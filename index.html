@@ -7,95 +7,128 @@
   <meta name="description" content="Création de sites web, soutien informatique et consultation technologique pour les entreprises des Laurentides. Basé à Saint-Joseph-du-Lac." />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #ffffff;
-      --bg2: #f7f7f5;
-      --text: #1a1a1a;
-      --text2: #6b6b6b;
-      --text3: #9b9b9b;
-      --border: rgba(0,0,0,0.1);
-      --border2: rgba(0,0,0,0.2);
-      --accent: #1a1a1a;
-      --radius: 8px;
-      --radius-lg: 12px;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #1a1a1a;
-        --bg2: #242424;
-        --text: #f0f0f0;
-        --text2: #a0a0a0;
-        --text3: #666;
-        --border: rgba(255,255,255,0.1);
-        --border2: rgba(255,255,255,0.2);
-        --accent: #f0f0f0;
-      }
-    }
     html { scroll-behavior: smooth; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.7; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1a1a2e; background: #fff; }
 
-    nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem; border-bottom: 0.5px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 100; }
-    .nav-logo { font-size: 20px; font-weight: 500; letter-spacing: -0.5px; color: var(--text); text-decoration: none; }
-    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
-    .nav-links { display: flex; gap: 1.5rem; }
-    .nav-links a { font-size: 14px; color: var(--text2); text-decoration: none; transition: color 0.2s; }
-    .nav-links a:hover { color: var(--text); }
-    .lang-btn { font-size: 13px; border: 0.5px solid var(--border2); border-radius: var(--radius); padding: 4px 12px; cursor: pointer; background: transparent; color: var(--text2); transition: background 0.2s; }
-    .lang-btn:hover { background: var(--bg2); }
-
-    .hero { padding: 5rem 2rem 4rem; max-width: 760px; margin: 0 auto; }
-    .hero-region { font-size: 12px; color: var(--text3); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 1.25rem; }
-    .hero h1 { font-size: clamp(28px, 5vw, 42px); font-weight: 500; line-height: 1.15; letter-spacing: -1px; margin-bottom: 1.25rem; }
-    .hero p { font-size: 16px; color: var(--text2); line-height: 1.7; margin-bottom: 2rem; max-width: 540px; }
-    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
-    .btn-primary { display: inline-block; background: var(--text); color: var(--bg); padding: 10px 22px; border-radius: var(--radius); font-size: 14px; cursor: pointer; border: none; text-decoration: none; transition: opacity 0.2s; }
-    .btn-primary:hover { opacity: 0.85; }
-    .btn-secondary { display: inline-block; background: transparent; color: var(--text); padding: 10px 22px; border-radius: var(--radius); font-size: 14px; cursor: pointer; border: 0.5px solid var(--border2); text-decoration: none; transition: background 0.2s; }
-    .btn-secondary:hover { background: var(--bg2); }
-
-    section { padding: 4rem 2rem; border-top: 0.5px solid var(--border); max-width: 760px; margin: 0 auto; }
-    .section-label { font-size: 12px; color: var(--text3); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 2rem; }
-
-    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
-    .service-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; }
-    .service-icon { font-size: 20px; margin-bottom: 0.75rem; }
-    .service-card h3 { font-size: 15px; font-weight: 500; margin-bottom: 0.5rem; }
-    .service-card p { font-size: 13px; color: var(--text2); line-height: 1.6; }
-
-    .portfolio-card { background: var(--bg2); border-radius: var(--radius-lg); padding: 1.5rem; border: 0.5px solid var(--border); }
-    .portfolio-card h3 { font-size: 16px; font-weight: 500; margin-bottom: 0.5rem; }
-    .portfolio-card p { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 1rem; }
-    .portfolio-link { font-size: 13px; color: #185FA5; text-decoration: none; }
-    .portfolio-link:hover { text-decoration: underline; }
-    .testimonial { background: var(--bg2); border-radius: var(--radius-lg); padding: 1.5rem; border-left: 2px solid var(--border2); border-top: 0.5px solid var(--border); border-right: 0.5px solid var(--border); border-bottom: 0.5px solid var(--border); margin-top: 1rem; border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
-    .testimonial p { font-size: 15px; line-height: 1.7; margin-bottom: 0.75rem; }
-    .testimonial-author { font-size: 13px; color: var(--text2); }
-
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; }
-    @media (max-width: 600px) { .contact-grid { grid-template-columns: 1fr; } }
-    .contact-info h2 { font-size: 22px; font-weight: 500; margin-bottom: 1rem; }
-    .contact-info p { font-size: 14px; color: var(--text2); line-height: 1.9; }
-    .contact-info a { color: #185FA5; text-decoration: none; }
-    .contact-form { display: flex; flex-direction: column; gap: 10px; }
-    .contact-form input, .contact-form textarea {
-      padding: 10px 12px; border: 0.5px solid var(--border2); border-radius: var(--radius);
-      font-size: 14px; background: var(--bg); color: var(--text);
-      font-family: inherit; outline: none; transition: border-color 0.2s;
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.25rem 3rem;
+      background: rgba(10, 20, 50, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
-    .contact-form input:focus, .contact-form textarea:focus { border-color: var(--text2); }
-    .contact-form textarea { min-height: 110px; resize: vertical; }
-    .form-success { font-size: 14px; color: #3B6D11; background: #EAF3DE; padding: 10px 14px; border-radius: var(--radius); display: none; }
+    .nav-logo { font-size: 22px; font-weight: 700; color: #fff; text-decoration: none; letter-spacing: -0.5px; }
+    .nav-logo span { color: #4fa3e8; }
+    .nav-right { display: flex; align-items: center; gap: 2rem; }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { font-size: 14px; color: rgba(255,255,255,0.7); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: #fff; }
+    .lang-btn { font-size: 13px; border: 1px solid rgba(255,255,255,0.3); border-radius: 6px; padding: 5px 14px; cursor: pointer; background: transparent; color: rgba(255,255,255,0.8); transition: all 0.2s; }
+    .lang-btn:hover { background: rgba(255,255,255,0.1); }
 
-    footer { padding: 2rem; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; max-width: 760px; margin: 0 auto; flex-wrap: wrap; gap: 0.5rem; }
-    footer p { font-size: 13px; color: var(--text3); }
+    .hero {
+      min-height: 100vh;
+      background: #0a1432;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 8rem 2rem 5rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=80') center/cover no-repeat;
+      opacity: 0.1;
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(79,163,232,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(79,163,232,0.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-glow { position: absolute; top: 20%; left: 50%; transform: translateX(-50%); width: 600px; height: 400px; background: radial-gradient(ellipse, rgba(37,99,235,0.25) 0%, transparent 70%); pointer-events: none; }
+    .hero-content { position: relative; z-index: 2; max-width: 800px; }
+    .hero-badge { display: inline-block; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #60a5fa; border: 1px solid rgba(96,165,250,0.35); border-radius: 20px; padding: 6px 18px; margin-bottom: 2rem; }
+    .hero h1 { font-size: clamp(38px, 6vw, 70px); font-weight: 700; color: #fff; line-height: 1.08; letter-spacing: -2px; margin-bottom: 1.5rem; }
+    .hero h1 span { color: #4fa3e8; }
+    .hero p { font-size: 18px; color: rgba(255,255,255,0.65); line-height: 1.7; max-width: 560px; margin: 0 auto 2.5rem; }
+    .btn-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-blue { background: #2563eb; color: #fff; padding: 14px 32px; border-radius: 8px; font-size: 15px; font-weight: 600; text-decoration: none; border: none; cursor: pointer; transition: background 0.2s; }
+    .btn-blue:hover { background: #1d4ed8; }
+    .btn-outline { background: transparent; color: #fff; padding: 14px 32px; border-radius: 8px; font-size: 15px; font-weight: 500; text-decoration: none; border: 1px solid rgba(255,255,255,0.3); cursor: pointer; transition: all 0.2s; }
+    .btn-outline:hover { background: rgba(255,255,255,0.08); }
 
-    @media (max-width: 480px) { nav { padding: 1rem; } .nav-links { display: none; } .hero { padding: 3rem 1.25rem 2.5rem; } section { padding: 2.5rem 1.25rem; } footer { padding: 1.5rem 1.25rem; } }
+    .stats-bar { background: #eff6ff; border-bottom: 1px solid #dbeafe; padding: 2rem 3rem; display: flex; justify-content: center; gap: 4rem; flex-wrap: wrap; }
+    .stat { text-align: center; }
+    .stat-num { font-size: 26px; font-weight: 700; color: #1d4ed8; }
+    .stat-label { font-size: 13px; color: #64748b; margin-top: 2px; }
+
+    .section { padding: 6rem 2rem; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-tag { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #2563eb; font-weight: 600; margin-bottom: 1rem; }
+    .section-title { font-size: clamp(26px, 4vw, 42px); font-weight: 700; color: #0f172a; line-height: 1.15; letter-spacing: -1px; margin-bottom: 1rem; }
+    .section-sub { font-size: 16px; color: #64748b; max-width: 540px; line-height: 1.7; margin-bottom: 3rem; }
+
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+    .service-card { border: 1px solid #e2e8f0; border-radius: 16px; padding: 2rem; transition: all 0.25s; background: #fff; }
+    .service-card:hover { border-color: #93c5fd; box-shadow: 0 8px 30px rgba(37,99,235,0.1); transform: translateY(-3px); }
+    .service-icon { width: 48px; height: 48px; background: #eff6ff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 1.25rem; }
+    .service-card h3 { font-size: 17px; font-weight: 600; color: #0f172a; margin-bottom: 0.6rem; }
+    .service-card p { font-size: 14px; color: #64748b; line-height: 1.65; }
+    .service-price { font-size: 13px; color: #2563eb; font-weight: 600; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #f1f5f9; }
+
+    .portfolio-bg { background: #0a1432; }
+    .portfolio-bg .section-title { color: #fff; }
+    .portfolio-bg .section-sub { color: rgba(255,255,255,0.55); }
+    .portfolio-bg .section-tag { color: #60a5fa; }
+    .portfolio-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; display: grid; grid-template-columns: 1fr 1.2fr; }
+    @media (max-width: 700px) { .portfolio-card { grid-template-columns: 1fr; } }
+    .portfolio-img { background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%); min-height: 300px; display: flex; align-items: center; justify-content: center; font-size: 90px; position: relative; }
+    .portfolio-img::after { content: 'alacroiseedespommes.com'; position: absolute; bottom: 1.25rem; left: 0; right: 0; text-align: center; font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 1px; }
+    .portfolio-body { padding: 2.5rem; display: flex; flex-direction: column; justify-content: center; }
+    .portfolio-body h3 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 0.75rem; }
+    .portfolio-body p { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.75; margin-bottom: 1.25rem; }
+    .portfolio-tag { display: inline-block; font-size: 12px; background: rgba(96,165,250,0.12); color: #60a5fa; border: 1px solid rgba(96,165,250,0.25); border-radius: 20px; padding: 4px 12px; margin-right: 6px; margin-bottom: 6px; }
+    .portfolio-link { display: inline-block; margin-top: 1.25rem; font-size: 14px; color: #60a5fa; text-decoration: none; font-weight: 600; }
+    .portfolio-link:hover { text-decoration: underline; }
+    .testimonial { margin-top: 2rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 2rem 2.5rem; }
+    .testimonial-quote { font-size: 16px; color: rgba(255,255,255,0.75); line-height: 1.8; font-style: italic; margin-bottom: 1rem; }
+    .testimonial-author { font-size: 13px; color: rgba(255,255,255,0.4); }
+
+    .contact-bg { background: #f8fafc; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+    @media (max-width: 700px) { .contact-grid { grid-template-columns: 1fr; gap: 2rem; } }
+    .contact-info h2 { font-size: 32px; font-weight: 700; color: #0f172a; letter-spacing: -1px; margin-bottom: 1rem; }
+    .contact-info p { font-size: 15px; color: #64748b; line-height: 1.9; }
+    .contact-info a { color: #2563eb; text-decoration: none; }
+    .contact-detail { display: flex; align-items: flex-start; gap: 12px; margin-top: 1.5rem; font-size: 14px; color: #475569; line-height: 1.6; }
+    .contact-detail-icon { width: 36px; height: 36px; background: #eff6ff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .contact-form { display: flex; flex-direction: column; gap: 12px; }
+    .contact-form input, .contact-form textarea, .contact-form select {
+      padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 10px;
+      font-size: 14px; background: #fff; color: #0f172a; font-family: inherit;
+      outline: none; transition: border-color 0.2s; width: 100%;
+    }
+    .contact-form input:focus, .contact-form textarea:focus, .contact-form select:focus { border-color: #2563eb; }
+    .contact-form textarea { min-height: 120px; resize: vertical; }
+    .form-success { font-size: 14px; color: #166534; background: #dcfce7; padding: 12px 16px; border-radius: 10px; display: none; }
+
+    footer { background: #060f28; padding: 2.5rem 3rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-logo { font-size: 20px; font-weight: 700; color: #fff; }
+    .footer-logo span { color: #4fa3e8; }
+    footer p { font-size: 13px; color: rgba(255,255,255,0.35); }
+
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { display: none; }
+      .stats-bar { gap: 1.5rem; padding: 1.5rem; }
+      .section { padding: 4rem 1.25rem; }
+      footer { padding: 2rem 1.25rem; flex-direction: column; text-align: center; }
+    }
   </style>
 </head>
 <body>
 
 <nav>
-  <a class="nav-logo" href="#">Norelo</a>
+  <a class="nav-logo" href="#">Nore<span>lo</span></a>
   <div class="nav-right">
     <div class="nav-links">
       <a href="#services" id="nav-services">Services</a>
@@ -106,155 +139,207 @@
   </div>
 </nav>
 
-<div style="max-width:760px;margin:0 auto;">
-  <div class="hero">
-    <p class="hero-region" id="hero-region">Saint-Joseph-du-Lac &amp; Laurentides</p>
-    <h1 id="hero-title">Solutions tech locales,<br>résultats concrets.</h1>
-    <p id="hero-desc">Création de sites web, soutien informatique et consultation technologique pour les entreprises et particuliers des Laurentides. Votre expert local, disponible quand vous en avez besoin.</p>
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-badge" id="hero-badge">Saint-Joseph-du-Lac · Laurentides</div>
+    <h1 id="hero-title">Votre expert tech<br><span>local.</span></h1>
+    <p id="hero-desc">Création de sites web, soutien informatique et consultation technologique pour les entreprises et particuliers des Laurentides.</p>
     <div class="btn-group">
-      <a href="#contact" class="btn-primary" id="hero-cta">Nous contacter</a>
-      <a href="#services" class="btn-secondary" id="hero-cta2">Nos services</a>
+      <a href="#contact" class="btn-blue" id="hero-cta">Nous contacter</a>
+      <a href="#services" class="btn-outline" id="hero-cta2">Nos services</a>
     </div>
   </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-num">100%</div><div class="stat-label" id="stat1">Local & disponible</div></div>
+  <div class="stat"><div class="stat-num">Bilingue</div><div class="stat-label" id="stat2">Français & anglais</div></div>
+  <div class="stat"><div class="stat-num">3-en-1</div><div class="stat-label" id="stat3">Web · IT · Consultation</div></div>
+  <div class="stat"><div class="stat-num">~48h</div><div class="stat-label" id="stat4">Temps de réponse</div></div>
 </div>
 
-<section id="services">
-  <p class="section-label" id="lbl-services">Services</p>
-  <div class="services-grid">
-    <div class="service-card">
-      <div class="service-icon">🌐</div>
-      <h3 id="s1-title">Création de sites web</h3>
-      <p id="s1-desc">Sites web professionnels, modernes et optimisés pour les moteurs de recherche. Bilingues français/anglais sur demande.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-icon">💻</div>
-      <h3 id="s2-title">Soutien informatique</h3>
-      <p id="s2-desc">Réparation d'ordinateurs, suppression de virus, configuration de réseaux et assistance technique à domicile ou en entreprise.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-icon">⚙️</div>
-      <h3 id="s3-title">Consultation technologique</h3>
-      <p id="s3-desc">Conseils personnalisés pour optimiser vos outils numériques, automatiser vos processus et améliorer votre présence en ligne.</p>
-    </div>
-    <div class="service-card">
-      <div class="service-icon">🔧</div>
-      <h3 id="s4-title">Hébergement & maintenance</h3>
-      <p id="s4-desc">Hébergement fiable de votre site web avec maintenance mensuelle pour que votre présence en ligne reste toujours à jour.</p>
+<section class="section" id="services">
+  <div class="section-inner">
+    <p class="section-tag" id="lbl-services">Services</p>
+    <h2 class="section-title" id="services-title">Tout ce dont vous avez besoin,<br>au même endroit.</h2>
+    <p class="section-sub" id="services-sub">Une seule personne de confiance pour tous vos besoins technologiques. Pas de centre d'appel, pas d'attente — juste Daniel.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🌐</div>
+        <h3 id="s1-title">Création de sites web</h3>
+        <p id="s1-desc">Sites web professionnels, modernes et optimisés pour les moteurs de recherche. Bilingues français/anglais sur demande.</p>
+        <p class="service-price" id="s1-price">À partir de 500$ · Hébergement dès 50$/mois</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">💻</div>
+        <h3 id="s2-title">Soutien informatique</h3>
+        <p id="s2-desc">Réparation d'ordinateurs, suppression de virus, configuration de réseaux et assistance technique à domicile ou en entreprise.</p>
+        <p class="service-price" id="s2-price">Tarif horaire compétitif · Déplacement disponible</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">⚙️</div>
+        <h3 id="s3-title">Consultation technologique</h3>
+        <p id="s3-desc">Conseils personnalisés pour optimiser vos outils numériques, automatiser vos processus et améliorer votre présence en ligne.</p>
+        <p class="service-price" id="s3-price">Sur mesure selon vos besoins</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔧</div>
+        <h3 id="s4-title">Hébergement & maintenance</h3>
+        <p id="s4-desc">Hébergement fiable avec maintenance mensuelle pour que votre site reste toujours rapide, sécurisé et à jour.</p>
+        <p class="service-price" id="s4-price">Forfaits mensuels disponibles</p>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="portfolio">
-  <p class="section-label" id="lbl-portfolio">Portfolio</p>
-  <div class="portfolio-card">
-    <h3>À la Croisée des Pommes</h3>
-    <p id="port-desc">Site web complet pour un verger biologique certifié à Saint-Joseph-du-Lac. Réservations en ligne, boutique, nouvelles et informations sur les activités.</p>
-    <a class="portfolio-link" href="https://alacroiseedespommes.com" target="_blank" rel="noopener">alacroiseedespommes.com →</a>
-  </div>
-  <div class="testimonial" style="margin-top:1rem;">
-    <p id="test-text">« Daniel a créé notre site web de A à Z avec professionnalisme et efficacité. Il comprend les besoins des entreprises locales et livre exactement ce qu'on lui demande. On le recommande sans hésitation. »</p>
-    <p class="testimonial-author" id="test-author">— À la Croisée des Pommes, Saint-Joseph-du-Lac</p>
+<section class="section portfolio-bg" id="portfolio">
+  <div class="section-inner">
+    <p class="section-tag" id="lbl-portfolio">Portfolio</p>
+    <h2 class="section-title" id="portfolio-title">Un travail concret,<br>des résultats réels.</h2>
+    <p class="section-sub" id="portfolio-sub">Des sites web livrés pour de vraies entreprises locales.</p>
+    <div class="portfolio-card">
+      <div class="portfolio-img">🍎</div>
+      <div class="portfolio-body">
+        <h3>À la Croisée des Pommes</h3>
+        <p id="port-desc">Site web complet pour un verger biologique certifié à Saint-Joseph-du-Lac. Réservations en ligne, boutique, nouvelles et activités.</p>
+        <div>
+          <span class="portfolio-tag">Bilingue</span>
+          <span class="portfolio-tag">Réservations</span>
+          <span class="portfolio-tag">Boutique</span>
+          <span class="portfolio-tag">SEO</span>
+        </div>
+        <a class="portfolio-link" href="https://alacroiseedespommes.com" target="_blank" rel="noopener">Visiter le site →</a>
+      </div>
+    </div>
+    <div class="testimonial">
+      <p class="testimonial-quote" id="test-text">« Daniel a créé notre site web de A à Z avec professionnalisme et efficacité. Il comprend les besoins des entreprises locales et livre exactement ce qu'on lui demande. On le recommande sans hésitation. »</p>
+      <p class="testimonial-author" id="test-author">— À la Croisée des Pommes, Saint-Joseph-du-Lac</p>
+    </div>
   </div>
 </section>
 
-<section id="contact">
-  <p class="section-label" id="lbl-contact">Contact</p>
-  <div class="contact-grid">
-    <div class="contact-info">
-      <h2 id="contact-title">Parlons de votre projet</h2>
-      <p id="contact-desc">
-        Vous avez besoin d'un site web ou d'un soutien informatique?<br>
-        Contactez Daniel directement.<br><br>
-        Basé à Saint-Joseph-du-Lac,<br>
-        disponible dans toute la région des Laurentides.<br><br>
-        <a href="mailto:daniel@norelo.ca">daniel@norelo.ca</a>
-      </p>
-    </div>
-    <div class="contact-form">
-      <input type="text" id="inp-name" placeholder="Votre nom" />
-      <input type="email" id="inp-email" placeholder="Votre courriel" />
-      <textarea id="inp-msg" placeholder="Décrivez votre projet..."></textarea>
-      <button class="btn-primary" onclick="submitForm()" id="form-btn">Envoyer →</button>
-      <p class="form-success" id="form-success">Message envoyé! Daniel vous contactera sous peu.</p>
+<section class="section contact-bg" id="contact">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <p class="section-tag" id="lbl-contact">Contact</p>
+        <h2 id="contact-title">Parlons de votre projet</h2>
+        <p id="contact-desc">Vous avez besoin d'un site web ou d'un soutien informatique? Contactez Daniel directement. Pas de téléphone automatisé — une vraie personne qui connaît la région.</p>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">✉️</div>
+          <a href="mailto:daniel@norelo.ca">daniel@norelo.ca</a>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">📍</div>
+          <span id="contact-location">Saint-Joseph-du-Lac, Québec<br>Disponible dans toute la région des Laurentides</span>
+        </div>
+      </div>
+      <div class="contact-form">
+        <input type="text" id="inp-name" placeholder="Votre nom" />
+        <input type="email" id="inp-email" placeholder="Votre courriel" />
+        <select id="inp-service">
+          <option id="opt-default">Quel service vous intéresse?</option>
+          <option id="opt-web">Création de site web</option>
+          <option id="opt-it">Soutien informatique</option>
+          <option id="opt-consult">Consultation technologique</option>
+          <option id="opt-hosting">Hébergement & maintenance</option>
+          <option id="opt-other">Autre</option>
+        </select>
+        <textarea id="inp-msg" placeholder="Décrivez votre projet..."></textarea>
+        <button class="btn-blue" onclick="submitForm()" id="form-btn">Envoyer le message →</button>
+        <p class="form-success" id="form-success">Message envoyé! Daniel vous contactera sous peu.</p>
+      </div>
     </div>
   </div>
 </section>
 
 <footer>
-  <p>© 2025 Norelo — Saint-Joseph-du-Lac, Québec</p>
+  <div class="footer-logo">Nore<span>lo</span></div>
+  <p id="footer-copy">© 2025 Norelo — Saint-Joseph-du-Lac, Québec</p>
   <p>Web · IT · Tech</p>
 </footer>
 
 <script>
 const content = {
   fr: {
-    'nav-services': 'Services', 'nav-portfolio': 'Portfolio', 'nav-contact': 'Contact',
-    'lang-btn': 'EN',
-    'hero-region': 'Saint-Joseph-du-Lac &amp; Laurentides',
-    'hero-title': 'Solutions tech locales,<br>résultats concrets.',
-    'hero-desc': "Création de sites web, soutien informatique et consultation technologique pour les entreprises et particuliers des Laurentides. Votre expert local, disponible quand vous en avez besoin.",
-    'hero-cta': 'Nous contacter', 'hero-cta2': 'Nos services',
-    'lbl-services': 'Services', 'lbl-portfolio': 'Portfolio', 'lbl-contact': 'Contact',
-    's1-title': 'Création de sites web', 's1-desc': "Sites web professionnels, modernes et optimisés pour les moteurs de recherche. Bilingues français/anglais sur demande.",
-    's2-title': 'Soutien informatique', 's2-desc': "Réparation d'ordinateurs, suppression de virus, configuration de réseaux et assistance technique à domicile ou en entreprise.",
-    's3-title': 'Consultation technologique', 's3-desc': "Conseils personnalisés pour optimiser vos outils numériques, automatiser vos processus et améliorer votre présence en ligne.",
-    's4-title': 'Hébergement & maintenance', 's4-desc': "Hébergement fiable de votre site web avec maintenance mensuelle pour que votre présence en ligne reste toujours à jour.",
-    'port-desc': "Site web complet pour un verger biologique certifié à Saint-Joseph-du-Lac. Réservations en ligne, boutique, nouvelles et informations sur les activités.",
-    'test-text': "« Daniel a créé notre site web de A à Z avec professionnalisme et efficacité. Il comprend les besoins des entreprises locales et livre exactement ce qu'on lui demande. On le recommande sans hésitation. »",
-    'test-author': '— À la Croisée des Pommes, Saint-Joseph-du-Lac',
-    'contact-title': 'Parlons de votre projet',
-    'contact-desc': "Vous avez besoin d'un site web ou d'un soutien informatique?<br>Contactez Daniel directement.<br><br>Basé à Saint-Joseph-du-Lac,<br>disponible dans toute la région des Laurentides.<br><br><a href='mailto:daniel@norelo.ca'>daniel@norelo.ca</a>",
-    'inp-name': 'Votre nom', 'inp-email': 'Votre courriel', 'inp-msg': 'Décrivez votre projet...',
-    'form-btn': 'Envoyer →',
-    'form-success': 'Message envoyé! Daniel vous contactera sous peu.'
+    'nav-services':'Services','nav-portfolio':'Portfolio','nav-contact':'Contact','lang-btn':'EN',
+    'hero-badge':'Saint-Joseph-du-Lac · Laurentides',
+    'hero-title':'Votre expert tech<br><span>local.</span>',
+    'hero-desc':"Création de sites web, soutien informatique et consultation technologique pour les entreprises et particuliers des Laurentides.",
+    'hero-cta':'Nous contacter','hero-cta2':'Nos services',
+    'stat1':'Local & disponible','stat2':'Français & anglais','stat3':'Web · IT · Consultation','stat4':'Temps de réponse',
+    'lbl-services':'Services',
+    'services-title':'Tout ce dont vous avez besoin,<br>au même endroit.',
+    'services-sub':"Une seule personne de confiance pour tous vos besoins technologiques. Pas de centre d'appel, pas d'attente — juste Daniel.",
+    's1-title':'Création de sites web','s1-desc':"Sites web professionnels, modernes et optimisés pour les moteurs de recherche. Bilingues français/anglais sur demande.",'s1-price':'À partir de 500$ · Hébergement dès 50$/mois',
+    's2-title':'Soutien informatique','s2-desc':"Réparation d'ordinateurs, suppression de virus, configuration de réseaux et assistance technique à domicile ou en entreprise.",'s2-price':'Tarif horaire compétitif · Déplacement disponible',
+    's3-title':'Consultation technologique','s3-desc':'Conseils personnalisés pour optimiser vos outils numériques, automatiser vos processus et améliorer votre présence en ligne.','s3-price':'Sur mesure selon vos besoins',
+    's4-title':'Hébergement & maintenance','s4-desc':'Hébergement fiable avec maintenance mensuelle pour que votre site reste toujours rapide, sécurisé et à jour.','s4-price':'Forfaits mensuels disponibles',
+    'lbl-portfolio':'Portfolio',
+    'portfolio-title':'Un travail concret,<br>des résultats réels.',
+    'portfolio-sub':'Des sites web livrés pour de vraies entreprises locales.',
+    'port-desc':'Site web complet pour un verger biologique certifié à Saint-Joseph-du-Lac. Réservations en ligne, boutique, nouvelles et activités.',
+    'test-text':"« Daniel a créé notre site web de A à Z avec professionnalisme et efficacité. Il comprend les besoins des entreprises locales et livre exactement ce qu'on lui demande. On le recommande sans hésitation. »",
+    'test-author':'— À la Croisée des Pommes, Saint-Joseph-du-Lac',
+    'lbl-contact':'Contact','contact-title':'Parlons de votre projet',
+    'contact-desc':"Vous avez besoin d'un site web ou d'un soutien informatique? Contactez Daniel directement. Pas de téléphone automatisé — une vraie personne qui connaît la région.",
+    'contact-location':'Saint-Joseph-du-Lac, Québec<br>Disponible dans toute la région des Laurentides',
+    'inp-name':'Votre nom','inp-email':'Votre courriel','inp-msg':'Décrivez votre projet...',
+    'opt-default':'Quel service vous intéresse?','opt-web':'Création de site web','opt-it':'Soutien informatique','opt-consult':'Consultation technologique','opt-hosting':'Hébergement & maintenance','opt-other':'Autre',
+    'form-btn':'Envoyer le message →','form-success':'Message envoyé! Daniel vous contactera sous peu.',
+    'footer-copy':'© 2025 Norelo — Saint-Joseph-du-Lac, Québec'
   },
   en: {
-    'nav-services': 'Services', 'nav-portfolio': 'Portfolio', 'nav-contact': 'Contact',
-    'lang-btn': 'FR',
-    'hero-region': 'Saint-Joseph-du-Lac &amp; Laurentides',
-    'hero-title': 'Local tech solutions,<br>real results.',
-    'hero-desc': "Web design, IT support and tech consulting for businesses and individuals in the Laurentians. Your local expert, available when you need it.",
-    'hero-cta': 'Contact us', 'hero-cta2': 'Our services',
-    'lbl-services': 'Services', 'lbl-portfolio': 'Portfolio', 'lbl-contact': 'Contact',
-    's1-title': 'Web design', 's1-desc': "Professional, modern websites optimized for search engines. Bilingual French/English available.",
-    's2-title': 'IT support', 's2-desc': "Computer repair, virus removal, network setup and on-site technical assistance for homes and businesses.",
-    's3-title': 'Tech consulting', 's3-desc': "Personalized advice to optimize your digital tools, automate processes and improve your online presence.",
-    's4-title': 'Hosting & maintenance', 's4-desc': "Reliable website hosting with monthly maintenance to keep your online presence always up to date.",
-    'port-desc': "Complete website for a certified organic apple orchard in Saint-Joseph-du-Lac. Online reservations, shop, news and activity information.",
-    'test-text': '"Daniel built our website from scratch with professionalism and efficiency. He understands local business needs and delivers exactly what you ask for. We recommend him without hesitation."',
-    'test-author': '— À la Croisée des Pommes, Saint-Joseph-du-Lac',
-    'contact-title': "Let's talk about your project",
-    'contact-desc': "Need a website or IT support?<br>Contact Daniel directly.<br><br>Based in Saint-Joseph-du-Lac,<br>available throughout the Laurentians.<br><br><a href='mailto:daniel@norelo.ca'>daniel@norelo.ca</a>",
-    'inp-name': 'Your name', 'inp-email': 'Your email', 'inp-msg': 'Describe your project...',
-    'form-btn': 'Send →',
-    'form-success': 'Message sent! Daniel will get back to you shortly.'
+    'nav-services':'Services','nav-portfolio':'Portfolio','nav-contact':'Contact','lang-btn':'FR',
+    'hero-badge':'Saint-Joseph-du-Lac · Laurentians',
+    'hero-title':'Your local tech<br><span>expert.</span>',
+    'hero-desc':"Web design, IT support and tech consulting for businesses and individuals in the Laurentians.",
+    'hero-cta':'Contact us','hero-cta2':'Our services',
+    'stat1':'Local & available','stat2':'French & English','stat3':'Web · IT · Consulting','stat4':'Response time',
+    'lbl-services':'Services',
+    'services-title':'Everything you need,<br>in one place.',
+    'services-sub':"One trusted person for all your tech needs. No call centre, no waiting — just Daniel.",
+    's1-title':'Web design','s1-desc':"Professional, modern websites optimized for search engines. Bilingual French/English available.",'s1-price':'From $500 · Hosting from $50/mo',
+    's2-title':'IT support','s2-desc':"Computer repair, virus removal, network setup and on-site technical assistance for homes and businesses.",'s2-price':'Competitive hourly rate · On-site available',
+    's3-title':'Tech consulting','s3-desc':'Personalized advice to optimize your digital tools, automate processes and improve your online presence.','s3-price':'Custom quote based on your needs',
+    's4-title':'Hosting & maintenance','s4-desc':'Reliable hosting with monthly maintenance to keep your site fast, secure and up to date.','s4-price':'Monthly plans available',
+    'lbl-portfolio':'Portfolio',
+    'portfolio-title':'Real work,<br>real results.',
+    'portfolio-sub':'Websites delivered for real local businesses.',
+    'port-desc':'Complete website for a certified organic apple orchard in Saint-Joseph-du-Lac. Online reservations, shop, news and activities.',
+    'test-text':'"Daniel built our website from scratch with professionalism and efficiency. He understands local business needs and delivers exactly what you ask for. We recommend him without hesitation."',
+    'test-author':'— À la Croisée des Pommes, Saint-Joseph-du-Lac',
+    'lbl-contact':'Contact','contact-title':"Let's talk about your project",
+    'contact-desc':"Need a website or IT support? Contact Daniel directly. No automated phone system — a real person who knows the area.",
+    'contact-location':'Saint-Joseph-du-Lac, Québec<br>Available throughout the Laurentians',
+    'inp-name':'Your name','inp-email':'Your email','inp-msg':'Describe your project...',
+    'opt-default':'Which service interests you?','opt-web':'Web design','opt-it':'IT support','opt-consult':'Tech consulting','opt-hosting':'Hosting & maintenance','opt-other':'Other',
+    'form-btn':'Send message →','form-success':'Message sent! Daniel will get back to you shortly.',
+    'footer-copy':'© 2025 Norelo — Saint-Joseph-du-Lac, Québec'
   }
 };
-
 let lang = 'fr';
-
 function toggleLang() {
   lang = lang === 'fr' ? 'en' : 'fr';
   const d = content[lang];
   for (const [id, val] of Object.entries(d)) {
     const el = document.getElementById(id);
     if (!el) continue;
-    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-      el.placeholder = val;
-    } else {
-      el.innerHTML = val;
-    }
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val;
+    else if (el.tagName === 'OPTION') el.textContent = val;
+    else el.innerHTML = val;
   }
   document.documentElement.lang = lang;
 }
-
 function submitForm() {
   const name = document.getElementById('inp-name').value.trim();
   const email = document.getElementById('inp-email').value.trim();
   const msg = document.getElementById('inp-msg').value.trim();
   if (!name || !email || !msg) return;
-  const success = document.getElementById('form-success');
-  success.style.display = 'block';
+  document.getElementById('form-success').style.display = 'block';
   document.getElementById('inp-name').value = '';
   document.getElementById('inp-email').value = '';
   document.getElementById('inp-msg').value = '';
