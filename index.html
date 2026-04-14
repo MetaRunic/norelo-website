@@ -13,23 +13,13 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     :root{--blue:#2563eb;--blue-light:#4fa3e8;--blue-pale:#60a5fa;--dark:#070f2b;--dark2:#0a1432;--dark3:#0d1b3e;--white:#fff;--gray:#64748b;--border:#e2e8f0;}
     html{scroll-behavior:smooth;}
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1a1a2e;background:#fff;overflow-x:hidden;cursor:none;}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1a1a2e;background:#fff;overflow-x:hidden;cursor:none;animation:fadeIn 0.6s ease;}@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
     /* ── CUSTOM CURSOR ── */
     #cursor{position:fixed;width:10px;height:10px;background:var(--blue-light);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s,width 0.2s,height 0.2s,opacity 0.2s;}
     #cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid rgba(79,163,232,0.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform 0.08s,width 0.3s,height 0.3s,opacity 0.3s;}
     body:not(:hover) #cursor,body:not(:hover) #cursor-ring{opacity:0;}
     a:hover~#cursor,button:hover~#cursor{width:18px;height:18px;}
-
-    /* ── PAGE LOADER ── */
-    #loader{position:fixed;inset:0;background:var(--dark);z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;transition:opacity 0.6s,visibility 0.6s;}
-    #loader.hidden{opacity:0;visibility:hidden;}
-    .loader-logo{font-size:36px;font-weight:800;color:#fff;letter-spacing:-1px;}
-    .loader-logo span{color:var(--blue-light);}
-    .loader-bar{width:180px;height:2px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;}
-    .loader-fill{height:100%;width:0;background:linear-gradient(to right,var(--blue),var(--blue-light));border-radius:2px;animation:load 1.2s ease forwards;}
-    @keyframes load{0%{width:0}60%{width:80%}100%{width:100%}}
-    .loader-text{font-size:12px;color:rgba(255,255,255,0.4);letter-spacing:3px;text-transform:uppercase;}
 
     /* ── PROGRESS BAR ── */
     #progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(to right,var(--blue),var(--blue-light));z-index:9997;width:0;transition:width 0.1s;}
@@ -181,6 +171,16 @@
     .pricing-card:hover{transform:translateY(-5px);box-shadow:0 16px 50px rgba(37,99,235,0.1);}
     .pricing-card.featured{border:2px solid var(--blue);background:linear-gradient(to bottom,#f0f7ff,#fff);}
     .pricing-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;font-size:11px;font-weight:700;padding:5px 18px;border-radius:20px;white-space:nowrap;letter-spacing:0.5px;box-shadow:0 4px 16px rgba(37,99,235,0.35);}
+    .pricing-card.promo{border:2px solid #e11d48;background:linear-gradient(to bottom,#fff1f4,#fff);}
+    .pricing-card.promo:hover{box-shadow:0 16px 50px rgba(225,29,72,0.12);}
+    .badge-promo{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#e11d48,#f43f5e);color:#fff;font-size:11px;font-weight:700;padding:5px 18px;border-radius:20px;white-space:nowrap;letter-spacing:0.5px;box-shadow:0 4px 16px rgba(225,29,72,0.4);display:flex;align-items:center;gap:6px;}
+    .badge-promo-icon{font-size:12px;}
+    .promo-strike{text-decoration:line-through;color:#94a3b8;font-size:28px;font-weight:400;letter-spacing:0;}
+    .promo-new{color:#e11d48;font-size:40px;font-weight:800;letter-spacing:-1.5px;}
+    .promo-saving{display:inline-block;background:#fff1f4;color:#e11d48;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #fda4af;margin-top:6px;}
+    .counter-wrap{font-size:12px;color:#e11d48;font-weight:600;margin-top:8px;display:flex;align-items:center;gap:6px;}
+    .counter-bar{flex:1;height:4px;background:#ffe4e6;border-radius:4px;overflow:hidden;}
+    .counter-fill{height:100%;width:23%;background:linear-gradient(to right,#e11d48,#f43f5e);border-radius:4px;}
     .pricing-name{font-size:12px;font-weight:700;color:var(--gray);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.75rem;}
     .pricing-price{font-size:40px;font-weight:800;color:#0f172a;letter-spacing:-1.5px;}
     .pricing-price sup{font-size:20px;vertical-align:top;margin-top:10px;display:inline-block;font-weight:600;}
@@ -249,13 +249,7 @@
 
 <!-- CURSOR -->
 <div id="cursor"></div>
-<div id="cursor-ring"></div>
-
-<!-- LOADER -->
-<div id="loader">
-  <div class="loader-logo">Nore<span>lo</span></div>
-  <div class="loader-bar"><div class="loader-fill"></div></div>
-  <div class="loader-text" id="loader-text">Chargement...</div>
+<div id="cursor-ring"></div></div>
 </div>
 
 <!-- PROGRESS BAR -->
@@ -417,18 +411,26 @@
     <h2 class="section-title reveal" id="pricing-title">Des prix clairs,<br>sans surprises.</h2>
     <p class="section-sub reveal" id="pricing-sub">Tous les forfaits incluent une consultation gratuite. Contactez-nous pour un devis personnalisé.</p>
     <div class="pricing-grid">
-      <div class="pricing-card reveal d1">
+      <div class="pricing-card promo reveal d1">
+        <div class="badge-promo"><span class="badge-promo-icon">🔥</span><span id="pr1-badge">Offre de lancement</span></div>
         <p class="pricing-name" id="pr1-name">Essentiel</p>
-        <div class="pricing-price"><sup>$</sup>500<sub id="pr1-per"> + hébergement</sub></div>
-        <p class="pricing-desc" id="pr1-desc">Idéal pour les petites entreprises qui veulent une présence en ligne simple et professionnelle.</p>
+        <div>
+          <span class="promo-strike">700$</span>
+          <div class="pricing-price promo-new" id="pr1-price-display">500$</div>
+          <span class="promo-saving" id="pr1-saving">Économisez 200$</span>
+        </div>
+        <sub id="pr1-per" style="font-size:13px;color:#94a3b8;"> + hébergement</sub>
+        <div class="counter-wrap"><span id="pr1-counter">23 sur 100 réclamés</span><div class="counter-bar"><div class="counter-fill"></div></div></div>
+        <p class="pricing-desc" id="pr1-desc" style="margin-top:0.75rem;">Idéal pour les petites entreprises qui veulent une présence en ligne simple et professionnelle.</p>
         <ul class="pricing-features">
           <li><span class="pricing-check">✓</span><span id="prf1-1">Site 1 à 5 pages</span></li>
           <li><span class="pricing-check">✓</span><span id="prf1-2">Design responsive (mobile)</span></li>
           <li><span class="pricing-check">✓</span><span id="prf1-3">Formulaire de contact</span></li>
           <li><span class="pricing-check">✓</span><span id="prf1-4">Optimisation de base (SEO)</span></li>
-          <li><span class="pricing-check">✓</span><span id="prf1-5">Hébergement dès 50$/mois</span></li>
+          <li><span class="pricing-check">✓</span><span id="prf1-5">Bilingue français / anglais</span></li>
+          <li><span class="pricing-check">✓</span><span id="prf1-6">Hébergement dès 50$/mois</span></li>
         </ul>
-        <a href="#contact" class="btn-outline" style="text-align:center;display:block;color:#1a1a2e;border-color:#e2e8f0;" id="pr1-cta">Commencer</a>
+        <a href="#contact" class="btn-blue" style="text-align:center;display:block;background:#e11d48;box-shadow:0 4px 16px rgba(225,29,72,0.3);" id="pr1-cta">Réclamer l'offre →</a>
       </div>
       <div class="pricing-card featured reveal d2">
         <div class="pricing-badge" id="pr2-badge">Le plus populaire</div>
@@ -472,7 +474,7 @@
         <p id="contact-desc">Vous avez besoin d'un site web ou d'un soutien informatique? Contactez Daniel directement. Pas de téléphone automatisé. Vous parlez à une vraie personne qui connaît la région.</p>
         <div class="contact-detail">
           <div class="contact-detail-icon">✉️</div>
-          <a href="mailto:daniel@norelo.ca">daniel@norelo.ca</a>
+          <a href="/cdn-cgi/l/email-protection#fd999c93949891bd93928f989192d39e9c"><span class="__cf_email__" data-cfemail="fb9f9a95929e97bb9594899e9794d5989a">[email&#160;protected]</span></a>
         </div>
         <div class="contact-detail">
           <div class="contact-detail-icon">📍</div>
@@ -539,7 +541,7 @@
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ── CURSOR ── */
 const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
 let mx=0,my=0,rx=0,ry=0;
@@ -551,7 +553,6 @@ document.querySelectorAll('a,button,.service-card,.why-card,.pricing-card').forE
 });
 
 /* ── LOADER ── */
-window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('loader').classList.add('hidden');},1300);});
 
 /* ── PROGRESS BAR ── */
 const prog=document.getElementById('progress');
@@ -646,8 +647,8 @@ const content={
     'test-text':"« Daniel a créé notre site web de A à Z avec professionnalisme et efficacité. Il comprend les besoins des entreprises locales et livre exactement ce qu'on lui demande. On le recommande sans hésitation. »",
     'test-author':'À la Croisée des Pommes, Saint-Joseph-du-Lac',
     'lbl-pricing':'Tarifs','pricing-title':'Des prix clairs,<br>sans surprises.','pricing-sub':'Tous les forfaits incluent une consultation gratuite. Contactez-nous pour un devis personnalisé.',
-    'pr1-name':'Essentiel','pr1-per':' + hébergement','pr1-desc':'Idéal pour les petites entreprises qui veulent une présence en ligne simple et professionnelle.',
-    'prf1-1':'Site 1 à 5 pages','prf1-2':'Design responsive (mobile)','prf1-3':'Formulaire de contact','prf1-4':'Optimisation de base (SEO)','prf1-5':'Hébergement dès 50$/mois','pr1-cta':'Commencer',
+    'pr1-badge':'Offre de lancement','pr1-name':'Essentiel','pr1-per':' + hébergement','pr1-price-display':'500$','pr1-saving':'Économisez 200$','pr1-counter':'23 sur 100 réclamés','pr1-desc':'Idéal pour les petites entreprises qui veulent une présence en ligne simple et professionnelle.',
+    'prf1-1':'Site 1 à 5 pages','prf1-2':'Design responsive (mobile)','prf1-3':'Formulaire de contact','prf1-4':'Optimisation de base (SEO)','prf1-5':'Bilingue français / anglais','prf1-6':'Hébergement dès 50$/mois','pr1-cta':'Réclamer l\'offre →',
     'pr2-badge':'Le plus populaire','pr2-name':'Professionnel','pr2-per':' + hébergement','pr2-desc':'Pour les entreprises qui veulent se démarquer avec un site complet, bilingue et optimisé.',
     'prf2-1':"Site jusqu'à 10 pages",'prf2-2':'Design sur mesure','prf2-3':'Bilingue français/anglais','prf2-4':'SEO avancé + Google Analytics','prf2-5':'Intégration réseaux sociaux','prf2-6':'Hébergement dès 75$/mois','pr2-cta':'Commencer',
     'pr3-name':'Sur mesure','pr3-price':'Sur devis','pr3-desc':'Boutique en ligne, application web, consultation IT ou projet complexe, on trouve toujours une solution adaptée.',
@@ -664,7 +665,6 @@ const content={
     'f-col2':'Entreprise','f-portfolio':'Portfolio','f-pricing':'Tarifs','f-process':'Processus','f-contact':'Contact',
     'footer-desc':'Expert tech local basé à Saint-Joseph-du-Lac. Sites web, soutien informatique et consultation pour les entreprises des Laurentides.',
     'footer-copy':'© 2025 Norelo · Saint-Joseph-du-Lac, Québec','footer-made':'Fait avec soin dans les Laurentides',
-    'loader-text':'Chargement...'
   },
   en:{
     'nav-services':'Services','nav-process':'Process','nav-portfolio':'Portfolio','nav-pricing':'Pricing','nav-contact':'Contact',
@@ -698,8 +698,8 @@ const content={
     'test-text':'"Daniel built our website from scratch with professionalism and efficiency. He understands local business needs and delivers exactly what you ask for. We recommend him without hesitation."',
     'test-author':'À la Croisée des Pommes, Saint-Joseph-du-Lac',
     'lbl-pricing':'Pricing','pricing-title':'Clear pricing,<br>no surprises.','pricing-sub':'All plans include a free consultation. Contact us for a custom quote.',
-    'pr1-name':'Essential','pr1-per':' + hosting','pr1-desc':'Perfect for small businesses that want a simple, professional online presence.',
-    'prf1-1':'1 to 5 page website','prf1-2':'Responsive design (mobile)','prf1-3':'Contact form','prf1-4':'Basic SEO optimization','prf1-5':'Hosting from $50/mo','pr1-cta':'Get started',
+    'pr1-badge':'Launch offer','pr1-name':'Essential','pr1-per':' + hosting','pr1-price-display':'$500','pr1-saving':'Save $200','pr1-counter':'23 out of 100 claimed','pr1-desc':'Perfect for small businesses that want a simple, professional online presence.',
+    'prf1-1':'1 to 5 page website','prf1-2':'Responsive design (mobile)','prf1-3':'Contact form','prf1-4':'Basic SEO optimization','prf1-5':'Bilingual French / English','prf1-6':'Hosting from $50/mo','pr1-cta':'Claim the offer →',
     'pr2-badge':'Most popular','pr2-name':'Professional','pr2-per':' + hosting','pr2-desc':'For businesses that want to stand out with a complete, bilingual and optimized website.',
     'prf2-1':'Up to 10 pages','prf2-2':'Custom design','prf2-3':'Bilingual French/English','prf2-4':'Advanced SEO + Google Analytics','prf2-5':'Social media integration','prf2-6':'Hosting from $75/mo','pr2-cta':'Get started',
     'pr3-name':'Custom','pr3-price':'Get a quote','pr3-desc':'Online store, web app, IT consulting or complex project, we always find a solution that fits.',
@@ -716,7 +716,6 @@ const content={
     'f-col2':'Company','f-portfolio':'Portfolio','f-pricing':'Pricing','f-process':'Process','f-contact':'Contact',
     'footer-desc':'Local tech expert based in Saint-Joseph-du-Lac. Websites, IT support and consulting for businesses in the Laurentians.',
     'footer-copy':'© 2025 Norelo · Saint-Joseph-du-Lac, Québec','footer-made':'Made with care in the Laurentians',
-    'loader-text':'Loading...'
   }
 };
 
@@ -746,12 +745,4 @@ function submitForm(){
   btn.textContent='Envoi...';btn.disabled=true;
   setTimeout(()=>{
     document.getElementById('form-success').style.display='block';
-    document.getElementById('inp-name').value='';
-    document.getElementById('inp-email').value='';
-    document.getElementById('inp-msg').value='';
-    btn.textContent=content[lang]['form-btn'];btn.disabled=false;
-  },800);
-}
-</script>
-</body>
-</html>
+    document.getE
