@@ -5,40 +5,39 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Norelo — Web · IT · Tech · Laurentides</title>
   <meta name="description" content="Création de sites web, soutien informatique et consultation technologique pour les entreprises des Laurentides."/>
-  <meta property="og:title" content="Norelo — Expert Tech Local, Laurentides"/>
-  <meta property="og:description" content="Sites web, soutien informatique et consultation technologique. Basé à Saint-Joseph-du-Lac."/>
-  <meta property="og:type" content="website"/>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a1432'/><text y='22' x='4' font-size='18' font-family='system-ui,sans-serif' font-weight='700' fill='%234fa3e8'>N</text></svg>"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    :root{--blue:#2563eb;--blue-light:#4fa3e8;--blue-pale:#60a5fa;--dark:#070f2b;--dark2:#0a1432;--dark3:#0d1b3e;--white:#fff;--gray:#64748b;--border:#e2e8f0;}
+    :root{--blue:#2563eb;--blue-light:#4fa3e8;--blue-pale:#60a5fa;--dark:#070f2b;--dark2:#0a1432;--dark3:#0d1b3e;--border:#e2e8f0;--gray:#64748b;}
     html{scroll-behavior:smooth;}
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1a1a2e;background:#fff;overflow-x:hidden;cursor:none;animation:fadeIn 0.6s ease;}@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1a1a2e;background:#fff;overflow-x:hidden;cursor:none;animation:fadeIn 0.5s ease;}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-    /* ── CUSTOM CURSOR ── */
-    #cursor{position:fixed;width:10px;height:10px;background:var(--blue-light);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s,width 0.2s,height 0.2s,opacity 0.2s;}
-    #cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid rgba(79,163,232,0.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform 0.08s,width 0.3s,height 0.3s,opacity 0.3s;}
-    body:not(:hover) #cursor,body:not(:hover) #cursor-ring{opacity:0;}
-    a:hover~#cursor,button:hover~#cursor{width:18px;height:18px;}
+    /* CURSOR */
+    #cursor{position:fixed;width:10px;height:10px;background:var(--blue-light);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s,transform 0.1s,opacity 0.3s;top:-20px;left:-20px;}
+    #cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid rgba(79,163,232,0.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s,opacity 0.3s;top:-20px;left:-20px;}
+    .cursor-grow #cursor{width:20px;height:20px;opacity:0.5;}
+    .cursor-grow #cursor-ring{width:52px;height:52px;}
 
-    /* ── PROGRESS BAR ── */
+    /* PROGRESS */
     #progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(to right,var(--blue),var(--blue-light));z-index:9997;width:0;transition:width 0.1s;}
 
-    /* ── FLOATING CTA ── */
-    #float-cta{position:fixed;bottom:2rem;right:2rem;background:var(--blue);color:#fff;border:none;border-radius:50px;padding:12px 22px;font-size:14px;font-weight:600;cursor:none;z-index:300;display:flex;align-items:center;gap:8px;box-shadow:0 8px 30px rgba(37,99,235,0.4);transform:translateY(100px);opacity:0;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);text-decoration:none;font-family:inherit;}
-    #float-cta.visible{transform:translateY(0);opacity:1;}
-    #float-cta:hover{background:#1d4ed8;box-shadow:0 12px 40px rgba(37,99,235,0.5);transform:translateY(-2px);}
-    #float-cta .dot{width:7px;height:7px;background:#22c55e;border-radius:50%;animation:pulse 2s infinite;}
+    /* FLOATING CTA */
+    #float-cta{position:fixed;bottom:2rem;right:2rem;background:var(--blue);color:#fff;border:none;border-radius:50px;padding:12px 22px;font-size:14px;font-weight:600;cursor:none;z-index:300;display:flex;align-items:center;gap:8px;box-shadow:0 8px 30px rgba(37,99,235,0.4);transform:translateY(120px);opacity:0;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);text-decoration:none;font-family:inherit;}
+    #float-cta.show{transform:translateY(0);opacity:1;}
+    #float-cta:hover{background:#1d4ed8;transform:translateY(-2px);}
+    .fcta-dot{width:7px;height:7px;background:#22c55e;border-radius:50%;animation:pulse 2s infinite;}
 
-    /* ── NAV ── */
+    /* NAV */
     nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.1rem 3rem;background:rgba(8,16,42,0.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.06);transition:padding 0.3s;}
     nav.scrolled{padding:0.7rem 3rem;}
-    .nav-logo{font-size:22px;font-weight:800;color:#fff;text-decoration:none;letter-spacing:-0.5px;display:flex;align-items:center;gap:2px;}
+    .nav-logo{font-size:22px;font-weight:800;color:#fff;text-decoration:none;letter-spacing:-0.5px;display:flex;align-items:center;gap:4px;}
     .nav-logo span{color:var(--blue-light);}
-    .nav-logo-dot{width:5px;height:5px;background:#22c55e;border-radius:50%;margin-bottom:10px;animation:pulse 2s infinite;}
+    .nav-logo-dot{width:5px;height:5px;background:#22c55e;border-radius:50%;margin-bottom:12px;animation:pulse 2s infinite;}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.4)}}
     .nav-right{display:flex;align-items:center;gap:2rem;}
     .nav-links{display:flex;gap:2rem;}
-    .nav-links a{font-size:13px;color:rgba(255,255,255,0.6);text-decoration:none;transition:color 0.2s;position:relative;padding-bottom:2px;letter-spacing:0.2px;}
+    .nav-links a{font-size:13px;color:rgba(255,255,255,0.6);text-decoration:none;transition:color 0.2s;position:relative;padding-bottom:2px;}
     .nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:1.5px;background:var(--blue-light);transform:scaleX(0);transform-origin:left;transition:transform 0.25s;}
     .nav-links a:hover{color:#fff;}
     .nav-links a:hover::after{transform:scaleX(1);}
@@ -46,50 +45,48 @@
     .lang-toggle button{font-size:13px;padding:5px 14px;cursor:none;background:transparent;color:rgba(255,255,255,0.45);border:none;transition:all 0.2s;font-family:inherit;font-weight:500;}
     .lang-toggle button.active{background:var(--blue);color:#fff;border-radius:20px;}
 
-    /* ── HERO ── */
+    /* HERO */
     .hero{min-height:100vh;background:var(--dark);display:flex;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 5rem;position:relative;overflow:hidden;}
-    #particles{position:absolute;inset:0;z-index:0;}
+    #particles-canvas{position:absolute;inset:0;z-index:0;}
     .hero-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=80') center/cover no-repeat;opacity:0.07;}
     .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(79,163,232,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(79,163,232,0.04) 1px,transparent 1px);background-size:60px 60px;}
     .hero-glow{position:absolute;top:10%;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(37,99,235,0.18) 0%,transparent 70%);pointer-events:none;}
-    .hero-glow2{position:absolute;bottom:5%;right:5%;width:500px;height:400px;background:radial-gradient(ellipse,rgba(79,163,232,0.08) 0%,transparent 70%);pointer-events:none;}
     .hero-content{position:relative;z-index:2;max-width:840px;}
-    .hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue-pale);border:1px solid rgba(96,165,250,0.25);border-radius:20px;padding:6px 18px;margin-bottom:2rem;background:rgba(96,165,250,0.06);}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--blue-pale);border:1px solid rgba(96,165,250,0.25);border-radius:20px;padding:6px 18px;margin-bottom:2rem;background:rgba(96,165,250,0.06);}
     .hero-badge-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;animation:pulse 2s infinite;flex-shrink:0;}
-    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.4)}}
     .hero h1{font-size:clamp(40px,6.5vw,76px);font-weight:800;color:#fff;line-height:1.05;letter-spacing:-3px;margin-bottom:1.5rem;}
     .hero h1 span{color:var(--blue-light);}
     .hero h1 em{font-style:normal;color:rgba(255,255,255,0.35);}
-    #typewriter{border-right:3px solid var(--blue-light);padding-right:4px;animation:blink 0.8s infinite;}
+    #typewriter{border-right:3px solid var(--blue-light);padding-right:3px;animation:blink 0.8s infinite;}
     @keyframes blink{0%,100%{border-color:var(--blue-light)}50%{border-color:transparent}}
     .hero-desc{font-size:18px;color:rgba(255,255,255,0.58);line-height:1.8;max-width:600px;margin:0 auto 2.5rem;}
     .btn-group{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
     .btn-blue{background:var(--blue);color:#fff;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:600;text-decoration:none;border:none;cursor:none;transition:all 0.25s;display:inline-flex;align-items:center;gap:8px;font-family:inherit;box-shadow:0 4px 20px rgba(37,99,235,0.35);}
     .btn-blue:hover{background:#1d4ed8;transform:translateY(-2px);box-shadow:0 8px 30px rgba(37,99,235,0.5);}
     .btn-outline{background:transparent;color:#fff;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:500;text-decoration:none;border:1px solid rgba(255,255,255,0.22);cursor:none;transition:all 0.25s;}
-    .btn-outline:hover{background:rgba(255,255,255,0.07);transform:translateY(-2px);border-color:rgba(255,255,255,0.4);}
+    .btn-outline:hover{background:rgba(255,255,255,0.07);transform:translateY(-2px);}
     .hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,0.25);font-size:10px;letter-spacing:3px;text-transform:uppercase;}
     .hero-scroll-line{width:1px;height:44px;background:linear-gradient(to bottom,rgba(255,255,255,0.3),transparent);animation:scrollLine 2s ease-in-out infinite;}
     @keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 
-    /* ── STATS ── */
+    /* STATS */
     .stats-bar{background:#eff6ff;border-bottom:1px solid #dbeafe;padding:2rem 3rem;display:flex;justify-content:center;gap:4rem;flex-wrap:wrap;}
     .stat{text-align:center;}
-    .stat-num{font-size:28px;font-weight:800;color:var(--blue);font-variant-numeric:tabular-nums;}
+    .stat-num{font-size:28px;font-weight:800;color:var(--blue);}
     .stat-label{font-size:13px;color:var(--gray);margin-top:3px;}
 
-    /* ── SCROLL REVEAL ── */
+    /* SCROLL REVEAL */
     .reveal{opacity:0;transform:translateY(36px);transition:opacity 0.75s ease,transform 0.75s ease;}
     .reveal.visible{opacity:1;transform:none;}
     .reveal-left{opacity:0;transform:translateX(-36px);transition:opacity 0.75s ease,transform 0.75s ease;}
     .reveal-left.visible{opacity:1;transform:none;}
     .reveal-right{opacity:0;transform:translateX(36px);transition:opacity 0.75s ease,transform 0.75s ease;}
     .reveal-right.visible{opacity:1;transform:none;}
-    .reveal-scale{opacity:0;transform:scale(0.92);transition:opacity 0.75s ease,transform 0.75s ease;}
+    .reveal-scale{opacity:0;transform:scale(0.93);transition:opacity 0.75s ease,transform 0.75s ease;}
     .reveal-scale.visible{opacity:1;transform:none;}
     .d1{transition-delay:0.08s;}.d2{transition-delay:0.16s;}.d3{transition-delay:0.24s;}.d4{transition-delay:0.32s;}
 
-    /* ── SECTIONS ── */
+    /* SECTIONS */
     .section{padding:6rem 2rem;}
     .section-inner{max-width:1100px;margin:0 auto;}
     .section-tag{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:8px;}
@@ -97,7 +94,7 @@
     .section-title{font-size:clamp(26px,4vw,46px);font-weight:800;color:#0f172a;line-height:1.1;letter-spacing:-1.5px;margin-bottom:1rem;}
     .section-sub{font-size:16px;color:var(--gray);max-width:540px;line-height:1.8;margin-bottom:3rem;}
 
-    /* ── SERVICES ── */
+    /* SERVICES */
     .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;}
     .service-card{border:1px solid var(--border);border-radius:18px;padding:2rem;transition:all 0.3s;background:#fff;position:relative;overflow:hidden;cursor:none;}
     .service-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(37,99,235,0.05),transparent);opacity:0;transition:opacity 0.3s;}
@@ -109,11 +106,11 @@
     .service-card:hover .service-icon{transform:scale(1.15) rotate(-5deg);}
     .service-card h3{font-size:17px;font-weight:700;color:#0f172a;margin-bottom:0.6rem;}
     .service-card p{font-size:14px;color:var(--gray);line-height:1.65;}
-    .service-price{font-size:12px;color:var(--blue);font-weight:700;margin-top:1rem;padding-top:1rem;border-top:1px solid #f1f5f9;letter-spacing:0.3px;}
+    .service-price{font-size:12px;color:var(--blue);font-weight:700;margin-top:1rem;padding-top:1rem;border-top:1px solid #f1f5f9;}
 
-    /* ── PROCESS ── */
+    /* PROCESS */
     .process-bg{background:#f8fafc;}
-    .process-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;position:relative;}
+    .process-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));position:relative;}
     .process-steps::before{content:'';position:absolute;top:28px;left:12%;right:12%;height:1px;background:linear-gradient(to right,transparent,#bfdbfe 20%,#bfdbfe 80%,transparent);}
     .process-step{text-align:center;padding:1.5rem 1rem;position:relative;z-index:1;}
     .process-num{width:56px;height:56px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;margin:0 auto 1.25rem;box-shadow:0 6px 24px rgba(37,99,235,0.35);transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);}
@@ -121,14 +118,13 @@
     .process-step h3{font-size:15px;font-weight:700;color:#0f172a;margin-bottom:0.5rem;}
     .process-step p{font-size:13px;color:var(--gray);line-height:1.65;}
 
-    /* ── WHY ── */
+    /* WHY */
     .why-bg{background:var(--dark);}
     .why-bg .section-title{color:#fff;}
     .why-bg .section-sub{color:rgba(255,255,255,0.45);}
     .why-bg .section-tag{color:var(--blue-pale);}
     .why-bg .section-tag::before{background:var(--blue-pale);}
     .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
-    @media(max-width:600px){.why-grid{grid-template-columns:1fr;}}
     .why-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:1.5rem;display:flex;gap:1rem;align-items:flex-start;transition:all 0.3s;cursor:none;}
     .why-card:hover{background:rgba(255,255,255,0.06);border-color:rgba(96,165,250,0.25);transform:translateY(-2px);}
     .why-icon{width:40px;height:40px;background:rgba(96,165,250,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);}
@@ -136,7 +132,7 @@
     .why-card h3{font-size:15px;font-weight:700;color:#fff;margin-bottom:0.4rem;}
     .why-card p{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.65;}
 
-    /* ── PORTFOLIO ── */
+    /* PORTFOLIO */
     .portfolio-bg{background:var(--dark3);}
     .portfolio-bg .section-title{color:#fff;}
     .portfolio-bg .section-sub{color:rgba(255,255,255,0.45);}
@@ -144,11 +140,10 @@
     .portfolio-bg .section-tag::before{background:var(--blue-pale);}
     .portfolio-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.09);border-radius:22px;overflow:hidden;display:grid;grid-template-columns:1fr 1.25fr;transition:all 0.35s;}
     .portfolio-card:hover{transform:translateY(-5px);box-shadow:0 24px 60px rgba(0,0,0,0.3);}
-    @media(max-width:700px){.portfolio-card{grid-template-columns:1fr;}}
     .portfolio-img{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);min-height:320px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;}
     .portfolio-img::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=60') center/cover no-repeat;opacity:0.12;transition:opacity 0.4s;}
     .portfolio-card:hover .portfolio-img::before{opacity:0.2;}
-    .portfolio-img-emoji{font-size:72px;position:relative;z-index:1;filter:drop-shadow(0 8px 24px rgba(0,0,0,0.4));transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);}
+    .portfolio-img-emoji{font-size:72px;position:relative;z-index:1;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);}
     .portfolio-card:hover .portfolio-img-emoji{transform:scale(1.15);}
     .portfolio-img-label{position:absolute;bottom:1.25rem;font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:1.5px;z-index:1;}
     .portfolio-body{padding:2.5rem;display:flex;flex-direction:column;justify-content:center;}
@@ -165,35 +160,35 @@
     .testimonial-author{font-size:13px;color:rgba(255,255,255,0.35);display:flex;align-items:center;gap:8px;}
     .testimonial-author::before{content:'';display:inline-block;width:24px;height:1px;background:rgba(255,255,255,0.25);}
 
-    /* ── PRICING ── */
+    /* PRICING */
     .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.5rem;}
     .pricing-card{border:1px solid var(--border);border-radius:22px;padding:2rem;background:#fff;position:relative;transition:all 0.3s;cursor:none;}
     .pricing-card:hover{transform:translateY(-5px);box-shadow:0 16px 50px rgba(37,99,235,0.1);}
     .pricing-card.featured{border:2px solid var(--blue);background:linear-gradient(to bottom,#f0f7ff,#fff);}
-    .pricing-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;font-size:11px;font-weight:700;padding:5px 18px;border-radius:20px;white-space:nowrap;letter-spacing:0.5px;box-shadow:0 4px 16px rgba(37,99,235,0.35);}
     .pricing-card.promo{border:2px solid #e11d48;background:linear-gradient(to bottom,#fff1f4,#fff);}
     .pricing-card.promo:hover{box-shadow:0 16px 50px rgba(225,29,72,0.12);}
-    .badge-promo{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#e11d48,#f43f5e);color:#fff;font-size:11px;font-weight:700;padding:5px 18px;border-radius:20px;white-space:nowrap;letter-spacing:0.5px;box-shadow:0 4px 16px rgba(225,29,72,0.4);display:flex;align-items:center;gap:6px;}
-    .badge-promo-icon{font-size:12px;}
-    .promo-strike{text-decoration:line-through;color:#94a3b8;font-size:28px;font-weight:400;letter-spacing:0;}
-    .promo-new{color:#e11d48;font-size:40px;font-weight:800;letter-spacing:-1.5px;}
-    .promo-saving{display:inline-block;background:#fff1f4;color:#e11d48;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #fda4af;margin-top:6px;}
-    .counter-wrap{font-size:12px;color:#e11d48;font-weight:600;margin-top:8px;display:flex;align-items:center;gap:6px;}
-    .counter-bar{flex:1;height:4px;background:#ffe4e6;border-radius:4px;overflow:hidden;}
-    .counter-fill{height:100%;width:23%;background:linear-gradient(to right,#e11d48,#f43f5e);border-radius:4px;}
+    .badge-blue{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;font-size:11px;font-weight:700;padding:5px 18px;border-radius:20px;white-space:nowrap;letter-spacing:0.5px;box-shadow:0 4px 16px rgba(37,99,235,0.35);}
+    .badge-red{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#e11d48,#f43f5e);color:#fff;font-size:11px;font-weight:700;padding:5px 18px;border-radius:20px;white-space:nowrap;letter-spacing:0.5px;box-shadow:0 4px 16px rgba(225,29,72,0.4);display:flex;align-items:center;gap:5px;}
     .pricing-name{font-size:12px;font-weight:700;color:var(--gray);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.75rem;}
     .pricing-price{font-size:40px;font-weight:800;color:#0f172a;letter-spacing:-1.5px;}
     .pricing-price sup{font-size:20px;vertical-align:top;margin-top:10px;display:inline-block;font-weight:600;}
     .pricing-price sub{font-size:14px;color:#94a3b8;font-weight:400;letter-spacing:0;}
+    .promo-strike{text-decoration:line-through;color:#94a3b8;font-size:22px;font-weight:400;}
+    .promo-price{color:#e11d48;font-size:40px;font-weight:800;letter-spacing:-1.5px;}
+    .promo-price sup{font-size:20px;vertical-align:top;margin-top:10px;display:inline-block;}
+    .promo-saving{display:inline-block;background:#fff1f4;color:#e11d48;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #fda4af;margin-top:4px;}
+    .counter-wrap{font-size:12px;color:#e11d48;font-weight:600;margin:8px 0;display:flex;align-items:center;gap:8px;}
+    .counter-bar{flex:1;height:4px;background:#ffe4e6;border-radius:4px;overflow:hidden;}
+    .counter-fill{height:100%;width:23%;background:linear-gradient(to right,#e11d48,#f43f5e);border-radius:4px;}
     .pricing-desc{font-size:14px;color:var(--gray);margin:0.75rem 0 1.5rem;line-height:1.65;}
     .pricing-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:2rem;}
     .pricing-features li{font-size:14px;color:#475569;display:flex;align-items:center;gap:10px;}
     .pricing-check{width:18px;height:18px;background:#eff6ff;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;color:var(--blue);font-weight:700;}
+    .pricing-check.red{background:#fff1f4;color:#e11d48;}
 
-    /* ── CONTACT ── */
+    /* CONTACT */
     .contact-bg{background:#f8fafc;}
     .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;}
-    @media(max-width:700px){.contact-grid{grid-template-columns:1fr;gap:2rem;}}
     .contact-info h2{font-size:clamp(24px,3vw,38px);font-weight:800;color:#0f172a;letter-spacing:-1.5px;margin-bottom:1rem;}
     .contact-info>p{font-size:15px;color:var(--gray);line-height:1.9;}
     .contact-info a{color:var(--blue);text-decoration:none;}
@@ -208,60 +203,48 @@
     .form-note{font-size:12px;color:#94a3b8;text-align:center;}
     .form-success{font-size:14px;color:#166534;background:#dcfce7;padding:14px 16px;border-radius:10px;display:none;text-align:center;font-weight:500;}
 
-    /* ── FOOTER ── */
+    /* FOOTER */
     footer{background:#060e26;padding:4rem 3rem 2rem;}
     .footer-inner{max-width:1100px;margin:0 auto;}
     .footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
-    @media(max-width:700px){.footer-top{grid-template-columns:1fr;gap:2rem;}}
-    .footer-brand p{font-size:13px;color:rgba(255,255,255,0.4);line-height:1.8;margin-top:0.75rem;max-width:260px;}
     .footer-logo{font-size:22px;font-weight:800;color:#fff;}
     .footer-logo span{color:var(--blue-light);}
+    .footer-brand p{font-size:13px;color:rgba(255,255,255,0.4);line-height:1.8;margin-top:0.75rem;max-width:260px;}
     .footer-col h4{font-size:12px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1rem;}
     .footer-col a{display:block;font-size:14px;color:rgba(255,255,255,0.35);text-decoration:none;margin-bottom:0.6rem;transition:color 0.2s;}
     .footer-col a:hover{color:rgba(255,255,255,0.75);}
     .footer-bottom{border-top:1px solid rgba(255,255,255,0.06);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
     .footer-bottom p{font-size:12px;color:rgba(255,255,255,0.25);}
-    .footer-made{font-size:12px;color:rgba(255,255,255,0.2);}
 
-    /* ── DIVIDERS ── */
-    .wave-divider{width:100%;overflow:hidden;line-height:0;}
-    .wave-divider svg{display:block;width:100%;}
-
-    /* ── TOOLTIP ── */
-    [data-tip]{position:relative;}
-    [data-tip]::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;font-size:11px;padding:5px 10px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.2s;}
-    [data-tip]:hover::after{opacity:1;}
-
-    @media(max-width:600px){
+    @media(max-width:700px){
       nav{padding:1rem 1.25rem;}
       .nav-links{display:none;}
       .stats-bar{gap:1.5rem;padding:1.5rem;}
       .section{padding:4rem 1.25rem;}
+      .why-grid{grid-template-columns:1fr;}
+      .portfolio-card{grid-template-columns:1fr;}
+      .contact-grid{grid-template-columns:1fr;gap:2rem;}
       .process-steps::before{display:none;}
+      .footer-top{grid-template-columns:1fr;gap:2rem;}
       footer{padding:2rem 1.25rem;}
-      #float-cta span{display:none;}
+      .footer-bottom{flex-direction:column;text-align:center;}
       body{cursor:auto;}
       #cursor,#cursor-ring{display:none;}
+      #float-cta span.fcta-label{display:none;}
     }
   </style>
 </head>
 <body>
 
-<!-- CURSOR -->
 <div id="cursor"></div>
-<div id="cursor-ring"></div></div>
-</div>
-
-<!-- PROGRESS BAR -->
+<div id="cursor-ring"></div>
 <div id="progress"></div>
 
-<!-- FLOATING CTA -->
 <a href="#contact" id="float-cta">
-  <span class="dot"></span>
-  <span id="float-text">Nous contacter</span>
+  <span class="fcta-dot"></span>
+  <span class="fcta-label" id="float-text">Nous contacter</span>
 </a>
 
-<!-- NAV -->
 <nav id="navbar">
   <a class="nav-logo" href="#">Nore<span>lo</span><span class="nav-logo-dot"></span></a>
   <div class="nav-right">
@@ -279,16 +262,14 @@
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <canvas id="particles"></canvas>
+  <canvas id="particles-canvas"></canvas>
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
-  <div class="hero-glow2"></div>
   <div class="hero-content">
     <div class="hero-badge"><span class="hero-badge-dot"></span><span id="hero-badge">Disponible dans les Laurentides</span></div>
-    <h1 id="hero-title">Votre expert tech<br><span id="typewriter">local</span><br><span>& abordable.</span></h1>
+    <h1>Votre expert tech<br><span id="typewriter">local</span><br><span>& abordable.</span></h1>
     <p class="hero-desc" id="hero-desc">Création de sites web, soutien informatique et consultation technologique pour les entreprises et particuliers des Laurentides. Une seule personne de confiance pour tous vos besoins.</p>
     <div class="btn-group">
       <a href="#contact" class="btn-blue" id="hero-cta">Nous contacter →</a>
@@ -298,7 +279,6 @@
   <div class="hero-scroll"><div class="hero-scroll-line"></div><span id="hero-scroll">Défiler</span></div>
 </section>
 
-<!-- STATS -->
 <div class="stats-bar">
   <div class="stat reveal"><div class="stat-num" id="stat1-num">100%</div><div class="stat-label" id="stat1">Local & disponible</div></div>
   <div class="stat reveal d1"><div class="stat-num" id="stat2-num">Bilingue</div><div class="stat-label" id="stat2">Français & anglais</div></div>
@@ -306,42 +286,20 @@
   <div class="stat reveal d3"><div class="stat-num" id="stat4-num">~48h</div><div class="stat-label" id="stat4">Temps de réponse</div></div>
 </div>
 
-<!-- SERVICES -->
 <section class="section" id="services">
   <div class="section-inner">
     <p class="section-tag reveal" id="lbl-services">Services</p>
     <h2 class="section-title reveal" id="services-title">Tout ce dont vous avez besoin,<br>au même endroit.</h2>
     <p class="section-sub reveal" id="services-sub">Une seule personne de confiance pour tous vos besoins technologiques. Pas de centre d'appel ni d'attente. Vous parlez directement à Daniel.</p>
     <div class="services-grid">
-      <div class="service-card reveal d1" data-tip="À partir de 500$">
-        <div class="service-icon">🌐</div>
-        <h3 id="s1-title">Création de sites web</h3>
-        <p id="s1-desc">Sites web professionnels, modernes et optimisés pour les moteurs de recherche. Bilingues français/anglais sur demande.</p>
-        <p class="service-price" id="s1-price">À partir de 500$ · Hébergement dès 50$/mois</p>
-      </div>
-      <div class="service-card reveal d2" data-tip="Déplacement disponible">
-        <div class="service-icon">💻</div>
-        <h3 id="s2-title">Soutien informatique</h3>
-        <p id="s2-desc">Réparation d'ordinateurs, suppression de virus, configuration de réseaux et assistance technique à domicile ou en entreprise.</p>
-        <p class="service-price" id="s2-price">Tarif horaire compétitif · Déplacement disponible</p>
-      </div>
-      <div class="service-card reveal d3" data-tip="Sur devis">
-        <div class="service-icon">⚙️</div>
-        <h3 id="s3-title">Consultation technologique</h3>
-        <p id="s3-desc">Conseils personnalisés pour optimiser vos outils numériques, automatiser vos processus et améliorer votre présence en ligne.</p>
-        <p class="service-price" id="s3-price">Sur mesure selon vos besoins</p>
-      </div>
-      <div class="service-card reveal d4" data-tip="Forfaits mensuels">
-        <div class="service-icon">🔧</div>
-        <h3 id="s4-title">Hébergement & maintenance</h3>
-        <p id="s4-desc">Hébergement fiable avec maintenance mensuelle pour que votre site reste toujours rapide, sécurisé et à jour.</p>
-        <p class="service-price" id="s4-price">Forfaits mensuels disponibles</p>
-      </div>
+      <div class="service-card reveal d1"><div class="service-icon">🌐</div><h3 id="s1-title">Création de sites web</h3><p id="s1-desc">Sites web professionnels, modernes et optimisés pour les moteurs de recherche. Bilingues français/anglais sur demande.</p><p class="service-price" id="s1-price">À partir de 500$ · Hébergement dès 50$/mois</p></div>
+      <div class="service-card reveal d2"><div class="service-icon">💻</div><h3 id="s2-title">Soutien informatique</h3><p id="s2-desc">Réparation d'ordinateurs, suppression de virus, configuration de réseaux et assistance technique à domicile ou en entreprise.</p><p class="service-price" id="s2-price">Tarif horaire compétitif · Déplacement disponible</p></div>
+      <div class="service-card reveal d3"><div class="service-icon">⚙️</div><h3 id="s3-title">Consultation technologique</h3><p id="s3-desc">Conseils personnalisés pour optimiser vos outils numériques, automatiser vos processus et améliorer votre présence en ligne.</p><p class="service-price" id="s3-price">Sur mesure selon vos besoins</p></div>
+      <div class="service-card reveal d4"><div class="service-icon">🔧</div><h3 id="s4-title">Hébergement & maintenance</h3><p id="s4-desc">Hébergement fiable avec maintenance mensuelle pour que votre site reste toujours rapide, sécurisé et à jour.</p><p class="service-price" id="s4-price">Forfaits mensuels disponibles</p></div>
     </div>
   </div>
 </section>
 
-<!-- PROCESS -->
 <section class="section process-bg" id="process">
   <div class="section-inner">
     <p class="section-tag reveal" id="lbl-process">Processus</p>
@@ -356,7 +314,6 @@
   </div>
 </section>
 
-<!-- WHY -->
 <section class="section why-bg">
   <div class="section-inner">
     <p class="section-tag reveal" id="lbl-why">Pourquoi Norelo</p>
@@ -373,7 +330,6 @@
   </div>
 </section>
 
-<!-- PORTFOLIO -->
 <section class="section portfolio-bg" id="portfolio">
   <div class="section-inner">
     <p class="section-tag reveal" id="lbl-portfolio">Portfolio</p>
@@ -404,36 +360,39 @@
   </div>
 </section>
 
-<!-- PRICING -->
 <section class="section" id="pricing">
   <div class="section-inner">
     <p class="section-tag reveal" id="lbl-pricing">Tarifs</p>
     <h2 class="section-title reveal" id="pricing-title">Des prix clairs,<br>sans surprises.</h2>
     <p class="section-sub reveal" id="pricing-sub">Tous les forfaits incluent une consultation gratuite. Contactez-nous pour un devis personnalisé.</p>
     <div class="pricing-grid">
+
+      <!-- ESSENTIEL - PROMO -->
       <div class="pricing-card promo reveal d1">
-        <div class="badge-promo"><span class="badge-promo-icon">🔥</span><span id="pr1-badge">Offre de lancement</span></div>
+        <div class="badge-red">🔥 <span id="pr1-badge">Offre de lancement</span></div>
         <p class="pricing-name" id="pr1-name">Essentiel</p>
         <div>
           <span class="promo-strike">700$</span>
-          <div class="pricing-price promo-new" id="pr1-price-display">500$</div>
+          <div class="promo-price"><sup>$</sup><span id="pr1-amount">500</span></div>
           <span class="promo-saving" id="pr1-saving">Économisez 200$</span>
         </div>
-        <sub id="pr1-per" style="font-size:13px;color:#94a3b8;"> + hébergement</sub>
+        <sub id="pr1-per" style="font-size:13px;color:#94a3b8;display:block;margin-top:2px;">+ hébergement</sub>
         <div class="counter-wrap"><span id="pr1-counter">23 sur 100 réclamés</span><div class="counter-bar"><div class="counter-fill"></div></div></div>
-        <p class="pricing-desc" id="pr1-desc" style="margin-top:0.75rem;">Idéal pour les petites entreprises qui veulent une présence en ligne simple et professionnelle.</p>
+        <p class="pricing-desc" id="pr1-desc">Idéal pour les petites entreprises qui veulent une présence en ligne simple et professionnelle.</p>
         <ul class="pricing-features">
-          <li><span class="pricing-check">✓</span><span id="prf1-1">Site 1 à 5 pages</span></li>
-          <li><span class="pricing-check">✓</span><span id="prf1-2">Design responsive (mobile)</span></li>
-          <li><span class="pricing-check">✓</span><span id="prf1-3">Formulaire de contact</span></li>
-          <li><span class="pricing-check">✓</span><span id="prf1-4">Optimisation de base (SEO)</span></li>
-          <li><span class="pricing-check">✓</span><span id="prf1-5">Bilingue français / anglais</span></li>
-          <li><span class="pricing-check">✓</span><span id="prf1-6">Hébergement dès 50$/mois</span></li>
+          <li><span class="pricing-check red">✓</span><span id="prf1-1">Site 1 à 5 pages</span></li>
+          <li><span class="pricing-check red">✓</span><span id="prf1-2">Design responsive (mobile)</span></li>
+          <li><span class="pricing-check red">✓</span><span id="prf1-3">Formulaire de contact</span></li>
+          <li><span class="pricing-check red">✓</span><span id="prf1-4">Optimisation de base (SEO)</span></li>
+          <li><span class="pricing-check red">✓</span><span id="prf1-5">Bilingue français / anglais</span></li>
+          <li><span class="pricing-check red">✓</span><span id="prf1-6">Hébergement dès 50$/mois</span></li>
         </ul>
         <a href="#contact" class="btn-blue" style="text-align:center;display:block;background:#e11d48;box-shadow:0 4px 16px rgba(225,29,72,0.3);" id="pr1-cta">Réclamer l'offre →</a>
       </div>
+
+      <!-- PROFESSIONNEL - FEATURED -->
       <div class="pricing-card featured reveal d2">
-        <div class="pricing-badge" id="pr2-badge">Le plus populaire</div>
+        <div class="badge-blue" id="pr2-badge">Le plus populaire</div>
         <p class="pricing-name" id="pr2-name">Professionnel</p>
         <div class="pricing-price"><sup>$</sup>1 200<sub id="pr2-per"> + hébergement</sub></div>
         <p class="pricing-desc" id="pr2-desc">Pour les entreprises qui veulent se démarquer avec un site complet, bilingue et optimisé.</p>
@@ -447,6 +406,8 @@
         </ul>
         <a href="#contact" class="btn-blue" style="text-align:center;display:block;" id="pr2-cta">Commencer</a>
       </div>
+
+      <!-- SUR MESURE -->
       <div class="pricing-card reveal d3">
         <p class="pricing-name" id="pr3-name">Sur mesure</p>
         <div class="pricing-price" style="font-size:28px;padding-top:10px;" id="pr3-price">Sur devis</div>
@@ -460,11 +421,11 @@
         </ul>
         <a href="#contact" class="btn-outline" style="text-align:center;display:block;color:#1a1a2e;border-color:#e2e8f0;" id="pr3-cta">Nous contacter</a>
       </div>
+
     </div>
   </div>
 </section>
 
-<!-- CONTACT -->
 <section class="section contact-bg" id="contact">
   <div class="section-inner">
     <div class="contact-grid">
@@ -474,7 +435,7 @@
         <p id="contact-desc">Vous avez besoin d'un site web ou d'un soutien informatique? Contactez Daniel directement. Pas de téléphone automatisé. Vous parlez à une vraie personne qui connaît la région.</p>
         <div class="contact-detail">
           <div class="contact-detail-icon">✉️</div>
-          <a href="/cdn-cgi/l/email-protection#fd999c93949891bd93928f989192d39e9c"><span class="__cf_email__" data-cfemail="fb9f9a95929e97bb9594899e9794d5989a">[email&#160;protected]</span></a>
+          <a href="mailto:daniel@norelo.ca">daniel@norelo.ca</a>
         </div>
         <div class="contact-detail">
           <div class="contact-detail-icon">📍</div>
@@ -511,7 +472,6 @@
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-inner">
     <div class="footer-top">
@@ -536,86 +496,94 @@
     </div>
     <div class="footer-bottom">
       <p id="footer-copy">© 2025 Norelo · Saint-Joseph-du-Lac, Québec</p>
-      <p class="footer-made" id="footer-made">Fait avec soin dans les Laurentides</p>
+      <p id="footer-made">Fait avec soin dans les Laurentides</p>
     </div>
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-/* ── CURSOR ── */
-const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-(function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
-document.querySelectorAll('a,button,.service-card,.why-card,.pricing-card').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2)';cur.style.opacity='0.5';ring.style.transform='translate(-50%,-50%) scale(1.5)';});
-  el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';cur.style.opacity='1';ring.style.transform='translate(-50%,-50%) scale(1)';});
+<script>
+/* CURSOR */
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = -100, my = -100, rx = -100, ry = -100;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+});
+function animateRing() {
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+document.querySelectorAll('a,button,.service-card,.why-card,.pricing-card,.portfolio-card').forEach(el => {
+  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-grow'));
+  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-grow'));
 });
 
-/* ── LOADER ── */
+/* PROGRESS BAR */
+window.addEventListener('scroll', () => {
+  const s = document.documentElement.scrollTop;
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('progress').style.width = (s / h * 100) + '%';
+  document.getElementById('navbar').classList.toggle('scrolled', s > 60);
+  document.getElementById('float-cta').classList.toggle('show', s > 400);
+});
 
-/* ── PROGRESS BAR ── */
-const prog=document.getElementById('progress');
-window.addEventListener('scroll',()=>{const s=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;prog.style.width=(s/h*100)+'%';});
+/* SCROLL REVEAL */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(el => obs.observe(el));
 
-/* ── FLOATING CTA ── */
-const fcta=document.getElementById('float-cta');
-window.addEventListener('scroll',()=>{fcta.classList.toggle('visible',window.scrollY>400);});
-
-/* ── NAV SHRINK ── */
-window.addEventListener('scroll',()=>{document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);});
-
-/* ── SCROLL REVEAL ── */
-const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});
-document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(el=>obs.observe(el));
-
-/* ── PARTICLES ── */
-(function(){
-  const canvas=document.getElementById('particles');
-  const ctx=canvas.getContext('2d');
-  let W,H,particles=[];
-  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=canvas.parentElement.offsetHeight;}
-  resize();window.addEventListener('resize',resize);
-  for(let i=0;i<60;i++)particles.push({x:Math.random()*2000,y:Math.random()*1000,r:Math.random()*1.5+0.3,vx:(Math.random()-0.5)*0.3,vy:(Math.random()-0.5)*0.3,o:Math.random()*0.4+0.1});
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    particles.forEach(p=>{
-      p.x+=p.vx;p.y+=p.vy;
-      if(p.x<0)p.x=W;if(p.x>W)p.x=0;
-      if(p.y<0)p.y=H;if(p.y>H)p.y=0;
-      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(79,163,232,${p.o})`;ctx.fill();
+/* PARTICLES */
+(function() {
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, pts = [];
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = canvas.parentElement.offsetHeight; }
+  resize(); window.addEventListener('resize', resize);
+  for (let i = 0; i < 55; i++) pts.push({ x: Math.random() * 2000, y: Math.random() * 1000, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, r: Math.random() * 1.5 + 0.3, o: Math.random() * 0.4 + 0.1 });
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    pts.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(79,163,232,' + p.o + ')'; ctx.fill();
     });
-    particles.forEach((p,i)=>{particles.slice(i+1).forEach(q=>{const d=Math.hypot(p.x-q.x,p.y-q.y);if(d<120){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=`rgba(79,163,232,${0.08*(1-d/120)})`;ctx.lineWidth=0.5;ctx.stroke();}});});
+    pts.forEach((p, i) => {
+      for (let j = i + 1; j < pts.length; j++) {
+        const q = pts[j], d = Math.hypot(p.x - q.x, p.y - q.y);
+        if (d < 120) { ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.strokeStyle = 'rgba(79,163,232,' + (0.08 * (1 - d / 120)) + ')'; ctx.lineWidth = 0.5; ctx.stroke(); }
+      }
+    });
     requestAnimationFrame(draw);
   }
   draw();
 })();
 
-/* ── TYPEWRITER ── */
-(function(){
-  const el=document.getElementById('typewriter');
-  const wordsFr=['local','fiable','rapide','abordable'];
-  const wordsEn=['local','trusted','fast','affordable'];
-  let i=0,lang='fr';
-  function type(){
-    const words=lang==='fr'?wordsFr:wordsEn;
-    const word=words[i%words.length];
-    let j=0;
-    el.textContent='';
-    const typing=setInterval(()=>{el.textContent=word.slice(0,++j);if(j===word.length){clearInterval(typing);setTimeout(erase,2000);}},80);
+/* TYPEWRITER */
+(function() {
+  const el = document.getElementById('typewriter');
+  const words = { fr: ['local','fiable','rapide','abordable'], en: ['local','trusted','fast','affordable'] };
+  let i = 0;
+  function type() {
+    const list = words[window._lang || 'fr'];
+    const word = list[i % list.length];
+    let j = 0; el.textContent = '';
+    const t = setInterval(() => { el.textContent = word.slice(0, ++j); if (j === word.length) { clearInterval(t); setTimeout(erase, 2000); } }, 80);
   }
-  function erase(){
-    let j=el.textContent.length;
-    const erasing=setInterval(()=>{el.textContent=el.textContent.slice(0,-1);if(--j===0){clearInterval(erasing);i++;setTimeout(type,300);}},50);
+  function erase() {
+    const t = setInterval(() => { el.textContent = el.textContent.slice(0, -1); if (!el.textContent) { clearInterval(t); i++; setTimeout(type, 300); } }, 50);
   }
-  setTimeout(type,1600);
-  window._twLang=l=>{lang=l;};
+  setTimeout(type, 800);
 })();
 
-/* ── LANGUAGE ── */
-const content={
-  fr:{
+/* LANGUAGE */
+const content = {
+  fr: {
     'nav-services':'Services','nav-process':'Processus','nav-portfolio':'Portfolio','nav-pricing':'Tarifs','nav-contact':'Contact',
     'hero-badge':'Disponible dans les Laurentides',
     'hero-desc':"Création de sites web, soutien informatique et consultation technologique pour les entreprises et particuliers des Laurentides. Une seule personne de confiance pour tous vos besoins.",
@@ -642,13 +610,13 @@ const content={
     'w6-title':'Sur mesure','w6-desc':'Chaque projet est unique. Pas de gabarit générique, tout est conçu spécifiquement pour vous.',
     'lbl-portfolio':'Portfolio','portfolio-title':'Un travail concret,<br>des résultats réels.','portfolio-sub':'Des sites web livrés pour de vraies entreprises locales.',
     'port-desc':'Site web complet pour un verger biologique certifié à Saint-Joseph-du-Lac. Réservations en ligne, boutique, nouvelles du verger et informations sur toutes les activités.',
-    'port-link':'Visiter le site →',
-    'ptag1':'Bilingue','ptag2':'Réservations','ptag3':'Boutique','ptag4':'SEO','ptag5':'Mobile-first',
+    'port-link':'Visiter le site →','ptag1':'Bilingue','ptag2':'Réservations','ptag3':'Boutique','ptag4':'SEO','ptag5':'Mobile-first',
     'test-text':"« Daniel a créé notre site web de A à Z avec professionnalisme et efficacité. Il comprend les besoins des entreprises locales et livre exactement ce qu'on lui demande. On le recommande sans hésitation. »",
     'test-author':'À la Croisée des Pommes, Saint-Joseph-du-Lac',
     'lbl-pricing':'Tarifs','pricing-title':'Des prix clairs,<br>sans surprises.','pricing-sub':'Tous les forfaits incluent une consultation gratuite. Contactez-nous pour un devis personnalisé.',
-    'pr1-badge':'Offre de lancement','pr1-name':'Essentiel','pr1-per':' + hébergement','pr1-price-display':'500$','pr1-saving':'Économisez 200$','pr1-counter':'23 sur 100 réclamés','pr1-desc':'Idéal pour les petites entreprises qui veulent une présence en ligne simple et professionnelle.',
-    'prf1-1':'Site 1 à 5 pages','prf1-2':'Design responsive (mobile)','prf1-3':'Formulaire de contact','prf1-4':'Optimisation de base (SEO)','prf1-5':'Bilingue français / anglais','prf1-6':'Hébergement dès 50$/mois','pr1-cta':'Réclamer l\'offre →',
+    'pr1-badge':'Offre de lancement','pr1-name':'Essentiel','pr1-amount':'500','pr1-saving':'Économisez 200$','pr1-per':'+ hébergement','pr1-counter':'23 sur 100 réclamés',
+    'pr1-desc':'Idéal pour les petites entreprises qui veulent une présence en ligne simple et professionnelle.',
+    'prf1-1':'Site 1 à 5 pages','prf1-2':'Design responsive (mobile)','prf1-3':'Formulaire de contact','prf1-4':'Optimisation de base (SEO)','prf1-5':'Bilingue français / anglais','prf1-6':'Hébergement dès 50$/mois','pr1-cta':"Réclamer l'offre →",
     'pr2-badge':'Le plus populaire','pr2-name':'Professionnel','pr2-per':' + hébergement','pr2-desc':'Pour les entreprises qui veulent se démarquer avec un site complet, bilingue et optimisé.',
     'prf2-1':"Site jusqu'à 10 pages",'prf2-2':'Design sur mesure','prf2-3':'Bilingue français/anglais','prf2-4':'SEO avancé + Google Analytics','prf2-5':'Intégration réseaux sociaux','prf2-6':'Hébergement dès 75$/mois','pr2-cta':'Commencer',
     'pr3-name':'Sur mesure','pr3-price':'Sur devis','pr3-desc':'Boutique en ligne, application web, consultation IT ou projet complexe, on trouve toujours une solution adaptée.',
@@ -664,9 +632,9 @@ const content={
     'f-col1':'Services','f-s1':'Création de sites web','f-s2':'Soutien informatique','f-s3':'Consultation','f-s4':'Hébergement',
     'f-col2':'Entreprise','f-portfolio':'Portfolio','f-pricing':'Tarifs','f-process':'Processus','f-contact':'Contact',
     'footer-desc':'Expert tech local basé à Saint-Joseph-du-Lac. Sites web, soutien informatique et consultation pour les entreprises des Laurentides.',
-    'footer-copy':'© 2025 Norelo · Saint-Joseph-du-Lac, Québec','footer-made':'Fait avec soin dans les Laurentides',
+    'footer-copy':'© 2025 Norelo · Saint-Joseph-du-Lac, Québec','footer-made':'Fait avec soin dans les Laurentides'
   },
-  en:{
+  en: {
     'nav-services':'Services','nav-process':'Process','nav-portfolio':'Portfolio','nav-pricing':'Pricing','nav-contact':'Contact',
     'hero-badge':'Available throughout the Laurentians',
     'hero-desc':"Web design, IT support and tech consulting for businesses and individuals in the Laurentians. One trusted person for all your technology needs.",
@@ -693,12 +661,12 @@ const content={
     'w6-title':'Custom-built','w6-desc':'Every project is unique. No generic templates, everything is built specifically for you.',
     'lbl-portfolio':'Portfolio','portfolio-title':'Real work,<br>real results.','portfolio-sub':'Websites delivered for real local businesses.',
     'port-desc':'Complete website for a certified organic apple orchard in Saint-Joseph-du-Lac. Online reservations, shop, orchard news and full activity information.',
-    'port-link':'Visit the site →',
-    'ptag1':'Bilingual','ptag2':'Reservations','ptag3':'Shop','ptag4':'SEO','ptag5':'Mobile-first',
+    'port-link':'Visit the site →','ptag1':'Bilingual','ptag2':'Reservations','ptag3':'Shop','ptag4':'SEO','ptag5':'Mobile-first',
     'test-text':'"Daniel built our website from scratch with professionalism and efficiency. He understands local business needs and delivers exactly what you ask for. We recommend him without hesitation."',
     'test-author':'À la Croisée des Pommes, Saint-Joseph-du-Lac',
     'lbl-pricing':'Pricing','pricing-title':'Clear pricing,<br>no surprises.','pricing-sub':'All plans include a free consultation. Contact us for a custom quote.',
-    'pr1-badge':'Launch offer','pr1-name':'Essential','pr1-per':' + hosting','pr1-price-display':'$500','pr1-saving':'Save $200','pr1-counter':'23 out of 100 claimed','pr1-desc':'Perfect for small businesses that want a simple, professional online presence.',
+    'pr1-badge':'Launch offer','pr1-name':'Essential','pr1-amount':'500','pr1-saving':'Save $200','pr1-per':'+ hosting','pr1-counter':'23 out of 100 claimed',
+    'pr1-desc':'Perfect for small businesses that want a simple, professional online presence.',
     'prf1-1':'1 to 5 page website','prf1-2':'Responsive design (mobile)','prf1-3':'Contact form','prf1-4':'Basic SEO optimization','prf1-5':'Bilingual French / English','prf1-6':'Hosting from $50/mo','pr1-cta':'Claim the offer →',
     'pr2-badge':'Most popular','pr2-name':'Professional','pr2-per':' + hosting','pr2-desc':'For businesses that want to stand out with a complete, bilingual and optimized website.',
     'prf2-1':'Up to 10 pages','prf2-2':'Custom design','prf2-3':'Bilingual French/English','prf2-4':'Advanced SEO + Google Analytics','prf2-5':'Social media integration','prf2-6':'Hosting from $75/mo','pr2-cta':'Get started',
@@ -715,34 +683,44 @@ const content={
     'f-col1':'Services','f-s1':'Web design','f-s2':'IT support','f-s3':'Consulting','f-s4':'Hosting',
     'f-col2':'Company','f-portfolio':'Portfolio','f-pricing':'Pricing','f-process':'Process','f-contact':'Contact',
     'footer-desc':'Local tech expert based in Saint-Joseph-du-Lac. Websites, IT support and consulting for businesses in the Laurentians.',
-    'footer-copy':'© 2025 Norelo · Saint-Joseph-du-Lac, Québec','footer-made':'Made with care in the Laurentians',
+    'footer-copy':'© 2025 Norelo · Saint-Joseph-du-Lac, Québec','footer-made':'Made with care in the Laurentians'
   }
 };
 
-let lang='fr';
-function setLang(l){
-  lang=l;
-  document.getElementById('btn-fr').classList.toggle('active',l==='fr');
-  document.getElementById('btn-en').classList.toggle('active',l==='en');
-  if(window._twLang)window._twLang(l);
-  const d=content[l];
-  for(const[id,val]of Object.entries(d)){
-    const el=document.getElementById(id);
-    if(!el)continue;
-    if(el.tagName==='INPUT'||el.tagName==='TEXTAREA')el.placeholder=val;
-    else if(el.tagName==='OPTION')el.textContent=val;
-    else el.innerHTML=val;
+let lang = 'fr';
+function setLang(l) {
+  lang = l;
+  window._lang = l;
+  document.getElementById('btn-fr').classList.toggle('active', l === 'fr');
+  document.getElementById('btn-en').classList.toggle('active', l === 'en');
+  const d = content[l];
+  for (const [id, val] of Object.entries(d)) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val;
+    else if (el.tagName === 'OPTION') el.textContent = val;
+    else el.innerHTML = val;
   }
-  document.documentElement.lang=l;
+  document.documentElement.lang = l;
 }
 
-function submitForm(){
-  const name=document.getElementById('inp-name').value.trim();
-  const email=document.getElementById('inp-email').value.trim();
-  const msg=document.getElementById('inp-msg').value.trim();
-  if(!name||!email||!msg)return;
-  const btn=document.getElementById('form-btn');
-  btn.textContent='Envoi...';btn.disabled=true;
-  setTimeout(()=>{
-    document.getElementById('form-success').style.display='block';
-    document.getE
+function submitForm() {
+  const name = document.getElementById('inp-name').value.trim();
+  const email = document.getElementById('inp-email').value.trim();
+  const msg = document.getElementById('inp-msg').value.trim();
+  if (!name || !email || !msg) return;
+  const btn = document.getElementById('form-btn');
+  btn.textContent = lang === 'fr' ? 'Envoi...' : 'Sending...';
+  btn.disabled = true;
+  setTimeout(() => {
+    document.getElementById('form-success').style.display = 'block';
+    document.getElementById('inp-name').value = '';
+    document.getElementById('inp-email').value = '';
+    document.getElementById('inp-msg').value = '';
+    btn.textContent = content[lang]['form-btn'];
+    btn.disabled = false;
+  }, 800);
+}
+</script>
+</body>
+</html>
