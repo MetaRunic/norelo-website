@@ -5,467 +5,479 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Norelo — Web · IT · Tech · Laurentides</title>
   <meta name="description" content="Création de sites web, soutien informatique et consultation technologique pour les entreprises des Laurentides."/>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a1432'/><text y='22' x='4' font-size='18' font-family='system-ui,sans-serif' font-weight='700' fill='%234fa3e8'>N</text></svg>"/>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230a1432'/><text y='22' x='4' font-size='18' font-family='system-ui' font-weight='700' fill='%234fa3e8'>N</text></svg>"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    :root{--blue:#2563eb;--blue-light:#4fa3e8;--blue-pale:#60a5fa;--dark:#070f2b;--dark2:#0a1432;--dark3:#0d1b3e;--border:#e2e8f0;--gray:#64748b;}
+    :root{--blue:#2563eb;--blue-l:#4fa3e8;--blue-p:#60a5fa;--dark:#070f2b;--dark3:#0d1b3e;--border:#e2e8f0;--gray:#64748b;}
     html{scroll-behavior:smooth;}
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1a1a2e;background:#fff;overflow-x:hidden;cursor:none;animation:fadeIn 0.5s ease;}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1a1a2e;background:#fff;overflow-x:hidden;cursor:none;animation:fadeIn .5s ease;}
     @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+    *{cursor:none;}
 
-    /* CURSOR */
-    #cursor{position:fixed;width:10px;height:10px;background:var(--blue-light);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s,transform 0.1s,opacity 0.3s;top:-20px;left:-20px;}
-    #cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid rgba(79,163,232,0.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.3s,height 0.3s,opacity 0.3s;top:-20px;left:-20px;}
-    .cursor-grow #cursor{width:20px;height:20px;opacity:0.5;}
-    .cursor-grow #cursor-ring{width:52px;height:52px;}
+    /* ── CURSOR ── */
+    #cur{position:fixed;width:10px;height:10px;background:var(--blue-l);border-radius:50%;pointer-events:none;z-index:9999;left:-20px;top:-20px;transform:translate(-50%,-50%);transition:width .18s,height .18s,border-radius .18s,opacity .2s;}
+    #cur-ring{position:fixed;width:36px;height:36px;border:1.5px solid rgba(79,163,232,.45);border-radius:50%;pointer-events:none;z-index:9998;left:-20px;top:-20px;transform:translate(-50%,-50%);transition:width .25s,height .25s,border-radius .25s,opacity .2s;}
+    body.c-text #cur{width:2px;height:22px;border-radius:2px;}
+    body.c-text #cur-ring{width:3px;height:32px;border-radius:2px;border:none;background:rgba(79,163,232,.15);}
+    body.c-click #cur{width:18px;height:18px;opacity:.5;}
+    body.c-click #cur-ring{width:50px;height:50px;}
+    @media(max-width:700px){#cur,#cur-ring{display:none;}body{cursor:auto;}*{cursor:auto;}}
 
-    /* PROGRESS */
-    #progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(to right,var(--blue),var(--blue-light));z-index:9997;width:0;transition:width 0.1s;}
+    /* ── PROGRESS ── */
+    #prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(to right,var(--blue),var(--blue-l));z-index:9997;width:0;}
 
-    /* FLOATING CTA */
-    #float-cta{position:fixed;bottom:2rem;right:2rem;background:var(--blue);color:#fff;border:none;border-radius:50px;padding:12px 22px;font-size:14px;font-weight:600;cursor:none;z-index:300;display:flex;align-items:center;gap:8px;box-shadow:0 8px 30px rgba(37,99,235,0.4);transform:translateY(120px);opacity:0;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);text-decoration:none;font-family:inherit;}
-    #float-cta.show{transform:translateY(0);opacity:1;}
-    #float-cta:hover{background:#1d4ed8;transform:translateY(-2px);}
-    .fcta-dot{width:7px;height:7px;background:#22c55e;border-radius:50%;animation:pulse 2s infinite;}
+    /* ── FLOAT CTA ── */
+    #fcta{position:fixed;bottom:2rem;right:2rem;background:var(--blue);color:#fff;border:none;border-radius:50px;padding:12px 22px;font-size:14px;font-weight:600;z-index:300;display:flex;align-items:center;gap:8px;box-shadow:0 8px 30px rgba(37,99,235,.4);transform:translateY(120px);opacity:0;transition:all .4s cubic-bezier(.34,1.56,.64,1);text-decoration:none;font-family:inherit;}
+    #fcta.show{transform:translateY(0);opacity:1;}
+    #fcta:hover{background:#1d4ed8;transform:translateY(-2px);}
+    .f-dot{width:7px;height:7px;background:#22c55e;border-radius:50%;animation:pulse 2s infinite;flex-shrink:0;}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
 
-    /* NAV */
-    nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.1rem 3rem;background:rgba(8,16,42,0.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.06);transition:padding 0.3s;}
-    nav.scrolled{padding:0.7rem 3rem;}
-    .nav-logo{font-size:22px;font-weight:800;color:#fff;text-decoration:none;letter-spacing:-0.5px;display:flex;align-items:center;gap:4px;}
-    .nav-logo span{color:var(--blue-light);}
-    .nav-logo-dot{width:5px;height:5px;background:#22c55e;border-radius:50%;margin-bottom:12px;animation:pulse 2s infinite;}
-    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.4)}}
-    .nav-right{display:flex;align-items:center;gap:2rem;}
-    .nav-links{display:flex;gap:2rem;}
-    .nav-links a{font-size:13px;color:rgba(255,255,255,0.6);text-decoration:none;transition:color 0.2s;position:relative;padding-bottom:2px;}
-    .nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:1.5px;background:var(--blue-light);transform:scaleX(0);transform-origin:left;transition:transform 0.25s;}
-    .nav-links a:hover{color:#fff;}
-    .nav-links a:hover::after{transform:scaleX(1);}
-    .lang-toggle{display:flex;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:20px;overflow:hidden;}
-    .lang-toggle button{font-size:13px;padding:5px 14px;cursor:none;background:transparent;color:rgba(255,255,255,0.45);border:none;transition:all 0.2s;font-family:inherit;font-weight:500;}
-    .lang-toggle button.active{background:var(--blue);color:#fff;border-radius:20px;}
+    /* ── NAV ── */
+    nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.1rem 3rem;background:rgba(8,16,42,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);transition:padding .3s;}
+    nav.scrolled{padding:.7rem 3rem;}
+    .n-logo{font-size:22px;font-weight:800;color:#fff;text-decoration:none;letter-spacing:-.5px;display:flex;align-items:center;gap:4px;}
+    .n-logo span{color:var(--blue-l);}
+    .n-dot{width:5px;height:5px;background:#22c55e;border-radius:50%;margin-bottom:12px;animation:pulse 2s infinite;}
+    .n-right{display:flex;align-items:center;gap:2rem;}
+    .n-links{display:flex;gap:2rem;}
+    .n-links a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:color .2s;position:relative;padding-bottom:2px;}
+    .n-links a::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:1.5px;background:var(--blue-l);transform:scaleX(0);transform-origin:left;transition:transform .25s;}
+    .n-links a:hover{color:#fff;}
+    .n-links a:hover::after{transform:scaleX(1);}
+    .lang-tog{display:flex;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:20px;overflow:hidden;}
+    .lang-tog button{font-size:13px;padding:5px 14px;background:transparent;color:rgba(255,255,255,.45);border:none;transition:all .2s;font-family:inherit;font-weight:500;}
+    .lang-tog button.on{background:var(--blue);color:#fff;border-radius:20px;}
 
-    /* HERO */
+    /* ── HERO ── */
     .hero{min-height:100vh;background:var(--dark);display:flex;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 5rem;position:relative;overflow:hidden;}
-    #particles-canvas{position:absolute;inset:0;z-index:0;}
-    .hero-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=80') center/cover no-repeat;opacity:0.07;}
-    .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(79,163,232,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(79,163,232,0.04) 1px,transparent 1px);background-size:60px 60px;}
-    .hero-glow{position:absolute;top:10%;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(37,99,235,0.18) 0%,transparent 70%);pointer-events:none;}
-    .hero-content{position:relative;z-index:2;max-width:840px;}
-    .hero-badge{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--blue-pale);border:1px solid rgba(96,165,250,0.25);border-radius:20px;padding:6px 18px;margin-bottom:2rem;background:rgba(96,165,250,0.06);}
-    .hero-badge-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;animation:pulse 2s infinite;flex-shrink:0;}
+    #ptc{position:absolute;inset:0;z-index:0;}
+    .h-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=80') center/cover no-repeat;opacity:.07;}
+    .h-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(79,163,232,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(79,163,232,.04) 1px,transparent 1px);background-size:60px 60px;}
+    .h-glow{position:absolute;top:10%;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(37,99,235,.18) 0%,transparent 70%);pointer-events:none;}
+    .h-cnt{position:relative;z-index:2;max-width:840px;}
+    .h-badge{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--blue-p);border:1px solid rgba(96,165,250,.25);border-radius:20px;padding:6px 18px;margin-bottom:2rem;background:rgba(96,165,250,.06);}
+    .h-badge-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;animation:pulse 2s infinite;flex-shrink:0;}
     .hero h1{font-size:clamp(40px,6.5vw,76px);font-weight:800;color:#fff;line-height:1.05;letter-spacing:-3px;margin-bottom:1.5rem;}
-    .hero h1 span{color:var(--blue-light);}
-    .hero h1 em{font-style:normal;color:rgba(255,255,255,0.35);}
-    #typewriter{border-right:3px solid var(--blue-light);padding-right:3px;animation:blink 0.8s infinite;}
-    @keyframes blink{0%,100%{border-color:var(--blue-light)}50%{border-color:transparent}}
-    .hero-desc{font-size:18px;color:rgba(255,255,255,0.58);line-height:1.8;max-width:600px;margin:0 auto 2.5rem;}
-    .btn-group{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
-    .btn-blue{background:var(--blue);color:#fff;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:600;text-decoration:none;border:none;cursor:none;transition:all 0.25s;display:inline-flex;align-items:center;gap:8px;font-family:inherit;box-shadow:0 4px 20px rgba(37,99,235,0.35);}
-    .btn-blue:hover{background:#1d4ed8;transform:translateY(-2px);box-shadow:0 8px 30px rgba(37,99,235,0.5);}
-    .btn-outline{background:transparent;color:#fff;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:500;text-decoration:none;border:1px solid rgba(255,255,255,0.22);cursor:none;transition:all 0.25s;}
-    .btn-outline:hover{background:rgba(255,255,255,0.07);transform:translateY(-2px);}
-    .hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,0.25);font-size:10px;letter-spacing:3px;text-transform:uppercase;}
-    .hero-scroll-line{width:1px;height:44px;background:linear-gradient(to bottom,rgba(255,255,255,0.3),transparent);animation:scrollLine 2s ease-in-out infinite;}
-    @keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+    .hero h1 span{color:var(--blue-l);}
+    .hero h1 em{font-style:normal;color:rgba(255,255,255,.35);}
+    #tw{border-right:3px solid var(--blue-l);padding-right:3px;animation:blink .8s infinite;}
+    @keyframes blink{0%,100%{border-color:var(--blue-l)}50%{border-color:transparent}}
+    .h-desc{font-size:18px;color:rgba(255,255,255,.58);line-height:1.8;max-width:600px;margin:0 auto 2.5rem;}
+    .btn-g{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+    .btn-b{background:var(--blue);color:#fff;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:600;text-decoration:none;border:none;transition:all .25s;display:inline-flex;align-items:center;gap:8px;font-family:inherit;box-shadow:0 4px 20px rgba(37,99,235,.35);}
+    .btn-b:hover{background:#1d4ed8;transform:translateY(-2px);box-shadow:0 8px 30px rgba(37,99,235,.5);}
+    .btn-o{background:transparent;color:#fff;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:500;text-decoration:none;border:1px solid rgba(255,255,255,.22);transition:all .25s;}
+    .btn-o:hover{background:rgba(255,255,255,.07);transform:translateY(-2px);}
+    .h-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,.25);font-size:10px;letter-spacing:3px;text-transform:uppercase;}
+    .h-scroll-l{width:1px;height:44px;background:linear-gradient(to bottom,rgba(255,255,255,.3),transparent);animation:sl 2s ease-in-out infinite;}
+    @keyframes sl{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 
-    /* STATS */
-    .stats-bar{background:#eff6ff;border-bottom:1px solid #dbeafe;padding:2rem 3rem;display:flex;justify-content:center;gap:4rem;flex-wrap:wrap;}
+    /* ── STATS ── */
+    .stats{background:#eff6ff;border-bottom:1px solid #dbeafe;padding:2rem 3rem;display:flex;justify-content:center;gap:4rem;flex-wrap:wrap;}
     .stat{text-align:center;}
-    .stat-num{font-size:28px;font-weight:800;color:var(--blue);}
-    .stat-label{font-size:13px;color:var(--gray);margin-top:3px;}
+    .stat-n{font-size:28px;font-weight:800;color:var(--blue);}
+    .stat-l{font-size:13px;color:var(--gray);margin-top:3px;}
 
-    /* SCROLL REVEAL */
-    .reveal{opacity:0;transform:translateY(36px);transition:opacity 0.75s ease,transform 0.75s ease;}
-    .reveal.visible{opacity:1;transform:none;}
-    .reveal-left{opacity:0;transform:translateX(-36px);transition:opacity 0.75s ease,transform 0.75s ease;}
-    .reveal-left.visible{opacity:1;transform:none;}
-    .reveal-right{opacity:0;transform:translateX(36px);transition:opacity 0.75s ease,transform 0.75s ease;}
-    .reveal-right.visible{opacity:1;transform:none;}
-    .reveal-scale{opacity:0;transform:scale(0.93);transition:opacity 0.75s ease,transform 0.75s ease;}
-    .reveal-scale.visible{opacity:1;transform:none;}
-    .d1{transition-delay:0.08s;}.d2{transition-delay:0.16s;}.d3{transition-delay:0.24s;}.d4{transition-delay:0.32s;}
+    /* ── REVEAL ── */
+    .rv{opacity:0;transform:translateY(36px);transition:opacity .75s ease,transform .75s ease;}
+    .rv.on{opacity:1;transform:none;}
+    .rvl{opacity:0;transform:translateX(-36px);transition:opacity .75s ease,transform .75s ease;}
+    .rvl.on{opacity:1;transform:none;}
+    .rvr{opacity:0;transform:translateX(36px);transition:opacity .75s ease,transform .75s ease;}
+    .rvr.on{opacity:1;transform:none;}
+    .rvs{opacity:0;transform:scale(.93);transition:opacity .75s ease,transform .75s ease;}
+    .rvs.on{opacity:1;transform:none;}
+    .d1{transition-delay:.08s;}.d2{transition-delay:.16s;}.d3{transition-delay:.24s;}.d4{transition-delay:.32s;}
 
-    /* SECTIONS */
-    .section{padding:6rem 2rem;}
-    .section-inner{max-width:1100px;margin:0 auto;}
-    .section-tag{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:8px;}
-    .section-tag::before{content:'';display:inline-block;width:20px;height:1.5px;background:var(--blue);}
-    .section-title{font-size:clamp(26px,4vw,46px);font-weight:800;color:#0f172a;line-height:1.1;letter-spacing:-1.5px;margin-bottom:1rem;}
-    .section-sub{font-size:16px;color:var(--gray);max-width:540px;line-height:1.8;margin-bottom:3rem;}
+    /* ── SECTION ── */
+    .sec{padding:6rem 2rem;}
+    .si{max-width:1100px;margin:0 auto;}
+    .s-tag{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:8px;}
+    .s-tag::before{content:'';display:inline-block;width:20px;height:1.5px;background:var(--blue);}
+    .s-title{font-size:clamp(26px,4vw,46px);font-weight:800;color:#0f172a;line-height:1.1;letter-spacing:-1.5px;margin-bottom:1rem;}
+    .s-sub{font-size:16px;color:var(--gray);max-width:540px;line-height:1.8;margin-bottom:3rem;}
 
-    /* SERVICES */
-    .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;}
-    .service-card{border:1px solid var(--border);border-radius:18px;padding:2rem;transition:all 0.3s;background:#fff;position:relative;overflow:hidden;cursor:none;}
-    .service-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(37,99,235,0.05),transparent);opacity:0;transition:opacity 0.3s;}
-    .service-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--blue),var(--blue-light));transform:scaleX(0);transform-origin:left;transition:transform 0.3s;}
-    .service-card:hover{border-color:#bfdbfe;box-shadow:0 16px 50px rgba(37,99,235,0.1);transform:translateY(-5px);}
-    .service-card:hover::before{opacity:1;}
-    .service-card:hover::after{transform:scaleX(1);}
-    .service-icon{width:52px;height:52px;background:#eff6ff;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:1.25rem;transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);}
-    .service-card:hover .service-icon{transform:scale(1.15) rotate(-5deg);}
-    .service-card h3{font-size:17px;font-weight:700;color:#0f172a;margin-bottom:0.6rem;}
-    .service-card p{font-size:14px;color:var(--gray);line-height:1.65;}
-    .service-price{font-size:12px;color:var(--blue);font-weight:700;margin-top:1rem;padding-top:1rem;border-top:1px solid #f1f5f9;}
+    /* ── SERVICES ── */
+    .sv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;}
+    .sv-card{border:1px solid var(--border);border-radius:18px;padding:2rem;transition:all .3s;background:#fff;position:relative;overflow:hidden;}
+    .sv-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(37,99,235,.05),transparent);opacity:0;transition:opacity .3s;}
+    .sv-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--blue),var(--blue-l));transform:scaleX(0);transform-origin:left;transition:transform .3s;}
+    .sv-card:hover{border-color:#bfdbfe;box-shadow:0 16px 50px rgba(37,99,235,.1);transform:translateY(-5px);}
+    .sv-card:hover::before{opacity:1;}
+    .sv-card:hover::after{transform:scaleX(1);}
+    .sv-icon{width:52px;height:52px;background:#eff6ff;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:1.25rem;transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
+    .sv-card:hover .sv-icon{transform:scale(1.15) rotate(-5deg);}
+    .sv-card h3{font-size:17px;font-weight:700;color:#0f172a;margin-bottom:.6rem;}
+    .sv-card p{font-size:14px;color:var(--gray);line-height:1.65;}
+    .sv-price{font-size:12px;color:var(--blue);font-weight:700;margin-top:1rem;padding-top:1rem;border-top:1px solid #f1f5f9;}
 
-    /* PROCESS */
-    .process-bg{background:#f8fafc;}
-    .process-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));position:relative;}
-    .process-steps::before{content:'';position:absolute;top:28px;left:12%;right:12%;height:1px;background:linear-gradient(to right,transparent,#bfdbfe 20%,#bfdbfe 80%,transparent);}
-    .process-step{text-align:center;padding:1.5rem 1rem;position:relative;z-index:1;}
-    .process-num{width:56px;height:56px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;margin:0 auto 1.25rem;box-shadow:0 6px 24px rgba(37,99,235,0.35);transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);}
-    .process-step:hover .process-num{transform:scale(1.15);}
-    .process-step h3{font-size:15px;font-weight:700;color:#0f172a;margin-bottom:0.5rem;}
-    .process-step p{font-size:13px;color:var(--gray);line-height:1.65;}
+    /* ── PROCESS ── */
+    .proc-bg{background:#f8fafc;}
+    .proc-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));position:relative;}
+    .proc-steps::before{content:'';position:absolute;top:28px;left:12%;right:12%;height:1px;background:linear-gradient(to right,transparent,#bfdbfe 20%,#bfdbfe 80%,transparent);}
+    .proc-step{text-align:center;padding:1.5rem 1rem;position:relative;z-index:1;}
+    .proc-n{width:56px;height:56px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;margin:0 auto 1.25rem;box-shadow:0 6px 24px rgba(37,99,235,.35);transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
+    .proc-step:hover .proc-n{transform:scale(1.15);}
+    .proc-step h3{font-size:15px;font-weight:700;color:#0f172a;margin-bottom:.5rem;}
+    .proc-step p{font-size:13px;color:var(--gray);line-height:1.65;}
 
-    /* WHY */
+    /* ── WHY ── */
     .why-bg{background:var(--dark);}
-    .why-bg .section-title{color:#fff;}
-    .why-bg .section-sub{color:rgba(255,255,255,0.45);}
-    .why-bg .section-tag{color:var(--blue-pale);}
-    .why-bg .section-tag::before{background:var(--blue-pale);}
+    .why-bg .s-title{color:#fff;}
+    .why-bg .s-sub{color:rgba(255,255,255,.45);}
+    .why-bg .s-tag{color:var(--blue-p);}
+    .why-bg .s-tag::before{background:var(--blue-p);}
     .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
-    .why-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:16px;padding:1.5rem;display:flex;gap:1rem;align-items:flex-start;transition:all 0.3s;cursor:none;}
-    .why-card:hover{background:rgba(255,255,255,0.06);border-color:rgba(96,165,250,0.25);transform:translateY(-2px);}
-    .why-icon{width:40px;height:40px;background:rgba(96,165,250,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);}
-    .why-card:hover .why-icon{transform:scale(1.15) rotate(-5deg);}
-    .why-card h3{font-size:15px;font-weight:700;color:#fff;margin-bottom:0.4rem;}
-    .why-card p{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.65;}
+    .why-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:1.5rem;display:flex;gap:1rem;align-items:flex-start;transition:all .3s;}
+    .why-card:hover{background:rgba(255,255,255,.06);border-color:rgba(96,165,250,.25);transform:translateY(-2px);}
+    .why-ic{width:40px;height:40px;background:rgba(96,165,250,.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
+    .why-card:hover .why-ic{transform:scale(1.15) rotate(-5deg);}
+    .why-card h3{font-size:15px;font-weight:700;color:#fff;margin-bottom:.4rem;}
+    .why-card p{font-size:13px;color:rgba(255,255,255,.5);line-height:1.65;}
 
-    /* PORTFOLIO */
-    .portfolio-bg{background:var(--dark3);}
-    .portfolio-bg .section-title{color:#fff;}
-    .portfolio-bg .section-sub{color:rgba(255,255,255,0.45);}
-    .portfolio-bg .section-tag{color:var(--blue-pale);}
-    .portfolio-bg .section-tag::before{background:var(--blue-pale);}
-    .portfolio-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.09);border-radius:22px;overflow:hidden;display:grid;grid-template-columns:1fr 1.25fr;transition:all 0.35s;}
-    .portfolio-card:hover{transform:translateY(-5px);box-shadow:0 24px 60px rgba(0,0,0,0.3);}
-    .portfolio-img{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);min-height:320px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-    .portfolio-img::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=60') center/cover no-repeat;opacity:0.12;transition:opacity 0.4s;}
-    .portfolio-card:hover .portfolio-img::before{opacity:0.2;}
-    .portfolio-img-emoji{font-size:72px;position:relative;z-index:1;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);}
-    .portfolio-card:hover .portfolio-img-emoji{transform:scale(1.15);}
-    .portfolio-img-label{position:absolute;bottom:1.25rem;font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:1.5px;z-index:1;}
-    .portfolio-body{padding:2.5rem;display:flex;flex-direction:column;justify-content:center;}
-    .portfolio-body h3{font-size:24px;font-weight:800;color:#fff;margin-bottom:0.75rem;letter-spacing:-0.5px;}
-    .portfolio-body p{font-size:14px;color:rgba(255,255,255,0.55);line-height:1.8;margin-bottom:1.25rem;}
-    .portfolio-tags{display:flex;flex-wrap:wrap;gap:6px;}
-    .portfolio-tag{font-size:12px;background:rgba(96,165,250,0.1);color:var(--blue-pale);border:1px solid rgba(96,165,250,0.22);border-radius:20px;padding:4px 12px;transition:all 0.2s;}
-    .portfolio-tag:hover{background:rgba(96,165,250,0.2);}
-    .portfolio-link{display:inline-flex;align-items:center;gap:6px;margin-top:1.5rem;font-size:14px;color:var(--blue-pale);text-decoration:none;font-weight:600;transition:all 0.2s;}
-    .portfolio-link:hover{gap:12px;color:#fff;}
-    .testimonial{margin-top:2rem;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:2rem 2.5rem;position:relative;overflow:hidden;}
-    .testimonial::before{content:'\201C';position:absolute;top:-16px;left:1.5rem;font-size:100px;color:rgba(96,165,250,0.12);font-family:Georgia,serif;line-height:1;pointer-events:none;}
-    .testimonial-quote{font-size:16px;color:rgba(255,255,255,0.72);line-height:1.85;font-style:italic;margin-bottom:1rem;padding-top:0.5rem;}
-    .testimonial-author{font-size:13px;color:rgba(255,255,255,0.35);display:flex;align-items:center;gap:8px;}
-    .testimonial-author::before{content:'';display:inline-block;width:24px;height:1px;background:rgba(255,255,255,0.25);}
+    /* ── PORTFOLIO ── */
+    .port-bg{background:var(--dark3);}
+    .port-bg .s-title{color:#fff;}
+    .port-bg .s-sub{color:rgba(255,255,255,.45);}
+    .port-bg .s-tag{color:var(--blue-p);}
+    .port-bg .s-tag::before{background:var(--blue-p);}
+    .port-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);border-radius:22px;overflow:hidden;display:grid;grid-template-columns:1fr 1.25fr;transition:all .35s;}
+    .port-card:hover{transform:translateY(-5px);box-shadow:0 24px 60px rgba(0,0,0,.3);}
+    .port-img{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);min-height:320px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+    .port-img::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=60') center/cover no-repeat;opacity:.12;transition:opacity .4s;}
+    .port-card:hover .port-img::before{opacity:.2;}
+    .port-emoji{font-size:72px;position:relative;z-index:1;transition:transform .4s cubic-bezier(.34,1.56,.64,1);}
+    .port-card:hover .port-emoji{transform:scale(1.15);}
+    .port-lbl{position:absolute;bottom:1.25rem;font-size:11px;color:rgba(255,255,255,.4);letter-spacing:1.5px;z-index:1;}
+    .port-body{padding:2.5rem;display:flex;flex-direction:column;justify-content:center;}
+    .port-body h3{font-size:24px;font-weight:800;color:#fff;margin-bottom:.75rem;letter-spacing:-.5px;}
+    .port-body p{font-size:14px;color:rgba(255,255,255,.55);line-height:1.8;margin-bottom:1.25rem;}
+    .port-tags{display:flex;flex-wrap:wrap;gap:6px;}
+    .port-tag{font-size:12px;background:rgba(96,165,250,.1);color:var(--blue-p);border:1px solid rgba(96,165,250,.22);border-radius:20px;padding:4px 12px;transition:all .2s;}
+    .port-tag:hover{background:rgba(96,165,250,.2);}
+    .port-link{display:inline-flex;align-items:center;gap:6px;margin-top:1.5rem;font-size:14px;color:var(--blue-p);text-decoration:none;font-weight:600;transition:all .2s;}
+    .port-link:hover{gap:12px;color:#fff;}
+    .testi{margin-top:2rem;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:2rem 2.5rem;position:relative;overflow:hidden;}
+    .testi::before{content:'\201C';position:absolute;top:-16px;left:1.5rem;font-size:100px;color:rgba(96,165,250,.12);font-family:Georgia,serif;line-height:1;pointer-events:none;}
+    .testi-q{font-size:16px;color:rgba(255,255,255,.72);line-height:1.85;font-style:italic;margin-bottom:1rem;padding-top:.5rem;}
+    .testi-a{font-size:13px;color:rgba(255,255,255,.35);display:flex;align-items:center;gap:8px;}
+    .testi-a::before{content:'';display:inline-block;width:24px;height:1px;background:rgba(255,255,255,.25);}
 
-    /* PRICING */
-    .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.5rem;}
-    .pricing-card{border:1px solid var(--border);border-radius:22px;padding:2rem;background:#fff;position:relative;transition:all 0.3s;cursor:none;}
-    .pricing-card:hover{transform:translateY(-5px);box-shadow:0 16px 50px rgba(37,99,235,0.1);}
-    .pricing-card.featured{border:2px solid var(--blue);background:linear-gradient(to bottom,#f0f7ff,#fff);}
-    .pricing-card.promo{border:2px solid #e11d48;background:linear-gradient(to bottom,#fff1f4,#fff);}
-    .pricing-card.promo:hover{box-shadow:0 16px 50px rgba(225,29,72,0.12);}
-    .badge-blue{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;font-size:11px;font-weight:700;padding:5px 18px;border-radius:20px;white-space:nowrap;letter-spacing:0.5px;box-shadow:0 4px 16px rgba(37,99,235,0.35);}
-    .badge-red{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#e11d48,#f43f5e);color:#fff;font-size:11px;font-weight:700;padding:5px 18px;border-radius:20px;white-space:nowrap;letter-spacing:0.5px;box-shadow:0 4px 16px rgba(225,29,72,0.4);display:flex;align-items:center;gap:5px;}
-    .pricing-name{font-size:12px;font-weight:700;color:var(--gray);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.75rem;}
-    .pricing-price{font-size:40px;font-weight:800;color:#0f172a;letter-spacing:-1.5px;}
-    .pricing-price sup{font-size:20px;vertical-align:top;margin-top:10px;display:inline-block;font-weight:600;}
-    .pricing-price sub{font-size:14px;color:#94a3b8;font-weight:400;letter-spacing:0;}
+    /* ── PRICING ── */
+    .pr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.5rem;}
+    .pr-card{border:1px solid var(--border);border-radius:22px;padding:2rem;background:#fff;position:relative;transition:all .3s;}
+    .pr-card:hover{transform:translateY(-5px);box-shadow:0 16px 50px rgba(37,99,235,.1);}
+    .pr-card.feat{border:2px solid var(--blue);background:linear-gradient(to bottom,#f0f7ff,#fff);}
+    .pr-card.promo{border:2px solid #e11d48;background:linear-gradient(to bottom,#fff1f4,#fff);}
+    .pr-card.promo:hover{box-shadow:0 16px 50px rgba(225,29,72,.12);}
+    .badge-b{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;font-size:11px;font-weight:700;padding:5px 18px;border-radius:20px;white-space:nowrap;letter-spacing:.5px;box-shadow:0 4px 16px rgba(37,99,235,.35);}
+    .badge-r{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#e11d48,#f43f5e);color:#fff;font-size:11px;font-weight:700;padding:5px 18px;border-radius:20px;white-space:nowrap;letter-spacing:.5px;box-shadow:0 4px 16px rgba(225,29,72,.4);}
+    .pr-name{font-size:12px;font-weight:700;color:var(--gray);letter-spacing:2px;text-transform:uppercase;margin-bottom:.75rem;}
+    .pr-price{font-size:40px;font-weight:800;color:#0f172a;letter-spacing:-1.5px;}
+    .pr-price sup{font-size:20px;vertical-align:top;margin-top:10px;display:inline-block;font-weight:600;}
+    .pr-price sub{font-size:14px;color:#94a3b8;font-weight:400;letter-spacing:0;}
     .promo-strike{text-decoration:line-through;color:#94a3b8;font-size:22px;font-weight:400;}
-    .promo-price{color:#e11d48;font-size:40px;font-weight:800;letter-spacing:-1.5px;}
-    .promo-price sup{font-size:20px;vertical-align:top;margin-top:10px;display:inline-block;}
-    .promo-saving{display:inline-block;background:#fff1f4;color:#e11d48;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #fda4af;margin-top:4px;}
-    .counter-wrap{font-size:12px;color:#e11d48;font-weight:600;margin:8px 0;display:flex;align-items:center;gap:8px;}
-    .counter-bar{flex:1;height:4px;background:#ffe4e6;border-radius:4px;overflow:hidden;}
-    .counter-fill{height:100%;width:23%;background:linear-gradient(to right,#e11d48,#f43f5e);border-radius:4px;}
-    .pricing-desc{font-size:14px;color:var(--gray);margin:0.75rem 0 1.5rem;line-height:1.65;}
-    .pricing-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:2rem;}
-    .pricing-features li{font-size:14px;color:#475569;display:flex;align-items:center;gap:10px;}
-    .pricing-check{width:18px;height:18px;background:#eff6ff;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;color:var(--blue);font-weight:700;}
-    .pricing-check.red{background:#fff1f4;color:#e11d48;}
+    .promo-p{color:#e11d48;font-size:40px;font-weight:800;letter-spacing:-1.5px;}
+    .promo-p sup{font-size:20px;vertical-align:top;margin-top:10px;display:inline-block;}
+    .promo-save{display:inline-block;background:#fff1f4;color:#e11d48;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #fda4af;margin-top:4px;}
+    .pr-desc{font-size:14px;color:var(--gray);margin:.75rem 0 1.5rem;line-height:1.65;}
+    .pr-feats{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:2rem;}
+    .pr-feats li{font-size:14px;color:#475569;display:flex;align-items:center;gap:10px;}
+    .pr-chk{width:18px;height:18px;background:#eff6ff;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;color:var(--blue);font-weight:700;}
+    .pr-chk.r{background:#fff1f4;color:#e11d48;}
 
-    /* CONTACT */
-    .contact-bg{background:#f8fafc;}
-    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;}
-    .contact-info h2{font-size:clamp(24px,3vw,38px);font-weight:800;color:#0f172a;letter-spacing:-1.5px;margin-bottom:1rem;}
-    .contact-info>p{font-size:15px;color:var(--gray);line-height:1.9;}
-    .contact-info a{color:var(--blue);text-decoration:none;}
-    .contact-detail{display:flex;align-items:flex-start;gap:14px;margin-top:1.5rem;font-size:14px;color:#475569;line-height:1.65;}
-    .contact-detail-icon{width:40px;height:40px;background:#eff6ff;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);}
-    .contact-detail:hover .contact-detail-icon{transform:scale(1.12) rotate(-5deg);}
-    .contact-form{display:flex;flex-direction:column;gap:12px;background:#fff;padding:2rem;border-radius:22px;border:1px solid var(--border);box-shadow:0 8px 40px rgba(0,0,0,0.06);}
-    .contact-form label{font-size:12px;font-weight:600;color:#475569;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:-4px;}
-    .contact-form input,.contact-form textarea,.contact-form select{padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;background:#f8fafc;color:#0f172a;font-family:inherit;outline:none;transition:all 0.2s;width:100%;}
-    .contact-form input:focus,.contact-form textarea:focus,.contact-form select:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,0.08);}
-    .contact-form textarea{min-height:120px;resize:vertical;}
-    .form-note{font-size:12px;color:#94a3b8;text-align:center;}
-    .form-success{font-size:14px;color:#166534;background:#dcfce7;padding:14px 16px;border-radius:10px;display:none;text-align:center;font-weight:500;}
+    /* ── CONTACT ── */
+    .ct-bg{background:#f8fafc;}
+    .ct-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:4rem;}
+    .ct-info h2{font-size:clamp(24px,3vw,38px);font-weight:800;color:#0f172a;letter-spacing:-1.5px;margin-bottom:1rem;}
+    .ct-info>p{font-size:15px;color:var(--gray);line-height:1.9;}
+    .ct-info a{color:var(--blue);text-decoration:none;}
+    .ct-det{display:flex;align-items:flex-start;gap:14px;margin-top:1.5rem;font-size:14px;color:#475569;line-height:1.65;}
+    .ct-det-ic{width:40px;height:40px;background:#eff6ff;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
+    .ct-det:hover .ct-det-ic{transform:scale(1.12) rotate(-5deg);}
+    .ct-form{display:flex;flex-direction:column;gap:14px;background:#fff;padding:2rem;border-radius:22px;border:1px solid var(--border);box-shadow:0 8px 40px rgba(0,0,0,.06);}
+    .ct-form label{font-size:11px;font-weight:700;color:#475569;letter-spacing:1px;text-transform:uppercase;margin-bottom:-6px;}
+    .ct-form input,.ct-form textarea{padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;background:#f8fafc;color:#0f172a;font-family:inherit;outline:none;transition:all .2s;width:100%;}
+    .ct-form input:focus,.ct-form textarea:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.08);}
+    .ct-form textarea{min-height:140px;resize:vertical;}
+    .f-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+    .svc-chip{display:flex;align-items:center;gap:8px;border:1.5px solid var(--border);border-radius:10px;padding:10px 14px;background:#f8fafc;transition:all .2s;user-select:none;}
+    .svc-chip:hover{border-color:#93c5fd;background:#eff6ff;}
+    .svc-chip.sel{border-color:var(--blue);background:#eff6ff;box-shadow:0 0 0 3px rgba(37,99,235,.08);}
+    .svc-chip-ic{font-size:18px;flex-shrink:0;}
+    .svc-chip-txt{font-size:13px;font-weight:600;color:#0f172a;line-height:1.3;}
+    .svc-chip-sub{font-size:11px;color:var(--gray);font-weight:400;}
+    .est-box{background:linear-gradient(135deg,#eff6ff,#f0f7ff);border:1.5px solid #bfdbfe;border-radius:14px;padding:1.25rem 1.5rem;display:none;}
+    .est-box.show{display:block;}
+    .est-ttl{font-size:12px;font-weight:700;color:var(--blue);letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;}
+    .est-rows{display:flex;flex-direction:column;gap:6px;}
+    .est-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#475569;}
+    .est-row span:last-child{font-weight:600;color:#0f172a;}
+    .est-div{height:1px;background:#dbeafe;margin:8px 0;}
+    .est-tot{display:flex;justify-content:space-between;align-items:center;font-size:15px;font-weight:800;color:#0f172a;}
+    .est-note{font-size:11px;color:var(--gray);margin-top:6px;}
+    .tips-box{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--gray);line-height:1.7;}
+    .tips-box strong{color:#475569;font-weight:600;}
+    .f-note{font-size:12px;color:#94a3b8;text-align:center;}
+    .f-ok{font-size:14px;color:#166534;background:#dcfce7;padding:14px 16px;border-radius:10px;display:none;text-align:center;font-weight:500;}
 
-    /* FOOTER */
+    /* ── FOOTER ── */
     footer{background:#060e26;padding:4rem 3rem 2rem;}
-    .footer-inner{max-width:1100px;margin:0 auto;}
-    .footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
-    .footer-logo{font-size:22px;font-weight:800;color:#fff;}
-    .footer-logo span{color:var(--blue-light);}
-    .footer-brand p{font-size:13px;color:rgba(255,255,255,0.4);line-height:1.8;margin-top:0.75rem;max-width:260px;}
-    .footer-col h4{font-size:12px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1rem;}
-    .footer-col a{display:block;font-size:14px;color:rgba(255,255,255,0.35);text-decoration:none;margin-bottom:0.6rem;transition:color 0.2s;}
-    .footer-col a:hover{color:rgba(255,255,255,0.75);}
-    .footer-bottom{border-top:1px solid rgba(255,255,255,0.06);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
-    .footer-bottom p{font-size:12px;color:rgba(255,255,255,0.25);}
+    .ft{max-width:1100px;margin:0 auto;}
+    .ft-top{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
+    .ft-logo{font-size:22px;font-weight:800;color:#fff;}
+    .ft-logo span{color:var(--blue-l);}
+    .ft-brand p{font-size:13px;color:rgba(255,255,255,.4);line-height:1.8;margin-top:.75rem;max-width:260px;}
+    .ft-col h4{font-size:12px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1rem;}
+    .ft-col a{display:block;font-size:14px;color:rgba(255,255,255,.35);text-decoration:none;margin-bottom:.6rem;transition:color .2s;}
+    .ft-col a:hover{color:rgba(255,255,255,.75);}
+    .ft-bot{border-top:1px solid rgba(255,255,255,.06);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+    .ft-bot p{font-size:12px;color:rgba(255,255,255,.25);}
 
     @media(max-width:700px){
       nav{padding:1rem 1.25rem;}
-      .nav-links{display:none;}
-      .stats-bar{gap:1.5rem;padding:1.5rem;}
-      .section{padding:4rem 1.25rem;}
+      .n-links{display:none;}
+      .stats{gap:1.5rem;padding:1.5rem;}
+      .sec{padding:4rem 1.25rem;}
       .why-grid{grid-template-columns:1fr;}
-      .portfolio-card{grid-template-columns:1fr;}
-      .contact-grid{grid-template-columns:1fr;gap:2rem;}
-      .process-steps::before{display:none;}
-      .footer-top{grid-template-columns:1fr;gap:2rem;}
+      .port-card{grid-template-columns:1fr;}
+      .ct-grid{grid-template-columns:1fr;gap:2rem;}
+      .f-row{grid-template-columns:1fr;}
+      .svc-grid{grid-template-columns:1fr;}
+      .proc-steps::before{display:none;}
+      .ft-top{grid-template-columns:1fr;gap:2rem;}
       footer{padding:2rem 1.25rem;}
-      .footer-bottom{flex-direction:column;text-align:center;}
-      body{cursor:auto;}
-      #cursor,#cursor-ring{display:none;}
-      #float-cta span.fcta-label{display:none;}
+      .ft-bot{flex-direction:column;text-align:center;}
     }
   </style>
 </head>
 <body>
 
-<div id="cursor"></div>
-<div id="cursor-ring"></div>
-<div id="progress"></div>
+<div id="cur"></div>
+<div id="cur-ring"></div>
+<div id="prog"></div>
 
-<a href="#contact" id="float-cta">
-  <span class="fcta-dot"></span>
-  <span class="fcta-label" id="float-text">Nous contacter</span>
+<a href="#contact" id="fcta">
+  <span class="f-dot"></span>
+  <span id="float-text">Nous contacter</span>
 </a>
 
-<nav id="navbar">
-  <a class="nav-logo" href="#">Nore<span>lo</span><span class="nav-logo-dot"></span></a>
-  <div class="nav-right">
-    <div class="nav-links">
-      <a href="#services" id="nav-services">Services</a>
-      <a href="#process" id="nav-process">Processus</a>
-      <a href="#portfolio" id="nav-portfolio">Portfolio</a>
-      <a href="#pricing" id="nav-pricing">Tarifs</a>
-      <a href="#contact" id="nav-contact">Contact</a>
+<nav id="nav">
+  <a class="n-logo" href="#">Nore<span>lo</span><span class="n-dot"></span></a>
+  <div class="n-right">
+    <div class="n-links">
+      <a href="#services" id="nl-sv">Services</a>
+      <a href="#process" id="nl-pr">Processus</a>
+      <a href="#portfolio" id="nl-po">Portfolio</a>
+      <a href="#pricing" id="nl-pi">Tarifs</a>
+      <a href="#contact" id="nl-ct">Contact</a>
     </div>
-    <div class="lang-toggle">
-      <button id="btn-fr" class="active" onclick="setLang('fr')">FR</button>
+    <div class="lang-tog">
+      <button id="btn-fr" class="on" onclick="setLang('fr')">FR</button>
       <button id="btn-en" onclick="setLang('en')">EN</button>
     </div>
   </div>
 </nav>
 
 <section class="hero">
-  <canvas id="particles-canvas"></canvas>
-  <div class="hero-bg"></div>
-  <div class="hero-grid"></div>
-  <div class="hero-glow"></div>
-  <div class="hero-content">
-    <div class="hero-badge"><span class="hero-badge-dot"></span><span id="hero-badge">Disponible dans les Laurentides</span></div>
-    <h1>Votre expert tech<br><span id="typewriter">local</span><br><span>& abordable.</span></h1>
-    <p class="hero-desc" id="hero-desc">Création de sites web, soutien informatique et consultation technologique pour les entreprises et particuliers des Laurentides. Une seule personne de confiance pour tous vos besoins.</p>
-    <div class="btn-group">
-      <a href="#contact" class="btn-blue" id="hero-cta">Nous contacter →</a>
-      <a href="#services" class="btn-outline" id="hero-cta2">Voir les services</a>
+  <canvas id="ptc"></canvas>
+  <div class="h-bg"></div>
+  <div class="h-grid"></div>
+  <div class="h-glow"></div>
+  <div class="h-cnt">
+    <div class="h-badge"><span class="h-badge-dot"></span><span id="h-badge">Disponible dans les Laurentides</span></div>
+    <h1><span id="h1-top">Votre expert tech</span><br><span id="tw">local</span><br><em>&</em> <span id="h1-end">abordable.</span></h1>
+    <p class="h-desc" id="h-desc">Création de sites web, soutien informatique et consultation technologique pour les entreprises et particuliers des Laurentides. Une seule personne de confiance pour tous vos besoins.</p>
+    <div class="btn-g">
+      <a href="#contact" class="btn-b" id="h-cta">Nous contacter →</a>
+      <a href="#services" class="btn-o" id="h-cta2">Voir les services</a>
     </div>
   </div>
-  <div class="hero-scroll"><div class="hero-scroll-line"></div><span id="hero-scroll">Défiler</span></div>
+  <div class="h-scroll"><div class="h-scroll-l"></div><span id="h-scroll">Défiler</span></div>
 </section>
 
-<div class="stats-bar">
-  <div class="stat reveal"><div class="stat-num" id="stat1-num">100%</div><div class="stat-label" id="stat1">Local & disponible</div></div>
-  <div class="stat reveal d1"><div class="stat-num" id="stat2-num">Bilingue</div><div class="stat-label" id="stat2">Français & anglais</div></div>
-  <div class="stat reveal d2"><div class="stat-num" id="stat3-num">3-en-1</div><div class="stat-label" id="stat3">Web · IT · Consultation</div></div>
-  <div class="stat reveal d3"><div class="stat-num" id="stat4-num">~48h</div><div class="stat-label" id="stat4">Temps de réponse</div></div>
+<div class="stats">
+  <div class="stat rv"><div class="stat-n" id="s1n">100%</div><div class="stat-l" id="s1">Local & disponible</div></div>
+  <div class="stat rv d1"><div class="stat-n" id="s2n">Bilingue</div><div class="stat-l" id="s2">Français & anglais</div></div>
+  <div class="stat rv d2"><div class="stat-n" id="s3n">3-en-1</div><div class="stat-l" id="s3">Web · IT · Consultation</div></div>
+  <div class="stat rv d3"><div class="stat-n" id="s4n">~48h</div><div class="stat-l" id="s4">Temps de réponse</div></div>
 </div>
 
-<section class="section" id="services">
-  <div class="section-inner">
-    <p class="section-tag reveal" id="lbl-services">Services</p>
-    <h2 class="section-title reveal" id="services-title">Tout ce dont vous avez besoin,<br>au même endroit.</h2>
-    <p class="section-sub reveal" id="services-sub">Une seule personne de confiance pour tous vos besoins technologiques. Pas de centre d'appel ni d'attente. Vous parlez directement à Daniel.</p>
-    <div class="services-grid">
-      <div class="service-card reveal d1"><div class="service-icon">🌐</div><h3 id="s1-title">Création de sites web</h3><p id="s1-desc">Sites web professionnels, modernes et optimisés pour les moteurs de recherche. Bilingues français/anglais sur demande.</p><p class="service-price" id="s1-price">À partir de 500$ · Hébergement dès 50$/mois</p></div>
-      <div class="service-card reveal d2"><div class="service-icon">💻</div><h3 id="s2-title">Soutien informatique</h3><p id="s2-desc">Réparation d'ordinateurs, suppression de virus, configuration de réseaux et assistance technique à domicile ou en entreprise.</p><p class="service-price" id="s2-price">Tarif horaire compétitif · Déplacement disponible</p></div>
-      <div class="service-card reveal d3"><div class="service-icon">⚙️</div><h3 id="s3-title">Consultation technologique</h3><p id="s3-desc">Conseils personnalisés pour optimiser vos outils numériques, automatiser vos processus et améliorer votre présence en ligne.</p><p class="service-price" id="s3-price">Sur mesure selon vos besoins</p></div>
-      <div class="service-card reveal d4"><div class="service-icon">🔧</div><h3 id="s4-title">Hébergement & maintenance</h3><p id="s4-desc">Hébergement fiable avec maintenance mensuelle pour que votre site reste toujours rapide, sécurisé et à jour.</p><p class="service-price" id="s4-price">Forfaits mensuels disponibles</p></div>
+<section class="sec" id="services">
+  <div class="si">
+    <p class="s-tag rv" id="lbl-sv">Services</p>
+    <h2 class="s-title rv" id="sv-title">Tout ce dont vous avez besoin,<br>au même endroit.</h2>
+    <p class="s-sub rv" id="sv-sub">Une seule personne de confiance pour tous vos besoins technologiques. Pas de centre d'appel ni d'attente. Vous parlez directement à Daniel.</p>
+    <div class="sv-grid">
+      <div class="sv-card rv d1"><div class="sv-icon">🌐</div><h3 id="sv1-t">Création de sites web</h3><p id="sv1-d">Sites web professionnels, modernes et optimisés pour les moteurs de recherche. Bilingues français/anglais sur demande.</p><p class="sv-price" id="sv1-p">À partir de 500$ · Hébergement dès 50$/mois</p></div>
+      <div class="sv-card rv d2"><div class="sv-icon">💻</div><h3 id="sv2-t">Soutien informatique</h3><p id="sv2-d">Réparation d'ordinateurs, suppression de virus, configuration de réseaux et assistance technique à domicile ou en entreprise.</p><p class="sv-price" id="sv2-p">Tarif horaire compétitif · Déplacement disponible</p></div>
+      <div class="sv-card rv d3"><div class="sv-icon">⚙️</div><h3 id="sv3-t">Consultation technologique</h3><p id="sv3-d">Conseils personnalisés pour optimiser vos outils numériques, automatiser vos processus et améliorer votre présence en ligne.</p><p class="sv-price" id="sv3-p">Sur mesure selon vos besoins</p></div>
+      <div class="sv-card rv d4"><div class="sv-icon">🔧</div><h3 id="sv4-t">Hébergement & maintenance</h3><p id="sv4-d">Hébergement fiable avec maintenance mensuelle pour que votre site reste toujours rapide, sécurisé et à jour.</p><p class="sv-price" id="sv4-p">Forfaits mensuels disponibles</p></div>
     </div>
   </div>
 </section>
 
-<section class="section process-bg" id="process">
-  <div class="section-inner">
-    <p class="section-tag reveal" id="lbl-process">Processus</p>
-    <h2 class="section-title reveal" id="process-title">Simple, rapide, efficace.</h2>
-    <p class="section-sub reveal" id="process-sub">De la première conversation jusqu'à la mise en ligne, voici comment ça se passe.</p>
-    <div class="process-steps">
-      <div class="process-step reveal d1"><div class="process-num">1</div><h3 id="p1-title">Consultation</h3><p id="p1-desc">On discute de vos besoins, votre budget et vos objectifs. Gratuit et sans engagement.</p></div>
-      <div class="process-step reveal d2"><div class="process-num">2</div><h3 id="p2-title">Conception</h3><p id="p2-desc">Je conçois votre site ou solution sur mesure selon vos préférences et votre image de marque.</p></div>
-      <div class="process-step reveal d3"><div class="process-num">3</div><h3 id="p3-title">Révisions</h3><p id="p3-desc">Vous révisez, commentez et on ajuste jusqu'à ce que vous soyez 100% satisfait.</p></div>
-      <div class="process-step reveal d4"><div class="process-num">4</div><h3 id="p4-title">Mise en ligne</h3><p id="p4-desc">Votre site est en ligne, rapide et sécurisé. Je reste disponible pour le support.</p></div>
+<section class="sec proc-bg" id="process">
+  <div class="si">
+    <p class="s-tag rv" id="lbl-pr">Processus</p>
+    <h2 class="s-title rv" id="pr-title">Simple, rapide, efficace.</h2>
+    <p class="s-sub rv" id="pr-sub">De la première conversation jusqu'à la mise en ligne, voici comment ça se passe.</p>
+    <div class="proc-steps">
+      <div class="proc-step rv d1"><div class="proc-n">1</div><h3 id="p1t">Consultation</h3><p id="p1d">On discute de vos besoins, votre budget et vos objectifs. Gratuit et sans engagement.</p></div>
+      <div class="proc-step rv d2"><div class="proc-n">2</div><h3 id="p2t">Conception</h3><p id="p2d">Je conçois votre site ou solution sur mesure selon vos préférences et votre image de marque.</p></div>
+      <div class="proc-step rv d3"><div class="proc-n">3</div><h3 id="p3t">Révisions</h3><p id="p3d">Vous révisez, commentez et on ajuste jusqu'à ce que vous soyez 100% satisfait.</p></div>
+      <div class="proc-step rv d4"><div class="proc-n">4</div><h3 id="p4t">Mise en ligne</h3><p id="p4d">Votre site est en ligne, rapide et sécurisé. Je reste disponible pour le support.</p></div>
     </div>
   </div>
 </section>
 
-<section class="section why-bg">
-  <div class="section-inner">
-    <p class="section-tag reveal" id="lbl-why">Pourquoi Norelo</p>
-    <h2 class="section-title reveal" id="why-title">Ce qui nous distingue.</h2>
-    <p class="section-sub reveal" id="why-sub">Pas une agence anonyme. Un expert local qui connaît votre communauté.</p>
+<section class="sec why-bg">
+  <div class="si">
+    <p class="s-tag rv" id="lbl-why">Pourquoi Norelo</p>
+    <h2 class="s-title rv" id="why-title">Ce qui nous distingue.</h2>
+    <p class="s-sub rv" id="why-sub">Pas une agence anonyme. Un expert local qui connaît votre communauté.</p>
     <div class="why-grid">
-      <div class="why-card reveal d1"><div class="why-icon">📍</div><div><h3 id="w1-title">100% local</h3><p id="w1-desc">Basé à Saint-Joseph-du-Lac, je connais la région, les entreprises et les besoins locaux.</p></div></div>
-      <div class="why-card reveal d2"><div class="why-icon">⚡</div><div><h3 id="w2-title">Réponse rapide</h3><p id="w2-desc">Pas de tickets, pas d'attente. Vous parlez directement à Daniel, sous 48h garanti.</p></div></div>
-      <div class="why-card reveal d3"><div class="why-icon">💰</div><div><h3 id="w3-title">Prix honnêtes</h3><p id="w3-desc">Des tarifs transparents sans frais cachés. Idéal pour les petites et moyennes entreprises.</p></div></div>
-      <div class="why-card reveal d4"><div class="why-icon">🔒</div><div><h3 id="w4-title">Tout inclus</h3><p id="w4-desc">Web, IT, consultation et hébergement. Un seul contact pour tous vos besoins technologiques.</p></div></div>
-      <div class="why-card reveal d1"><div class="why-icon">🌐</div><div><h3 id="w5-title">Bilingue</h3><p id="w5-desc">Sites web et support disponibles en français et en anglais pour rejoindre plus de clients.</p></div></div>
-      <div class="why-card reveal d2"><div class="why-icon">🎯</div><div><h3 id="w6-title">Sur mesure</h3><p id="w6-desc">Chaque projet est unique. Pas de gabarit générique, tout est conçu spécifiquement pour vous.</p></div></div>
+      <div class="why-card rv d1"><div class="why-ic">📍</div><div><h3 id="w1t">100% local</h3><p id="w1d">Basé à Saint-Joseph-du-Lac, je connais la région, les entreprises et les besoins locaux.</p></div></div>
+      <div class="why-card rv d2"><div class="why-ic">⚡</div><div><h3 id="w2t">Réponse rapide</h3><p id="w2d">Pas de tickets, pas d'attente. Vous parlez directement à Daniel, sous 48h garanti.</p></div></div>
+      <div class="why-card rv d3"><div class="why-ic">💰</div><div><h3 id="w3t">Prix honnêtes</h3><p id="w3d">Des tarifs transparents sans frais cachés. Idéal pour les petites et moyennes entreprises.</p></div></div>
+      <div class="why-card rv d4"><div class="why-ic">🔒</div><div><h3 id="w4t">Tout inclus</h3><p id="w4d">Web, IT, consultation et hébergement. Un seul contact pour tous vos besoins technologiques.</p></div></div>
+      <div class="why-card rv d1"><div class="why-ic">🌐</div><div><h3 id="w5t">Bilingue</h3><p id="w5d">Sites web et support disponibles en français et en anglais pour rejoindre plus de clients.</p></div></div>
+      <div class="why-card rv d2"><div class="why-ic">🎯</div><div><h3 id="w6t">Sur mesure</h3><p id="w6d">Chaque projet est unique. Pas de gabarit générique, tout est conçu spécifiquement pour vous.</p></div></div>
     </div>
   </div>
 </section>
 
-<section class="section portfolio-bg" id="portfolio">
-  <div class="section-inner">
-    <p class="section-tag reveal" id="lbl-portfolio">Portfolio</p>
-    <h2 class="section-title reveal" id="portfolio-title">Un travail concret,<br>des résultats réels.</h2>
-    <p class="section-sub reveal" id="portfolio-sub">Des sites web livrés pour de vraies entreprises locales.</p>
-    <div class="portfolio-card reveal-scale">
-      <div class="portfolio-img">
-        <span class="portfolio-img-emoji">🍎</span>
-        <span class="portfolio-img-label">alacroiseedespommes.com</span>
-      </div>
-      <div class="portfolio-body">
+<section class="sec port-bg" id="portfolio">
+  <div class="si">
+    <p class="s-tag rv" id="lbl-po">Portfolio</p>
+    <h2 class="s-title rv" id="po-title">Un travail concret,<br>des résultats réels.</h2>
+    <p class="s-sub rv" id="po-sub">Des sites web livrés pour de vraies entreprises locales.</p>
+    <div class="port-card rvs">
+      <div class="port-img"><span class="port-emoji">🍎</span><span class="port-lbl">alacroiseedespommes.com</span></div>
+      <div class="port-body">
         <h3>À la Croisée des Pommes</h3>
-        <p id="port-desc">Site web complet pour un verger biologique certifié à Saint-Joseph-du-Lac. Réservations en ligne, boutique, nouvelles du verger et informations sur toutes les activités.</p>
-        <div class="portfolio-tags">
-          <span class="portfolio-tag" id="ptag1">Bilingue</span>
-          <span class="portfolio-tag" id="ptag2">Réservations</span>
-          <span class="portfolio-tag" id="ptag3">Boutique</span>
-          <span class="portfolio-tag" id="ptag4">SEO</span>
-          <span class="portfolio-tag" id="ptag5">Mobile-first</span>
+        <p id="po-desc">Site web complet pour un verger biologique certifié à Saint-Joseph-du-Lac. Réservations en ligne, boutique, nouvelles du verger et informations sur toutes les activités.</p>
+        <div class="port-tags">
+          <span class="port-tag" id="pt1">Bilingue</span>
+          <span class="port-tag" id="pt2">Réservations</span>
+          <span class="port-tag" id="pt3">Boutique</span>
+          <span class="port-tag" id="pt4">SEO</span>
+          <span class="port-tag" id="pt5">Mobile-first</span>
         </div>
-        <a class="portfolio-link" href="https://alacroiseedespommes.com" target="_blank" rel="noopener" id="port-link">Visiter le site →</a>
+        <a class="port-link" href="https://alacroiseedespommes.com" target="_blank" rel="noopener" id="po-link">Visiter le site →</a>
       </div>
     </div>
-    <div class="testimonial reveal">
-      <p class="testimonial-quote" id="test-text">« Daniel a créé notre site web de A à Z avec professionnalisme et efficacité. Il comprend les besoins des entreprises locales et livre exactement ce qu'on lui demande. On le recommande sans hésitation. »</p>
-      <p class="testimonial-author" id="test-author">À la Croisée des Pommes, Saint-Joseph-du-Lac</p>
+    <div class="testi rv">
+      <p class="testi-q" id="testi-q">« Daniel a créé notre site web de A à Z avec professionnalisme et efficacité. Il comprend les besoins des entreprises locales et livre exactement ce qu'on lui demande. On le recommande sans hésitation. »</p>
+      <p class="testi-a" id="testi-a">À la Croisée des Pommes, Saint-Joseph-du-Lac</p>
     </div>
   </div>
 </section>
 
-<section class="section" id="pricing">
-  <div class="section-inner">
-    <p class="section-tag reveal" id="lbl-pricing">Tarifs</p>
-    <h2 class="section-title reveal" id="pricing-title">Des prix clairs,<br>sans surprises.</h2>
-    <p class="section-sub reveal" id="pricing-sub">Tous les forfaits incluent une consultation gratuite. Contactez-nous pour un devis personnalisé.</p>
-    <div class="pricing-grid">
+<section class="sec" id="pricing">
+  <div class="si">
+    <p class="s-tag rv" id="lbl-pi">Tarifs</p>
+    <h2 class="s-title rv" id="pi-title">Des prix clairs,<br>sans surprises.</h2>
+    <p class="s-sub rv" id="pi-sub">Tous les forfaits incluent une consultation gratuite. Contactez-nous pour un devis personnalisé.</p>
+    <div class="pr-grid">
 
-      <!-- ESSENTIEL - PROMO -->
-      <div class="pricing-card promo reveal d1">
-        <div class="badge-red">🔥 <span id="pr1-badge">Offre de lancement</span></div>
-        <p class="pricing-name" id="pr1-name">Essentiel</p>
-        <div>
-          <span class="promo-strike">700$</span>
-          <div class="promo-price"><sup>$</sup><span id="pr1-amount">500</span></div>
-          <span class="promo-saving" id="pr1-saving">Économisez 200$</span>
-        </div>
+      <div class="pr-card promo rv d1">
+        <div class="badge-r">🔥 <span id="pr1-badge">Offre de lancement</span></div>
+        <p class="pr-name" id="pr1-name">Essentiel</p>
+        <div><span class="promo-strike">700$</span><div class="promo-p"><sup>$</sup><span id="pr1-amt">500</span></div><span class="promo-save" id="pr1-save">Économisez 200$</span></div>
         <sub id="pr1-per" style="font-size:13px;color:#94a3b8;display:block;margin-top:2px;">+ hébergement</sub>
-        <div class="counter-wrap"><span id="pr1-counter">23 sur 100 réclamés</span><div class="counter-bar"><div class="counter-fill"></div></div></div>
-        <p class="pricing-desc" id="pr1-desc">Idéal pour les petites entreprises qui veulent une présence en ligne simple et professionnelle.</p>
-        <ul class="pricing-features">
-          <li><span class="pricing-check red">✓</span><span id="prf1-1">Site 1 à 5 pages</span></li>
-          <li><span class="pricing-check red">✓</span><span id="prf1-2">Design responsive (mobile)</span></li>
-          <li><span class="pricing-check red">✓</span><span id="prf1-3">Formulaire de contact</span></li>
-          <li><span class="pricing-check red">✓</span><span id="prf1-4">Optimisation de base (SEO)</span></li>
-          <li><span class="pricing-check red">✓</span><span id="prf1-5">Bilingue français / anglais</span></li>
-          <li><span class="pricing-check red">✓</span><span id="prf1-6">Hébergement dès 50$/mois</span></li>
+        <p class="pr-desc" id="pr1-desc">Idéal pour les petites entreprises qui veulent une présence en ligne simple et professionnelle.</p>
+        <ul class="pr-feats">
+          <li><span class="pr-chk r">✓</span><span id="pf1-1">Site 1 à 5 pages</span></li>
+          <li><span class="pr-chk r">✓</span><span id="pf1-2">Design responsive (mobile)</span></li>
+          <li><span class="pr-chk r">✓</span><span id="pf1-3">Formulaire de contact</span></li>
+          <li><span class="pr-chk r">✓</span><span id="pf1-4">Optimisation de base (SEO)</span></li>
+          <li><span class="pr-chk r">✓</span><span id="pf1-5">Bilingue français / anglais</span></li>
+          <li><span class="pr-chk r">✓</span><span id="pf1-6">Hébergement dès 50$/mois</span></li>
         </ul>
-        <a href="#contact" class="btn-blue" style="text-align:center;display:block;background:#e11d48;box-shadow:0 4px 16px rgba(225,29,72,0.3);" id="pr1-cta">Réclamer l'offre →</a>
+        <a href="#contact" class="btn-b" style="text-align:center;display:block;background:#e11d48;box-shadow:0 4px 16px rgba(225,29,72,.3);" id="pr1-cta">Réclamer l'offre →</a>
       </div>
 
-      <!-- PROFESSIONNEL - FEATURED -->
-      <div class="pricing-card featured reveal d2">
-        <div class="badge-blue" id="pr2-badge">Le plus populaire</div>
-        <p class="pricing-name" id="pr2-name">Professionnel</p>
-        <div class="pricing-price"><sup>$</sup>1 200<sub id="pr2-per"> + hébergement</sub></div>
-        <p class="pricing-desc" id="pr2-desc">Pour les entreprises qui veulent se démarquer avec un site complet, bilingue et optimisé.</p>
-        <ul class="pricing-features">
-          <li><span class="pricing-check">✓</span><span id="prf2-1">Site jusqu'à 10 pages</span></li>
-          <li><span class="pricing-check">✓</span><span id="prf2-2">Design sur mesure</span></li>
-          <li><span class="pricing-check">✓</span><span id="prf2-3">Bilingue français/anglais</span></li>
-          <li><span class="pricing-check">✓</span><span id="prf2-4">SEO avancé + Google Analytics</span></li>
-          <li><span class="pricing-check">✓</span><span id="prf2-5">Intégration réseaux sociaux</span></li>
-          <li><span class="pricing-check">✓</span><span id="prf2-6">Hébergement dès 75$/mois</span></li>
+      <div class="pr-card feat rv d2">
+        <div class="badge-b" id="pr2-badge">Le plus populaire</div>
+        <p class="pr-name" id="pr2-name">Professionnel</p>
+        <div class="pr-price"><sup>$</sup>1 200<sub id="pr2-per"> + hébergement</sub></div>
+        <p class="pr-desc" id="pr2-desc">Pour les entreprises qui veulent se démarquer avec un site complet, bilingue et optimisé.</p>
+        <ul class="pr-feats">
+          <li><span class="pr-chk">✓</span><span id="pf2-1">Site jusqu'à 10 pages</span></li>
+          <li><span class="pr-chk">✓</span><span id="pf2-2">Design sur mesure</span></li>
+          <li><span class="pr-chk">✓</span><span id="pf2-3">Bilingue français/anglais</span></li>
+          <li><span class="pr-chk">✓</span><span id="pf2-4">SEO avancé + Google Analytics</span></li>
+          <li><span class="pr-chk">✓</span><span id="pf2-5">Intégration réseaux sociaux</span></li>
+          <li><span class="pr-chk">✓</span><span id="pf2-6">Hébergement dès 75$/mois</span></li>
         </ul>
-        <a href="#contact" class="btn-blue" style="text-align:center;display:block;" id="pr2-cta">Commencer</a>
+        <a href="#contact" class="btn-b" style="text-align:center;display:block;" id="pr2-cta">Commencer</a>
       </div>
 
-      <!-- SUR MESURE -->
-      <div class="pricing-card reveal d3">
-        <p class="pricing-name" id="pr3-name">Sur mesure</p>
-        <div class="pricing-price" style="font-size:28px;padding-top:10px;" id="pr3-price">Sur devis</div>
-        <p class="pricing-desc" id="pr3-desc">Boutique en ligne, application web, consultation IT ou projet complexe, on trouve toujours une solution adaptée.</p>
-        <ul class="pricing-features">
-          <li><span class="pricing-check">✓</span><span id="prf3-1">Boutique en ligne (e-commerce)</span></li>
-          <li><span class="pricing-check">✓</span><span id="prf3-2">Fonctionnalités personnalisées</span></li>
-          <li><span class="pricing-check">✓</span><span id="prf3-3">Support IT mensuel</span></li>
-          <li><span class="pricing-check">✓</span><span id="prf3-4">Formation & documentation</span></li>
-          <li><span class="pricing-check">✓</span><span id="prf3-5">Consultation technologique</span></li>
+      <div class="pr-card rv d3">
+        <p class="pr-name" id="pr3-name">Sur mesure</p>
+        <div class="pr-price" style="font-size:28px;padding-top:10px;" id="pr3-price">Sur devis</div>
+        <p class="pr-desc" id="pr3-desc">Boutique en ligne, application web, consultation IT ou projet complexe, on trouve toujours une solution adaptée.</p>
+        <ul class="pr-feats">
+          <li><span class="pr-chk">✓</span><span id="pf3-1">Boutique en ligne (e-commerce)</span></li>
+          <li><span class="pr-chk">✓</span><span id="pf3-2">Fonctionnalités personnalisées</span></li>
+          <li><span class="pr-chk">✓</span><span id="pf3-3">Support IT mensuel</span></li>
+          <li><span class="pr-chk">✓</span><span id="pf3-4">Formation & documentation</span></li>
+          <li><span class="pr-chk">✓</span><span id="pf3-5">Consultation technologique</span></li>
         </ul>
-        <a href="#contact" class="btn-outline" style="text-align:center;display:block;color:#1a1a2e;border-color:#e2e8f0;" id="pr3-cta">Nous contacter</a>
+        <a href="#contact" class="btn-o" style="text-align:center;display:block;color:#1a1a2e;border-color:#e2e8f0;" id="pr3-cta">Nous contacter</a>
       </div>
 
     </div>
   </div>
 </section>
 
-<section class="section contact-bg" id="contact">
-  <div class="section-inner">
-    <div class="contact-grid">
-      <div class="contact-info reveal-left">
-        <p class="section-tag" id="lbl-contact">Contact</p>
-        <h2 id="contact-title">Parlons de<br>votre projet</h2>
-        <p id="contact-desc">Vous avez besoin d'un site web ou d'un soutien informatique? Contactez Daniel directement. Pas de téléphone automatisé. Vous parlez à une vraie personne qui connaît la région.</p>
-        <div class="contact-detail">
-          <div class="contact-detail-icon">✉️</div>
-          <a href="mailto:daniel@norelo.ca">daniel@norelo.ca</a>
-        </div>
-        <div class="contact-detail">
-          <div class="contact-detail-icon">📍</div>
-          <span id="contact-location">Saint-Joseph-du-Lac, Québec<br>Disponible dans toute la région des Laurentides</span>
-        </div>
-        <div class="contact-detail">
-          <div class="contact-detail-icon">🕐</div>
-          <span id="contact-hours">Lundi – Vendredi · 9h à 18h<br>Réponse sous 48h garantie</span>
+<section class="sec ct-bg" id="contact">
+  <div class="si">
+    <div class="ct-grid">
+      <div class="ct-info rvl">
+        <p class="s-tag" id="lbl-ct">Contact</p>
+        <h2 id="ct-title">Parlons de<br>votre projet</h2>
+        <p id="ct-desc">Vous avez besoin d'un site web ou d'un soutien informatique? Contactez Daniel directement. Pas de téléphone automatisé. Vous parlez à une vraie personne qui connaît la région.</p>
+        <div class="ct-det"><div class="ct-det-ic">✉️</div><a href="mailto:daniel@norelo.ca">daniel@norelo.ca</a></div>
+        <div class="ct-det"><div class="ct-det-ic">📍</div><span id="ct-loc">Saint-Joseph-du-Lac, Québec<br>Disponible dans toute la région des Laurentides</span></div>
+        <div class="ct-det"><div class="ct-det-ic">🕐</div><span id="ct-hrs">Lundi – Vendredi · 9h à 18h<br>Réponse sous 48h garantie</span></div>
+        <div class="ct-det" style="margin-top:1.5rem;padding:1rem;background:#eff6ff;border-radius:14px;border:1px solid #bfdbfe;">
+          <div class="ct-det-ic" style="background:#dbeafe;">💡</div>
+          <span id="ct-tip" style="font-size:13px;color:#1e40af;line-height:1.65;">Plus votre message est détaillé, plus vite Daniel pourra vous préparer un devis précis et personnalisé.</span>
         </div>
       </div>
-      <div class="reveal-right">
-        <div class="contact-form">
-          <label id="lbl-name">Nom</label>
-          <input type="text" id="inp-name" placeholder="Votre nom"/>
-          <label id="lbl-email">Courriel</label>
-          <input type="email" id="inp-email" placeholder="Votre courriel"/>
-          <label id="lbl-svc">Service</label>
-          <select id="inp-service">
-            <option id="opt-default">Quel service vous intéresse?</option>
-            <option id="opt-web">Création de site web</option>
-            <option id="opt-it">Soutien informatique</option>
-            <option id="opt-consult">Consultation technologique</option>
-            <option id="opt-hosting">Hébergement & maintenance</option>
-            <option id="opt-other">Autre</option>
-          </select>
-          <label id="lbl-msg">Message</label>
-          <textarea id="inp-msg" placeholder="Décrivez votre projet..."></textarea>
-          <button class="btn-blue" onclick="submitForm()" id="form-btn" style="width:100%;justify-content:center;">Envoyer le message →</button>
-          <p class="form-note" id="form-note">Réponse garantie sous 48h · Aucun spam</p>
-          <p class="form-success" id="form-success">✓ Message envoyé! Daniel vous contactera sous peu.</p>
+      <div class="rvr">
+        <div class="ct-form">
+          <div class="f-row">
+            <div><label id="lbl-name">Nom</label><input type="text" id="inp-name" placeholder="Votre nom" style="margin-top:6px;"/></div>
+            <div><label id="lbl-email">Courriel</label><input type="email" id="inp-email" placeholder="Votre courriel" style="margin-top:6px;"/></div>
+          </div>
+          <label id="lbl-svc">Services qui m'intéressent</label>
+          <div class="svc-grid">
+            <div class="svc-chip" id="chip-web" onclick="toggleChip('web',this)"><span class="svc-chip-ic">🌐</span><span class="svc-chip-txt"><span id="chip-web-t">Site web</span><br><span class="svc-chip-sub" id="chip-web-s">Dès 500$</span></span></div>
+            <div class="svc-chip" id="chip-it" onclick="toggleChip('it',this)"><span class="svc-chip-ic">💻</span><span class="svc-chip-txt"><span id="chip-it-t">Soutien IT</span><br><span class="svc-chip-sub" id="chip-it-s">Taux horaire</span></span></div>
+            <div class="svc-chip" id="chip-consult" onclick="toggleChip('consult',this)"><span class="svc-chip-ic">⚙️</span><span class="svc-chip-txt"><span id="chip-consult-t">Consultation</span><br><span class="svc-chip-sub" id="chip-consult-s">Sur devis</span></span></div>
+            <div class="svc-chip" id="chip-hosting" onclick="toggleChip('hosting',this)"><span class="svc-chip-ic">🔧</span><span class="svc-chip-txt"><span id="chip-hosting-t">Hébergement</span><br><span class="svc-chip-sub" id="chip-hosting-s">Dès 50$/mois</span></span></div>
+          </div>
+          <div class="est-box" id="est-box">
+            <div class="est-ttl" id="est-ttl">Estimation approximative</div>
+            <div class="est-rows" id="est-rows"></div>
+            <div class="est-div"></div>
+            <div class="est-tot"><span id="est-tot-l">Total estimé</span><span id="est-tot-v">—</span></div>
+            <p class="est-note" id="est-note">Estimation indicative seulement. Un devis précis sera fourni après consultation gratuite.</p>
+          </div>
+          <label id="lbl-msg">Votre message</label>
+          <div class="tips-box">
+            <strong id="tips-t">Pour un devis précis, pensez à inclure :</strong><br>
+            <span id="tips-b">• Votre secteur d'activité et le nom de votre entreprise<br>• Le nombre de pages souhaitées et les fonctionnalités clés<br>• Votre délai idéal et votre budget approximatif<br>• Des exemples de sites que vous aimez (optionnel)</span>
+          </div>
+          <textarea id="inp-msg" placeholder="Ex: Je gère un restaurant à Saint-Eustache et j'aimerais un site avec un menu, une galerie photo et un formulaire de réservation. Mon budget est autour de 700$..."></textarea>
+          <button class="btn-b" onclick="submitForm()" id="form-btn" style="width:100%;justify-content:center;">Envoyer le message →</button>
+          <p class="f-note" id="f-note">Réponse garantie sous 48h · Aucun spam · Consultation gratuite</p>
+          <p class="f-ok" id="f-ok">✓ Message envoyé! Daniel vous contactera sous peu.</p>
         </div>
       </div>
     </div>
@@ -473,77 +485,68 @@
 </section>
 
 <footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <div class="footer-logo">Nore<span>lo</span></div>
-        <p id="footer-desc">Expert tech local basé à Saint-Joseph-du-Lac. Sites web, soutien informatique et consultation pour les entreprises des Laurentides.</p>
-      </div>
-      <div class="footer-col">
-        <h4 id="f-col1">Services</h4>
-        <a href="#services" id="f-s1">Création de sites web</a>
-        <a href="#services" id="f-s2">Soutien informatique</a>
-        <a href="#services" id="f-s3">Consultation</a>
-        <a href="#services" id="f-s4">Hébergement</a>
-      </div>
-      <div class="footer-col">
-        <h4 id="f-col2">Entreprise</h4>
-        <a href="#portfolio" id="f-portfolio">Portfolio</a>
-        <a href="#pricing" id="f-pricing">Tarifs</a>
-        <a href="#process" id="f-process">Processus</a>
-        <a href="#contact" id="f-contact">Contact</a>
-      </div>
+  <div class="ft">
+    <div class="ft-top">
+      <div class="ft-brand"><div class="ft-logo">Nore<span>lo</span></div><p id="ft-desc">Expert tech local basé à Saint-Joseph-du-Lac. Sites web, soutien informatique et consultation pour les entreprises des Laurentides.</p></div>
+      <div class="ft-col"><h4 id="ft-c1">Services</h4><a href="#services" id="ft-s1">Création de sites web</a><a href="#services" id="ft-s2">Soutien informatique</a><a href="#services" id="ft-s3">Consultation</a><a href="#services" id="ft-s4">Hébergement</a></div>
+      <div class="ft-col"><h4 id="ft-c2">Entreprise</h4><a href="#portfolio" id="ft-po">Portfolio</a><a href="#pricing" id="ft-pi">Tarifs</a><a href="#process" id="ft-pr">Processus</a><a href="#contact" id="ft-ct">Contact</a></div>
     </div>
-    <div class="footer-bottom">
-      <p id="footer-copy">© 2025 Norelo · Saint-Joseph-du-Lac, Québec</p>
-      <p id="footer-made">Fait avec soin dans les Laurentides</p>
-    </div>
+    <div class="ft-bot"><p id="ft-copy">© 2025 Norelo · Saint-Joseph-du-Lac, Québec</p><p id="ft-made">Fait avec soin dans les Laurentides</p></div>
   </div>
 </footer>
 
 <script>
 /* CURSOR */
-const cur = document.getElementById('cursor');
-const ring = document.getElementById('cursor-ring');
+const cur = document.getElementById('cur');
+const ring = document.getElementById('cur-ring');
 let mx = -100, my = -100, rx = -100, ry = -100;
 document.addEventListener('mousemove', e => {
   mx = e.clientX; my = e.clientY;
-  cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+  cur.style.left = mx + 'px';
+  cur.style.top = my + 'px';
+  const el = document.elementFromPoint(mx, my);
+  if (!el) return;
+  const tag = el.tagName.toLowerCase();
+  const isClickable = tag === 'a' || tag === 'button' || el.closest('a,button,.sv-card,.why-card,.pr-card,.port-card,.svc-chip,.lang-tog');
+  const isText = !isClickable && (
+    ['p','h1','h2','h3','h4','h5','h6','span','li','label'].includes(tag) ||
+    el.closest('p,h1,h2,h3,h4,h5,h6,li') ||
+    tag === 'textarea' || (tag === 'input' && el.type !== 'submit')
+  );
+  document.body.classList.toggle('c-click', !!isClickable);
+  document.body.classList.toggle('c-text', isText && !isClickable);
 });
-function animateRing() {
-  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
-  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-  requestAnimationFrame(animateRing);
-}
-animateRing();
-document.querySelectorAll('a,button,.service-card,.why-card,.pricing-card,.portfolio-card').forEach(el => {
-  el.addEventListener('mouseenter', () => document.body.classList.add('cursor-grow'));
-  el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-grow'));
-});
+(function loop() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(loop);
+})();
 
-/* PROGRESS BAR */
+/* SCROLL */
 window.addEventListener('scroll', () => {
   const s = document.documentElement.scrollTop;
   const h = document.documentElement.scrollHeight - window.innerHeight;
-  document.getElementById('progress').style.width = (s / h * 100) + '%';
-  document.getElementById('navbar').classList.toggle('scrolled', s > 60);
-  document.getElementById('float-cta').classList.toggle('show', s > 400);
+  document.getElementById('prog').style.width = (s / h * 100) + '%';
+  document.getElementById('nav').classList.toggle('scrolled', s > 60);
+  document.getElementById('fcta').classList.toggle('show', s > 400);
 });
 
-/* SCROLL REVEAL */
+/* REVEAL */
 const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
 }, { threshold: 0.1 });
-document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').forEach(el => obs.observe(el));
+document.querySelectorAll('.rv,.rvl,.rvr,.rvs').forEach(el => obs.observe(el));
 
 /* PARTICLES */
 (function() {
-  const canvas = document.getElementById('particles-canvas');
-  const ctx = canvas.getContext('2d');
+  const c = document.getElementById('ptc');
+  const ctx = c.getContext('2d');
   let W, H, pts = [];
-  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = canvas.parentElement.offsetHeight; }
+  function resize() { W = c.width = window.innerWidth; H = c.height = c.parentElement.offsetHeight; }
   resize(); window.addEventListener('resize', resize);
-  for (let i = 0; i < 55; i++) pts.push({ x: Math.random() * 2000, y: Math.random() * 1000, vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3, r: Math.random() * 1.5 + 0.3, o: Math.random() * 0.4 + 0.1 });
+  for (let i = 0; i < 55; i++) pts.push({ x: Math.random() * 2000, y: Math.random() * 1000, vx: (Math.random() - .5) * .3, vy: (Math.random() - .5) * .3, r: Math.random() * 1.5 + .3, o: Math.random() * .4 + .1 });
   function draw() {
     ctx.clearRect(0, 0, W, H);
     pts.forEach(p => {
@@ -556,7 +559,7 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').fo
     pts.forEach((p, i) => {
       for (let j = i + 1; j < pts.length; j++) {
         const q = pts[j], d = Math.hypot(p.x - q.x, p.y - q.y);
-        if (d < 120) { ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.strokeStyle = 'rgba(79,163,232,' + (0.08 * (1 - d / 120)) + ')'; ctx.lineWidth = 0.5; ctx.stroke(); }
+        if (d < 120) { ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.strokeStyle = 'rgba(79,163,232,' + (.08 * (1 - d / 120)) + ')'; ctx.lineWidth = .5; ctx.stroke(); }
       }
     });
     requestAnimationFrame(draw);
@@ -566,8 +569,8 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').fo
 
 /* TYPEWRITER */
 (function() {
-  const el = document.getElementById('typewriter');
-  const words = { fr: ['local','fiable','rapide','abordable'], en: ['local','trusted','fast','affordable'] };
+  const el = document.getElementById('tw');
+  const words = { fr: ['local','fiable','rapide','professionnel'], en: ['local','trusted','fast','professional'] };
   let i = 0;
   function type() {
     const list = words[window._lang || 'fr'];
@@ -576,124 +579,179 @@ document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale').fo
     const t = setInterval(() => { el.textContent = word.slice(0, ++j); if (j === word.length) { clearInterval(t); setTimeout(erase, 2000); } }, 80);
   }
   function erase() {
-    const t = setInterval(() => { el.textContent = el.textContent.slice(0, -1); if (!el.textContent) { clearInterval(t); i++; setTimeout(type, 300); } }, 50);
+    const t = setInterval(() => { el.textContent = el.textContent.slice(0, -1); if (!el.textContent.length) { clearInterval(t); i++; setTimeout(type, 300); } }, 50);
   }
   setTimeout(type, 800);
 })();
 
+/* SERVICE CHIPS + ESTIMATE */
+const pricing = {
+  web:     { fr: 'Site web',       en: 'Web design',   frv: 'À partir de 500$',     env: 'From $500',      min: 500,  max: 1200 },
+  it:      { fr: 'Soutien IT',     en: 'IT support',   frv: '75$ – 150$/heure',      env: '$75–$150/hr',    min: 75,   max: 150,  hourly: true },
+  consult: { fr: 'Consultation',   en: 'Consulting',   frv: '100$ – 200$/heure',     env: '$100–$200/hr',   min: 100,  max: 200,  hourly: true },
+  hosting: { fr: 'Hébergement',    en: 'Hosting',      frv: 'Dès 50$/mois',          env: 'From $50/mo',    min: 50,   max: 75,   monthly: true }
+};
+const sel = new Set();
+function toggleChip(key, el) {
+  el.classList.toggle('sel');
+  if (sel.has(key)) sel.delete(key); else sel.add(key);
+  updateEst();
+}
+function updateEst() {
+  const box = document.getElementById('est-box');
+  const rows = document.getElementById('est-rows');
+  const tot = document.getElementById('est-tot-v');
+  const l = window._lang || 'fr';
+  if (!sel.size) { box.classList.remove('show'); return; }
+  box.classList.add('show');
+  let minT = 0, maxT = 0, html = '';
+  sel.forEach(k => {
+    const p = pricing[k];
+    html += '<div class="est-row"><span>' + (l === 'fr' ? p.fr : p.en) + '</span><span>' + (l === 'fr' ? p.frv : p.env) + '</span></div>';
+    minT += p.min; maxT += p.max;
+  });
+  rows.innerHTML = html;
+  const hasVar = [...sel].some(k => pricing[k].hourly);
+  tot.textContent = l === 'fr'
+    ? minT + '$ – ' + maxT + '$' + (hasVar ? ' +' : '')
+    : '$' + minT + ' – $' + maxT + (hasVar ? ' +' : '');
+}
+
 /* LANGUAGE */
-const content = {
+const T = {
   fr: {
-    'nav-services':'Services','nav-process':'Processus','nav-portfolio':'Portfolio','nav-pricing':'Tarifs','nav-contact':'Contact',
-    'hero-badge':'Disponible dans les Laurentides',
-    'hero-desc':"Création de sites web, soutien informatique et consultation technologique pour les entreprises et particuliers des Laurentides. Une seule personne de confiance pour tous vos besoins.",
-    'hero-cta':'Nous contacter →','hero-cta2':'Voir les services','hero-scroll':'Défiler','float-text':'Nous contacter',
-    'stat1-num':'100%','stat2-num':'Bilingue','stat3-num':'3-en-1','stat4-num':'~48h',
-    'stat1':'Local & disponible','stat2':'Français & anglais','stat3':'Web · IT · Consultation','stat4':'Temps de réponse',
-    'lbl-services':'Services','services-title':'Tout ce dont vous avez besoin,<br>au même endroit.',
-    'services-sub':"Une seule personne de confiance pour tous vos besoins technologiques. Pas de centre d'appel ni d'attente. Vous parlez directement à Daniel.",
-    's1-title':'Création de sites web','s1-desc':"Sites web professionnels, modernes et optimisés pour les moteurs de recherche. Bilingues français/anglais sur demande.",'s1-price':'À partir de 500$ · Hébergement dès 50$/mois',
-    's2-title':'Soutien informatique','s2-desc':"Réparation d'ordinateurs, suppression de virus, configuration de réseaux et assistance technique à domicile ou en entreprise.",'s2-price':'Tarif horaire compétitif · Déplacement disponible',
-    's3-title':'Consultation technologique','s3-desc':'Conseils personnalisés pour optimiser vos outils numériques, automatiser vos processus et améliorer votre présence en ligne.','s3-price':'Sur mesure selon vos besoins',
-    's4-title':'Hébergement & maintenance','s4-desc':'Hébergement fiable avec maintenance mensuelle pour que votre site reste toujours rapide, sécurisé et à jour.','s4-price':'Forfaits mensuels disponibles',
-    'lbl-process':'Processus','process-title':'Simple, rapide, efficace.','process-sub':"De la première conversation jusqu'à la mise en ligne, voici comment ça se passe.",
-    'p1-title':'Consultation','p1-desc':'On discute de vos besoins, votre budget et vos objectifs. Gratuit et sans engagement.',
-    'p2-title':'Conception','p2-desc':'Je conçois votre site ou solution sur mesure selon vos préférences et votre image de marque.',
-    'p3-title':'Révisions','p3-desc':"Vous révisez, commentez et on ajuste jusqu'à ce que vous soyez 100% satisfait.",
-    'p4-title':'Mise en ligne','p4-desc':"Votre site est en ligne, rapide et sécurisé. Je reste disponible pour le support.",
+    'nl-sv':'Services','nl-pr':'Processus','nl-po':'Portfolio','nl-pi':'Tarifs','nl-ct':'Contact',
+    'float-text':'Nous contacter',
+    'h1-top':'Votre expert tech','h1-end':'abordable.','h-badge':'Disponible dans les Laurentides',
+    'h-desc':"Création de sites web, soutien informatique et consultation technologique pour les entreprises et particuliers des Laurentides. Une seule personne de confiance pour tous vos besoins.",
+    'h-cta':'Nous contacter →','h-cta2':'Voir les services','h-scroll':'Défiler',
+    's1n':'100%','s2n':'Bilingue','s3n':'3-en-1','s4n':'~48h',
+    's1':'Local & disponible','s2':'Français & anglais','s3':'Web · IT · Consultation','s4':'Temps de réponse',
+    'lbl-sv':'Services','sv-title':'Tout ce dont vous avez besoin,<br>au même endroit.',
+    'sv-sub':"Une seule personne de confiance pour tous vos besoins technologiques. Pas de centre d'appel ni d'attente. Vous parlez directement à Daniel.",
+    'sv1-t':'Création de sites web','sv1-d':"Sites web professionnels, modernes et optimisés pour les moteurs de recherche. Bilingues français/anglais sur demande.",'sv1-p':'À partir de 500$ · Hébergement dès 50$/mois',
+    'sv2-t':'Soutien informatique','sv2-d':"Réparation d'ordinateurs, suppression de virus, configuration de réseaux et assistance technique à domicile ou en entreprise.",'sv2-p':'Tarif horaire compétitif · Déplacement disponible',
+    'sv3-t':'Consultation technologique','sv3-d':'Conseils personnalisés pour optimiser vos outils numériques, automatiser vos processus et améliorer votre présence en ligne.','sv3-p':'Sur mesure selon vos besoins',
+    'sv4-t':'Hébergement & maintenance','sv4-d':'Hébergement fiable avec maintenance mensuelle pour que votre site reste toujours rapide, sécurisé et à jour.','sv4-p':'Forfaits mensuels disponibles',
+    'lbl-pr':'Processus','pr-title':'Simple, rapide, efficace.','pr-sub':"De la première conversation jusqu'à la mise en ligne, voici comment ça se passe.",
+    'p1t':'Consultation','p1d':'On discute de vos besoins, votre budget et vos objectifs. Gratuit et sans engagement.',
+    'p2t':'Conception','p2d':'Je conçois votre site ou solution sur mesure selon vos préférences et votre image de marque.',
+    'p3t':'Révisions','p3d':"Vous révisez, commentez et on ajuste jusqu'à ce que vous soyez 100% satisfait.",
+    'p4t':'Mise en ligne','p4d':"Votre site est en ligne, rapide et sécurisé. Je reste disponible pour le support.",
     'lbl-why':'Pourquoi Norelo','why-title':'Ce qui nous distingue.','why-sub':'Pas une agence anonyme. Un expert local qui connaît votre communauté.',
-    'w1-title':'100% local','w1-desc':'Basé à Saint-Joseph-du-Lac, je connais la région, les entreprises et les besoins locaux.',
-    'w2-title':'Réponse rapide','w2-desc':"Pas de tickets, pas d'attente. Vous parlez directement à Daniel, sous 48h garanti.",
-    'w3-title':'Prix honnêtes','w3-desc':'Des tarifs transparents sans frais cachés. Idéal pour les petites et moyennes entreprises.',
-    'w4-title':'Tout inclus','w4-desc':'Web, IT, consultation et hébergement. Un seul contact pour tous vos besoins technologiques.',
-    'w5-title':'Bilingue','w5-desc':'Sites web et support disponibles en français et en anglais pour rejoindre plus de clients.',
-    'w6-title':'Sur mesure','w6-desc':'Chaque projet est unique. Pas de gabarit générique, tout est conçu spécifiquement pour vous.',
-    'lbl-portfolio':'Portfolio','portfolio-title':'Un travail concret,<br>des résultats réels.','portfolio-sub':'Des sites web livrés pour de vraies entreprises locales.',
-    'port-desc':'Site web complet pour un verger biologique certifié à Saint-Joseph-du-Lac. Réservations en ligne, boutique, nouvelles du verger et informations sur toutes les activités.',
-    'port-link':'Visiter le site →','ptag1':'Bilingue','ptag2':'Réservations','ptag3':'Boutique','ptag4':'SEO','ptag5':'Mobile-first',
-    'test-text':"« Daniel a créé notre site web de A à Z avec professionnalisme et efficacité. Il comprend les besoins des entreprises locales et livre exactement ce qu'on lui demande. On le recommande sans hésitation. »",
-    'test-author':'À la Croisée des Pommes, Saint-Joseph-du-Lac',
-    'lbl-pricing':'Tarifs','pricing-title':'Des prix clairs,<br>sans surprises.','pricing-sub':'Tous les forfaits incluent une consultation gratuite. Contactez-nous pour un devis personnalisé.',
-    'pr1-badge':'Offre de lancement','pr1-name':'Essentiel','pr1-amount':'500','pr1-saving':'Économisez 200$','pr1-per':'+ hébergement','pr1-counter':'23 sur 100 réclamés',
+    'w1t':'100% local','w1d':'Basé à Saint-Joseph-du-Lac, je connais la région, les entreprises et les besoins locaux.',
+    'w2t':'Réponse rapide','w2d':"Pas de tickets, pas d'attente. Vous parlez directement à Daniel, sous 48h garanti.",
+    'w3t':'Prix honnêtes','w3d':'Des tarifs transparents sans frais cachés. Idéal pour les petites et moyennes entreprises.',
+    'w4t':'Tout inclus','w4d':'Web, IT, consultation et hébergement. Un seul contact pour tous vos besoins technologiques.',
+    'w5t':'Bilingue','w5d':'Sites web et support disponibles en français et en anglais pour rejoindre plus de clients.',
+    'w6t':'Sur mesure','w6d':'Chaque projet est unique. Pas de gabarit générique, tout est conçu spécifiquement pour vous.',
+    'lbl-po':'Portfolio','po-title':'Un travail concret,<br>des résultats réels.','po-sub':'Des sites web livrés pour de vraies entreprises locales.',
+    'po-desc':'Site web complet pour un verger biologique certifié à Saint-Joseph-du-Lac. Réservations en ligne, boutique, nouvelles du verger et informations sur toutes les activités.',
+    'po-link':'Visiter le site →','pt1':'Bilingue','pt2':'Réservations','pt3':'Boutique','pt4':'SEO','pt5':'Mobile-first',
+    'testi-q':"« Daniel a créé notre site web de A à Z avec professionnalisme et efficacité. Il comprend les besoins des entreprises locales et livre exactement ce qu'on lui demande. On le recommande sans hésitation. »",
+    'testi-a':'À la Croisée des Pommes, Saint-Joseph-du-Lac',
+    'lbl-pi':'Tarifs','pi-title':'Des prix clairs,<br>sans surprises.','pi-sub':'Tous les forfaits incluent une consultation gratuite. Contactez-nous pour un devis personnalisé.',
+    'pr1-badge':'Offre de lancement','pr1-name':'Essentiel','pr1-amt':'500','pr1-save':'Économisez 200$','pr1-per':'+ hébergement',
     'pr1-desc':'Idéal pour les petites entreprises qui veulent une présence en ligne simple et professionnelle.',
-    'prf1-1':'Site 1 à 5 pages','prf1-2':'Design responsive (mobile)','prf1-3':'Formulaire de contact','prf1-4':'Optimisation de base (SEO)','prf1-5':'Bilingue français / anglais','prf1-6':'Hébergement dès 50$/mois','pr1-cta':"Réclamer l'offre →",
-    'pr2-badge':'Le plus populaire','pr2-name':'Professionnel','pr2-per':' + hébergement','pr2-desc':'Pour les entreprises qui veulent se démarquer avec un site complet, bilingue et optimisé.',
-    'prf2-1':"Site jusqu'à 10 pages",'prf2-2':'Design sur mesure','prf2-3':'Bilingue français/anglais','prf2-4':'SEO avancé + Google Analytics','prf2-5':'Intégration réseaux sociaux','prf2-6':'Hébergement dès 75$/mois','pr2-cta':'Commencer',
+    'pf1-1':'Site 1 à 5 pages','pf1-2':'Design responsive (mobile)','pf1-3':'Formulaire de contact','pf1-4':'Optimisation de base (SEO)','pf1-5':'Bilingue français / anglais','pf1-6':'Hébergement dès 50$/mois','pr1-cta':"Réclamer l'offre →",
+    'pr2-badge':'Le plus populaire','pr2-name':'Professionnel','pr2-per':' + hébergement',
+    'pr2-desc':'Pour les entreprises qui veulent se démarquer avec un site complet, bilingue et optimisé.',
+    'pf2-1':"Site jusqu'à 10 pages",'pf2-2':'Design sur mesure','pf2-3':'Bilingue français/anglais','pf2-4':'SEO avancé + Google Analytics','pf2-5':'Intégration réseaux sociaux','pf2-6':'Hébergement dès 75$/mois','pr2-cta':'Commencer',
     'pr3-name':'Sur mesure','pr3-price':'Sur devis','pr3-desc':'Boutique en ligne, application web, consultation IT ou projet complexe, on trouve toujours une solution adaptée.',
-    'prf3-1':'Boutique en ligne (e-commerce)','prf3-2':'Fonctionnalités personnalisées','prf3-3':'Support IT mensuel','prf3-4':'Formation & documentation','prf3-5':'Consultation technologique','pr3-cta':'Nous contacter',
-    'lbl-contact':'Contact','contact-title':'Parlons de<br>votre projet',
-    'contact-desc':"Vous avez besoin d'un site web ou d'un soutien informatique? Contactez Daniel directement. Pas de téléphone automatisé. Vous parlez à une vraie personne qui connaît la région.",
-    'contact-location':'Saint-Joseph-du-Lac, Québec<br>Disponible dans toute la région des Laurentides',
-    'contact-hours':'Lundi – Vendredi · 9h à 18h<br>Réponse sous 48h garantie',
-    'lbl-name':'Nom','lbl-email':'Courriel','lbl-svc':'Service','lbl-msg':'Message',
-    'inp-name':'Votre nom','inp-email':'Votre courriel','inp-msg':'Décrivez votre projet...',
-    'opt-default':'Quel service vous intéresse?','opt-web':'Création de site web','opt-it':'Soutien informatique','opt-consult':'Consultation technologique','opt-hosting':'Hébergement & maintenance','opt-other':'Autre',
-    'form-btn':'Envoyer le message →','form-note':'Réponse garantie sous 48h · Aucun spam','form-success':'✓ Message envoyé! Daniel vous contactera sous peu.',
-    'f-col1':'Services','f-s1':'Création de sites web','f-s2':'Soutien informatique','f-s3':'Consultation','f-s4':'Hébergement',
-    'f-col2':'Entreprise','f-portfolio':'Portfolio','f-pricing':'Tarifs','f-process':'Processus','f-contact':'Contact',
-    'footer-desc':'Expert tech local basé à Saint-Joseph-du-Lac. Sites web, soutien informatique et consultation pour les entreprises des Laurentides.',
-    'footer-copy':'© 2025 Norelo · Saint-Joseph-du-Lac, Québec','footer-made':'Fait avec soin dans les Laurentides'
+    'pf3-1':'Boutique en ligne (e-commerce)','pf3-2':'Fonctionnalités personnalisées','pf3-3':'Support IT mensuel','pf3-4':'Formation & documentation','pf3-5':'Consultation technologique','pr3-cta':'Nous contacter',
+    'lbl-ct':'Contact','ct-title':'Parlons de<br>votre projet',
+    'ct-desc':"Vous avez besoin d'un site web ou d'un soutien informatique? Contactez Daniel directement. Pas de téléphone automatisé. Vous parlez à une vraie personne qui connaît la région.",
+    'ct-loc':'Saint-Joseph-du-Lac, Québec<br>Disponible dans toute la région des Laurentides',
+    'ct-hrs':'Lundi – Vendredi · 9h à 18h<br>Réponse sous 48h garantie',
+    'ct-tip':'Plus votre message est détaillé, plus vite Daniel pourra vous préparer un devis précis et personnalisé.',
+    'lbl-name':'Nom','lbl-email':'Courriel','lbl-svc':"Services qui m'intéressent",'lbl-msg':'Votre message',
+    'chip-web-t':'Site web','chip-web-s':'Dès 500$','chip-it-t':'Soutien IT','chip-it-s':'Taux horaire',
+    'chip-consult-t':'Consultation','chip-consult-s':'Sur devis','chip-hosting-t':'Hébergement','chip-hosting-s':'Dès 50$/mois',
+    'est-ttl':'Estimation approximative','est-tot-l':'Total estimé',
+    'est-note':'Estimation indicative seulement. Un devis précis sera fourni après consultation gratuite.',
+    'tips-t':'Pour un devis précis, pensez à inclure :',
+    'tips-b':"• Votre secteur d'activité et le nom de votre entreprise<br>• Le nombre de pages souhaitées et les fonctionnalités clés<br>• Votre délai idéal et votre budget approximatif<br>• Des exemples de sites que vous aimez (optionnel)",
+    'inp-name':'Votre nom','inp-email':'Votre courriel',
+    'inp-msg':"Ex: Je gère un restaurant à Saint-Eustache et j'aimerais un site avec un menu, une galerie photo et un formulaire de réservation. Mon budget est autour de 700$...",
+    'form-btn':'Envoyer le message →','f-note':'Réponse garantie sous 48h · Aucun spam · Consultation gratuite',
+    'f-ok':'✓ Message envoyé! Daniel vous contactera sous peu.',
+    'ft-c1':'Services','ft-s1':'Création de sites web','ft-s2':'Soutien informatique','ft-s3':'Consultation','ft-s4':'Hébergement',
+    'ft-c2':'Entreprise','ft-po':'Portfolio','ft-pi':'Tarifs','ft-pr':'Processus','ft-ct':'Contact',
+    'ft-desc':'Expert tech local basé à Saint-Joseph-du-Lac. Sites web, soutien informatique et consultation pour les entreprises des Laurentides.',
+    'ft-copy':'© 2025 Norelo · Saint-Joseph-du-Lac, Québec','ft-made':'Fait avec soin dans les Laurentides'
   },
   en: {
-    'nav-services':'Services','nav-process':'Process','nav-portfolio':'Portfolio','nav-pricing':'Pricing','nav-contact':'Contact',
-    'hero-badge':'Available throughout the Laurentians',
-    'hero-desc':"Web design, IT support and tech consulting for businesses and individuals in the Laurentians. One trusted person for all your technology needs.",
-    'hero-cta':'Contact us →','hero-cta2':'See our services','hero-scroll':'Scroll','float-text':'Contact us',
-    'stat1-num':'100%','stat2-num':'Bilingual','stat3-num':'3-in-1','stat4-num':'~48h',
-    'stat1':'Local & available','stat2':'French & English','stat3':'Web · IT · Consulting','stat4':'Response time',
-    'lbl-services':'Services','services-title':'Everything you need,<br>in one place.',
-    'services-sub':"One trusted person for all your tech needs. No call centre, no waiting around. Just Daniel.",
-    's1-title':'Web design','s1-desc':"Professional, modern websites optimized for search engines. Bilingual French/English available.",'s1-price':'From $500 · Hosting from $50/mo',
-    's2-title':'IT support','s2-desc':"Computer repair, virus removal, network setup and on-site technical assistance for homes and businesses.",'s2-price':'Competitive hourly rate · On-site available',
-    's3-title':'Tech consulting','s3-desc':'Personalized advice to optimize your digital tools, automate processes and improve your online presence.','s3-price':'Custom quote based on your needs',
-    's4-title':'Hosting & maintenance','s4-desc':'Reliable hosting with monthly maintenance to keep your site fast, secure and always up to date.','s4-price':'Monthly plans available',
-    'lbl-process':'Process','process-title':'Simple, fast, effective.','process-sub':'From the first conversation all the way to launch, here is how it works.',
-    'p1-title':'Consultation','p1-desc':'We discuss your needs, budget and goals. Free and no commitment.',
-    'p2-title':'Design','p2-desc':'I design your website or solution tailored to your preferences and brand.',
-    'p3-title':'Revisions','p3-desc':"You review, comment and we adjust until you're 100% satisfied.",
-    'p4-title':'Launch','p4-desc':"Your site is live, fast and secure. I remain available for ongoing support.",
+    'nl-sv':'Services','nl-pr':'Process','nl-po':'Portfolio','nl-pi':'Pricing','nl-ct':'Contact',
+    'float-text':'Contact us',
+    'h1-top':'Your local tech','h1-end':'affordable.','h-badge':'Available throughout the Laurentians',
+    'h-desc':"Web design, IT support and tech consulting for businesses and individuals in the Laurentians. One trusted person for all your technology needs.",
+    'h-cta':'Contact us →','h-cta2':'See our services','h-scroll':'Scroll',
+    's1n':'100%','s2n':'Bilingual','s3n':'3-in-1','s4n':'~48h',
+    's1':'Local & available','s2':'French & English','s3':'Web · IT · Consulting','s4':'Response time',
+    'lbl-sv':'Services','sv-title':'Everything you need,<br>in one place.',
+    'sv-sub':"One trusted person for all your tech needs. No call centre, no waiting around. Just Daniel.",
+    'sv1-t':'Web design','sv1-d':"Professional, modern websites optimized for search engines. Bilingual French/English available.",'sv1-p':'From $500 · Hosting from $50/mo',
+    'sv2-t':'IT support','sv2-d':"Computer repair, virus removal, network setup and on-site technical assistance for homes and businesses.",'sv2-p':'Competitive hourly rate · On-site available',
+    'sv3-t':'Tech consulting','sv3-d':'Personalized advice to optimize your digital tools, automate processes and improve your online presence.','sv3-p':'Custom quote based on your needs',
+    'sv4-t':'Hosting & maintenance','sv4-d':'Reliable hosting with monthly maintenance to keep your site fast, secure and always up to date.','sv4-p':'Monthly plans available',
+    'lbl-pr':'Process','pr-title':'Simple, fast, effective.','pr-sub':'From the first conversation all the way to launch, here is how it works.',
+    'p1t':'Consultation','p1d':'We discuss your needs, budget and goals. Free and no commitment.',
+    'p2t':'Design','p2d':'I design your website or solution tailored to your preferences and brand.',
+    'p3t':'Revisions','p3d':"You review, comment and we adjust until you're 100% satisfied.",
+    'p4t':'Launch','p4d':"Your site is live, fast and secure. I remain available for ongoing support.",
     'lbl-why':'Why Norelo','why-title':'What sets us apart.','why-sub':'Not an anonymous agency. A local expert who knows your community.',
-    'w1-title':'100% local','w1-desc':'Based in Saint-Joseph-du-Lac, I know the region, the businesses and the local needs.',
-    'w2-title':'Fast response','w2-desc':'No tickets, no waiting. You talk directly to Daniel, guaranteed within 48h.',
-    'w3-title':'Honest pricing','w3-desc':'Transparent rates with no hidden fees. Perfect for small and medium businesses.',
-    'w4-title':'All-in-one','w4-desc':'Web, IT, consulting and hosting. One contact for all your technology needs.',
-    'w5-title':'Bilingual','w5-desc':'Websites and support available in French and English to reach more customers.',
-    'w6-title':'Custom-built','w6-desc':'Every project is unique. No generic templates, everything is built specifically for you.',
-    'lbl-portfolio':'Portfolio','portfolio-title':'Real work,<br>real results.','portfolio-sub':'Websites delivered for real local businesses.',
-    'port-desc':'Complete website for a certified organic apple orchard in Saint-Joseph-du-Lac. Online reservations, shop, orchard news and full activity information.',
-    'port-link':'Visit the site →','ptag1':'Bilingual','ptag2':'Reservations','ptag3':'Shop','ptag4':'SEO','ptag5':'Mobile-first',
-    'test-text':'"Daniel built our website from scratch with professionalism and efficiency. He understands local business needs and delivers exactly what you ask for. We recommend him without hesitation."',
-    'test-author':'À la Croisée des Pommes, Saint-Joseph-du-Lac',
-    'lbl-pricing':'Pricing','pricing-title':'Clear pricing,<br>no surprises.','pricing-sub':'All plans include a free consultation. Contact us for a custom quote.',
-    'pr1-badge':'Launch offer','pr1-name':'Essential','pr1-amount':'500','pr1-saving':'Save $200','pr1-per':'+ hosting','pr1-counter':'23 out of 100 claimed',
+    'w1t':'100% local','w1d':'Based in Saint-Joseph-du-Lac, I know the region, the businesses and the local needs.',
+    'w2t':'Fast response','w2d':'No tickets, no waiting. You talk directly to Daniel, guaranteed within 48h.',
+    'w3t':'Honest pricing','w3d':'Transparent rates with no hidden fees. Perfect for small and medium businesses.',
+    'w4t':'All-in-one','w4d':'Web, IT, consulting and hosting. One contact for all your technology needs.',
+    'w5t':'Bilingual','w5d':'Websites and support available in French and English to reach more customers.',
+    'w6t':'Custom-built','w6d':'Every project is unique. No generic templates, everything is built specifically for you.',
+    'lbl-po':'Portfolio','po-title':'Real work,<br>real results.','po-sub':'Websites delivered for real local businesses.',
+    'po-desc':'Complete website for a certified organic apple orchard in Saint-Joseph-du-Lac. Online reservations, shop, orchard news and full activity information.',
+    'po-link':'Visit the site →','pt1':'Bilingual','pt2':'Reservations','pt3':'Shop','pt4':'SEO','pt5':'Mobile-first',
+    'testi-q':'"Daniel built our website from scratch with professionalism and efficiency. He understands local business needs and delivers exactly what you ask for. We recommend him without hesitation."',
+    'testi-a':'À la Croisée des Pommes, Saint-Joseph-du-Lac',
+    'lbl-pi':'Pricing','pi-title':'Clear pricing,<br>no surprises.','pi-sub':'All plans include a free consultation. Contact us for a custom quote.',
+    'pr1-badge':'Launch offer','pr1-name':'Essential','pr1-amt':'500','pr1-save':'Save $200','pr1-per':'+ hosting',
     'pr1-desc':'Perfect for small businesses that want a simple, professional online presence.',
-    'prf1-1':'1 to 5 page website','prf1-2':'Responsive design (mobile)','prf1-3':'Contact form','prf1-4':'Basic SEO optimization','prf1-5':'Bilingual French / English','prf1-6':'Hosting from $50/mo','pr1-cta':'Claim the offer →',
-    'pr2-badge':'Most popular','pr2-name':'Professional','pr2-per':' + hosting','pr2-desc':'For businesses that want to stand out with a complete, bilingual and optimized website.',
-    'prf2-1':'Up to 10 pages','prf2-2':'Custom design','prf2-3':'Bilingual French/English','prf2-4':'Advanced SEO + Google Analytics','prf2-5':'Social media integration','prf2-6':'Hosting from $75/mo','pr2-cta':'Get started',
+    'pf1-1':'1 to 5 page website','pf1-2':'Responsive design (mobile)','pf1-3':'Contact form','pf1-4':'Basic SEO optimization','pf1-5':'Bilingual French / English','pf1-6':'Hosting from $50/mo','pr1-cta':'Claim the offer →',
+    'pr2-badge':'Most popular','pr2-name':'Professional','pr2-per':' + hosting',
+    'pr2-desc':'For businesses that want to stand out with a complete, bilingual and optimized website.',
+    'pf2-1':'Up to 10 pages','pf2-2':'Custom design','pf2-3':'Bilingual French/English','pf2-4':'Advanced SEO + Google Analytics','pf2-5':'Social media integration','pf2-6':'Hosting from $75/mo','pr2-cta':'Get started',
     'pr3-name':'Custom','pr3-price':'Get a quote','pr3-desc':'Online store, web app, IT consulting or complex project, we always find a solution that fits.',
-    'prf3-1':'E-commerce store','prf3-2':'Custom features','prf3-3':'Monthly IT support','prf3-4':'Training & documentation','prf3-5':'Tech consulting','pr3-cta':'Contact us',
-    'lbl-contact':'Contact','contact-title':"Let's talk about<br>your project",
-    'contact-desc':"Need a website or IT support? Contact Daniel directly. No automated phone system, no runaround. A real person who knows the area.",
-    'contact-location':'Saint-Joseph-du-Lac, Québec<br>Available throughout the Laurentians',
-    'contact-hours':'Monday – Friday · 9am to 6pm<br>Response within 48h guaranteed',
-    'lbl-name':'Name','lbl-email':'Email','lbl-svc':'Service','lbl-msg':'Message',
-    'inp-name':'Your name','inp-email':'Your email','inp-msg':'Describe your project...',
-    'opt-default':'Which service interests you?','opt-web':'Web design','opt-it':'IT support','opt-consult':'Tech consulting','opt-hosting':'Hosting & maintenance','opt-other':'Other',
-    'form-btn':'Send message →','form-note':'Response within 48h · No spam','form-success':'✓ Message sent! Daniel will get back to you shortly.',
-    'f-col1':'Services','f-s1':'Web design','f-s2':'IT support','f-s3':'Consulting','f-s4':'Hosting',
-    'f-col2':'Company','f-portfolio':'Portfolio','f-pricing':'Pricing','f-process':'Process','f-contact':'Contact',
-    'footer-desc':'Local tech expert based in Saint-Joseph-du-Lac. Websites, IT support and consulting for businesses in the Laurentians.',
-    'footer-copy':'© 2025 Norelo · Saint-Joseph-du-Lac, Québec','footer-made':'Made with care in the Laurentians'
+    'pf3-1':'E-commerce store','pf3-2':'Custom features','pf3-3':'Monthly IT support','pf3-4':'Training & documentation','pf3-5':'Tech consulting','pr3-cta':'Contact us',
+    'lbl-ct':'Contact','ct-title':"Let's talk about<br>your project",
+    'ct-desc':"Need a website or IT support? Contact Daniel directly. No automated phone system, no runaround. A real person who knows the area.",
+    'ct-loc':'Saint-Joseph-du-Lac, Québec<br>Available throughout the Laurentians',
+    'ct-hrs':'Monday – Friday · 9am to 6pm<br>Response within 48h guaranteed',
+    'ct-tip':'The more detail you include, the faster Daniel can prepare an accurate and personalized quote for you.',
+    'lbl-name':'Name','lbl-email':'Email','lbl-svc':'Services I am interested in','lbl-msg':'Your message',
+    'chip-web-t':'Web design','chip-web-s':'From $500','chip-it-t':'IT support','chip-it-s':'Hourly rate',
+    'chip-consult-t':'Consulting','chip-consult-s':'Custom quote','chip-hosting-t':'Hosting','chip-hosting-s':'From $50/mo',
+    'est-ttl':'Approximate estimate','est-tot-l':'Estimated total',
+    'est-note':'Indicative estimate only. A precise quote will be provided after a free consultation.',
+    'tips-t':'For an accurate quote, try to include:',
+    'tips-b':'• Your industry and business name<br>• Number of pages and key features you need<br>• Your ideal timeline and approximate budget<br>• Examples of sites you like (optional)',
+    'inp-name':'Your name','inp-email':'Your email',
+    'inp-msg':'E.g. I run a restaurant in Saint-Eustache and would like a site with a menu, photo gallery and reservation form. My budget is around $700...',
+    'form-btn':'Send message →','f-note':'Response within 48h · No spam · Free consultation',
+    'f-ok':'✓ Message sent! Daniel will get back to you shortly.',
+    'ft-c1':'Services','ft-s1':'Web design','ft-s2':'IT support','ft-s3':'Consulting','ft-s4':'Hosting',
+    'ft-c2':'Company','ft-po':'Portfolio','ft-pi':'Pricing','ft-pr':'Process','ft-ct':'Contact',
+    'ft-desc':'Local tech expert based in Saint-Joseph-du-Lac. Websites, IT support and consulting for businesses in the Laurentians.',
+    'ft-copy':'© 2025 Norelo · Saint-Joseph-du-Lac, Québec','ft-made':'Made with care in the Laurentians'
   }
 };
 
 let lang = 'fr';
+window._lang = 'fr';
+
 function setLang(l) {
   lang = l;
   window._lang = l;
-  document.getElementById('btn-fr').classList.toggle('active', l === 'fr');
-  document.getElementById('btn-en').classList.toggle('active', l === 'en');
-  const d = content[l];
+  document.getElementById('btn-fr').classList.toggle('on', l === 'fr');
+  document.getElementById('btn-en').classList.toggle('on', l === 'en');
+  const d = T[l];
   for (const [id, val] of Object.entries(d)) {
     const el = document.getElementById(id);
     if (!el) continue;
@@ -702,6 +760,7 @@ function setLang(l) {
     else el.innerHTML = val;
   }
   document.documentElement.lang = l;
+  updateEst();
 }
 
 function submitForm() {
@@ -713,11 +772,11 @@ function submitForm() {
   btn.textContent = lang === 'fr' ? 'Envoi...' : 'Sending...';
   btn.disabled = true;
   setTimeout(() => {
-    document.getElementById('form-success').style.display = 'block';
+    document.getElementById('f-ok').style.display = 'block';
     document.getElementById('inp-name').value = '';
     document.getElementById('inp-email').value = '';
     document.getElementById('inp-msg').value = '';
-    btn.textContent = content[lang]['form-btn'];
+    btn.textContent = T[lang]['form-btn'];
     btn.disabled = false;
   }, 800);
 }
