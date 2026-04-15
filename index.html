@@ -193,7 +193,7 @@ nav.sc{padding:.7rem 3rem;}
 .tb{background:#f8fafc;border:1px solid var(--bdr);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--gr);line-height:1.7;}
 .tb strong{color:#475569;font-weight:600;}
 .fn{font-size:12px;color:#94a3b8;text-align:center;}
-.fok{font-size:14px;color:#166534;background:#dcfce7;padding:14px 16px;border-radius:10px;display:none;text-align:center;font-weight:500;}
+.fok{font-size:14px;color:#166534;background:#dcfce7;padding:14px 16px;border-radius:10px;display:none;text-align:center;font-weight:500;}.ferr{font-size:13px;color:#991b1b;background:#fee2e2;padding:10px 14px;border-radius:10px;display:none;border:1px solid #fca5a5;}.finv{border-color:#e11d48 !important;box-shadow:0 0 0 3px rgba(225,29,72,.1) !important;background:#fff !important;}
 footer{background:#060e26;padding:4rem 3rem 2rem;}
 .ft{max-width:1100px;margin:0 auto;}
 .ftt{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
@@ -398,8 +398,8 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
       <div class="rvr">
         <div class="ctf">
           <div class="fr">
-            <div><label id="lname">Nom</label><input type="text" id="iname" placeholder="Votre nom" style="margin-top:6px;"/></div>
-            <div><label id="lemail">Courriel</label><input type="email" id="iemail" placeholder="Votre courriel" style="margin-top:6px;"/></div>
+            <div><label id="lname">Nom</label><input type="text" id="iname" placeholder="Votre nom" style="margin-top:6px;" oninput="clearErr('iname')"/></div>
+            <div><label id="lemail">Courriel</label><input type="email" id="iemail" placeholder="Votre courriel" style="margin-top:6px;" oninput="clearErr('iemail')"/></div>
           </div>
           <label id="lsvc">Services qui m'intéressent</label>
           <div class="scg">
@@ -419,10 +419,11 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
           </div>
           <label id="lmsg">Votre message</label>
           <div class="tb"><strong id="tipst">Pour un devis précis, pensez à inclure :</strong><br><span id="tipsb">• Votre secteur d'activité et le nom de votre entreprise<br>• Le nombre de pages souhaitées et les fonctionnalités clés<br>• Votre délai idéal et votre budget approximatif<br>• Des exemples de sites que vous aimez (optionnel)</span></div>
-          <textarea id="imsg" placeholder="Ex: Je gère un restaurant à Saint-Eustache et j'aimerais un site avec un menu, une galerie photo et un formulaire de réservation. Mon budget est autour de 700$..."></textarea>
+          <textarea id="imsg" oninput="clearErr('imsg')" placeholder="Ex: Je gère un restaurant à Saint-Eustache et j'aimerais un site avec un menu, une galerie photo et un formulaire de réservation. Mon budget est autour de 700$..."></textarea>
           <button class="bb" onclick="sub()" id="fbtn" style="width:100%;justify-content:center;">Envoyer le message →</button>
           <p class="fn" id="fnote">Réponse garantie sous 48h · Aucun spam · Consultation gratuite</p>
           <p class="fok" id="fok">✓ Message envoyé! Daniel vous contactera sous peu.</p>
+          <p class="ferr" id="ferr">Veuillez remplir tous les champs obligatoires.</p>
         </div>
       </div>
     </div>
@@ -570,7 +571,7 @@ const T={
     'iname':'Votre nom','iemail':'Votre courriel',
     'imsg':"Ex: Je gère un restaurant à Saint-Eustache et j'aimerais un site avec un menu, une galerie photo et un formulaire de réservation. Mon budget est autour de 700$...",
     'fbtn':'Envoyer le message →','fnote':'Réponse garantie sous 48h · Aucun spam · Consultation gratuite',
-    'fok':'✓ Message envoyé! Daniel vous contactera sous peu.',
+    'fok':'✓ Message envoyé! Daniel vous contactera sous peu.','ferr':'Veuillez remplir tous les champs obligatoires.',
     'fc1':'Services','fs1':'Création de sites web','fs2':'Soutien informatique','fs3':'Consultation','fs4':'Hébergement','fs5':'Assemblage PC',
     'fc2':'Entreprise','fpo':'Portfolio','fpi':'Tarifs','fpr':'Processus','fct':'Contact',
     'fdesc':'Expert tech local basé à Saint-Joseph-du-Lac. Sites web, soutien informatique et consultation pour les entreprises des Laurentides.',
@@ -633,7 +634,7 @@ const T={
     'iname':'Your name','iemail':'Your email',
     'imsg':'E.g. I run a restaurant in Saint-Eustache and would like a site with a menu, photo gallery and reservation form. My budget is around $700...',
     'fbtn':'Send message →','fnote':'Response within 48h · No spam · Free consultation',
-    'fok':'✓ Message sent! Daniel will get back to you shortly.',
+    'fok':'✓ Message sent! Daniel will get back to you shortly.','ferr':'Please fill in all required fields.',
     'fc1':'Services','fs1':'Web design','fs2':'IT support','fs3':'Consulting','fs4':'Hosting','fs5':'PC building',
     'fc2':'Company','fpo':'Portfolio','fpi':'Pricing','fpr':'Process','fct':'Contact',
     'fdesc':'Local tech expert based in Saint-Joseph-du-Lac. Websites, IT support and consulting for businesses in the Laurentians.',
@@ -660,11 +661,22 @@ function sL(l){
   uEst();
 }
 
+function clearErr(id){const el=document.getElementById(id);if(el){el.classList.remove('finv');}}
 function sub(){
-  const name=document.getElementById('iname').value.trim();
-  const email=document.getElementById('iemail').value.trim();
-  const msg=document.getElementById('imsg').value.trim();
-  if(!name||!email||!msg)return;
+  const nameEl=document.getElementById('iname');
+  const emailEl=document.getElementById('iemail');
+  const msgEl=document.getElementById('imsg');
+  const name=nameEl.value.trim();
+  const email=emailEl.value.trim();
+  const msg=msgEl.value.trim();
+  const errBox=document.getElementById('ferr');
+  [nameEl,emailEl,msgEl].forEach(el=>el.classList.remove('finv'));
+  errBox.style.display='none';
+  let hasErr=false;
+  if(!name){nameEl.classList.add('finv');hasErr=true;}
+  if(!email||!/^[^@]+@[^@]+\.[^@]+$/.test(email)){emailEl.classList.add('finv');hasErr=true;}
+  if(!msg){msgEl.classList.add('finv');hasErr=true;}
+  if(hasErr){errBox.innerHTML=T[lang]['ferr'];errBox.style.display='block';return;}
   const btn=document.getElementById('fbtn');
   btn.textContent=lang==='fr'?'Envoi...':'Sending...';
   btn.disabled=true;
