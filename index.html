@@ -9,7 +9,7 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{--blue:#2563eb;--bl:#4fa3e8;--bp:#60a5fa;--dark:#070f2b;--d3:#0d1b3e;--bdr:#e2e8f0;--gr:#64748b;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1a1a2e;background:#fff;overflow-x:hidden;cursor:none;animation:fi .5s ease;}
 @keyframes fi{from{opacity:0}to{opacity:1}}
 *{cursor:none;}
@@ -96,7 +96,7 @@ nav.sc{padding:.7rem 3rem;}
 .svp{font-size:12px;color:var(--blue);font-weight:700;margin-top:1rem;padding-top:1rem;border-top:1px solid #f1f5f9;}
 .pbg{background:#f8fafc;}
 .ps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));position:relative;}
-.ps::before{content:'';position:absolute;top:28px;left:12%;right:12%;height:1px;background:linear-gradient(to right,transparent,#bfdbfe 20%,#bfdbfe 80%,transparent);}
+.ps::before{content:'';position:absolute;top:52px;left:12%;right:12%;height:1px;background:linear-gradient(to right,transparent,#bfdbfe 20%,#bfdbfe 80%,transparent);}
 .pst{text-align:center;padding:1.5rem 1rem;position:relative;z-index:1;}
 .psn{width:56px;height:56px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;margin:0 auto 1.25rem;box-shadow:0 6px 24px rgba(37,99,235,.35);transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
 .pst:hover .psn{transform:scale(1.15);}
@@ -215,6 +215,7 @@ nav.sc{padding:.7rem 3rem;}
 .zocity:hover{border-color:#93c5fd;color:var(--blue);}
 .zonote{font-size:13px;color:var(--gr);background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;display:flex;align-items:center;gap:.75rem;}
 @media(max-width:800px){.zog{grid-template-columns:1fr;}}
+.zoregsgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.5rem;}
 footer{background:#060e26;padding:4rem 3rem 2rem;}
 .ft{max-width:1100px;margin:0 auto;}
 .ftt{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
@@ -229,10 +230,20 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
 @media(max-width:700px){
   nav{padding:1rem 1.25rem;}.nls{display:none;}
   .sb{gap:1.5rem;padding:1.5rem;}.sec{padding:4rem 1.25rem;}
+  .hero{padding:6rem 1.25rem 4rem;}
+  .hero h1{letter-spacing:-1.5px;}
+  .hd{font-size:15px;}
+  .hgl{width:100%;left:0;transform:none;}
   .wg{grid-template-columns:1fr;}.poc{grid-template-columns:1fr;}
+  .poi{min-height:200px;}
   .ctg{grid-template-columns:1fr;gap:2rem;}.fr{grid-template-columns:1fr;}.scg{grid-template-columns:1fr;}
   .ps::before{display:none;}.ftt{grid-template-columns:1fr;gap:2rem;}
+  .zoregsgrid{grid-template-columns:1fr;}
+  .zog{grid-template-columns:1fr;}
+  #fcta{bottom:1rem;right:1rem;padding:10px 16px;font-size:13px;}
   footer{padding:2rem 1.25rem;}.fbt{flex-direction:column;text-align:center;}
+  .fbt p{text-align:center;}
+  .prg{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -441,7 +452,7 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
         </div>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.5rem;">
+    <div class="zoregsgrid">
       <div class="zoreg rv">
         <div class="zoregn">Laurentides &amp; Rive-Nord</div>
         <div class="zocities">
