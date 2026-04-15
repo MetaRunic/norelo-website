@@ -43,11 +43,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .card{background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:14px;overflow:hidden;transition:transform .3s,border-color .3s,box-shadow .3s;}
 .card:hover{transform:translateY(-4px);border-color:rgba(79,163,232,.4);box-shadow:0 12px 40px rgba(37,99,235,.15);}
 .card-demo{height:190px;position:relative;overflow:hidden;background:rgba(255,255,255,.03);}
-.card-label-bar{display:flex;align-items:center;gap:7px;padding:.38rem 1rem;background:rgba(7,15,43,.5);border-top:1px solid rgba(79,163,232,.12);border-bottom:1px solid rgba(79,163,232,.12);}
+.card-label-bar{display:flex;align-items:center;gap:7px;padding:.55rem 1rem;background:rgba(37,99,235,.28);border-bottom:2px solid rgba(79,163,232,.4);}
 .card-label-bar::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--bl);flex-shrink:0;}
 .clb-cat{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--bl);flex-shrink:0;}
-.clb-sep{color:rgba(255,255,255,.2);font-size:10px;flex-shrink:0;}
-.clb-title{font-size:12px;font-weight:700;color:rgba(255,255,255,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.clb-sep{color:rgba(255,255,255,.4);font-size:10px;flex-shrink:0;}
+.clb-title{font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .card-info{padding:.9rem 1rem;}
 .card-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.65;}
 /* DEMO CSS */
@@ -198,6 +198,212 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .popup-box h3{font-size:.88rem;font-weight:700;color:#fff;margin-bottom:.28rem;}
 .popup-box p{font-size:.68rem;color:rgba(255,255,255,.4);line-height:1.6;margin-bottom:.62rem;}
 .popup-cta{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:.42rem .85rem;font-size:.7rem;font-weight:700;cursor:pointer;font-family:inherit;}
+/* 26 gradient text */
+.demo-gradtext{display:flex;align-items:center;justify-content:center;height:100%;background:#0a1628;flex-direction:column;gap:.75rem;}
+.grad-word{font-size:2rem;font-weight:800;background:linear-gradient(90deg,var(--bl),#a78bfa,#f472b6,var(--bl));background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:grad-move 3s linear infinite;}
+@keyframes grad-move{0%{background-position:0%}100%{background-position:200%}}
+.grad-sub{font-size:.7rem;color:rgba(255,255,255,.3);letter-spacing:.12em;text-transform:uppercase;}
+/* 27 floating icons */
+.demo-floaticons{height:100%;background:#070f2b;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.fi-icon{position:absolute;font-size:1.6rem;animation:fi-float 3s ease-in-out infinite;}
+@keyframes fi-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+/* 28 skeleton */
+.demo-skeleton{padding:.85rem;height:100%;background:#0a1628;display:flex;flex-direction:column;gap:.65rem;justify-content:center;}
+.skel{background:linear-gradient(90deg,rgba(255,255,255,.05) 25%,rgba(255,255,255,.1) 50%,rgba(255,255,255,.05) 75%);background-size:200%;animation:skel-shimmer 1.5s infinite;border-radius:5px;}
+@keyframes skel-shimmer{0%{background-position:200%}100%{background-position:-200%}}
+.skel-circle{width:40px;height:40px;border-radius:50%;}
+.skel-line{height:10px;}
+.skel-row{display:flex;gap:.6rem;align-items:center;}
+/* 29 glitch */
+.demo-glitch{display:flex;align-items:center;justify-content:center;height:100%;background:#070f2b;flex-direction:column;gap:.5rem;}
+.glitch-text{font-size:1.8rem;font-weight:800;color:#fff;position:relative;letter-spacing:-.02em;}
+.glitch-text::before,.glitch-text::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;}
+.glitch-text::before{color:#f472b6;animation:glitch-a .8s infinite step-end;clip-path:polygon(0 0,100% 0,100% 45%,0 45%);}
+.glitch-text::after{color:var(--bl);animation:glitch-b .8s infinite step-end;clip-path:polygon(0 55%,100% 55%,100% 100%,0 100%);}
+@keyframes glitch-a{0%,100%{transform:none;opacity:1}33%{transform:translate(-3px,0);opacity:.8}66%{transform:translate(3px,0);opacity:.8}}
+@keyframes glitch-b{0%,100%{transform:none;opacity:1}33%{transform:translate(3px,0);opacity:.8}66%{transform:translate(-3px,0);opacity:.8}}
+.glitch-sub{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+/* 30 ripple */
+.demo-ripple{display:flex;align-items:center;justify-content:center;height:100%;background:#0a1628;position:relative;overflow:hidden;}
+.ripple-btn{background:var(--blue);color:#fff;border:none;border-radius:8px;padding:.65rem 1.4rem;font-size:.82rem;font-weight:700;cursor:pointer;font-family:inherit;position:relative;overflow:hidden;}
+.ripple-circle{position:absolute;border-radius:50%;background:rgba(255,255,255,.35);transform:scale(0);animation:ripple-out .6s linear;pointer-events:none;}
+@keyframes ripple-out{to{transform:scale(4);opacity:0}}
+/* 31 tabs */
+.demo-tabs{height:100%;background:#0a1628;display:flex;flex-direction:column;}
+.tab-bar{display:flex;border-bottom:1px solid rgba(79,163,232,.15);}
+.tab-btn{flex:1;padding:.55rem;font-size:.72rem;font-weight:700;background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-family:inherit;transition:all .2s;border-bottom:2px solid transparent;margin-bottom:-1px;}
+.tab-btn.active{color:var(--bl);border-bottom-color:var(--bl);}
+.tab-content{flex:1;padding:.85rem;font-size:.78rem;color:rgba(255,255,255,.6);line-height:1.7;display:none;}
+.tab-content.active{display:block;}
+/* 32 dropdown */
+.demo-dropdown{height:100%;background:#0a1628;display:flex;align-items:center;justify-content:center;position:relative;}
+.dd-btn{background:rgba(255,255,255,.06);border:1px solid rgba(79,163,232,.25);color:#fff;border-radius:8px;padding:.6rem 1.1rem;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:.5rem;transition:all .2s;}
+.dd-btn:hover{background:rgba(255,255,255,.1);}
+.dd-arrow{font-size:.65rem;transition:transform .25s;color:var(--bl);}
+.dd-menu{position:absolute;top:calc(50% + 20px);left:50%;transform:translateX(-50%);background:#0f1f3d;border:1px solid rgba(79,163,232,.2);border-radius:8px;overflow:hidden;min-width:160px;display:none;z-index:10;}
+.dd-menu.open{display:block;}
+.dd-item{padding:.55rem 1rem;font-size:.75rem;color:rgba(255,255,255,.7);cursor:pointer;transition:background .15s;}
+.dd-item:hover{background:rgba(79,163,232,.12);color:#fff;}
+/* 33 side drawer */
+.demo-drawer{height:100%;background:#0a1628;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.drawer-open-btn{background:rgba(255,255,255,.06);border:1px solid rgba(79,163,232,.25);color:#fff;border-radius:8px;padding:.6rem 1.1rem;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;}
+.drawer-panel{position:absolute;top:0;left:0;bottom:0;width:75%;background:#0d1b35;border-right:1px solid rgba(79,163,232,.2);transform:translateX(-100%);transition:transform .35s ease;padding:1.1rem;display:flex;flex-direction:column;gap:.85rem;z-index:5;}
+.drawer-panel.open{transform:none;}
+.drawer-close{align-self:flex-end;background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;font-size:.95rem;font-family:inherit;}
+.drawer-link{font-size:.82rem;color:rgba(255,255,255,.65);padding:.4rem 0;border-bottom:1px solid rgba(255,255,255,.05);cursor:pointer;transition:color .2s;}
+.drawer-link:hover{color:var(--bl);}
+/* 34 star rating */
+.demo-stars{height:100%;background:#0a1628;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.85rem;}
+.star-row{display:flex;gap:.35rem;}
+.star{font-size:1.8rem;cursor:pointer;transition:transform .2s;filter:grayscale(1) brightness(.5);}
+.star.lit{filter:none;}
+.star:hover{transform:scale(1.2);}
+.star-label{font-size:.72rem;color:rgba(255,255,255,.4);letter-spacing:.1em;}
+/* 35 timeline */
+.demo-timeline{height:100%;overflow-y:auto;padding:.85rem;background:#0a1628;display:flex;flex-direction:column;gap:0;}
+.tl-item{display:flex;gap:.75rem;position:relative;padding-bottom:.85rem;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-dot-col{display:flex;flex-direction:column;align-items:center;flex-shrink:0;}
+.tl-dot{width:12px;height:12px;border-radius:50%;background:var(--blue);border:2px solid var(--bl);flex-shrink:0;margin-top:.15rem;}
+.tl-line{flex:1;width:1px;background:rgba(79,163,232,.2);margin-top:3px;}
+.tl-item:last-child .tl-line{display:none;}
+.tl-body{padding-bottom:.2rem;}
+.tl-year{font-size:.62rem;font-weight:700;color:var(--bl);letter-spacing:.1em;margin-bottom:.2rem;}
+.tl-title{font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.2rem;}
+.tl-desc{font-size:.7rem;color:rgba(255,255,255,.4);line-height:1.5;}
+/* 36 flip cards */
+.demo-flipcards{height:100%;background:#070f2b;display:flex;gap:.6rem;align-items:center;justify-content:center;padding:.75rem;}
+.flip-card{flex:1;height:120px;perspective:600px;cursor:pointer;}
+.flip-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .5s ease;}
+.flip-card:hover .flip-inner{transform:rotateY(180deg);}
+.flip-front,.flip-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.3rem;}
+.flip-front{background:rgba(255,255,255,.05);border:1px solid rgba(79,163,232,.15);}
+.flip-back{background:rgba(37,99,235,.18);border:1px solid rgba(79,163,232,.3);transform:rotateY(180deg);}
+.flip-icon{font-size:1.4rem;}
+.flip-name{font-size:.65rem;font-weight:700;color:rgba(255,255,255,.7);text-align:center;}
+.flip-back-text{font-size:.65rem;color:rgba(255,255,255,.6);text-align:center;padding:0 .5rem;line-height:1.4;}
+/* 37 blog grid */
+.demo-blog{height:100%;background:#070f2b;padding:.6rem;display:flex;flex-direction:column;gap:.45rem;}
+.blog-card{background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.1);border-radius:8px;overflow:hidden;display:flex;gap:.65rem;align-items:center;padding:.55rem;transition:border-color .2s;}
+.blog-card:hover{border-color:rgba(79,163,232,.35);}
+.blog-thumb{width:48px;height:48px;border-radius:6px;flex-shrink:0;}
+.blog-meta{font-size:.58rem;color:var(--bl);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.2rem;}
+.blog-ttl{font-size:.72rem;font-weight:700;color:#fff;line-height:1.3;}
+/* 38 video section */
+.demo-video{height:100%;background:#0a1628;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.65rem;}
+.vid-frame{width:85%;height:105px;background:#000;border-radius:8px;position:relative;overflow:hidden;cursor:pointer;}
+.vid-thumb{position:absolute;inset:0;background:linear-gradient(135deg,#1a3a6b,#2563eb);display:flex;align-items:center;justify-content:center;}
+.vid-play{width:38px;height:38px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:transform .2s;}
+.vid-frame:hover .vid-play{transform:scale(1.1);}
+.vid-label{font-size:.68rem;color:rgba(255,255,255,.4);letter-spacing:.08em;}
+/* 39 opening hours */
+.demo-hours{height:100%;background:#0a1628;padding:.85rem;display:flex;flex-direction:column;justify-content:center;gap:.38rem;}
+.hours-title{font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--bl);margin-bottom:.2rem;}
+.hours-row{display:flex;justify-content:space-between;font-size:.72rem;padding:.28rem 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.hours-day{color:rgba(255,255,255,.6);}
+.hours-time{color:#fff;font-weight:600;}
+.hours-closed{color:rgba(255,255,255,.25);font-style:italic;}
+.hours-today{background:rgba(37,99,235,.12);border-radius:4px;padding:.1rem .4rem;margin:-.1rem -.4rem;}
+/* 40 live search */
+.demo-search{height:100%;background:#0a1628;padding:.85rem;display:flex;flex-direction:column;gap:.55rem;}
+.search-wrap{position:relative;}
+.search-input{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(79,163,232,.25);border-radius:8px;padding:.52rem .7rem .52rem 2rem;font-size:.75rem;color:#fff;font-family:inherit;outline:none;}
+.search-input::placeholder{color:rgba(255,255,255,.3);}
+.search-icon{position:absolute;left:.65rem;top:50%;transform:translateY(-50%);font-size:.75rem;color:rgba(255,255,255,.35);}
+.search-results{display:flex;flex-direction:column;gap:.3rem;}
+.search-item{background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.08);border-radius:6px;padding:.45rem .7rem;font-size:.72rem;color:rgba(255,255,255,.65);transition:all .15s;display:block;}
+.search-item.hidden{display:none;}
+.search-item mark{background:rgba(79,163,232,.3);color:var(--bl);border-radius:2px;padding:0 2px;}
+/* 41 like button */
+.demo-like{height:100%;background:#0a1628;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;}
+.like-btn{background:none;border:2px solid rgba(255,255,255,.15);border-radius:50px;padding:.65rem 1.4rem;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;gap:.6rem;transition:all .3s;font-family:inherit;color:rgba(255,255,255,.6);}
+.like-btn.liked{border-color:#f472b6;background:rgba(244,114,182,.1);color:#f472b6;}
+.like-count{font-size:.82rem;font-weight:700;}
+@keyframes like-pop{0%{transform:scale(1)}50%{transform:scale(1.35)}100%{transform:scale(1)}}
+.like-btn.pop{animation:like-pop .3s ease;}
+/* 42 copy clipboard */
+.demo-copy{height:100%;background:#0a1628;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.85rem;padding:1rem;}
+.copy-box{background:rgba(255,255,255,.05);border:1px solid rgba(79,163,232,.2);border-radius:8px;padding:.55rem .85rem;font-size:.72rem;color:rgba(255,255,255,.6);font-family:monospace;letter-spacing:.02em;text-align:center;}
+.copy-btn{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:.5rem 1rem;font-size:.73rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;display:flex;align-items:center;gap:.4rem;}
+.copy-btn.copied{background:#22c55e;}
+/* 43 theme switcher */
+.demo-theme{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.85rem;background:#0a1628;}
+.theme-swatches{display:flex;gap:.55rem;}
+.theme-swatch{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .2s;}
+.theme-swatch.active{border-color:#fff;transform:scale(1.15);}
+.theme-preview{width:130px;height:60px;border-radius:8px;border:1px solid rgba(255,255,255,.15);transition:background .3s;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#fff;}
+/* 44 multi-step form */
+.demo-multistep{height:100%;background:#0a1628;padding:.85rem;display:flex;flex-direction:column;gap:.65rem;}
+.ms-steps{display:flex;align-items:center;gap:0;margin-bottom:.2rem;}
+.ms-step{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(79,163,232,.2);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:rgba(255,255,255,.4);flex-shrink:0;transition:all .3s;}
+.ms-step.done{background:#22c55e;border-color:#22c55e;color:#fff;}
+.ms-step.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+.ms-line{flex:1;height:1px;background:rgba(79,163,232,.15);}
+.ms-panel{display:none;flex-direction:column;gap:.5rem;flex:1;}
+.ms-panel.active{display:flex;}
+.ms-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);}
+.ms-nav{display:flex;gap:.5rem;margin-top:auto;}
+.ms-btn{flex:1;border:none;border-radius:6px;padding:.5rem;font-size:.73rem;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;}
+.ms-btn-next{background:var(--blue);color:#fff;}
+.ms-btn-back{background:rgba(255,255,255,.07);color:rgba(255,255,255,.6);}
+/* 45 newsletter */
+.demo-newsletter{height:100%;background:linear-gradient(135deg,#0a1628,#0d1b35);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;padding:1.2rem;text-align:center;}
+.nl-icon{font-size:1.8rem;}
+.nl-title{font-size:.92rem;font-weight:800;color:#fff;}
+.nl-sub{font-size:.72rem;color:rgba(255,255,255,.45);line-height:1.5;}
+.nl-row{display:flex;gap:.4rem;width:100%;}
+.nl-input{flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(79,163,232,.25);border-radius:6px;padding:.5rem .7rem;font-size:.72rem;color:#fff;font-family:inherit;outline:none;}
+.nl-input::placeholder{color:rgba(255,255,255,.3);}
+.nl-submit{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:.5rem .85rem;font-size:.72rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;}
+/* 46 cookie banner */
+.demo-cookie{height:100%;background:#070f2b;position:relative;display:flex;align-items:center;justify-content:center;}
+.cookie-page-hint{font-size:.73rem;color:rgba(255,255,255,.2);text-align:center;padding:1rem;}
+.cookie-banner{position:absolute;bottom:0;left:0;right:0;background:#0d1b35;border-top:1px solid rgba(79,163,232,.2);padding:.85rem;display:flex;flex-direction:column;gap:.65rem;}
+.cookie-text{font-size:.72rem;color:rgba(255,255,255,.6);line-height:1.5;}
+.cookie-btns{display:flex;gap:.5rem;}
+.cookie-accept{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:.42rem .85rem;font-size:.7rem;font-weight:700;cursor:pointer;font-family:inherit;}
+.cookie-decline{background:rgba(255,255,255,.07);color:rgba(255,255,255,.5);border:none;border-radius:6px;padding:.42rem .85rem;font-size:.7rem;font-weight:600;cursor:pointer;font-family:inherit;}
+/* 47 review card */
+.demo-review{height:100%;background:#0a1628;padding:.85rem;display:flex;flex-direction:column;gap:.55rem;justify-content:center;}
+.review-card{background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.12);border-radius:10px;padding:.85rem;}
+.review-stars-row{display:flex;gap:2px;margin-bottom:.4rem;}
+.review-star{color:#fbbf24;font-size:.85rem;}
+.review-text{font-size:.73rem;color:rgba(255,255,255,.65);line-height:1.6;font-style:italic;margin-bottom:.5rem;}
+.review-author-row{display:flex;align-items:center;gap:.5rem;}
+.review-avatar{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0;}
+.review-name{font-size:.68rem;font-weight:700;color:rgba(255,255,255,.7);}
+.review-source{font-size:.6rem;color:rgba(255,255,255,.3);}
+/* 48 product card */
+.demo-product{height:100%;background:#070f2b;padding:.65rem;display:flex;flex-direction:column;gap:.5rem;align-items:center;justify-content:center;}
+.prod-card{background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.12);border-radius:10px;overflow:hidden;width:100%;transition:transform .2s,border-color .2s;}
+.prod-card:hover{transform:translateY(-3px);border-color:rgba(79,163,232,.3);}
+.prod-img{height:65px;background:linear-gradient(135deg,#1e3a8a,#2563eb);display:flex;align-items:center;justify-content:center;font-size:1.5rem;position:relative;}
+.prod-badge{position:absolute;top:.4rem;right:.4rem;background:#e11d48;color:#fff;font-size:.55rem;font-weight:700;padding:.15rem .4rem;border-radius:4px;}
+.prod-body{padding:.55rem .75rem;}
+.prod-name{font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.2rem;}
+.prod-price-row{display:flex;align-items:center;gap:.5rem;}
+.prod-price{font-size:.95rem;font-weight:800;color:var(--bl);}
+.prod-old{font-size:.68rem;text-decoration:line-through;color:rgba(255,255,255,.3);}
+.prod-buy{width:100%;background:var(--blue);color:#fff;border:none;border-radius:6px;padding:.42rem;font-size:.7rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:.4rem;transition:background .2s;}
+.prod-buy:hover{background:#1d4ed8;}
+/* 49 social share */
+.demo-social{height:100%;background:#0a1628;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.85rem;padding:1rem;}
+.social-label{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.35);}
+.social-btns{display:flex;gap:.55rem;flex-wrap:wrap;justify-content:center;}
+.social-btn{display:flex;align-items:center;gap:.4rem;padding:.45rem .85rem;border-radius:6px;font-size:.72rem;font-weight:700;cursor:pointer;border:none;font-family:inherit;transition:transform .2s,opacity .2s;}
+.social-btn:hover{transform:translateY(-2px);opacity:.85;}
+/* 50 pricing toggle monthly/annual */
+.demo-pricetoggle{height:100%;background:#070f2b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.85rem;padding:.85rem;}
+.pt-toggle-row{display:flex;align-items:center;gap:.65rem;font-size:.72rem;color:rgba(255,255,255,.5);}
+.pt-toggle{width:44px;height:22px;background:var(--blue);border-radius:100px;cursor:pointer;position:relative;transition:background .3s;flex-shrink:0;}
+.pt-toggle::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:transform .3s;}
+.pt-toggle.annual::after{transform:translateX(22px);}
+.pt-save{font-size:.6rem;background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.3);border-radius:4px;padding:.1rem .4rem;font-weight:700;}
+.pt-cards{display:flex;gap:.5rem;width:100%;}
+.pt-card{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.12);border-radius:8px;padding:.65rem .5rem;text-align:center;}
+.pt-plan{font-size:.58rem;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.45);margin-bottom:.25rem;}
+.pt-price{font-size:1.1rem;font-weight:800;color:#fff;transition:all .3s;}
+.pt-per{font-size:.58rem;color:rgba(255,255,255,.35);}
 /* FOOTER */
 footer{background:#060e26;text-align:center;padding:2rem;border-top:1px solid rgba(255,255,255,.06);}
 footer p{font-size:12px;color:rgba(255,255,255,.3);}
@@ -237,73 +443,83 @@ footer a{color:var(--bl);text-decoration:none;}
 </div>
 <div class="grid">
   <div class="card" data-cat="animation">
-    <div class="card-demo demo-typewriter"><span class="tw-text">Bienvenue chez nous!</span></div>
     <div class="card-label-bar"><span class="clb-cat" id="c1_cat">Animation</span><span class="clb-sep">·</span><span class="clb-title" id="c1_title">Effet machine à écrire</span></div>
+    <div class="card-demo demo-typewriter"><span class="tw-text">Bienvenue chez nous!</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c1_desc">Le texte se tape tout seul lettre par lettre. Idéal pour un slogan ou une phrase d'accroche dans le haut de votre page.</div></div>
   </div>
   <div class="card" data-cat="animation">
-    <div class="card-demo demo-particles" id="particleDemo"><canvas id="particleCanvas"></canvas></div>
     <div class="card-label-bar"><span class="clb-cat" id="c2_cat">Animation</span><span class="clb-sep">·</span><span class="clb-title" id="c2_title">Fond de particules animées</span></div>
+    <div class="card-demo demo-particles" id="particleDemo"><canvas id="particleCanvas"></canvas></div>
+    
     <div class="card-info"><div class="card-desc" id="c2_desc">Un fond vivant avec des points qui bougent et se connectent. Crée une ambiance moderne et technologique.</div></div>
   </div>
   <div class="card" data-cat="interaction">
-    <div class="card-demo demo-cursor" id="cursorDemo"><span style="font-size:1.4rem">🐾</span><p>Déplacez votre souris ici</p></div>
     <div class="card-label-bar"><span class="clb-cat" id="c3_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c3_title">Curseur personnalisé</span></div>
+    <div class="card-demo demo-cursor" id="cursorDemo"><span style="font-size:1.4rem">🐾</span><p>Déplacez votre souris ici</p></div>
+    
     <div class="card-info"><div class="card-desc" id="c3_desc">Remplacez le curseur standard par un design unique qui correspond à votre marque. Mémorable et distinctif.</div></div>
   </div>
   <div class="card" data-cat="animation">
+    <div class="card-label-bar"><span class="clb-cat" id="c4_cat">Animation</span><span class="clb-sep">·</span><span class="clb-title" id="c4_title">Révélation au défilement</span></div>
     <div class="card-demo demo-scroll" id="scrollDemo">
       <div class="sr-item">✦ Nos services professionnels</div><div class="sr-item">✦ Expertise locale depuis 2020</div><div class="sr-item">✦ Satisfaction garantie</div><div class="sr-item">✦ Disponible 7 jours sur 7</div><div class="sr-item">✦ Devis gratuit en 24h</div>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c4_cat">Animation</span><span class="clb-sep">·</span><span class="clb-title" id="c4_title">Révélation au défilement</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c4_desc">Les éléments apparaissent en fondu au fur et à mesure que le visiteur fait défiler la page. Donne de la vie à chaque section.</div></div>
   </div>
   <div class="card" data-cat="interaction">
+    <div class="card-label-bar"><span class="clb-cat" id="c5_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c5_title">Mode sombre / clair</span></div>
     <div class="card-demo demo-toggle dark-mode" id="toggleDemo">
       <div class="toggle-card" id="toggleCard">Apparence de votre site</div>
       <div class="toggle-switch" id="toggleSwitch" onclick="toggleMode()"></div>
       <div class="toggle-label" id="toggleLabel">Mode sombre activé</div>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c5_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c5_title">Mode sombre / clair</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c5_desc">Un bouton permet à vos visiteurs de choisir entre un thème sombre et clair. Confort visuel optimal.</div></div>
   </div>
   <div class="card" data-cat="animation">
+    <div class="card-label-bar"><span class="clb-cat" id="c6_cat">Animation</span><span class="clb-sep">·</span><span class="clb-title" id="c6_title">Compteurs animés</span></div>
     <div class="card-demo demo-counter" id="counterDemo">
       <div class="counter-item"><span class="counter-num" data-target="247" data-suffix="">0</span><div class="counter-lbl">Clients</div></div>
       <div class="counter-item"><span class="counter-num" data-target="12" data-suffix="ans">0</span><div class="counter-lbl">Expérience</div></div>
       <div class="counter-item"><span class="counter-num" data-target="98" data-suffix="%">0</span><div class="counter-lbl">Satisfaction</div></div>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c6_cat">Animation</span><span class="clb-sep">·</span><span class="clb-title" id="c6_title">Compteurs animés</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c6_desc">Des chiffres qui comptent jusqu'à leur valeur finale. Parfait pour afficher vos statistiques et renforcer la confiance.</div></div>
   </div>
   <div class="card" data-cat="contenu">
+    <div class="card-label-bar"><span class="clb-cat" id="c7_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c7_title">FAQ accordéon</span></div>
     <div class="card-demo demo-faq">
       <div class="faq-item open"><div class="faq-q" onclick="toggleFaq(this)">Acceptez-vous les nouveaux clients? <span class="arr">▼</span></div><div class="faq-a">Oui, nous accueillons de nouveaux clients toute l'année.</div></div>
       <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Quelles sont vos heures d'ouverture? <span class="arr">▼</span></div><div class="faq-a">Lundi au vendredi 9h–17h, samedi sur rendez-vous.</div></div>
       <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Offrez-vous des devis gratuits? <span class="arr">▼</span></div><div class="faq-a">Absolument! Gratuits et sans engagement.</div></div>
       <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Déplacez-vous à domicile? <span class="arr">▼</span></div><div class="faq-a">Oui, dans toute la région des Laurentides.</div></div>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c7_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c7_title">FAQ accordéon</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c7_desc">Une liste de questions fréquentes qui s'ouvrent et se ferment au clic. Réduit les appels inutiles.</div></div>
   </div>
   <div class="card" data-cat="contenu">
+    <div class="card-label-bar"><span class="clb-cat" id="c8_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c8_title">Carrousel de témoignages</span></div>
     <div class="card-demo demo-testimonial">
       <div class="test-wrap"><div class="test-quote" id="testQuote">"Service exceptionnel, à l'écoute de nos besoins. Je recommande sans hésiter!"</div><div class="test-author" id="testAuthor">— Marie-Claude B., Saint-Eustache</div></div>
       <div class="test-dots" id="testDots"></div>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c8_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c8_title">Carrousel de témoignages</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c8_desc">Vos avis clients défilent automatiquement. Renforce la crédibilité et la confiance des nouveaux visiteurs.</div></div>
   </div>
   <div class="card" data-cat="contenu">
+    <div class="card-label-bar"><span class="clb-cat" id="c9_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c9_title">Tableau de tarification</span></div>
     <div class="card-demo demo-pricing">
       <div class="price-card"><div class="price-name">Essentiel</div><div class="price-amt">500<span>$</span></div></div>
       <div class="price-card featured"><div class="price-name">Professionnel</div><div class="price-amt">1200<span>$</span></div><div class="price-badge">Populaire</div></div>
       <div class="price-card"><div class="price-name">Premium</div><div class="price-amt">Sur<span> mesure</span></div></div>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c9_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c9_title">Tableau de tarification</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c9_desc">Présentez vos forfaits clairement avec une option mise en valeur. Facilite la décision du client.</div></div>
   </div>
   <div class="card" data-cat="formulaire">
+    <div class="card-label-bar"><span class="clb-cat" id="c10_cat">Formulaire</span><span class="clb-sep">·</span><span class="clb-title" id="c10_title">Formulaire de contact</span></div>
     <div class="card-demo demo-form">
       <input class="f-input" type="text" placeholder="Votre nom complet">
       <input class="f-input" type="email" placeholder="Votre courriel">
@@ -311,54 +527,60 @@ footer a{color:var(--bl);text-decoration:none;}
       <textarea class="f-input" rows="2" placeholder="Votre message..."></textarea>
       <button class="f-btn">Envoyer le message</button>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c10_cat">Formulaire</span><span class="clb-sep">·</span><span class="clb-title" id="c10_title">Formulaire de contact</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c10_desc">Un formulaire propre et fonctionnel qui vous envoie les messages directement par courriel. Indispensable.</div></div>
   </div>
   <div class="card" data-cat="interaction">
+    <div class="card-label-bar"><span class="clb-cat" id="c11_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c11_title">Bouton d'appel flottant</span></div>
     <div class="card-demo demo-floating">
       <div class="float-bg">Contenu de la page...<br><br>Le bouton reste toujours visible<br>peu importe où le visiteur se trouve.</div>
       <button class="float-btn">📞 Nous appeler</button>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c11_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c11_title">Bouton d'appel flottant</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c11_desc">Un bouton fixe toujours visible qui invite le visiteur à vous appeler ou vous contacter. Augmente les conversions.</div></div>
   </div>
   <div class="card" data-cat="animation">
+    <div class="card-label-bar"><span class="clb-cat" id="c12_cat">Animation</span><span class="clb-sep">·</span><span class="clb-title" id="c12_title">Barres de compétences</span></div>
     <div class="card-demo demo-progress">
       <div><div class="prog-label"><span>Coupe & Coloration</span><span>95%</span></div><div class="prog-bar"><div class="prog-fill" style="width:95%"></div></div></div>
       <div><div class="prog-label"><span>Soins capillaires</span><span>88%</span></div><div class="prog-bar"><div class="prog-fill" style="width:88%"></div></div></div>
       <div><div class="prog-label"><span>Techniques avancées</span><span>80%</span></div><div class="prog-bar"><div class="prog-fill" style="width:80%"></div></div></div>
       <div><div class="prog-label"><span>Satisfaction client</span><span>100%</span></div><div class="prog-bar"><div class="prog-fill" style="width:100%"></div></div></div>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c12_cat">Animation</span><span class="clb-sep">·</span><span class="clb-title" id="c12_title">Barres de compétences</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c12_desc">Présentez vos expertises de façon visuelle. Les barres se remplissent lors du défilement, captant l'attention.</div></div>
   </div>
   <div class="card" data-cat="interaction">
+    <div class="card-label-bar"><span class="clb-cat" id="c13_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c13_title">Cartes de services animées</span></div>
     <div class="card-demo demo-hovercards">
       <div class="hcard"><div class="hcard-icon">✂️</div><div class="hcard-label">Coupe</div></div>
       <div class="hcard"><div class="hcard-icon">🐾</div><div class="hcard-label">Toilettage</div></div>
       <div class="hcard"><div class="hcard-icon">💆</div><div class="hcard-label">Massage</div></div>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c13_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c13_title">Cartes de services animées</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c13_desc">Survolez les cartes pour voir les effets. Présentez vos services de façon engageante et mémorable.</div></div>
   </div>
   <div class="card" data-cat="navigation">
+    <div class="card-label-bar"><span class="clb-cat" id="c14_cat">Navigation</span><span class="clb-sep">·</span><span class="clb-title" id="c14_title">Bouton retour en haut</span></div>
     <div class="card-demo demo-backtop">
       <div class="btt-content">Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud...</div>
       <div class="btt-btn">↑</div>
       <div style="font-size:.63rem;color:rgba(255,255,255,.25)" id="btt-lbl">Retour en haut</div>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c14_cat">Navigation</span><span class="clb-sep">·</span><span class="clb-title" id="c14_title">Bouton retour en haut</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c14_desc">Un bouton apparaît après défilement pour remonter d'un clic en haut de la page. Améliore l'expérience sur les longues pages.</div></div>
   </div>
   <div class="card" data-cat="interaction">
+    <div class="card-label-bar"><span class="clb-cat" id="c15_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c15_title">Notification toast</span></div>
     <div class="card-demo demo-toast">
       <button class="toast-trigger" id="toast-btn" onclick="showToast()">Cliquez pour tester</button>
       <div class="toast" id="toast"><span class="toast-icon">✓</span><span id="toast-msg"> Message envoyé avec succès!</span></div>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c15_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c15_title">Notification toast</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c15_desc">Une petite notification discrète qui confirme une action — formulaire envoyé, ajout au panier, etc. Feedback immédiat.</div></div>
   </div>
   <div class="card" data-cat="contenu">
+    <div class="card-label-bar"><span class="clb-cat" id="c16_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c16_title">Compte à rebours</span></div>
     <div class="card-demo demo-countdown">
       <div class="cd-label" id="cd-label">Offre spéciale — expire dans</div>
       <div class="cd-units">
@@ -368,28 +590,31 @@ footer a{color:var(--bl);text-decoration:none;}
         <div class="cd-unit"><span class="cd-num" id="cd-s">00</span><div class="cd-sublabel" id="cd-secs">Secondes</div></div>
       </div>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c16_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c16_title">Compte à rebours</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c16_desc">Un minuteur qui décompte vers une date précise. Idéal pour les promotions, lancements, événements saisonniers.</div></div>
   </div>
   <div class="card" data-cat="interaction">
+    <div class="card-label-bar"><span class="clb-cat" id="c17_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c17_title">Comparateur avant / après</span></div>
     <div class="card-demo demo-beforeafter" id="baDemo">
       <div class="ba-before"><span class="ba-label" id="ba-avant">AVANT</span></div>
       <div class="ba-after" id="baAfter"><span class="ba-label" id="ba-apres">APRÈS</span></div>
       <div class="ba-divider" id="baDivider"></div>
       <div class="ba-handle" id="baHandle">⇔</div>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c17_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c17_title">Comparateur avant / après</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c17_desc">Glissez pour comparer deux images. Parfait pour les toiletteurs, coiffeurs, rénovateurs — montrez votre travail!</div></div>
   </div>
   <div class="card" data-cat="contenu">
+    <div class="card-label-bar"><span class="clb-cat" id="c18_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c18_title">Carte Google Maps intégrée</span></div>
     <div class="card-demo demo-map">
       <div class="map-mock"><div class="map-grid"></div><div class="map-pin">📍</div></div>
       <div class="map-lbl" id="map-lbl">Intégration Google Maps</div>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c18_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c18_title">Carte Google Maps intégrée</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c18_desc">Votre adresse affichée sur une carte interactive. Les visiteurs peuvent obtenir l'itinéraire en un clic.</div></div>
   </div>
   <div class="card" data-cat="navigation">
+    <div class="card-label-bar"><span class="clb-cat" id="c19_cat">Navigation</span><span class="clb-sep">·</span><span class="clb-title" id="c19_title">Menu hamburger mobile</span></div>
     <div class="card-demo demo-hamburger">
       <div class="hamburger-nav">
         <div class="hbg-brand">MonSite</div>
@@ -401,18 +626,20 @@ footer a{color:var(--bl);text-decoration:none;}
         <a href="#">Accueil</a><a href="#">Services</a><a href="#">À propos</a><a href="#">Contact</a>
       </div>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c19_cat">Navigation</span><span class="clb-sep">·</span><span class="clb-title" id="c19_title">Menu hamburger mobile</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c19_desc">Sur mobile, le menu se replie derrière un bouton et s'ouvre en glissant. Essentiel pour une bonne expérience mobile.</div></div>
   </div>
   <div class="card" data-cat="navigation">
+    <div class="card-label-bar"><span class="clb-cat" id="c20_cat">Navigation</span><span class="clb-sep">·</span><span class="clb-title" id="c20_title">Barre de progression de lecture</span></div>
     <div class="card-demo demo-readprog" id="readProg">
       <div class="read-prog-bar" id="readBar"></div>
       <div class="read-content"><strong style="color:rgba(255,255,255,.6)" id="scroll-hint">Faites défiler ce texte ↓</strong><br><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.<br><br>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.<br><br>✓ <span id="read-done">Vous avez lu jusqu'ici!</span></div>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c20_cat">Navigation</span><span class="clb-sep">·</span><span class="clb-title" id="c20_title">Barre de progression de lecture</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c20_desc">Une barre en haut de page indique à quel point le visiteur a progressé dans la lecture. Utile pour les blogs et articles.</div></div>
   </div>
   <div class="card" data-cat="contenu">
+    <div class="card-label-bar"><span class="clb-cat" id="c21_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c21_title">Galerie de photos</span></div>
     <div class="card-demo demo-gallery">
       <div class="gal-item"><div class="gal-swatch" style="background:linear-gradient(135deg,#1a3a6b,#2563eb);height:100%"></div><div class="gal-overlay">🔍</div></div>
       <div class="gal-item"><div class="gal-swatch" style="background:linear-gradient(135deg,#0f4c3a,#1d9e75);height:100%"></div><div class="gal-overlay">🔍</div></div>
@@ -420,18 +647,20 @@ footer a{color:var(--bl);text-decoration:none;}
       <div class="gal-item"><div class="gal-swatch" style="background:linear-gradient(135deg,#3d2b1a,#e67e22);height:100%"></div><div class="gal-overlay">🔍</div></div>
       <div class="gal-item"><div class="gal-swatch" style="background:linear-gradient(135deg,#2c1a4a,#8e44ad);height:100%"></div><div class="gal-overlay">🔍</div></div>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c21_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c21_title">Galerie de photos</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c21_desc">Présentez vos réalisations en grille. Survolez pour agrandir. Idéal pour tout métier visuel.</div></div>
   </div>
   <div class="card" data-cat="navigation">
+    <div class="card-label-bar"><span class="clb-cat" id="c22_cat">Navigation</span><span class="clb-sep">·</span><span class="clb-title" id="c22_title">Navigation collante (sticky)</span></div>
     <div class="card-demo demo-stickynav" id="stickyDemo">
       <div class="sticky-nav"><div class="sn-logo">MonSite</div><div class="sn-links"><a href="#">Accueil</a><a href="#">Services</a><a href="#">Contact</a></div></div>
       <div class="sn-content"><span id="sticky-hint">Faites défiler pour voir la navigation collante.</span><br><br>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore.<br><br>Ut enim ad minim veniam quis nostrud exercitation ullamco laboris.<br><br>↑ <span id="sticky-note">La navigation reste toujours visible!</span></div>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c22_cat">Navigation</span><span class="clb-sep">·</span><span class="clb-title" id="c22_title">Navigation collante (sticky)</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c22_desc">Le menu reste fixé en haut de la fenêtre même en défilant. Le visiteur peut naviguer à tout moment.</div></div>
   </div>
   <div class="card" data-cat="animation">
+    <div class="card-label-bar"><span class="clb-cat" id="c23_cat">Animation</span><span class="clb-sep">·</span><span class="clb-title" id="c23_title">Effet parallaxe</span></div>
     <div class="card-demo demo-parallax" id="paraDemo">
       <div class="para-bg" id="paraBg"></div>
       <div class="para-content">
@@ -439,18 +668,20 @@ footer a{color:var(--bl);text-decoration:none;}
         <div class="para-card" id="paraCard2" style="font-size:.7rem;opacity:.7">Les éléments bougent à des vitesses différentes</div>
       </div>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c23_cat">Animation</span><span class="clb-sep">·</span><span class="clb-title" id="c23_title">Effet parallaxe</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c23_desc">Le fond se déplace plus lentement que le contenu, créant une illusion de profondeur. Spectaculaire au premier regard.</div></div>
   </div>
   <div class="card" data-cat="contenu">
+    <div class="card-label-bar"><span class="clb-cat" id="c24_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c24_title">Bannière promotionnelle</span></div>
     <div class="card-demo demo-promo" id="promoDemo">
       <div class="promo-banner" id="promoBanner"><span class="promo-text">🎉 Offre spéciale — 10% de rabais jusqu'au 30 avril!</span><button class="promo-close" onclick="closeBanner()">✕</button></div>
       <div class="promo-body"><h3>Bienvenue sur notre site</h3><p id="promo-body-p">La bannière peut être fermée par le visiteur et affiche n'importe quel message.</p></div>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c24_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c24_title">Bannière promotionnelle</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c24_desc">Une bande en haut de page pour annoncer une promotion, un événement ou une info importante. Visible immédiatement.</div></div>
   </div>
   <div class="card" data-cat="interaction">
+    <div class="card-label-bar"><span class="clb-cat" id="c25_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c25_title">Pop-up de bienvenue</span></div>
     <div class="card-demo demo-popup" id="popupDemo">
       <div style="font-size:.73rem;color:rgba(255,255,255,.25)">Contenu de la page...</div>
       <div class="popup-backdrop" id="popupBackdrop">
@@ -464,11 +695,347 @@ footer a{color:var(--bl);text-decoration:none;}
         </div>
       </div>
     </div>
-    <div class="card-label-bar"><span class="clb-cat" id="c25_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c25_title">Pop-up de bienvenue</span></div>
+    
     <div class="card-info"><div class="card-desc" id="c25_desc">Une fenêtre qui apparaît après quelques secondes pour offrir une promotion ou collecter des courriels.</div></div>
   </div>
-</div>
-<footer><p id="footer-txt">Une fonctionnalité vous intéresse? Écrivez à <a href="mailto:norelo.danielb@gmail.com">norelo.danielb@gmail.com</a> — <a href="https://norelo.ca">norelo.ca</a></p></footer>
+  <!-- 26 gradient text -->
+  <div class="card" data-cat="animation">
+    <div class="card-label-bar"><span class="clb-cat" id="c26_cat">Animation</span><span class="clb-sep">·</span><span class="clb-title" id="c26_title">Texte en dégradé animé</span></div>
+    <div class="card-demo demo-gradtext"><span class="grad-word" id="gw">Votre marque</span><span class="grad-sub">couleurs personnalisables</span></div>
+    
+    <div class="card-info"><div class="card-desc" id="c26_desc">Votre slogan ou titre en couleurs qui se déplacent. Capte l'attention et donne un aspect haut de gamme moderne.</div></div>
+  </div>
+  <!-- 27 floating icons -->
+  <div class="card" data-cat="animation">
+    <div class="card-label-bar"><span class="clb-cat" id="c27_cat">Animation</span><span class="clb-sep">·</span><span class="clb-title" id="c27_title">Icônes flottantes</span></div>
+    <div class="card-demo demo-floaticons" id="floatDemo">
+      <span class="fi-icon" style="top:20%;left:15%;animation-delay:0s">✂️</span>
+      <span class="fi-icon" style="top:15%;left:45%;animation-delay:.4s">🐾</span>
+      <span class="fi-icon" style="top:20%;right:15%;animation-delay:.8s">💆</span>
+      <span class="fi-icon" style="bottom:20%;left:20%;animation-delay:.2s">🌿</span>
+      <span class="fi-icon" style="bottom:20%;right:20%;animation-delay:.6s">⭐</span>
+      <span class="fi-icon" style="top:45%;left:50%;transform:translateX(-50%);animation-delay:.3s;font-size:2rem">🏠</span>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c27_desc">Des icônes de votre secteur qui flottent doucement. Représente visuellement vos services dès la page d'accueil.</div></div>
+  </div>
+  <!-- 28 skeleton -->
+  <div class="card" data-cat="animation">
+    <div class="card-label-bar"><span class="clb-cat" id="c28_cat">Animation</span><span class="clb-sep">·</span><span class="clb-title" id="c28_title">Écran de chargement skeleton</span></div>
+    <div class="card-demo demo-skeleton">
+      <div class="skel-row"><div class="skel skel-circle"></div><div style="flex:1;display:flex;flex-direction:column;gap:.4rem"><div class="skel skel-line" style="width:60%"></div><div class="skel skel-line" style="width:40%"></div></div></div>
+      <div class="skel skel-line" style="width:100%;height:6px"></div>
+      <div class="skel skel-line" style="width:85%;height:6px"></div>
+      <div class="skel skel-line" style="width:90%;height:6px"></div>
+      <div class="skel skel-line" style="width:70%;height:6px"></div>
+      <div style="display:flex;gap:.5rem"><div class="skel skel-line" style="flex:1;height:28px;border-radius:6px"></div><div class="skel skel-line" style="flex:1;height:28px;border-radius:6px"></div></div>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c28_desc">Des placeholders animés s'affichent pendant le chargement. Évite l'écran blanc vide et paraît professionnel.</div></div>
+  </div>
+  <!-- 29 glitch -->
+  <div class="card" data-cat="animation">
+    <div class="card-label-bar"><span class="clb-cat" id="c29_cat">Animation</span><span class="clb-sep">·</span><span class="clb-title" id="c29_title">Effet glitch</span></div>
+    <div class="card-demo demo-glitch"><span class="glitch-text" data-text="DIGITAL">DIGITAL</span><span class="glitch-sub">effet glitch — style techno</span></div>
+    
+    <div class="card-info"><div class="card-desc" id="c29_desc">Un effet de distorsion visuelle sur votre titre, comme un vieux téléviseur. Parfait pour une marque tech ou créative qui veut se démarquer.</div></div>
+  </div>
+  <!-- 30 ripple -->
+  <div class="card" data-cat="interaction">
+    <div class="card-label-bar"><span class="clb-cat" id="c30_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c30_title">Effet ripple sur bouton</span></div>
+    <div class="card-demo demo-ripple"><button class="ripple-btn" id="rippleBtn">Cliquez ici →</button></div>
+    
+    <div class="card-info"><div class="card-desc" id="c30_desc">Un cercle se propage au clic comme une vague. Donne un feedback visuel immédiat et un sentiment de qualité.</div></div>
+  </div>
+  <!-- 31 tabs -->
+  <div class="card" data-cat="navigation">
+    <div class="card-label-bar"><span class="clb-cat" id="c31_cat">Navigation</span><span class="clb-sep">·</span><span class="clb-title" id="c31_title">Onglets de contenu</span></div>
+    <div class="card-demo demo-tabs" id="tabsDemo">
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab(0,this)">Services</button>
+        <button class="tab-btn" onclick="switchTab(1,this)">Tarifs</button>
+        <button class="tab-btn" onclick="switchTab(2,this)">À propos</button>
+      </div>
+      <div class="tab-content active">✓ Coupe & coloration<br>✓ Soins capillaires<br>✓ Lissage brésilien<br>✓ Balayage & mèches</div>
+      <div class="tab-content">Coupe simple : 35$<br>Couleur complète : 95$<br>Balayage : 120$<br>Forfait complet : 175$</div>
+      <div class="tab-content">Plus de 10 ans d'expérience en coiffure. Spécialisée en couleurs naturelles et techniques modernes. Formation continue chaque année.</div>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c31_desc">Organisez plusieurs sections sur la même page avec des onglets. Garde la page propre sans demander au visiteur de défiler.</div></div>
+  </div>
+  <!-- 32 dropdown -->
+  <div class="card" data-cat="navigation">
+    <div class="card-label-bar"><span class="clb-cat" id="c32_cat">Navigation</span><span class="clb-sep">·</span><span class="clb-title" id="c32_title">Menu déroulant</span></div>
+    <div class="card-demo demo-dropdown" id="ddDemo">
+      <button class="dd-btn" onclick="toggleDD()">Nos services <span class="dd-arrow" id="ddArrow">▼</span></button>
+      <div class="dd-menu" id="ddMenu">
+        <div class="dd-item">✂️ Coupe & Coloration</div>
+        <div class="dd-item">🐾 Toilettage</div>
+        <div class="dd-item">💆 Massage</div>
+        <div class="dd-item">🏠 Visite à domicile</div>
+      </div>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c32_desc">Un bouton qui révèle une liste d'options. Idéal pour lister plusieurs services ou catégories sans encombrer le menu principal.</div></div>
+  </div>
+  <!-- 33 drawer -->
+  <div class="card" data-cat="navigation">
+    <div class="card-label-bar"><span class="clb-cat" id="c33_cat">Navigation</span><span class="clb-sep">·</span><span class="clb-title" id="c33_title">Tiroir latéral</span></div>
+    <div class="card-demo demo-drawer" id="drawerDemo">
+      <button class="drawer-open-btn" onclick="toggleDrawer()">☰ Ouvrir le menu</button>
+      <div class="drawer-panel" id="drawerPanel">
+        <button class="drawer-close" onclick="toggleDrawer()">✕</button>
+        <div class="drawer-link">🏠 Accueil</div>
+        <div class="drawer-link">⚙️ Services</div>
+        <div class="drawer-link">💰 Tarifs</div>
+        <div class="drawer-link">✉️ Contact</div>
+      </div>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c33_desc">Un panneau glisse depuis le côté avec votre menu complet. Alternative élégante au hamburger, populaire sur mobile et tablette.</div></div>
+  </div>
+  <!-- 34 stars -->
+  <div class="card" data-cat="interaction">
+    <div class="card-label-bar"><span class="clb-cat" id="c34_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c34_title">Évaluation par étoiles</span></div>
+    <div class="card-demo demo-stars">
+      <div class="star-row" id="starRow">
+        <span class="star" onclick="rateStar(1)">★</span><span class="star" onclick="rateStar(2)">★</span><span class="star" onclick="rateStar(3)">★</span><span class="star" onclick="rateStar(4)">★</span><span class="star" onclick="rateStar(5)">★</span>
+      </div>
+      <div class="star-label" id="starLabel">Cliquez pour évaluer</div>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c34_desc">Vos visiteurs peuvent laisser une note en cliquant sur les étoiles. Parfait pour afficher votre réputation et collecter des avis.</div></div>
+  </div>
+  <!-- 35 timeline -->
+  <div class="card" data-cat="contenu">
+    <div class="card-label-bar"><span class="clb-cat" id="c35_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c35_title">Chronologie / historique</span></div>
+    <div class="card-demo demo-timeline">
+      <div class="tl-item"><div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-year">2018</div><div class="tl-title">Fondation</div><div class="tl-desc">Ouverture du premier salon à Saint-Eustache.</div></div></div>
+      <div class="tl-item"><div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-year">2020</div><div class="tl-title">Expansion</div><div class="tl-desc">Nouvelle équipe, service à domicile lancé.</div></div></div>
+      <div class="tl-item"><div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div><div class="tl-body"><div class="tl-year">2024</div><div class="tl-title">Aujourd'hui</div><div class="tl-desc">500+ clients satisfaits dans les Laurentides.</div></div></div>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c35_desc">Racontez l'histoire de votre entreprise étape par étape. Humanise votre marque et renforce la confiance des visiteurs.</div></div>
+  </div>
+  <!-- 36 flip cards -->
+  <div class="card" data-cat="interaction">
+    <div class="card-label-bar"><span class="clb-cat" id="c36_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c36_title">Cartes à retournement</span></div>
+    <div class="card-demo demo-flipcards">
+      <div class="flip-card"><div class="flip-inner"><div class="flip-front"><div class="flip-icon">✂️</div><div class="flip-name">Coupe</div></div><div class="flip-back"><div class="flip-back-text">À partir de 35$<br>30–45 min</div></div></div></div>
+      <div class="flip-card"><div class="flip-inner"><div class="flip-front"><div class="flip-icon">🐾</div><div class="flip-name">Toilettage</div></div><div class="flip-back"><div class="flip-back-text">À partir de 50$<br>Toutes races</div></div></div></div>
+      <div class="flip-card"><div class="flip-inner"><div class="flip-front"><div class="flip-icon">💆</div><div class="flip-name">Massage</div></div><div class="flip-back"><div class="flip-back-text">À partir de 70$<br>60 min</div></div></div></div>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c36_desc">Survolez une carte pour la retourner et révéler plus d'info — prix, durée, détails. Élégant et économise de l'espace.</div></div>
+  </div>
+  <!-- 37 blog grid -->
+  <div class="card" data-cat="contenu">
+    <div class="card-label-bar"><span class="clb-cat" id="c37_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c37_title">Grille d'articles / blogue</span></div>
+    <div class="card-demo demo-blog">
+      <div class="blog-card"><div class="blog-thumb" style="background:linear-gradient(135deg,#1e3a8a,#2563eb)"></div><div><div class="blog-meta">Conseils · 3 jan</div><div class="blog-ttl">Comment bien préparer votre chien pour le toilettage</div></div></div>
+      <div class="blog-card"><div class="blog-thumb" style="background:linear-gradient(135deg,#0f4c3a,#1d9e75)"></div><div><div class="blog-meta">Santé · 15 jan</div><div class="blog-ttl">5 signes que votre animal a besoin d'un soin capillaire</div></div></div>
+      <div class="blog-card"><div class="blog-thumb" style="background:linear-gradient(135deg,#4a1a6b,#8e44ad)"></div><div><div class="blog-meta">Nouveautés · 28 jan</div><div class="blog-ttl">Nos nouveaux forfaits saisonniers sont arrivés!</div></div></div>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c37_desc">Partagez des conseils et nouvelles de votre secteur. Améliore votre référencement Google et fidélise vos clients.</div></div>
+  </div>
+  <!-- 38 video -->
+  <div class="card" data-cat="contenu">
+    <div class="card-label-bar"><span class="clb-cat" id="c38_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c38_title">Section vidéo</span></div>
+    <div class="card-demo demo-video">
+      <div class="vid-frame"><div class="vid-thumb"><div class="vid-play">▶</div></div></div>
+      <div class="vid-label" id="vid-lbl">Présentation de votre entreprise</div>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c38_desc">Intégrez une vidéo YouTube ou de présentation directement sur votre site. Une vidéo de 60 secondes vaut mille mots.</div></div>
+  </div>
+  <!-- 39 hours -->
+  <div class="card" data-cat="contenu">
+    <div class="card-label-bar"><span class="clb-cat" id="c39_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c39_title">Horaires d'ouverture</span></div>
+    <div class="card-demo demo-hours">
+      <div class="hours-title" id="hours-title">Heures d'ouverture</div>
+      <div class="hours-row hours-today"><span class="hours-day">Lundi</span><span class="hours-time">9h00 – 18h00</span></div>
+      <div class="hours-row"><span class="hours-day">Mardi</span><span class="hours-time">9h00 – 18h00</span></div>
+      <div class="hours-row"><span class="hours-day">Mercredi</span><span class="hours-time">9h00 – 20h00</span></div>
+      <div class="hours-row"><span class="hours-day">Jeudi</span><span class="hours-time">9h00 – 20h00</span></div>
+      <div class="hours-row"><span class="hours-day">Vendredi</span><span class="hours-time">9h00 – 17h00</span></div>
+      <div class="hours-row"><span class="hours-day">Samedi</span><span class="hours-closed">Fermé</span></div>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c39_desc">Affichez vos heures clairement avec le jour actuel mis en valeur. Évite les appels inutiles pour des infos de base.</div></div>
+  </div>
+  <!-- 40 live search -->
+  <div class="card" data-cat="formulaire">
+    <div class="card-label-bar"><span class="clb-cat" id="c40_cat">Formulaire</span><span class="clb-sep">·</span><span class="clb-title" id="c40_title">Recherche en direct</span></div>
+    <div class="card-demo demo-search">
+      <div class="search-wrap"><span class="search-icon">🔍</span><input class="search-input" id="searchInput" type="text" placeholder="Rechercher un service..." oninput="liveSearch(this.value)"></div>
+      <div class="search-results" id="searchResults">
+        <span class="search-item" data-val="Coupe & Coloration">✂️ Coupe &amp; Coloration</span>
+        <span class="search-item" data-val="Toilettage canin">🐾 Toilettage canin</span>
+        <span class="search-item" data-val="Massage thérapeutique">💆 Massage thérapeutique</span>
+        <span class="search-item" data-val="Soins capillaires">🌿 Soins capillaires</span>
+        <span class="search-item" data-val="Visite à domicile">🏠 Visite à domicile</span>
+      </div>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c40_desc">Les résultats filtrent instantanément pendant que le visiteur tape. Pratique pour les sites avec plusieurs services ou produits.</div></div>
+  </div>
+  <!-- 41 like -->
+  <div class="card" data-cat="interaction">
+    <div class="card-label-bar"><span class="clb-cat" id="c41_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c41_title">Bouton j'aime / favori</span></div>
+    <div class="card-demo demo-like">
+      <button class="like-btn" id="likeBtn" onclick="toggleLike()">🤍 <span class="like-count" id="likeCount">248</span></button>
+      <div style="font-size:.68rem;color:rgba(255,255,255,.3)" id="like-hint">Cliquez pour aimer</div>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c41_desc">Un bouton qui s'anime au clic pour sauvegarder un favori ou liker un article. Augmente l'engagement de vos visiteurs.</div></div>
+  </div>
+  <!-- 42 copy -->
+  <div class="card" data-cat="interaction">
+    <div class="card-label-bar"><span class="clb-cat" id="c42_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c42_title">Copier en un clic</span></div>
+    <div class="card-demo demo-copy">
+      <div class="copy-box" id="copyText">norelo.danielb@gmail.com</div>
+      <button class="copy-btn" id="copyBtn" onclick="doCopy()"><span id="copy-icon">📋</span><span id="copy-lbl">Copier l'adresse</span></button>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c42_desc">Un bouton copie automatiquement un numéro, courriel ou lien dans le presse-papier. Ultra pratique pour les coordonnées.</div></div>
+  </div>
+  <!-- 43 theme switcher -->
+  <div class="card" data-cat="interaction">
+    <div class="card-label-bar"><span class="clb-cat" id="c43_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c43_title">Sélecteur de couleur / thème</span></div>
+    <div class="card-demo demo-theme">
+      <div class="theme-swatches">
+        <div class="theme-swatch active" style="background:#2563eb" onclick="pickTheme('#2563eb','Bleu pro',this)"></div>
+        <div class="theme-swatch" style="background:#16a34a" onclick="pickTheme('#16a34a','Vert nature',this)"></div>
+        <div class="theme-swatch" style="background:#e11d48" onclick="pickTheme('#e11d48','Rouge énergie',this)"></div>
+        <div class="theme-swatch" style="background:#d97706" onclick="pickTheme('#d97706','Or chaleureux',this)"></div>
+        <div class="theme-swatch" style="background:#7c3aed" onclick="pickTheme('#7c3aed','Mauve créatif',this)"></div>
+      </div>
+      <div class="theme-preview" id="themePreview" style="background:rgba(37,99,235,.25);border-color:rgba(37,99,235,.4)"><span id="themeLabel">Bleu pro</span></div>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c43_desc">Vos visiteurs choisissent leur couleur préférée ou vous présentez vos variantes de produits. Expérience personnalisée.</div></div>
+  </div>
+  <!-- 44 multistep -->
+  <div class="card" data-cat="formulaire">
+    <div class="card-label-bar"><span class="clb-cat" id="c44_cat">Formulaire</span><span class="clb-sep">·</span><span class="clb-title" id="c44_title">Formulaire multi-étapes</span></div>
+    <div class="card-demo demo-multistep" id="msDemo">
+      <div class="ms-steps">
+        <div class="ms-step active" id="ms1">1</div><div class="ms-line"></div>
+        <div class="ms-step" id="ms2">2</div><div class="ms-line"></div>
+        <div class="ms-step" id="ms3">3</div>
+      </div>
+      <div class="ms-panel active" id="msp1">
+        <div class="ms-label">Étape 1 — Vos coordonnées</div>
+        <input class="f-input" type="text" placeholder="Votre nom">
+        <input class="f-input" type="email" placeholder="Votre courriel">
+        <div class="ms-nav"><button class="ms-btn ms-btn-next" onclick="msNext(2)">Suivant →</button></div>
+      </div>
+      <div class="ms-panel" id="msp2">
+        <div class="ms-label">Étape 2 — Votre projet</div>
+        <input class="f-input" type="text" placeholder="Type de service">
+        <input class="f-input" type="text" placeholder="Budget approximatif">
+        <div class="ms-nav"><button class="ms-btn ms-btn-back" onclick="msBack(1)">← Retour</button><button class="ms-btn ms-btn-next" onclick="msNext(3)">Suivant →</button></div>
+      </div>
+      <div class="ms-panel" id="msp3">
+        <div class="ms-label">Étape 3 — Confirmation ✓</div>
+        <div style="font-size:.8rem;color:rgba(255,255,255,.6);line-height:1.6">Tout est prêt! Votre demande sera envoyée à Daniel sous 24h.</div>
+        <div class="ms-nav"><button class="ms-btn ms-btn-back" onclick="msBack(2)">← Retour</button><button class="ms-btn ms-btn-next" style="background:#22c55e">Envoyer ✓</button></div>
+      </div>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c44_desc">Le formulaire se remplit en plusieurs étapes courtes au lieu d'une longue page. Réduit l'abandon et augmente les soumissions.</div></div>
+  </div>
+  <!-- 45 newsletter -->
+  <div class="card" data-cat="formulaire">
+    <div class="card-label-bar"><span class="clb-cat" id="c45_cat">Formulaire</span><span class="clb-sep">·</span><span class="clb-title" id="c45_title">Abonnement infolettre</span></div>
+    <div class="card-demo demo-newsletter">
+      <div class="nl-icon">✉️</div>
+      <div class="nl-title" id="nl-title">Restez dans la boucle</div>
+      <div class="nl-sub" id="nl-sub">Conseils, promotions et nouveautés — directement dans votre boîte courriel.</div>
+      <div class="nl-row"><input class="nl-input" type="email" placeholder="Votre courriel"><button class="nl-submit">S'abonner</button></div>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c45_desc">Collectez les courriels de vos visiteurs pour envoyer des promotions et nouvelles. Votre liste de clients commence ici.</div></div>
+  </div>
+  <!-- 46 cookie -->
+  <div class="card" data-cat="interaction">
+    <div class="card-label-bar"><span class="clb-cat" id="c46_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c46_title">Bannière de consentement</span></div>
+    <div class="card-demo demo-cookie" id="cookieDemo">
+      <div class="cookie-page-hint">Contenu de la page...</div>
+      <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-text" id="cookie-text">🍪 Ce site utilise des témoins pour améliorer votre expérience. Consultez notre politique de confidentialité.</div>
+        <div class="cookie-btns"><button class="cookie-accept" onclick="dismissCookie()">Accepter</button><button class="cookie-decline" onclick="dismissCookie()">Refuser</button></div>
+      </div>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c46_desc">Bandeau de consentement aux témoins (cookies) requis par la loi pour les sites avec analyse ou publicité. Peut être personnalisé.</div></div>
+  </div>
+  <!-- 47 review -->
+  <div class="card" data-cat="contenu">
+    <div class="card-label-bar"><span class="clb-cat" id="c47_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c47_title">Carte d'avis Google</span></div>
+    <div class="card-demo demo-review">
+      <div class="review-card">
+        <div class="review-stars-row"><span class="review-star">★</span><span class="review-star">★</span><span class="review-star">★</span><span class="review-star">★</span><span class="review-star">★</span></div>
+        <div class="review-text">"Absolument incroyable. Mon chien est ressorti transformé et heureux. Je reviendrai sans hésiter!"</div>
+        <div class="review-author-row">
+          <div class="review-avatar" style="background:rgba(37,99,235,.3)">MC</div>
+          <div><div class="review-name">Marie-Claude B.</div><div class="review-source">Google · il y a 2 jours</div></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c47_desc">Affichez vos meilleurs avis Google directement sur votre site avec étoiles, nom et source. Renforce instantanément la crédibilité.</div></div>
+  </div>
+  <!-- 48 product card -->
+  <div class="card" data-cat="contenu">
+    <div class="card-label-bar"><span class="clb-cat" id="c48_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c48_title">Carte de service / produit</span></div>
+    <div class="card-demo demo-product">
+      <div class="prod-card">
+        <div class="prod-img">🐾<div class="prod-badge">-20%</div></div>
+        <div class="prod-body">
+          <div class="prod-name">Forfait Toilettage Complet</div>
+          <div class="prod-price-row"><span class="prod-price">79$</span><span class="prod-old">99$</span></div>
+          <button class="prod-buy">Réserver →</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c48_desc">Présentez vos services ou produits avec image, prix, rabais et bouton d'action. Parfait pour une mini boutique ou liste de forfaits.</div></div>
+  </div>
+  <!-- 49 social share -->
+  <div class="card" data-cat="interaction">
+    <div class="card-label-bar"><span class="clb-cat" id="c49_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c49_title">Boutons de partage social</span></div>
+    <div class="card-demo demo-social">
+      <div class="social-label" id="social-label">Partager cette page</div>
+      <div class="social-btns">
+        <button class="social-btn" style="background:#1877f2;color:#fff">📘 Facebook</button>
+        <button class="social-btn" style="background:#25d366;color:#fff">💬 WhatsApp</button>
+        <button class="social-btn" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.15)">🔗 Copier</button>
+      </div>
+    </div>
+    
+    <div class="card-info"><div class="card-desc" id="c49_desc">Permettez à vos visiteurs de partager votre page sur Facebook, WhatsApp ou par lien. Votre meilleur outil de marketing gratuit.</div></div>
+  </div>
+  <!-- 50 pricing toggle -->
+  <div class="card" data-cat="contenu">
+    <div class="card-demo demo-pricetoggle" id="ptDemo">
+      <div class="pt-toggle-row">
+        <span id="pt-monthly">Mensuel</span>
+        <div class="pt-toggle" id="ptToggle" onclick="togglePT()"></div>
+        <span id="pt-annual">Annuel</span>
+        <span class="pt-save" id="pt-save">-20%</span>
+      </div>
+      <div class="pt-cards">
+        <div class="pt-card"><div class="pt-plan" id="pt-p1">Essentiel</div><div class="pt-price" id="pt-pr1">50$</div><div class="pt-per" id="pt-per1">/mois</div></div>
+        <div class="pt-card" style="border-color:rgba(37,99,235,.35);background:rgba(37,99,235,.1)"><div class="pt-plan" id="pt-p2">Pro</div><div class="pt-price" id="pt-pr2">100$</div><div class="pt-per" id="pt-per2">/mois</div></div>
+        <div class="pt-card"><div class="pt-plan" id="pt-p3">Premium</div><div class="pt-price" id="pt-pr3">200$</div><div class="pt-per" id="pt-per3">/mois</div></div>
+      </div>
+    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c50_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c50_title">Tarifs mensuel / annuel</span></div>
+    <div class="card-info"><div class="card-desc" id="c50_desc">Un bouton bascule entre les prix mensuels et annuels avec rabais. Encourage les abonnements longue durée et clarifie l'offre.</div></div>
+  </div>
+</div><p id="footer-txt">Une fonctionnalité vous intéresse? Écrivez à <a href="mailto:norelo.danielb@gmail.com">norelo.danielb@gmail.com</a> — <a href="https://norelo.ca">norelo.ca</a></p></footer>
 <script>
 const T={
 fr:{
@@ -511,6 +1078,32 @@ fr:{
   'promo-body-p':"La bannière peut être fermée par le visiteur et affiche n'importe quel message.",
   'popup-title':"Offre de bienvenue!",'popup-desc':"Inscrivez-vous et recevez 15% de rabais sur votre première visite.",'popup-cta':"Je profite de l'offre",
   'footer-txt':"Une fonctionnalité vous intéresse? Écrivez à <a href='mailto:norelo.danielb@gmail.com'>norelo.danielb@gmail.com</a> — <a href='https://norelo.ca'>norelo.ca</a>",
+  'c26_cat':"Animation",'c26_title':"Texte en dégradé animé",'c26_desc':"Votre slogan ou titre en couleurs qui se déplacent. Capte l'attention et donne un aspect haut de gamme moderne.",
+  'c27_cat':"Animation",'c27_title':"Icônes flottantes",'c27_desc':"Des icônes de votre secteur qui flottent doucement. Représente visuellement vos services dès la page d'accueil.",
+  'c28_cat':"Animation",'c28_title':"Écran de chargement skeleton",'c28_desc':"Des placeholders animés s'affichent pendant le chargement. Évite l'écran blanc vide et paraît professionnel.",
+  'c29_cat':"Animation",'c29_title':"Effet glitch",'c29_desc':"Un effet de distorsion visuelle sur votre titre, comme un vieux téléviseur. Parfait pour une marque tech ou créative.",
+  'c30_cat':"Interaction",'c30_title':"Effet ripple sur bouton",'c30_desc':"Un cercle se propage au clic comme une vague. Donne un feedback visuel immédiat et un sentiment de qualité.",
+  'c31_cat':"Navigation",'c31_title':"Onglets de contenu",'c31_desc':"Organisez plusieurs sections sur la même page avec des onglets. Garde la page propre sans demander au visiteur de défiler.",
+  'c32_cat':"Navigation",'c32_title':"Menu déroulant",'c32_desc':"Un bouton qui révèle une liste d'options. Idéal pour lister plusieurs services ou catégories sans encombrer le menu.",
+  'c33_cat':"Navigation",'c33_title':"Tiroir latéral",'c33_desc':"Un panneau glisse depuis le côté avec votre menu complet. Alternative élégante au hamburger, populaire sur mobile.",
+  'c34_cat':"Interaction",'c34_title':"Évaluation par étoiles",'c34_desc':"Vos visiteurs peuvent laisser une note en cliquant sur les étoiles. Parfait pour afficher votre réputation.",
+  'c35_cat':"Contenu",'c35_title':"Chronologie / historique",'c35_desc':"Racontez l'histoire de votre entreprise étape par étape. Humanise votre marque et renforce la confiance.",
+  'c36_cat':"Interaction",'c36_title':"Cartes à retournement",'c36_desc':"Survolez une carte pour la retourner et révéler plus d'info — prix, durée, détails. Élégant et économise de l'espace.",
+  'c37_cat':"Contenu",'c37_title':"Grille d'articles / blogue",'c37_desc':"Partagez des conseils et nouvelles de votre secteur. Améliore votre référencement Google et fidélise vos clients.",
+  'c38_cat':"Contenu",'c38_title':"Section vidéo",'c38_desc':"Intégrez une vidéo YouTube ou de présentation directement sur votre site. Une vidéo de 60 secondes vaut mille mots.",
+  'c39_cat':"Contenu",'c39_title':"Horaires d'ouverture",'c39_desc':"Affichez vos heures clairement avec le jour actuel mis en valeur. Évite les appels inutiles pour des infos de base.",
+  'c40_cat':"Formulaire",'c40_title':"Recherche en direct",'c40_desc':"Les résultats filtrent instantanément pendant que le visiteur tape. Pratique pour les sites avec plusieurs services.",
+  'c41_cat':"Interaction",'c41_title':"Bouton j'aime / favori",'c41_desc':"Un bouton qui s'anime au clic pour sauvegarder un favori ou liker un article. Augmente l'engagement des visiteurs.",
+  'c42_cat':"Interaction",'c42_title':"Copier en un clic",'c42_desc':"Un bouton copie automatiquement un numéro, courriel ou lien dans le presse-papier. Ultra pratique pour les coordonnées.",
+  'c43_cat':"Interaction",'c43_title':"Sélecteur de couleur / thème",'c43_desc':"Vos visiteurs choisissent leur couleur préférée ou vous présentez vos variantes de produits. Expérience personnalisée.",
+  'c44_cat':"Formulaire",'c44_title':"Formulaire multi-étapes",'c44_desc':"Le formulaire se remplit en plusieurs étapes courtes. Réduit l'abandon et augmente les soumissions de 40%+.",
+  'c45_cat':"Formulaire",'c45_title':"Abonnement infolettre",'c45_desc':"Collectez les courriels de vos visiteurs pour envoyer des promotions et nouvelles. Votre liste de clients commence ici.",
+  'c46_cat':"Interaction",'c46_title':"Bannière de consentement",'c46_desc':"Bandeau de consentement aux témoins requis par la loi pour les sites avec analyse ou publicité.",
+  'c47_cat':"Contenu",'c47_title':"Carte d'avis Google",'c47_desc':"Affichez vos meilleurs avis Google directement sur votre site avec étoiles, nom et source. Renforce la crédibilité.",
+  'c48_cat':"Contenu",'c48_title':"Carte de service / produit",'c48_desc':"Présentez vos services ou produits avec image, prix, rabais et bouton d'action. Parfait pour une mini boutique.",
+  'c49_cat':"Interaction",'c49_title':"Boutons de partage social",'c49_desc':"Permettez à vos visiteurs de partager votre page sur Facebook, WhatsApp ou par lien. Marketing gratuit.",
+  'c50_cat':"Contenu",'c50_title':"Tarifs mensuel / annuel",'c50_desc':"Un bouton bascule entre les prix mensuels et annuels avec rabais. Encourage les abonnements longue durée.",
+  'hours-title':"Heures d'ouverture",'vid-lbl':"Présentation de votre entreprise",'nl-title':"Restez dans la boucle",'nl-sub':"Conseils, promotions et nouveautés — directement dans votre boîte courriel.",'social-label':"Partager cette page",'like-hint':"Cliquez pour aimer",'pt-monthly':"Mensuel",'pt-annual':"Annuel",'pt-save':"-20%",'cookie-text':"🍪 Ce site utilise des témoins pour améliorer votre expérience. Consultez notre politique de confidentialité.",
 },
 en:{
   'h-tag':"Inspiration catalog",
@@ -552,6 +1145,32 @@ en:{
   'promo-body-p':"The banner can be closed by the visitor and displays any message you choose.",
   'popup-title':"Welcome offer!",'popup-desc':"Sign up and get 15% off your first visit.",'popup-cta':"Claim the offer",
   'footer-txt':"Interested in a feature? Write to <a href='mailto:norelo.danielb@gmail.com'>norelo.danielb@gmail.com</a> — <a href='https://norelo.ca'>norelo.ca</a>",
+  'c26_cat':"Animation",'c26_title':"Animated gradient text",'c26_desc':"Your slogan or title in flowing colors. Grabs attention and gives a premium, modern look.",
+  'c27_cat':"Animation",'c27_title':"Floating icons",'c27_desc':"Icons from your industry gently bobbing on screen. Visually represents your services right from the homepage.",
+  'c28_cat':"Animation",'c28_title':"Skeleton loading screen",'c28_desc':"Animated placeholders show while content loads. Avoids a blank white screen and looks professional.",
+  'c29_cat':"Animation",'c29_title':"Glitch effect",'c29_desc':"A visual distortion effect on your title, like an old TV. Perfect for a tech or creative brand that wants to stand out.",
+  'c30_cat':"Interaction",'c30_title':"Ripple effect on button",'c30_desc':"A circle spreads on click like a wave. Gives immediate visual feedback and a sense of quality.",
+  'c31_cat':"Navigation",'c31_title':"Content tabs",'c31_desc':"Organize multiple sections on the same page with tabs. Keeps the page clean without asking visitors to scroll.",
+  'c32_cat':"Navigation",'c32_title':"Dropdown menu",'c32_desc':"A button reveals a list of options. Great for listing several services or categories without cluttering the nav.",
+  'c33_cat':"Navigation",'c33_title':"Side drawer",'c33_desc':"A panel slides in from the side with your full menu. Elegant alternative to hamburger, popular on mobile.",
+  'c34_cat':"Interaction",'c34_title':"Star rating",'c34_desc':"Visitors can leave a rating by clicking the stars. Perfect for showing your reputation and collecting reviews.",
+  'c35_cat':"Content",'c35_title':"Timeline / history",'c35_desc':"Tell your business story step by step. Humanizes your brand and builds visitor trust.",
+  'c36_cat':"Interaction",'c36_title':"Flip cards",'c36_desc':"Hover a card to flip it and reveal more info — price, duration, details. Elegant and saves space.",
+  'c37_cat':"Content",'c37_title':"Blog / article grid",'c37_desc':"Share tips and news from your industry. Improves your Google ranking and keeps clients coming back.",
+  'c38_cat':"Content",'c38_title':"Video section",'c38_desc':"Embed a YouTube or intro video directly on your site. A 60-second video is worth a thousand words.",
+  'c39_cat':"Content",'c39_title':"Opening hours",'c39_desc':"Show your hours clearly with today highlighted. Avoids unnecessary calls asking for basic info.",
+  'c40_cat':"Form",'c40_title':"Live search",'c40_desc':"Results filter instantly as the visitor types. Handy for sites with multiple services or products.",
+  'c41_cat':"Interaction",'c41_title':"Like / favorite button",'c41_desc':"A button that animates on click to save a favorite or like a post. Increases visitor engagement.",
+  'c42_cat':"Interaction",'c42_title':"Copy in one click",'c42_desc':"A button automatically copies a number, email or link to the clipboard. Extremely handy for contact details.",
+  'c43_cat':"Interaction",'c43_title':"Color / theme selector",'c43_desc':"Visitors choose their preferred color or you present product variants. Personalized experience.",
+  'c44_cat':"Form",'c44_title':"Multi-step form",'c44_desc':"The form fills in short steps instead of one long page. Reduces abandonment and increases submissions by 40%+.",
+  'c45_cat':"Form",'c45_title':"Newsletter signup",'c45_desc':"Collect visitor emails to send promotions and news. Your client list starts here.",
+  'c46_cat':"Interaction",'c46_title':"Cookie consent banner",'c46_desc':"Cookie consent strip required by law for sites with analytics or advertising. Fully customizable.",
+  'c47_cat':"Content",'c47_title':"Google review card",'c47_desc':"Display your best Google reviews directly on your site with stars, name and source. Instantly builds credibility.",
+  'c48_cat':"Content",'c48_title':"Service / product card",'c48_desc':"Show your services or products with image, price, discount and action button. Perfect for a mini shop.",
+  'c49_cat':"Interaction",'c49_title':"Social share buttons",'c49_desc':"Let visitors share your page on Facebook, WhatsApp or by link. Your best free marketing tool.",
+  'c50_cat':"Content",'c50_title':"Monthly / annual pricing toggle",'c50_desc':"A toggle switches between monthly and annual prices with discount. Encourages longer subscriptions.",
+  'hours-title':"Opening hours",'vid-lbl':"Your business presentation",'nl-title':"Stay in the loop",'nl-sub':"Tips, promotions and news — straight to your inbox.",'social-label':"Share this page",'like-hint':"Click to like",'pt-monthly':"Monthly",'pt-annual':"Annual",'pt-save':"-20%",'cookie-text':"🍪 This site uses cookies to improve your experience. See our privacy policy.",
 }};
 let lang='fr';
 function sL(l){
@@ -618,8 +1237,37 @@ function toggleHamburger(){document.getElementById('hbgBtn').classList.toggle('o
   demo.addEventListener('mousemove',e=>{const r=demo.getBoundingClientRect();const x=((e.clientX-r.left)/r.width-.5)*2;const y=((e.clientY-r.top)/r.height-.5)*2;bg.style.transform=`translate(${x*8}px,${y*8}px)`;bg.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');bg.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');c1.style.transform=`translate(${x*12}px,${y*12}px)`;c2.style.transform=`translate(${x*22}px,${y*22}px)`;});
   demo.addEventListener('mouseleave',()=>{bg.style.transform='';c1.style.transform='';c2.style.transform='';});
 })();
-function closeBanner(){document.getElementById('promoBanner').style.display='none';}
-function closePopup(){document.getElementById('popupBackdrop').style.display='none';}
+// RIPPLE
+document.getElementById('rippleBtn').addEventListener('click',function(e){const r=this.getBoundingClientRect();const c=document.createElement('span');c.className='ripple-circle';const size=Math.max(this.offsetWidth,this.offsetHeight)*2;c.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-r.left-size/2}px;top:${e.clientY-r.top-size/2}px;`;this.appendChild(c);setTimeout(()=>c.remove(),600);});
+// TABS
+function switchTab(i,btn){document.querySelectorAll('#tabsDemo .tab-btn').forEach((b,j)=>b.classList.toggle('active',j===i));document.querySelectorAll('#tabsDemo .tab-content').forEach((c,j)=>c.classList.toggle('active',j===i));}
+// DROPDOWN
+function toggleDD(){const m=document.getElementById('ddMenu');const a=document.getElementById('ddArrow');m.classList.toggle('open');a.style.transform=m.classList.contains('open')?'rotate(180deg)':'';} 
+document.addEventListener('click',e=>{if(!e.target.closest('#ddDemo')){document.getElementById('ddMenu').classList.remove('open');document.getElementById('ddArrow').style.transform='';}});
+// DRAWER
+function toggleDrawer(){document.getElementById('drawerPanel').classList.toggle('open');}
+// STAR RATING
+let starRating=0;
+function rateStar(n){starRating=n;const stars=document.querySelectorAll('#starRow .star');const labels=['','Mauvais','Acceptable','Bien','Très bien','Excellent!'];stars.forEach((s,i)=>s.classList.toggle('lit',i<n));document.getElementById('starLabel').textContent=labels[n];}
+// COPY
+function doCopy(){const t=document.getElementById('copyText').textContent;navigator.clipboard.writeText(t).catch(()=>{});const btn=document.getElementById('copyBtn');const lbl=document.getElementById('copy-lbl');const ico=document.getElementById('copy-icon');btn.classList.add('copied');ico.textContent='✓';lbl.textContent=(lang==='fr'?'Copié!':'Copied!');setTimeout(()=>{btn.classList.remove('copied');ico.textContent='📋';lbl.textContent=(lang==='fr'?'Copier l\'adresse':'Copy address');},2000);}
+// THEME SWITCHER
+function pickTheme(color,name,el){document.querySelectorAll('.theme-swatch').forEach(s=>s.classList.remove('active'));el.classList.add('active');const p=document.getElementById('themePreview');p.style.background=color+'44';p.style.borderColor=color+'88';document.getElementById('themeLabel').textContent=name;}
+// MULTI-STEP
+let msStep=1;
+function msNext(n){document.getElementById('msp'+msStep).classList.remove('active');document.getElementById('ms'+msStep).classList.remove('active');document.getElementById('ms'+msStep).classList.add('done');msStep=n;document.getElementById('msp'+n).classList.add('active');document.getElementById('ms'+n).classList.add('active');}
+function msBack(n){document.getElementById('msp'+msStep).classList.remove('active');document.getElementById('ms'+msStep).classList.remove('active');msStep=n;document.getElementById('msp'+n).classList.add('active');document.getElementById('ms'+n).classList.remove('done');document.getElementById('ms'+n).classList.add('active');}
+// COOKIE
+function dismissCookie(){const b=document.getElementById('cookieBanner');b.style.transform='translateY(100%)';b.style.transition='transform .4s ease';setTimeout(()=>b.style.display='none',400);}
+// LIVE SEARCH
+function liveSearch(q){const items=document.querySelectorAll('#searchResults .search-item');const term=q.trim().toLowerCase();items.forEach(el=>{const val=el.dataset.val.toLowerCase();if(!term||val.includes(term)){el.classList.remove('hidden');el.innerHTML=term?el.dataset.val.replace(new RegExp(`(${term})`,'gi'),'<mark>$1</mark>'):el.dataset.val;}else{el.classList.add('hidden');}});}
+// LIKE
+let liked=false,likeNum=248;
+function toggleLike(){liked=!liked;likeNum+=liked?1:-1;const btn=document.getElementById('likeBtn');btn.textContent='';btn.innerHTML=(liked?'❤️ ':'🤍 ')+'<span class="like-count">'+likeNum+'</span>';btn.classList.toggle('liked',liked);btn.classList.add('pop');setTimeout(()=>btn.classList.remove('pop'),300);}
+// PRICING TOGGLE
+let ptAnnual=false;
+const ptData={monthly:['50$','100$','200$'],annual:['40$','80$','160$']};
+function togglePT(){ptAnnual=!ptAnnual;document.getElementById('ptToggle').classList.toggle('annual',ptAnnual);const d=ptAnnual?ptData.annual:ptData.monthly;['1','2','3'].forEach((n,i)=>{document.getElementById('pt-pr'+n).textContent=d[i];document.getElementById('pt-per'+n).textContent=ptAnnual?(lang==='fr'?'/mois (fact. annuel)':'/mo (billed yearly)'):(lang==='fr'?'/mois':'/month');});}
 </script>
 </body>
 </html>
