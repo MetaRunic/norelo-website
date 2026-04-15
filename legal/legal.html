@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Mentions légales & Politique de confidentialité — Norelo</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#2563eb;
+  --bl:#4fa3e8;
+  --dark:#070f2b;
+  --text:#1a2535;
+  --muted:#64748b;
+  --border:#e2e8f0;
+  --bg:#f8fafc;
+  --white:#ffffff;
+}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);background:var(--white);line-height:1.7;overflow-x:hidden}
+
+/* NAV */
+nav{background:var(--dark);padding:1rem 3rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-logo{font-size:1.25rem;font-weight:800;color:#fff;text-decoration:none;letter-spacing:-.5px}
+.nav-logo span{color:var(--bl)}
+.nav-right{display:flex;align-items:center;gap:1.5rem}
+.nav-back{font-size:0.82rem;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s}
+.nav-back:hover{color:var(--bl)}
+.lang-toggle{display:flex;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:20px;overflow:hidden}
+.lang-toggle button{font-size:12px;padding:4px 12px;background:transparent;color:rgba(255,255,255,.4);border:none;cursor:pointer;font-family:inherit;font-weight:600;transition:all .2s}
+.lang-toggle button.on{background:var(--blue);color:#fff;border-radius:20px}
+
+/* HERO */
+.hero{background:var(--dark);padding:4rem 3rem 3rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(79,163,232,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(79,163,232,.04) 1px,transparent 1px);background-size:50px 50px}
+.hero::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(37,99,235,.2) 0%,transparent 70%);pointer-events:none}
+.hero-inner{max-width:800px;margin:0 auto;position:relative;z-index:1}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--bl);border:1px solid rgba(79,163,232,.25);border-radius:20px;padding:5px 16px;margin-bottom:1.25rem;background:rgba(79,163,232,.06)}
+.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:#fff;letter-spacing:-1px;line-height:1.15;margin-bottom:.75rem}
+.hero-sub{font-size:.9rem;color:rgba(255,255,255,.4);margin-bottom:1.5rem}
+.hero-updated{font-size:.78rem;color:rgba(255,255,255,.25);border-top:1px solid rgba(255,255,255,.07);padding-top:1rem;margin-top:1rem}
+
+/* TOC */
+.toc{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:1.5rem 2rem;margin:2.5rem auto;max-width:800px}
+.toc-title{font-size:.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:.75rem}
+.toc-links{display:flex;flex-direction:column;gap:.35rem}
+.toc-links a{font-size:.875rem;color:var(--blue);text-decoration:none;transition:opacity .2s}
+.toc-links a:hover{opacity:.7}
+
+/* CONTENT */
+.content{max-width:800px;margin:0 auto;padding:0 2rem 5rem}
+
+.section{margin-bottom:3.5rem;padding-bottom:3.5rem;border-bottom:1px solid var(--border)}
+.section:last-child{border-bottom:none}
+
+.section-num{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:.6rem}
+.section h2{font-size:1.35rem;font-weight:800;color:var(--dark);letter-spacing:-.5px;margin-bottom:1.25rem;line-height:1.2}
+.section h3{font-size:1rem;font-weight:700;color:var(--dark);margin:1.5rem 0 .6rem}
+
+.section p{font-size:.93rem;color:#475569;margin-bottom:.9rem;line-height:1.8}
+.section p:last-child{margin-bottom:0}
+
+.section ul{padding-left:1.2rem;margin-bottom:.9rem}
+.section ul li{font-size:.93rem;color:#475569;margin-bottom:.4rem;line-height:1.7}
+
+.highlight{background:#eff6ff;border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:1rem 1.25rem;margin:1.25rem 0}
+.highlight p{margin:0;font-size:.875rem;color:#1e40af;line-height:1.7}
+
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.25rem 0}
+.info-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem}
+.info-card .label{font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
+.info-card .value{font-size:.9rem;color:var(--dark);font-weight:500;line-height:1.5}
+.info-card a{color:var(--blue);text-decoration:none}
+
+.rights-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.75rem;margin:1.25rem 0}
+.right-item{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.85rem 1rem;display:flex;align-items:flex-start;gap:.6rem}
+.right-icon{font-size:1rem;flex-shrink:0;margin-top:.1rem}
+.right-text strong{display:block;font-size:.82rem;font-weight:700;color:var(--dark);margin-bottom:.15rem}
+.right-text span{font-size:.78rem;color:var(--muted);line-height:1.5}
+
+/* FOOTER */
+footer{background:var(--dark);padding:2rem 3rem;text-align:center}
+footer p{font-size:.78rem;color:rgba(255,255,255,.3)}
+footer a{color:var(--bl);text-decoration:none}
+
+/* LANG */
+[data-fr],[data-en]{transition:opacity .2s}
+
+@media(max-width:640px){
+  nav{padding:.85rem 1.25rem}
+  .hero{padding:3rem 1.25rem 2rem}
+  .content{padding:0 1.25rem 4rem}
+  .info-grid{grid-template-columns:1fr}
+  .toc{margin:2rem 1.25rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">Nore<span>lo</span></a>
+  <div class="nav-right">
+    <a href="/" class="nav-back" id="nav-back-link">← Retour au site</a>
+    <div class="lang-toggle">
+      <button id="bfr" class="on" onclick="setLang('fr')">FR</button>
+      <button id="ben" onclick="setLang('en')">EN</button>
+    </div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">⚖️ Légal · Legal</div>
+    <h1 id="htitle">Mentions légales &amp;<br>Politique de confidentialité</h1>
+    <p class="hero-sub" id="hsub">Norelo — Daniel Bolduc · Saint-Joseph-du-Lac, Québec</p>
+    <div class="hero-updated" id="hupdated">Dernière mise à jour : avril 2026 · Conformité : Loi 25 (Québec), LPRPDE (Canada)</div>
+  </div>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc" style="margin-top:2.5rem">
+  <div class="toc-title" id="toctitle">Table des matières</div>
+  <div class="toc-links">
+    <a href="#mentions" id="toc1">1. Mentions légales</a>
+    <a href="#collecte" id="toc2">2. Informations collectées</a>
+    <a href="#utilisation" id="toc3">3. Utilisation des informations</a>
+    <a href="#conservation" id="toc4">4. Conservation des données</a>
+    <a href="#partage" id="toc5">5. Partage avec des tiers</a>
+    <a href="#droits" id="toc6">6. Vos droits</a>
+    <a href="#cookies" id="toc7">7. Témoins (cookies)</a>
+    <a href="#securite" id="toc8">8. Sécurité</a>
+    <a href="#mineurs" id="toc9">9. Mineurs</a>
+    <a href="#modifications" id="toc10">10. Modifications</a>
+    <a href="#contact-legal" id="toc11">11. Nous contacter</a>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- 1. MENTIONS LÉGALES -->
+  <div class="section" id="mentions">
+    <span class="section-num" id="s1num">01 — Mentions légales</span>
+    <h2 id="s1title">Identification de l'entreprise</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="label" id="l-name">Nom commercial</div>
+        <div class="value">Norelo</div>
+      </div>
+      <div class="info-card">
+        <div class="label" id="l-owner">Propriétaire</div>
+        <div class="value">Daniel Bolduc</div>
+      </div>
+      <div class="info-card">
+        <div class="label" id="l-addr">Adresse</div>
+        <div class="value">Saint-Joseph-du-Lac, Québec, Canada</div>
+      </div>
+      <div class="info-card">
+        <div class="label" id="l-email">Courriel</div>
+        <div class="value"><a href="mailto:norelo.danielb@gmail.com">norelo.danielb@gmail.com</a></div>
+      </div>
+      <div class="info-card">
+        <div class="label" id="l-site">Site web</div>
+        <div class="value"><a href="https://norelo.ca">norelo.ca</a></div>
+      </div>
+      <div class="info-card">
+        <div class="label" id="l-host">Hébergement</div>
+        <div class="value">Vercel Inc. · <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">vercel.com</a></div>
+      </div>
+    </div>
+    <p id="s1p1">Norelo est une entreprise individuelle (travailleur autonome) basée au Québec, offrant des services de création de sites web, soutien informatique et consultation technologique aux entreprises et particuliers de la région des Laurentides et du Grand Montréal.</p>
+  </div>
+
+  <!-- 2. COLLECTE -->
+  <div class="section" id="collecte">
+    <span class="section-num" id="s2num">02 — Informations collectées</span>
+    <h2 id="s2title">Quelles informations recueillons-nous?</h2>
+    <p id="s2p1">Nous collectons uniquement les informations que vous nous fournissez volontairement via notre formulaire de contact. Ces informations peuvent inclure :</p>
+    <ul id="s2list">
+      <li>Votre nom</li>
+      <li>Votre adresse courriel</li>
+      <li>Votre numéro de téléphone (optionnel)</li>
+      <li>Le contenu de votre message</li>
+      <li>Les services qui vous intéressent</li>
+    </ul>
+    <p id="s2p2">Nous ne collectons aucune donnée de navigation, aucun témoin (cookie) de suivi, et nous n'utilisons aucun outil d'analyse ou de publicité (comme Google Analytics ou Facebook Pixel). Votre visite sur ce site est privée.</p>
+    <div class="highlight">
+      <p id="s2note">Le traitement de votre formulaire de contact est effectué par <strong>Formspree</strong> (formspree.io), un service tiers. Consultez leur <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener">politique de confidentialité</a> pour savoir comment ils traitent les données transmises.</p>
+    </div>
+  </div>
+
+  <!-- 3. UTILISATION -->
+  <div class="section" id="utilisation">
+    <span class="section-num" id="s3num">03 — Utilisation des informations</span>
+    <h2 id="s3title">Pourquoi utilisons-nous vos informations?</h2>
+    <p id="s3p1">Les informations que vous nous communiquez sont utilisées exclusivement pour :</p>
+    <ul id="s3list">
+      <li>Répondre à votre demande de contact ou de devis</li>
+      <li>Communiquer avec vous dans le cadre d'un projet en cours</li>
+      <li>Vous fournir les services demandés</li>
+    </ul>
+    <p id="s3p2">Vos informations ne sont jamais utilisées à des fins de marketing non sollicité, de prospection commerciale ou de profilage.</p>
+  </div>
+
+  <!-- 4. CONSERVATION -->
+  <div class="section" id="conservation">
+    <span class="section-num" id="s4num">04 — Conservation des données</span>
+    <h2 id="s4title">Combien de temps conservons-nous vos données?</h2>
+    <p id="s4p1">Vos informations sont conservées uniquement le temps nécessaire pour traiter votre demande et, le cas échéant, pour la durée de notre relation d'affaires. Les échanges par courriel sont conservés selon les paramètres standard de Gmail (Google), et peuvent être supprimés sur demande.</p>
+    <p id="s4p2">Conformément à la Loi 25 du Québec, vous pouvez à tout moment demander la suppression de vos informations personnelles en nous contactant à l'adresse indiquée à la section 11.</p>
+  </div>
+
+  <!-- 5. PARTAGE -->
+  <div class="section" id="partage">
+    <span class="section-num" id="s5num">05 — Partage avec des tiers</span>
+    <h2 id="s5title">Partageons-nous vos informations?</h2>
+    <p id="s5p1">Nous ne vendons, ne louons et ne partageons pas vos informations personnelles avec des tiers à des fins commerciales. Vos données peuvent transiter par les services tiers suivants, dans le seul but d'assurer le fonctionnement du site :</p>
+    <ul id="s5list">
+      <li><strong>Formspree</strong> — Traitement du formulaire de contact (États-Unis)</li>
+      <li><strong>Vercel</strong> — Hébergement du site web (États-Unis)</li>
+      <li><strong>Google (Gmail)</strong> — Réception et gestion des courriels (États-Unis)</li>
+    </ul>
+    <p id="s5p2">Ces prestataires sont assujettis à leurs propres politiques de confidentialité et ne sont autorisés à utiliser vos données qu'aux fins pour lesquelles nous faisons appel à eux.</p>
+    <div class="highlight">
+      <p id="s5note">Certains de ces prestataires sont situés aux États-Unis. En utilisant notre formulaire de contact, vous consentez au transfert de vos informations vers ces territoires, lequel est effectué dans le respect des lois applicables.</p>
+    </div>
+  </div>
+
+  <!-- 6. DROITS -->
+  <div class="section" id="droits">
+    <span class="section-num" id="s6num">06 — Vos droits</span>
+    <h2 id="s6title">Vos droits en vertu de la Loi 25 (Québec) et de la LPRPDE (Canada)</h2>
+    <p id="s6p1">En tant que résident du Québec ou du Canada, vous disposez des droits suivants concernant vos informations personnelles :</p>
+    <div class="rights-grid">
+      <div class="right-item">
+        <div class="right-icon">👁️</div>
+        <div class="right-text"><strong id="r1t">Accès</strong><span id="r1d">Consulter les informations que nous détenons sur vous.</span></div>
+      </div>
+      <div class="right-item">
+        <div class="right-icon">✏️</div>
+        <div class="right-text"><strong id="r2t">Rectification</strong><span id="r2d">Corriger des informations inexactes ou incomplètes.</span></div>
+      </div>
+      <div class="right-item">
+        <div class="right-icon">🗑️</div>
+        <div class="right-text"><strong id="r3t">Suppression</strong><span id="r3d">Demander l'effacement de vos données personnelles.</span></div>
+      </div>
+      <div class="right-item">
+        <div class="right-icon">📦</div>
+        <div class="right-text"><strong id="r4t">Portabilité</strong><span id="r4d">Recevoir vos données dans un format structuré et lisible.</span></div>
+      </div>
+      <div class="right-item">
+        <div class="right-icon">🚫</div>
+        <div class="right-text"><strong id="r5t">Opposition</strong><span id="r5d">Vous opposer à certains traitements de vos données.</span></div>
+      </div>
+      <div class="right-item">
+        <div class="right-icon">✉️</div>
+        <div class="right-text"><strong id="r6t">Plainte</strong><span id="r6d">Déposer une plainte auprès de la Commission d'accès à l'information du Québec.</span></div>
+      </div>
+    </div>
+    <p id="s6p2">Pour exercer l'un de ces droits, contactez-nous à : <a href="mailto:norelo.danielb@gmail.com">norelo.danielb@gmail.com</a>. Nous répondrons dans un délai de 30 jours.</p>
+  </div>
+
+  <!-- 7. COOKIES -->
+  <div class="section" id="cookies">
+    <span class="section-num" id="s7num">07 — Témoins (cookies)</span>
+    <h2 id="s7title">Utilisons-nous des cookies?</h2>
+    <p id="s7p1">Non. Ce site n'utilise aucun témoin (cookie) de suivi, de publicité ou d'analyse. Aucun identifiant de navigation n'est déposé sur votre appareil lors de votre visite.</p>
+    <p id="s7p2">Des cookies techniques essentiels peuvent être utilisés par notre prestataire d'hébergement Vercel pour assurer le bon fonctionnement du site. Ces cookies ne servent pas à vous identifier personnellement.</p>
+  </div>
+
+  <!-- 8. SÉCURITÉ -->
+  <div class="section" id="securite">
+    <span class="section-num" id="s8num">08 — Sécurité</span>
+    <h2 id="s8title">Comment protégeons-nous vos données?</h2>
+    <p id="s8p1">Nous prenons des mesures raisonnables pour protéger vos informations personnelles contre tout accès non autorisé, divulgation ou destruction. Le site est servi exclusivement via HTTPS (connexion chiffrée). Les formulaires sont transmis de façon sécurisée via Formspree.</p>
+    <p id="s8p2">Toutefois, aucune transmission de données sur Internet n'est garantie à 100 % sécurisée. En utilisant ce site, vous acceptez les risques inhérents à toute communication électronique.</p>
+  </div>
+
+  <!-- 9. MINEURS -->
+  <div class="section" id="mineurs">
+    <span class="section-num" id="s9num">09 — Mineurs</span>
+    <h2 id="s9title">Services destinés aux adultes</h2>
+    <p id="s9p1">Nos services s'adressent aux entreprises et aux adultes de 18 ans et plus. Nous ne collectons pas sciemment d'informations personnelles sur des personnes de moins de 18 ans. Si vous croyez qu'un mineur nous a transmis des informations, contactez-nous immédiatement pour que nous les supprimions.</p>
+  </div>
+
+  <!-- 10. MODIFICATIONS -->
+  <div class="section" id="modifications">
+    <span class="section-num" id="s10num">10 — Modifications</span>
+    <h2 id="s10title">Mises à jour de cette politique</h2>
+    <p id="s10p1">Nous nous réservons le droit de modifier cette politique de confidentialité à tout moment. Toute modification sera publiée sur cette page avec une date de mise à jour. Nous vous encourageons à consulter cette page périodiquement. L'utilisation continue du site après toute modification constitue votre acceptation des changements.</p>
+  </div>
+
+  <!-- 11. CONTACT -->
+  <div class="section" id="contact-legal">
+    <span class="section-num" id="s11num">11 — Nous contacter</span>
+    <h2 id="s11title">Questions ou demandes?</h2>
+    <p id="s11p1">Pour toute question relative à cette politique de confidentialité, ou pour exercer vos droits, contactez-nous :</p>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="label" id="l2-name">Responsable</div>
+        <div class="value">Daniel Bolduc, Norelo</div>
+      </div>
+      <div class="info-card">
+        <div class="label" id="l2-email">Courriel</div>
+        <div class="value"><a href="mailto:norelo.danielb@gmail.com">norelo.danielb@gmail.com</a></div>
+      </div>
+      <div class="info-card">
+        <div class="label" id="l2-loc">Lieu</div>
+        <div class="value">Saint-Joseph-du-Lac, Québec, Canada</div>
+      </div>
+      <div class="info-card">
+        <div class="label" id="l2-cai">Autorité de contrôle</div>
+        <div class="value"><a href="https://www.cai.gouv.qc.ca" target="_blank" rel="noopener">Commission d'accès à l'information du Québec</a></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 Norelo · Saint-Joseph-du-Lac, Québec · <a href="/">norelo.ca</a></p>
+</footer>
+
+<script>
+const T = {
+  fr: {
+    htitle: 'Mentions légales &amp;<br>Politique de confidentialité',
+    hsub: 'Norelo — Daniel Bolduc · Saint-Joseph-du-Lac, Québec',
+    hupdated: 'Dernière mise à jour : avril 2026 · Conformité : Loi 25 (Québec), LPRPDE (Canada)',
+    toctitle: 'Table des matières',
+    toc1:'1. Mentions légales', toc2:'2. Informations collectées', toc3:'3. Utilisation des informations',
+    toc4:'4. Conservation des données', toc5:'5. Partage avec des tiers', toc6:'6. Vos droits',
+    toc7:'7. Témoins (cookies)', toc8:'8. Sécurité', toc9:'9. Mineurs',
+    toc10:'10. Modifications', toc11:'11. Nous contacter',
+    's1num':'01 — Mentions légales', 's1title':"Identification de l'entreprise",
+    'l-name':'Nom commercial','l-owner':'Propriétaire','l-addr':'Adresse','l-email':'Courriel','l-site':'Site web','l-host':'Hébergement',
+    's1p1':"Norelo est une entreprise individuelle (travailleur autonome) basée au Québec, offrant des services de création de sites web, soutien informatique et consultation technologique aux entreprises et particuliers de la région des Laurentides et du Grand Montréal.",
+    's2num':'02 — Informations collectées','s2title':'Quelles informations recueillons-nous?',
+    's2p1':'Nous collectons uniquement les informations que vous nous fournissez volontairement via notre formulaire de contact. Ces informations peuvent inclure :',
+    's2list':'<li>Votre nom</li><li>Votre adresse courriel</li><li>Votre numéro de téléphone (optionnel)</li><li>Le contenu de votre message</li><li>Les services qui vous intéressent</li>',
+    's2p2':"Nous ne collectons aucune donnée de navigation, aucun témoin (cookie) de suivi, et nous n'utilisons aucun outil d'analyse ou de publicité (comme Google Analytics ou Facebook Pixel). Votre visite sur ce site est privée.",
+    's2note':'Le traitement de votre formulaire de contact est effectué par <strong>Formspree</strong> (formspree.io), un service tiers. Consultez leur <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener">politique de confidentialité</a> pour savoir comment ils traitent les données transmises.',
+    's3num':'03 — Utilisation des informations','s3title':'Pourquoi utilisons-nous vos informations?',
+    's3p1':'Les informations que vous nous communiquez sont utilisées exclusivement pour :',
+    's3list':'<li>Répondre à votre demande de contact ou de devis</li><li>Communiquer avec vous dans le cadre d\'un projet en cours</li><li>Vous fournir les services demandés</li>',
+    's3p2':"Vos informations ne sont jamais utilisées à des fins de marketing non sollicité, de prospection commerciale ou de profilage.",
+    's4num':'04 — Conservation des données','s4title':'Combien de temps conservons-nous vos données?',
+    's4p1':"Vos informations sont conservées uniquement le temps nécessaire pour traiter votre demande et, le cas échéant, pour la durée de notre relation d'affaires. Les échanges par courriel sont conservés selon les paramètres standard de Gmail (Google), et peuvent être supprimés sur demande.",
+    's4p2':"Conformément à la Loi 25 du Québec, vous pouvez à tout moment demander la suppression de vos informations personnelles en nous contactant à l'adresse indiquée à la section 11.",
+    's5num':'05 — Partage avec des tiers','s5title':'Partageons-nous vos informations?',
+    's5p1':"Nous ne vendons, ne louons et ne partageons pas vos informations personnelles avec des tiers à des fins commerciales. Vos données peuvent transiter par les services tiers suivants, dans le seul but d'assurer le fonctionnement du site :",
+    's5list':'<li><strong>Formspree</strong> — Traitement du formulaire de contact (États-Unis)</li><li><strong>Vercel</strong> — Hébergement du site web (États-Unis)</li><li><strong>Google (Gmail)</strong> — Réception et gestion des courriels (États-Unis)</li>',
+    's5p2':"Ces prestataires sont assujettis à leurs propres politiques de confidentialité et ne sont autorisés à utiliser vos données qu'aux fins pour lesquelles nous faisons appel à eux.",
+    's5note':"Certains de ces prestataires sont situés aux États-Unis. En utilisant notre formulaire de contact, vous consentez au transfert de vos informations vers ces territoires, lequel est effectué dans le respect des lois applicables.",
+    's6num':'06 — Vos droits','s6title':'Vos droits en vertu de la Loi 25 (Québec) et de la LPRPDE (Canada)',
+    's6p1':'En tant que résident du Québec ou du Canada, vous disposez des droits suivants concernant vos informations personnelles :',
+    'r1t':'Accès','r1d':'Consulter les informations que nous détenons sur vous.',
+    'r2t':'Rectification','r2d':'Corriger des informations inexactes ou incomplètes.',
+    'r3t':'Suppression','r3d':'Demander l\'effacement de vos données personnelles.',
+    'r4t':'Portabilité','r4d':'Recevoir vos données dans un format structuré et lisible.',
+    'r5t':'Opposition','r5d':'Vous opposer à certains traitements de vos données.',
+    'r6t':'Plainte','r6d':'Déposer une plainte auprès de la Commission d\'accès à l\'information du Québec.',
+    's6p2':'Pour exercer l\'un de ces droits, contactez-nous à : <a href="mailto:norelo.danielb@gmail.com">norelo.danielb@gmail.com</a>. Nous répondrons dans un délai de 30 jours.',
+    's7num':'07 — Témoins (cookies)','s7title':'Utilisons-nous des cookies?',
+    's7p1':"Non. Ce site n'utilise aucun témoin (cookie) de suivi, de publicité ou d'analyse. Aucun identifiant de navigation n'est déposé sur votre appareil lors de votre visite.",
+    's7p2':"Des cookies techniques essentiels peuvent être utilisés par notre prestataire d'hébergement Vercel pour assurer le bon fonctionnement du site. Ces cookies ne servent pas à vous identifier personnellement.",
+    's8num':'08 — Sécurité','s8title':'Comment protégeons-nous vos données?',
+    's8p1':"Nous prenons des mesures raisonnables pour protéger vos informations personnelles contre tout accès non autorisé, divulgation ou destruction. Le site est servi exclusivement via HTTPS (connexion chiffrée). Les formulaires sont transmis de façon sécurisée via Formspree.",
+    's8p2':"Toutefois, aucune transmission de données sur Internet n'est garantie à 100 % sécurisée. En utilisant ce site, vous acceptez les risques inhérents à toute communication électronique.",
+    's9num':'09 — Mineurs','s9title':'Services destinés aux adultes',
+    's9p1':"Nos services s'adressent aux entreprises et aux adultes de 18 ans et plus. Nous ne collectons pas sciemment d'informations personnelles sur des personnes de moins de 18 ans. Si vous croyez qu'un mineur nous a transmis des informations, contactez-nous immédiatement pour que nous les supprimions.",
+    's10num':'10 — Modifications','s10title':'Mises à jour de cette politique',
+    's10p1':"Nous nous réservons le droit de modifier cette politique de confidentialité à tout moment. Toute modification sera publiée sur cette page avec une date de mise à jour. Nous vous encourageons à consulter cette page périodiquement. L'utilisation continue du site après toute modification constitue votre acceptation des changements.",
+    's11num':'11 — Nous contacter','s11title':'Questions ou demandes?',
+    's11p1':'Pour toute question relative à cette politique de confidentialité, ou pour exercer vos droits, contactez-nous :',
+    'l2-name':'Responsable','l2-email':'Courriel','l2-loc':'Lieu','l2-cai':'Autorité de contrôle',
+  },
+  en: {
+    htitle: 'Legal Notice &amp;<br>Privacy Policy',
+    hsub: 'Norelo — Daniel Bolduc · Saint-Joseph-du-Lac, Québec',
+    hupdated: 'Last updated: April 2026 · Compliance: Law 25 (Québec), PIPEDA (Canada)',
+    toctitle: 'Table of contents',
+    toc1:'1. Legal Notice', toc2:'2. Information Collected', toc3:'3. Use of Information',
+    toc4:'4. Data Retention', toc5:'5. Third-Party Sharing', toc6:'6. Your Rights',
+    toc7:'7. Cookies', toc8:'8. Security', toc9:'9. Minors',
+    toc10:'10. Changes', toc11:'11. Contact Us',
+    's1num':'01 — Legal Notice', 's1title':'Business Identification',
+    'l-name':'Business name','l-owner':'Owner','l-addr':'Address','l-email':'Email','l-site':'Website','l-host':'Hosting',
+    's1p1':"Norelo is a sole proprietorship based in Québec, Canada, offering web design, IT support and tech consulting services to businesses and individuals in the Laurentians and Greater Montreal area.",
+    's2num':'02 — Information Collected','s2title':'What information do we collect?',
+    's2p1':'We only collect information you voluntarily provide through our contact form. This may include:',
+    's2list':'<li>Your name</li><li>Your email address</li><li>Your phone number (optional)</li><li>The content of your message</li><li>The services you are interested in</li>',
+    's2p2':"We do not collect any browsing data, tracking cookies, or use any analytics or advertising tools (such as Google Analytics or Facebook Pixel). Your visit to this site is private.",
+    's2note':'Contact form submissions are processed by <strong>Formspree</strong> (formspree.io), a third-party service. Please review their <a href="https://formspree.io/legal/privacy-policy/" target="_blank" rel="noopener">privacy policy</a> to understand how they handle submitted data.',
+    's3num':'03 — Use of Information','s3title':'Why do we use your information?',
+    's3p1':'The information you share with us is used exclusively to:',
+    's3list':'<li>Respond to your contact request or quote inquiry</li><li>Communicate with you regarding an ongoing project</li><li>Provide the services you requested</li>',
+    's3p2':"Your information is never used for unsolicited marketing, commercial prospecting, or profiling.",
+    's4num':'04 — Data Retention','s4title':'How long do we keep your data?',
+    's4p1':"Your information is kept only as long as necessary to process your request and, where applicable, for the duration of our business relationship. Email exchanges are retained according to Gmail's standard settings and can be deleted upon request.",
+    's4p2':"Under Québec's Law 25, you may request the deletion of your personal information at any time by contacting us at the address listed in section 11.",
+    's5num':'05 — Third-Party Sharing','s5title':'Do we share your information?',
+    's5p1':"We do not sell, rent, or share your personal information with third parties for commercial purposes. Your data may pass through the following third-party services solely to ensure the site functions properly:",
+    's5list':'<li><strong>Formspree</strong> — Contact form processing (United States)</li><li><strong>Vercel</strong> — Website hosting (United States)</li><li><strong>Google (Gmail)</strong> — Email reception and management (United States)</li>',
+    's5p2':"These providers are subject to their own privacy policies and are only authorized to use your data for the purposes for which we engage them.",
+    's5note':"Some of these providers are located in the United States. By using our contact form, you consent to the transfer of your information to these territories, carried out in compliance with applicable laws.",
+    's6num':'06 — Your Rights','s6title':'Your Rights under Law 25 (Québec) and PIPEDA (Canada)',
+    's6p1':'As a resident of Québec or Canada, you have the following rights regarding your personal information:',
+    'r1t':'Access','r1d':'View the information we hold about you.',
+    'r2t':'Correction','r2d':'Correct inaccurate or incomplete information.',
+    'r3t':'Deletion','r3d':'Request the erasure of your personal data.',
+    'r4t':'Portability','r4d':'Receive your data in a structured, readable format.',
+    'r5t':'Objection','r5d':'Object to certain processing of your data.',
+    'r6t':'Complaint','r6d':'File a complaint with the Commission d\'accès à l\'information du Québec.',
+    's6p2':'To exercise any of these rights, contact us at: <a href="mailto:norelo.danielb@gmail.com">norelo.danielb@gmail.com</a>. We will respond within 30 days.',
+    's7num':'07 — Cookies','s7title':'Do we use cookies?',
+    's7p1':"No. This site does not use any tracking, advertising, or analytics cookies. No browsing identifier is placed on your device during your visit.",
+    's7p2':"Essential technical cookies may be used by our hosting provider Vercel to ensure the site functions properly. These cookies are not used to identify you personally.",
+    's8num':'08 — Security','s8title':'How do we protect your data?',
+    's8p1':"We take reasonable measures to protect your personal information against unauthorized access, disclosure, or destruction. The site is served exclusively over HTTPS (encrypted connection). Forms are transmitted securely via Formspree.",
+    's8p2':"However, no internet data transmission is 100% guaranteed to be secure. By using this site, you accept the risks inherent in any electronic communication.",
+    's9num':'09 — Minors','s9title':'Services intended for adults',
+    's9p1':"Our services are intended for businesses and adults aged 18 and over. We do not knowingly collect personal information from individuals under 18. If you believe a minor has submitted information to us, please contact us immediately so we can delete it.",
+    's10num':'10 — Changes','s10title':'Updates to this policy',
+    's10p1':"We reserve the right to modify this privacy policy at any time. Any changes will be posted on this page with an updated date. We encourage you to review this page periodically. Continued use of the site after any changes constitutes your acceptance of those changes.",
+    's11num':'11 — Contact Us','s11title':'Questions or requests?',
+    's11p1':'For any questions regarding this privacy policy, or to exercise your rights, contact us:',
+    'l2-name':'Contact','l2-email':'Email','l2-loc':'Location','l2-cai':'Supervisory authority',
+  }
+};
+
+let lang = 'fr';
+
+function setLang(l) {
+  lang = l;
+  document.getElementById('bfr').classList.toggle('on', l === 'fr');
+  document.getElementById('ben').classList.toggle('on', l === 'en');
+  document.documentElement.lang = l;
+  document.getElementById('nav-back-link').textContent = l === 'fr' ? '← Retour au site' : '← Back to site';
+  const d = T[l];
+  for (const [id, val] of Object.entries(d)) {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = val;
+  }
+}
+
+
+</script>
+
+</body>
+</html>

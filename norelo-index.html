@@ -28,15 +28,16 @@ body.cc #cur-r{width:50px;height:50px;}
 @keyframes pu{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
 nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.1rem 3rem;background:rgba(8,16,42,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);transition:padding .3s;}
 nav.sc{padding:.7rem 3rem;}
-.nl{font-size:22px;font-weight:800;color:#fff;text-decoration:none;letter-spacing:-.5px;display:flex;align-items:center;gap:4px;}
+.nl{font-size:22px;font-weight:800;color:#fff;text-decoration:none;letter-spacing:-.5px;display:flex;align-items:center;gap:0;}
 .nl span{color:var(--bl);}
-.nld{width:5px;height:5px;background:#22c55e;border-radius:50%;margin-bottom:12px;animation:pu 2s infinite;}
+.nld{width:5px;height:5px;background:#22c55e;border-radius:50%;margin-bottom:12px;margin-left:5px;animation:pu 2s infinite;}
 .nr{display:flex;align-items:center;gap:2rem;}
 .nls{display:flex;gap:2rem;}
 .nls a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:color .2s;position:relative;padding-bottom:2px;}
 .nls a::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:1.5px;background:var(--bl);transform:scaleX(0);transform-origin:left;transition:transform .25s;}
 .nls a:hover{color:#fff;}
 .nls a:hover::after{transform:scaleX(1);}
+.nlidees::after{display:none!important;}.nlidees:hover{color:var(--bl)!important;background:rgba(79,163,232,0.22)!important;}
 .lt{display:flex;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:20px;overflow:hidden;}
 .lt button{font-size:13px;padding:5px 14px;background:transparent;color:rgba(255,255,255,.45);border:none;transition:all .2s;font-family:inherit;font-weight:500;}
 .lt button.on{background:var(--blue);color:#fff;border-radius:20px;}
@@ -194,6 +195,26 @@ nav.sc{padding:.7rem 3rem;}
 .tb strong{color:#475569;font-weight:600;}
 .fn{font-size:12px;color:#94a3b8;text-align:center;}
 .fok{font-size:14px;color:#166534;background:#dcfce7;padding:14px 16px;border-radius:10px;display:none;text-align:center;font-weight:500;}
+.zobg{background:#fff;}
+.zog{display:grid;grid-template-columns:1fr 1.6fr;gap:4rem;align-items:start;}
+.zomap{background:#eff6ff;border:1px solid #bfdbfe;border-radius:22px;padding:2rem;position:relative;overflow:hidden;}
+.zomap::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(37,99,235,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(37,99,235,.05) 1px,transparent 1px);background-size:24px 24px;}
+.zopin{font-size:3rem;display:block;text-align:center;position:relative;z-index:1;animation:pnb 1.8s ease-in-out infinite;}
+@keyframes pnb{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.zobase{text-align:center;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);font-weight:700;margin-top:.5rem;position:relative;z-index:1;}
+.zozones{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.25rem;position:relative;z-index:1;}
+.zotag{font-size:12px;background:#fff;color:var(--blue);border:1px solid #bfdbfe;border-radius:20px;padding:4px 12px;font-weight:600;transition:all .2s;}
+.zotag:hover{background:var(--blue);color:#fff;border-color:var(--blue);}
+.zotag.hl{background:var(--blue);color:#fff;border-color:var(--blue);}
+.zoright{display:flex;flex-direction:column;gap:1.5rem;}
+.zoreg{border:1px solid var(--bdr);border-radius:16px;padding:1.25rem 1.5rem;background:#f8fafc;}
+.zoregn{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:.75rem;display:flex;align-items:center;gap:6px;}
+.zoregn::before{content:'';display:inline-block;width:14px;height:1.5px;background:var(--blue);}
+.zocities{display:flex;flex-wrap:wrap;gap:.4rem;}
+.zocity{font-size:12px;color:#475569;background:#fff;border:1px solid var(--bdr);border-radius:20px;padding:3px 11px;transition:all .2s;}
+.zocity:hover{border-color:#93c5fd;color:var(--blue);}
+.zonote{font-size:13px;color:var(--gr);background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;display:flex;align-items:center;gap:.75rem;}
+@media(max-width:800px){.zog{grid-template-columns:1fr;}}
 footer{background:#060e26;padding:4rem 3rem 2rem;}
 .ft{max-width:1100px;margin:0 auto;}
 .ftt{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
@@ -229,7 +250,9 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
       <a href="#process" id="n2">Processus</a>
       <a href="#portfolio" id="n3">Portfolio</a>
       <a href="#pricing" id="n4">Tarifs</a>
+      <a href="#zones" id="n6">Zones</a>
       <a href="#contact" id="n5">Contact</a>
+      <a href="/previews/idees/" style="background:rgba(79,163,232,0.12);border:1px solid rgba(79,163,232,0.3);border-radius:20px;padding:4px 14px;color:var(--bl);font-weight:700;text-decoration:none;" class="nlidees" target="_blank">✦ Idées</a>
     </div>
     <div class="lt">
       <button id="bfr" class="on" onclick="sL('fr')">FR</button>
@@ -254,7 +277,7 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
   <div class="st rv"><div class="stn" id="s1n">100%</div><div class="stl" id="s1">Local & disponible</div></div>
   <div class="st rv d1"><div class="stn" id="s2n">Bilingue</div><div class="stl" id="s2">Français & anglais</div></div>
   <div class="st rv d2"><div class="stn" id="s3n">3-en-1</div><div class="stl" id="s3">Web · IT · Consultation</div></div>
-  <div class="st rv d3"><div class="stn" id="s4n">~48h</div><div class="stl" id="s4">Temps de réponse</div></div>
+  <div class="st rv d3"><div class="stn" id="s4n">~24h</div><div class="stl" id="s4">Temps de réponse</div></div>
 </div>
 
 <section class="sec" id="services">
@@ -270,11 +293,18 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
       <div class="svc rv d1"><div class="svic">🖥️</div><h3 id="sv5t">Assemblage d'ordinateurs</h3><p id="sv5d">Vous rêvez d'un PC sur mesure pour le travail, le gaming ou la création? Daniel assemble votre ordinateur de A à Z selon votre budget. Vous payez les pièces au coût réel, sans markup, et la main-d'oeuvre au taux horaire.</p><p class="svp" id="sv5p">Pièces au coût + 50$ – 100$/heure</p></div>
       <div class="svc rv d2"><div class="svic">📷</div><h3 id="sv6t">Photographie professionnelle</h3><p id="sv6d">Votre site a besoin d'images de qualité? Daniel se déplace avec son Sony A7II et son objectif Tamron pour capturer votre entreprise sous son meilleur jour. Idéal pour les commerces, restaurants, produits et espaces.</p><p class="svp" id="sv6p">500$ · ~10 photos retouchées · Déplacement inclus</p></div>
     </div>
+    <div class="rv" style="margin-top:2rem;background:linear-gradient(135deg,#eff6ff,#e0effe);border:1px solid #bfdbfe;border-radius:16px;padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+      <div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:.35rem;" id="zoinsplab">✦ Inspiration</div>
+        <div style="font-size:15px;font-weight:700;color:#0f172a;" id="zoinspt">Vous ne savez pas quoi vouloir sur votre site?</div>
+        <div style="font-size:13px;color:var(--gr);margin-top:.25rem;" id="zoinsps">Explorez nos exemples interactifs de fonctionnalités — animations, formulaires, galeries et plus.</div>
+      </div>
+      <a href="/previews/idees/" target="_blank" class="bb" style="white-space:nowrap;flex-shrink:0;" id="zoinspbtn">Voir les idées →</a>
+    </div>
   </div>
 </section>
 
 <section class="sec pbg" id="process">
-  <div class="si">
     <p class="stag rv" id="lpr">Processus</p>
     <h2 class="sti rv" id="prt">Simple, rapide, efficace.</h2>
     <p class="ssu rv" id="prs">De la première conversation jusqu'à la mise en ligne, voici comment ça se passe.</p>
@@ -294,7 +324,7 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
     <p class="ssu rv" id="wys">Pas une agence anonyme. Un expert local qui connaît votre communauté.</p>
     <div class="wg">
       <div class="wc rv d1"><div class="wci">📍</div><div><h3 id="w1t">100% local</h3><p id="w1d">Basé à Saint-Joseph-du-Lac, je connais la région, les entreprises et les besoins locaux.</p></div></div>
-      <div class="wc rv d2"><div class="wci">⚡</div><div><h3 id="w2t">Réponse rapide</h3><p id="w2d">Pas de tickets, pas d'attente. Vous parlez directement à Daniel, sous 48h garanti.</p></div></div>
+      <div class="wc rv d2"><div class="wci">⚡</div><div><h3 id="w2t">Réponse rapide</h3><p id="w2d">Pas de tickets, pas d'attente. Vous parlez directement à Daniel, sous 24h garanti.</p></div></div>
       <div class="wc rv d3"><div class="wci">💰</div><div><h3 id="w3t">Prix honnêtes</h3><p id="w3d">Des tarifs transparents sans frais cachés. Idéal pour les petites et moyennes entreprises.</p></div></div>
       <div class="wc rv d4"><div class="wci">🔒</div><div><h3 id="w4t">Tout inclus</h3><p id="w4d">Web, IT, consultation, hébergement, photo et assemblage PC. Un seul contact pour tout.</p></div></div>
       <div class="wc rv d1"><div class="wci">🌐</div><div><h3 id="w5t">Bilingue</h3><p id="w5d">Sites web et support disponibles en français et en anglais pour rejoindre plus de clients.</p></div></div>
@@ -380,6 +410,59 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
   </div>
 </section>
 
+<section class="sec zobg" id="zones">
+  <div class="si">
+    <div class="zog">
+      <div class="rvl">
+        <p class="stag" id="lzo">Zones desservies</p>
+        <h2 class="sti" id="zot">On se déplace<br>partout autour.</h2>
+        <p class="ssu" id="zos">Basé à Saint-Joseph-du-Lac, Norelo dessert toute la grande région de Montréal et des Laurentides. Déplacement sur place disponible.</p>
+        <div class="zonote rv" style="margin-bottom:1rem;">
+          <span style="font-size:1.1rem">🚗</span>
+          <span id="zonote">Déplacement sur place disponible dans toutes ces zones. Pour les projets à distance, le travail se fait entièrement en ligne.</span>
+        </div>
+      </div>
+      <div class="rvr">
+        <div class="zomap">
+          <span class="zopin">📍</span>
+          <div class="zobase" id="zobase">Saint-Joseph-du-Lac — Notre base</div>
+          <div class="zozones">
+            <span class="zotag hl">Laurentides</span><span class="zotag">Rive-Nord</span><span class="zotag">Laval</span><span class="zotag">Grand Montréal</span><span class="zotag">Rive-Sud</span>
+          </div>
+          <div style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid #bfdbfe;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:.75rem;" id="zoray">Rayon approximatif</div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;color:#475569;margin-bottom:.4rem;"><span>Saint-Jérôme</span><span style="font-weight:600;color:#0f172a;">~30 min</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;color:#475569;margin-bottom:.4rem;"><span>Laval</span><span style="font-weight:600;color:#0f172a;">~35 min</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;color:#475569;margin-bottom:.4rem;"><span>Montréal</span><span style="font-weight:600;color:#0f172a;">~45 min</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;color:#475569;margin-bottom:.4rem;"><span>Vaudreuil-Dorion</span><span style="font-weight:600;color:#0f172a;">~25 min</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px;color:#475569;"><span>Longueuil / Brossard</span><span style="font-weight:600;color:#0f172a;">~55 min</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.5rem;">
+      <div class="zoreg rv">
+        <div class="zoregn">Laurentides &amp; Rive-Nord</div>
+        <div class="zocities">
+          <span class="zocity zotag hl">Saint-Joseph-du-Lac</span><span class="zocity">Mirabel</span><span class="zocity">Saint-Eustache</span><span class="zocity">Deux-Montagnes</span><span class="zocity">Sainte-Marthe-sur-le-Lac</span><span class="zocity">Pointe-Calumet</span><span class="zocity">Oka</span><span class="zocity">Saint-Jérôme</span><span class="zocity">Blainville</span><span class="zocity">Sainte-Thérèse</span><span class="zocity">Boisbriand</span><span class="zocity">Saint-Colomban</span><span class="zocity">Lachute</span><span class="zocity">Bois-des-Filion</span><span class="zocity">Terrebonne</span><span class="zocity">Mascouche</span><span class="zocity">Repentigny</span>
+        </div>
+      </div>
+      <div class="zoreg rv d1">
+        <div class="zoregn">Laval &amp; Grand Montréal</div>
+        <div class="zocities">
+          <span class="zocity">Laval</span><span class="zocity">Montréal</span><span class="zocity">Île-Bizard</span><span class="zocity">Kirkland</span><span class="zocity">Dollard-des-Ormeaux</span><span class="zocity">Beaconsfield</span><span class="zocity">Vaudreuil-Dorion</span><span class="zocity">Hudson</span><span class="zocity">Rigaud</span><span class="zocity">Pincourt</span>
+        </div>
+      </div>
+      <div class="zoreg rv d2">
+        <div class="zoregn">Rive-Sud</div>
+        <div class="zocities">
+          <span class="zocity">Longueuil</span><span class="zocity">Brossard</span><span class="zocity">La Prairie</span><span class="zocity">Châteauguay</span><span class="zocity">Saint-Constant</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="sec ctbg" id="contact">
   <div class="si">
     <div class="ctg">
@@ -389,7 +472,7 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
         <p id="ctd">Vous avez besoin d'un site web ou d'un soutien informatique? Contactez Daniel directement. Pas de téléphone automatisé. Vous parlez à une vraie personne qui connaît la région.</p>
         <div class="ctd"><div class="ctdi">✉️</div><a href="mailto:norelo.danielb@gmail.com">norelo.danielb@gmail.com</a></div>
         <div class="ctd"><div class="ctdi">📍</div><span id="ctloc">Saint-Joseph-du-Lac, Québec<br>Disponible dans toute la région des Laurentides</span></div>
-        <div class="ctd"><div class="ctdi">🕐</div><span id="cthrs">Lundi – Vendredi · 9h à 18h<br>Réponse sous 48h garantie</span></div>
+        <div class="ctd"><div class="ctdi">🕐</div><span id="cthrs">Lundi – Vendredi · 9h à 18h<br>Réponse sous 24h garantie</span></div>
         <div class="ctd" style="margin-top:1.5rem;padding:1rem;background:#eff6ff;border-radius:14px;border:1px solid #bfdbfe;">
           <div class="ctdi" style="background:#dbeafe;">💡</div>
           <span id="cttip" style="font-size:13px;color:#1e40af;line-height:1.65;">Plus votre message est détaillé, plus vite Daniel pourra vous préparer un devis précis et personnalisé.</span>
@@ -421,7 +504,7 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
           <div class="tb"><strong id="tipst">Pour un devis précis, pensez à inclure :</strong><br><span id="tipsb">• Votre secteur d'activité et le nom de votre entreprise<br>• Le nombre de pages souhaitées et les fonctionnalités clés<br>• Votre délai idéal et votre budget approximatif<br>• Des exemples de sites que vous aimez (optionnel)</span></div>
           <textarea id="imsg" placeholder="Ex: Je gère un restaurant à Saint-Eustache et j'aimerais un site avec un menu, une galerie photo et un formulaire de réservation. Mon budget est autour de 700$..."></textarea>
           <button class="bb" onclick="sub()" id="fbtn" style="width:100%;justify-content:center;">Envoyer le message →</button>
-          <p class="fn" id="fnote">Réponse garantie sous 48h · Aucun spam · Consultation gratuite</p>
+          <p class="fn" id="fnote">Réponse garantie sous 24h · Aucun spam · Consultation gratuite</p>
           <p class="fok" id="fok">✓ Message envoyé! Daniel vous contactera sous peu.</p>
         </div>
       </div>
@@ -436,7 +519,7 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
       <div class="fcol"><h4 id="fc1">Services</h4><a href="#services" id="fs1">Création de sites web</a><a href="#services" id="fs2">Soutien informatique</a><a href="#services" id="fs3">Consultation</a><a href="#services" id="fs4">Hébergement</a><a href="#services" id="fs5">Assemblage PC</a></div>
       <div class="fcol"><h4 id="fc2">Entreprise</h4><a href="#portfolio" id="fpo">Portfolio</a><a href="#pricing" id="fpi">Tarifs</a><a href="#process" id="fpr">Processus</a><a href="#contact" id="fct">Contact</a></div>
     </div>
-    <div class="fbt"><p id="fcopy">© 2025 Norelo · Saint-Joseph-du-Lac, Québec</p><p id="fmade">Fait avec soin dans les Laurentides</p></div>
+    <div class="fbt"><p id="fcopy">© 2026 Norelo · Saint-Joseph-du-Lac, Québec</p><p id="fmade">Fait avec soin dans les Laurentides</p><p style="margin-top:.5rem"><a href="/legal/" style="font-size:11px;color:rgba(255,255,255,.25);text-decoration:none;transition:color .2s;" onmouseover="this.style.color='#4fa3e8'" onmouseout="this.style.color='rgba(255,255,255,.25)'" id="flegal">Mentions légales & Politique de confidentialité</a></p></div>
   </div>
 </footer>
 
@@ -514,11 +597,11 @@ function uEst(){
 
 const T={
   fr:{
-    'n1':'Services','n2':'Processus','n3':'Portfolio','n4':'Tarifs','n5':'Contact','ft':'Nous contacter',
+    'n1':'Services','n2':'Processus','n3':'Portfolio','n4':'Tarifs','n5':'Contact','n6':'Zones','ft':'Nous contacter',
     'hbdg':'Disponible dans les Laurentides','h1t':'Votre expert tech','h1e':'abordable.',
     'hd':"Création de sites web, soutien informatique et consultation technologique pour les entreprises et particuliers des Laurentides. Une seule personne de confiance pour tous vos besoins.",
     'hc1':'Nous contacter →','hc2':'Voir les services','hsc':'Défiler',
-    's1n':'100%','s2n':'Bilingue','s3n':'3-en-1','s4n':'~48h',
+    's1n':'100%','s2n':'Bilingue','s3n':'3-en-1','s4n':'~24h',
     's1':'Local & disponible','s2':'Français & anglais','s3':'Web · IT · Consultation','s4':'Temps de réponse',
     'lsv':'Services','svt':'Tout ce dont vous avez besoin,<br>au même endroit.',
     'svs':"Une seule personne de confiance pour tous vos besoins. Pas de centre d'appel ni d'attente. Vous parlez directement à Daniel.",
@@ -535,7 +618,7 @@ const T={
     'p4t':'Mise en ligne','p4d':"Votre site est en ligne, rapide et sécurisé. Je reste disponible pour le support.",
     'lwy':'Pourquoi Norelo','wyt':'Ce qui nous distingue.','wys':'Pas une agence anonyme. Un expert local qui connaît votre communauté.',
     'w1t':'100% local','w1d':'Basé à Saint-Joseph-du-Lac, je connais la région, les entreprises et les besoins locaux.',
-    'w2t':'Réponse rapide','w2d':"Pas de tickets, pas d'attente. Vous parlez directement à Daniel, sous 48h garanti.",
+    'w2t':'Réponse rapide','w2d':"Pas de tickets, pas d'attente. Vous parlez directement à Daniel, sous 24h garanti.",
     'w3t':'Prix honnêtes','w3d':'Des tarifs transparents sans frais cachés. Idéal pour les petites et moyennes entreprises.',
     'w4t':'Tout inclus','w4d':'Web, IT, consultation, hébergement, photo et assemblage PC. Un seul contact pour tout.',
     'w5t':'Bilingue','w5d':'Sites web et support disponibles en français et en anglais pour rejoindre plus de clients.',
@@ -554,10 +637,10 @@ const T={
     'pf21':"Site jusqu'à 10 pages",'pf22':'Design sur mesure','pf23':'Bilingue français/anglais','pf24':'SEO avancé + Google Analytics','pf25':'Intégration réseaux sociaux','pf26':'Hébergement dès 75$/mois','pr2cta':'Commencer',
     'pr3n':'Sur mesure','pr3p':'Sur devis','pr3d':'Boutique en ligne, assemblage PC, photographie ou projet complexe, on trouve toujours une solution adaptée.',
     'pf31':'Boutique en ligne (e-commerce)','pf32':'Assemblage PC sur mesure','pf33':'Photographie professionnelle','pf34':'Support IT mensuel','pf35':'Formation & documentation','pr3cta':'Nous contacter',
+    'lzo':'Zones desservies','zot':'On se déplace<br>partout autour.','zos':'Basé à Saint-Joseph-du-Lac, Norelo dessert toute la grande région de Montréal et des Laurentides. Déplacement sur place disponible.','zobase':'Saint-Joseph-du-Lac — Notre base','zonote':'Déplacement sur place disponible dans toutes ces zones. Pour les projets à distance, le travail se fait entièrement en ligne.','zoray':'Rayon approximatif','zoinsplab':'✦ Inspiration','zoinspt':'Vous ne savez pas quoi vouloir sur votre site?','zoinsps':'Explorez nos exemples interactifs de fonctionnalités — animations, formulaires, galeries et plus.','zoinspbtn':'Voir les idées →',
     'lct':'Contact','ctt':'Parlons de<br>votre projet',
-    'ctd':"Vous avez besoin d'un site web ou d'un soutien informatique? Contactez Daniel directement. Pas de téléphone automatisé. Vous parlez à une vraie personne qui connaît la région.",
     'ctloc':'Saint-Joseph-du-Lac, Québec<br>Disponible dans toute la région des Laurentides',
-    'cthrs':'Lundi – Vendredi · 9h à 18h<br>Réponse sous 48h garantie',
+    'cthrs':'Lundi – Vendredi · 9h à 18h<br>Réponse sous 24h garantie',
     'cttip':'Plus votre message est détaillé, plus vite Daniel pourra vous préparer un devis précis et personnalisé.',
     'lname':'Nom','lemail':'Courriel','lsvc':"Services qui m'intéressent",'lmsg':'Votre message',
     'cwt':'Site web','cws':'Dès 500$','citt':'Soutien IT','cits':'50–100$/h',
@@ -569,19 +652,19 @@ const T={
     'tipsb':"• Votre secteur d'activité et le nom de votre entreprise<br>• Le nombre de pages souhaitées et les fonctionnalités clés<br>• Votre délai idéal et votre budget approximatif<br>• Des exemples de sites que vous aimez (optionnel)",
     'iname':'Votre nom','iemail':'Votre courriel',
     'imsg':"Ex: Je gère un restaurant à Saint-Eustache et j'aimerais un site avec un menu, une galerie photo et un formulaire de réservation. Mon budget est autour de 700$...",
-    'fbtn':'Envoyer le message →','fnote':'Réponse garantie sous 48h · Aucun spam · Consultation gratuite',
+    'fbtn':'Envoyer le message →','fnote':'Réponse garantie sous 24h · Aucun spam · Consultation gratuite',
     'fok':'✓ Message envoyé! Daniel vous contactera sous peu.',
     'fc1':'Services','fs1':'Création de sites web','fs2':'Soutien informatique','fs3':'Consultation','fs4':'Hébergement','fs5':'Assemblage PC',
     'fc2':'Entreprise','fpo':'Portfolio','fpi':'Tarifs','fpr':'Processus','fct':'Contact',
     'fdesc':'Expert tech local basé à Saint-Joseph-du-Lac. Sites web, soutien informatique et consultation pour les entreprises des Laurentides.',
-    'fcopy':'© 2025 Norelo · Saint-Joseph-du-Lac, Québec','fmade':'Fait avec soin dans les Laurentides'
+    'fcopy':'© 2026 Norelo · Saint-Joseph-du-Lac, Québec','fmade':'Fait avec soin dans les Laurentides','flegal':'Mentions légales & Politique de confidentialité'
   },
   en:{
-    'n1':'Services','n2':'Process','n3':'Portfolio','n4':'Pricing','n5':'Contact','ft':'Contact us',
+    'n1':'Services','n2':'Process','n3':'Portfolio','n4':'Pricing','n5':'Contact','n6':'Areas','ft':'Contact us',
     'hbdg':'Available throughout the Laurentians','h1t':'Your local tech','h1e':'affordable.',
     'hd':"Web design, IT support and tech consulting for businesses and individuals in the Laurentians. One trusted person for all your technology needs.",
     'hc1':'Contact us →','hc2':'See our services','hsc':'Scroll',
-    's1n':'100%','s2n':'Bilingual','s3n':'3-in-1','s4n':'~48h',
+    's1n':'100%','s2n':'Bilingual','s3n':'3-in-1','s4n':'~24h',
     's1':'Local & available','s2':'French & English','s3':'Web · IT · Consulting','s4':'Response time',
     'lsv':'Services','svt':'Everything you need,<br>in one place.',
     'svs':"One trusted person for all your tech needs. No call centre, no waiting around. Just Daniel.",
@@ -598,7 +681,7 @@ const T={
     'p4t':'Launch','p4d':"Your site is live, fast and secure. I remain available for ongoing support.",
     'lwy':'Why Norelo','wyt':'What sets us apart.','wys':'Not an anonymous agency. A local expert who knows your community.',
     'w1t':'100% local','w1d':'Based in Saint-Joseph-du-Lac, I know the region, the businesses and the local needs.',
-    'w2t':'Fast response','w2d':'No tickets, no waiting. You talk directly to Daniel, guaranteed within 48h.',
+    'w2t':'Fast response','w2d':'No tickets, no waiting. You talk directly to Daniel, guaranteed within 24h.',
     'w3t':'Honest pricing','w3d':'Transparent rates with no hidden fees. Perfect for small and medium businesses.',
     'w4t':'All-in-one','w4d':'Web, IT, consulting, hosting, photography and PC building. One contact for everything.',
     'w5t':'Bilingual','w5d':'Websites and support available in French and English to reach more customers.',
@@ -617,10 +700,11 @@ const T={
     'pf21':'Up to 10 pages','pf22':'Custom design','pf23':'Bilingual French/English','pf24':'Advanced SEO + Google Analytics','pf25':'Social media integration','pf26':'Hosting from $75/mo','pr2cta':'Get started',
     'pr3n':'Custom','pr3p':'Get a quote','pr3d':'Online store, PC build, photography or complex project, we always find a solution that fits.',
     'pf31':'E-commerce store','pf32':'Custom PC build','pf33':'Professional photography','pf34':'Monthly IT support','pf35':'Training & documentation','pr3cta':'Contact us',
+    'lzo':'Service areas','zot':'We go<br>wherever you are.','zos':'Based in Saint-Joseph-du-Lac, Norelo serves the greater Montreal and Laurentians region. On-site visits available.','zobase':'Saint-Joseph-du-Lac — Our home base','zonote':'On-site visits available throughout all these areas. For remote projects, everything is done online.','zoray':'Approximate travel time','zoinsplab':'✦ Inspiration','zoinspt':'Not sure what you want on your website?','zoinsps':'Browse our interactive feature examples — animations, forms, galleries and more.','zoinspbtn':'Browse ideas →',
     'lct':'Contact','ctt':"Let's talk about<br>your project",
     'ctd':"Need a website or IT support? Contact Daniel directly. No automated phone system, no runaround. A real person who knows the area.",
     'ctloc':'Saint-Joseph-du-Lac, Québec<br>Available throughout the Laurentians',
-    'cthrs':'Monday – Friday · 9am to 6pm<br>Response within 48h guaranteed',
+    'cthrs':'Monday – Friday · 9am to 6pm<br>Response within 24h guaranteed',
     'cttip':'The more detail you include, the faster Daniel can prepare an accurate and personalized quote for you.',
     'lname':'Name','lemail':'Email','lsvc':'Services I am interested in','lmsg':'Your message',
     'cwt':'Web design','cws':'From $500','citt':'IT support','cits':'$50–$100/hr',
@@ -632,12 +716,12 @@ const T={
     'tipsb':'• Your industry and business name<br>• Number of pages and key features you need<br>• Your ideal timeline and approximate budget<br>• Examples of sites you like (optional)',
     'iname':'Your name','iemail':'Your email',
     'imsg':'E.g. I run a restaurant in Saint-Eustache and would like a site with a menu, photo gallery and reservation form. My budget is around $700...',
-    'fbtn':'Send message →','fnote':'Response within 48h · No spam · Free consultation',
+    'fbtn':'Send message →','fnote':'Response within 24h · No spam · Free consultation',
     'fok':'✓ Message sent! Daniel will get back to you shortly.',
     'fc1':'Services','fs1':'Web design','fs2':'IT support','fs3':'Consulting','fs4':'Hosting','fs5':'PC building',
     'fc2':'Company','fpo':'Portfolio','fpi':'Pricing','fpr':'Process','fct':'Contact',
     'fdesc':'Local tech expert based in Saint-Joseph-du-Lac. Websites, IT support and consulting for businesses in the Laurentians.',
-    'fcopy':'© 2025 Norelo · Saint-Joseph-du-Lac, Québec','fmade':'Made with care in the Laurentians'
+    'fcopy':'© 2026 Norelo · Saint-Joseph-du-Lac, Québec','fmade':'Made with care in the Laurentians','flegal':'Legal Notice & Privacy Policy'
   }
 };
 
