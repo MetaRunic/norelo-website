@@ -2,941 +2,624 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title>Idées & Inspirations — Norelo</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --navy:#070f2b;
-  --blue:#2563eb;
-  --accent:#4fa3e8;
-  --light:#e8f4fd;
-  --white:#ffffff;
-  --text:#1a2535;
-  --muted:#6b7d8f;
-}
-html{scroll-behavior:smooth}
-body{font-family:'Lato',sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden}
-
-/* NAV */
-nav{position:fixed;top:0;width:100%;background:rgba(7,15,43,0.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(79,163,232,0.2);z-index:1000;padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between}
-.nav-logo{font-family:'Playfair Display',serif;color:var(--accent);font-size:1.1rem;text-decoration:none}
-.nav-logo span{font-family:'Lato',sans-serif;font-size:0.65rem;font-weight:300;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.4);display:block}
-.nav-back{color:rgba(255,255,255,0.6);font-size:0.82rem;text-decoration:none;transition:color 0.2s}
-.nav-back:hover{color:var(--accent)}
-
+:root{--blue:#2563eb;--bl:#4fa3e8;--bp:#60a5fa;--dark:#070f2b;--bdr:rgba(79,163,232,0.15);}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--dark);color:#fff;overflow-x:hidden}
+@keyframes pu{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+/* NAV — exact match norelo.ca */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.1rem 3rem;background:rgba(8,16,42,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);transition:padding .3s;}
+.nl{font-size:22px;font-weight:800;color:#fff;text-decoration:none;letter-spacing:-.5px;display:flex;align-items:center;gap:0;}
+.nl span{color:var(--bl);}
+.nld{width:5px;height:5px;background:#22c55e;border-radius:50%;margin-bottom:12px;margin-left:5px;animation:pu 2s infinite;}
+.nr{display:flex;align-items:center;gap:2rem;}
+.nls{display:flex;gap:2rem;}
+.nls a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:color .2s;position:relative;padding-bottom:2px;}
+.nls a::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:1.5px;background:var(--bl);transform:scaleX(0);transform-origin:left;transition:transform .25s;}
+.nls a:hover{color:#fff;}.nls a:hover::after{transform:scaleX(1);}
+.lt{display:flex;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:20px;overflow:hidden;}
+.lt button{font-size:13px;padding:5px 14px;background:transparent;color:rgba(255,255,255,.45);border:none;transition:all .2s;font-family:inherit;font-weight:500;cursor:pointer;}
+.lt button.on{background:var(--blue);color:#fff;border-radius:20px;}
+@media(max-width:700px){nav{padding:1rem 1.25rem;}.nls{display:none;}}
 /* HERO */
-.hero{padding:120px 2rem 60px;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(37,99,235,0.15) 0%,transparent 70%)}
-.hero-tag{display:inline-block;background:rgba(79,163,232,0.15);border:1px solid rgba(79,163,232,0.3);color:var(--accent);font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;padding:0.4rem 1.2rem;border-radius:100px;margin-bottom:1.5rem}
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,3.5rem);margin-bottom:1rem;line-height:1.15}
-.hero h1 span{color:var(--accent)}
-.hero p{color:rgba(255,255,255,0.6);font-size:1.05rem;max-width:560px;margin:0 auto 1rem;line-height:1.8;font-weight:300}
-.hero-note{font-size:0.82rem;color:rgba(255,255,255,0.35);margin-top:0.5rem}
-
+.hero{padding:110px 2rem 50px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(37,99,235,.18) 0%,transparent 70%);}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--bp);border:1px solid rgba(96,165,250,.25);border-radius:20px;padding:6px 18px;margin-bottom:1.5rem;background:rgba(96,165,250,.06);}
+.hero h1{font-size:clamp(26px,5vw,52px);font-weight:800;color:#fff;line-height:1.1;letter-spacing:-2px;margin-bottom:1rem;}
+.hero h1 span{color:var(--bl);}
+.hero p{font-size:16px;color:rgba(255,255,255,.55);max-width:560px;margin:0 auto .75rem;line-height:1.8;}
+.hero-note{font-size:12px;color:rgba(255,255,255,.3);margin-top:.25rem;}
 /* FILTER */
-.filter-bar{display:flex;gap:0.6rem;justify-content:center;flex-wrap:wrap;padding:0 2rem 3rem}
-.filter-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);padding:0.4rem 1rem;border-radius:100px;font-size:0.78rem;cursor:pointer;transition:all 0.2s;font-family:'Lato',sans-serif}
-.filter-btn:hover,.filter-btn.active{background:var(--blue);border-color:var(--blue);color:var(--white)}
-
+.filter-bar{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;padding:0 2rem 2.5rem;}
+.filter-btn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);padding:6px 18px;border-radius:20px;font-size:13px;cursor:pointer;transition:all .2s;font-family:inherit;font-weight:500;}
+.filter-btn:hover,.filter-btn.active{background:var(--blue);border-color:var(--blue);color:#fff;}
 /* GRID */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.5rem;padding:0 2rem 6rem;max-width:1300px;margin:0 auto}
-
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem;padding:0 2rem 6rem;max-width:1300px;margin:0 auto;}
 /* CARDS */
-.card{background:rgba(255,255,255,0.04);border:1px solid rgba(79,163,232,0.15);border-radius:12px;overflow:hidden;transition:transform 0.3s,border-color 0.3s,box-shadow 0.3s}
-.card:hover{transform:translateY(-4px);border-color:rgba(79,163,232,0.4);box-shadow:0 12px 40px rgba(37,99,235,0.15)}
-.card-demo{height:200px;position:relative;overflow:hidden;background:rgba(255,255,255,0.03);border-bottom:1px solid rgba(79,163,232,0.1)}
-.demo-label{position:absolute;top:0;left:0;right:0;background:rgba(7,15,43,0.85);backdrop-filter:blur(6px);border-bottom:1px solid rgba(79,163,232,0.15);padding:0.35rem 0.9rem;font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.55);z-index:5;display:flex;align-items:center;gap:0.5rem}
-.demo-label::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0}
-.card-info{padding:1.25rem}
-.card-cat{font-size:0.65rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem}
-.card-title{font-family:'Playfair Display',serif;font-size:1.05rem;margin-bottom:0.5rem;color:var(--white)}
-.card-desc{font-size:0.83rem;color:rgba(255,255,255,0.5);line-height:1.65;font-weight:300}
-
-/* ===================== DEMOS ===================== */
-
-/* 1. Typewriter */
-.demo-typewriter{display:flex;align-items:center;justify-content:center;height:100%;padding:1.5rem;background:linear-gradient(135deg,#0a1628,#111d3a)}
-.tw-text{font-family:'Playfair Display',serif;font-size:1.3rem;color:#fff;border-right:2px solid var(--accent);padding-right:4px;white-space:nowrap;overflow:hidden;width:0;animation:typing 3s steps(30) infinite alternate,blink 0.7s step-end infinite}
+.card{background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:14px;overflow:hidden;transition:transform .3s,border-color .3s,box-shadow .3s;}
+.card:hover{transform:translateY(-4px);border-color:rgba(79,163,232,.4);box-shadow:0 12px 40px rgba(37,99,235,.15);}
+.card-demo{height:190px;position:relative;overflow:hidden;background:rgba(255,255,255,.03);}
+.card-label-bar{display:flex;align-items:center;gap:7px;padding:.38rem 1rem;background:rgba(7,15,43,.5);border-top:1px solid rgba(79,163,232,.12);border-bottom:1px solid rgba(79,163,232,.12);}
+.card-label-bar::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--bl);flex-shrink:0;}
+.clb-cat{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--bl);flex-shrink:0;}
+.clb-sep{color:rgba(255,255,255,.2);font-size:10px;flex-shrink:0;}
+.clb-title{font-size:12px;font-weight:700;color:rgba(255,255,255,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.card-info{padding:.9rem 1rem;}
+.card-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.65;}
+/* DEMO CSS */
+.demo-typewriter{display:flex;align-items:center;justify-content:center;height:100%;padding:1.5rem;background:linear-gradient(135deg,#0a1628,#111d3a);}
+.tw-text{font-size:1.15rem;font-weight:700;color:#fff;border-right:2px solid var(--bl);padding-right:4px;white-space:nowrap;overflow:hidden;width:0;animation:typing 3s steps(30) infinite alternate,blink .7s step-end infinite;}
 @keyframes typing{0%{width:0}100%{width:16ch}}
 @keyframes blink{50%{border-color:transparent}}
-
-/* 2. Particles */
-.demo-particles{position:relative;height:100%;background:#070f2b;overflow:hidden}
-.demo-particles canvas{position:absolute;inset:0}
-
-/* 3. Custom cursor */
-.demo-cursor{display:flex;align-items:center;justify-content:center;height:100%;background:#0d1b2a;cursor:none;flex-direction:column;gap:0.75rem}
-.demo-cursor p{font-size:0.8rem;color:rgba(255,255,255,0.4);pointer-events:none}
-.cursor-dot{width:8px;height:8px;background:var(--accent);border-radius:50%;position:absolute;pointer-events:none;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s;z-index:10}
-.cursor-ring{width:32px;height:32px;border:1.5px solid var(--accent);border-radius:50%;position:absolute;pointer-events:none;transform:translate(-50%,-50%);transition:all 0.12s ease;z-index:10;opacity:0.6}
-
-/* 4. Scroll reveal */
-.demo-scroll{overflow-y:auto;height:100%;padding:1rem;display:flex;flex-direction:column;gap:0.6rem}
-.sr-item{background:rgba(79,163,232,0.08);border:1px solid rgba(79,163,232,0.15);border-radius:6px;padding:0.7rem 1rem;font-size:0.8rem;opacity:0;transform:translateY(20px);transition:all 0.5s ease;color:rgba(255,255,255,0.7)}
-.sr-item.visible{opacity:1;transform:none}
-
-/* 5. Dark/light toggle */
-.demo-toggle{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:1rem;transition:background 0.4s}
-.demo-toggle.light-mode{background:#f0f4f8}
-.demo-toggle.dark-mode{background:#0d1b2a}
-.toggle-card{padding:0.8rem 1.5rem;border-radius:8px;font-size:0.85rem;transition:all 0.4s;text-align:center}
-.dark-mode .toggle-card{background:#1a2d4a;color:#fff;border:1px solid rgba(79,163,232,0.2)}
-.light-mode .toggle-card{background:#fff;color:#1a2535;border:1px solid #dde}
-.toggle-switch{width:52px;height:26px;background:var(--blue);border-radius:100px;cursor:pointer;position:relative;transition:background 0.3s}
-.toggle-switch::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:transform 0.3s}
-.light-mode .toggle-switch::after{transform:translateX(26px)}
-.toggle-label{font-size:0.72rem;color:rgba(255,255,255,0.5);letter-spacing:0.1em}
-.light-mode .toggle-label{color:rgba(0,0,0,0.4)}
-
-/* 6. Animated counter */
-.demo-counter{display:flex;gap:1.5rem;align-items:center;justify-content:center;height:100%;background:#070f2b;flex-wrap:wrap;padding:1rem}
-.counter-item{text-align:center}
-.counter-num{font-family:'Playfair Display',serif;font-size:2rem;color:var(--accent);display:block;line-height:1}
-.counter-lbl{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.4);margin-top:0.3rem}
-
-/* 7. FAQ accordion */
-.demo-faq{overflow-y:auto;height:100%;padding:0.75rem;display:flex;flex-direction:column;gap:0.4rem}
-.faq-item{border:1px solid rgba(79,163,232,0.15);border-radius:6px;overflow:hidden}
-.faq-q{padding:0.65rem 0.9rem;font-size:0.78rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:rgba(255,255,255,0.85);background:rgba(255,255,255,0.03);user-select:none}
-.faq-q .arr{transition:transform 0.3s;color:var(--accent);font-size:0.65rem}
-.faq-item.open .faq-q .arr{transform:rotate(180deg)}
-.faq-a{max-height:0;overflow:hidden;transition:max-height 0.35s ease;font-size:0.76rem;color:rgba(255,255,255,0.45);line-height:1.6;padding:0 0.9rem}
-.faq-item.open .faq-a{max-height:80px;padding:0.5rem 0.9rem}
-
-/* 8. Testimonial slider */
-.demo-testimonial{height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:1.25rem;position:relative;background:#0a1628;overflow:hidden}
-.test-wrap{text-align:center;transition:opacity 0.4s}
-.test-quote{font-size:0.82rem;color:rgba(255,255,255,0.7);line-height:1.7;font-style:italic;margin-bottom:0.75rem}
-.test-author{font-size:0.7rem;font-weight:700;color:var(--accent);letter-spacing:0.08em}
-.test-dots{display:flex;gap:5px;justify-content:center;margin-top:0.75rem}
-.test-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.2);cursor:pointer;transition:background 0.2s}
-.test-dot.active{background:var(--accent)}
-
-/* 9. Pricing table */
-.demo-pricing{display:flex;gap:0.6rem;height:100%;padding:0.75rem;align-items:center;justify-content:center;background:#070f2b}
-.price-card{flex:1;border:1px solid rgba(79,163,232,0.15);border-radius:8px;padding:0.75rem 0.5rem;text-align:center;background:rgba(255,255,255,0.03);transition:transform 0.2s}
-.price-card.featured{border-color:var(--blue);background:rgba(37,99,235,0.12);transform:scale(1.04)}
-.price-name{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(255,255,255,0.5);margin-bottom:0.3rem}
-.price-amt{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--white)}
-.price-amt span{font-size:0.65rem;font-weight:300;font-family:'Lato',sans-serif;color:rgba(255,255,255,0.4)}
-.price-badge{font-size:0.58rem;background:var(--blue);color:#fff;padding:0.15rem 0.5rem;border-radius:100px;display:inline-block;margin-top:0.3rem}
-
-/* 10. Contact form */
-.demo-form{padding:0.9rem;height:100%;display:flex;flex-direction:column;gap:0.5rem;justify-content:center;background:#0a1628}
-.f-input{background:rgba(255,255,255,0.06);border:1px solid rgba(79,163,232,0.2);border-radius:6px;padding:0.55rem 0.75rem;font-size:0.78rem;color:#fff;font-family:'Lato',sans-serif;outline:none;transition:border-color 0.2s;width:100%}
-.f-input:focus{border-color:var(--accent)}
-.f-input::placeholder{color:rgba(255,255,255,0.3)}
-.f-btn{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:0.6rem;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif;transition:background 0.2s;letter-spacing:0.05em}
-.f-btn:hover{background:#1d4ed8}
-
-/* 11. Floating button */
-.demo-floating{height:100%;display:flex;align-items:center;justify-content:center;background:#0d1b2a;position:relative}
-.float-bg{font-size:0.8rem;color:rgba(255,255,255,0.3);text-align:center;padding:1rem}
-.float-btn{position:absolute;bottom:1rem;right:1rem;background:var(--blue);color:#fff;border:none;border-radius:100px;padding:0.6rem 1.1rem;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif;box-shadow:0 4px 20px rgba(37,99,235,0.4);animation:pulse-btn 2s ease-in-out infinite}
-@keyframes pulse-btn{0%,100%{box-shadow:0 4px 20px rgba(37,99,235,0.4)}50%{box-shadow:0 4px 30px rgba(37,99,235,0.7)}}
-
-/* 12. Progress bars */
-.demo-progress{padding:1.25rem;height:100%;display:flex;flex-direction:column;gap:0.85rem;justify-content:center;background:#0a1628}
-.prog-item{}
-.prog-label{display:flex;justify-content:space-between;font-size:0.73rem;color:rgba(255,255,255,0.6);margin-bottom:0.35rem}
-.prog-bar{height:6px;background:rgba(255,255,255,0.07);border-radius:100px;overflow:hidden}
-.prog-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--blue),var(--accent));animation:fill-anim 2s ease forwards}
+.demo-particles{position:relative;height:100%;background:var(--dark);overflow:hidden;}
+.demo-particles canvas{position:absolute;inset:0;}
+.demo-cursor{display:flex;align-items:center;justify-content:center;height:100%;background:#0d1b2a;cursor:none;flex-direction:column;gap:.75rem;}
+.demo-cursor p{font-size:.78rem;color:rgba(255,255,255,.4);pointer-events:none;}
+.cursor-dot{width:8px;height:8px;background:var(--bl);border-radius:50%;position:absolute;pointer-events:none;transform:translate(-50%,-50%);z-index:10;}
+.cursor-ring{width:30px;height:30px;border:1.5px solid var(--bl);border-radius:50%;position:absolute;pointer-events:none;transform:translate(-50%,-50%);transition:all .1s ease;z-index:10;opacity:.6;}
+.demo-scroll{overflow-y:auto;height:100%;padding:.85rem;display:flex;flex-direction:column;gap:.5rem;}
+.sr-item{background:rgba(79,163,232,.08);border:1px solid rgba(79,163,232,.15);border-radius:6px;padding:.6rem .85rem;font-size:.78rem;opacity:0;transform:translateY(16px);transition:all .5s ease;color:rgba(255,255,255,.7);}
+.sr-item.visible{opacity:1;transform:none;}
+.demo-toggle{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:.85rem;transition:background .4s;}
+.demo-toggle.dark-mode{background:#0d1b2a;}
+.demo-toggle.light-mode{background:#f0f4f8;}
+.toggle-card{padding:.65rem 1.3rem;border-radius:8px;font-size:.82rem;transition:all .4s;text-align:center;}
+.dark-mode .toggle-card{background:#1a2d4a;color:#fff;border:1px solid rgba(79,163,232,.2);}
+.light-mode .toggle-card{background:#fff;color:#1a2535;border:1px solid #dde;}
+.toggle-switch{width:50px;height:25px;background:var(--blue);border-radius:100px;cursor:pointer;position:relative;transition:background .3s;}
+.toggle-switch::after{content:'';position:absolute;top:3px;left:3px;width:19px;height:19px;background:#fff;border-radius:50%;transition:transform .3s;}
+.light-mode .toggle-switch::after{transform:translateX(25px);}
+.toggle-label{font-size:.68rem;color:rgba(255,255,255,.5);letter-spacing:.1em;}
+.light-mode .toggle-label{color:rgba(0,0,0,.4);}
+.demo-counter{display:flex;gap:1.4rem;align-items:center;justify-content:center;height:100%;background:var(--dark);flex-wrap:wrap;padding:1rem;}
+.counter-item{text-align:center;}
+.counter-num{font-size:1.9rem;font-weight:800;color:var(--bl);display:block;line-height:1;}
+.counter-lbl{font-size:.62rem;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.4);margin-top:.25rem;}
+.demo-faq{overflow-y:auto;height:100%;padding:.65rem;display:flex;flex-direction:column;gap:.35rem;}
+.faq-item{border:1px solid rgba(79,163,232,.15);border-radius:6px;overflow:hidden;}
+.faq-q{padding:.58rem .85rem;font-size:.73rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:rgba(255,255,255,.85);background:rgba(255,255,255,.03);user-select:none;}
+.faq-q .arr{transition:transform .3s;color:var(--bl);font-size:.62rem;}
+.faq-item.open .faq-q .arr{transform:rotate(180deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease;font-size:.72rem;color:rgba(255,255,255,.45);line-height:1.6;padding:0 .85rem;}
+.faq-item.open .faq-a{max-height:80px;padding:.45rem .85rem;}
+.demo-testimonial{height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:1rem;background:#0a1628;overflow:hidden;}
+.test-wrap{text-align:center;}
+.test-quote{font-size:.78rem;color:rgba(255,255,255,.7);line-height:1.7;font-style:italic;margin-bottom:.6rem;}
+.test-author{font-size:.67rem;font-weight:700;color:var(--bl);letter-spacing:.08em;}
+.test-dots{display:flex;gap:5px;justify-content:center;margin-top:.6rem;}
+.test-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:background .2s;}
+.test-dot.active{background:var(--bl);}
+.demo-pricing{display:flex;gap:.45rem;height:100%;padding:.65rem;align-items:center;justify-content:center;background:var(--dark);}
+.price-card{flex:1;border:1px solid rgba(79,163,232,.15);border-radius:8px;padding:.6rem .35rem;text-align:center;background:rgba(255,255,255,.03);transition:transform .2s;}
+.price-card.featured{border-color:var(--blue);background:rgba(37,99,235,.12);transform:scale(1.04);}
+.price-name{font-size:.58rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.5);margin-bottom:.22rem;}
+.price-amt{font-size:1.15rem;font-weight:800;color:#fff;}
+.price-amt span{font-size:.58rem;font-weight:400;color:rgba(255,255,255,.4);}
+.price-badge{font-size:.52rem;background:var(--blue);color:#fff;padding:.1rem .4rem;border-radius:100px;display:inline-block;margin-top:.22rem;}
+.demo-form{padding:.8rem;height:100%;display:flex;flex-direction:column;gap:.4rem;justify-content:center;background:#0a1628;}
+.f-input{background:rgba(255,255,255,.06);border:1px solid rgba(79,163,232,.2);border-radius:6px;padding:.48rem .68rem;font-size:.73rem;color:#fff;font-family:inherit;outline:none;transition:border-color .2s;width:100%;}
+.f-input:focus{border-color:var(--bl);}
+.f-input::placeholder{color:rgba(255,255,255,.3);}
+.f-btn{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:.52rem;font-size:.73rem;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;}
+.f-btn:hover{background:#1d4ed8;}
+.demo-floating{height:100%;display:flex;align-items:center;justify-content:center;background:#0d1b2a;position:relative;}
+.float-bg{font-size:.73rem;color:rgba(255,255,255,.3);text-align:center;padding:1rem;}
+.float-btn{position:absolute;bottom:1rem;right:1rem;background:var(--blue);color:#fff;border:none;border-radius:100px;padding:.52rem .95rem;font-size:.72rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 20px rgba(37,99,235,.4);animation:pulse-btn 2s ease-in-out infinite;}
+@keyframes pulse-btn{0%,100%{box-shadow:0 4px 20px rgba(37,99,235,.4)}50%{box-shadow:0 4px 28px rgba(37,99,235,.7)}}
+.demo-progress{padding:1.05rem;height:100%;display:flex;flex-direction:column;gap:.7rem;justify-content:center;background:#0a1628;}
+.prog-label{display:flex;justify-content:space-between;font-size:.68rem;color:rgba(255,255,255,.6);margin-bottom:.28rem;}
+.prog-bar{height:5px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--blue),var(--bl));animation:fill-anim 2s ease forwards;}
 @keyframes fill-anim{from{width:0}}
-
-/* 13. Hover cards */
-.demo-hovercards{display:flex;gap:0.6rem;height:100%;padding:0.75rem;align-items:center;justify-content:center;background:#070f2b}
-.hcard{flex:1;height:120px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(79,163,232,0.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.4rem;cursor:pointer;transition:all 0.3s;position:relative;overflow:hidden}
-.hcard::before{content:'';position:absolute;inset:0;background:var(--blue);opacity:0;transition:opacity 0.3s}
-.hcard:hover::before{opacity:0.15}
-.hcard:hover{transform:translateY(-5px);border-color:var(--accent)}
-.hcard-icon{font-size:1.5rem;position:relative}
-.hcard-label{font-size:0.68rem;color:rgba(255,255,255,0.5);position:relative;text-align:center;padding:0 0.5rem}
-
-/* 14. Back to top */
-.demo-backtop{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0d1b2a;gap:0.8rem;padding:1rem;overflow-y:auto}
-.btt-content{font-size:0.75rem;color:rgba(255,255,255,0.3);line-height:1.8;text-align:center}
-.btt-btn{background:rgba(37,99,235,0.2);border:1px solid rgba(79,163,232,0.4);color:var(--accent);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.9rem;transition:all 0.2s}
-.btt-btn:hover{background:var(--blue);color:#fff}
-
-/* 15. Toast notification */
-.demo-toast{height:100%;background:#0a1628;position:relative;display:flex;align-items:center;justify-content:center}
-.toast-trigger{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:0.55rem 1.1rem;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif}
-.toast{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%) translateY(80px);background:#1a2d4a;border:1px solid rgba(79,163,232,0.3);border-radius:8px;padding:0.65rem 1rem;font-size:0.78rem;color:#fff;white-space:nowrap;transition:transform 0.3s ease,opacity 0.3s ease;opacity:0;display:flex;align-items:center;gap:0.5rem}
-.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
-.toast-icon{color:#22c55e;font-size:0.9rem}
-
-/* 16. Countdown */
-.demo-countdown{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#070f2b;gap:0.75rem}
-.cd-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.35)}
-.cd-units{display:flex;gap:0.75rem}
-.cd-unit{text-align:center}
-.cd-num{font-family:'Playfair Display',serif;font-size:2rem;color:var(--accent);display:block;background:rgba(79,163,232,0.08);border:1px solid rgba(79,163,232,0.15);border-radius:6px;width:54px;line-height:1.2;padding:0.2rem 0}
-.cd-sublabel{font-size:0.6rem;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:0.1em;margin-top:0.25rem}
-
-/* 17. Before/after slider */
-.demo-beforeafter{height:100%;position:relative;overflow:hidden;cursor:ew-resize;user-select:none}
-.ba-before{position:absolute;inset:0;background:linear-gradient(135deg,#1a2d4a,#0a1628);display:flex;align-items:center;justify-content:center}
-.ba-after{position:absolute;inset:0;background:linear-gradient(135deg,#2563eb,#4fa3e8);display:flex;align-items:center;justify-content:center;clip-path:inset(0 50% 0 0)}
-.ba-label{font-size:0.75rem;font-weight:700;letter-spacing:0.1em;color:rgba(255,255,255,0.8)}
-.ba-divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;transform:translateX(-50%);pointer-events:none}
-.ba-handle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:34px;height:34px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,0.3);pointer-events:none;font-size:0.7rem;color:#333}
-
-/* 18. Map embed */
-.demo-map{height:100%;background:#0a1628;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.6rem}
-.map-mock{width:85%;height:120px;background:rgba(79,163,232,0.06);border:1px solid rgba(79,163,232,0.15);border-radius:8px;position:relative;overflow:hidden}
-.map-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(79,163,232,0.08) 1px,transparent 1px),linear-gradient(90deg,rgba(79,163,232,0.08) 1px,transparent 1px);background-size:20px 20px}
-.map-pin{position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);color:var(--accent);font-size:1.4rem;animation:pin-bounce 1.5s ease-in-out infinite}
+.demo-hovercards{display:flex;gap:.45rem;height:100%;padding:.65rem;align-items:center;justify-content:center;background:var(--dark);}
+.hcard{flex:1;height:110px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.32rem;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
+.hcard::before{content:'';position:absolute;inset:0;background:var(--blue);opacity:0;transition:opacity .3s;}
+.hcard:hover::before{opacity:.15;}
+.hcard:hover{transform:translateY(-5px);border-color:var(--bl);}
+.hcard-icon{font-size:1.35rem;position:relative;}
+.hcard-label{font-size:.63rem;color:rgba(255,255,255,.5);position:relative;text-align:center;}
+.demo-backtop{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0d1b2a;gap:.7rem;padding:1rem;overflow-y:auto;}
+.btt-content{font-size:.72rem;color:rgba(255,255,255,.3);line-height:1.8;text-align:center;}
+.btt-btn{background:rgba(37,99,235,.2);border:1px solid rgba(79,163,232,.4);color:var(--bl);width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem;transition:all .2s;}
+.btt-btn:hover{background:var(--blue);color:#fff;}
+.demo-toast{height:100%;background:#0a1628;position:relative;display:flex;align-items:center;justify-content:center;}
+.toast-trigger{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:.48rem .95rem;font-size:.73rem;font-weight:700;cursor:pointer;font-family:inherit;}
+.toast{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%) translateY(70px);background:#1a2d4a;border:1px solid rgba(79,163,232,.3);border-radius:8px;padding:.58rem .95rem;font-size:.73rem;color:#fff;white-space:nowrap;transition:transform .3s,opacity .3s;opacity:0;display:flex;align-items:center;gap:.45rem;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.toast-icon{color:#22c55e;}
+.demo-countdown{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--dark);gap:.6rem;}
+.cd-label{font-size:.63rem;text-transform:uppercase;letter-spacing:.15em;color:rgba(255,255,255,.35);}
+.cd-units{display:flex;gap:.6rem;}
+.cd-unit{text-align:center;}
+.cd-num{font-size:1.75rem;font-weight:800;color:var(--bl);display:block;background:rgba(79,163,232,.08);border:1px solid rgba(79,163,232,.15);border-radius:6px;width:48px;line-height:1.2;padding:.12rem 0;}
+.cd-sublabel{font-size:.56rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.1em;margin-top:.18rem;}
+.demo-beforeafter{height:100%;position:relative;overflow:hidden;cursor:ew-resize;user-select:none;}
+.ba-before{position:absolute;inset:0;background:linear-gradient(135deg,#1a2d4a,#0a1628);display:flex;align-items:center;justify-content:center;}
+.ba-after{position:absolute;inset:0;background:linear-gradient(135deg,#2563eb,#4fa3e8);display:flex;align-items:center;justify-content:center;clip-path:inset(0 50% 0 0);}
+.ba-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;color:rgba(255,255,255,.8);}
+.ba-divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:#fff;transform:translateX(-50%);pointer-events:none;}
+.ba-handle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:30px;height:30px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.3);pointer-events:none;font-size:.68rem;color:#333;}
+.demo-map{height:100%;background:#0a1628;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.45rem;}
+.map-mock{width:85%;height:108px;background:rgba(79,163,232,.06);border:1px solid rgba(79,163,232,.15);border-radius:8px;position:relative;overflow:hidden;}
+.map-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(79,163,232,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(79,163,232,.08) 1px,transparent 1px);background-size:20px 20px;}
+.map-pin{position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);color:var(--bl);font-size:1.3rem;animation:pin-bounce 1.5s ease-in-out infinite;}
 @keyframes pin-bounce{0%,100%{transform:translate(-50%,-60%)}50%{transform:translate(-50%,-40%)}}
-.map-label{font-size:0.72rem;color:rgba(255,255,255,0.4);letter-spacing:0.08em}
-
-/* 19. Hamburger menu */
-.demo-hamburger{height:100%;background:#070f2b;position:relative;overflow:hidden}
-.hamburger-nav{position:absolute;top:0;left:0;right:0;height:50px;background:rgba(7,15,43,0.95);border-bottom:1px solid rgba(79,163,232,0.15);display:flex;align-items:center;justify-content:space-between;padding:0 1rem}
-.hbg-brand{font-size:0.85rem;color:var(--accent);font-weight:700}
-.hbg-btn{display:flex;flex-direction:column;gap:4px;cursor:pointer;padding:4px}
-.hbg-line{width:22px;height:2px;background:rgba(255,255,255,0.7);border-radius:2px;transition:all 0.3s}
-.hbg-btn.open .hbg-line:nth-child(1){transform:translateY(6px) rotate(45deg)}
-.hbg-btn.open .hbg-line:nth-child(2){opacity:0}
-.hbg-btn.open .hbg-line:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-.hbg-menu{position:absolute;top:50px;left:0;right:0;bottom:0;background:rgba(7,15,43,0.98);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;transform:translateX(-100%);transition:transform 0.35s ease}
-.hbg-menu.open{transform:none}
-.hbg-menu a{color:rgba(255,255,255,0.7);text-decoration:none;font-size:1.1rem;font-weight:700;letter-spacing:0.05em;transition:color 0.2s}
-.hbg-menu a:hover{color:var(--accent)}
-
-/* 20. Reading progress bar */
-.demo-readprog{height:100%;overflow-y:auto;position:relative}
-.read-prog-bar{position:sticky;top:0;height:3px;background:var(--accent);width:0%;transition:width 0.1s;z-index:10}
-.read-content{padding:1rem;color:rgba(255,255,255,0.5);font-size:0.78rem;line-height:1.8}
-
-/* 21. Image gallery */
-.demo-gallery{height:100%;padding:0.6rem;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:0.4rem;background:#070f2b}
-.gal-item{border-radius:5px;overflow:hidden;cursor:pointer;position:relative}
-.gal-item:first-child{grid-row:span 2}
-.gal-swatch{width:100%;height:100%;transition:transform 0.3s,filter 0.3s;filter:brightness(0.75)}
-.gal-item:hover .gal-swatch{transform:scale(1.08);filter:brightness(1)}
-.gal-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s;background:rgba(37,99,235,0.3)}
-.gal-item:hover .gal-overlay{opacity:1}
-
-/* 22. Sticky nav demo */
-.demo-stickynav{height:100%;overflow-y:auto;position:relative}
-.sticky-nav{position:sticky;top:0;background:rgba(7,15,43,0.97);border-bottom:1px solid rgba(79,163,232,0.2);padding:0.5rem 1rem;display:flex;gap:1rem;align-items:center;z-index:5;backdrop-filter:blur(8px)}
-.sn-logo{font-size:0.8rem;color:var(--accent);font-weight:700;font-family:'Playfair Display',serif}
-.sn-links{display:flex;gap:0.75rem;margin-left:auto}
-.sn-links a{font-size:0.7rem;color:rgba(255,255,255,0.5);text-decoration:none;transition:color 0.2s}
-.sn-links a:hover{color:var(--accent)}
-.sn-content{padding:1rem;color:rgba(255,255,255,0.3);font-size:0.75rem;line-height:1.9}
-
-/* 23. Parallax */
-.demo-parallax{height:100%;overflow:hidden;position:relative;cursor:default}
-.para-bg{position:absolute;inset:-20%;background:radial-gradient(ellipse at var(--mx,50%) var(--my,50%),rgba(37,99,235,0.3) 0%,transparent 60%),linear-gradient(135deg,#070f2b,#0d1b35);transition:transform 0.1s ease-out}
-.para-content{position:relative;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem}
-.para-card{background:rgba(255,255,255,0.06);border:1px solid rgba(79,163,232,0.2);border-radius:8px;padding:0.75rem 1.5rem;font-size:0.8rem;color:rgba(255,255,255,0.7);transition:transform 0.15s ease-out;text-align:center}
-
-/* 24. Promo banner */
-.demo-promo{height:100%;display:flex;flex-direction:column;justify-content:space-between;background:#0a1628;overflow:hidden}
-.promo-banner{background:var(--blue);padding:0.5rem 1rem;display:flex;align-items:center;justify-content:space-between}
-.promo-text{font-size:0.72rem;font-weight:700;color:#fff;letter-spacing:0.03em}
-.promo-close{background:none;border:none;color:rgba(255,255,255,0.6);cursor:pointer;font-size:0.9rem;transition:color 0.2s;font-family:'Lato',sans-serif}
-.promo-close:hover{color:#fff}
-.promo-body{flex:1;display:flex;align-items:center;justify-content:center;padding:1rem;flex-direction:column;gap:0.5rem}
-.promo-body h3{font-family:'Playfair Display',serif;font-size:1rem;color:#fff}
-.promo-body p{font-size:0.75rem;color:rgba(255,255,255,0.4);text-align:center}
-
-/* 25. Welcome popup */
-.demo-popup{height:100%;background:#070f2b;position:relative;display:flex;align-items:center;justify-content:center}
-.popup-backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center}
-.popup-box{background:#0d1b2a;border:1px solid rgba(79,163,232,0.25);border-radius:10px;padding:1.25rem;width:85%;text-align:center;position:relative}
-.popup-close-btn{position:absolute;top:0.5rem;right:0.75rem;background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:1rem;font-family:'Lato',sans-serif}
-.popup-icon{font-size:1.5rem;margin-bottom:0.5rem}
-.popup-box h3{font-family:'Playfair Display',serif;font-size:0.95rem;color:#fff;margin-bottom:0.35rem}
-.popup-box p{font-size:0.72rem;color:rgba(255,255,255,0.4);line-height:1.6;margin-bottom:0.75rem}
-.popup-cta{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:0.5rem 1rem;font-size:0.75rem;font-weight:700;cursor:pointer;font-family:'Lato',sans-serif}
-
+.map-lbl{font-size:.67rem;color:rgba(255,255,255,.4);letter-spacing:.08em;}
+.demo-hamburger{height:100%;background:var(--dark);position:relative;overflow:hidden;}
+.hamburger-nav{position:absolute;top:0;left:0;right:0;height:44px;background:rgba(7,15,43,.97);border-bottom:1px solid rgba(79,163,232,.15);display:flex;align-items:center;justify-content:space-between;padding:0 .85rem;}
+.hbg-brand{font-size:.8rem;color:var(--bl);font-weight:800;}
+.hbg-btn{display:flex;flex-direction:column;gap:4px;cursor:pointer;padding:4px;}
+.hbg-line{width:20px;height:2px;background:rgba(255,255,255,.7);border-radius:2px;transition:all .3s;}
+.hbg-btn.open .hbg-line:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.hbg-btn.open .hbg-line:nth-child(2){opacity:0;}
+.hbg-btn.open .hbg-line:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+.hbg-menu{position:absolute;top:44px;left:0;right:0;bottom:0;background:rgba(7,15,43,.98);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;transform:translateX(-100%);transition:transform .35s ease;}
+.hbg-menu.open{transform:none;}
+.hbg-menu a{color:rgba(255,255,255,.7);text-decoration:none;font-size:.95rem;font-weight:700;letter-spacing:.05em;transition:color .2s;}
+.hbg-menu a:hover{color:var(--bl);}
+.demo-readprog{height:100%;overflow-y:auto;position:relative;}
+.read-prog-bar{position:sticky;top:0;height:3px;background:var(--bl);width:0%;transition:width .1s;z-index:10;}
+.read-content{padding:.85rem;color:rgba(255,255,255,.5);font-size:.72rem;line-height:1.8;}
+.demo-gallery{height:100%;padding:.48rem;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:.32rem;background:var(--dark);}
+.gal-item{border-radius:5px;overflow:hidden;cursor:pointer;position:relative;}
+.gal-item:first-child{grid-row:span 2;}
+.gal-swatch{width:100%;height:100%;transition:transform .3s,filter .3s;filter:brightness(.75);}
+.gal-item:hover .gal-swatch{transform:scale(1.08);filter:brightness(1);}
+.gal-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;background:rgba(37,99,235,.3);}
+.gal-item:hover .gal-overlay{opacity:1;}
+.demo-stickynav{height:100%;overflow-y:auto;position:relative;}
+.sticky-nav{position:sticky;top:0;background:rgba(7,15,43,.97);border-bottom:1px solid rgba(79,163,232,.2);padding:.42rem .85rem;display:flex;gap:.8rem;align-items:center;z-index:5;backdrop-filter:blur(8px);}
+.sn-logo{font-size:.77rem;color:var(--bl);font-weight:800;}
+.sn-links{display:flex;gap:.6rem;margin-left:auto;}
+.sn-links a{font-size:.66rem;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s;}
+.sn-links a:hover{color:var(--bl);}
+.sn-content{padding:.85rem;color:rgba(255,255,255,.3);font-size:.7rem;line-height:1.9;}
+.demo-parallax{height:100%;overflow:hidden;position:relative;cursor:default;}
+.para-bg{position:absolute;inset:-20%;background:radial-gradient(ellipse at var(--mx,50%) var(--my,50%),rgba(37,99,235,.3) 0%,transparent 60%),linear-gradient(135deg,var(--dark),#0d1b35);transition:transform .1s ease-out;}
+.para-content{position:relative;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;}
+.para-card{background:rgba(255,255,255,.06);border:1px solid rgba(79,163,232,.2);border-radius:8px;padding:.62rem 1.2rem;font-size:.77rem;color:rgba(255,255,255,.7);transition:transform .15s ease-out;text-align:center;}
+.demo-promo{height:100%;display:flex;flex-direction:column;justify-content:space-between;background:#0a1628;overflow:hidden;}
+.promo-banner{background:var(--blue);padding:.42rem .9rem;display:flex;align-items:center;justify-content:space-between;}
+.promo-text{font-size:.68rem;font-weight:700;color:#fff;letter-spacing:.03em;}
+.promo-close{background:none;border:none;color:rgba(255,255,255,.6);cursor:pointer;font-size:.88rem;transition:color .2s;font-family:inherit;}
+.promo-close:hover{color:#fff;}
+.promo-body{flex:1;display:flex;align-items:center;justify-content:center;padding:1rem;flex-direction:column;gap:.42rem;}
+.promo-body h3{font-size:.92rem;font-weight:700;color:#fff;}
+.promo-body p{font-size:.7rem;color:rgba(255,255,255,.4);text-align:center;}
+.demo-popup{height:100%;background:var(--dark);position:relative;display:flex;align-items:center;justify-content:center;}
+.popup-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;}
+.popup-box{background:#0d1b2a;border:1px solid rgba(79,163,232,.25);border-radius:10px;padding:1rem;width:84%;text-align:center;position:relative;}
+.popup-close-btn{position:absolute;top:.38rem;right:.6rem;background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;font-size:.95rem;font-family:inherit;}
+.popup-icon{font-size:1.35rem;margin-bottom:.38rem;}
+.popup-box h3{font-size:.88rem;font-weight:700;color:#fff;margin-bottom:.28rem;}
+.popup-box p{font-size:.68rem;color:rgba(255,255,255,.4);line-height:1.6;margin-bottom:.62rem;}
+.popup-cta{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:.42rem .85rem;font-size:.7rem;font-weight:700;cursor:pointer;font-family:inherit;}
 /* FOOTER */
-footer{text-align:center;padding:3rem 2rem;border-top:1px solid rgba(79,163,232,0.1)}
-footer p{font-size:0.8rem;color:rgba(255,255,255,0.25)}
-footer a{color:var(--accent);text-decoration:none}
-
-/* RESPONSIVE */
-@media(max-width:600px){.grid{grid-template-columns:1fr;padding:0 1rem 4rem}.hero{padding:90px 1.25rem 50px}}
+footer{background:#060e26;text-align:center;padding:2rem;border-top:1px solid rgba(255,255,255,.06);}
+footer p{font-size:12px;color:rgba(255,255,255,.3);}
+footer a{color:var(--bl);text-decoration:none;}
+@media(max-width:600px){.grid{grid-template-columns:1fr;padding:0 1rem 4rem;}.hero{padding:88px 1.25rem 38px;}}
 </style>
 </head>
 <body>
-
-<nav>
-  <a href="https://norelo.ca" class="nav-logo">norelo<span>Retour au site principal</span></a>
-  <a href="https://norelo.ca" class="nav-back">← norelo.ca</a>
+<nav id="nav">
+  <a class="nl" href="https://norelo.ca">Nore<span>lo</span><span class="nld"></span></a>
+  <div class="nr">
+    <div class="nls">
+      <a href="https://norelo.ca#services" id="ni1">Services</a>
+      <a href="https://norelo.ca#pricing" id="ni2">Tarifs</a>
+      <a href="https://norelo.ca#contact" id="ni3">Contact</a>
+      <a href="https://norelo.ca" id="ni4">← norelo.ca</a>
+    </div>
+    <div class="lt">
+      <button id="bfr" class="on" onclick="sL('fr')">FR</button>
+      <button id="ben" onclick="sL('en')">EN</button>
+    </div>
+  </div>
 </nav>
-
 <div class="hero">
-  <span class="hero-tag">Catalogue d'inspiration</span>
-  <h1>Qu'est-ce que vous<br>voulez sur <span>votre site?</span></h1>
-  <p>Parcourez les fonctionnalités ci-dessous et notez celles qui vous plaisent. Chaque démonstration est réelle et interactive.</p>
-  <p class="hero-note">Cliquez, survolez et interagissez avec chaque exemple.</p>
+  <div class="hero-tag" id="h-tag">Catalogue d'inspiration</div>
+  <h1 id="h-title">Qu'est-ce que vous voulez<br>sur <span>votre site?</span></h1>
+  <p id="h-desc">Parcourez les fonctionnalités ci-dessous et notez celles qui vous plaisent. Chaque démonstration est réelle et interactive.</p>
+  <p class="hero-note" id="h-note">Cliquez, survolez et interagissez avec chaque exemple.</p>
 </div>
-
 <div class="filter-bar">
-  <button class="filter-btn active" onclick="filterCards('all',this)">Tout voir</button>
-  <button class="filter-btn" onclick="filterCards('animation',this)">Animations</button>
-  <button class="filter-btn" onclick="filterCards('navigation',this)">Navigation</button>
-  <button class="filter-btn" onclick="filterCards('contenu',this)">Contenu</button>
-  <button class="filter-btn" onclick="filterCards('formulaire',this)">Formulaires</button>
-  <button class="filter-btn" onclick="filterCards('interaction',this)">Interactions</button>
+  <button class="filter-btn active" id="fb-all"  onclick="filterCards('all',this)">Tout voir</button>
+  <button class="filter-btn" id="fb-anim" onclick="filterCards('animation',this)">Animations</button>
+  <button class="filter-btn" id="fb-nav"  onclick="filterCards('navigation',this)">Navigation</button>
+  <button class="filter-btn" id="fb-cont" onclick="filterCards('contenu',this)">Contenu</button>
+  <button class="filter-btn" id="fb-form" onclick="filterCards('formulaire',this)">Formulaires</button>
+  <button class="filter-btn" id="fb-int"  onclick="filterCards('interaction',this)">Interactions</button>
 </div>
-
 <div class="grid">
-
-  <!-- 1. TYPEWRITER -->
   <div class="card" data-cat="animation">
-    <div class="card-demo demo-typewriter"><div class="demo-label">Effet machine à écrire</div>
-      <span class="tw-text">Bienvenue chez nous!</span>
-    </div>
-    <div class="card-info">
-      <div class="card-cat">Animation</div>
-      <div class="card-title">Effet machine à écrire</div>
-      <div class="card-desc">Le texte se tape tout seul lettre par lettre. Idéal pour un slogan ou une phrase d'accroche dans le haut de votre page.</div>
-    </div>
+    <div class="card-demo demo-typewriter"><span class="tw-text">Bienvenue chez nous!</span></div>
+    <div class="card-label-bar"><span class="clb-cat" id="c1_cat">Animation</span><span class="clb-sep">·</span><span class="clb-title" id="c1_title">Effet machine à écrire</span></div>
+    <div class="card-info"><div class="card-desc" id="c1_desc">Le texte se tape tout seul lettre par lettre. Idéal pour un slogan ou une phrase d'accroche dans le haut de votre page.</div></div>
   </div>
-
-  <!-- 2. PARTICLES -->
   <div class="card" data-cat="animation">
-    <div class="card-demo demo-particles" id="particleDemo"><div class="demo-label">Fond de particules</div>
-      <canvas id="particleCanvas"></canvas>
-    </div>
-    <div class="card-info">
-      <div class="card-cat">Animation</div>
-      <div class="card-title">Fond de particules animées</div>
-      <div class="card-desc">Un fond vivant avec des points qui bougent et se connectent. Crée une ambiance moderne et technologique.</div>
-    </div>
+    <div class="card-demo demo-particles" id="particleDemo"><canvas id="particleCanvas"></canvas></div>
+    <div class="card-label-bar"><span class="clb-cat" id="c2_cat">Animation</span><span class="clb-sep">·</span><span class="clb-title" id="c2_title">Fond de particules animées</span></div>
+    <div class="card-info"><div class="card-desc" id="c2_desc">Un fond vivant avec des points qui bougent et se connectent. Crée une ambiance moderne et technologique.</div></div>
   </div>
-
-  <!-- 3. CUSTOM CURSOR -->
   <div class="card" data-cat="interaction">
-    <div class="card-demo demo-cursor" id="cursorDemo"><div class="demo-label">Curseur personnalisé</div>
-      <span style="font-size:1.5rem">🐾</span>
-      <p>Déplacez votre souris ici</p>
-    </div>
-    <div class="card-info">
-      <div class="card-cat">Interaction</div>
-      <div class="card-title">Curseur personnalisé</div>
-      <div class="card-desc">Remplacez le curseur standard par un design unique qui correspond à votre marque. Mémorable et distinctif.</div>
-    </div>
+    <div class="card-demo demo-cursor" id="cursorDemo"><span style="font-size:1.4rem">🐾</span><p>Déplacez votre souris ici</p></div>
+    <div class="card-label-bar"><span class="clb-cat" id="c3_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c3_title">Curseur personnalisé</span></div>
+    <div class="card-info"><div class="card-desc" id="c3_desc">Remplacez le curseur standard par un design unique qui correspond à votre marque. Mémorable et distinctif.</div></div>
   </div>
-
-  <!-- 4. SCROLL REVEAL -->
   <div class="card" data-cat="animation">
-    <div class="card-demo demo-scroll" id="scrollDemo"><div class="demo-label">Révélation au défilement</div>
-      <div class="sr-item">✦ Nos services professionnels</div>
-      <div class="sr-item">✦ Expertise locale depuis 2020</div>
-      <div class="sr-item">✦ Satisfaction garantie</div>
-      <div class="sr-item">✦ Disponible 7 jours sur 7</div>
-      <div class="sr-item">✦ Devis gratuit en 24h</div>
+    <div class="card-demo demo-scroll" id="scrollDemo">
+      <div class="sr-item">✦ Nos services professionnels</div><div class="sr-item">✦ Expertise locale depuis 2020</div><div class="sr-item">✦ Satisfaction garantie</div><div class="sr-item">✦ Disponible 7 jours sur 7</div><div class="sr-item">✦ Devis gratuit en 24h</div>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Animation</div>
-      <div class="card-title">Révélation au défilement</div>
-      <div class="card-desc">Les éléments apparaissent en fondu au fur et à mesure que le visiteur fait défiler la page. Donne de la vie à chaque section.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c4_cat">Animation</span><span class="clb-sep">·</span><span class="clb-title" id="c4_title">Révélation au défilement</span></div>
+    <div class="card-info"><div class="card-desc" id="c4_desc">Les éléments apparaissent en fondu au fur et à mesure que le visiteur fait défiler la page. Donne de la vie à chaque section.</div></div>
   </div>
-
-  <!-- 5. DARK / LIGHT TOGGLE -->
   <div class="card" data-cat="interaction">
-    <div class="card-demo demo-toggle dark-mode" id="toggleDemo"><div class="demo-label">Mode sombre / clair</div>
+    <div class="card-demo demo-toggle dark-mode" id="toggleDemo">
       <div class="toggle-card" id="toggleCard">Apparence de votre site</div>
       <div class="toggle-switch" id="toggleSwitch" onclick="toggleMode()"></div>
       <div class="toggle-label" id="toggleLabel">Mode sombre activé</div>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Interaction</div>
-      <div class="card-title">Mode sombre / mode clair</div>
-      <div class="card-desc">Un bouton permet à vos visiteurs de choisir entre un thème sombre et clair. Confort visuel optimal.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c5_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c5_title">Mode sombre / clair</span></div>
+    <div class="card-info"><div class="card-desc" id="c5_desc">Un bouton permet à vos visiteurs de choisir entre un thème sombre et clair. Confort visuel optimal.</div></div>
   </div>
-
-  <!-- 6. ANIMATED COUNTER -->
   <div class="card" data-cat="animation">
-    <div class="card-demo demo-counter" id="counterDemo"><div class="demo-label">Compteurs animés</div>
+    <div class="card-demo demo-counter" id="counterDemo">
       <div class="counter-item"><span class="counter-num" data-target="247" data-suffix="">0</span><div class="counter-lbl">Clients</div></div>
       <div class="counter-item"><span class="counter-num" data-target="12" data-suffix="ans">0</span><div class="counter-lbl">Expérience</div></div>
       <div class="counter-item"><span class="counter-num" data-target="98" data-suffix="%">0</span><div class="counter-lbl">Satisfaction</div></div>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Animation</div>
-      <div class="card-title">Compteurs animés</div>
-      <div class="card-desc">Des chiffres qui comptent jusqu'à leur valeur finale. Parfait pour afficher vos statistiques et renforcer la confiance.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c6_cat">Animation</span><span class="clb-sep">·</span><span class="clb-title" id="c6_title">Compteurs animés</span></div>
+    <div class="card-info"><div class="card-desc" id="c6_desc">Des chiffres qui comptent jusqu'à leur valeur finale. Parfait pour afficher vos statistiques et renforcer la confiance.</div></div>
   </div>
-
-  <!-- 7. FAQ ACCORDION -->
   <div class="card" data-cat="contenu">
-    <div class="card-demo demo-faq"><div class="demo-label">FAQ accordéon</div>
-      <div class="faq-item open">
-        <div class="faq-q" onclick="toggleFaq(this)">Acceptez-vous les nouveaux clients? <span class="arr">▼</span></div>
-        <div class="faq-a">Oui, nous accueillons de nouveaux clients toute l'année. Contactez-nous pour prendre rendez-vous.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Quelles sont vos heures d'ouverture? <span class="arr">▼</span></div>
-        <div class="faq-a">Nous sommes ouverts du lundi au vendredi de 9h à 17h, et le samedi sur rendez-vous.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Offrez-vous des devis gratuits? <span class="arr">▼</span></div>
-        <div class="faq-a">Absolument! Tous nos devis sont gratuits et sans engagement. Réponse en 24 heures.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">Déplacez-vous à domicile? <span class="arr">▼</span></div>
-        <div class="faq-a">Oui, nous offrons un service à domicile dans toute la région des Laurentides.</div>
-      </div>
+    <div class="card-demo demo-faq">
+      <div class="faq-item open"><div class="faq-q" onclick="toggleFaq(this)">Acceptez-vous les nouveaux clients? <span class="arr">▼</span></div><div class="faq-a">Oui, nous accueillons de nouveaux clients toute l'année.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Quelles sont vos heures d'ouverture? <span class="arr">▼</span></div><div class="faq-a">Lundi au vendredi 9h–17h, samedi sur rendez-vous.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Offrez-vous des devis gratuits? <span class="arr">▼</span></div><div class="faq-a">Absolument! Gratuits et sans engagement.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Déplacez-vous à domicile? <span class="arr">▼</span></div><div class="faq-a">Oui, dans toute la région des Laurentides.</div></div>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Contenu</div>
-      <div class="card-title">Section FAQ accordéon</div>
-      <div class="card-desc">Une liste de questions fréquentes qui s'ouvrent et se ferment au clic. Réduit les appels inutiles.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c7_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c7_title">FAQ accordéon</span></div>
+    <div class="card-info"><div class="card-desc" id="c7_desc">Une liste de questions fréquentes qui s'ouvrent et se ferment au clic. Réduit les appels inutiles.</div></div>
   </div>
-
-  <!-- 8. TESTIMONIAL SLIDER -->
   <div class="card" data-cat="contenu">
-    <div class="card-demo demo-testimonial"><div class="demo-label">Carrousel de témoignages</div>
-      <div class="test-wrap" id="testWrap">
-        <div class="test-quote" id="testQuote">"Service exceptionnel, à l'écoute de nos besoins. Je recommande sans hésiter à tous mes amis!"</div>
-        <div class="test-author" id="testAuthor">— Marie-Claude B., Saint-Eustache</div>
-      </div>
+    <div class="card-demo demo-testimonial">
+      <div class="test-wrap"><div class="test-quote" id="testQuote">"Service exceptionnel, à l'écoute de nos besoins. Je recommande sans hésiter!"</div><div class="test-author" id="testAuthor">— Marie-Claude B., Saint-Eustache</div></div>
       <div class="test-dots" id="testDots"></div>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Contenu</div>
-      <div class="card-title">Carrousel de témoignages</div>
-      <div class="card-desc">Vos avis clients défilent automatiquement. Renforce la crédibilité et la confiance des nouveaux visiteurs.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c8_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c8_title">Carrousel de témoignages</span></div>
+    <div class="card-info"><div class="card-desc" id="c8_desc">Vos avis clients défilent automatiquement. Renforce la crédibilité et la confiance des nouveaux visiteurs.</div></div>
   </div>
-
-  <!-- 9. PRICING TABLE -->
   <div class="card" data-cat="contenu">
-    <div class="card-demo demo-pricing"><div class="demo-label">Tableau de tarification</div>
-      <div class="price-card">
-        <div class="price-name">Essentiel</div>
-        <div class="price-amt">500<span>$</span></div>
-      </div>
-      <div class="price-card featured">
-        <div class="price-name">Professionnel</div>
-        <div class="price-amt">1200<span>$</span></div>
-        <div class="price-badge">Populaire</div>
-      </div>
-      <div class="price-card">
-        <div class="price-name">Premium</div>
-        <div class="price-amt">Sur<span> mesure</span></div>
-      </div>
+    <div class="card-demo demo-pricing">
+      <div class="price-card"><div class="price-name">Essentiel</div><div class="price-amt">500<span>$</span></div></div>
+      <div class="price-card featured"><div class="price-name">Professionnel</div><div class="price-amt">1200<span>$</span></div><div class="price-badge">Populaire</div></div>
+      <div class="price-card"><div class="price-name">Premium</div><div class="price-amt">Sur<span> mesure</span></div></div>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Contenu</div>
-      <div class="card-title">Tableau de tarification</div>
-      <div class="card-desc">Présentez vos forfaits clairement avec une option mise en valeur. Facilite la décision du client.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c9_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c9_title">Tableau de tarification</span></div>
+    <div class="card-info"><div class="card-desc" id="c9_desc">Présentez vos forfaits clairement avec une option mise en valeur. Facilite la décision du client.</div></div>
   </div>
-
-  <!-- 10. CONTACT FORM -->
   <div class="card" data-cat="formulaire">
-    <div class="card-demo demo-form"><div class="demo-label">Formulaire de contact</div>
+    <div class="card-demo demo-form">
       <input class="f-input" type="text" placeholder="Votre nom complet">
       <input class="f-input" type="email" placeholder="Votre courriel">
       <input class="f-input" type="tel" placeholder="Votre téléphone">
       <textarea class="f-input" rows="2" placeholder="Votre message..."></textarea>
       <button class="f-btn">Envoyer le message</button>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Formulaire</div>
-      <div class="card-title">Formulaire de contact</div>
-      <div class="card-desc">Un formulaire propre et fonctionnel qui vous envoie les messages directement par courriel. Indispensable.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c10_cat">Formulaire</span><span class="clb-sep">·</span><span class="clb-title" id="c10_title">Formulaire de contact</span></div>
+    <div class="card-info"><div class="card-desc" id="c10_desc">Un formulaire propre et fonctionnel qui vous envoie les messages directement par courriel. Indispensable.</div></div>
   </div>
-
-  <!-- 11. FLOATING BUTTON -->
   <div class="card" data-cat="interaction">
-    <div class="card-demo demo-floating"><div class="demo-label">Bouton flottant</div>
+    <div class="card-demo demo-floating">
       <div class="float-bg">Contenu de la page...<br><br>Le bouton reste toujours visible<br>peu importe où le visiteur se trouve.</div>
       <button class="float-btn">📞 Nous appeler</button>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Interaction</div>
-      <div class="card-title">Bouton d'appel flottant</div>
-      <div class="card-desc">Un bouton fixe toujours visible qui invite le visiteur à vous appeler ou vous contacter. Augmente les conversions.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c11_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c11_title">Bouton d'appel flottant</span></div>
+    <div class="card-info"><div class="card-desc" id="c11_desc">Un bouton fixe toujours visible qui invite le visiteur à vous appeler ou vous contacter. Augmente les conversions.</div></div>
   </div>
-
-  <!-- 12. PROGRESS BARS -->
   <div class="card" data-cat="animation">
-    <div class="card-demo demo-progress"><div class="demo-label">Barres de compétences</div>
-      <div class="prog-item">
-        <div class="prog-label"><span>Coupe & Coloration</span><span>95%</span></div>
-        <div class="prog-bar"><div class="prog-fill" style="width:95%"></div></div>
-      </div>
-      <div class="prog-item">
-        <div class="prog-label"><span>Soins capillaires</span><span>88%</span></div>
-        <div class="prog-bar"><div class="prog-fill" style="width:88%"></div></div>
-      </div>
-      <div class="prog-item">
-        <div class="prog-label"><span>Techniques avancées</span><span>80%</span></div>
-        <div class="prog-bar"><div class="prog-fill" style="width:80%"></div></div>
-      </div>
-      <div class="prog-item">
-        <div class="prog-label"><span>Satisfaction client</span><span>100%</span></div>
-        <div class="prog-bar"><div class="prog-fill" style="width:100%"></div></div>
-      </div>
+    <div class="card-demo demo-progress">
+      <div><div class="prog-label"><span>Coupe & Coloration</span><span>95%</span></div><div class="prog-bar"><div class="prog-fill" style="width:95%"></div></div></div>
+      <div><div class="prog-label"><span>Soins capillaires</span><span>88%</span></div><div class="prog-bar"><div class="prog-fill" style="width:88%"></div></div></div>
+      <div><div class="prog-label"><span>Techniques avancées</span><span>80%</span></div><div class="prog-bar"><div class="prog-fill" style="width:80%"></div></div></div>
+      <div><div class="prog-label"><span>Satisfaction client</span><span>100%</span></div><div class="prog-bar"><div class="prog-fill" style="width:100%"></div></div></div>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Animation</div>
-      <div class="card-title">Barres de compétences</div>
-      <div class="card-desc">Présentez vos expertises de façon visuelle. Les barres se remplissent lors du défilement, captant l'attention.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c12_cat">Animation</span><span class="clb-sep">·</span><span class="clb-title" id="c12_title">Barres de compétences</span></div>
+    <div class="card-info"><div class="card-desc" id="c12_desc">Présentez vos expertises de façon visuelle. Les barres se remplissent lors du défilement, captant l'attention.</div></div>
   </div>
-
-  <!-- 13. HOVER CARDS -->
   <div class="card" data-cat="interaction">
-    <div class="card-demo demo-hovercards"><div class="demo-label">Cartes de services animées</div>
+    <div class="card-demo demo-hovercards">
       <div class="hcard"><div class="hcard-icon">✂️</div><div class="hcard-label">Coupe</div></div>
       <div class="hcard"><div class="hcard-icon">🐾</div><div class="hcard-label">Toilettage</div></div>
       <div class="hcard"><div class="hcard-icon">💆</div><div class="hcard-label">Massage</div></div>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Interaction</div>
-      <div class="card-title">Cartes de services animées</div>
-      <div class="card-desc">Survolez les cartes pour voir les effets. Présentez vos services de façon engageante et mémorable.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c13_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c13_title">Cartes de services animées</span></div>
+    <div class="card-info"><div class="card-desc" id="c13_desc">Survolez les cartes pour voir les effets. Présentez vos services de façon engageante et mémorable.</div></div>
   </div>
-
-  <!-- 14. BACK TO TOP -->
   <div class="card" data-cat="navigation">
-    <div class="card-demo demo-backtop"><div class="demo-label">Bouton retour en haut</div>
-      <div class="btt-content">Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco...</div>
-      <div class="btt-btn" title="Retour en haut">↑</div>
-      <div style="font-size:0.7rem;color:rgba(255,255,255,0.25)">Retour en haut</div>
+    <div class="card-demo demo-backtop">
+      <div class="btt-content">Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud...</div>
+      <div class="btt-btn">↑</div>
+      <div style="font-size:.63rem;color:rgba(255,255,255,.25)" id="btt-lbl">Retour en haut</div>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Navigation</div>
-      <div class="card-title">Bouton retour en haut</div>
-      <div class="card-desc">Un bouton apparaît après défilement pour remonter d'un clic en haut de la page. Améliore l'expérience sur les longues pages.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c14_cat">Navigation</span><span class="clb-sep">·</span><span class="clb-title" id="c14_title">Bouton retour en haut</span></div>
+    <div class="card-info"><div class="card-desc" id="c14_desc">Un bouton apparaît après défilement pour remonter d'un clic en haut de la page. Améliore l'expérience sur les longues pages.</div></div>
   </div>
-
-  <!-- 15. TOAST -->
   <div class="card" data-cat="interaction">
-    <div class="card-demo demo-toast"><div class="demo-label">Notification toast</div>
-      <button class="toast-trigger" onclick="showToast()">Cliquez pour tester</button>
-      <div class="toast" id="toast"><span class="toast-icon">✓</span> Message envoyé avec succès!</div>
+    <div class="card-demo demo-toast">
+      <button class="toast-trigger" id="toast-btn" onclick="showToast()">Cliquez pour tester</button>
+      <div class="toast" id="toast"><span class="toast-icon">✓</span><span id="toast-msg"> Message envoyé avec succès!</span></div>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Interaction</div>
-      <div class="card-title">Notification toast</div>
-      <div class="card-desc">Une petite notification discrète qui confirme une action — formulaire envoyé, ajout au panier, etc. Feedback immédiat.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c15_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c15_title">Notification toast</span></div>
+    <div class="card-info"><div class="card-desc" id="c15_desc">Une petite notification discrète qui confirme une action — formulaire envoyé, ajout au panier, etc. Feedback immédiat.</div></div>
   </div>
-
-  <!-- 16. COUNTDOWN -->
   <div class="card" data-cat="contenu">
-    <div class="card-demo demo-countdown"><div class="demo-label">Compte à rebours</div>
-      <div class="cd-label">Offre spéciale — expire dans</div>
+    <div class="card-demo demo-countdown">
+      <div class="cd-label" id="cd-label">Offre spéciale — expire dans</div>
       <div class="cd-units">
-        <div class="cd-unit"><span class="cd-num" id="cd-d">07</span><div class="cd-sublabel">Jours</div></div>
-        <div class="cd-unit"><span class="cd-num" id="cd-h">14</span><div class="cd-sublabel">Heures</div></div>
-        <div class="cd-unit"><span class="cd-num" id="cd-m">32</span><div class="cd-sublabel">Minutes</div></div>
-        <div class="cd-unit"><span class="cd-num" id="cd-s">00</span><div class="cd-sublabel">Secondes</div></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-d">07</span><div class="cd-sublabel" id="cd-days">Jours</div></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-h">14</span><div class="cd-sublabel" id="cd-hours">Heures</div></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-m">32</span><div class="cd-sublabel" id="cd-mins">Minutes</div></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-s">00</span><div class="cd-sublabel" id="cd-secs">Secondes</div></div>
       </div>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Contenu</div>
-      <div class="card-title">Compte à rebours</div>
-      <div class="card-desc">Un minuteur qui décompte vers une date précise. Idéal pour les promotions, lancements, événements saisonniers.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c16_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c16_title">Compte à rebours</span></div>
+    <div class="card-info"><div class="card-desc" id="c16_desc">Un minuteur qui décompte vers une date précise. Idéal pour les promotions, lancements, événements saisonniers.</div></div>
   </div>
-
-  <!-- 17. BEFORE/AFTER -->
   <div class="card" data-cat="interaction">
-    <div class="card-demo demo-beforeafter" id="baDemo"><div class="demo-label">Comparateur avant / après</div>
-      <div class="ba-before"><span class="ba-label">AVANT</span></div>
-      <div class="ba-after" id="baAfter"><span class="ba-label">APRÈS</span></div>
+    <div class="card-demo demo-beforeafter" id="baDemo">
+      <div class="ba-before"><span class="ba-label" id="ba-avant">AVANT</span></div>
+      <div class="ba-after" id="baAfter"><span class="ba-label" id="ba-apres">APRÈS</span></div>
       <div class="ba-divider" id="baDivider"></div>
       <div class="ba-handle" id="baHandle">⇔</div>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Interaction</div>
-      <div class="card-title">Comparateur avant / après</div>
-      <div class="card-desc">Glissez pour comparer deux images. Parfait pour les toiletteurs, coiffeurs, rénovateurs — montrez votre travail!</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c17_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c17_title">Comparateur avant / après</span></div>
+    <div class="card-info"><div class="card-desc" id="c17_desc">Glissez pour comparer deux images. Parfait pour les toiletteurs, coiffeurs, rénovateurs — montrez votre travail!</div></div>
   </div>
-
-  <!-- 18. MAP -->
   <div class="card" data-cat="contenu">
-    <div class="card-demo demo-map"><div class="demo-label">Google Maps intégrée</div>
-      <div class="map-mock">
-        <div class="map-grid"></div>
-        <div class="map-pin">📍</div>
-      </div>
-      <div class="map-label">Intégration Google Maps</div>
+    <div class="card-demo demo-map">
+      <div class="map-mock"><div class="map-grid"></div><div class="map-pin">📍</div></div>
+      <div class="map-lbl" id="map-lbl">Intégration Google Maps</div>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Contenu</div>
-      <div class="card-title">Carte Google Maps intégrée</div>
-      <div class="card-desc">Votre adresse affichée sur une carte interactive. Les visiteurs peuvent obtenir l'itinéraire en un clic.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c18_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c18_title">Carte Google Maps intégrée</span></div>
+    <div class="card-info"><div class="card-desc" id="c18_desc">Votre adresse affichée sur une carte interactive. Les visiteurs peuvent obtenir l'itinéraire en un clic.</div></div>
   </div>
-
-  <!-- 19. HAMBURGER -->
   <div class="card" data-cat="navigation">
-    <div class="card-demo demo-hamburger"><div class="demo-label">Menu hamburger mobile</div>
+    <div class="card-demo demo-hamburger">
       <div class="hamburger-nav">
         <div class="hbg-brand">MonSite</div>
         <div class="hbg-btn" id="hbgBtn" onclick="toggleHamburger()">
-          <div class="hbg-line"></div>
-          <div class="hbg-line"></div>
-          <div class="hbg-line"></div>
+          <div class="hbg-line"></div><div class="hbg-line"></div><div class="hbg-line"></div>
         </div>
       </div>
       <div class="hbg-menu" id="hbgMenu">
-        <a href="#">Accueil</a>
-        <a href="#">Services</a>
-        <a href="#">À propos</a>
-        <a href="#">Contact</a>
+        <a href="#">Accueil</a><a href="#">Services</a><a href="#">À propos</a><a href="#">Contact</a>
       </div>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Navigation</div>
-      <div class="card-title">Menu hamburger mobile</div>
-      <div class="card-desc">Sur mobile, le menu se replie derrière un bouton et s'ouvre en glissant. Essentiel pour une bonne expérience mobile.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c19_cat">Navigation</span><span class="clb-sep">·</span><span class="clb-title" id="c19_title">Menu hamburger mobile</span></div>
+    <div class="card-info"><div class="card-desc" id="c19_desc">Sur mobile, le menu se replie derrière un bouton et s'ouvre en glissant. Essentiel pour une bonne expérience mobile.</div></div>
   </div>
-
-  <!-- 20. READING PROGRESS -->
   <div class="card" data-cat="navigation">
-    <div class="card-demo demo-readprog" id="readProg"><div class="demo-label">Barre de progression lecture</div>
+    <div class="card-demo demo-readprog" id="readProg">
       <div class="read-prog-bar" id="readBar"></div>
-      <div class="read-content">
-        <strong style="color:rgba(255,255,255,0.6)">Faites défiler ce texte ↓</strong><br><br>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.<br><br>
-        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.<br><br>
-        Sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br><br>
-        ✓ Vous avez lu jusqu'ici!
-      </div>
+      <div class="read-content"><strong style="color:rgba(255,255,255,.6)" id="scroll-hint">Faites défiler ce texte ↓</strong><br><br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.<br><br>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.<br><br>✓ <span id="read-done">Vous avez lu jusqu'ici!</span></div>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Navigation</div>
-      <div class="card-title">Barre de progression de lecture</div>
-      <div class="card-desc">Une barre en haut de page indique à quel point le visiteur a progressé dans la lecture. Utile pour les blogs et articles.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c20_cat">Navigation</span><span class="clb-sep">·</span><span class="clb-title" id="c20_title">Barre de progression de lecture</span></div>
+    <div class="card-info"><div class="card-desc" id="c20_desc">Une barre en haut de page indique à quel point le visiteur a progressé dans la lecture. Utile pour les blogs et articles.</div></div>
   </div>
-
-  <!-- 21. GALLERY -->
   <div class="card" data-cat="contenu">
-    <div class="card-demo demo-gallery"><div class="demo-label">Galerie de photos</div>
+    <div class="card-demo demo-gallery">
       <div class="gal-item"><div class="gal-swatch" style="background:linear-gradient(135deg,#1a3a6b,#2563eb);height:100%"></div><div class="gal-overlay">🔍</div></div>
       <div class="gal-item"><div class="gal-swatch" style="background:linear-gradient(135deg,#0f4c3a,#1d9e75);height:100%"></div><div class="gal-overlay">🔍</div></div>
       <div class="gal-item"><div class="gal-swatch" style="background:linear-gradient(135deg,#4a1515,#c0392b);height:100%"></div><div class="gal-overlay">🔍</div></div>
       <div class="gal-item"><div class="gal-swatch" style="background:linear-gradient(135deg,#3d2b1a,#e67e22);height:100%"></div><div class="gal-overlay">🔍</div></div>
       <div class="gal-item"><div class="gal-swatch" style="background:linear-gradient(135deg,#2c1a4a,#8e44ad);height:100%"></div><div class="gal-overlay">🔍</div></div>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Contenu</div>
-      <div class="card-title">Galerie de photos</div>
-      <div class="card-desc">Présentez vos réalisations en grille. Survolez pour agrandir. Idéal pour tout métier visuel.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c21_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c21_title">Galerie de photos</span></div>
+    <div class="card-info"><div class="card-desc" id="c21_desc">Présentez vos réalisations en grille. Survolez pour agrandir. Idéal pour tout métier visuel.</div></div>
   </div>
-
-  <!-- 22. STICKY NAV -->
   <div class="card" data-cat="navigation">
-    <div class="card-demo demo-stickynav" id="stickyDemo"><div class="demo-label">Navigation collante</div>
-      <div class="sticky-nav">
-        <div class="sn-logo">MonSite</div>
-        <div class="sn-links"><a href="#">Accueil</a><a href="#">Services</a><a href="#">Contact</a></div>
-      </div>
-      <div class="sn-content">Faites défiler ce texte pour voir la navigation rester en place en haut de page.<br><br>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore.<br><br>Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br><br>↑ La navigation reste toujours visible!</div>
+    <div class="card-demo demo-stickynav" id="stickyDemo">
+      <div class="sticky-nav"><div class="sn-logo">MonSite</div><div class="sn-links"><a href="#">Accueil</a><a href="#">Services</a><a href="#">Contact</a></div></div>
+      <div class="sn-content"><span id="sticky-hint">Faites défiler pour voir la navigation collante.</span><br><br>Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore.<br><br>Ut enim ad minim veniam quis nostrud exercitation ullamco laboris.<br><br>↑ <span id="sticky-note">La navigation reste toujours visible!</span></div>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Navigation</div>
-      <div class="card-title">Navigation collante (sticky)</div>
-      <div class="card-desc">Le menu reste fixé en haut de la fenêtre même en défilant. Le visiteur peut naviguer à tout moment.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c22_cat">Navigation</span><span class="clb-sep">·</span><span class="clb-title" id="c22_title">Navigation collante (sticky)</span></div>
+    <div class="card-info"><div class="card-desc" id="c22_desc">Le menu reste fixé en haut de la fenêtre même en défilant. Le visiteur peut naviguer à tout moment.</div></div>
   </div>
-
-  <!-- 23. PARALLAX -->
   <div class="card" data-cat="animation">
-    <div class="card-demo demo-parallax" id="paraDemo"><div class="demo-label">Effet parallaxe</div>
+    <div class="card-demo demo-parallax" id="paraDemo">
       <div class="para-bg" id="paraBg"></div>
       <div class="para-content">
-        <div class="para-card" id="paraCard1" style="--depth:0.03">Bougez votre souris ici</div>
-        <div class="para-card" id="paraCard2" style="--depth:0.06;font-size:0.7rem;opacity:0.7">Les éléments bougent à des vitesses différentes</div>
+        <div class="para-card" id="paraCard1">Bougez votre souris ici</div>
+        <div class="para-card" id="paraCard2" style="font-size:.7rem;opacity:.7">Les éléments bougent à des vitesses différentes</div>
       </div>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Animation</div>
-      <div class="card-title">Effet parallaxe</div>
-      <div class="card-desc">Le fond se déplace plus lentement que le contenu, créant une illusion de profondeur. Spectaculaire au premier regard.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c23_cat">Animation</span><span class="clb-sep">·</span><span class="clb-title" id="c23_title">Effet parallaxe</span></div>
+    <div class="card-info"><div class="card-desc" id="c23_desc">Le fond se déplace plus lentement que le contenu, créant une illusion de profondeur. Spectaculaire au premier regard.</div></div>
   </div>
-
-  <!-- 24. PROMO BANNER -->
   <div class="card" data-cat="contenu">
-    <div class="card-demo demo-promo" id="promoDemo"><div class="demo-label">Bannière promotionnelle</div>
-      <div class="promo-banner" id="promoBanner">
-        <span class="promo-text">🎉 Offre spéciale — 10% de rabais jusqu'au 30 avril!</span>
-        <button class="promo-close" onclick="closeBanner()">✕</button>
-      </div>
-      <div class="promo-body">
-        <h3>Bienvenue sur notre site</h3>
-        <p>La bannière promotionnelle peut être fermée par le visiteur et affiche n'importe quel message.</p>
-      </div>
+    <div class="card-demo demo-promo" id="promoDemo">
+      <div class="promo-banner" id="promoBanner"><span class="promo-text">🎉 Offre spéciale — 10% de rabais jusqu'au 30 avril!</span><button class="promo-close" onclick="closeBanner()">✕</button></div>
+      <div class="promo-body"><h3>Bienvenue sur notre site</h3><p id="promo-body-p">La bannière peut être fermée par le visiteur et affiche n'importe quel message.</p></div>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Contenu</div>
-      <div class="card-title">Bannière promotionnelle</div>
-      <div class="card-desc">Une bande en haut de page pour annoncer une promotion, un événement ou une info importante. Visible immédiatement.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c24_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c24_title">Bannière promotionnelle</span></div>
+    <div class="card-info"><div class="card-desc" id="c24_desc">Une bande en haut de page pour annoncer une promotion, un événement ou une info importante. Visible immédiatement.</div></div>
   </div>
-
-  <!-- 25. POPUP -->
   <div class="card" data-cat="interaction">
-    <div class="card-demo demo-popup" id="popupDemo"><div class="demo-label">Pop-up de bienvenue</div>
-      <div style="font-size:0.78rem;color:rgba(255,255,255,0.3)">Contenu de la page...</div>
+    <div class="card-demo demo-popup" id="popupDemo">
+      <div style="font-size:.73rem;color:rgba(255,255,255,.25)">Contenu de la page...</div>
       <div class="popup-backdrop" id="popupBackdrop">
         <div class="popup-box">
           <button class="popup-close-btn" onclick="closePopup()">✕</button>
           <div class="popup-icon">🎁</div>
-          <h3>Offre de bienvenue!</h3>
-          <p>Inscrivez-vous et recevez 15% de rabais sur votre première visite.</p>
-          <input class="f-input" type="email" placeholder="Votre courriel" style="margin-bottom:0.5rem;font-size:0.75rem">
-          <button class="popup-cta">Je profite de l'offre</button>
+          <h3 id="popup-title">Offre de bienvenue!</h3>
+          <p id="popup-desc">Inscrivez-vous et recevez 15% de rabais sur votre première visite.</p>
+          <input class="f-input" type="email" placeholder="Votre courriel" style="margin-bottom:.38rem;font-size:.7rem">
+          <button class="popup-cta" id="popup-cta">Je profite de l'offre</button>
         </div>
       </div>
     </div>
-    <div class="card-info">
-      <div class="card-cat">Interaction</div>
-      <div class="card-title">Pop-up de bienvenue</div>
-      <div class="card-desc">Une fenêtre qui apparaît après quelques secondes pour offrir une promotion ou collecter des courriels.</div>
-    </div>
+    <div class="card-label-bar"><span class="clb-cat" id="c25_cat">Interaction</span><span class="clb-sep">·</span><span class="clb-title" id="c25_title">Pop-up de bienvenue</span></div>
+    <div class="card-info"><div class="card-desc" id="c25_desc">Une fenêtre qui apparaît après quelques secondes pour offrir une promotion ou collecter des courriels.</div></div>
   </div>
-
 </div>
-
-<footer>
-  <p>Une fonctionnalité vous intéresse? Écrivez à <a href="mailto:norelo.danielb@gmail.com">norelo.danielb@gmail.com</a> — <a href="https://norelo.ca">norelo.ca</a></p>
-</footer>
-
+<footer><p id="footer-txt">Une fonctionnalité vous intéresse? Écrivez à <a href="mailto:norelo.danielb@gmail.com">norelo.danielb@gmail.com</a> — <a href="https://norelo.ca">norelo.ca</a></p></footer>
 <script>
-// FILTER
+const T={
+fr:{
+  'h-tag':"Catalogue d'inspiration",
+  'h-title':"Qu'est-ce que vous voulez<br>sur <span style='color:var(--bl)'>votre site?</span>",
+  'h-desc':"Parcourez les fonctionnalités ci-dessous et notez celles qui vous plaisent. Chaque démonstration est réelle et interactive.",
+  'h-note':"Cliquez, survolez et interagissez avec chaque exemple.",
+  'fb-all':"Tout voir",'fb-anim':"Animations",'fb-nav':"Navigation",'fb-cont':"Contenu",'fb-form':"Formulaires",'fb-int':"Interactions",
+  'ni1':"Services",'ni2':"Tarifs",'ni3':"Contact",'ni4':"← norelo.ca",
+  'c1_cat':"Animation",'c1_title':"Effet machine à écrire",'c1_desc':"Le texte se tape tout seul lettre par lettre. Idéal pour un slogan ou une phrase d'accroche dans le haut de votre page.",
+  'c2_cat':"Animation",'c2_title':"Fond de particules animées",'c2_desc':"Un fond vivant avec des points qui bougent et se connectent. Crée une ambiance moderne et technologique.",
+  'c3_cat':"Interaction",'c3_title':"Curseur personnalisé",'c3_desc':"Remplacez le curseur standard par un design unique qui correspond à votre marque. Mémorable et distinctif.",
+  'c4_cat':"Animation",'c4_title':"Révélation au défilement",'c4_desc':"Les éléments apparaissent en fondu au fur et à mesure que le visiteur fait défiler la page. Donne de la vie à chaque section.",
+  'c5_cat':"Interaction",'c5_title':"Mode sombre / clair",'c5_desc':"Un bouton permet à vos visiteurs de choisir entre un thème sombre et clair. Confort visuel optimal.",
+  'c6_cat':"Animation",'c6_title':"Compteurs animés",'c6_desc':"Des chiffres qui comptent jusqu'à leur valeur finale. Parfait pour afficher vos statistiques et renforcer la confiance.",
+  'c7_cat':"Contenu",'c7_title':"FAQ accordéon",'c7_desc':"Une liste de questions fréquentes qui s'ouvrent et se ferment au clic. Réduit les appels inutiles.",
+  'c8_cat':"Contenu",'c8_title':"Carrousel de témoignages",'c8_desc':"Vos avis clients défilent automatiquement. Renforce la crédibilité et la confiance des nouveaux visiteurs.",
+  'c9_cat':"Contenu",'c9_title':"Tableau de tarification",'c9_desc':"Présentez vos forfaits clairement avec une option mise en valeur. Facilite la décision du client.",
+  'c10_cat':"Formulaire",'c10_title':"Formulaire de contact",'c10_desc':"Un formulaire propre et fonctionnel qui vous envoie les messages directement par courriel. Indispensable.",
+  'c11_cat':"Interaction",'c11_title':"Bouton d'appel flottant",'c11_desc':"Un bouton fixe toujours visible qui invite le visiteur à vous appeler ou vous contacter. Augmente les conversions.",
+  'c12_cat':"Animation",'c12_title':"Barres de compétences",'c12_desc':"Présentez vos expertises de façon visuelle. Les barres se remplissent lors du défilement, captant l'attention.",
+  'c13_cat':"Interaction",'c13_title':"Cartes de services animées",'c13_desc':"Survolez les cartes pour voir les effets. Présentez vos services de façon engageante et mémorable.",
+  'c14_cat':"Navigation",'c14_title':"Bouton retour en haut",'c14_desc':"Un bouton apparaît après défilement pour remonter d'un clic en haut de la page. Améliore l'expérience sur les longues pages.",
+  'c15_cat':"Interaction",'c15_title':"Notification toast",'c15_desc':"Une petite notification discrète qui confirme une action — formulaire envoyé, ajout au panier, etc. Feedback immédiat.",
+  'c16_cat':"Contenu",'c16_title':"Compte à rebours",'c16_desc':"Un minuteur qui décompte vers une date précise. Idéal pour les promotions, lancements, événements saisonniers.",
+  'c17_cat':"Interaction",'c17_title':"Comparateur avant / après",'c17_desc':"Glissez pour comparer deux images. Parfait pour les toiletteurs, coiffeurs, rénovateurs — montrez votre travail!",
+  'c18_cat':"Contenu",'c18_title':"Carte Google Maps intégrée",'c18_desc':"Votre adresse affichée sur une carte interactive. Les visiteurs peuvent obtenir l'itinéraire en un clic.",
+  'c19_cat':"Navigation",'c19_title':"Menu hamburger mobile",'c19_desc':"Sur mobile, le menu se replie derrière un bouton et s'ouvre en glissant. Essentiel pour une bonne expérience mobile.",
+  'c20_cat':"Navigation",'c20_title':"Barre de progression de lecture",'c20_desc':"Une barre en haut de page indique à quel point le visiteur a progressé dans la lecture. Utile pour les blogs et articles.",
+  'c21_cat':"Contenu",'c21_title':"Galerie de photos",'c21_desc':"Présentez vos réalisations en grille. Survolez pour agrandir. Idéal pour tout métier visuel.",
+  'c22_cat':"Navigation",'c22_title':"Navigation collante (sticky)",'c22_desc':"Le menu reste fixé en haut de la fenêtre même en défilant. Le visiteur peut naviguer à tout moment.",
+  'c23_cat':"Animation",'c23_title':"Effet parallaxe",'c23_desc':"Le fond se déplace plus lentement que le contenu, créant une illusion de profondeur. Spectaculaire au premier regard.",
+  'c24_cat':"Contenu",'c24_title':"Bannière promotionnelle",'c24_desc':"Une bande en haut de page pour annoncer une promotion, un événement ou une info importante. Visible immédiatement.",
+  'c25_cat':"Interaction",'c25_title':"Pop-up de bienvenue",'c25_desc':"Une fenêtre qui apparaît après quelques secondes pour offrir une promotion ou collecter des courriels.",
+  'cd-label':"Offre spéciale — expire dans",'cd-days':"Jours",'cd-hours':"Heures",'cd-mins':"Minutes",'cd-secs':"Secondes",
+  'ba-avant':"AVANT",'ba-apres':"APRÈS",'map-lbl':"Intégration Google Maps",
+  'toast-btn':"Cliquez pour tester",'toast-msg':" Message envoyé avec succès!",'btt-lbl':"Retour en haut",
+  'scroll-hint':"Faites défiler ce texte ↓",'read-done':"Vous avez lu jusqu'ici!",
+  'sticky-hint':"Faites défiler pour voir la navigation collante.",'sticky-note':"La navigation reste toujours visible!",
+  'promo-body-p':"La bannière peut être fermée par le visiteur et affiche n'importe quel message.",
+  'popup-title':"Offre de bienvenue!",'popup-desc':"Inscrivez-vous et recevez 15% de rabais sur votre première visite.",'popup-cta':"Je profite de l'offre",
+  'footer-txt':"Une fonctionnalité vous intéresse? Écrivez à <a href='mailto:norelo.danielb@gmail.com'>norelo.danielb@gmail.com</a> — <a href='https://norelo.ca'>norelo.ca</a>",
+},
+en:{
+  'h-tag':"Inspiration catalog",
+  'h-title':"What do you want<br>on <span style='color:var(--bl)'>your website?</span>",
+  'h-desc':"Browse the features below and note the ones you like. Every demo is real and interactive.",
+  'h-note':"Click, hover and interact with each example.",
+  'fb-all':"All",'fb-anim':"Animations",'fb-nav':"Navigation",'fb-cont':"Content",'fb-form':"Forms",'fb-int':"Interactions",
+  'ni1':"Services",'ni2':"Pricing",'ni3':"Contact",'ni4':"← norelo.ca",
+  'c1_cat':"Animation",'c1_title':"Typewriter effect",'c1_desc':"Text types itself out letter by letter. Great for a slogan or attention-grabbing headline at the top of your page.",
+  'c2_cat':"Animation",'c2_title':"Animated particle background",'c2_desc':"A living background with moving, connecting dots. Creates a modern, tech-forward atmosphere.",
+  'c3_cat':"Interaction",'c3_title':"Custom cursor",'c3_desc':"Replace the standard cursor with a unique design that matches your brand. Memorable and distinctive.",
+  'c4_cat':"Animation",'c4_title':"Scroll reveal",'c4_desc':"Elements fade in as visitors scroll down the page. Brings each section to life.",
+  'c5_cat':"Interaction",'c5_title':"Dark / light mode toggle",'c5_desc':"A button lets visitors switch between dark and light themes. Optimal visual comfort.",
+  'c6_cat':"Animation",'c6_title':"Animated counters",'c6_desc':"Numbers count up to their final value. Perfect for displaying stats and building credibility.",
+  'c7_cat':"Content",'c7_title':"FAQ accordion",'c7_desc':"A list of frequently asked questions that expand and collapse on click. Reduces unnecessary calls.",
+  'c8_cat':"Content",'c8_title':"Testimonial carousel",'c8_desc':"Client reviews cycle automatically. Builds credibility and trust with new visitors.",
+  'c9_cat':"Content",'c9_title':"Pricing table",'c9_desc':"Present your packages clearly with a highlighted option. Makes it easier for clients to decide.",
+  'c10_cat':"Form",'c10_title':"Contact form",'c10_desc':"A clean, functional form that sends messages directly to your email. Essential.",
+  'c11_cat':"Interaction",'c11_title':"Floating call button",'c11_desc':"A fixed button always visible, inviting visitors to call or contact you. Increases conversions.",
+  'c12_cat':"Animation",'c12_title':"Skill progress bars",'c12_desc':"Present your expertise visually. Bars fill up on scroll, capturing attention.",
+  'c13_cat':"Interaction",'c13_title':"Animated service cards",'c13_desc':"Hover to see effects. Present your services in an engaging, memorable way.",
+  'c14_cat':"Navigation",'c14_title':"Back to top button",'c14_desc':"A button appears after scrolling to jump back to the top in one click. Improves experience on long pages.",
+  'c15_cat':"Interaction",'c15_title':"Toast notification",'c15_desc':"A subtle notification confirming an action — form sent, item added, etc. Immediate feedback.",
+  'c16_cat':"Content",'c16_title':"Countdown timer",'c16_desc':"A timer counting down to a specific date. Great for promotions, launches, seasonal events.",
+  'c17_cat':"Interaction",'c17_title':"Before / after slider",'c17_desc':"Drag to compare two images. Perfect for groomers, hairdressers, renovators — show your work!",
+  'c18_cat':"Content",'c18_title':"Embedded Google Map",'c18_desc':"Your address displayed on an interactive map. Visitors can get directions in one click.",
+  'c19_cat':"Navigation",'c19_title':"Mobile hamburger menu",'c19_desc':"On mobile, the menu folds behind a button and slides open. Essential for a good mobile experience.",
+  'c20_cat':"Navigation",'c20_title':"Reading progress bar",'c20_desc':"A bar at the top of the page shows how far the visitor has read. Useful for blogs and articles.",
+  'c21_cat':"Content",'c21_title':"Photo gallery",'c21_desc':"Display your work in a grid. Hover to zoom. Ideal for any visual trade.",
+  'c22_cat':"Navigation",'c22_title':"Sticky navigation",'c22_desc':"The menu stays fixed at the top of the window while scrolling. The visitor can navigate at any time.",
+  'c23_cat':"Animation",'c23_title':"Parallax effect",'c23_desc':"The background moves slower than the content, creating depth. Spectacular at first glance.",
+  'c24_cat':"Content",'c24_title':"Promotional banner",'c24_desc':"A strip at the top of the page to announce a promotion, event or important news. Immediately visible.",
+  'c25_cat':"Interaction",'c25_title':"Welcome popup",'c25_desc':"A window that appears after a few seconds to offer a promotion or collect emails.",
+  'cd-label':"Special offer — expires in",'cd-days':"Days",'cd-hours':"Hours",'cd-mins':"Minutes",'cd-secs':"Seconds",
+  'ba-avant':"BEFORE",'ba-apres':"AFTER",'map-lbl':"Google Maps integration",
+  'toast-btn':"Click to test",'toast-msg':" Message sent successfully!",'btt-lbl':"Back to top",
+  'scroll-hint':"Scroll this text ↓",'read-done':"You've read this far!",
+  'sticky-hint':"Scroll to see the sticky navigation.",'sticky-note':"The navigation stays always visible!",
+  'promo-body-p':"The banner can be closed by the visitor and displays any message you choose.",
+  'popup-title':"Welcome offer!",'popup-desc':"Sign up and get 15% off your first visit.",'popup-cta':"Claim the offer",
+  'footer-txt':"Interested in a feature? Write to <a href='mailto:norelo.danielb@gmail.com'>norelo.danielb@gmail.com</a> — <a href='https://norelo.ca'>norelo.ca</a>",
+}};
+let lang='fr';
+function sL(l){
+  lang=l;
+  document.getElementById('bfr').classList.toggle('on',l==='fr');
+  document.getElementById('ben').classList.toggle('on',l==='en');
+  document.documentElement.lang=l;
+  const d=T[l];
+  for(const[id,val]of Object.entries(d)){const el=document.getElementById(id);if(el)el.innerHTML=val;}
+}
 function filterCards(cat,btn){
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  document.querySelectorAll('.card').forEach(c=>{
-    c.style.display=(cat==='all'||c.dataset.cat===cat)?'':'none';
-  });
+  document.querySelectorAll('.card').forEach(c=>{c.style.display=(cat==='all'||c.dataset.cat===cat)?'':'none';});
 }
-
-// PARTICLES
 (function(){
-  const canvas=document.getElementById('particleCanvas');
-  if(!canvas)return;
-  const ctx=canvas.getContext('2d');
-  const demo=document.getElementById('particleDemo');
-  let pts=[];
-  function resize(){canvas.width=demo.offsetWidth;canvas.height=demo.offsetHeight}
-  resize();
-  for(let i=0;i<40;i++)pts.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-0.5)*0.5,vy:(Math.random()-0.5)*0.5});
-  function draw(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    pts.forEach(p=>{
-      p.x+=p.vx;p.y+=p.vy;
-      if(p.x<0||p.x>canvas.width)p.vx*=-1;
-      if(p.y<0||p.y>canvas.height)p.vy*=-1;
-      ctx.beginPath();ctx.arc(p.x,p.y,2,0,Math.PI*2);ctx.fillStyle='rgba(79,163,232,0.7)';ctx.fill();
-    });
-    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
-      const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);
-      if(d<80){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(79,163,232,${0.4*(1-d/80)})`;ctx.lineWidth=0.8;ctx.stroke()}
-    }
-    requestAnimationFrame(draw);
-  }
-  draw();
-  window.addEventListener('resize',resize);
+  const canvas=document.getElementById('particleCanvas');if(!canvas)return;
+  const ctx=canvas.getContext('2d');const demo=document.getElementById('particleDemo');let pts=[];
+  function resize(){canvas.width=demo.offsetWidth;canvas.height=demo.offsetHeight;}resize();
+  for(let i=0;i<38;i++)pts.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:(Math.random()-.5)*.45,vy:(Math.random()-.5)*.45});
+  function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>canvas.width)p.vx*=-1;if(p.y<0||p.y>canvas.height)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,2,0,Math.PI*2);ctx.fillStyle='rgba(79,163,232,.7)';ctx.fill();});for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);if(d<75){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(79,163,232,${.4*(1-d/75)})`;ctx.lineWidth=.8;ctx.stroke();}}requestAnimationFrame(draw);}
+  draw();window.addEventListener('resize',resize);
 })();
-
-// CUSTOM CURSOR
 (function(){
-  const demo=document.getElementById('cursorDemo');
-  if(!demo)return;
+  const demo=document.getElementById('cursorDemo');if(!demo)return;
   let dot=document.createElement('div');dot.className='cursor-dot';
   let ring=document.createElement('div');ring.className='cursor-ring';
-  demo.appendChild(dot);demo.appendChild(ring);
-  let rx=0,ry=0;
-  demo.addEventListener('mousemove',e=>{
-    const r=demo.getBoundingClientRect();
-    const x=e.clientX-r.left,y=e.clientY-r.top;
-    dot.style.left=x+'px';dot.style.top=y+'px';
-    rx+=(x-rx)*0.15;ry+=(y-ry)*0.15;
-    ring.style.left=rx+'px';ring.style.top=ry+'px';
-  });
-  function animRing(){rx+=(parseFloat(dot.style.left||0)-rx)*0.15;ry+=(parseFloat(dot.style.top||0)-ry)*0.15;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing)}
-  animRing();
+  demo.appendChild(dot);demo.appendChild(ring);let rx=0,ry=0;
+  demo.addEventListener('mousemove',e=>{const r=demo.getBoundingClientRect();const x=e.clientX-r.left,y=e.clientY-r.top;dot.style.left=x+'px';dot.style.top=y+'px';rx+=(x-rx)*.15;ry+=(y-ry)*.15;ring.style.left=rx+'px';ring.style.top=ry+'px';});
+  function animRing(){rx+=(parseFloat(dot.style.left||0)-rx)*.15;ry+=(parseFloat(dot.style.top||0)-ry)*.15;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}animRing();
 })();
-
-// SCROLL REVEAL for demo
 (function(){
-  const demo=document.getElementById('scrollDemo');
-  if(!demo)return;
-  const items=demo.querySelectorAll('.sr-item');
-  let i=0;
-  function show(){if(i<items.length){items[i].classList.add('visible');i++;setTimeout(show,350)}}
-  show();
-  setInterval(()=>{items.forEach(el=>el.classList.remove('visible'));i=0;setTimeout(show,400)},4000);
+  const demo=document.getElementById('scrollDemo');if(!demo)return;
+  const items=demo.querySelectorAll('.sr-item');let i=0;
+  function show(){if(i<items.length){items[i].classList.add('visible');i++;setTimeout(show,350);}}show();
+  setInterval(()=>{items.forEach(el=>el.classList.remove('visible'));i=0;setTimeout(show,400);},4000);
 })();
-
-// DARK/LIGHT TOGGLE
-function toggleMode(){
-  const demo=document.getElementById('toggleDemo');
-  const lbl=document.getElementById('toggleLabel');
-  demo.classList.toggle('dark-mode');
-  demo.classList.toggle('light-mode');
-  lbl.textContent=demo.classList.contains('dark-mode')?'Mode sombre activé':'Mode clair activé';
-}
-
-// COUNTER
+function toggleMode(){const demo=document.getElementById('toggleDemo');const lbl=document.getElementById('toggleLabel');demo.classList.toggle('dark-mode');demo.classList.toggle('light-mode');lbl.textContent=demo.classList.contains('dark-mode')?(lang==='fr'?'Mode sombre activé':'Dark mode on'):(lang==='fr'?'Mode clair activé':'Light mode on');}
 (function(){
-  const nums=document.querySelectorAll('.counter-num');
-  let done=false;
-  function animate(){
-    if(done)return;
-    done=true;
-    nums.forEach(el=>{
-      const target=+el.dataset.target;
-      const suffix=el.dataset.suffix||'';
-      let cur=0;
-      const step=target/60;
-      const t=setInterval(()=>{
-        cur=Math.min(cur+step,target);
-        el.textContent=Math.round(cur)+suffix;
-        if(cur>=target)clearInterval(t);
-      },20);
-    });
-    setTimeout(()=>{done=false;nums.forEach(el=>el.textContent='0');setTimeout(animate,500)},4000);
-  }
-  animate();
+  const nums=document.querySelectorAll('.counter-num');let done=false;
+  function animate(){if(done)return;done=true;nums.forEach(el=>{const target=+el.dataset.target;const suffix=el.dataset.suffix||'';let cur=0;const step=target/60;const t=setInterval(()=>{cur=Math.min(cur+step,target);el.textContent=Math.round(cur)+suffix;if(cur>=target)clearInterval(t);},20);});setTimeout(()=>{done=false;nums.forEach(el=>el.textContent='0');setTimeout(animate,500);},4000);}animate();
 })();
-
-// FAQ
-function toggleFaq(q){
-  const item=q.parentElement;
-  item.classList.toggle('open');
-}
-
-// TESTIMONIALS
+function toggleFaq(q){q.parentElement.classList.toggle('open');}
 (function(){
-  const tests=[
-    {q:'"Service exceptionnel, à l\'écoute de nos besoins. Je recommande sans hésiter à tous mes amis!"',a:'— Marie-Claude B., Saint-Eustache'},
-    {q:'"Mon chien est toujours magnifique après chaque visite. Une professionnelle vraiment passionnée."',a:'— Jonathan L., Mirabel'},
-    {q:'"Site web livré en 5 jours, exactement comme je le voulais. Merci Daniel!"',a:'— Sophie T., Sainte-Thérèse'},
-  ];
-  const dots=document.getElementById('testDots');
-  let cur=0;
-  tests.forEach((_,i)=>{const d=document.createElement('div');d.className='test-dot'+(i===0?' active':'');d.onclick=()=>goTo(i);dots.appendChild(d)});
-  function goTo(i){
-    cur=i;
-    document.getElementById('testQuote').textContent=tests[i].q;
-    document.getElementById('testAuthor').textContent=tests[i].a;
-    document.querySelectorAll('.test-dot').forEach((d,j)=>d.classList.toggle('active',j===i));
-  }
+  const tests=[{q:'"Service exceptionnel, à l\'écoute de nos besoins. Je recommande sans hésiter!"',a:'— Marie-Claude B., Saint-Eustache'},{q:'"Mon chien est toujours magnifique après chaque visite."',a:'— Jonathan L., Mirabel'},{q:'"Site web livré en 5 jours, exactement comme je le voulais!"',a:'— Sophie T., Sainte-Thérèse'}];
+  const dots=document.getElementById('testDots');let cur=0;
+  tests.forEach((_,i)=>{const d=document.createElement('div');d.className='test-dot'+(i===0?' active':'');d.onclick=()=>goTo(i);dots.appendChild(d);});
+  function goTo(i){cur=i;document.getElementById('testQuote').textContent=tests[i].q;document.getElementById('testAuthor').textContent=tests[i].a;document.querySelectorAll('.test-dot').forEach((d,j)=>d.classList.toggle('active',j===i));}
   setInterval(()=>goTo((cur+1)%tests.length),3000);
 })();
-
-// TOAST
-function showToast(){
-  const t=document.getElementById('toast');
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
-
-// COUNTDOWN
+function showToast(){const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+(function(){let d=7,h=14,m=32,s=0;setInterval(()=>{s--;if(s<0){s=59;m--;}if(m<0){m=59;h--;}if(h<0){h=23;d--;}document.getElementById('cd-d').textContent=String(d).padStart(2,'0');document.getElementById('cd-h').textContent=String(h).padStart(2,'0');document.getElementById('cd-m').textContent=String(m).padStart(2,'0');document.getElementById('cd-s').textContent=String(s).padStart(2,'0');},1000);})();
 (function(){
-  let d=7,h=14,m=32,s=0;
-  setInterval(()=>{
-    s--;if(s<0){s=59;m--;}if(m<0){m=59;h--;}if(h<0){h=23;d--;}
-    document.getElementById('cd-d').textContent=String(d).padStart(2,'0');
-    document.getElementById('cd-h').textContent=String(h).padStart(2,'0');
-    document.getElementById('cd-m').textContent=String(m).padStart(2,'0');
-    document.getElementById('cd-s').textContent=String(s).padStart(2,'0');
-  },1000);
+  const demo=document.getElementById('baDemo');const after=document.getElementById('baAfter');const divider=document.getElementById('baDivider');const handle=document.getElementById('baHandle');
+  if(!demo)return;let dragging=false;
+  function setPos(x){const r=demo.getBoundingClientRect();let pct=Math.max(5,Math.min(95,((x-r.left)/r.width)*100));after.style.clipPath=`inset(0 ${100-pct}% 0 0)`;divider.style.left=pct+'%';handle.style.left=pct+'%';}
+  demo.addEventListener('mousedown',e=>{dragging=true;setPos(e.clientX);});window.addEventListener('mousemove',e=>{if(dragging)setPos(e.clientX);});window.addEventListener('mouseup',()=>dragging=false);
+  demo.addEventListener('touchstart',e=>{dragging=true;setPos(e.touches[0].clientX);},{passive:true});window.addEventListener('touchmove',e=>{if(dragging)setPos(e.touches[0].clientX);},{passive:true});window.addEventListener('touchend',()=>dragging=false);
 })();
-
-// BEFORE/AFTER SLIDER
+function toggleHamburger(){document.getElementById('hbgBtn').classList.toggle('open');document.getElementById('hbgMenu').classList.toggle('open');}
+(function(){const el=document.getElementById('readProg');const bar=document.getElementById('readBar');if(!el)return;el.addEventListener('scroll',()=>{const pct=(el.scrollTop/(el.scrollHeight-el.clientHeight))*100;bar.style.width=pct+'%';});})();
 (function(){
-  const demo=document.getElementById('baDemo');
-  const after=document.getElementById('baAfter');
-  const divider=document.getElementById('baDivider');
-  const handle=document.getElementById('baHandle');
-  if(!demo)return;
-  let dragging=false;
-  function setPos(x){
-    const r=demo.getBoundingClientRect();
-    let pct=Math.max(5,Math.min(95,((x-r.left)/r.width)*100));
-    after.style.clipPath=`inset(0 ${100-pct}% 0 0)`;
-    divider.style.left=pct+'%';
-    handle.style.left=pct+'%';
-  }
-  demo.addEventListener('mousedown',e=>{dragging=true;setPos(e.clientX)});
-  window.addEventListener('mousemove',e=>{if(dragging)setPos(e.clientX)});
-  window.addEventListener('mouseup',()=>dragging=false);
-  demo.addEventListener('touchstart',e=>{dragging=true;setPos(e.touches[0].clientX)},{passive:true});
-  window.addEventListener('touchmove',e=>{if(dragging)setPos(e.touches[0].clientX)},{passive:true});
-  window.addEventListener('touchend',()=>dragging=false);
+  const demo=document.getElementById('paraDemo');const bg=document.getElementById('paraBg');const c1=document.getElementById('paraCard1');const c2=document.getElementById('paraCard2');if(!demo)return;
+  demo.addEventListener('mousemove',e=>{const r=demo.getBoundingClientRect();const x=((e.clientX-r.left)/r.width-.5)*2;const y=((e.clientY-r.top)/r.height-.5)*2;bg.style.transform=`translate(${x*8}px,${y*8}px)`;bg.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');bg.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');c1.style.transform=`translate(${x*12}px,${y*12}px)`;c2.style.transform=`translate(${x*22}px,${y*22}px)`;});
+  demo.addEventListener('mouseleave',()=>{bg.style.transform='';c1.style.transform='';c2.style.transform='';});
 })();
-
-// HAMBURGER
-function toggleHamburger(){
-  document.getElementById('hbgBtn').classList.toggle('open');
-  document.getElementById('hbgMenu').classList.toggle('open');
-}
-
-// READING PROGRESS
-(function(){
-  const el=document.getElementById('readProg');
-  const bar=document.getElementById('readBar');
-  if(!el)return;
-  el.addEventListener('scroll',()=>{
-    const pct=(el.scrollTop/(el.scrollHeight-el.clientHeight))*100;
-    bar.style.width=pct+'%';
-  });
-})();
-
-// PARALLAX
-(function(){
-  const demo=document.getElementById('paraDemo');
-  const bg=document.getElementById('paraBg');
-  const c1=document.getElementById('paraCard1');
-  const c2=document.getElementById('paraCard2');
-  if(!demo)return;
-  demo.addEventListener('mousemove',e=>{
-    const r=demo.getBoundingClientRect();
-    const x=((e.clientX-r.left)/r.width-0.5)*2;
-    const y=((e.clientY-r.top)/r.height-0.5)*2;
-    bg.style.transform=`translate(${x*8}px,${y*8}px)`;
-    bg.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');
-    bg.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');
-    c1.style.transform=`translate(${x*12}px,${y*12}px)`;
-    c2.style.transform=`translate(${x*22}px,${y*22}px)`;
-  });
-  demo.addEventListener('mouseleave',()=>{
-    bg.style.transform='';c1.style.transform='';c2.style.transform='';
-  });
-})();
-
-// BANNER CLOSE
-function closeBanner(){
-  document.getElementById('promoBanner').style.display='none';
-}
-
-// POPUP CLOSE
-function closePopup(){
-  document.getElementById('popupBackdrop').style.display='none';
-}
+function closeBanner(){document.getElementById('promoBanner').style.display='none';}
+function closePopup(){document.getElementById('popupBackdrop').style.display='none';}
 </script>
 </body>
 </html>
