@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Miss Canin — Salon de toilettage professionnel pour chiens et chats à Sainte-Marthe-sur-le-Lac. Service personnalisé, coupes stylisées, bain & séchage.">
+  <title>Miss Canin — Toilettage professionnel · Sainte-Marthe-sur-le-Lac</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:      #faf8f3;
+      --cream2:     #f2ede3;
+      --cream3:     #e8e0d2;
+      --green:      #2d5a3d;
+      --green-mid:  #3d7052;
+      --green-lt:   #5a9070;
+      --honey:      #c0864a;
+      --honey-lt:   #d9a870;
+      --dark:       #1c1c18;
+      --text:       #3a3a34;
+      --muted:      #7c7c70;
+      --border:     #ddd8cc;
+      --shadow:     0 4px 28px rgba(44,90,60,0.10);
+      --shadow-lg:  0 12px 48px rgba(44,90,60,0.14);
+    }
+
+    html, body {
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text);
+      background: var(--cream);
+    }
+
+    /* ===================== PREVIEW BANNER ===================== */
+    .preview-banner {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 9999;
+      background: #f5c400;
+      color: #1a1a00;
+      text-align: center;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 0.45rem 1rem;
+      letter-spacing: 0.03em;
+    }
+
+    /* ===================== NAV ===================== */
+    nav {
+      position: fixed;
+      top: 32px;
+      left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(250,248,243,0.94);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+      height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.05rem;
+    }
+    .nav-logo-main {
+      font-family: 'Fraunces', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--green);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .nav-logo-sub {
+      font-size: 0.62rem;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      line-height: 1;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 400;
+      color: var(--text);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--green); }
+
+    .btn-nav {
+      background: var(--green);
+      color: #fff !important;
+      padding: 0.5rem 1.3rem;
+      border-radius: 100px;
+      font-size: 0.84rem;
+      font-weight: 500 !important;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+    .btn-nav:hover { background: var(--green-mid) !important; transform: translateY(-1px); }
+
+    /* ===================== HERO ===================== */
+    .hero-wrap {
+      min-height: 100vh;
+      background: var(--cream);
+      overflow: hidden;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 4rem;
+      padding: 140px 2.5rem 100px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .hero-visual {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-circle {
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 38%, var(--cream2) 0%, var(--cream3) 100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .hero-circle::before {
+      content: '';
+      position: absolute;
+      inset: 18px;
+      border-radius: 50%;
+      border: 1.5px dashed var(--border);
+    }
+
+    .hero-paw-svg {
+      width: 170px;
+      height: 170px;
+      opacity: 0.2;
+    }
+
+    .hero-float {
+      position: absolute;
+      background: var(--cream);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 0.85rem 1.15rem;
+      box-shadow: var(--shadow);
+      font-size: 0.82rem;
+      font-weight: 400;
+      color: var(--dark);
+      white-space: nowrap;
+      line-height: 1.4;
+    }
+    .hero-float span {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 0.15rem;
+    }
+    .hero-float.f1 { top: 20px; right: -20px; }
+    .hero-float.f2 { bottom: 60px; left: -20px; }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 520px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--honey);
+      margin-bottom: 1.4rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 28px;
+      height: 1.5px;
+      background: var(--honey);
+    }
+
+    .hero h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(3rem, 5.5vw, 4.8rem);
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.4rem;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--green);
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--text);
+      max-width: 440px;
+      margin-bottom: 2.4rem;
+      line-height: 1.75;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--green);
+      color: #fff;
+      padding: 0.85rem 2rem;
+      border-radius: 100px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(45,90,61,0.25);
+    }
+    .btn-primary:hover {
+      background: var(--green-mid);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(45,90,61,0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--dark);
+      padding: 0.85rem 2rem;
+      border-radius: 100px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1.5px solid var(--border);
+      transition: border-color 0.2s, color 0.2s, transform 0.15s;
+    }
+    .btn-secondary:hover {
+      border-color: var(--green);
+      color: var(--green);
+      transform: translateY(-2px);
+    }
+
+    /* Review badge */
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-top: 2.8rem;
+      background: var(--cream2);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 0.5rem 1.1rem 0.5rem 0.6rem;
+    }
+    .hero-stars { color: #f4a831; font-size: 0.88rem; letter-spacing: 0.05em; }
+    .hero-badge-text { font-size: 0.8rem; color: var(--muted); }
+    .hero-badge-text strong { color: var(--dark); }
+
+    /* ===================== SECTION COMMONS ===================== */
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--honey);
+      margin-bottom: 0.9rem;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1.5px;
+      background: var(--honey);
+    }
+
+    section { padding: 100px 2.5rem; }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      max-width: 540px;
+      margin-bottom: 3.5rem;
+    }
+    .section-header h2 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2rem, 3.5vw, 2.9rem);
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.8rem;
+    }
+    .section-header p {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* ===================== SERVICES ===================== */
+    .services { background: var(--cream2); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      background: var(--border);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .service-card {
+      background: var(--cream);
+      padding: 2.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: background 0.2s;
+    }
+    .service-card:hover { background: var(--cream2); }
+
+    .service-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--green);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.4rem;
+      flex-shrink: 0;
+    }
+    .service-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: #fff;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .service-card h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--dark);
+      line-height: 1.25;
+    }
+    .service-card p {
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ===================== WHY US ===================== */
+    .why-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .why-visual {
+      position: relative;
+    }
+
+    .why-stamp {
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      background: var(--green);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+      padding: 3rem;
+      margin: 0 auto;
+      position: relative;
+    }
+    .why-stamp::before {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border-radius: 50%;
+      border: 1.5px dashed rgba(255,255,255,0.35);
+    }
+    .why-stamp-num {
+      font-family: 'Fraunces', serif;
+      font-size: 4rem;
+      font-weight: 700;
+      color: var(--honey-lt);
+      line-height: 1;
+    }
+    .why-stamp-text {
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      margin-top: 0.4rem;
+      line-height: 1.4;
+    }
+
+    .why-floating {
+      position: absolute;
+      background: var(--cream);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 0.9rem 1.2rem;
+      box-shadow: var(--shadow);
+      font-size: 0.82rem;
+      font-weight: 400;
+      color: var(--dark);
+      white-space: nowrap;
+    }
+    .why-floating.one { top: 20px; right: -20px; }
+    .why-floating.two { bottom: 30px; left: -10px; }
+    .why-floating span {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 0.15rem;
+    }
+
+    .why-points {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    .why-point {
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+    }
+    .why-point-num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--cream2);
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fraunces', serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--green);
+      margin-top: 0.1rem;
+    }
+    .why-point h4 {
+      font-family: 'Fraunces', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.25rem;
+    }
+    .why-point p {
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ===================== CONTACT ===================== */
+    .contact { background: var(--cream2); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .contact-info h2 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.9rem, 3vw, 2.6rem);
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.9rem;
+    }
+    .contact-intro {
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--muted);
+      margin-bottom: 2.2rem;
+      line-height: 1.75;
+    }
+
+    .contact-items {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .c-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--green);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .c-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: #fff;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .c-text strong {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--dark);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.25rem;
+    }
+    .c-text a, .c-text p {
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--text);
+      text-decoration: none;
+      line-height: 1.5;
+    }
+    .c-text a:hover { color: var(--green); }
+
+    /* Hours table */
+    .hours-card {
+      background: var(--cream);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .hours-header {
+      background: var(--green);
+      color: #fff;
+      padding: 1.1rem 1.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.84rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .hours-header svg {
+      width: 17px; height: 17px;
+      fill: none; stroke: rgba(255,255,255,0.8);
+      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+    .hours-body { padding: 0.5rem 0; }
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.7rem 1.6rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.88rem;
+    }
+    .hours-row:last-child { border-bottom: none; }
+    .hours-row .day { font-weight: 400; color: var(--text); }
+    .hours-row .time { font-weight: 500; color: var(--green); }
+    .hours-row .time.closed { color: var(--muted); font-weight: 300; }
+
+    .fb-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-top: 1.6rem;
+      color: var(--green);
+      font-size: 0.88rem;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 0.65rem 1.3rem;
+      border: 1.5px solid var(--green);
+      border-radius: 100px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .fb-link:hover { background: var(--green); color: #fff; }
+    .fb-link svg { width: 16px; height: 16px; fill: currentColor; }
+
+    /* ===================== FOOTER ===================== */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,0.5);
+      padding: 2.8rem 2.5rem;
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.5rem;
+    }
+    .footer-logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.3rem;
+      letter-spacing: -0.02em;
+    }
+    .footer-inner p { font-size: 0.82rem; font-weight: 300; }
+    .footer-norelo {
+      margin-top: 0.8rem;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.3);
+    }
+    .footer-norelo a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-norelo a:hover { color: #fff; }
+
+    /* ===================== REVEAL ANIMATIONS ===================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.1s !important; }
+    .d2 { transition-delay: 0.2s !important; }
+    .d3 { transition-delay: 0.3s !important; }
+    .d4 { transition-delay: 0.4s !important; }
+    .d5 { transition-delay: 0.5s !important; }
+
+    /* ===================== MOBILE ===================== */
+    @media (max-width: 700px) {
+      nav { top: 28px; }
+      .nav-inner { padding: 0 1.25rem; height: 58px; }
+      .nav-links { display: none; }
+
+      .hero { grid-template-columns: 1fr; padding: 130px 1.25rem 60px; gap: 2rem; min-height: auto; }
+      .hero-visual { display: none; }
+
+      section { padding: 70px 1.25rem; }
+
+      .services-grid { grid-template-columns: 1fr; }
+      .service-card { padding: 1.6rem; }
+
+      .why-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .why-stamp { width: 260px; height: 260px; }
+      .why-stamp-num { font-size: 3rem; }
+      .why-floating.one { top: 10px; right: 0; }
+      .why-floating.two { bottom: 10px; left: 0; }
+
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    @media (min-width: 701px) and (max-width: 900px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- PREVIEW BANNER -->
+<div class="preview-banner">
+  Aperçu préliminaire — Site en cours de développement. Non publié. Non indexé.
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <span class="nav-logo-main">Miss Canin</span>
+      <span class="nav-logo-sub">Toilettage professionnel</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#pourquoi">À propos</a></li>
+      <li><a href="#contact">Heures</a></li>
+      <li><a href="tel:5146022141" class="btn-nav">📞 514-602-2141</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero-wrap" id="accueil">
+<div class="hero">
+  <div class="hero-content">
+    <span class="hero-eyebrow">Sainte-Marthe-sur-le-Lac</span>
+    <h1>Vos petits poilus<br>méritent le<br><em>meilleur soin.</em></h1>
+    <p class="hero-desc">
+      Salon de toilettage professionnel pour chiens et chats. Un service personnalisé, des coupes stylisées et une touche d'amour pour chaque animal.
+    </p>
+    <div class="hero-ctas">
+      <a href="tel:5146022141" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.37 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.73a16 16 0 0 0 6.29 6.29l.93-.93a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Prendre rendez-vous
+      </a>
+      <a href="#services" class="btn-secondary">Voir les services</a>
+    </div>
+    <div class="hero-badge">
+      <span class="hero-stars">★★★★★</span>
+      <span class="hero-badge-text"><strong>100 % de satisfaction</strong> · 7 avis clients</span>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-circle">
+      <!-- Large paw SVG centered -->
+      <svg class="hero-paw-svg" viewBox="0 0 120 120" fill="var(--green)">
+        <ellipse cx="30" cy="18" rx="11" ry="14"/>
+        <ellipse cx="58" cy="10" rx="9" ry="11"/>
+        <ellipse cx="84" cy="16" rx="9" ry="11"/>
+        <ellipse cx="103" cy="36" rx="11" ry="9"/>
+        <ellipse cx="60" cy="72" rx="34" ry="42"/>
+      </svg>
+    </div>
+
+    <div class="hero-float f1">
+      🐾 Chiens &amp; chats acceptés
+      <span>Toutes races, tous pelages</span>
+    </div>
+    <div class="hero-float f2">
+      ⭐ 100 % de satisfaction
+      <span>7 avis Google vérifiés</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-label">Ce que nous offrons</span>
+      <h2>Des soins complets pour chiens et chats</h2>
+      <p>Chaque visite est adaptée à votre animal — sa race, son pelage, son tempérament. Parce qu'aucun poilu n'est pareil.</p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </div>
+        <h3>Bain & séchage</h3>
+        <p>Shampoing adapté à chaque type de pelage, séchage soigné et brossage en profondeur pour un résultat impeccable.</p>
+      </div>
+
+      <div class="service-card reveal d1">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M6 3h12l4 6-10 13L2 9z"/><path d="M11 3 8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg>
+        </div>
+        <h3>Coupe & stylisation</h3>
+        <p>Des coupes stylisées sur mesure selon votre souhait ou la norme de la race, exécutées avec précision et douceur.</p>
+      </div>
+
+      <div class="service-card reveal d2">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <h3>Soins des oreilles</h3>
+        <p>Nettoyage délicat et inspection des canaux auriculaires pour prévenir les infections et garder vos animaux en santé.</p>
+      </div>
+
+      <div class="service-card reveal d1">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        </div>
+        <h3>Taille des griffes</h3>
+        <p>Coupe sécuritaire et précise des griffes pour le confort de votre animal et la protection de vos planchers.</p>
+      </div>
+
+      <div class="service-card reveal d2">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <h3>Démêlage & brossage</h3>
+        <p>Travail patient et doux sur les pelages longs ou emmêlés, sans stress pour votre animal.</p>
+      </div>
+
+      <div class="service-card reveal d3">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </div>
+        <h3>Chats acceptés</h3>
+        <p>Service spécialisé pour les félins, avec une approche calme et adaptée à leur nature unique.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="pourquoi">
+  <div class="container">
+    <div class="why-grid">
+
+      <div class="why-visual reveal">
+        <div class="why-stamp">
+          <div class="why-stamp-num">100%</div>
+          <div class="why-stamp-text">Satisfaction<br>clientèle</div>
+        </div>
+        <div class="why-floating one">
+          🐾 Chiens & chats acceptés
+          <span>Toutes races, tous pelages</span>
+        </div>
+        <div class="why-floating two">
+          📍 Sainte-Marthe-sur-le-Lac
+          <span>Service de proximité</span>
+        </div>
+      </div>
+
+      <div class="why-content">
+        <span class="section-label reveal">Pourquoi nous choisir</span>
+        <h2 class="reveal" style="font-family:'Fraunces',serif;font-size:clamp(2rem,3.5vw,2.8rem);font-weight:700;color:var(--dark);line-height:1.15;letter-spacing:-0.02em;margin-bottom:2.5rem;">Un salon où votre animal est entre bonnes mains</h2>
+
+        <div class="why-points">
+          <div class="why-point reveal">
+            <div class="why-point-num">1</div>
+            <div>
+              <h4>Service professionnel & personnalisé</h4>
+              <p>Chaque animal est accueilli comme s'il était le seul. Nous prenons le temps de bien comprendre vos attentes et les besoins de votre compagnon.</p>
+            </div>
+          </div>
+
+          <div class="why-point reveal d1">
+            <div class="why-point-num">2</div>
+            <div>
+              <h4>Spécialisées en coupes stylisées</h4>
+              <p>De la coupe classique aux styles tendance, nos compétences assurent un résultat soigné et durable — à chaque visite.</p>
+            </div>
+          </div>
+
+          <div class="why-point reveal d2">
+            <div class="why-point-num">3</div>
+            <div>
+              <h4>Sécurité & bien-être avant tout</h4>
+              <p>Un environnement propre, calme et sécuritaire. Vos petits poilus sont entre bonnes mains du début à la fin de leur séjour.</p>
+            </div>
+          </div>
+
+          <div class="why-point reveal d3">
+            <div class="why-point-num">4</div>
+            <div>
+              <h4>Salon local, réputation bâtie sur la confiance</h4>
+              <p>Établis à Sainte-Marthe-sur-le-Lac, nous sommes fiers de servir notre communauté avec passion depuis plusieurs années.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+
+      <div class="contact-info">
+        <span class="section-label reveal">Nous joindre</span>
+        <h2 class="reveal">Prenez rendez-vous</h2>
+        <p class="contact-intro reveal">Pour toute question ou pour réserver une séance, appelez-nous ou écrivez-nous directement. Nous répondons dans les 24 heures.</p>
+
+        <div class="contact-items">
+          <div class="contact-item reveal">
+            <div class="c-icon">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.37 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.73a16 16 0 0 0 6.29 6.29l.93-.93a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div class="c-text">
+              <strong>Téléphone</strong>
+              <a href="tel:5146022141">514-602-2141</a>
+            </div>
+          </div>
+
+          <div class="contact-item reveal d1">
+            <div class="c-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div class="c-text">
+              <strong>Courriel</strong>
+              <a href="mailto:jenniferpreuss@videotron.ca">jenniferpreuss@videotron.ca</a>
+            </div>
+          </div>
+
+          <div class="contact-item reveal d2">
+            <div class="c-icon">
+              <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="c-text">
+              <strong>Emplacement</strong>
+              <p>Sainte-Marthe-sur-le-Lac, Québec</p>
+            </div>
+          </div>
+        </div>
+
+        <a href="https://www.facebook.com/p/Miss-Canin-100063762182722/" target="_blank" rel="noopener" class="fb-link reveal d3">
+          <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          Suivez-nous sur Facebook
+        </a>
+      </div>
+
+      <!-- HOURS -->
+      <div class="reveal d1">
+        <div class="hours-card">
+          <div class="hours-header">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Heures d'ouverture
+          </div>
+          <div class="hours-body">
+            <div class="hours-row">
+              <span class="day">Lundi</span>
+              <span class="time">8h00 – 15h30</span>
+            </div>
+            <div class="hours-row">
+              <span class="day">Mardi</span>
+              <span class="time">8h00 – 15h30</span>
+            </div>
+            <div class="hours-row">
+              <span class="day">Mercredi</span>
+              <span class="time">8h00 – 15h30</span>
+            </div>
+            <div class="hours-row">
+              <span class="day">Jeudi</span>
+              <span class="time">8h00 – 15h30</span>
+            </div>
+            <div class="hours-row">
+              <span class="day">Vendredi</span>
+              <span class="time closed">Fermé</span>
+            </div>
+            <div class="hours-row">
+              <span class="day">Samedi</span>
+              <span class="time closed">Fermé</span>
+            </div>
+            <div class="hours-row">
+              <span class="day">Dimanche</span>
+              <span class="time closed">Fermé</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Miss Canin</div>
+    <p>Salon de toilettage professionnel · Sainte-Marthe-sur-le-Lac, Québec</p>
+    <p>514-602-2141 · jenniferpreuss@videotron.ca</p>
+    <p style="margin-top:0.3rem;">© 2026 Miss Canin. Tous droits réservés.</p>
+    <div class="footer-norelo">
+      Site web réalisé par <a href="https://norelo.ca" target="_blank" rel="noopener">Norelo</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav preview banner offset
+  const banner = document.querySelector('.preview-banner');
+  const navbar = document.getElementById('navbar');
+
+  // Nav scroll
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive: true });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        const offset = 98;
+        const top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
