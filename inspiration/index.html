@@ -106,9 +106,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .f-input::placeholder{color:rgba(255,255,255,.3);}
 .f-btn{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:.52rem;font-size:.73rem;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;}
 .f-btn:hover{background:#1d4ed8;}
-.demo-floating{height:100%;display:flex;align-items:center;justify-content:center;background:#0d1b2a;position:relative;}
-.float-bg{font-size:.73rem;color:rgba(255,255,255,.3);text-align:center;padding:1rem;}
-.float-btn{position:absolute;bottom:1rem;right:1rem;background:var(--blue);color:#fff;border:none;border-radius:100px;padding:.52rem .95rem;font-size:.72rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 20px rgba(37,99,235,.4);animation:pulse-btn 2s ease-in-out infinite;}
+.demo-floating{height:100%;display:flex;flex-direction:column;background:#0d1b2a;}
+.float-bg{flex:1;display:flex;align-items:center;justify-content:center;font-size:.73rem;color:rgba(255,255,255,.3);text-align:center;padding:1rem;line-height:1.8;}
+.float-btn{align-self:flex-end;margin:.75rem;background:var(--blue);color:#fff;border:none;border-radius:100px;padding:.52rem .95rem;font-size:.72rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 20px rgba(37,99,235,.4);animation:pulse-btn 2s ease-in-out infinite;}
 @keyframes pulse-btn{0%,100%{box-shadow:0 4px 20px rgba(37,99,235,.4)}50%{box-shadow:0 4px 28px rgba(37,99,235,.7)}}
 .demo-progress{padding:1.05rem;height:100%;display:flex;flex-direction:column;gap:.7rem;justify-content:center;background:#0a1628;}
 .prog-label{display:flex;justify-content:space-between;font-size:.68rem;color:rgba(255,255,255,.6);margin-bottom:.28rem;}
@@ -128,7 +128,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .btt-btn:hover{background:var(--blue);color:#fff;}
 .demo-toast{height:100%;background:#0a1628;position:relative;display:flex;align-items:center;justify-content:center;}
 .toast-trigger{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:.48rem .95rem;font-size:.73rem;font-weight:700;cursor:pointer;font-family:inherit;}
-.toast{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%) translateY(70px);background:#1a2d4a;border:1px solid rgba(79,163,232,.3);border-radius:8px;padding:.58rem .95rem;font-size:.73rem;color:#fff;white-space:nowrap;transition:transform .3s,opacity .3s;opacity:0;display:flex;align-items:center;gap:.45rem;}
+.toast{position:absolute;top:1rem;left:50%;transform:translateX(-50%) translateY(-80px);background:#1a2d4a;border:1px solid rgba(79,163,232,.3);border-radius:8px;padding:.58rem .95rem;font-size:.73rem;color:#fff;white-space:nowrap;transition:transform .3s,opacity .3s;opacity:0;display:flex;align-items:center;gap:.45rem;}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 .toast-icon{color:#22c55e;}
 .demo-countdown{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--dark);gap:.6rem;}
@@ -236,13 +236,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .tab-content{flex:1;padding:.85rem;font-size:.78rem;color:rgba(255,255,255,.6);line-height:1.7;display:none;}
 .tab-content.active{display:block;}
 /* 32 dropdown */
-.demo-dropdown{height:100%;background:#0a1628;display:flex;align-items:center;justify-content:center;position:relative;}
-.dd-btn{background:rgba(255,255,255,.06);border:1px solid rgba(79,163,232,.25);color:#fff;border-radius:8px;padding:.6rem 1.1rem;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:.5rem;transition:all .2s;}
+.demo-dropdown{height:100%;background:#0a1628;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.75rem;gap:.4rem;}
+.dd-btn{background:rgba(255,255,255,.06);border:1px solid rgba(79,163,232,.25);color:#fff;border-radius:8px;padding:.6rem 1.1rem;font-size:.78rem;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:.5rem;transition:all .2s;width:100%;justify-content:space-between;}
 .dd-btn:hover{background:rgba(255,255,255,.1);}
 .dd-arrow{font-size:.65rem;transition:transform .25s;color:var(--bl);}
-.dd-menu{position:absolute;top:calc(50% + 20px);left:50%;transform:translateX(-50%);background:#0f1f3d;border:1px solid rgba(79,163,232,.2);border-radius:8px;overflow:hidden;min-width:160px;display:none;z-index:10;}
-.dd-menu.open{display:block;}
-.dd-item{padding:.55rem 1rem;font-size:.75rem;color:rgba(255,255,255,.7);cursor:pointer;transition:background .15s;}
+.dd-menu{width:100%;background:#0f1f3d;border:1px solid rgba(79,163,232,.2);border-radius:8px;overflow:hidden;max-height:0;opacity:0;transition:max-height .3s ease,opacity .2s;}
+.dd-menu.open{max-height:160px;opacity:1;}
+.dd-item{padding:.5rem 1rem;font-size:.75rem;color:rgba(255,255,255,.7);cursor:pointer;transition:background .15s;}
 .dd-item:hover{background:rgba(79,163,232,.12);color:#fff;}
 /* 33 side drawer */
 .demo-drawer{height:100%;background:#0a1628;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
@@ -333,17 +333,17 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .theme-swatch.active{border-color:#fff;transform:scale(1.15);}
 .theme-preview{width:130px;height:60px;border-radius:8px;border:1px solid rgba(255,255,255,.15);transition:background .3s;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:#fff;}
 /* 44 multi-step form */
-.demo-multistep{height:100%;background:#0a1628;padding:.85rem;display:flex;flex-direction:column;gap:.65rem;}
-.ms-steps{display:flex;align-items:center;gap:0;margin-bottom:.2rem;}
+.demo-multistep{height:100%;background:#0a1628;padding:.6rem;display:flex;flex-direction:column;gap:.4rem;}
+.ms-steps{display:flex;align-items:center;gap:0;margin-bottom:.1rem;}
 .ms-step{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(79,163,232,.2);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:rgba(255,255,255,.4);flex-shrink:0;transition:all .3s;}
 .ms-step.done{background:#22c55e;border-color:#22c55e;color:#fff;}
 .ms-step.active{background:var(--blue);border-color:var(--blue);color:#fff;}
 .ms-line{flex:1;height:1px;background:rgba(79,163,232,.15);}
-.ms-panel{display:none;flex-direction:column;gap:.5rem;flex:1;}
+.ms-panel{display:none;flex-direction:column;gap:.38rem;flex:1;}
 .ms-panel.active{display:flex;}
-.ms-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);}
+.ms-label{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);}
 .ms-nav{display:flex;gap:.5rem;margin-top:auto;}
-.ms-btn{flex:1;border:none;border-radius:6px;padding:.5rem;font-size:.73rem;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;}
+.ms-btn{flex:1;border:none;border-radius:6px;padding:.45rem;font-size:.7rem;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;}
 .ms-btn-next{background:var(--blue);color:#fff;}
 .ms-btn-back{background:rgba(255,255,255,.07);color:rgba(255,255,255,.6);}
 /* 45 newsletter */
@@ -356,13 +356,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .nl-input::placeholder{color:rgba(255,255,255,.3);}
 .nl-submit{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:.5rem .85rem;font-size:.72rem;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;}
 /* 46 cookie banner */
-.demo-cookie{height:100%;background:#070f2b;position:relative;display:flex;align-items:center;justify-content:center;}
-.cookie-page-hint{font-size:.73rem;color:rgba(255,255,255,.2);text-align:center;padding:1rem;}
-.cookie-banner{position:absolute;bottom:0;left:0;right:0;background:#0d1b35;border-top:1px solid rgba(79,163,232,.2);padding:.85rem;display:flex;flex-direction:column;gap:.65rem;}
-.cookie-text{font-size:.72rem;color:rgba(255,255,255,.6);line-height:1.5;}
+.demo-cookie{height:100%;background:#070f2b;display:flex;flex-direction:column;}
+.cookie-page-hint{flex:1;display:flex;align-items:center;justify-content:center;font-size:.73rem;color:rgba(255,255,255,.2);}
+.cookie-banner{background:#0d1b35;border-top:1px solid rgba(79,163,232,.2);padding:.7rem;display:flex;flex-direction:column;gap:.45rem;}
+.cookie-text{font-size:.69rem;color:rgba(255,255,255,.6);line-height:1.45;}
 .cookie-btns{display:flex;gap:.5rem;}
-.cookie-accept{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:.42rem .85rem;font-size:.7rem;font-weight:700;cursor:pointer;font-family:inherit;}
-.cookie-decline{background:rgba(255,255,255,.07);color:rgba(255,255,255,.5);border:none;border-radius:6px;padding:.42rem .85rem;font-size:.7rem;font-weight:600;cursor:pointer;font-family:inherit;}
+.cookie-accept{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:.38rem .75rem;font-size:.68rem;font-weight:700;cursor:pointer;font-family:inherit;}
+.cookie-decline{background:rgba(255,255,255,.07);color:rgba(255,255,255,.5);border:none;border-radius:6px;padding:.38rem .75rem;font-size:.68rem;font-weight:600;cursor:pointer;font-family:inherit;}
 /* 47 review card */
 .demo-review{height:100%;background:#0a1628;padding:.85rem;display:flex;flex-direction:column;gap:.55rem;justify-content:center;}
 .review-card{background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.12);border-radius:10px;padding:.85rem;}
@@ -405,9 +405,15 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content
 .pt-price{font-size:1.1rem;font-weight:800;color:#fff;transition:all .3s;}
 .pt-per{font-size:.58rem;color:rgba(255,255,255,.35);}
 /* FOOTER */
-footer{background:#060e26;text-align:center;padding:2rem;border-top:1px solid rgba(255,255,255,.06);}
-footer p{font-size:12px;color:rgba(255,255,255,.3);}
-footer a{color:var(--bl);text-decoration:none;}
+footer{background:#060e26;padding:2.5rem 2rem;border-top:1px solid rgba(255,255,255,.06);}
+.footer-inner{max-width:1300px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:.85rem;}
+.footer-logo{font-size:18px;font-weight:800;color:#fff;text-decoration:none;letter-spacing:-.5px;display:flex;align-items:center;gap:0;}
+.footer-logo span{color:var(--bl);}
+.footer-dot{width:5px;height:5px;background:#22c55e;border-radius:50%;margin-bottom:10px;margin-left:5px;animation:pu 2s infinite;}
+.footer-cta{font-size:13px;color:rgba(255,255,255,.4);text-align:center;line-height:1.8;}
+.footer-cta a{color:var(--bl);text-decoration:none;font-weight:600;}
+.footer-cta a:hover{color:#fff;}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.18);letter-spacing:.04em;}
 @media(max-width:600px){.grid{grid-template-columns:1fr;padding:0 1rem 4rem;}.hero{padding:88px 1.25rem 38px;}}
 </style>
 </head>
@@ -1035,7 +1041,14 @@ footer a{color:var(--bl);text-decoration:none;}
     <div class="card-label-bar"><span class="clb-cat" id="c50_cat">Contenu</span><span class="clb-sep">·</span><span class="clb-title" id="c50_title">Tarifs mensuel / annuel</span></div>
     <div class="card-info"><div class="card-desc" id="c50_desc">Un bouton bascule entre les prix mensuels et annuels avec rabais. Encourage les abonnements longue durée et clarifie l'offre.</div></div>
   </div>
-</div><p id="footer-txt">Une fonctionnalité vous intéresse? Écrivez à <a href="mailto:norelo.danielb@gmail.com">norelo.danielb@gmail.com</a> — <a href="https://norelo.ca">norelo.ca</a></p></footer>
+</div>
+<footer>
+  <div class="footer-inner">
+    <a class="footer-logo" href="https://norelo.ca">Nore<span>lo</span><span class="footer-dot"></span></a>
+    <p class="footer-cta" id="footer-txt">Une fonctionnalité vous intéresse? Écrivez à <a href="mailto:norelo.danielb@gmail.com">norelo.danielb@gmail.com</a> ou visitez <a href="https://norelo.ca">norelo.ca</a></p>
+    <p class="footer-copy">© 2026 Norelo · Saint-Joseph-du-Lac, Québec</p>
+  </div>
+</footer>
 <script>
 const T={
 fr:{
@@ -1077,7 +1090,7 @@ fr:{
   'sticky-hint':"Faites défiler pour voir la navigation collante.",'sticky-note':"La navigation reste toujours visible!",
   'promo-body-p':"La bannière peut être fermée par le visiteur et affiche n'importe quel message.",
   'popup-title':"Offre de bienvenue!",'popup-desc':"Inscrivez-vous et recevez 15% de rabais sur votre première visite.",'popup-cta':"Je profite de l'offre",
-  'footer-txt':"Une fonctionnalité vous intéresse? Écrivez à <a href='mailto:norelo.danielb@gmail.com'>norelo.danielb@gmail.com</a> — <a href='https://norelo.ca'>norelo.ca</a>",
+  'footer-txt':"Une fonctionnalité vous intéresse? Écrivez à <a href='mailto:norelo.danielb@gmail.com'>norelo.danielb@gmail.com</a> ou visitez <a href='https://norelo.ca'>norelo.ca</a>",
   'c26_cat':"Animation",'c26_title':"Texte en dégradé animé",'c26_desc':"Votre slogan ou titre en couleurs qui se déplacent. Capte l'attention et donne un aspect haut de gamme moderne.",
   'c27_cat':"Animation",'c27_title':"Icônes flottantes",'c27_desc':"Des icônes de votre secteur qui flottent doucement. Représente visuellement vos services dès la page d'accueil.",
   'c28_cat':"Animation",'c28_title':"Écran de chargement skeleton",'c28_desc':"Des placeholders animés s'affichent pendant le chargement. Évite l'écran blanc vide et paraît professionnel.",
@@ -1144,7 +1157,7 @@ en:{
   'sticky-hint':"Scroll to see the sticky navigation.",'sticky-note':"The navigation stays always visible!",
   'promo-body-p':"The banner can be closed by the visitor and displays any message you choose.",
   'popup-title':"Welcome offer!",'popup-desc':"Sign up and get 15% off your first visit.",'popup-cta':"Claim the offer",
-  'footer-txt':"Interested in a feature? Write to <a href='mailto:norelo.danielb@gmail.com'>norelo.danielb@gmail.com</a> — <a href='https://norelo.ca'>norelo.ca</a>",
+  'footer-txt':"Interested in a feature? Write to <a href='mailto:norelo.danielb@gmail.com'>norelo.danielb@gmail.com</a> or visit <a href='https://norelo.ca'>norelo.ca</a>",
   'c26_cat':"Animation",'c26_title':"Animated gradient text",'c26_desc':"Your slogan or title in flowing colors. Grabs attention and gives a premium, modern look.",
   'c27_cat':"Animation",'c27_title':"Floating icons",'c27_desc':"Icons from your industry gently bobbing on screen. Visually represents your services right from the homepage.",
   'c28_cat':"Animation",'c28_title':"Skeleton loading screen",'c28_desc':"Animated placeholders show while content loads. Avoids a blank white screen and looks professional.",
