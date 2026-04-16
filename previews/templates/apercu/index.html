@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="robots" content="noindex, nofollow"/>
+<title>Gabarits & Styles — Norelo</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--blue:#2563eb;--bl:#4fa3e8;--bp:#60a5fa;--dark:#070f2b;--d3:#0d1b3e;--bdr:#e2e8f0;--gr:#64748b;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--dark);color:#fff;overflow-x:hidden;}
+
+/* Watermark */
+.wm{background:#fbbf24;color:#000;text-align:center;padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:.5px;position:sticky;top:0;z-index:10000;}
+.wm a{color:#000;}
+
+/* Nav */
+nav{position:fixed;top:36px;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.1rem 3rem;background:rgba(8,16,42,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);}
+.nl{font-size:22px;font-weight:800;color:#fff;text-decoration:none;letter-spacing:-.5px;display:flex;align-items:center;gap:0;}
+.nl span{color:var(--bl);}
+.nld{width:5px;height:5px;background:#22c55e;border-radius:50%;margin-bottom:12px;margin-left:5px;animation:pu 2s infinite;}
+@keyframes pu{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+.nback{font-size:13px;color:rgba(255,255,255,.5);text-decoration:none;border:1px solid rgba(255,255,255,.12);padding:7px 18px;border-radius:20px;transition:all .2s;}
+.nback:hover{color:#fff;border-color:rgba(255,255,255,.3);}
+@media(max-width:700px){nav{padding:1rem 1.25rem;}}
+
+/* Hero */
+.hero{padding:9rem 3rem 5rem;text-align:center;position:relative;overflow:hidden;max-width:900px;margin:0 auto;}
+.hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:800px;height:500px;background:radial-gradient(ellipse,rgba(37,99,235,.2) 0%,transparent 70%);pointer-events:none;}
+.hgr{position:fixed;inset:0;background-image:linear-gradient(rgba(79,163,232,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(79,163,232,.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0;}
+.hbdg{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--bp);border:1px solid rgba(96,165,250,.25);border-radius:20px;padding:6px 18px;margin-bottom:2rem;background:rgba(96,165,250,.06);}
+.hero h1{font-size:clamp(38px,5.5vw,68px);font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:1.5rem;position:relative;z-index:1;}
+.hero h1 span{color:var(--bl);}
+.hero p{font-size:17px;color:rgba(255,255,255,.55);line-height:1.8;max-width:600px;margin:0 auto 3rem;position:relative;z-index:1;}
+.hcta{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:600;text-decoration:none;transition:all .25s;position:relative;z-index:1;}
+.hcta:hover{background:#1d4ed8;}
+@media(max-width:700px){.hero{padding:7rem 1.5rem 3rem;}}
+
+/* Filter tabs */
+.filters{display:flex;justify-content:center;gap:.5rem;padding:3rem 2rem 0;flex-wrap:wrap;}
+.ftab{font-size:13px;padding:8px 20px;border-radius:50px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);cursor:pointer;transition:all .25s;font-family:inherit;}
+.ftab:hover,.ftab.on{background:var(--blue);border-color:var(--blue);color:#fff;}
+
+/* Grid */
+.tg{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:1.5rem;padding:3rem;max-width:1300px;margin:0 auto;}
+.tc{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:22px;overflow:hidden;transition:all .35s;display:flex;flex-direction:column;}
+.tc:hover{transform:translateY(-6px);border-color:rgba(96,165,250,.3);box-shadow:0 24px 60px rgba(0,0,0,.4);}
+.tprev{position:relative;height:260px;overflow:hidden;background:#111;}
+.tprev iframe{width:200%;height:200%;transform:scale(.5);transform-origin:top left;border:none;pointer-events:none;}
+.tprev-overlay{position:absolute;inset:0;background:transparent;cursor:pointer;}
+.tprev-overlay:hover~.tprev-btn{opacity:1;}
+.tprev-btn{position:absolute;bottom:1rem;right:1rem;background:rgba(37,99,235,.9);color:#fff;font-size:12px;font-weight:600;padding:8px 18px;border-radius:20px;opacity:0;transition:opacity .25s;pointer-events:none;backdrop-filter:blur(10px);}
+.tc:hover .tprev-btn{opacity:1;}
+.tbody{padding:1.75rem;flex:1;display:flex;flex-direction:column;}
+.ttags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem;}
+.ttag{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;letter-spacing:.5px;}
+.tc h3{font-size:20px;font-weight:800;color:#fff;margin-bottom:.5rem;letter-spacing:-.25px;}
+.tc p{font-size:14px;color:rgba(255,255,255,.5);line-height:1.7;flex:1;margin-bottom:1.5rem;}
+.tactions{display:flex;gap:.75rem;margin-top:auto;}
+.tb1{flex:1;text-align:center;background:var(--blue);color:#fff;padding:11px 16px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;}
+.tb1:hover{background:#1d4ed8;}
+.tb2{flex:1;text-align:center;background:transparent;color:rgba(255,255,255,.6);padding:11px 16px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;border:1px solid rgba(255,255,255,.12);transition:all .2s;}
+.tb2:hover{border-color:rgba(255,255,255,.3);color:#fff;}
+
+/* Style badge colors */
+.tag-luxe{background:rgba(201,169,110,.15);color:#c9a96e;}
+.tag-playful{background:rgba(224,123,84,.15);color:#e07b54;}
+.tag-zen{background:rgba(122,158,126,.15);color:#7a9e7e;}
+.tag-bold{background:rgba(245,200,66,.15);color:#f5c842;}
+.tag-clean{background:rgba(75,163,184,.15);color:#4ba3b8;}
+.tag-dark{background:rgba(255,255,255,.07);color:rgba(255,255,255,.5);}
+.tag-light{background:rgba(255,255,255,.07);color:rgba(255,255,255,.5);}
+
+/* CTA bottom */
+.cta-sec{background:rgba(255,255,255,.02);border-top:1px solid rgba(255,255,255,.06);padding:5rem 3rem;text-align:center;}
+.cta-sec h2{font-size:clamp(28px,4vw,46px);font-weight:800;letter-spacing:-1.5px;margin-bottom:1rem;}
+.cta-sec h2 span{color:var(--bl);}
+.cta-sec p{font-size:16px;color:rgba(255,255,255,.5);max-width:500px;margin:0 auto 2rem;}
+.ctabtns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.cbb{background:var(--blue);color:#fff;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:600;text-decoration:none;transition:all .25s;}
+.cbb:hover{background:#1d4ed8;}
+.cbo{background:transparent;color:#fff;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:500;text-decoration:none;border:1px solid rgba(255,255,255,.22);transition:all .25s;}
+.cbo:hover{background:rgba(255,255,255,.07);}
+
+footer{background:#060e26;padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,.06);flex-wrap:wrap;gap:1rem;}
+footer p{font-size:12px;color:rgba(255,255,255,.2);}
+footer a{font-size:12px;color:rgba(79,163,232,.5);text-decoration:none;transition:color .2s;}
+footer a:hover{color:var(--bl);}
+@media(max-width:700px){.tg{grid-template-columns:1fr;padding:1.5rem;}.cta-sec{padding:4rem 1.5rem;}.filters{padding:2rem 1.5rem 0;}footer{padding:1.5rem;flex-direction:column;text-align:center;}}
+</style>
+</head>
+<body>
+<div class="wm">⚠️ APERÇU — Démos de gabarits Norelo · Pas de vrais clients · <a href="https://norelo.ca" target="_blank">norelo.ca</a></div>
+
+<nav>
+  <a class="nl" href="https://norelo.ca">Nore<span>lo</span><div class="nld"></div></a>
+  <a class="nback" href="https://norelo.ca/#portfolio">← Retour au portfolio</a>
+</nav>
+
+<div class="hgr"></div>
+
+<section class="hero">
+  <p class="hbdg">✦ Exemples de styles de sites web</p>
+  <h1>Des styles <span>radicalement</span><br>différents. Votre choix.</h1>
+  <p>5 gabarits interactifs pour différents types d'entreprises. Chaque design est unique — choisissez le style qui vous ressemble, puis on le personnalise pour vous.</p>
+  <a href="https://norelo.ca/#contact" class="hcta">Discuter de mon projet →</a>
+</section>
+
+<div class="filters">
+  <button class="ftab on" onclick="filter('all')">Tous les styles</button>
+  <button class="ftab" onclick="filter('sombre')">Fond sombre</button>
+  <button class="ftab" onclick="filter('clair')">Fond clair</button>
+  <button class="ftab" onclick="filter('luxe')">Luxe & Élégance</button>
+  <button class="ftab" onclick="filter('chaleureux')">Chaleureux</button>
+  <button class="ftab" onclick="filter('minimaliste')">Minimaliste</button>
+</div>
+
+<div class="tg" id="grid">
+
+  <!-- Salon -->
+  <div class="tc" data-tags="sombre luxe">
+    <div class="tprev">
+      <iframe src="../salon/index.html" loading="lazy" title="Template Salon de Coiffure" scrolling="no"></iframe>
+      <div class="tprev-overlay" onclick="window.open('../salon/index.html','_blank')"></div>
+      <div class="tprev-btn">Ouvrir en plein écran ↗</div>
+    </div>
+    <div class="tbody">
+      <div class="ttags">
+        <span class="ttag tag-luxe">✦ Luxe & Élégance</span>
+        <span class="ttag tag-dark">Fond sombre</span>
+      </div>
+      <h3>Salon de coiffure</h3>
+      <p>Style éditorial haute gamme — fond noir, accents or et typographie Playfair Display. Parfait pour coiffure, esthétique, spa et boutiques luxe.</p>
+      <div class="tactions">
+        <a href="../salon/index.html" target="_blank" class="tb1">Voir en plein écran</a>
+        <a href="https://norelo.ca/#contact" class="tb2">M'en inspirer</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toilettage -->
+  <div class="tc" data-tags="clair chaleureux">
+    <div class="tprev">
+      <iframe src="../toilettage/index.html" loading="lazy" title="Template Toilettage" scrolling="no"></iframe>
+      <div class="tprev-overlay" onclick="window.open('../toilettage/index.html','_blank')"></div>
+      <div class="tprev-btn">Ouvrir en plein écran ↗</div>
+    </div>
+    <div class="tbody">
+      <div class="ttags">
+        <span class="ttag tag-playful">🐾 Chaleureux</span>
+        <span class="ttag tag-light">Fond clair</span>
+      </div>
+      <h3>Toilettage / Services animaux</h3>
+      <p>Style organique et amical — tons crème et terracotta, Nunito, formes rondes. Idéal pour toilettage, animalerie, garde d'animaux et services locaux.</p>
+      <div class="tactions">
+        <a href="../toilettage/index.html" target="_blank" class="tb1">Voir en plein écran</a>
+        <a href="https://norelo.ca/#contact" class="tb2">M'en inspirer</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Massothérapie -->
+  <div class="tc" data-tags="clair minimaliste">
+    <div class="tprev">
+      <iframe src="../massotherapie/index.html" loading="lazy" title="Template Massothérapie" scrolling="no"></iframe>
+      <div class="tprev-overlay" onclick="window.open('../massotherapie/index.html','_blank')"></div>
+      <div class="tprev-btn">Ouvrir en plein écran ↗</div>
+    </div>
+    <div class="tbody">
+      <div class="ttags">
+        <span class="ttag tag-zen">🌿 Zen & Minimaliste</span>
+        <span class="ttag tag-light">Fond clair</span>
+      </div>
+      <h3>Massothérapie / Bien-être</h3>
+      <p>Style éditorial zen — blanc cassé, vert sauge, Cormorant Garamond. Idéal pour massothérapie, yoga, naturopathie, psychologie et médecine douce.</p>
+      <div class="tactions">
+        <a href="../massotherapie/index.html" target="_blank" class="tb1">Voir en plein écran</a>
+        <a href="https://norelo.ca/#contact" class="tb2">M'en inspirer</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Construction -->
+  <div class="tc" data-tags="sombre bold">
+    <div class="tprev">
+      <iframe src="../construction/index.html" loading="lazy" title="Template Construction" scrolling="no"></iframe>
+      <div class="tprev-overlay" onclick="window.open('../construction/index.html','_blank')"></div>
+      <div class="tprev-btn">Ouvrir en plein écran ↗</div>
+    </div>
+    <div class="tbody">
+      <div class="ttags">
+        <span class="ttag tag-bold">⚡ Audacieux & Fort</span>
+        <span class="ttag tag-dark">Fond sombre</span>
+      </div>
+      <h3>Construction / Entrepreneur</h3>
+      <p>Style industriel haute tension — noir, jaune vif, Oswald. Impact maximal. Idéal pour construction, rénovation, plomberie, électricité et métiers de la main.</p>
+      <div class="tactions">
+        <a href="../construction/index.html" target="_blank" class="tb1">Voir en plein écran</a>
+        <a href="https://norelo.ca/#contact" class="tb2">M'en inspirer</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Santé -->
+  <div class="tc" data-tags="clair minimaliste chaleureux">
+    <div class="tprev">
+      <iframe src="../sante/index.html" loading="lazy" title="Template Santé / Chiro" scrolling="no"></iframe>
+      <div class="tprev-overlay" onclick="window.open('../sante/index.html','_blank')"></div>
+      <div class="tprev-btn">Ouvrir en plein écran ↗</div>
+    </div>
+    <div class="tbody">
+      <div class="ttags">
+        <span class="ttag tag-clean">🏥 Professionnel & Confiant</span>
+        <span class="ttag tag-light">Fond clair</span>
+      </div>
+      <h3>Santé / Clinique / Chiro</h3>
+      <p>Style clinique chaleureux — bleu profond, teal, Lora. Professionnalisme rassurant. Idéal pour chiropratique, médecine, dentisterie, psychologie et santé.</p>
+      <div class="tactions">
+        <a href="../sante/index.html" target="_blank" class="tb1">Voir en plein écran</a>
+        <a href="https://norelo.ca/#contact" class="tb2">M'en inspirer</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<section class="cta-sec">
+  <h2>Votre style est <span>unique.</span><br>Votre site aussi.</h2>
+  <p>Ces gabarits sont des points de départ — couleurs, typographie, contenu et sections sont entièrement personnalisés pour votre entreprise.</p>
+  <div class="ctabtns">
+    <a href="https://norelo.ca/#contact" class="cbb">Discuter de mon projet →</a>
+    <a href="https://norelo.ca/previews/idees/" class="cbo">Explorer les fonctionnalités ✦</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Norelo — Saint-Joseph-du-Lac, Québec · Ces gabarits sont des démos, pas des clients réels.</p>
+  <a href="https://norelo.ca">norelo.ca</a>
+</footer>
+
+<script>
+function filter(tag){
+  document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('on'));
+  event.target.classList.add('on');
+  const cards=document.querySelectorAll('.tc');
+  cards.forEach(c=>{
+    const tags=c.dataset.tags||'';
+    if(tag==='all'){c.style.display='flex';}
+    else{c.style.display=tags.includes(tag)?'flex':'none';}
+  });
+}
+</script>
+</body>
+</html>

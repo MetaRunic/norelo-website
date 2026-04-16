@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="robots" content="noindex, nofollow"/>
+<title>Clinique Équilibre — Chiropratique & Santé</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--teal:#4ba3b8;--dark:#0f3460;--light:#e8f4f8;--cream:#f8fbff;--text:#5a6b75;--green:#34a853;--warm:#f0f7f9;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
+body{font-family:'Nunito Sans',sans-serif;background:#fff;color:#1a2832;overflow-x:hidden;}
+
+.wm{background:#fbbf24;color:#000;text-align:center;padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:.5px;position:sticky;top:0;z-index:10000;}
+.wm a{color:#000;}
+
+/* Nav */
+nav{position:fixed;top:36px;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1rem 4rem;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);box-shadow:0 2px 30px rgba(15,52,96,.08);transition:all .3s;}
+nav.sc{top:0;}
+.logo{display:flex;flex-direction:column;line-height:1;text-decoration:none;}
+.logo-n{font-family:'Lora',serif;font-size:20px;font-weight:600;color:var(--dark);}
+.logo-s{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);font-weight:600;}
+.nl{display:flex;gap:2rem;list-style:none;}
+.nl a{font-size:14px;font-weight:600;color:var(--text);text-decoration:none;transition:color .2s;}
+.nl a:hover{color:var(--teal);}
+.nnav{display:flex;align-items:center;gap:1rem;}
+.nphone{font-size:14px;font-weight:700;color:var(--dark);display:flex;align-items:center;gap:.4rem;}
+.ncta{background:var(--teal);color:#fff;padding:11px 24px;border-radius:50px;font-size:13px;font-weight:700;text-decoration:none;transition:all .25s;}
+.ncta:hover{background:var(--dark);}
+@media(max-width:700px){nav{padding:1rem 1.5rem;}.nl{display:none;}.nphone{display:none;}}
+
+/* Top bar */
+.tbar{background:var(--dark);color:rgba(255,255,255,.7);font-size:12px;padding:.6rem 4rem;display:flex;justify-content:space-between;align-items:center;}
+.tbar span{display:flex;align-items:center;gap:.4rem;}
+@media(max-width:700px){.tbar{padding:.6rem 1.5rem;font-size:11px;flex-direction:column;gap:.25rem;}}
+
+/* Hero */
+.hero{padding:8rem 4rem 5rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;max-width:1300px;margin:0 auto;position:relative;}
+.hbdg{display:inline-flex;align-items:center;gap:8px;background:var(--light);color:var(--teal);font-size:12px;font-weight:700;padding:8px 18px;border-radius:50px;margin-bottom:1.5rem;}
+.hbdg-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pu 2s infinite;}
+@keyframes pu{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+.hero h1{font-family:'Lora',serif;font-size:clamp(38px,4.5vw,62px);font-weight:600;line-height:1.1;color:var(--dark);margin-bottom:1.5rem;letter-spacing:-.5px;}
+.hero h1 em{color:var(--teal);font-style:italic;}
+.hd{font-size:16px;color:var(--text);line-height:1.85;margin-bottom:2rem;font-weight:400;}
+.hbtns{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem;}
+.hb1{background:var(--teal);color:#fff;padding:14px 32px;border-radius:50px;font-size:15px;font-weight:700;text-decoration:none;transition:all .25s;box-shadow:0 6px 24px rgba(75,163,184,.3);}
+.hb1:hover{background:var(--dark);transform:translateY(-2px);}
+.hb2{background:transparent;color:var(--dark);padding:14px 28px;border-radius:50px;font-size:15px;font-weight:600;text-decoration:none;border:2px solid #d0e6ed;transition:all .25s;}
+.hb2:hover{border-color:var(--teal);color:var(--teal);}
+.hstats{display:flex;gap:2rem;padding-top:1.5rem;border-top:1px solid #e8f0f4;}
+.hs{}<h4.hsn{font-size:26px;font-weight:800;color:var(--dark);}
+.hsl{font-size:12px;color:var(--text);margin-top:.1rem;}
+.himg{position:relative;}
+.himg img{width:100%;border-radius:32px 8px 32px 8px;aspect-ratio:4/5;object-fit:cover;object-position:top;}
+.hbcard{position:absolute;bottom:-1.5rem;right:-1.5rem;background:#fff;padding:1.25rem 1.5rem;border-radius:16px;box-shadow:0 16px 50px rgba(15,52,96,.15);display:flex;gap:.75rem;align-items:center;}
+.hbcard-ic{width:44px;height:44px;background:var(--light);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.hbcard-n{font-size:16px;font-weight:800;color:var(--dark);}
+.hbcard-l{font-size:11px;color:var(--text);}
+@media(max-width:700px){.hero{grid-template-columns:1fr;padding:7rem 1.5rem 3rem;gap:2.5rem;}.hbcard{display:none;}}
+
+/* Trust bar */
+.trust{background:var(--warm);border-top:1px solid #d0e6ed;border-bottom:1px solid #d0e6ed;padding:1.5rem 4rem;display:flex;justify-content:center;gap:4rem;flex-wrap:wrap;}
+.ti{text-align:center;}.tin{font-size:24px;font-weight:800;color:var(--dark);}
+.til{font-size:12px;color:var(--text);margin-top:.15rem;}
+@media(max-width:700px){.trust{padding:1.5rem;gap:1.5rem;}}
+
+/* Services */
+.sec{padding:6rem 4rem;}
+.si{max-width:1100px;margin:0 auto;}
+.stag{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:10px;}
+.stag::before{content:'';width:20px;height:2px;background:var(--teal);}
+.sti{font-family:'Lora',serif;font-size:clamp(30px,4vw,48px);font-weight:600;color:var(--dark);line-height:1.1;letter-spacing:-.5px;margin-bottom:1rem;}
+.sti em{font-style:italic;color:var(--teal);}
+.ssu{font-size:15px;color:var(--text);line-height:1.85;max-width:520px;margin-bottom:3.5rem;}
+.svsg{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.svc{background:var(--warm);border:1.5px solid transparent;border-radius:20px;padding:2rem;transition:all .3s;}
+.svc:hover{border-color:var(--teal);background:#fff;box-shadow:0 12px 40px rgba(75,163,184,.12);transform:translateY(-4px);}
+.svic{width:52px;height:52px;background:var(--light);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:1.25rem;transition:transform .3s;}
+.svc:hover .svic{transform:scale(1.1) rotate(-5deg);}
+.svc h3{font-size:18px;font-weight:700;color:var(--dark);margin-bottom:.6rem;}
+.svc p{font-size:14px;color:var(--text);line-height:1.75;}
+@media(max-width:700px){.sec{padding:4rem 1.5rem;}.svsg{grid-template-columns:1fr;}}
+
+/* Equipe */
+.ebg{background:var(--dark);}
+.eg{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:560px;}
+.eimg{overflow:hidden;}
+.eimg img{width:100%;height:100%;object-fit:cover;object-position:top;filter:brightness(.85);}
+.ec{padding:6rem 5rem;display:flex;flex-direction:column;justify-content:center;}
+.ec .stag{color:rgba(75,163,184,.7);}
+.ec .sti{color:#fff;}
+.ec .sti em{color:var(--teal);}
+.etags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem;}
+.etag{background:rgba(75,163,184,.15);color:var(--teal);border:1px solid rgba(75,163,184,.3);font-size:12px;padding:5px 14px;border-radius:50px;font-weight:600;}
+.ebio{font-size:15px;color:rgba(255,255,255,.55);line-height:1.85;margin-top:1.25rem;font-weight:300;}
+@media(max-width:700px){.eg{grid-template-columns:1fr;}.eimg{height:70vw;}.ec{padding:3rem 1.5rem;}}
+
+/* Pourquoi */
+.wg{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;}
+.wc{display:flex;gap:1rem;align-items:flex-start;background:var(--warm);border-radius:16px;padding:1.75rem;}
+.wci{width:44px;height:44px;background:var(--light);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.wc h4{font-size:16px;font-weight:700;color:var(--dark);margin-bottom:.35rem;}
+.wc p{font-size:14px;color:var(--text);line-height:1.7;}
+
+/* Soins */
+.pg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem;}
+.pc{border:1.5px solid #d0e6ed;border-radius:18px;padding:2rem;background:#fff;transition:all .3s;}
+.pc:hover{border-color:var(--teal);box-shadow:0 12px 40px rgba(75,163,184,.1);}
+.pcn{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:.4rem;}
+.pcti{font-family:'Lora',serif;font-size:20px;color:var(--dark);font-weight:600;margin-bottom:.4rem;}
+.pctime{font-size:12px;color:rgba(90,107,117,.5);letter-spacing:1px;margin-bottom:1rem;}
+.pcd{font-size:13px;color:var(--text);line-height:1.7;margin-bottom:1.25rem;}
+.pcbtn{display:inline-block;background:var(--light);color:var(--teal);padding:9px 20px;border-radius:50px;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;}
+.pcbtn:hover{background:var(--teal);color:#fff;}
+
+/* Témoignages */
+.tg{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.tc{background:var(--warm);border-radius:20px;padding:2rem;border:1.5px solid #d0e6ed;}
+.tcs{color:var(--teal);font-size:16px;margin-bottom:1rem;}
+.tcq{font-size:15px;color:var(--dark);line-height:1.75;font-style:italic;margin-bottom:1.25rem;}
+.tcn{font-size:13px;font-weight:700;color:var(--text);}
+@media(max-width:700px){.tg{grid-template-columns:1fr;}}
+
+/* Contact */
+.ctbg{background:var(--warm);}
+.ctg{display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:start;}
+.ctl h2{font-family:'Lora',serif;font-size:clamp(28px,3.5vw,44px);color:var(--dark);line-height:1.1;margin-bottom:1rem;font-weight:600;}
+.ctl p{font-size:15px;color:var(--text);line-height:1.85;margin-bottom:2rem;}
+.cinfo{display:flex;flex-direction:column;gap:1.25rem;}
+.ci{display:flex;gap:.75rem;align-items:flex-start;}
+.cii{width:36px;height:36px;background:var(--light);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.ci-t h4{font-size:13px;font-weight:700;color:var(--dark);margin-bottom:.15rem;}
+.ci-t p{font-size:13px;color:var(--text);line-height:1.5;}
+.ctf{background:#fff;border-radius:24px;padding:2.5rem;display:flex;flex-direction:column;gap:1.25rem;box-shadow:0 8px 40px rgba(15,52,96,.08);}
+.ctf h3{font-family:'Lora',serif;font-size:26px;color:var(--dark);font-weight:600;}
+.ctf input,.ctf select,.ctf textarea{background:var(--warm);border:1.5px solid #d0e6ed;border-radius:12px;padding:13px 16px;font-family:'Nunito Sans',sans-serif;font-size:14px;color:var(--dark);outline:none;width:100%;transition:border-color .2s;}
+.ctf input:focus,.ctf select:focus,.ctf textarea:focus{border-color:var(--teal);background:#fff;}
+.ctf textarea{min-height:90px;resize:vertical;}
+.ctbtn{background:var(--teal);color:#fff;border:none;padding:15px 32px;border-radius:50px;font-family:'Nunito Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .25s;width:100%;}
+.ctbtn:hover{background:var(--dark);}
+.fnote{font-size:12px;color:rgba(90,107,117,.6);text-align:center;}
+@media(max-width:700px){.ctg{grid-template-columns:1fr;gap:2.5rem;}}
+
+footer{background:var(--dark);padding:2.5rem 4rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+footer p{font-size:12px;color:rgba(255,255,255,.25);}
+footer a{color:rgba(75,163,184,.5);text-decoration:none;font-size:12px;transition:color .2s;font-weight:600;}
+footer a:hover{color:var(--teal);}
+@media(max-width:700px){footer{padding:1.5rem;flex-direction:column;text-align:center;}}
+</style>
+</head>
+<body>
+<div class="wm">⚠️ APERÇU SEULEMENT — Site démo conçu par <a href="https://norelo.ca" target="_blank">Norelo</a> — Pas encore en ligne</div>
+
+<div class="tbar">
+  <span>📍 1200 boul. des Laurentides, Saint-Eustache, J7R 2L9</span>
+  <span>📞 450-000-0000 &nbsp;·&nbsp; 🕐 Lun/Mer/Jeu : 9h–20h</span>
+</div>
+
+<nav id="nav">
+  <a class="logo" href="#"><span class="logo-n">Clinique Équilibre</span><span class="logo-s">Chiropratique & Santé</span></a>
+  <ul class="nl">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#equipe">Équipe</a></li>
+    <li><a href="#soins">Soins</a></li>
+    <li><a href="#contact">Rendez-vous</a></li>
+  </ul>
+  <div class="nnav">
+    <span class="nphone">📞 450-000-0000</span>
+    <a href="#contact" class="ncta">Prendre rendez-vous</a>
+  </div>
+</nav>
+
+<section style="padding-top:36px;">
+  <div class="hero">
+    <div>
+      <p class="hbdg"><span class="hbdg-dot"></span> Acceptons de nouveaux patients</p>
+      <h1>Soulagez vos douleurs.<br>Retrouvez <em>la mobilité.</em></h1>
+      <p class="hd">Soins chiropratiques personnalisés pour adultes, enfants et sportifs. Une approche globale centrée sur votre santé à long terme.</p>
+      <div class="hbtns">
+        <a href="#contact" class="hb1">Prendre rendez-vous</a>
+        <a href="#services" class="hb2">Nos services</a>
+      </div>
+      <div class="hstats">
+        <div class="hs"><div style="font-size:26px;font-weight:800;color:var(--dark);">2000+</div><div class="hsl">Patients traités</div></div>
+        <div class="hs"><div style="font-size:26px;font-weight:800;color:var(--dark);">15+</div><div class="hsl">Ans d'expérience</div></div>
+        <div class="hs"><div style="font-size:26px;font-weight:800;color:var(--dark);">4.9★</div><div class="hsl">Note Google</div></div>
+      </div>
+    </div>
+    <div class="himg">
+      <img src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=700&q=80" alt="Clinique Équilibre chiropratique"/>
+      <div class="hbcard">
+        <div class="hbcard-ic">✅</div>
+        <div><div class="hbcard-n">Certifiée</div><div class="hbcard-l">Ordre des chiropraticiens du Québec</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="trust">
+  <div class="ti"><div class="tin">2000+</div><div class="til">Patients traités</div></div>
+  <div class="ti"><div class="tin">15 ans</div><div class="til">En pratique</div></div>
+  <div class="ti"><div class="tin">Pédiatrique</div><div class="til">Formation spécialisée</div></div>
+  <div class="ti"><div class="tin">Assurances</div><div class="til">Acceptées</div></div>
+</div>
+
+<section class="sec" id="services">
+  <div class="si">
+    <p class="stag">Services</p>
+    <h2 class="sti">Des soins adaptés<br>à <em>chaque patient.</em></h2>
+    <p class="ssu">De la douleur aiguë à la maintenance préventive, nous offrons une gamme complète de soins chiropratiques.</p>
+    <div class="svsg">
+      <div class="svc"><div class="svic">🦴</div><h3>Ajustement chiropratique</h3><p>Manipulation vertébrale douce et précise pour corriger les subluxations et restaurer la mobilité. Techniques adaptées à chaque patient.</p></div>
+      <div class="svc"><div class="svic">👶</div><h3>Chiropratique pédiatrique</h3><p>Soins doux et sécuritaires pour les bébés, enfants et adolescents. Coliques, troubles du sommeil, scoliose et plus.</p></div>
+      <div class="svc"><div class="svic">🏃</div><h3>Chiropratique sportive</h3><p>Prévention et traitement des blessures sportives. Retour rapide à la performance avec un suivi personnalisé.</p></div>
+      <div class="svc"><div class="svic">🤰</div><h3>Chiro & grossesse</h3><p>Soins adaptés aux femmes enceintes pour soulager les douleurs lombaires, sciatiques et inconfort de grossesse.</p></div>
+      <div class="svc"><div class="svic">💆</div><h3>Massothérapie</h3><p>Massages thérapeutiques complémentaires aux ajustements. Libération des tensions musculaires profondes.</p></div>
+      <div class="svc"><div class="svic">📋</div><h3>Bilan posturologique</h3><p>Analyse complète de votre posture et de vos mouvements pour identifier les déséquilibres et prévenir les blessures.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec ebg" id="equipe">
+  <div class="eg">
+    <div class="eimg"><img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=700&q=80" alt="Chiropraticienne Clinique Équilibre"/></div>
+    <div class="ec">
+      <p class="stag">Notre chiropraticienne</p>
+      <h2 class="sti">Dre Sophie <em>Leblanc</em></h2>
+      <p class="ebio">Docteure en chiropratique depuis 2008, Dre Leblanc est passionnée par l'approche holistique de la santé. Elle s'est spécialisée en chiropratique pédiatrique et prénatale, et est membre active de l'Ordre des chiropraticiens du Québec. Elle croit fermement que chaque patient mérite une attention personnalisée et des soins de haute qualité.</p>
+      <div class="etags">
+        <span class="etag">D.C. UQTR 2008</span>
+        <span class="etag">Chiropratique pédiatrique</span>
+        <span class="etag">Webster Technique</span>
+        <span class="etag">SOT</span>
+        <span class="etag">Bilingue</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="soins">
+  <div class="si">
+    <p class="stag">Soins & Tarifs</p>
+    <h2 class="sti">Choisissez<br>votre <em>forfait.</em></h2>
+    <p class="ssu" style="margin-bottom:3rem;">La plupart des régimes d'assurance couvrent les soins chiropratiques. Vérifiez votre couverture.</p>
+    <div class="pg">
+      <div class="pc"><p class="pcn">Première visite</p><p class="pcti">Consultation initiale</p><p class="pctime">60 minutes</p><p class="pcd">Examen complet, antécédents, bilan postural, radiographies si nécessaires et premier ajustement.</p><a href="#contact" class="pcbtn">Réserver — 95 $</a></div>
+      <div class="pc"><p class="pcn">Suivi standard</p><p class="pcti">Ajustement</p><p class="pctime">20–30 minutes</p><p class="pcd">Ajustement chiropratique ciblé avec bilan rapide des progrès et recommandations.</p><a href="#contact" class="pcbtn">Réserver — 65 $</a></div>
+      <div class="pc"><p class="pcn">Pédiatrique</p><p class="pcti">Soin enfant</p><p class="pctime">20–30 minutes</p><p class="pcd">Soins adaptés aux nourrissons, enfants et adolescents. Techniques douces et spécifiques.</p><a href="#contact" class="pcbtn">Réserver — 55 $</a></div>
+      <div class="pc"><p class="pcn">Combo</p><p class="pcti">Chiro + Massage</p><p class="pctime">60 minutes</p><p class="pcd">Ajustement chiropratique suivi d'un massage thérapeutique ciblé pour des résultats optimaux.</p><a href="#contact" class="pcbtn">Réserver — 120 $</a></div>
+    </div>
+    <div style="background:var(--warm);border:1.5px solid #d0e6ed;border-radius:16px;padding:1.25rem 1.5rem;margin-top:2rem;font-size:14px;color:var(--text);display:flex;gap:.75rem;align-items:center;">
+      <span style="font-size:1.2rem;">🏥</span>
+      <span>La plupart des régimes d'assurance collective couvrent les soins chiropratiques. Nous vous fournissons un reçu pour remboursement. Nous acceptons aussi l'IVAC et la CNESST.</span>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="background:var(--warm);" id="temoignages">
+  <div class="si">
+    <p class="stag">Témoignages</p>
+    <h2 class="sti" style="margin-bottom:3rem;">Ils ont <em>retrouvé</em><br>leur qualité de vie.</h2>
+    <div class="tg">
+      <div class="tc"><div class="tcs">★★★★★</div><p class="tcq">Après 3 ans de douleurs chroniques au dos, 6 séances ont suffi pour retrouver une vie normale. Je regrette de ne pas être venu plus tôt.</p><p class="tcn">— Marc A., patient depuis 2022</p></div>
+      <div class="tc"><div class="tcs">★★★★★</div><p class="tcq">Ma fille de 4 mois souffrait de coliques. Dès la 2ème séance, une nuit complète de sommeil. Incroyable. Je recommande à tous les parents!</p><p class="tcn">— Isabelle T., maman</p></div>
+      <div class="tc"><div class="tcs">★★★★★</div><p class="tcq">En tant que coureuse, j'avais des blessures à répétition. Dre Leblanc a identifié le problème à la racine. Ça fait maintenant 2 ans sans blessure.</p><p class="tcn">— Caroline M., triathlète</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec ctbg" id="contact">
+  <div class="si">
+    <div class="ctg">
+      <div class="ctl">
+        <p class="stag">Rendez-vous</p>
+        <h2>Prenez soin de votre colonne. Votre corps vous remerciera.</h2>
+        <p>Nouveaux patients bienvenus. Réponse sous 24h. Assurances acceptées.</p>
+        <div class="cinfo">
+          <div class="ci"><div class="cii">📍</div><div class="ci-t"><h4>Adresse</h4><p>1200 boul. des Laurentides, Saint-Eustache, J7R 2L9</p></div></div>
+          <div class="ci"><div class="cii">📞</div><div class="ci-t"><h4>Téléphone</h4><p>450-000-0000</p></div></div>
+          <div class="ci"><div class="cii">🕐</div><div class="ci-t"><h4>Horaires</h4><p>Lun / Mer / Jeu : 9h–20h<br>Fermé Mar / Ven / Sam / Dim</p></div></div>
+          <div class="ci"><div class="cii">🏥</div><div class="ci-t"><h4>Assurances</h4><p>Sun Life, Desjardins, Croix Bleue, IVAC, CNESST et plus</p></div></div>
+        </div>
+      </div>
+      <div class="ctf">
+        <h3>Demande de rendez-vous</h3>
+        <input type="text" placeholder="Votre prénom et nom"/>
+        <input type="tel" placeholder="Votre numéro de téléphone"/>
+        <input type="text" placeholder="Date(s) préférée(s)"/>
+        <select><option value="">Type de consultation...</option><option>Première visite (nouvelle patient)</option><option>Ajustement de suivi</option><option>Soin pédiatrique (enfant)</option><option>Soin prénatal</option><option>Combo chiro + massage</option></select>
+        <textarea placeholder="Motif de consultation ou zone douloureuse (ex: lombaires, cervicales, sciatique...)"></textarea>
+        <button class="ctbtn">Envoyer la demande</button>
+        <p class="fnote">Réponse garantie sous 24h · Tous les renseignements sont confidentiels</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Clinique Équilibre — Chiropratique & Santé · Saint-Eustache, Québec</p>
+  <a href="https://norelo.ca" target="_blank">Site web réalisé par Norelo</a>
+</footer>
+
+<script>
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('sc',window.scrollY>80));
+</script>
+</body>
+</html>

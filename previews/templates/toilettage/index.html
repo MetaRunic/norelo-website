@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="robots" content="noindex, nofollow"/>
+<title>Toutou Prestige — Salon de Toilettage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--tc:#e07b54;--tc2:#f5a07a;--dark:#2d1f14;--cream:#fdf8f2;--sand:#f0e8db;--text:#6b4f3a;--green:#6aad76;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--dark);overflow-x:hidden;}
+
+.wm{background:#fbbf24;color:#000;text-align:center;padding:8px 16px;font-size:12px;font-weight:700;letter-spacing:.5px;position:sticky;top:0;z-index:10000;}
+.wm a{color:#000;}
+
+/* Nav */
+nav{position:fixed;top:36px;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1rem 3rem;transition:all .3s;}
+nav.sc{top:0;background:rgba(253,248,242,.96);backdrop-filter:blur(20px);box-shadow:0 2px 30px rgba(45,31,20,.08);}
+.logo{font-size:24px;font-weight:900;color:var(--dark);text-decoration:none;display:flex;align-items:center;gap:.4rem;}
+.logo span{color:var(--tc);}
+.logo em{font-size:22px;font-style:normal;}
+.nl{display:flex;gap:2rem;list-style:none;}
+.nl a{font-size:14px;font-weight:600;color:var(--text);text-decoration:none;transition:color .2s;}
+.nl a:hover{color:var(--tc);}
+.ncta{background:var(--tc);color:#fff;padding:11px 26px;border-radius:50px;font-size:14px;font-weight:700;text-decoration:none;transition:all .25s;box-shadow:0 4px 20px rgba(224,123,84,.35);}
+.ncta:hover{background:var(--dark);transform:translateY(-2px);}
+@media(max-width:700px){nav{padding:1rem 1.25rem;}.nl{display:none;}nav.sc{top:0;}}
+
+/* Hero */
+.hero{padding:9rem 3rem 5rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;max-width:1200px;margin:0 auto;position:relative;}
+.hero::before{content:'🐾';font-size:300px;position:absolute;right:-60px;top:50%;transform:translateY(-50%);opacity:.04;pointer-events:none;}
+.hbdg{display:inline-flex;align-items:center;gap:8px;background:var(--sand);color:var(--tc);font-size:12px;font-weight:700;letter-spacing:1px;padding:8px 16px;border-radius:50px;margin-bottom:1.5rem;}
+.hero h1{font-size:clamp(42px,5.5vw,68px);font-weight:900;line-height:1;color:var(--dark);margin-bottom:1.5rem;letter-spacing:-1.5px;}
+.hero h1 span{color:var(--tc);}
+.hd{font-size:16px;color:var(--text);line-height:1.8;margin-bottom:2rem;}
+.hbtns{display:flex;gap:1rem;flex-wrap:wrap;}
+.hb1{background:var(--tc);color:#fff;padding:14px 32px;border-radius:50px;font-size:15px;font-weight:700;text-decoration:none;transition:all .25s;box-shadow:0 6px 24px rgba(224,123,84,.35);}
+.hb1:hover{background:var(--dark);transform:translateY(-2px);}
+.hb2{background:transparent;color:var(--dark);padding:14px 32px;border-radius:50px;font-size:15px;font-weight:700;text-decoration:none;border:2px solid var(--sand);transition:all .25s;}
+.hb2:hover{border-color:var(--tc);color:var(--tc);}
+.himg{position:relative;}
+.himg img{width:100%;border-radius:40px 40px 120px 40px;aspect-ratio:4/5;object-fit:cover;}
+.hbadge{position:absolute;bottom:-1.5rem;left:-1.5rem;background:var(--green);color:#fff;font-size:14px;font-weight:800;padding:14px 20px;border-radius:20px;box-shadow:0 8px 24px rgba(106,173,118,.4);line-height:1.3;}
+.hbadge span{display:block;font-size:11px;font-weight:600;opacity:.8;}
+@media(max-width:700px){.hero{grid-template-columns:1fr;padding:7rem 1.5rem 3rem;gap:2.5rem;}.himg img{border-radius:30px;}.hbadge{bottom:1rem;left:1rem;}}
+
+/* Stats */
+.stats{background:var(--dark);padding:3rem;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center;}
+.st n{font-size:36px;font-weight:900;color:var(--tc2);display:block;}
+.stl{font-size:13px;color:rgba(253,248,242,.5);font-weight:600;margin-top:.25rem;}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr);padding:2rem 1.5rem;}}
+
+/* Services */
+.sec{padding:6rem 3rem;}
+.si{max-width:1100px;margin:0 auto;}
+.sheader{text-align:center;margin-bottom:4rem;}
+.stag{background:rgba(224,123,84,.12);color:var(--tc);font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:6px 18px;border-radius:50px;display:inline-block;margin-bottom:1rem;}
+.sti{font-size:clamp(32px,4vw,48px);font-weight:900;color:var(--dark);letter-spacing:-1.5px;line-height:1.05;}
+.sti span{color:var(--tc);}
+.ssu{font-size:15px;color:var(--text);margin-top:.75rem;}
+.svsg{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.svc{background:#fff;border-radius:24px;padding:2.5rem 2rem;transition:all .3s;border:2px solid transparent;text-align:center;}
+.svc:hover{border-color:var(--tc2);transform:translateY(-6px);box-shadow:0 20px 50px rgba(224,123,84,.15);}
+.svic{font-size:44px;display:block;margin-bottom:1.25rem;}
+.svc h3{font-size:18px;font-weight:800;color:var(--dark);margin-bottom:.6rem;}
+.svc p{font-size:14px;color:var(--text);line-height:1.7;}
+.svp{display:inline-block;margin-top:1.25rem;background:var(--sand);color:var(--tc);font-size:13px;font-weight:700;padding:6px 18px;border-radius:50px;}
+@media(max-width:700px){.sec{padding:4rem 1.5rem;}.svsg{grid-template-columns:1fr;}}
+
+/* Why */
+.why{background:var(--sand);}
+.whyg{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.whyimg img{width:100%;border-radius:30px 30px 30px 100px;aspect-ratio:1;object-fit:cover;}
+.wlist{display:flex;flex-direction:column;gap:1.5rem;margin-top:2rem;}
+.wi{display:flex;gap:1rem;align-items:flex-start;}
+.wii{width:44px;height:44px;background:var(--tc);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.wi h4{font-size:16px;font-weight:800;color:var(--dark);margin-bottom:.25rem;}
+.wi p{font-size:14px;color:var(--text);line-height:1.6;}
+@media(max-width:700px){.whyg{grid-template-columns:1fr;gap:2.5rem;}}
+
+/* Prix */
+.pxbg{background:#fff;}
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.pc{background:var(--cream);border-radius:24px;padding:2.5rem 2rem;border:2px solid transparent;transition:all .3s;}
+.pc:hover{border-color:var(--tc2);transform:translateY(-5px);}
+.pc.pop{background:var(--dark);border-color:var(--tc);}
+.pcbdg{background:var(--tc);color:#fff;font-size:11px;font-weight:700;padding:5px 16px;border-radius:50px;display:inline-block;margin-bottom:1rem;letter-spacing:.5px;}
+.pcn{font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text);margin-bottom:.5rem;}
+.pc.pop .pcn{color:rgba(253,248,242,.5);}
+.pcp{font-size:44px;font-weight:900;color:var(--dark);letter-spacing:-1.5px;}
+.pc.pop .pcp{color:var(--cream);}
+.pcp sup{font-size:20px;vertical-align:top;margin-top:12px;display:inline-block;}
+.pcd{font-size:14px;color:var(--text);margin:1rem 0 1.5rem;line-height:1.7;}
+.pc.pop .pcd{color:rgba(253,248,242,.55);}
+.pcf{list-style:none;display:flex;flex-direction:column;gap:.7rem;margin-bottom:2rem;}
+.pcf li{font-size:14px;color:var(--text);display:flex;gap:.6rem;align-items:flex-start;}
+.pc.pop .pcf li{color:rgba(253,248,242,.65);}
+.pcf li::before{content:'✓';color:var(--green);font-weight:800;flex-shrink:0;}
+.pcbtn{display:block;text-align:center;background:var(--tc);color:#fff;padding:13px 24px;border-radius:50px;font-size:14px;font-weight:700;text-decoration:none;transition:all .25s;}
+.pcbtn:hover{background:var(--dark);}
+.pc.pop .pcbtn{background:var(--tc2);}
+@media(max-width:700px){.pg{grid-template-columns:1fr;}}
+
+/* Contact */
+.ctbg{background:var(--tc);padding:6rem 3rem;}
+.ctg{display:grid;grid-template-columns:1fr 1.2fr;gap:5rem;align-items:center;max-width:1100px;margin:0 auto;}
+.ctl h2{font-size:clamp(32px,4vw,50px);font-weight:900;color:#fff;line-height:1.05;letter-spacing:-1.5px;margin-bottom:1.25rem;}
+.ctl p{font-size:15px;color:rgba(255,255,255,.75);line-height:1.8;margin-bottom:2rem;}
+.ctinfo{display:flex;flex-direction:column;gap:.75rem;}
+.ctrow{display:flex;align-items:center;gap.75rem;gap:.75rem;font-size:14px;color:rgba(255,255,255,.85);}
+.ctrow span:first-child{font-size:18px;width:28px;}
+.ctf{background:#fff;border-radius:30px;padding:2.5rem;display:flex;flex-direction:column;gap:1rem;}
+.ctf h3{font-size:20px;font-weight:800;color:var(--dark);margin-bottom:.25rem;}
+.ctf input,.ctf select,.ctf textarea{background:var(--cream);border:2px solid var(--sand);border-radius:14px;padding:13px 16px;font-family:'Nunito',sans-serif;font-size:14px;color:var(--dark);outline:none;width:100%;transition:border-color .2s;}
+.ctf input:focus,.ctf select:focus,.ctf textarea:focus{border-color:var(--tc);}
+.ctf textarea{min-height:80px;resize:none;}
+.ctbtn{background:var(--tc);color:#fff;border:none;padding:14px 32px;border-radius:50px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .25s;width:100%;}
+.ctbtn:hover{background:var(--dark);}
+@media(max-width:700px){.ctbg{padding:4rem 1.5rem;}.ctg{grid-template-columns:1fr;gap:2.5rem;}}
+
+footer{background:var(--dark);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+footer p{font-size:13px;color:rgba(253,248,242,.25);}
+footer a{color:rgba(224,123,84,.6);text-decoration:none;font-size:13px;font-weight:600;transition:color .2s;}
+footer a:hover{color:var(--tc2);}
+@media(max-width:700px){footer{padding:1.5rem;flex-direction:column;text-align:center;}}
+</style>
+</head>
+<body>
+<div class="wm">⚠️ APERÇU SEULEMENT — Site démo conçu par <a href="https://norelo.ca" target="_blank">Norelo</a> — Pas encore en ligne</div>
+
+<nav id="nav">
+  <a class="logo" href="#"><span>🐾</span> Toutou <span>Prestige</span></a>
+  <ul class="nl">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#pourquoi">Pourquoi nous</a></li>
+    <li><a href="#prix">Tarifs</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="ncta">📅 Réserver</a>
+</nav>
+
+<section style="padding-top:36px;">
+  <div class="hero">
+    <div>
+      <p class="hbdg">🌿 Toilettage naturel & sans stress</p>
+      <h1>Votre chien mérite<br>le <span>meilleur.</span></h1>
+      <p class="hd">Bain, coupe, brossage et plus — dans un environnement calme, propre et bienveillant. Votre animal repart heureux et beau.</p>
+      <div class="hbtns">
+        <a href="#contact" class="hb1">Prendre rendez-vous 🐶</a>
+        <a href="#services" class="hb2">Voir les services</a>
+      </div>
+    </div>
+    <div class="himg">
+      <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=700&q=80" alt="Chien toiletté chez Toutou Prestige"/>
+      <div class="hbadge">⭐ 4.9/5<span>+120 avis Google</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="st"><n>500+</n><div class="stl">Clients satisfaits</div></div>
+  <div class="st"><n>7</n><div class="stl">Ans d'expérience</div></div>
+  <div class="st"><n>24h</n><div class="stl">Prise de rendez-vous</div></div>
+  <div class="st"><n>100%</n><div class="stl">Produits naturels</div></div>
+</div>
+
+<section class="sec" id="services">
+  <div class="si">
+    <div class="sheader">
+      <span class="stag">Nos services</span>
+      <h2 class="sti">Tout pour <span>chouchouter</span> votre compagnon.</h2>
+      <p class="ssu">Pour chiens de toutes tailles et races. Nous nous adaptons à chaque animal.</p>
+    </div>
+    <div class="svsg">
+      <div class="svc">
+        <span class="svic">🛁</span>
+        <h3>Bain & Séchage</h3>
+        <p>Shampoing hypoallergénique, après-shampoing, séchage et brossage complet. Peau saine, poil brillant.</p>
+        <span class="svp">À partir de 35 $</span>
+      </div>
+      <div class="svc">
+        <span class="svic">✂️</span>
+        <h3>Coupe & Toilettage</h3>
+        <p>Coupe selon la race ou selon vos préférences. Retouche des pattes, museau et contours. Fini impeccable.</p>
+        <span class="svp">À partir de 55 $</span>
+      </div>
+      <div class="svc">
+        <span class="svic">💅</span>
+        <h3>Soins Complets</h3>
+        <p>Bain + coupe + griffes + nettoyage oreilles + expression des glandes. Le forfait tout inclus.</p>
+        <span class="svp">À partir de 80 $</span>
+      </div>
+      <div class="svc">
+        <span class="svic">🐱</span>
+        <h3>Toilettage Chat</h3>
+        <p>Brossage anti-nœuds, dématage, bain si nécessaire et coupe d'ongles. Calme et douceur assurés.</p>
+        <span class="svp">À partir de 55 $</span>
+      </div>
+      <div class="svc">
+        <span class="svic">🏡</span>
+        <h3>Service à Domicile</h3>
+        <p>Trop de stress en salon? On se déplace chez vous pour un toilettage dans le confort de votre foyer.</p>
+        <span class="svp">+25 $ (déplacement)</span>
+      </div>
+      <div class="svc">
+        <span class="svic">🎀</span>
+        <h3>Toilettage Express</h3>
+        <p>Retouche rapide entre deux toilettages complets — griffes, pattes et nettoyage facial.</p>
+        <span class="svp">À partir de 20 $</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec why" id="pourquoi">
+  <div class="si">
+    <div class="whyg">
+      <div class="whyimg">
+        <img src="https://images.unsplash.com/photo-1548681528-6a5c45b66b42?w=600&q=80" alt=""/>
+      </div>
+      <div>
+        <span class="stag">Pourquoi Toutou Prestige?</span>
+        <h2 class="sti" style="margin-top:1rem;">Votre animal entre en bonnes <span>mains.</span></h2>
+        <div class="wlist">
+          <div class="wi"><div class="wii">🌿</div><div><h4>Produits 100% naturels</h4><p>Formules douces, sans sulfates ni parabènes. Idéales pour les peaux sensibles et les allergiques.</p></div></div>
+          <div class="wi"><div class="wii">❤️</div><div><h4>Approche sans stress</h4><p>Un seul animal à la fois. Pas de cages, ambiance calme et musique douce pour votre compagnon.</p></div></div>
+          <div class="wi"><div class="wii">📸</div><div><h4>Photo avant/après</h4><p>On vous envoie une photo de votre toutou tout beau avant que vous veniez le chercher!</p></div></div>
+          <div class="wi"><div class="wii">🏆</div><div><h4>Expérience certifiée</h4><p>Formatrice professionnelle de l'AFTQ. Plus de 7 ans d'expérience avec tous types de races.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec pxbg" id="prix">
+  <div class="si">
+    <div class="sheader">
+      <span class="stag">Tarifs</span>
+      <h2 class="sti">Simple, <span>transparent</span> et sans mauvaises surprises.</h2>
+      <p class="ssu">Tarifs selon la taille de l'animal. Consultez-nous pour les races à poils longs ou très fournis.</p>
+    </div>
+    <div class="pg">
+      <div class="pc">
+        <p class="pcn">Petit gabarit</p>
+        <p class="pcp"><sup>$</sup>55</p>
+        <p class="pcd">Moins de 10 kg · Chihuahua, Maltais, Poméranien, Yorkshire...</p>
+        <ul class="pcf">
+          <li>Bain + séchage complet</li>
+          <li>Coupe personnalisée</li>
+          <li>Griffes & oreilles</li>
+          <li>Parfum offert</li>
+        </ul>
+        <a href="#contact" class="pcbtn">Réserver</a>
+      </div>
+      <div class="pc pop">
+        <span class="pcbdg">⭐ Le plus populaire</span>
+        <p class="pcn">Moyen gabarit</p>
+        <p class="pcp"><sup>$</sup>80</p>
+        <p class="pcd">10–25 kg · Cocker, Shih Tzu, Bichon, Schnauzer, Caniche moyen...</p>
+        <ul class="pcf">
+          <li>Bain + séchage complet</li>
+          <li>Coupe personnalisée</li>
+          <li>Griffes & oreilles</li>
+          <li>Glandes & parfum</li>
+        </ul>
+        <a href="#contact" class="pcbtn">Réserver</a>
+      </div>
+      <div class="pc">
+        <p class="pcn">Grand gabarit</p>
+        <p class="pcp"><sup>$</sup>110</p>
+        <p class="pcd">25 kg+ · Berger Australien, Golden, Labrador, Husky, Border Collie...</p>
+        <ul class="pcf">
+          <li>Bain + séchage complet</li>
+          <li>Coupe personnalisée</li>
+          <li>Griffes & oreilles</li>
+          <li>Glandes & parfum</li>
+        </ul>
+        <a href="#contact" class="pcbtn">Réserver</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ctbg" id="contact">
+  <div class="ctg">
+    <div class="ctl">
+      <h2>Réservez dès maintenant. 🐾</h2>
+      <p>Réponse sous 24h. Nous acceptons les chiens et les chats de toutes races et tous gabarits.</p>
+      <div class="ctinfo">
+        <div class="ctrow"><span>📍</span><span>456 rue des Érables, Sainte-Marthe-sur-le-Lac</span></div>
+        <div class="ctrow"><span>📞</span><span>514-000-0000</span></div>
+        <div class="ctrow"><span>🕐</span><span>Mar–Ven 9h–17h · Sam 8h–14h</span></div>
+        <div class="ctrow"><span>📸</span><span>Instagram: @toutouprestige</span></div>
+      </div>
+    </div>
+    <div class="ctf">
+      <h3>📋 Demande de rendez-vous</h3>
+      <input type="text" placeholder="Votre nom"/>
+      <input type="tel" placeholder="Votre téléphone"/>
+      <input type="text" placeholder="Nom & race de votre animal"/>
+      <select><option>Service désiré</option><option>Bain & Séchage</option><option>Coupe & Toilettage</option><option>Soins Complets</option><option>Chat</option><option>Service à domicile</option></select>
+      <textarea placeholder="Informations sur votre animal (âge, comportement, demandes spéciales...)"></textarea>
+      <button class="ctbtn">Envoyer ma demande 🐶</button>
+      <p style="font-size:12px;color:var(--text);text-align:center;">Réponse garantie sous 24h · Confirmation par appel ou SMS</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Toutou Prestige — Toilettage canin & félin</p>
+  <a href="https://norelo.ca" target="_blank">Site web réalisé par Norelo</a>
+</footer>
+
+<script>
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('sc',window.scrollY>80));
+</script>
+</body>
+</html>
