@@ -31,7 +31,7 @@ nav.sc{top:0;background:rgba(253,248,242,.96);backdrop-filter:blur(20px);box-sha
 
 /* Hero */
 .hero{padding:9rem 3rem 5rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;max-width:1200px;margin:0 auto;position:relative;}
-.hero::before{content:'🐾';font-size:300px;position:absolute;right:-60px;top:50%;transform:translateY(-50%);opacity:.04;pointer-events:none;}
+.hero::before{content:'';font-size:300px;position:absolute;right:-60px;top:50%;transform:translateY(-50%);opacity:.04;pointer-events:none;}
 .hbdg{display:inline-flex;align-items:center;gap:8px;background:var(--sand);color:var(--tc);font-size:12px;font-weight:700;letter-spacing:1px;padding:8px 16px;border-radius:50px;margin-bottom:1.5rem;}
 .hero h1{font-size:clamp(42px,5.5vw,68px);font-weight:900;line-height:1;color:var(--dark);margin-bottom:1.5rem;letter-spacing:-1.5px;}
 .hero h1 span{color:var(--tc);}
@@ -132,24 +132,24 @@ footer a:hover{color:var(--tc2);}
 <div class="wm">⚠️ APERÇU SEULEMENT — Site démo conçu par <a href="https://norelo.ca" target="_blank">Norelo</a> — Pas encore en ligne</div>
 
 <nav id="nav">
-  <a class="logo" href="#"><span>🐾</span> Toutou <span>Prestige</span></a>
+  <a class="logo" href="#"><span style="display:inline-flex;align-items:center;"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="4" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="20" cy="16" r="2"/><path d="M9 10a5 5 0 0 1 5 5v3.5a3.5 3.5 0 0 1-6.84 1.045Q6.52 17.48 4.46 16.84A3.5 3.5 0 0 1 5.5 10Z"/><circle cx="4" cy="8" r="2"/></svg></span> Toutou <span>Prestige</span></a>
   <ul class="nl">
     <li><a href="#services">Services</a></li>
     <li><a href="#pourquoi">Pourquoi nous</a></li>
     <li><a href="#prix">Tarifs</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="#contact" class="ncta">📅 Réserver</a>
+  <a href="#contact" class="ncta" style="display:inline-flex;align-items:center;gap:6px;"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg> Réserver</a>
 </nav>
 
 <section style="padding-top:36px;">
   <div class="hero">
     <div>
-      <p class="hbdg">🌿 Toilettage naturel & sans stress</p>
+      <p class="hbdg"><span style="display:inline-flex;align-items:center;gap:6px;"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg> Toilettage naturel &amp; sans stress</span></p>
       <h1>Votre chien mérite<br>le <span>meilleur.</span></h1>
       <p class="hd">Bain, coupe, brossage et plus — dans un environnement calme, propre et bienveillant. Votre animal repart heureux et beau.</p>
       <div class="hbtns">
-        <a href="#contact" class="hb1">Prendre rendez-vous 🐶</a>
+        <a href="#contact" class="hb1">Prendre rendez-vous</a>
         <a href="#services" class="hb2">Voir les services</a>
       </div>
     </div>
@@ -176,37 +176,37 @@ footer a:hover{color:var(--tc2);}
     </div>
     <div class="svsg">
       <div class="svc">
-        <span class="svic">🛁</span>
+        <span class="svic"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><line x1="4" x2="20" y1="11" y2="11"/></svg></span>
         <h3>Bain & Séchage</h3>
         <p>Shampoing hypoallergénique, après-shampoing, séchage et brossage complet. Peau saine, poil brillant.</p>
         <span class="svp">À partir de 35 $</span>
       </div>
       <div class="svc">
-        <span class="svic">✂️</span>
+        <span class="svic"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" x2="8.12" y1="4" y2="15.88"/><line x1="14.47" x2="20" y1="14.47" y2="20"/><line x1="8.12" x2="12" y1="8.12" y2="12"/></svg></span>
         <h3>Coupe & Toilettage</h3>
         <p>Coupe selon la race ou selon vos préférences. Retouche des pattes, museau et contours. Fini impeccable.</p>
         <span class="svp">À partir de 55 $</span>
       </div>
       <div class="svc">
-        <span class="svic">💅</span>
+        <span class="svic"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></span>
         <h3>Soins Complets</h3>
         <p>Bain + coupe + griffes + nettoyage oreilles + expression des glandes. Le forfait tout inclus.</p>
         <span class="svp">À partir de 80 $</span>
       </div>
       <div class="svc">
-        <span class="svic">🐱</span>
+        <span class="svic"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.26A10.5 10.5 0 0 1 12 5Z"/><path d="M8 14v.5"/><path d="M16 14v.5"/><path d="M11.25 16.25h1.5L12 17Z"/></svg></span>
         <h3>Toilettage Chat</h3>
         <p>Brossage anti-nœuds, dématage, bain si nécessaire et coupe d'ongles. Calme et douceur assurés.</p>
         <span class="svp">À partir de 55 $</span>
       </div>
       <div class="svc">
-        <span class="svic">🏡</span>
+        <span class="svic"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
         <h3>Service à Domicile</h3>
         <p>Trop de stress en salon? On se déplace chez vous pour un toilettage dans le confort de votre foyer.</p>
         <span class="svp">+25 $ (déplacement)</span>
       </div>
       <div class="svc">
-        <span class="svic">🎀</span>
+        <span class="svic"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="m2 12 10-10 10 10"/><path d="m2 20 10-10 10 10"/></svg></span>
         <h3>Toilettage Express</h3>
         <p>Retouche rapide entre deux toilettages complets — griffes, pattes et nettoyage facial.</p>
         <span class="svp">À partir de 20 $</span>
@@ -225,10 +225,10 @@ footer a:hover{color:var(--tc2);}
         <span class="stag">Pourquoi Toutou Prestige?</span>
         <h2 class="sti" style="margin-top:1rem;">Votre animal entre en bonnes <span>mains.</span></h2>
         <div class="wlist">
-          <div class="wi"><div class="wii">🌿</div><div><h4>Produits 100% naturels</h4><p>Formules douces, sans sulfates ni parabènes. Idéales pour les peaux sensibles et les allergiques.</p></div></div>
-          <div class="wi"><div class="wii">❤️</div><div><h4>Approche sans stress</h4><p>Un seul animal à la fois. Pas de cages, ambiance calme et musique douce pour votre compagnon.</p></div></div>
-          <div class="wi"><div class="wii">📸</div><div><h4>Photo avant/après</h4><p>On vous envoie une photo de votre toutou tout beau avant que vous veniez le chercher!</p></div></div>
-          <div class="wi"><div class="wii">🏆</div><div><h4>Expérience certifiée</h4><p>Formatrice professionnelle de l'AFTQ. Plus de 7 ans d'expérience avec tous types de races.</p></div></div>
+          <div class="wi"><div class="wii"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></div><div><h4>Produits 100% naturels</h4><p>Formules douces, sans sulfates ni parabènes. Idéales pour les peaux sensibles et les allergiques.</p></div></div>
+          <div class="wi"><div class="wii"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></div><div><h4>Approche sans stress</h4><p>Un seul animal à la fois. Pas de cages, ambiance calme et musique douce pour votre compagnon.</p></div></div>
+          <div class="wi"><div class="wii"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg></div><div><h4>Photo avant/après</h4><p>On vous envoie une photo de votre toutou tout beau avant que vous veniez le chercher!</p></div></div>
+          <div class="wi"><div class="wii"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg></div><div><h4>Expérience certifiée</h4><p>Formatrice professionnelle de l'AFTQ. Plus de 7 ans d'expérience avec tous types de races.</p></div></div>
         </div>
       </div>
     </div>
@@ -287,23 +287,23 @@ footer a:hover{color:var(--tc2);}
 <section class="ctbg" id="contact">
   <div class="ctg">
     <div class="ctl">
-      <h2>Réservez dès maintenant. 🐾</h2>
+      <h2>Réservez dès maintenant.</h2>
       <p>Réponse sous 24h. Nous acceptons les chiens et les chats de toutes races et tous gabarits.</p>
       <div class="ctinfo">
-        <div class="ctrow"><span>📍</span><span>456 rue des Érables, Sainte-Marthe-sur-le-Lac</span></div>
-        <div class="ctrow"><span>📞</span><span>514-000-0000</span></div>
-        <div class="ctrow"><span>🕐</span><span>Mar–Ven 9h–17h · Sam 8h–14h</span></div>
-        <div class="ctrow"><span>📸</span><span>Instagram: @toutouprestige</span></div>
+        <div class="ctrow"><span style="display:flex;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></span><span>456 rue des Érables, Sainte-Marthe-sur-le-Lac</span></div>
+        <div class="ctrow"><span style="display:flex;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.07 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span><span>514-000-0000</span></div>
+        <div class="ctrow"><span style="display:flex;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span><span>Mar–Ven 9h–17h · Sam 8h–14h</span></div>
+        <div class="ctrow"><span style="display:flex;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg></span><span>Instagram: @toutouprestige</span></div>
       </div>
     </div>
     <div class="ctf">
-      <h3>📋 Demande de rendez-vous</h3>
+      <h3 style="display:flex;align-items:center;gap:8px;"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg> Demande de rendez-vous</h3>
       <input type="text" placeholder="Votre nom"/>
       <input type="tel" placeholder="Votre téléphone"/>
       <input type="text" placeholder="Nom & race de votre animal"/>
       <select><option>Service désiré</option><option>Bain & Séchage</option><option>Coupe & Toilettage</option><option>Soins Complets</option><option>Chat</option><option>Service à domicile</option></select>
       <textarea placeholder="Informations sur votre animal (âge, comportement, demandes spéciales...)"></textarea>
-      <button class="ctbtn">Envoyer ma demande 🐶</button>
+      <button class="ctbtn">Envoyer ma demande</button>
       <p style="font-size:12px;color:var(--text);text-align:center;">Réponse garantie sous 24h · Confirmation par appel ou SMS</p>
     </div>
   </div>
