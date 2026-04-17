@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Relais Détente — Massothérapie professionnelle avec Mélanie. Détente, soulagement et bien-être à Saint-Joseph-du-Lac.">
+    <title>Relais Détente — Massothérapie</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:     #f5f1ec;
+            --cream:  #faf8f5;
+            --dark:   #2d2926;
+            --text:   #4a3f3a;
+            --gr:     #9a8a84;
+            --accent: #b89b8a;
+            --acc-d:  #9a7a6a;
+            --acc-l:  #d4bdb2;
+            --bdr:    rgba(184,155,138,0.2);
+            --shadow: 0 4px 28px rgba(45,41,38,0.10);
+        }
+
+        html, body { overflow-x: hidden; scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        /* === WATERMARK === */
+        .watermark-banner {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 9999;
+            background: #f59e0b;
+            color: #1a1a1a;
+            text-align: center;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            padding: 0.45rem 1rem;
+        }
+
+        /* === NAV === */
+        nav {
+            position: fixed;
+            top: 32px;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(250,248,245,0.94);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--bdr);
+            transition: box-shadow 0.3s;
+        }
+
+        nav.scrolled { box-shadow: 0 2px 20px rgba(45,41,38,0.08); }
+
+        .nav-inner {
+            max-width: 1060px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            height: 66px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo { display: flex; align-items: center; text-decoration: none; }
+        .nav-logo img { height: 42px; width: auto; }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1.8rem;
+            list-style: none;
+        }
+
+        .nav-links a { color: var(--text); text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--accent); }
+
+        .btn-cta {
+            display: inline-block;
+            background: var(--accent);
+            color: #fff;
+            padding: 0.52rem 1.3rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .btn-cta:hover { background: var(--acc-d); transform: translateY(-1px); }
+
+        /* === HERO === */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 2rem 80px;
+            position: relative;
+            overflow: hidden;
+            background: var(--dark);
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1600334129128-685c5582fd35?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.32;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(160deg, rgba(45,41,38,0.78) 0%, rgba(45,41,38,0.5) 55%, rgba(184,155,138,0.18) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            text-align: center;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            border: 1px solid rgba(212,189,178,0.45);
+            color: var(--acc-l);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            padding: 0.35rem 1.1rem;
+            border-radius: 100px;
+            margin-bottom: 1.6rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.8rem, 7vw, 4.8rem);
+            font-weight: 300;
+            color: #fff;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+
+        .hero h1 strong {
+            font-weight: 700;
+            color: var(--acc-l);
+            display: block;
+        }
+
+        .hero-sub {
+            font-size: clamp(1rem, 2vw, 1.15rem);
+            color: rgba(255,255,255,0.6);
+            margin: 1.4rem auto 2.4rem;
+            max-width: 480px;
+        }
+
+        .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+        .btn-hero {
+            display: inline-block;
+            background: var(--accent);
+            color: #fff;
+            padding: 0.85rem 2rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .btn-hero:hover { background: var(--acc-d); transform: translateY(-2px); }
+
+        .btn-hero-ghost {
+            display: inline-block;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.85);
+            padding: 0.85rem 2rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .btn-hero-ghost:hover { border-color: rgba(255,255,255,0.6); color: #fff; }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+            color: rgba(255,255,255,0.3);
+            font-size: 0.68rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            animation: bounce 2.2s ease-in-out infinite;
+        }
+
+        .hero-scroll svg { width: 18px; height: 18px; stroke: rgba(255,255,255,0.3); fill: none; stroke-width: 1.5; }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(7px); }
+        }
+
+        /* === SHARED === */
+        section { padding: 6rem 2rem; }
+        .container { max-width: 1060px; margin: 0 auto; }
+
+        .section-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 0.7rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            font-weight: 700;
+            color: var(--dark);
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .section-desc { font-size: 1.02rem; color: var(--gr); max-width: 520px; }
+
+        /* === SERVICES === */
+        .services { background: var(--cream); }
+        .services-header { margin-bottom: 3.5rem; }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .svc-card {
+            background: #fff;
+            border: 1px solid var(--bdr);
+            border-radius: 12px;
+            padding: 2rem 1.75rem;
+            transition: box-shadow 0.25s, transform 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .svc-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            transform-origin: left;
+        }
+
+        .svc-card:hover::before { transform: scaleX(1); }
+        .svc-card:hover { box-shadow: var(--shadow); transform: translateY(-3px); }
+
+        .svc-icon {
+            width: 44px; height: 44px;
+            background: rgba(184,155,138,0.12);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 1.1rem;
+        }
+
+        .svc-icon svg { width: 22px; height: 22px; stroke: var(--accent); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+        .svc-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--dark); margin-bottom: 0.5rem; }
+        .svc-card p { font-size: 0.9rem; color: var(--gr); line-height: 1.65; }
+        .svc-duration { display: inline-block; margin-top: 1rem; font-size: 0.75rem; font-weight: 600; color: var(--accent); letter-spacing: 0.05em; }
+
+        /* === ABOUT === */
+        .about {
+            background: var(--dark);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.07;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 5rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-photo-wrap {
+            border-radius: 16px;
+            overflow: hidden;
+            aspect-ratio: 4/5;
+            position: relative;
+        }
+
+        .about-photo-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+        }
+
+        .about-photo-badge {
+            position: absolute;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            background: var(--accent);
+            color: #fff;
+            border-radius: 10px;
+            padding: 0.75rem 1.1rem;
+            text-align: center;
+        }
+
+        .about-photo-badge strong { display: block; font-size: 1.6rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+        .about-photo-badge span { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.85; }
+
+        .about .section-label { color: var(--acc-l); }
+        .about .section-title { color: #fff; }
+
+        .about-text p { color: rgba(255,255,255,0.65); margin-bottom: 1rem; font-size: 0.98rem; }
+
+        .about-vals { display: flex; flex-direction: column; gap: 0.9rem; margin-top: 2rem; }
+        .about-val { display: flex; align-items: flex-start; gap: 0.85rem; }
+
+        .val-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; margin-top: 0.55rem; flex-shrink: 0; }
+
+        .about-val strong { display: block; font-size: 0.9rem; color: #fff; font-weight: 600; }
+        .about-val span { font-size: 0.87rem; color: rgba(255,255,255,0.5); }
+
+        /* === TARIFS === */
+        .tarifs { background: var(--cream); }
+
+        .tarifs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            margin-top: 3rem;
+        }
+
+        .tarif-card {
+            background: #fff;
+            border: 1px solid var(--bdr);
+            border-radius: 12px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: box-shadow 0.25s, transform 0.2s, border-color 0.2s;
+        }
+
+        .tarif-card:hover { box-shadow: var(--shadow); transform: translateY(-3px); border-color: var(--accent); }
+
+        .tarif-dur { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; }
+        .tarif-price { font-size: 2.4rem; font-weight: 700; color: var(--dark); letter-spacing: -0.04em; }
+        .tarif-price sup { font-size: 1.1rem; font-weight: 400; vertical-align: super; }
+        .tarif-type { font-size: 0.83rem; color: var(--gr); margin-top: 0.4rem; }
+        .tarifs-note { margin-top: 2rem; text-align: center; font-size: 0.82rem; color: var(--gr); }
+
+        /* === CONTACT === */
+        .contact { background: var(--bg); }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .contact-item { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.75rem; }
+
+        .c-icon {
+            width: 42px; height: 42px;
+            background: rgba(184,155,138,0.12);
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .c-icon svg { width: 20px; height: 20px; stroke: var(--accent); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+        .c-text strong { display: block; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--dark); margin-bottom: 0.25rem; }
+        .c-text a, .c-text p { font-size: 0.95rem; color: var(--text); text-decoration: none; }
+        .c-text a:hover { color: var(--accent); }
+
+        /* === FORM === */
+        .contact-form {
+            background: #fff;
+            border: 1px solid var(--bdr);
+            border-radius: 14px;
+            padding: 2.25rem;
+        }
+
+        .form-title { font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 1.5rem; }
+        .form-group { margin-bottom: 1.1rem; }
+
+        .form-group label { display: block; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--dark); margin-bottom: 0.4rem; }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--bdr);
+            border-radius: 7px;
+            padding: 0.72rem 1rem;
+            font-family: inherit;
+            font-size: 0.92rem;
+            color: var(--dark);
+            outline: none;
+            transition: border-color 0.2s;
+            appearance: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus { border-color: var(--accent); }
+
+        .form-group textarea { resize: vertical; min-height: 100px; }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 7px;
+            padding: 0.87rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .btn-submit:hover { background: var(--acc-d); }
+
+        /* === FOOTER === */
+        footer { background: var(--dark); padding: 2.5rem 2rem; text-align: center; }
+
+        .footer-inner {
+            max-width: 1060px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-logo { height: 36px; width: auto; opacity: 0.55; margin-bottom: 0.4rem; filter: brightness(10); }
+
+        footer p { font-size: 0.82rem; color: rgba(255,255,255,0.35); }
+        footer a { font-size: 0.8rem; color: rgba(255,255,255,0.22); text-decoration: none; transition: color 0.2s; }
+        footer a:hover { color: var(--acc-l); }
+
+        /* === REVEAL === */
+        .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .reveal.visible { opacity: 1; transform: none; }
+        .d1 { transition-delay: 0.1s; }
+        .d2 { transition-delay: 0.2s; }
+        .d3 { transition-delay: 0.3s; }
+
+        /* === MOBILE === */
+        @media (max-width: 700px) {
+            .nav-inner { padding: 0 1.25rem; }
+            .nav-links { display: none; }
+            .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .about-photo-wrap { aspect-ratio: 3/2; }
+            section { padding: 4rem 1.25rem; }
+            .tarifs-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="watermark-banner">MAQUETTE PRÉLIMINAIRE — Non publiée — Site web réalisé par Norelo</div>
+
+<nav id="navbar">
+    <div class="nav-inner">
+        <a href="#" class="nav-logo">
+            <img src="logo.png" alt="Relais Détente">
+        </a>
+        <ul class="nav-links">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#about">À propos</a></li>
+            <li><a href="#tarifs">Tarifs</a></li>
+            <li><a href="#contact" class="btn-cta">Réserver</a></li>
+        </ul>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <span class="hero-tag">Massothérapie professionnelle · Saint-Joseph-du-Lac</span>
+        <h1>
+            Un espace de
+            <strong>détente complète</strong>
+        </h1>
+        <p class="hero-sub">Des soins personnalisés pour libérer les tensions, apaiser le corps et retrouver un équilibre profond.</p>
+        <div class="hero-ctas">
+            <a href="#contact" class="btn-hero">Prendre rendez-vous</a>
+            <a href="#services" class="btn-hero-ghost">Voir les soins</a>
+        </div>
+    </div>
+    <div class="hero-scroll">
+        <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        Défiler
+    </div>
+</section>
+
+<section class="services" id="services">
+    <div class="container">
+        <div class="services-header">
+            <span class="section-label reveal">Soins offerts</span>
+            <h2 class="section-title reveal d1">Ce que je propose</h2>
+            <p class="section-desc reveal d2">Chaque soin est adapté à vos besoins du moment, que vous cherchiez à vous détendre ou à soulager une douleur précise.</p>
+        </div>
+        <div class="services-grid">
+            <div class="svc-card reveal">
+                <div class="svc-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <h3>Massage de relaxation</h3>
+                <p>Manœuvres douces et enveloppantes pour relâcher le stress, calmer le système nerveux et favoriser un état de détente profonde.</p>
+                <span class="svc-duration">30 min · 45 min · 60 min · 90 min</span>
+            </div>
+            <div class="svc-card reveal d1">
+                <div class="svc-icon">
+                    <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+                </div>
+                <h3>Massage thérapeutique</h3>
+                <p>Travail ciblé sur les zones de tension, raideurs musculaires et inconforts chroniques. Pression ajustée selon vos besoins.</p>
+                <span class="svc-duration">45 min · 60 min · 90 min</span>
+            </div>
+            <div class="svc-card reveal d2">
+                <div class="svc-icon">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                </div>
+                <h3>Massage aux pierres chaudes</h3>
+                <p>La chaleur des pierres basaltiques pénètre en profondeur pour fondre les tensions musculaires et apporter une détente intense.</p>
+                <span class="svc-duration">60 min · 90 min</span>
+            </div>
+            <div class="svc-card reveal d3">
+                <div class="svc-icon">
+                    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </div>
+                <h3>Massage prénatal</h3>
+                <p>Soin adapté pour accompagner la grossesse, soulager les inconforts physiques et offrir un moment de calme profond à la future maman.</p>
+                <span class="svc-duration">45 min · 60 min</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="about" id="about">
+    <div class="about-bg"></div>
+    <div class="container">
+        <div class="about-grid">
+            <div class="about-photo-wrap reveal">
+                <img src="melanie.jpg" alt="Mélanie, massothérapeute — Relais Détente">
+                <div class="about-photo-badge">
+                    <strong>20+</strong>
+                    <span>ans d'expérience</span>
+                </div>
+            </div>
+            <div class="about-text">
+                <span class="section-label reveal">À propos</span>
+                <h2 class="section-title reveal d1">Mélanie,<br>massothérapeute</h2>
+                <p class="reveal d2">Avec plus de 20 ans d'expérience, Mélanie offre des soins personnalisés dans un espace chaleureux et apaisant, pensé pour vous permettre de vraiment décrocher.</p>
+                <p class="reveal d2">Passionnée par le bien-être et le soin des personnes, elle adapte chaque séance à vos besoins spécifiques — que vous veniez pour gérer le stress du quotidien, soulager une tension chronique ou simplement vous offrir un moment de ressourcement.</p>
+                <div class="about-vals">
+                    <div class="about-val reveal d2">
+                        <div class="val-dot"></div>
+                        <div>
+                            <strong>Écoute et personnalisation</strong>
+                            <span>Chaque séance commence par un échange pour cibler vos besoins réels.</span>
+                        </div>
+                    </div>
+                    <div class="about-val reveal d3">
+                        <div class="val-dot"></div>
+                        <div>
+                            <strong>Reçus pour assurances</strong>
+                            <span>Des reçus de massothérapie sont émis sur demande.</span>
+                        </div>
+                    </div>
+                    <div class="about-val reveal d3">
+                        <div class="val-dot"></div>
+                        <div>
+                            <strong>Environnement apaisant</strong>
+                            <span>Un espace entièrement dédié à votre confort et à votre tranquillité.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="tarifs" id="tarifs">
+    <div class="container">
+        <span class="section-label reveal">Tarifs</span>
+        <h2 class="section-title reveal d1">Des soins accessibles</h2>
+        <p class="section-desc reveal d2">Tous les tarifs incluent la consultation initiale et le soin complet.</p>
+        <div class="tarifs-grid">
+            <div class="tarif-card reveal">
+                <div class="tarif-dur">30 min</div>
+                <div class="tarif-price"><sup>$</sup>45</div>
+                <div class="tarif-type">Relaxation</div>
+            </div>
+            <div class="tarif-card reveal d1">
+                <div class="tarif-dur">45 min</div>
+                <div class="tarif-price"><sup>$</sup>65</div>
+                <div class="tarif-type">Relaxation / Thérapeutique</div>
+            </div>
+            <div class="tarif-card reveal d2">
+                <div class="tarif-dur">60 min</div>
+                <div class="tarif-price"><sup>$</sup>80</div>
+                <div class="tarif-type">Tous les soins</div>
+            </div>
+            <div class="tarif-card reveal d3">
+                <div class="tarif-dur">90 min</div>
+                <div class="tarif-price"><sup>$</sup>110</div>
+                <div class="tarif-type">Tous les soins</div>
+            </div>
+        </div>
+        <p class="tarifs-note reveal">* Les prix sont en dollars canadiens, taxes incluses. Reçus pour assurances disponibles sur demande.</p>
+    </div>
+</section>
+
+<section class="contact" id="contact">
+    <div class="container">
+        <div class="contact-grid">
+            <div class="contact-info">
+                <span class="section-label reveal">Nous joindre</span>
+                <h2 class="section-title reveal d1">Prendre rendez-vous</h2>
+                <p class="section-desc reveal d2" style="margin-bottom:2.5rem;">Pour toute question ou pour réserver votre séance, contactez-moi directement.</p>
+
+                <div class="contact-item reveal d1">
+                    <div class="c-icon">
+                        <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.37 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.73a16 16 0 0 0 6.29 6.29l.93-.93a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    </div>
+                    <div class="c-text">
+                        <strong>Téléphone</strong>
+                        <a href="tel:5148671833">514 867-1833</a>
+                    </div>
+                </div>
+
+                <div class="contact-item reveal d2">
+                    <div class="c-icon">
+                        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    </div>
+                    <div class="c-text">
+                        <strong>Adresse</strong>
+                        <p>3472 Chem. d'Oka<br>Saint-Joseph-du-Lac, QC J0N 1M0</p>
+                    </div>
+                </div>
+
+                <div class="contact-item reveal d3">
+                    <div class="c-icon">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <div class="c-text">
+                        <strong>Disponibilités</strong>
+                        <p>[Horaires à confirmer avec Mélanie]</p>
+                    </div>
+                </div>
+
+                <div class="contact-item reveal d3">
+                    <div class="c-icon">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    </div>
+                    <div class="c-text">
+                        <strong>Reçus pour assurances</strong>
+                        <p>Disponibles sur demande</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form reveal d2">
+                <p class="form-title">Envoyer un message</p>
+                <form action="https://formspree.io/f/REPLACE_ID" method="POST">
+                    <div class="form-group">
+                        <label for="nom">Nom complet</label>
+                        <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tel">Téléphone</label>
+                        <input type="tel" id="tel" name="telephone" placeholder="514 000-0000">
+                    </div>
+                    <div class="form-group">
+                        <label for="soin">Soin souhaité</label>
+                        <select id="soin" name="soin">
+                            <option value="">— Choisir un soin —</option>
+                            <option>Massage de relaxation</option>
+                            <option>Massage thérapeutique</option>
+                            <option>Massage aux pierres chaudes</option>
+                            <option>Massage prénatal</option>
+                            <option>Je ne sais pas encore</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="msg">Message (optionnel)</label>
+                        <textarea id="msg" name="message" placeholder="Questions, précisions..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Envoyer ma demande</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="footer-inner">
+        <img src="logo.png" alt="Relais Détente" class="footer-logo">
+        <p>3472 Chem. d'Oka, Saint-Joseph-du-Lac, QC J0N 1M0 · 514 867-1833</p>
+        <p>© 2026 Relais Détente. Tous droits réservés.</p>
+        <a href="https://norelo.ca" target="_blank" rel="noopener">Site web réalisé par Norelo</a>
+    </div>
+</footer>
+
+<script>
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        nav.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+
+    const revEls = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+        });
+    }, { threshold: 0.1 });
+    revEls.forEach(el => obs.observe(el));
+
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            const t = document.querySelector(a.getAttribute('href'));
+            if (t) { e.preventDefault(); window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 66, behavior: 'smooth' }); }
+        });
+    });
+</script>
+
+</body>
+</html>
