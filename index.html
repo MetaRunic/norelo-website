@@ -245,6 +245,17 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
   .fbt p{text-align:center;}
   .prg{grid-template-columns:1fr;}
 }
+.faqbg{background:#f8fafc;}
+.faq{display:flex;flex-direction:column;gap:.75rem;max-width:780px;margin:0 auto;}
+.fqi{border:1px solid var(--bdr);border-radius:14px;background:#fff;overflow:hidden;transition:box-shadow .25s,border-color .25s;}
+.fqi.open{box-shadow:0 8px 30px rgba(37,99,235,.08);border-color:#bfdbfe;}
+.fqq{width:100%;text-align:left;background:none;border:none;padding:1.25rem 1.5rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;font-family:inherit;font-size:15px;font-weight:600;color:#0f172a;cursor:none;transition:color .2s;}
+.fqi.open .fqq{color:var(--blue);}
+.fqch{width:22px;height:22px;background:#eff6ff;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;color:var(--blue);font-weight:700;transition:transform .3s,background .2s;}
+.fqi.open .fqch{transform:rotate(180deg);background:var(--blue);color:#fff;}
+.fqa{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1);}
+.fqi.open .fqa{max-height:300px;}
+.fqap{padding:0 1.5rem 1.25rem;font-size:14px;color:var(--gr);line-height:1.75;border-top:1px solid #f1f5f9;}
 </style>
 </head>
 <body>
@@ -486,6 +497,40 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
   </div>
 </section>
 
+<section class="sec faqbg" id="faq">
+  <div class="si">
+    <p class="stag rv" id="lfaq">FAQ</p>
+    <h2 class="sti rv" style="text-align:center;" id="faqt">Des questions?<br>Des réponses.</h2>
+    <p class="ssu rv" style="text-align:center;margin:0 auto 3rem;" id="faqs">Les réponses aux questions qu'on nous pose le plus souvent.</p>
+    <div class="faq">
+      <div class="fqi rv">
+        <button class="fqq" onclick="tFaq(this)"><span id="fq1">Est-ce que je suis propriétaire de mon site?</span><span class="fqch">▾</span></button>
+        <div class="fqa"><p class="fqap" id="fa1">Oui, à 100%. Une fois votre site livré, vous en êtes le seul propriétaire. Le code, les textes, les images, tout vous appartient. Norelo n'a aucun droit de rétention sur votre contenu.</p></div>
+      </div>
+      <div class="fqi rv d1">
+        <button class="fqq" onclick="tFaq(this)"><span id="fq2">Combien de temps ça prend pour avoir mon site?</span><span class="fqch">▾</span></button>
+        <div class="fqa"><p class="fqap" id="fa2">En général, entre 1 et 3 semaines selon la complexité. Un site Essentiel peut être livré en moins de 7 jours. Pour un projet Professionnel avec plusieurs pages et fonctionnalités, comptez 2 à 3 semaines.</p></div>
+      </div>
+      <div class="fqi rv d2">
+        <button class="fqq" onclick="tFaq(this)"><span id="fq3">Et si je n'ai pas de textes ni de photos?</span><span class="fqch">▾</span></button>
+        <div class="fqa"><p class="fqap" id="fa3">Pas de problème. Daniel peut vous aider à rédiger vos textes et offre un service de photographie professionnelle sur place. On s'assure que votre site soit complet et prêt à l'emploi, même si vous partez de zéro.</p></div>
+      </div>
+      <div class="fqi rv d3">
+        <button class="fqq" onclick="tFaq(this)"><span id="fq4">Puis-je mettre à jour le site moi-même?</span><span class="fqch">▾</span></button>
+        <div class="fqa"><p class="fqap" id="fa4">Ça dépend du type de site. Pour les sites simples, les modifications sont gérées par Norelo dans le cadre du forfait de maintenance. Pour les projets plus complexes avec un CMS, une formation est incluse pour vous rendre autonome.</p></div>
+      </div>
+      <div class="fqi rv d1">
+        <button class="fqq" onclick="tFaq(this)"><span id="fq5">Qu'est-ce qui est inclus dans l'hébergement?</span><span class="fqch">▾</span></button>
+        <div class="fqa"><p class="fqap" id="fa5">L'hébergement comprend l'espace serveur, le certificat SSL (cadenas HTTPS), les mises à jour de sécurité et la surveillance du site. En cas de problème, Daniel est joignable directement, pas via un centre d'assistance anonyme.</p></div>
+      </div>
+      <div class="fqi rv d2">
+        <button class="fqq" onclick="tFaq(this)"><span id="fq6">Offrez-vous du support après la mise en ligne?</span><span class="fqch">▾</span></button>
+        <div class="fqa"><p class="fqap" id="fa6">Oui. Après la livraison, une période de support est incluse pour corriger les ajustements mineurs. Pour les modifications plus importantes ou le support continu, des forfaits de maintenance mensuelle sont disponibles.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="sec ctbg" id="contact">
   <div class="si">
     <div class="ctg">
@@ -618,6 +663,13 @@ function uEst(){
   tot.textContent=l==='fr'?mn+'$ – '+mx+'$'+(hasH?' +':''):'$'+mn+' – $'+mx+(hasH?' +':'');
 }
 
+function tFaq(btn){
+  const item=btn.closest('.fqi');
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.fqi.open').forEach(f=>f.classList.remove('open'));
+  if(!isOpen)item.classList.add('open');
+}
+
 const T={
   fr:{
     'n1':'Services','n2':'Processus','n3':'Portfolio','n4':'Tarifs','n5':'Contact','n6':'Zones','n7':'✦ Idées','ft':'Nous contacter',
@@ -663,6 +715,13 @@ const T={
     'pr3n':'Sur mesure','pr3p':'Sur devis','pr3d':'Boutique en ligne, assemblage PC, photographie ou projet complexe, on trouve toujours une solution adaptée.',
     'pf31':'Boutique en ligne (e-commerce)','pf32':'Assemblage PC sur mesure','pf33':'Photographie professionnelle','pf34':'Support IT mensuel','pf35':'Formation & documentation','pr3cta':'Nous contacter',
     'lzo':'Zones desservies','zot':'On se déplace<br>partout autour.','zos':'Basé à Saint-Joseph-du-Lac, Norelo dessert toute la grande région de Montréal et des Laurentides. Déplacement sur place disponible.','zobase':'Saint-Joseph-du-Lac — Notre base','zonote':'Déplacement sur place disponible dans toutes ces zones. Pour les projets à distance, le travail se fait entièrement en ligne.','zoray':'Rayon approximatif','zoinsplab':'✦ Inspiration','zoinspt':'Vous ne savez pas quoi vouloir sur votre site?','zoinsps':'Explorez nos exemples interactifs de fonctionnalités — animations, formulaires, galeries et plus.','zoinspbtn':'Voir les idées →',
+    'lfaq':'FAQ','faqt':'Des questions?<br>Des réponses.','faqs':"Les réponses aux questions qu'on nous pose le plus souvent.",
+    'fq1':'Est-ce que je suis propriétaire de mon site?','fa1':"Oui, à 100%. Une fois votre site livré, vous en êtes le seul propriétaire. Le code, les textes, les images, tout vous appartient. Norelo n'a aucun droit de rétention sur votre contenu.",
+    'fq2':'Combien de temps ça prend pour avoir mon site?','fa2':'En général, entre 1 et 3 semaines selon la complexité. Un site Essentiel peut être livré en moins de 7 jours. Pour un projet Professionnel avec plusieurs pages et fonctionnalités, comptez 2 à 3 semaines.',
+    'fq3':"Et si je n'ai pas de textes ni de photos?",'fa3':"Pas de problème. Daniel peut vous aider à rédiger vos textes et offre un service de photographie professionnelle sur place. On s'assure que votre site soit complet et prêt à l'emploi, même si vous partez de zéro.",
+    'fq4':'Puis-je mettre à jour le site moi-même?','fa4':"Bien sûr! Les mises à jour font partie du service et Daniel s'en occupe pour vous. Si vous préférez gérer certaines choses vous-même, ça se règle facilement. On s'assure que vous soyez à l'aise, peu importe la formule choisie.",
+    'fq5':"Qu'est-ce qui est inclus dans l'hébergement?",'fa5':"L'hébergement comprend l'espace serveur, le certificat SSL (cadenas HTTPS), les mises à jour de sécurité et la surveillance du site. En cas de problème, Daniel est joignable directement, pas via un centre d'assistance anonyme.",
+    'fq6':'Offrez-vous du support après la mise en ligne?','fa6':"Oui. Après la livraison, une période de support est incluse pour corriger les ajustements mineurs. Pour les modifications plus importantes ou le support continu, des forfaits de maintenance mensuelle sont disponibles.",
     'lct':'Contact','ctt':'Parlons de<br>votre projet',
     'ctloc':'Saint-Joseph-du-Lac, Québec<br>Disponible dans toute la région des Laurentides',
     'cthrs':'Lundi – Vendredi · 9h à 18h<br>Réponse sous 24h garantie',
@@ -728,6 +787,13 @@ const T={
     'pr3n':'Custom','pr3p':'Get a quote','pr3d':'Online store, PC build, photography or complex project, we always find a solution that fits.',
     'pf31':'E-commerce store','pf32':'Custom PC build','pf33':'Professional photography','pf34':'Monthly IT support','pf35':'Training & documentation','pr3cta':'Contact us',
     'lzo':'Service areas','zot':'We go<br>wherever you are.','zos':'Based in Saint-Joseph-du-Lac, Norelo serves the greater Montreal and Laurentians region. On-site visits available.','zobase':'Saint-Joseph-du-Lac — Our home base','zonote':'On-site visits available throughout all these areas. For remote projects, everything is done online.','zoray':'Approximate travel time','zoinsplab':'✦ Inspiration','zoinspt':'Not sure what you want on your website?','zoinsps':'Browse our interactive feature examples — animations, forms, galleries and more.','zoinspbtn':'Browse ideas →',
+    'lfaq':'FAQ','faqt':'Questions?<br>Answered.','faqs':'Answers to the questions we get asked most often.',
+    'fq1':'Do I own my website?','fa1':'Yes, 100%. Once your site is delivered, you are the sole owner. The code, text, images, everything belongs to you. Norelo holds no rights over your content.',
+    'fq2':'How long does it take to get my site?','fa2':'Generally between 1 and 3 weeks depending on complexity. An Essential site can be delivered in under 7 days. For a Professional project with multiple pages and features, expect 2 to 3 weeks.',
+    'fq3':"What if I don't have text or photos?",'fa3':"No problem. Daniel can help you write your content and offers an on-site professional photography service. We make sure your site is complete and ready to go, even if you're starting from scratch.",
+    'fq4':'Can I update the site myself?','fa4':"Of course! Updates are part of the service and Daniel handles them for you. If you prefer to manage certain things yourself, that can always be arranged, no problem. We make sure you feel comfortable either way.",
+    'fq5':"What's included in hosting?",'fa5':'Hosting includes server space, an SSL certificate (HTTPS), security updates and site monitoring. If anything goes wrong, Daniel is reachable directly, not through an anonymous support desk.',
+    'fq6':'Do you offer support after launch?','fa6':'Yes. After delivery, a support period is included to handle minor adjustments. For larger changes or ongoing support, monthly maintenance plans are available.',
     'lct':'Contact','ctt':"Let's talk about<br>your project",
     'ctd':"Need a website or IT support? Contact Daniel directly. No automated phone system, no runaround. A real person who knows the area.",
     'ctloc':'Saint-Joseph-du-Lac, Québec<br>Available throughout the Laurentians',
