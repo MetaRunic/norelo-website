@@ -121,7 +121,9 @@ footer p{font-size:12px;color:rgba(255,255,255,.2);}
 .reveal.on{opacity:1;transform:none;}
 .reveal.d1{transition-delay:.1s;}.reveal.d2{transition-delay:.2s;}.reveal.d3{transition-delay:.3s;}.reveal.d4{transition-delay:.4s;}
 
-/* CONFETTI */
+@keyframes btn-pop{0%{transform:scale(1)}40%{transform:scale(1.12)}70%{transform:scale(.96)}100%{transform:scale(1)}}
+@keyframes btn-shine{0%{background-position:200% center}100%{background-position:-200% center}}
+@keyframes btn-ripple{0%{transform:translate(-50%,-50%) scale(0);opacity:1}100%{transform:translate(-50%,-50%) scale(28);opacity:0}}
 .confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;z-index:999;animation:confettiFall linear forwards;}
 @keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
 </style>
@@ -168,11 +170,11 @@ footer p{font-size:12px;color:rgba(255,255,255,.2);}
         </div>
       </div>
 
-      <div class="check-card reveal d2" style="grid-column:1/-1;cursor:default;" id="sig-card">
-        <div class="check-box" style="cursor:pointer;flex-shrink:0;" onclick="toggleCheck(document.getElementById('sig-card'))"></div>
-        <div class="check-body" style="width:100%">
-          <h3>✍️ Installer ta signature Gmail</h3>
-          <p style="margin-bottom:1rem;">Suis ces étapes dans l'ordre. Ça prend environ 3 minutes. Coche quand c'est fait.</p>
+      <div style="grid-column:1/-1;background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.18);border-radius:16px;padding:1.5rem;display:flex;gap:1rem;align-items:flex-start;" id="sig-card">
+        <div class="check-box" style="cursor:pointer;flex-shrink:0;margin-top:2px;" onclick="toggleSigCard()"></div>
+        <div style="width:100%;">
+          <h3 style="font-size:14px;font-weight:700;color:#fff;margin-bottom:.3rem;line-height:1.3;">✍️ Installer ta signature Gmail</h3>
+          <p style="font-size:12px;color:rgba(255,255,255,.45);line-height:1.6;margin-bottom:1rem;">Suis ces étapes dans l'ordre. Ça prend environ 3 minutes. Coche quand c'est fait.</p>
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.6rem;">
             <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.15);border-radius:8px;padding:.75rem;">
               <div style="width:22px;height:22px;border-radius:50%;background:#2563eb;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
@@ -180,11 +182,11 @@ footer p{font-size:12px;color:rgba(255,255,255,.2);}
             </div>
             <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.15);border-radius:8px;padding:.75rem;">
               <div style="width:22px;height:22px;border-radius:50%;background:#2563eb;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
-              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">Clique sur le bouton <strong style="color:#fff;">Copier le code</strong> juste en dessous, puis colle (<code>Ctrl+V</code>) dans le panneau <strong style="color:#fff;">HTML</strong> de CodePen</div>
+              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">Clique sur le bouton <strong style="color:#fff;">Copier le code</strong> juste en dessous, puis colle (<code style="background:rgba(79,163,232,.12);border:1px solid rgba(79,163,232,.2);border-radius:4px;padding:1px 6px;font-size:11px;color:#4fa3e8;font-family:monospace;">Ctrl+V</code>) dans le panneau <strong style="color:#fff;">HTML</strong> de CodePen</div>
             </div>
             <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.15);border-radius:8px;padding:.75rem;">
               <div style="width:22px;height:22px;border-radius:50%;background:#2563eb;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
-              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">La signature apparaît dans l'<strong style="color:#fff;">aperçu en bas</strong> de CodePen, sélectionne-la entièrement avec ta souris et copie (<code>Ctrl+C</code>)</div>
+              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">La signature apparaît dans l'<strong style="color:#fff;">aperçu en bas</strong> de CodePen, sélectionne-la entièrement avec ta souris et copie (<code style="background:rgba(79,163,232,.12);border:1px solid rgba(79,163,232,.2);border-radius:4px;padding:1px 6px;font-size:11px;color:#4fa3e8;font-family:monospace;">Ctrl+C</code>)</div>
             </div>
             <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.15);border-radius:8px;padding:.75rem;">
               <div style="width:22px;height:22px;border-radius:50%;background:#2563eb;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div>
@@ -192,11 +194,11 @@ footer p{font-size:12px;color:rgba(255,255,255,.2);}
             </div>
             <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.15);border-radius:8px;padding:.75rem;">
               <div style="width:22px;height:22px;border-radius:50%;background:#2563eb;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">5</div>
-              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">Clique dans la zone de signature et colle (<code>Ctrl+V</code>). Donne-lui le nom <strong style="color:#fff;">Norelo</strong></div>
+              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">Clique dans la zone de signature et colle (<code style="background:rgba(79,163,232,.12);border:1px solid rgba(79,163,232,.2);border-radius:4px;padding:1px 6px;font-size:11px;color:#4fa3e8;font-family:monospace;">Ctrl+V</code>). Donne-lui le nom <strong style="color:#fff;">Norelo</strong></div>
             </div>
             <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.15);border-radius:8px;padding:.75rem;">
               <div style="width:22px;height:22px;border-radius:50%;background:#2563eb;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">6</div>
-              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">Descends à la section <strong style="color:#fff;">Signature defaults</strong> et change les deux menus déroulants (<strong style="color:#fff;">For new emails</strong> et <strong style="color:#fff;">On reply/forward</strong>) pour sélectionner <strong style="color:#fff;">Norelo</strong></div>
+              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">Descends à <strong style="color:#fff;">Signature defaults</strong> et règle les deux menus déroulants (<strong style="color:#fff;">For new emails</strong> et <strong style="color:#fff;">On reply/forward</strong>) sur <strong style="color:#fff;">Norelo</strong></div>
             </div>
             <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:.75rem;grid-column:1/-1;">
               <div style="width:22px;height:22px;border-radius:50%;background:#22c55e;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">7</div>
@@ -208,9 +210,9 @@ footer p{font-size:12px;color:rgba(255,255,255,.2);}
           <div style="margin-top:1.25rem;background:#060e20;border:1px solid rgba(79,163,232,.2);border-radius:10px;overflow:hidden;">
             <div style="display:flex;align-items:center;justify-content:space-between;padding:.75rem 1rem;border-bottom:1px solid rgba(79,163,232,.12);">
               <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35);">💾 Code de la signature</span>
-              <button id="sigCopyBtn" onclick="event.stopPropagation();copySig()" style="background:#2563eb;color:#fff;border:none;border-radius:6px;padding:7px 18px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;flex-shrink:0;">Copier le code</button>
+              <button id="sigCopyBtn" onclick="copySig()" style="background:#2563eb;color:#fff;border:none;border-radius:6px;padding:7px 18px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;flex-shrink:0;">Copier le code</button>
             </div>
-            <pre id="sigCodeBlock" style="font-size:10px;color:rgba(255,255,255,.4);line-height:1.6;padding:1rem;overflow-x:auto;white-space:pre-wrap;word-break:break-all;font-family:'Courier New',monospace;max-height:140px;overflow-y:auto;"></pre>
+            <pre id="sigCodeBlock" style="font-size:10px;color:rgba(255,255,255,.4);line-height:1.6;padding:1rem;overflow-x:auto;white-space:pre-wrap;word-break:break-all;font-family:'Courier New',monospace;max-height:160px;overflow-y:auto;"></pre>
           </div>
 
           <div style="margin-top:1rem;">
@@ -453,10 +455,52 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 function copySig(){
   navigator.clipboard.writeText(sigHTML).then(()=>{
-    const btn=document.getElementById('sigCopyBtn');
-    btn.textContent='Copié ✓';
-    btn.style.background='#22c55e';
-    setTimeout(()=>{btn.textContent='Copier le code';btn.style.background='#2563eb';},2500);
+    const btn = document.getElementById('sigCopyBtn');
+    // Already copying? ignore
+    if(btn.dataset.copying) return;
+    btn.dataset.copying = '1';
+
+    // Pop scale + green + checkmark
+    btn.style.transition = 'background .15s, transform .15s';
+    btn.style.transform = 'scale(1.12)';
+    btn.style.background = '#22c55e';
+    btn.innerHTML = '✓ Copié!';
+
+    // Ripple effect inside button
+    const ripple = document.createElement('span');
+    ripple.style.cssText = 'position:absolute;border-radius:50%;background:rgba(255,255,255,.35);width:6px;height:6px;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);animation:btn-ripple .5s ease-out forwards;pointer-events:none;';
+    btn.style.position = 'relative';
+    btn.style.overflow = 'hidden';
+    btn.appendChild(ripple);
+
+    // Settle back
+    setTimeout(()=>{
+      btn.style.transform = 'scale(1)';
+    }, 150);
+
+    // Shimmer effect
+    setTimeout(()=>{
+      btn.style.background = 'linear-gradient(90deg,#22c55e,#4ade80,#22c55e)';
+      btn.style.backgroundSize = '200% auto';
+      btn.style.animation = 'btn-shine 1.2s linear infinite';
+    }, 200);
+
+    // Reset after 2.5s
+    setTimeout(()=>{
+      btn.style.animation = '';
+      btn.style.background = '#2563eb';
+      btn.style.transform = '';
+      btn.innerHTML = 'Copier le code';
+      btn.style.overflow = '';
+      ripple.remove();
+      delete btn.dataset.copying;
+    }, 2500);
+  }).catch(()=>{
+    // Fallback for browsers that block clipboard
+    const btn = document.getElementById('sigCopyBtn');
+    btn.style.background = '#e11d48';
+    btn.innerHTML = '⚠ Autorise le presse-papier';
+    setTimeout(()=>{btn.style.background='#2563eb';btn.innerHTML='Copier le code';},2500);
   });
 }
 
@@ -490,6 +534,31 @@ function copySig(){
 const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('on');});},{threshold:.12});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
+// SIG CARD TOGGLE (separate from check-card system)
+let sigDone = false;
+function toggleSigCard(){
+  const card = document.getElementById('sig-card');
+  const box = card.querySelector('.check-box');
+  sigDone = !sigDone;
+  if(sigDone){
+    box.textContent = '✓';
+    box.style.background = 'var(--green)';
+    box.style.borderColor = 'var(--green)';
+    box.style.color = '#fff';
+    card.style.borderColor = 'rgba(34,197,94,.3)';
+    card.style.background = 'rgba(34,197,94,.05)';
+    spawnConfetti();
+  } else {
+    box.textContent = '';
+    box.style.background = '';
+    box.style.borderColor = '';
+    box.style.color = '';
+    card.style.borderColor = '';
+    card.style.background = '';
+  }
+  updateProgress();
+}
+
 // CHECKLIST
 let total=0,done=0;
 function toggleCheck(card){
@@ -507,10 +576,11 @@ function toggleCheck(card){
 }
 function updateProgress(){
   const cards=document.querySelectorAll('.check-card');
-  total=cards.length;
-  const pct=Math.round((done/total)*100);
+  total=cards.length + 1; // +1 for sig-card
+  const doneSig = sigDone ? 1 : 0;
+  const pct=Math.round(((done + doneSig)/total)*100);
   document.getElementById('prog-fill').style.width=pct+'%';
-  document.getElementById('prog-text').textContent=done+' / '+total+' complétées';
+  document.getElementById('prog-text').textContent=(done + doneSig)+' / '+total+' complétées';
   document.getElementById('prog-pct').textContent=pct+'%';
 }
 document.addEventListener('DOMContentLoaded',updateProgress);
