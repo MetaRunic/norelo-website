@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Bienvenue chez Norelo · Kevin Kenney</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --dark:#070f2b;
+  --blue:#2563eb;
+  --bl:#4fa3e8;
+  --green:#22c55e;
+  --card:rgba(255,255,255,.04);
+  --border:rgba(79,163,232,.18);
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:'DM Sans',sans-serif;background:var(--dark);color:#fff;overflow-x:hidden;}
+
+/* PARTICLES */
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 3rem;background:rgba(7,15,43,.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);}
+.nav-logo{font-size:20px;font-weight:700;color:#fff;text-decoration:none;letter-spacing:-.5px;display:flex;align-items:center;}
+.nav-logo span{color:var(--bl);}
+.nav-dot{width:5px;height:5px;background:var(--green);border-radius:50%;margin-left:3px;margin-bottom:9px;display:inline-block;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.5)}}
+.nav-right{font-size:12px;color:rgba(255,255,255,.3);letter-spacing:1px;text-transform:uppercase;}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 4rem;position:relative;z-index:1;}
+.hero-inner{max-width:720px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:100px;padding:6px 18px;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:2rem;}
+.hero-badge span{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;}
+.hero-greeting{font-family:'DM Serif Display',serif;font-size:clamp(14px,3vw,18px);color:rgba(255,255,255,.45);font-style:italic;margin-bottom:.5rem;}
+.hero-name{font-family:'DM Serif Display',serif;font-size:clamp(48px,9vw,96px);font-weight:400;line-height:.95;letter-spacing:-3px;margin-bottom:1.5rem;}
+.hero-name .accent{color:var(--bl);}
+.hero-sub{font-size:17px;color:rgba(255,255,255,.5);line-height:1.8;max-width:520px;margin:0 auto 2.5rem;font-weight:300;}
+.hero-role{display:inline-flex;align-items:center;gap:10px;background:rgba(37,99,235,.15);border:1px solid rgba(37,99,235,.35);border-radius:8px;padding:10px 20px;font-size:13px;font-weight:600;color:var(--bl);}
+.hero-role-dot{width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:rgba(255,255,255,.2);font-size:10px;letter-spacing:2px;text-transform:uppercase;}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,.3),transparent);animation:scrollAnim 2s ease-in-out infinite;}
+@keyframes scrollAnim{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* SECTIONS */
+section{position:relative;z-index:1;padding:6rem 2rem;}
+.container{max-width:1000px;margin:0 auto;}
+.section-tag{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--bl);margin-bottom:.75rem;display:flex;align-items:center;gap:8px;}
+.section-tag::before{content:'';width:20px;height:1.5px;background:var(--bl);}
+.section-title{font-family:'DM Serif Display',serif;font-size:clamp(28px,4vw,48px);font-weight:400;line-height:1.1;letter-spacing:-1.5px;margin-bottom:.75rem;}
+.section-sub{font-size:15px;color:rgba(255,255,255,.45);line-height:1.8;font-weight:300;max-width:520px;margin-bottom:3rem;}
+
+/* CHECKLIST SECTION */
+.checklist-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.checklist-grid .full-width{grid-column:1/-1;}
+@media(max-width:680px){.checklist-grid{grid-template-columns:1fr;}}
+.check-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;display:flex;gap:1rem;align-items:flex-start;transition:all .3s;cursor:pointer;position:relative;overflow:hidden;}
+.check-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(37,99,235,.08),transparent);opacity:0;transition:opacity .3s;}
+.check-card:hover::before{opacity:1;}
+.check-card:hover{border-color:rgba(79,163,232,.4);transform:translateY(-3px);}
+.check-card.done{border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05);}
+.check-card.done::before{background:linear-gradient(135deg,rgba(34,197,94,.06),transparent);opacity:1;}
+.check-box{width:26px;height:26px;border-radius:6px;border:2px solid rgba(79,163,232,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:all .3s;font-size:13px;}
+.check-card.done .check-box{background:var(--green);border-color:var(--green);color:#fff;}
+.check-body h3{font-size:14px;font-weight:700;color:#fff;margin-bottom:.3rem;line-height:1.3;}
+.check-body p{font-size:12px;color:rgba(255,255,255,.45);line-height:1.6;}
+.check-body a{color:var(--bl);text-decoration:none;font-weight:600;}
+.check-body a:hover{text-decoration:underline;}
+.check-body code{background:rgba(79,163,232,.12);border:1px solid rgba(79,163,232,.2);border-radius:4px;padding:1px 6px;font-size:11px;color:var(--bl);font-family:monospace;}
+.check-progress{margin-top:1.5rem;background:rgba(255,255,255,.05);border-radius:100px;height:6px;overflow:hidden;}
+.check-progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:100px;transition:width .6s cubic-bezier(.34,1.56,.64,1);width:0%;}
+.progress-label{display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.3);margin-bottom:.4rem;}
+
+/* TEAM SECTION */
+.team-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+@media(max-width:680px){.team-grid{grid-template-columns:1fr;}}
+.team-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.75rem;display:flex;gap:1.25rem;align-items:flex-start;transition:all .3s;}
+.team-card:hover{border-color:rgba(79,163,232,.4);transform:translateY(-3px);}
+.team-avatar{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;flex-shrink:0;letter-spacing:-.5px;}
+.team-info h3{font-size:16px;font-weight:700;color:#fff;margin-bottom:3px;}
+.team-info .team-role{font-size:11px;font-weight:700;color:var(--bl);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:.6rem;}
+.team-info p{font-size:12px;color:rgba(255,255,255,.4);line-height:1.6;}
+.team-info .team-contact{display:flex;flex-direction:column;gap:4px;margin-top:.75rem;}
+.team-contact-row{font-size:12px;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:6px;}
+.team-contact-row a{color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s;}
+.team-contact-row a:hover{color:var(--bl);}
+.you-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);border-radius:100px;padding:2px 10px;font-size:10px;font-weight:700;color:var(--green);letter-spacing:1px;text-transform:uppercase;margin-left:8px;}
+
+/* VALUES */
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+@media(max-width:700px){.values-grid{grid-template-columns:1fr;}}
+.value-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;text-align:center;transition:all .3s;}
+.value-card:hover{border-color:rgba(79,163,232,.4);transform:translateY(-4px);}
+.value-icon{font-size:2rem;margin-bottom:.85rem;display:block;}
+.value-card h3{font-size:14px;font-weight:700;color:#fff;margin-bottom:.4rem;}
+.value-card p{font-size:12px;color:rgba(255,255,255,.4);line-height:1.6;}
+
+/* TOOLS */
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;}
+.tool-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.25rem;display:flex;align-items:center;gap:.85rem;transition:all .3s;}
+.tool-card:hover{border-color:rgba(79,163,232,.4);transform:translateY(-2px);}
+.tool-icon{font-size:1.4rem;flex-shrink:0;}
+.tool-info h4{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px;}
+.tool-info p{font-size:11px;color:rgba(255,255,255,.4);line-height:1.4;}
+
+/* MISSION */
+.mission-box{background:linear-gradient(135deg,rgba(37,99,235,.12),rgba(79,163,232,.06));border:1px solid rgba(79,163,232,.25);border-radius:20px;padding:3rem;text-align:center;position:relative;overflow:hidden;}
+.mission-box::before{content:'';position:absolute;top:-60%;left:50%;transform:translateX(-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(37,99,235,.2),transparent 70%);pointer-events:none;}
+.mission-quote{font-family:'DM Serif Display',serif;font-size:clamp(18px,3vw,28px);font-style:italic;color:#fff;line-height:1.5;position:relative;z-index:1;max-width:600px;margin:0 auto 1.5rem;}
+.mission-quote span{color:var(--bl);}
+.mission-sig{font-size:13px;color:rgba(255,255,255,.35);letter-spacing:1px;}
+
+/* FOOTER */
+footer{position:relative;z-index:1;background:#060e20;border-top:1px solid rgba(255,255,255,.06);padding:2rem 3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+footer p{font-size:12px;color:rgba(255,255,255,.2);}
+
+/* ANIMATIONS */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.on{opacity:1;transform:none;}
+.reveal.d1{transition-delay:.1s;}.reveal.d2{transition-delay:.2s;}.reveal.d3{transition-delay:.3s;}.reveal.d4{transition-delay:.4s;}
+
+/* CONFETTI */
+.confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;z-index:999;animation:confettiFall linear forwards;}
+@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<nav>
+  <a class="nav-logo" href="https://norelo.ca">Nore<span>lo</span><span class="nav-dot"></span></a>
+  <div class="nav-right">Portail d'accueil · Équipe</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span></span>Nouveau membre de l'équipe</div>
+    <p class="hero-greeting">Bienvenue dans la famille,</p>
+    <h1 class="hero-name">Kevin<br><span class="accent">Kenney.</span></h1>
+    <p class="hero-sub">Tu rejoins Norelo à un moment excitant. On construit quelque chose de solide ici, pour les entreprises locales des Laurentides et bien au-delà.</p>
+    <div class="hero-role"><span class="hero-role-dot"></span>Co-Fondateur · Norelo</div>
+  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div><span>Défiler</span></div>
+</section>
+
+<!-- CHECKLIST -->
+<section style="background:rgba(255,255,255,.01);border-top:1px solid rgba(255,255,255,.05);">
+  <div class="container">
+    <p class="section-tag reveal">Mise en route</p>
+    <h2 class="section-title reveal">Ta liste de départ.</h2>
+    <p class="section-sub reveal">Coche chaque étape au fur et à mesure. Tout ce dont tu as besoin pour être opérationnel dès le premier jour.</p>
+
+    <div class="progress-label reveal"><span id="prog-text">0 / 8 complétées</span><span id="prog-pct">0%</span></div>
+    <div class="check-progress reveal"><div class="check-progress-fill" id="prog-fill"></div></div>
+    <br>
+
+    <div class="checklist-grid">
+
+      <div class="check-card reveal d1" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-body">
+          <h3>📧 Configurer ton courriel Gmail</h3>
+          <p>Ton adresse Norelo : <code>norelo.kevink@gmail.com</code><br>Crée le compte ou connecte-toi et garde-le séparé de ton Gmail personnel.</p>
+        </div>
+      </div>
+
+      <div class="check-card reveal d2" onclick="toggleCheck(this)" style="grid-column:1/-1;cursor:default;" id="sig-card">
+        <div class="check-box" style="cursor:pointer;" onclick="event.stopPropagation();toggleCheck(document.getElementById('sig-card'))"></div>
+        <div class="check-body" style="width:100%">
+          <h3>✍️ Installer ta signature Gmail</h3>
+          <p style="margin-bottom:1rem;">Suis ces étapes dans l'ordre. Ça prend environ 3 minutes.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.6rem;">
+            <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.15);border-radius:8px;padding:.75rem;">
+              <div style="width:22px;height:22px;border-radius:50%;background:#2563eb;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">Va sur <a href="https://codepen.io/pen" target="_blank" style="color:#4fa3e8;font-weight:700;">codepen.io/pen</a>, gratuit et sans compte requis</div>
+            </div>
+            <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.15);border-radius:8px;padding:.75rem;">
+              <div style="width:22px;height:22px;border-radius:50%;background:#2563eb;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">Clique sur le bouton <strong style="color:#fff;">Copier le code</strong> juste en dessous, puis colle dans CodePen</div>
+            </div>
+            <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.15);border-radius:8px;padding:.75rem;">
+              <div style="width:22px;height:22px;border-radius:50%;background:#2563eb;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
+              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">Colle (<code>Ctrl+V</code>) dans le panneau <strong style="color:#fff;">HTML</strong> de CodePen (en haut à gauche)</div>
+            </div>
+            <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.15);border-radius:8px;padding:.75rem;">
+              <div style="width:22px;height:22px;border-radius:50%;background:#2563eb;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div>
+              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">La signature apparaît dans l'<strong style="color:#fff;">aperçu en bas</strong>, sélectionne-la entièrement avec ta souris</div>
+            </div>
+            <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.15);border-radius:8px;padding:.75rem;">
+              <div style="width:22px;height:22px;border-radius:50%;background:#2563eb;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">5</div>
+              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">Copie (<code>Ctrl+C</code>), puis dans Gmail : ⚙️ <strong style="color:#fff;">Paramètres</strong> &rsaquo; <strong style="color:#fff;">Voir tous les paramètres</strong> &rsaquo; section <strong style="color:#fff;">Signature</strong></div>
+            </div>
+            <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:.75rem;">
+              <div style="width:22px;height:22px;border-radius:50%;background:#22c55e;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">6</div>
+              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">Clique dans la zone signature, colle (<code>Ctrl+V</code>) et enregistre en bas de page. <strong style="color:#22c55e;">Terminé ✓</strong></div>
+            </div>
+          </div>
+
+          <!-- COPY + PREVIEW -->
+          <div style="margin-top:1.25rem;background:#060e20;border:1px solid rgba(79,163,232,.2);border-radius:10px;overflow:hidden;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:.75rem 1rem;border-bottom:1px solid rgba(79,163,232,.12);">
+              <span style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35);">💾 Code de la signature</span>
+              <button id="sigCopyBtn" onclick="event.stopPropagation();copySig()" style="background:#2563eb;color:#fff;border:none;border-radius:6px;padding:7px 18px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .2s;flex-shrink:0;">Copier le code</button>
+            </div>
+            <pre id="sigCodeBlock" style="font-size:10px;color:rgba(255,255,255,.4);line-height:1.6;padding:1rem;overflow-x:auto;white-space:pre-wrap;word-break:break-all;font-family:'Courier New',monospace;max-height:140px;overflow-y:auto;"></pre>
+          </div>
+
+          <div style="margin-top:1rem;">
+            <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:.6rem;">👁️ Aperçu de la signature</div>
+            <div id="sigPreview" style="background:#fff;border-radius:8px;padding:1rem;overflow-x:auto;"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="check-card reveal d3" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-body">
+          <h3>🌐 Explorer le site norelo.ca</h3>
+          <p>Familiarise-toi avec le site principal, les services offerts, les tarifs et les zones desservies. C'est notre vitrine.</p>
+          <a href="https://norelo.ca" target="_blank">Visiter norelo.ca →</a>
+        </div>
+      </div>
+
+      <div class="check-card reveal d4" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-body">
+          <h3>💡 Explorer le catalogue Idées</h3>
+          <p>Regarde les 50 fonctionnalités interactives qu'on montre aux clients pour les aider à visualiser leur site.</p>
+          <a href="https://norelo.ca/previews/idees/" target="_blank">Voir les idées →</a>
+        </div>
+      </div>
+
+      <div class="check-card reveal d1" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-body">
+          <h3>🐙 Accéder au GitHub</h3>
+          <p>Demande à Daniel de t'ajouter comme collaborateur sur le repo <code>norelo-website</code>. C'est là que tous les sites sont hébergés via Vercel.</p>
+        </div>
+      </div>
+
+      <div class="check-card reveal d2" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-body">
+          <h3>📋 Lire la politique de confidentialité</h3>
+          <p>On est conformes à la Loi 25 du Québec. Important de connaître ce qu'on collecte et comment on protège les clients.</p>
+          <a href="https://norelo.ca/legal/" target="_blank">Lire la politique →</a>
+        </div>
+      </div>
+
+      <div class="check-card reveal d3" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-body">
+          <h3>📍 Apprendre les zones desservies</h3>
+          <p>On couvre les Laurentides, Rive-Nord, Laval, Grand Montréal et Rive-Sud. Connais les temps de déplacement approximatifs depuis Saint-Joseph-du-Lac.</p>
+        </div>
+      </div>
+
+      <div class="check-card reveal d4" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-body">
+          <h3>🤝 Premier appel avec Daniel</h3>
+          <p>Planifie un appel ou une rencontre avec Daniel pour discuter de ton rôle, tes forces et comment on divise le travail entre co-fondateurs.</p>
+          <a href="mailto:norelo.danielb@gmail.com">Envoyer un courriel →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section>
+  <div class="container">
+    <p class="section-tag reveal">L'équipe</p>
+    <h2 class="section-title reveal">Qui on est.</h2>
+    <p class="section-sub reveal">Une petite équipe, une grande vision. On se connaît, on se fait confiance, et on construit quelque chose de vrai.</p>
+    <div class="team-grid">
+      <div class="team-card reveal d1">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#1e3a8a,#2563eb)">DB</div>
+        <div class="team-info">
+          <h3>Daniel Bolduc</h3>
+          <div class="team-role">Fondateur</div>
+          <p>Basé à Saint-Joseph-du-Lac. Création web, soutien IT, consultation tech. La tête derrière Norelo depuis le début.</p>
+          <div class="team-contact">
+            <div class="team-contact-row">📞 <a href="tel:5818497700">581-849-7700</a></div>
+            <div class="team-contact-row">✉️ <a href="mailto:norelo.danielb@gmail.com">norelo.danielb@gmail.com</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="team-card reveal d2" style="border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.03);">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#065f46,#22c55e)">KK</div>
+        <div class="team-info">
+          <h3>Kevin Kenney <span class="you-badge">✦ Toi</span></h3>
+          <div class="team-role">Co-Fondateur</div>
+          <p>Tu apportes ta perspective, tes forces et ton énergie à Norelo. Ensemble on est plus forts qu'individuellement.</p>
+          <div class="team-contact">
+            <div class="team-contact-row">📞 <a href="tel:4384923713">438-492-3713</a></div>
+            <div class="team-contact-row">✉️ <a href="mailto:norelo.kevink@gmail.com">norelo.kevink@gmail.com</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section style="background:rgba(255,255,255,.01);border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05);">
+  <div class="container">
+    <p class="section-tag reveal">Notre ADN</p>
+    <h2 class="section-title reveal">Ce qui nous définit.</h2>
+    <p class="section-sub reveal">Pas des valeurs affichées sur un mur, des principes qu'on vit dans chaque interaction client.</p>
+    <div class="values-grid">
+      <div class="value-card reveal d1">
+        <span class="value-icon">📍</span>
+        <h3>Local d'abord</h3>
+        <p>On connaît nos clients en personne. On comprend leurs défis parce qu'on vit dans la même région qu'eux.</p>
+      </div>
+      <div class="value-card reveal d2">
+        <span class="value-icon">⚡</span>
+        <h3>Réponse en 24h</h3>
+        <p>Pas de tickets, pas d'attente absurde. Les clients parlent à une vraie personne qui connaît leur dossier.</p>
+      </div>
+      <div class="value-card reveal d3">
+        <span class="value-icon">💰</span>
+        <h3>Prix honnêtes</h3>
+        <p>Aucun frais caché. Les petites et moyennes entreprises méritent un service professionnel sans se faire exploiter.</p>
+      </div>
+      <div class="value-card reveal d1">
+        <span class="value-icon">🔒</span>
+        <h3>Confiance avant tout</h3>
+        <p>On protège les données de nos clients, on est conformes à la Loi 25, et on dit toujours la vérité, même quand c'est difficile.</p>
+      </div>
+      <div class="value-card reveal d2">
+        <span class="value-icon">🎯</span>
+        <h3>Sur mesure</h3>
+        <p>Jamais de solution générique copiée-collée. Chaque client est unique et mérite une attention réelle.</p>
+      </div>
+      <div class="value-card reveal d3">
+        <span class="value-icon">🌱</span>
+        <h3>En croissance</h3>
+        <p>On apprend ensemble, on s'améliore continuellement. Norelo est un projet vivant, pas une idée figée.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section>
+  <div class="container">
+    <p class="section-tag reveal">L'outillage</p>
+    <h2 class="section-title reveal">Notre stack technique.</h2>
+    <p class="section-sub reveal">Tout ce qu'on utilise pour construire et livrer des sites aux clients. Simple, efficace, pas d'abonnements inutiles.</p>
+    <div class="tools-grid">
+      <div class="tool-card reveal d1">
+        <div class="tool-icon">📄</div>
+        <div class="tool-info"><h4>HTML / CSS / JS</h4><p>Tout en fichiers index.html uniques. Pas de frameworks, pas de build tools.</p></div>
+      </div>
+      <div class="tool-card reveal d2">
+        <div class="tool-icon">🐙</div>
+        <div class="tool-info"><h4>GitHub</h4><p>Repo norelo-website. Tous les sites clients en sous-dossiers /previews/.</p></div>
+      </div>
+      <div class="tool-card reveal d3">
+        <div class="tool-icon">▲</div>
+        <div class="tool-info"><h4>Vercel</h4><p>Hébergement auto-déployé depuis GitHub. Gratuit, rapide, fiable.</p></div>
+      </div>
+      <div class="tool-card reveal d4">
+        <div class="tool-icon">📬</div>
+        <div class="tool-info"><h4>Formspree</h4><p>Formulaires de contact envoyés par courriel. Plug and play.</p></div>
+      </div>
+      <div class="tool-card reveal d1">
+        <div class="tool-icon">🌐</div>
+        <div class="tool-info"><h4>Namecheap</h4><p>Registraire de domaines. norelo.ca et domaines clients.</p></div>
+      </div>
+      <div class="tool-card reveal d2">
+        <div class="tool-icon">✉️</div>
+        <div class="tool-info"><h4>Gmail</h4><p>norelo.danielb@ et norelo.kevink@. Toute la comms client passe par là.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section style="background:rgba(255,255,255,.01);border-top:1px solid rgba(255,255,255,.05);">
+  <div class="container">
+    <div class="mission-box reveal">
+      <p class="mission-quote">
+        "On n'est pas une agence anonyme.<br>On est <span>des voisins</span> qui font du bon travail."
+      </p>
+      <div class="mission-sig">La mission de Norelo</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="nav-logo" style="font-size:18px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:800;color:#fff;letter-spacing:-.5px;display:flex;align-items:center;">Nore<span style="color:#4fa3e8;">lo</span><span style="width:5px;height:5px;background:#22c55e;border-radius:50%;margin-left:3px;margin-bottom:8px;display:inline-block;"></span></div>
+  <p>Bienvenue dans l'équipe, Kevin. On est contents que tu sois là. 🎉</p>
+  <p style="color:rgba(255,255,255,.15);">© 2026 Norelo · Saint-Joseph-du-Lac, Québec</p>
+</footer>
+
+<script>
+// SIGNATURE CODE
+const sigHTML = `<table cellpadding="0" cellspacing="0" border="0" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;width:520px;border-radius:10px;overflow:hidden;border:1px solid #e2e8f0;">
+  <tr>
+    <td style="background:#070f2b;padding:16px 20px;">
+      <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+          <td style="width:50px;vertical-align:middle;">
+            <div style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#1e3a8a,#2563eb);font-size:15px;font-weight:800;color:#fff;text-align:center;line-height:50px;">KK</div>
+          </td>
+          <td style="padding-left:14px;vertical-align:middle;">
+            <div style="font-size:16px;font-weight:800;color:#ffffff;letter-spacing:-0.3px;">Kevin Kenney</div>
+            <div style="font-size:10px;font-weight:700;color:#4fa3e8;text-transform:uppercase;letter-spacing:2px;margin-top:3px;">Co-Fondateur &middot; Norelo</div>
+          </td>
+          <td style="text-align:right;vertical-align:middle;">
+            <div style="font-size:20px;font-weight:800;color:#ffffff;letter-spacing:-0.5px;line-height:1;">Nore<span style="color:#4fa3e8;">lo</span><span style="display:inline-block;width:5px;height:5px;background:#22c55e;border-radius:50%;margin-left:3px;margin-bottom:8px;vertical-align:bottom;"></span></div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:3px;">norelo.ca</div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td style="background:#0d1525;padding:13px 20px;border-top:1px solid rgba(79,163,232,0.12);">
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tr><td style="padding-bottom:7px;"><span style="color:#4fa3e8;font-size:13px;margin-right:9px;">&#128222;</span><span style="font-size:13px;color:#cbd5e1;">438-492-3713</span></td></tr>
+        <tr><td style="padding-bottom:7px;"><span style="color:#4fa3e8;font-size:13px;margin-right:9px;">&#9993;&#65039;</span><a href="mailto:norelo.kevink@gmail.com" style="font-size:13px;color:#cbd5e1;text-decoration:none;">norelo.kevink@gmail.com</a></td></tr>
+        <tr><td><span style="color:#4fa3e8;font-size:13px;margin-right:9px;">&#127760;</span><a href="https://norelo.ca" style="font-size:13px;color:#4fa3e8;text-decoration:none;">norelo.ca</a></td></tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td style="background:#060e20;padding:9px 20px;border-top:1px solid rgba(255,255,255,0.05);">
+      <span style="font-size:9px;color:rgba(255,255,255,0.2);letter-spacing:2px;text-transform:uppercase;">Services web &amp; informatiques · Laurentides</span>
+    </td>
+  </tr>
+</table>`;
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const pre = document.getElementById('sigCodeBlock');
+  const preview = document.getElementById('sigPreview');
+  if(pre) pre.textContent = sigHTML;
+  if(preview) preview.innerHTML = sigHTML;
+});
+
+function copySig(){
+  navigator.clipboard.writeText(sigHTML).then(()=>{
+    const btn=document.getElementById('sigCopyBtn');
+    btn.textContent='Copié ✓';
+    btn.style.background='#22c55e';
+    setTimeout(()=>{btn.textContent='Copier le code';btn.style.background='#2563eb';},2500);
+  });
+}
+
+// PARTICLES
+(function(){
+  const c=document.getElementById('bg-canvas');
+  const ctx=c.getContext('2d');
+  let W,H,pts=[];
+  function rsz(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}
+  rsz();window.addEventListener('resize',rsz);
+  for(let i=0;i<50;i++)pts.push({x:Math.random()*2000,y:Math.random()*1000,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:Math.random()*1.5+.3,o:Math.random()*.3+.05});
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;
+      if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(79,163,232,${p.o})`;ctx.fill();
+    });
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+      const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);
+      if(d<100){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(79,163,232,${.15*(1-d/100)})`;ctx.lineWidth=.6;ctx.stroke();}
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// SCROLL REVEAL
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('on');});},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// CHECKLIST
+let total=0,done=0;
+function toggleCheck(card){
+  card.classList.toggle('done');
+  const box=card.querySelector('.check-box');
+  if(card.classList.contains('done')){
+    box.textContent='✓';
+    done++;
+    spawnConfetti();
+  } else {
+    box.textContent='';
+    done--;
+  }
+  updateProgress();
+}
+function updateProgress(){
+  const cards=document.querySelectorAll('.check-card');
+  total=cards.length;
+  const pct=Math.round((done/total)*100);
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-text').textContent=done+' / '+total+' complétées';
+  document.getElementById('prog-pct').textContent=pct+'%';
+}
+document.addEventListener('DOMContentLoaded',updateProgress);
+
+// CONFETTI
+const colors=['#2563eb','#4fa3e8','#22c55e','#f472b6','#fbbf24','#a78bfa'];
+function spawnConfetti(){
+  for(let i=0;i<18;i++){
+    const el=document.createElement('div');
+    el.className='confetti-piece';
+    el.style.cssText=`
+      left:${20+Math.random()*60}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration:${1.2+Math.random()*.8}s;
+      animation-delay:${Math.random()*.3}s;
+      transform:rotate(${Math.random()*360}deg);
+      width:${6+Math.random()*6}px;
+      height:${6+Math.random()*6}px;
+      border-radius:${Math.random()>0.5?'50%':'2px'};
+    `;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),2200);
+  }
+}
+</script>
+</body>
+</html>
