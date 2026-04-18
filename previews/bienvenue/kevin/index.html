@@ -168,11 +168,11 @@ footer p{font-size:12px;color:rgba(255,255,255,.2);}
         </div>
       </div>
 
-      <div class="check-card reveal d2" onclick="toggleCheck(this)" style="grid-column:1/-1;cursor:default;" id="sig-card">
-        <div class="check-box" style="cursor:pointer;" onclick="event.stopPropagation();toggleCheck(document.getElementById('sig-card'))"></div>
+      <div class="check-card reveal d2" style="grid-column:1/-1;cursor:default;" id="sig-card">
+        <div class="check-box" style="cursor:pointer;flex-shrink:0;" onclick="toggleCheck(document.getElementById('sig-card'))"></div>
         <div class="check-body" style="width:100%">
           <h3>✍️ Installer ta signature Gmail</h3>
-          <p style="margin-bottom:1rem;">Suis ces étapes dans l'ordre. Ça prend environ 3 minutes.</p>
+          <p style="margin-bottom:1rem;">Suis ces étapes dans l'ordre. Ça prend environ 3 minutes. Coche quand c'est fait.</p>
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.6rem;">
             <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.15);border-radius:8px;padding:.75rem;">
               <div style="width:22px;height:22px;border-radius:50%;background:#2563eb;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
@@ -180,23 +180,27 @@ footer p{font-size:12px;color:rgba(255,255,255,.2);}
             </div>
             <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.15);border-radius:8px;padding:.75rem;">
               <div style="width:22px;height:22px;border-radius:50%;background:#2563eb;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
-              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">Clique sur le bouton <strong style="color:#fff;">Copier le code</strong> juste en dessous, puis colle dans CodePen</div>
+              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">Clique sur le bouton <strong style="color:#fff;">Copier le code</strong> juste en dessous, puis colle (<code>Ctrl+V</code>) dans le panneau <strong style="color:#fff;">HTML</strong> de CodePen</div>
             </div>
             <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.15);border-radius:8px;padding:.75rem;">
               <div style="width:22px;height:22px;border-radius:50%;background:#2563eb;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
-              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">Colle (<code>Ctrl+V</code>) dans le panneau <strong style="color:#fff;">HTML</strong> de CodePen (en haut à gauche)</div>
+              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">La signature apparaît dans l'<strong style="color:#fff;">aperçu en bas</strong> de CodePen, sélectionne-la entièrement avec ta souris et copie (<code>Ctrl+C</code>)</div>
             </div>
             <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.15);border-radius:8px;padding:.75rem;">
               <div style="width:22px;height:22px;border-radius:50%;background:#2563eb;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div>
-              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">La signature apparaît dans l'<strong style="color:#fff;">aperçu en bas</strong>, sélectionne-la entièrement avec ta souris</div>
+              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">Dans Gmail : ⚙️ <strong style="color:#fff;">Paramètres</strong> › <strong style="color:#fff;">Voir tous les paramètres</strong> › section <strong style="color:#fff;">Signature</strong> › <strong style="color:#fff;">Créer une signature</strong></div>
             </div>
             <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.15);border-radius:8px;padding:.75rem;">
               <div style="width:22px;height:22px;border-radius:50%;background:#2563eb;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">5</div>
-              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">Copie (<code>Ctrl+C</code>), puis dans Gmail : ⚙️ <strong style="color:#fff;">Paramètres</strong> &rsaquo; <strong style="color:#fff;">Voir tous les paramètres</strong> &rsaquo; section <strong style="color:#fff;">Signature</strong></div>
+              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">Clique dans la zone de signature et colle (<code>Ctrl+V</code>). Donne-lui le nom <strong style="color:#fff;">Norelo</strong></div>
             </div>
-            <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:.75rem;">
-              <div style="width:22px;height:22px;border-radius:50%;background:#22c55e;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">6</div>
-              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">Clique dans la zone signature, colle (<code>Ctrl+V</code>) et enregistre en bas de page. <strong style="color:#22c55e;">Terminé ✓</strong></div>
+            <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(255,255,255,.04);border:1px solid rgba(79,163,232,.15);border-radius:8px;padding:.75rem;">
+              <div style="width:22px;height:22px;border-radius:50%;background:#2563eb;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">6</div>
+              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">Descends à la section <strong style="color:#fff;">Signature defaults</strong> et change les deux menus déroulants (<strong style="color:#fff;">For new emails</strong> et <strong style="color:#fff;">On reply/forward</strong>) pour sélectionner <strong style="color:#fff;">Norelo</strong></div>
+            </div>
+            <div style="display:flex;gap:.65rem;align-items:flex-start;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:.75rem;grid-column:1/-1;">
+              <div style="width:22px;height:22px;border-radius:50%;background:#22c55e;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">7</div>
+              <div style="font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;">Clique sur <strong style="color:#fff;">Enregistrer les modifications</strong> tout en bas de la page. <strong style="color:#22c55e;">Terminé ✓</strong> Ta signature apparaîtra automatiquement dans tous tes nouveaux courriels.</div>
             </div>
           </div>
 
