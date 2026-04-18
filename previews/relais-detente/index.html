@@ -559,52 +559,76 @@
             color: var(--taupe-l); opacity: 0.6;
         }
 
-        /* ABOUT - EDGE TO EDGE SPLIT */
+        /* ABOUT */
         .about {
+            background: var(--cream);
+            padding: 7rem 2rem;
+        }
+
+        .about-grid {
+            max-width: 1140px;
+            margin: 0 auto;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            min-height: 90vh;
-            overflow: hidden;
+            grid-template-columns: 400px 1fr;
+            gap: 5rem;
+            align-items: center;
         }
 
-        .about-photo-side {
+        .about-photo-col { position: relative; }
+
+        .about-frame {
+            border-radius: 4px;
+            overflow: hidden;
             position: relative;
-            overflow: hidden;
+            aspect-ratio: 3/4;
         }
 
-        .about-photo-side img {
-            position: absolute; inset: 0;
+        .about-frame img {
             width: 100%; height: 100%;
             object-fit: cover;
-            object-position: center top;
-            will-change: transform;
+            object-position: 30% 10%;
+            display: block;
+            scale: 1.05;
         }
 
-        /* Subtle gradient overlay on photo side */
-        .about-photo-side::after {
+        /* Bottom vignette to blend out the poster background */
+        .about-frame::before {
             content: '';
-            position: absolute; inset: 0;
-            background: linear-gradient(to right, transparent 70%, rgba(245,237,227,0.3) 100%);
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(245,237,227,0.55) 0%, transparent 35%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Inset decorative border */
+        .about-frame::after {
+            content: '';
+            position: absolute;
+            inset: 12px;
+            border: 1px solid rgba(184,146,122,0.22);
+            border-radius: 3px;
+            z-index: 2;
             pointer-events: none;
         }
 
         .about-badge {
             position: absolute;
-            bottom: 3rem;
-            right: -2.8rem;
-            width: 120px; height: 120px;
+            bottom: -1.5rem;
+            right: -1.5rem;
+            width: 116px; height: 116px;
             background: var(--taupe);
             border-radius: 50%;
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
             color: #fff;
-            box-shadow: 0 12px 40px rgba(184,146,122,0.5);
-            z-index: 2;
+            box-shadow: 0 10px 36px rgba(184,146,122,0.5);
+            z-index: 3;
         }
 
         .about-badge strong {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2.4rem; font-weight: 700; line-height: 1;
+            font-size: 2.2rem; font-weight: 700; line-height: 1;
         }
 
         .about-badge span {
@@ -612,14 +636,6 @@
             letter-spacing: 0.12em; text-transform: uppercase;
             opacity: 0.88; text-align: center;
             line-height: 1.4; padding: 0 0.6rem; margin-top: 2px;
-        }
-
-        .about-text-side {
-            background: var(--cream);
-            padding: 6rem 5rem 6rem 7rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
         }
 
         .about-text-side .sec-label { justify-content: flex-start; }
@@ -783,11 +799,10 @@
             .svc-dur { display: none; }
             .svc-arr { display: none; }
             .svc-ghost { font-size: 3rem; }
-            .about { grid-template-columns: 1fr; }
-            .about-photo-side { height: 55vw; min-height: 260px; }
-            .about-badge { bottom: 1rem; right: 1rem; width: 90px; height: 90px; }
+            .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .about-frame { aspect-ratio: 4/3; }
+            .about-badge { bottom: -1rem; right: -0.5rem; width: 90px; height: 90px; }
             .about-badge strong { font-size: 1.8rem; }
-            .about-text-side { padding: 3.5rem 1.5rem; }
             .tarifs-grid { grid-template-columns: repeat(2, 1fr); }
             .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
             .contact { padding: 4.5rem 1.5rem; }
@@ -996,16 +1011,19 @@
     </div>
 </div>
 
-<!-- ABOUT - EDGE TO EDGE -->
+<!-- ABOUT -->
 <section id="about" class="about">
-    <div class="about-photo-side rv">
-        <img src="melanie.jpg" alt="Mélanie Boucher, massothérapeute - Relais Détente" id="aboutImg">
-        <div class="about-badge">
-            <strong>20+</strong>
-            <span>ans d'expérience</span>
+    <div class="about-grid">
+        <div class="about-photo-col rv">
+            <div class="about-frame">
+                <img src="melanie.jpg" alt="Mélanie Boucher, massothérapeute - Relais Détente" id="aboutImg">
+            </div>
+            <div class="about-badge">
+                <strong>20+</strong>
+                <span>ans d'expérience</span>
+            </div>
         </div>
-    </div>
-    <div class="about-text-side">
+        <div class="about-text-side">
         <span class="sec-label rv">À propos</span>
         <h2 class="sec-title rv d1">Mélanie <em>Boucher</em></h2>
         <p class="rv d2">Avec plus de 20 ans de pratique, Mélanie a développé une approche profondément humaine du soin. Elle ne traite pas simplement un muscle tendu, elle accompagne chaque client dans un retour à lui-même.</p>
@@ -1052,6 +1070,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </section>
 
@@ -1211,19 +1230,6 @@
         }
     }, { threshold: 0.5 });
     countObs.observe(counterEl);
-
-    // About photo parallax
-    const aboutImg = document.getElementById('aboutImg');
-    const aboutSection = document.querySelector('.about');
-    if (aboutImg && aboutSection) {
-        window.addEventListener('scroll', () => {
-            const rect = aboutSection.getBoundingClientRect();
-            if (rect.top < window.innerHeight && rect.bottom > 0) {
-                const progress = (window.innerHeight - rect.top) / (window.innerHeight + rect.height);
-                aboutImg.style.transform = `translateY(${(progress - 0.5) * 60}px)`;
-            }
-        }, { passive: true });
-    }
 
     // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(a => {
