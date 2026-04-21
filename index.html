@@ -83,7 +83,7 @@ nav.sc{padding:.7rem 3rem;}
 .sti{font-size:clamp(26px,4vw,46px);font-weight:800;color:#0f172a;line-height:1.1;letter-spacing:-1.5px;margin-bottom:1rem;}
 .ssu{font-size:16px;color:var(--gr);max-width:540px;line-height:1.8;margin-bottom:3rem;}
 .svg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;}
-.svc{border:1px solid var(--bdr);border-radius:18px;padding:2rem;transition:all .3s;background:#fff;position:relative;overflow:hidden;}
+.svc{border:1px solid var(--bdr);border-radius:18px;padding:2rem;transition:all .3s;background:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;}
 .svc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(37,99,235,.05),transparent);opacity:0;transition:opacity .3s;}
 .svc::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--blue),var(--bl));transform:scaleX(0);transform-origin:left;transition:transform .3s;}
 .svc:hover{border-color:#bfdbfe;box-shadow:0 16px 50px rgba(37,99,235,.1);transform:translateY(-5px);}
@@ -93,7 +93,9 @@ nav.sc{padding:.7rem 3rem;}
 .svc:hover .svic{transform:scale(1.15) rotate(-5deg);}
 .svc h3{font-size:17px;font-weight:700;color:#0f172a;margin-bottom:.6rem;}
 .svc p{font-size:14px;color:var(--gr);line-height:1.65;}
-.svp{font-size:12px;color:var(--blue);font-weight:700;margin-top:1rem;padding-top:1rem;border-top:1px solid #f1f5f9;}
+.svp{margin-top:auto;padding-top:1rem;border-top:1px solid #f1f5f9;display:flex;flex-wrap:wrap;gap:6px;}
+.svptag{display:inline-flex;align-items:center;background:#eff6ff;color:var(--blue);font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;border:1px solid #bfdbfe;white-space:nowrap;}
+.svptag.gr{background:#f0fdf4;color:#166534;border-color:#bbf7d0;}
 .pbg{background:#f8fafc;}
 .ps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));position:relative;}
 .ps::before{content:'';position:absolute;top:52px;left:12%;right:12%;height:1px;background:linear-gradient(to right,transparent,#bfdbfe 20%,#bfdbfe 80%,transparent);}
@@ -383,12 +385,12 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
     <h2 class="sti rv" id="svt">Tout ce dont vous avez besoin,<br>au même endroit.</h2>
     <p class="ssu rv" id="svs">Une seule personne de confiance pour tous vos besoins. Pas de centre d'appel ni d'attente. Vous parlez directement à Daniel.</p>
     <div class="svg">
-      <div class="svc rv d1"><div class="svic">🌐</div><h3 id="sv1t">Création de sites web</h3><p id="sv1d">Sites web professionnels, modernes et optimisés pour les moteurs de recherche. Bilingues français/anglais sur demande.</p><p class="svp" id="sv1p">À partir de 500$ · Hébergement dès 50$/mois</p></div>
-      <div class="svc rv d2"><div class="svic">💻</div><h3 id="sv2t">Soutien informatique</h3><p id="sv2d">Réparation et mise à niveau d'ordinateurs, suppression de virus et malwares, configuration de réseaux Wi-Fi, installation de logiciels et assistance technique à domicile ou en entreprise. Aucune question trop simple.</p><p class="svp" id="sv2p">50$ – 100$/heure · Déplacement disponible</p></div>
-      <div class="svc rv d3"><div class="svic">⚙️</div><h3 id="sv3t">Consultation technologique</h3><p id="sv3d">Vous avez un projet numérique mais ne savez pas par où commencer? Daniel vous guide : choix des bons outils, stratégie web, automatisation de tâches et amélioration de votre visibilité en ligne. Une session = un plan d'action concret.</p><p class="svp" id="sv3p">50$ – 100$/heure · Première session gratuite</p></div>
-      <div class="svc rv d4"><div class="svic">🔧</div><h3 id="sv4t">Hébergement & maintenance</h3><p id="sv4d">Hébergement fiable avec maintenance mensuelle pour que votre site reste toujours rapide, sécurisé et à jour.</p><p class="svp" id="sv4p">Forfaits mensuels disponibles</p></div>
-      <div class="svc rv d1"><div class="svic">🖥️</div><h3 id="sv5t">Assemblage d'ordinateurs</h3><p id="sv5d">Vous rêvez d'un PC sur mesure pour le travail, le gaming ou la création? Daniel assemble votre ordinateur de A à Z selon votre budget. Vous payez les pièces au coût réel, sans markup, et la main-d'oeuvre au taux horaire.</p><p class="svp" id="sv5p">Pièces au coût + 50$ – 100$/heure</p></div>
-      <div class="svc rv d2"><div class="svic">📷</div><h3 id="sv6t">Photographie professionnelle</h3><p id="sv6d">Votre site a besoin d'images de qualité? Daniel se déplace avec son Sony A7II et son objectif Tamron pour capturer votre entreprise sous son meilleur jour. Idéal pour les commerces, restaurants, produits et espaces.</p><p class="svp" id="sv6p">500$ · ~10 photos retouchées · Déplacement inclus</p></div>
+      <div class="svc rv d1"><div class="svic">🌐</div><h3 id="sv1t">Création de sites web</h3><p id="sv1d">Sites web professionnels, modernes et optimisés pour les moteurs de recherche. Bilingues français/anglais sur demande.</p><p class="svp" id="sv1p"><span class="svptag">À partir de 500$</span><span class="svptag">Hébergement dès 18$/mois</span></p></div>
+      <div class="svc rv d2"><div class="svic">💻</div><h3 id="sv2t">Soutien informatique</h3><p id="sv2d">Réparation et mise à niveau d'ordinateurs, suppression de virus et malwares, configuration de réseaux Wi-Fi, installation de logiciels et assistance technique à domicile ou en entreprise. Aucune question trop simple.</p><p class="svp" id="sv2p"><span class="svptag">50$ – 100$/heure</span><span class="svptag gr">Déplacement disponible</span></p></div>
+      <div class="svc rv d3"><div class="svic">⚙️</div><h3 id="sv3t">Consultation technologique</h3><p id="sv3d">Vous avez un projet numérique mais ne savez pas par où commencer? Daniel vous guide : choix des bons outils, stratégie web, automatisation de tâches et amélioration de votre visibilité en ligne. Une session = un plan d'action concret.</p><p class="svp" id="sv3p"><span class="svptag">50$ – 100$/heure</span><span class="svptag gr">1re session gratuite</span></p></div>
+      <div class="svc rv d4"><div class="svic">🔧</div><h3 id="sv4t">Hébergement & maintenance</h3><p id="sv4d">Hébergement fiable avec maintenance mensuelle pour que votre site reste toujours rapide, sécurisé et à jour.</p><p class="svp" id="sv4p"><span class="svptag">Dès 18$/mois</span><span class="svptag gr">Forfaits disponibles</span></p></div>
+      <div class="svc rv d1"><div class="svic">🖥️</div><h3 id="sv5t">Assemblage d'ordinateurs</h3><p id="sv5d">Vous rêvez d'un PC sur mesure pour le travail, le gaming ou la création? Daniel assemble votre ordinateur de A à Z selon votre budget. Vous payez les pièces au coût réel, sans markup, et la main-d'oeuvre au taux horaire.</p><p class="svp" id="sv5p"><span class="svptag">Pièces au coût réel</span><span class="svptag">50$ – 100$/heure</span></p></div>
+      <div class="svc rv d2"><div class="svic">📷</div><h3 id="sv6t">Photographie professionnelle</h3><p id="sv6d">Votre site a besoin d'images de qualité? Daniel se déplace avec son Sony A7II et son objectif Tamron pour capturer votre entreprise sous son meilleur jour. Idéal pour les commerces, restaurants, produits et espaces.</p><p class="svp" id="sv6p"><span class="svptag">500$</span><span class="svptag gr">~10 photos · Dépl. inclus</span></p></div>
     </div>
     <div class="rv" style="margin-top:2rem;background:linear-gradient(135deg,#eff6ff,#e0effe);border:1px solid #bfdbfe;border-radius:16px;padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
       <div>
@@ -483,7 +485,7 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
           <li><span class="prck r">✓</span><span id="pf13">Formulaire de contact</span></li>
           <li><span class="prck r">✓</span><span id="pf14">Optimisation de base (SEO)</span></li>
           <li><span class="prck r">✓</span><span id="pf15">Bilingue français / anglais</span></li>
-          <li><span class="prck r">✓</span><span id="pf16">Hébergement dès 50$/mois</span></li>
+          <li><span class="prck r">✓</span><span id="pf16">Hébergement dès 18$/mois</span></li>
         </ul>
         <a href="#contact" class="bb" style="text-align:center;display:block;background:#e11d48;box-shadow:0 4px 16px rgba(225,29,72,.3);" id="pr1cta">Réclamer l'offre →</a>
       </div>
@@ -498,7 +500,7 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
           <li><span class="prck">✓</span><span id="pf23">Bilingue français/anglais</span></li>
           <li><span class="prck">✓</span><span id="pf24">SEO avancé + Google Analytics</span></li>
           <li><span class="prck">✓</span><span id="pf25">Intégration réseaux sociaux</span></li>
-          <li><span class="prck">✓</span><span id="pf26">Hébergement dès 75$/mois</span></li>
+          <li><span class="prck">✓</span><span id="pf26">Hébergement dès 18$/mois</span></li>
         </ul>
         <a href="#contact" class="bb" style="text-align:center;display:block;" id="pr2cta">Commencer</a>
       </div>
@@ -632,7 +634,7 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
             <div class="sch" id="cweb" onclick="tC('web',this)"><span class="schic">🌐</span><span class="scht"><span id="cwt">Site web</span><br><span class="schs" id="cws">Dès 500$</span></span></div>
             <div class="sch" id="cit" onclick="tC('it',this)"><span class="schic">💻</span><span class="scht"><span id="citt">Soutien IT</span><br><span class="schs" id="cits">50–100$/h</span></span></div>
             <div class="sch" id="ccons" onclick="tC('consult',this)"><span class="schic">⚙️</span><span class="scht"><span id="ccot">Consultation</span><br><span class="schs" id="ccos">50–100$/h</span></span></div>
-            <div class="sch" id="chost" onclick="tC('hosting',this)"><span class="schic">🔧</span><span class="scht"><span id="chot">Hébergement</span><br><span class="schs" id="chos">Dès 50$/mois</span></span></div>
+            <div class="sch" id="chost" onclick="tC('hosting',this)"><span class="schic">🔧</span><span class="scht"><span id="chot">Hébergement</span><br><span class="schs" id="chos">Dès 18$/mois</span></span></div>
             <div class="sch" id="cpc" onclick="tC('pc',this)"><span class="schic">🖥️</span><span class="scht"><span id="cpct">Assemblage PC</span><br><span class="schs" id="cpcs">Pièces + horaire</span></span></div>
             <div class="sch" id="cphoto" onclick="tC('photo',this)"><span class="schic">📷</span><span class="scht"><span id="cpht">Photographie</span><br><span class="schs" id="cphs">500$</span></span></div>
           </div>
@@ -720,7 +722,7 @@ const PR={
   web:{fr:'Site web',en:'Web design',frv:'À partir de 500$',env:'From $500',min:500,max:1200},
   it:{fr:'Soutien IT',en:'IT support',frv:'50$–100$/h',env:'$50–$100/hr',min:50,max:100,h:true},
   consult:{fr:'Consultation',en:'Consulting',frv:'50$–100$/h',env:'$50–$100/hr',min:50,max:100,h:true},
-  hosting:{fr:'Hébergement',en:'Hosting',frv:'Dès 50$/mois',env:'From $50/mo',min:50,max:75,m:true},
+  hosting:{fr:'Hébergement',en:'Hosting',frv:'Dès 18$/mois',env:'From $18/mo',min:18,max:18,m:true},
   pc:{fr:'Assemblage PC',en:'PC building',frv:'Pièces + 50$–100$/h',env:'Parts + $50–$100/hr',min:50,max:100,h:true},
   photo:{fr:'Photographie',en:'Photography',frv:'500$ (journée)',env:'$500 (full day)',min:500,max:500}
 };
@@ -755,12 +757,12 @@ const T={
     's1':'Local & disponible','s2':'Français & anglais','s3':'Web · IT · Consultation','s4':'Temps de réponse',
     'lsv':'Services','svt':'Tout ce dont vous avez besoin,<br>au même endroit.',
     'svs':"Une seule personne de confiance pour tous vos besoins. Pas de centre d'appel ni d'attente. Vous parlez directement à Daniel.",
-    'sv1t':'Création de sites web','sv1d':"Sites web professionnels, modernes et optimisés pour les moteurs de recherche. Bilingues français/anglais sur demande.",'sv1p':'À partir de 500$ · Hébergement dès 50$/mois',
-    'sv2t':'Soutien informatique','sv2d':"Réparation et mise à niveau d'ordinateurs, suppression de virus et malwares, configuration de réseaux Wi-Fi, installation de logiciels et assistance technique à domicile ou en entreprise. Aucune question trop simple.",'sv2p':'50$ – 100$/heure · Déplacement disponible',
-    'sv3t':'Consultation technologique','sv3d':"Vous avez un projet numérique mais ne savez pas par où commencer? Daniel vous guide : choix des bons outils, stratégie web, automatisation de tâches et amélioration de votre visibilité en ligne. Une session = un plan d'action concret.",'sv3p':'50$ – 100$/heure · Première session gratuite',
-    'sv4t':'Hébergement & maintenance','sv4d':'Hébergement fiable avec maintenance mensuelle pour que votre site reste toujours rapide, sécurisé et à jour.','sv4p':'Forfaits mensuels disponibles',
-    'sv5t':"Assemblage d'ordinateurs",'sv5d':"Vous rêvez d'un PC sur mesure pour le travail, le gaming ou la création? Daniel assemble votre ordinateur de A à Z selon votre budget. Vous payez les pièces au coût réel, sans markup, et la main-d'oeuvre au taux horaire.",'sv5p':'Pièces au coût + 50$ – 100$/heure',
-    'sv6t':'Photographie professionnelle','sv6d':"Votre site a besoin d'images de qualité? Daniel se déplace avec son Sony A7II et son objectif Tamron pour capturer votre entreprise sous son meilleur jour. Idéal pour les commerces, restaurants, produits et espaces.",'sv6p':'500$ · ~10 photos retouchées · Déplacement inclus',
+    'sv1t':'Création de sites web','sv1d':"Sites web professionnels, modernes et optimisés pour les moteurs de recherche. Bilingues français/anglais sur demande.",'sv1p':'<span class="svptag">À partir de 500$</span><span class="svptag">Hébergement dès 18$/mois</span>',
+    'sv2t':'Soutien informatique','sv2d':"Réparation et mise à niveau d'ordinateurs, suppression de virus et malwares, configuration de réseaux Wi-Fi, installation de logiciels et assistance technique à domicile ou en entreprise. Aucune question trop simple.",'sv2p':'<span class="svptag">50$ – 100$/heure</span><span class="svptag gr">Déplacement disponible</span>',
+    'sv3t':'Consultation technologique','sv3d':"Vous avez un projet numérique mais ne savez pas par où commencer? Daniel vous guide : choix des bons outils, stratégie web, automatisation de tâches et amélioration de votre visibilité en ligne. Une session = un plan d'action concret.",'sv3p':'<span class="svptag">50$ – 100$/heure</span><span class="svptag gr">1re session gratuite</span>',
+    'sv4t':'Hébergement & maintenance','sv4d':'Hébergement fiable avec maintenance mensuelle pour que votre site reste toujours rapide, sécurisé et à jour.','sv4p':'<span class="svptag">Dès 18$/mois</span><span class="svptag gr">Forfaits disponibles</span>',
+    'sv5t':"Assemblage d'ordinateurs",'sv5d':"Vous rêvez d'un PC sur mesure pour le travail, le gaming ou la création? Daniel assemble votre ordinateur de A à Z selon votre budget. Vous payez les pièces au coût réel, sans markup, et la main-d'oeuvre au taux horaire.",'sv5p':'<span class="svptag">Pièces au coût réel</span><span class="svptag">50$ – 100$/heure</span>',
+    'sv6t':'Photographie professionnelle','sv6d':"Votre site a besoin d'images de qualité? Daniel se déplace avec son Sony A7II et son objectif Tamron pour capturer votre entreprise sous son meilleur jour. Idéal pour les commerces, restaurants, produits et espaces.",'sv6p':'<span class="svptag">500$</span><span class="svptag gr">~10 photos · Dépl. inclus</span>',
     'lpr':'Processus','prt':'Simple, rapide, efficace.','prs':"De la première conversation jusqu'à la mise en ligne, voici comment ça se passe.",
     'p1t':'Consultation','p1d':'On discute de vos besoins, votre budget et vos objectifs. Gratuit et sans engagement.',
     'p2t':'Conception','p2d':'Je conçois votre site ou solution sur mesure selon vos préférences et votre image de marque.',
@@ -783,10 +785,10 @@ const T={
     'pitip':'<strong>Transparence totale :</strong> Vous voyez les prix avant même de nous écrire. Pas de surprise, pas de pression. Si votre projet sort des forfaits, on vous donne un devis honnête après une discussion gratuite.',
     'pr1b':'Offre de lancement','pr1n':'Essentiel','pr1a':'500','pr1sv':'Économisez 200$','pr1per':'+ hébergement',
     'pr1d':'Idéal pour les petites entreprises qui veulent une présence en ligne simple et professionnelle.',
-    'pf11':'Site 1 à 5 pages','pf12':'Design responsive (mobile)','pf13':'Formulaire de contact','pf14':'Optimisation de base (SEO)','pf15':'Bilingue français / anglais','pf16':'Hébergement dès 50$/mois','pr1cta':"Réclamer l'offre →",
+    'pf11':'Site 1 à 5 pages','pf12':'Design responsive (mobile)','pf13':'Formulaire de contact','pf14':'Optimisation de base (SEO)','pf15':'Bilingue français / anglais','pf16':'Hébergement dès 18$/mois','pr1cta':"Réclamer l'offre →",
     'pr2b':'Le plus populaire','pr2n':'Professionnel','pr2per':' + hébergement',
     'pr2d':'Pour les entreprises qui veulent se démarquer avec un site complet, bilingue et optimisé.',
-    'pf21':"Site jusqu'à 10 pages",'pf22':'Design sur mesure','pf23':'Bilingue français/anglais','pf24':'SEO avancé + Google Analytics','pf25':'Intégration réseaux sociaux','pf26':'Hébergement dès 75$/mois','pr2cta':'Commencer',
+    'pf21':"Site jusqu'à 10 pages",'pf22':'Design sur mesure','pf23':'Bilingue français/anglais','pf24':'SEO avancé + Google Analytics','pf25':'Intégration réseaux sociaux','pf26':'Hébergement dès 18$/mois','pr2cta':'Commencer',
     'pr3n':'Sur mesure','pr3p':'Sur devis','pr3d':'Boutique en ligne, assemblage PC, photographie ou projet complexe, on trouve toujours une solution adaptée.',
     'pf31':'Boutique en ligne (e-commerce)','pf32':'Assemblage PC sur mesure','pf33':'Photographie professionnelle','pf34':'Support IT mensuel','pf35':'Formation & documentation','pr3cta':'Nous contacter',
     'lzo':'Zones desservies','zot':'On se déplace<br>partout autour.','zos':'Basé à Saint-Joseph-du-Lac, Norelo dessert toute la grande région de Montréal et des Laurentides. Déplacement sur place disponible.','zobase':'Saint-Joseph-du-Lac — Notre base','zonote':'Déplacement sur place disponible dans toutes ces zones. Pour les projets à distance, le travail se fait entièrement en ligne.','zoray':'Rayon approximatif','zoinsplab':'✦ Inspiration','zoinspt':'Vous ne savez pas quoi vouloir sur votre site?','zoinsps':'Explorez nos exemples interactifs de fonctionnalités — animations, formulaires, galeries et plus.','zoinspbtn':'Voir les idées →',
@@ -803,7 +805,7 @@ const T={
     'cttip':'Plus votre message est détaillé, plus vite Daniel pourra vous préparer un devis précis et personnalisé.',
     'lname':'Nom','lemail':'Courriel','lsvc':"Services qui m'intéressent",'lmsg':'Votre message',
     'cwt':'Site web','cws':'Dès 500$','citt':'Soutien IT','cits':'50–100$/h',
-    'ccot':'Consultation','ccos':'50–100$/h','chot':'Hébergement','chos':'Dès 50$/mois',
+    'ccot':'Consultation','ccos':'50–100$/h','chot':'Hébergement','chos':'Dès 18$/mois',
     'cpct':'Assemblage PC','cpcs':'Pièces + horaire','cpht':'Photographie','cphs':'500$',
     'etit':'Estimation approximative','etotl':'Total estimé',
     'enote':'Estimation indicative seulement. Un devis précis sera fourni après consultation gratuite.',
@@ -827,12 +829,12 @@ const T={
     's1':'Local & available','s2':'French & English','s3':'Web · IT · Consulting','s4':'Response time',
     'lsv':'Services','svt':'Everything you need,<br>in one place.',
     'svs':"One trusted person for all your tech needs. No call centre, no waiting around. Just Daniel.",
-    'sv1t':'Web design','sv1d':"Professional, modern websites optimized for search engines. Bilingual French/English available.",'sv1p':'From $500 · Hosting from $50/mo',
-    'sv2t':'IT support','sv2d':"Computer and hardware repair, virus and malware removal, Wi-Fi network setup, software installation and on-site technical assistance for homes and businesses. No question is too simple.",'sv2p':'$50 – $100/hour · On-site available',
-    'sv3t':'Tech consulting','sv3d':"Have a digital project but not sure where to start? Daniel guides you through tool selection, web strategy, task automation, online visibility and more. One session means one concrete action plan.",'sv3p':'$50 – $100/hour · First session free',
-    'sv4t':'Hosting & maintenance','sv4d':'Reliable hosting with monthly maintenance to keep your site fast, secure and always up to date.','sv4p':'Monthly plans available',
-    'sv5t':'PC building & assembly','sv5d':"Want a custom-built PC for work, gaming or content creation? Daniel builds your computer from scratch based on your budget and needs. You pay real cost on parts with no markup, plus hourly labour.",'sv5p':'Parts at cost + $50 – $100/hour',
-    'sv6t':'Professional photography','sv6d':"Need quality images for your website? Daniel brings his Sony A7II camera and Tamron lens to capture your business at its best. Perfect for shops, restaurants, products and spaces.",'sv6p':'$500 · ~10 retouched photos · Travel included',
+    'sv1t':'Web design','sv1d':"Professional, modern websites optimized for search engines. Bilingual French/English available.",'sv1p':'<span class="svptag">From $500</span><span class="svptag">Hosting from $18/mo</span>',
+    'sv2t':'IT support','sv2d':"Computer and hardware repair, virus and malware removal, Wi-Fi network setup, software installation and on-site technical assistance for homes and businesses. No question is too simple.",'sv2p':'<span class="svptag">$50 – $100/hour</span><span class="svptag gr">On-site available</span>',
+    'sv3t':'Tech consulting','sv3d':"Have a digital project but not sure where to start? Daniel guides you through tool selection, web strategy, task automation, online visibility and more. One session means one concrete action plan.",'sv3p':'<span class="svptag">$50 – $100/hour</span><span class="svptag gr">First session free</span>',
+    'sv4t':'Hosting & maintenance','sv4d':'Reliable hosting with monthly maintenance to keep your site fast, secure and always up to date.','sv4p':'<span class="svptag">From $18/mo</span><span class="svptag gr">Plans available</span>',
+    'sv5t':'PC building & assembly','sv5d':"Want a custom-built PC for work, gaming or content creation? Daniel builds your computer from scratch based on your budget and needs. You pay real cost on parts with no markup, plus hourly labour.",'sv5p':'<span class="svptag">Parts at cost</span><span class="svptag">$50 – $100/hour</span>',
+    'sv6t':'Professional photography','sv6d':"Need quality images for your website? Daniel brings his Sony A7II camera and Tamron lens to capture your business at its best. Perfect for shops, restaurants, products and spaces.",'sv6p':'<span class="svptag">$500</span><span class="svptag gr">~10 photos · Travel incl.</span>',
     'lpr':'Process','prt':'Simple, fast, effective.','prs':'From the first conversation all the way to launch, here is how it works.',
     'p1t':'Consultation','p1d':'We discuss your needs, budget and goals. Free and no commitment.',
     'p2t':'Design','p2d':'I design your website or solution tailored to your preferences and brand.',
@@ -855,10 +857,10 @@ const T={
     'pitip':'<strong>Full transparency:</strong> You see the prices before you even contact us. No pressure, no surprises. If your project goes beyond the packages, we\'ll give you an honest quote after a free chat.',
     'pr1b':'Launch offer','pr1n':'Essential','pr1a':'500','pr1sv':'Save $200','pr1per':'+ hosting',
     'pr1d':'Perfect for small businesses that want a simple, professional online presence.',
-    'pf11':'1 to 5 page website','pf12':'Responsive design (mobile)','pf13':'Contact form','pf14':'Basic SEO optimization','pf15':'Bilingual French / English','pf16':'Hosting from $50/mo','pr1cta':'Claim the offer →',
+    'pf11':'1 to 5 page website','pf12':'Responsive design (mobile)','pf13':'Contact form','pf14':'Basic SEO optimization','pf15':'Bilingual French / English','pf16':'Hosting from $18/mo','pr1cta':'Claim the offer →',
     'pr2b':'Most popular','pr2n':'Professional','pr2per':' + hosting',
     'pr2d':'For businesses that want to stand out with a complete, bilingual and optimized website.',
-    'pf21':'Up to 10 pages','pf22':'Custom design','pf23':'Bilingual French/English','pf24':'Advanced SEO + Google Analytics','pf25':'Social media integration','pf26':'Hosting from $75/mo','pr2cta':'Get started',
+    'pf21':'Up to 10 pages','pf22':'Custom design','pf23':'Bilingual French/English','pf24':'Advanced SEO + Google Analytics','pf25':'Social media integration','pf26':'Hosting from $18/mo','pr2cta':'Get started',
     'pr3n':'Custom','pr3p':'Get a quote','pr3d':'Online store, PC build, photography or complex project, we always find a solution that fits.',
     'pf31':'E-commerce store','pf32':'Custom PC build','pf33':'Professional photography','pf34':'Monthly IT support','pf35':'Training & documentation','pr3cta':'Contact us',
     'lzo':'Service areas','zot':'We go<br>wherever you are.','zos':'Based in Saint-Joseph-du-Lac, Norelo serves the greater Montreal and Laurentians region. On-site visits available.','zobase':'Saint-Joseph-du-Lac — Our home base','zonote':'On-site visits available throughout all these areas. For remote projects, everything is done online.','zoray':'Approximate travel time','zoinsplab':'✦ Inspiration','zoinspt':'Not sure what you want on your website?','zoinsps':'Browse our interactive feature examples — animations, forms, galleries and more.','zoinspbtn':'Browse ideas →',
@@ -876,7 +878,7 @@ const T={
     'cttip':'The more detail you include, the faster Daniel can prepare an accurate and personalized quote for you.',
     'lname':'Name','lemail':'Email','lsvc':'Services I am interested in','lmsg':'Your message',
     'cwt':'Web design','cws':'From $500','citt':'IT support','cits':'$50–$100/hr',
-    'ccot':'Consulting','ccos':'$50–$100/hr','chot':'Hosting','chos':'From $50/mo',
+    'ccot':'Consulting','ccos':'$50–$100/hr','chot':'Hosting','chos':'From $18/mo',
     'cpct':'PC building','cpcs':'Parts + hourly','cpht':'Photography','cphs':'$500',
     'etit':'Approximate estimate','etotl':'Estimated total',
     'enote':'Indicative estimate only. A precise quote will be provided after a free consultation.',
