@@ -1240,14 +1240,14 @@ function startGrass() {
   const ctx = cvs.getContext('2d');
   const W = cvs.width, H = cvs.height;
   // Get hero rect for translating mouse into canvas space
-  let heroRect = cvs.closest('.lhero')?.getBoundingClientRect() || {left:0,top:0};
+  let heroRect = cvs.getBoundingClientRect();
   let t = 0, lastTs = 0;
 
   function tick(ts) {
     const dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.04) : 0.016;
     lastTs = ts;
     // Update heroRect occasionally
-    if (Math.floor(t * 60) % 120 === 0) heroRect = cvs.closest('.lhero')?.getBoundingClientRect() || {left:0,top:0};
+    if (Math.floor(t * 60) % 120 === 0) heroRect = cvs.getBoundingClientRect();
 
     ctx.clearRect(0, 0, W, H);
     const wind = Math.sin(t * 0.26) * 0.34 + Math.sin(t * 0.58 + 0.8) * 0.16;
@@ -1255,7 +1255,9 @@ function startGrass() {
     // Mouse in canvas coords (for proximity sway)
     const mxC = grassMouseX - heroRect.left;
     const myC = grassMouseY - heroRect.top;
-    const MOUSE_R = 110; // radius of influence
+    const MOUSE_R = 110;
+    // Only apply grass interaction when mouse is actually over the grass strip
+    const mouseOverGrass = grassMouseY >= heroRect.top && grassMouseY <= heroRect.bottom;
 
     // ---- GRASS BLADES ----
     for (const b of blades) {
@@ -1267,13 +1269,15 @@ function startGrass() {
       const h = b.h * b.grow * b.trimProgress;
       let sway = (Math.sin(t * b.spd + b.phase) * 0.13 + wind * 0.08) * (h / 55);
 
-      // Mouse proximity push
-      const dx = b.x - mxC;
-      const dy = (H - h * 0.5) - myC;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      if (dist < MOUSE_R) {
-        const push = (1 - dist / MOUSE_R) * 0.65;
-        sway += (dx / (dist || 1)) * push;
+      // Mouse proximity push — only when mouse is over the grass strip
+      if (mouseOverGrass) {
+        const dx = b.x - mxC;
+        const dy = (H - h * 0.5) - myC;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < MOUSE_R) {
+          const push = (1 - dist / MOUSE_R) * 0.65;
+          sway += (dx / (dist || 1)) * push;
+        }
       }
 
       const lean = b.lean + sway;
