@@ -892,7 +892,7 @@ function setSide(s) {
   document.querySelector('.gr').style.display = s === 'laser' ? 'block' : 'none';
   window.scrollTo({top:0, behavior:'smooth'});
   scheduleObserver();
-  if (s === 'lawn') { stopLaserHero(); startSky(); startGrass(); startPollen(); startLeaves(); }
+  if (s === 'lawn') { stopLaserHero(); startSky(); startGrass(); startPollen(); startLeaves(); mowTriggered = false; }
   else { stopSky(); stopGrass(); stopPollen(); stopLeaves(); startLaserHero(); }
 }
 
@@ -1164,6 +1164,7 @@ function stopPollen(){
 // ================================================================
 let grassRaf = null, blades = [], flowers = [], fireflies = [];
 let grassMouseX = -999, grassMouseY = -999;
+let clippings = [], mowTriggered = false;
 
 document.addEventListener('mousemove', e => { grassMouseX = e.clientX; grassMouseY = e.clientY; });
 
@@ -1175,7 +1176,7 @@ function buildBlades() {
   const W = cvs.width, H = cvs.height;
 
   // Grass blades
-  const count = Math.floor(W / 4.8);
+  const count = Math.floor(W / 2.2);
   for (let i = 0; i < count; i++) {
     const layer = Math.floor(Math.random() * 4);
     blades.push({
@@ -1187,21 +1188,24 @@ function buildBlades() {
       lean: (Math.random() - 0.5) * 0.4,
       layer,
       grow: Math.random() * 0.25,
-      // slight hue variation per blade
       hue: 115 + Math.floor(Math.random() * 35),
       sat: 45 + Math.floor(Math.random() * 30),
       lit: 22 + Math.floor(Math.random() * 22),
+      mowed: false,
+      trimH: 0,   // target trimmed height
+      trimProgress: 1, // 1=full height, animates to trimmed ratio
     });
   }
   blades.sort((a,b) => a.layer - b.layer);
 
   // Wildflowers scattered in grass
-  const flowerCount = Math.floor(W / 90);
+  const flowerCount = Math.floor(W / 38);
   for (let i = 0; i < flowerCount; i++) {
     const type = Math.random() < 0.5 ? 'daisy' : 'buttercup';
+    const fh = 28 + Math.random() * 40;
     flowers.push({
       x: Math.random() * W,
-      h: 28 + Math.random() * 40,
+      h: fh, originalH: fh,
       phase: Math.random() * Math.PI * 2,
       spd: 0.3 + Math.random() * 0.5,
       type,
@@ -1210,6 +1214,9 @@ function buildBlades() {
       col: type === 'daisy' ? '#fff' : '#ffe033',
       center: type === 'daisy' ? '#f5d020' : '#e8a010',
       stemCol: `hsl(${120+Math.floor(Math.random()*25)},55%,${28+Math.floor(Math.random()*18)}%)`,
+      plucked: false,
+      pluckVy: 0,
+      pluckAlpha: 1,
     });
   }
 
@@ -1253,7 +1260,11 @@ function startGrass() {
     // ---- GRASS BLADES ----
     for (const b of blades) {
       b.grow = Math.min(1, b.grow + 0.007);
-      const h = b.h * b.grow;
+      // Animate trim
+      if (b.mowed && b.trimProgress > b.trimH) {
+        b.trimProgress = Math.max(b.trimH, b.trimProgress - dt * 1.8);
+      }
+      const h = b.h * b.grow * b.trimProgress;
       let sway = (Math.sin(t * b.spd + b.phase) * 0.13 + wind * 0.08) * (h / 55);
 
       // Mouse proximity push
@@ -1266,33 +1277,55 @@ function startGrass() {
       }
 
       const lean = b.lean + sway;
-      const col = `hsla(${b.hue},${b.sat}%,${b.lit}%,${0.5 + b.layer*0.16})`;
+      // Trimmed blades shift slightly greener/lighter to show fresh cut
+      const litShift = b.mowed ? Math.min(b.lit + 12, 58) : b.lit;
+      const col = `hsla(${b.hue},${b.sat}%,${litShift}%,${0.5 + b.layer*0.16})`;
       ctx.beginPath();
       ctx.moveTo(b.x, H);
       ctx.quadraticCurveTo(b.x + lean*h*0.5, H - h*0.58, b.x + lean*h, H - h);
       ctx.strokeStyle = col; ctx.lineWidth = b.w; ctx.lineCap = 'round'; ctx.stroke();
     }
 
+    // ---- GRASS CLIPPINGS (scatter after mow) ----
+    for (let i = clippings.length - 1; i >= 0; i--) {
+      const c = clippings[i];
+      c.x += c.vx; c.y += c.vy; c.vy += 0.06; c.vx *= 0.98;
+      c.rot += c.rv; c.life -= 0.014;
+      if (c.life <= 0) { clippings.splice(i, 1); continue; }
+      ctx.save();
+      ctx.globalAlpha = Math.min(c.life * 1.5, 0.8);
+      ctx.translate(c.x, c.y); ctx.rotate(c.rot);
+      ctx.beginPath();
+      ctx.moveTo(0, -c.len); ctx.lineTo(0, c.len);
+      ctx.strokeStyle = `hsl(${115 + Math.random()*25},62%,38%)`;
+      ctx.lineWidth = 0.9; ctx.lineCap = 'round'; ctx.stroke();
+      ctx.restore();
+    }
+
     // ---- WILDFLOWERS ----
     for (const f of flowers) {
+      if (f.plucked) {
+        // Fly upward and fade
+        f.h += f.pluckVy; f.pluckVy -= 0.55; f.pluckAlpha -= 0.028;
+        if (f.pluckAlpha <= 0) continue;
+      }
       const sway = (Math.sin(t * f.spd + f.phase) * 0.12 + wind * 0.08) * (f.h / 55);
       const tipX = f.x + sway * f.h;
       const tipY = H - f.h;
+      ctx.save(); ctx.globalAlpha = f.pluckAlpha;
       // Stem
       ctx.beginPath(); ctx.moveTo(f.x, H);
       ctx.quadraticCurveTo(f.x + sway*f.h*0.5, H - f.h*0.55, tipX, tipY);
       ctx.strokeStyle = f.stemCol; ctx.lineWidth = 1.2; ctx.lineCap = 'round'; ctx.stroke();
       // Petals
-      ctx.save(); ctx.translate(tipX, tipY);
-      const petalSway = sway * 0.4;
-      ctx.rotate(petalSway);
+      ctx.translate(tipX, tipY); ctx.rotate(sway * 0.4);
       for (let j = 0; j < f.petals; j++) {
         const a = (j / f.petals) * Math.PI * 2;
         ctx.beginPath();
         ctx.ellipse(Math.cos(a)*f.psize, Math.sin(a)*f.psize, f.psize*0.6, f.psize*1.1, a, 0, Math.PI*2);
-        ctx.fillStyle = f.col; ctx.globalAlpha = 0.88; ctx.fill(); ctx.globalAlpha = 1;
+        ctx.fillStyle = f.col; ctx.globalAlpha = 0.88 * f.pluckAlpha; ctx.fill();
       }
-      // Center
+      ctx.globalAlpha = f.pluckAlpha;
       ctx.beginPath(); ctx.arc(0, 0, f.psize * 0.55, 0, Math.PI*2);
       ctx.fillStyle = f.center; ctx.shadowBlur = 4; ctx.shadowColor = f.center; ctx.fill(); ctx.shadowBlur = 0;
       ctx.restore();
@@ -2085,6 +2118,55 @@ function stopLeaves() {
   if (cvs) cvs.getContext('2d').clearRect(0, 0, cvs.width, cvs.height);
 }
 
+
+function triggerMow() {
+  if (mowTriggered) return;
+  mowTriggered = true;
+
+  const cvs = document.getElementById('grass-cvs');
+  const W = cvs ? cvs.width : window.innerWidth;
+  const H = cvs ? cvs.height : 150;
+
+  // Stagger blade trimming left to right — mower pass effect
+  blades.forEach(b => {
+    const delay = (b.x / W) * 900;
+    setTimeout(() => {
+      b.mowed = true;
+      b.trimH = 0.28 + Math.random() * 0.18;
+      const tipX = b.x;
+      const tipY = H - b.h * b.grow;
+      for (let j = 0; j < 2 + Math.floor(Math.random() * 2); j++) {
+        clippings.push({
+          x: tipX + (Math.random() - 0.5) * 8,
+          y: tipY + Math.random() * 8,
+          vx: (Math.random() - 0.5) * 2.2,
+          vy: -(0.5 + Math.random() * 1.8),
+          rot: Math.random() * Math.PI,
+          rv: (Math.random() - 0.5) * 0.18,
+          len: 2 + Math.random() * 4,
+          life: 0.6 + Math.random() * 0.4,
+        });
+      }
+    }, delay);
+  });
+
+  // Pluck flowers with staggered pop
+  flowers.forEach(f => {
+    setTimeout(() => {
+      f.plucked = true;
+      f.pluckVy = -(3.5 + Math.random() * 4);
+    }, 200 + Math.random() * 800);
+  });
+}
+
+(function() {
+  const target = document.querySelector('.l-stats');
+  if (!target) return;
+  const mowObs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { triggerMow(); mowObs.disconnect(); }
+  }, { threshold: 0.1 });
+  mowObs.observe(target);
+})();
 
 function countUp(el) {
   const target = +el.dataset.target;
