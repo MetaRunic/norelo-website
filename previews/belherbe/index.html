@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>Bel'herbe -- Tonte de gazon &amp; Gravure laser | Saint-Lazare</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{overflow-x:hidden;}
+html{scroll-behavior:smooth;}
+:root{--lp:#2a6041;--lm:#52b788;--lb:#f0faf4;--gp:#c8963c;--gd:#0d0d0d;--gs:#111;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:900;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;border-bottom:1px solid;transition:background .4s,border-color .4s;}
+body.lawn nav{background:#fff;border-color:rgba(42,96,65,.13);}
+body.laser nav{background:rgba(10,10,10,.96);border-color:rgba(200,150,60,.18);backdrop-filter:blur(12px);}
+.logo{font-size:22px;font-weight:800;letter-spacing:-.8px;text-decoration:none;}
+body.lawn .logo{color:#0d2818;}body.laser .logo{color:#f0f0f0;}
+.logo em{font-style:normal;}
+body.lawn .logo em{color:var(--lp);}body.laser .logo em{color:var(--gp);}
+.tog{display:flex;border-radius:30px;padding:3px;gap:2px;transition:background .4s;}
+body.lawn .tog{background:#eef2ee;}body.laser .tog{background:#1c1c1c;}
+.tog button{font-family:inherit;font-size:13px;font-weight:600;padding:7px 16px;border:none;border-radius:26px;cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:7px;}
+.tog button svg{width:14px;height:14px;flex-shrink:0;}
+body.lawn .tog .tl{background:var(--lp);color:#fff;}
+body.lawn .tog .tg{background:transparent;color:#999;}
+body.laser .tog .tl{background:transparent;color:#555;}
+body.laser .tog .tg{background:var(--gp);color:#0d0d0d;}
+.nlks{display:flex;gap:1.5rem;align-items:center;}
+.nlks a{font-size:14px;text-decoration:none;font-weight:500;transition:color .25s;}
+body.lawn .nlks a{color:#5a7a68;}body.lawn .nlks a:hover{color:var(--lp);}
+body.laser .nlks a{color:#888;}body.laser .nlks a:hover{color:var(--gp);}
+.np{font-weight:700!important;}
+@media(max-width:700px){.nlks{display:none;}nav{padding:1rem 1.25rem;}}
+
+/* CONTENT SWITCH */
+.lw,.gr{animation:fi .4s ease;}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+
+/* HERO */
+.hero{min-height:90vh;display:flex;align-items:center;padding:6rem 2rem 5rem;position:relative;overflow:hidden;}
+.hi{max-width:1100px;margin:0 auto;position:relative;z-index:4;width:100%;}
+
+/* LAWN HERO */
+.lhero{background:linear-gradient(155deg,#e8f4ec 0%,#cfe9d8 45%,#b8dfc7 100%);}
+.lhero::after{content:'';position:absolute;top:-80px;right:-80px;width:480px;height:480px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,235,120,.28) 0%,transparent 68%);}
+#grass-cvs{position:absolute;bottom:0;left:0;width:100%;height:150px;z-index:3;pointer-events:none;}
+.lhero .hbadge{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:rgba(42,96,65,.1);color:var(--lp);border:1px solid rgba(42,96,65,.22);border-radius:20px;padding:6px 16px;margin-bottom:2rem;}
+.lhero h1{font-size:clamp(38px,5.5vw,72px);font-weight:800;line-height:1.04;letter-spacing:-2px;margin-bottom:1.5rem;color:#0d2818;}
+.lhero h1 span{display:block;color:var(--lp);}
+.lhero .hsub{font-size:17px;line-height:1.8;max-width:510px;margin-bottom:2.5rem;color:#3d6652;}
+
+/* LASER HERO */
+.ghero{background:var(--gd);}
+.ghero::before{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(45deg,transparent,transparent 4px,rgba(200,150,60,.013) 4px,rgba(200,150,60,.013) 8px),radial-gradient(ellipse at 18% 50%,rgba(200,150,60,.11) 0%,transparent 55%);}
+.ghero .hbadge{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:rgba(200,150,60,.08);color:var(--gp);border:1px solid rgba(200,150,60,.22);border-radius:20px;padding:6px 16px;margin-bottom:2rem;}
+.ghero h1{font-size:clamp(38px,5.5vw,72px);font-weight:800;line-height:1.04;letter-spacing:-2px;margin-bottom:1.5rem;color:#f0f0f0;}
+.ghero h1 span{display:block;color:var(--gp);}
+.ghero .hsub{font-size:17px;line-height:1.8;max-width:510px;margin-bottom:2.5rem;color:#999;}
+
+/* HERO ENTRANCE */
+.ha{opacity:0;animation:ha .75s cubic-bezier(.22,1,.36,1) forwards;}
+.ha:nth-child(1){animation-delay:.08s;}.ha:nth-child(2){animation-delay:.2s;}.ha:nth-child(3){animation-delay:.35s;}.ha:nth-child(4){animation-delay:.5s;}
+@keyframes ha{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+/* BUTTONS */
+.btns{display:flex;gap:.85rem;flex-wrap:wrap;}
+.bp,.bs{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:8px;font-size:15px;font-weight:600;text-decoration:none;font-family:inherit;border:none;cursor:pointer;transition:all .25s;}
+.lhero .bp{background:var(--lp);color:#fff;box-shadow:0 4px 20px rgba(42,96,65,.32);}
+.lhero .bp:hover{background:#1e4d31;transform:translateY(-2px);}
+.ghero .bp{background:var(--gp);color:#0d0d0d;box-shadow:0 4px 20px rgba(200,150,60,.32);}
+.ghero .bp:hover{background:#b07a28;transform:translateY(-2px);}
+.lhero .bs{color:var(--lp);border:1px solid rgba(42,96,65,.4);background:transparent;}
+.lhero .bs:hover{background:rgba(42,96,65,.07);transform:translateY(-2px);}
+.ghero .bs{color:var(--gp);border:1px solid rgba(200,150,60,.38);background:transparent;}
+.ghero .bs:hover{background:rgba(200,150,60,.07);transform:translateY(-2px);}
+
+/* SECTIONS */
+.sec{padding:5rem 2rem;}
+.si{max-width:1100px;margin:0 auto;}
+.stag{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:.7rem;display:flex;align-items:center;gap:8px;}
+.stag::before{content:'';display:inline-block;width:18px;height:1.5px;}
+.sec h2{font-size:clamp(26px,3.5vw,42px);font-weight:800;line-height:1.1;letter-spacing:-1.5px;margin-bottom:.75rem;}
+.ssu{font-size:15px;line-height:1.8;max-width:520px;margin-bottom:3rem;}
+.ls{background:#fff;}.ls.alt{background:var(--lb);}
+.ls .stag{color:var(--lp);}.ls .stag::before{background:var(--lp);}
+.ls h2{color:#0d2818;}.ls .ssu{color:#4a6a58;}
+.gs{background:var(--gd);}.gs.alt{background:var(--gs);}
+.gs .stag{color:var(--gp);}.gs .stag::before{background:var(--gp);}
+.gs h2{color:#f0f0f0;}.gs .ssu{color:#888;}
+
+/* ICONS */
+.ico{width:52px;height:52px;border-radius:15px;display:flex;align-items:center;justify-content:center;margin-bottom:1.1rem;transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
+.ico svg{width:28px;height:28px;display:block;}
+.ls .ico{background:rgba(42,96,65,.1);color:var(--lp);}
+.gs .ico{background:rgba(200,150,60,.1);color:var(--gp);}
+.ls .svc:hover .ico{transform:scale(1.13) rotate(-6deg);}
+.gs .svc:hover .ico{transform:scale(1.13) rotate(6deg);}
+
+/* CARDS */
+.svgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem;}
+.svc{border-radius:16px;padding:1.75rem;position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s,border-color .3s;}
+.svc h3{font-size:17px;font-weight:700;margin-bottom:.45rem;}
+.svc p{font-size:14px;line-height:1.65;}
+.ls .svc{background:var(--lb);border:1px solid #c3dcca;}
+.ls .svc h3{color:#0d2818;}.ls .svc p{color:#4a6a58;}
+.ls .svc:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(42,96,65,.14);border-color:#94c9a8;}
+.ls .svc::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(82,183,136,.07),transparent 60%);opacity:0;transition:opacity .4s;}
+.ls .svc:hover::after{opacity:1;}
+.gs .svc{background:#141414;border:1px solid rgba(200,150,60,.12);}
+.gs .svc h3{color:#f0f0f0;}.gs .svc p{color:#888;}
+.gs .svc:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(200,150,60,.1);border-color:rgba(200,150,60,.4);}
+.gs .svc::before{content:'';position:absolute;inset:0;border-radius:16px;background:radial-gradient(circle at 50% 0%,rgba(200,150,60,.09),transparent 65%);opacity:0;transition:opacity .4s;}
+.gs .svc:hover::before{opacity:1;}
+
+/* GALLERY */
+.gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.25rem;}
+.gal-item{border-radius:12px;aspect-ratio:1;display:flex;align-items:center;justify-content:center;border:1px solid rgba(200,150,60,.14);background:#141414;color:#3a3a3a;font-size:12px;font-weight:600;letter-spacing:.4px;position:relative;overflow:hidden;transition:border-color .3s;}
+.gal-item:hover{border-color:rgba(200,150,60,.5);}
+.gal-item::after{content:'';position:absolute;top:-50%;left:0;right:0;height:50%;background:linear-gradient(to bottom,transparent,rgba(200,150,60,.07),transparent);animation:gscan 2.8s ease-in-out infinite;}
+.gal-item:nth-child(2)::after{animation-delay:.65s;}.gal-item:nth-child(3)::after{animation-delay:1.3s;}.gal-item:nth-child(4)::after{animation-delay:1.95s;}
+@keyframes gscan{0%{top:-50%}100%{top:120%}}
+
+/* ZONE */
+.zwrap{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
+@media(max-width:700px){.zwrap{grid-template-columns:1fr;}}
+.zmap{border-radius:16px;height:260px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.75rem;font-size:13px;font-weight:600;letter-spacing:.4px;}
+.ls .zmap{background:var(--lb);border:2px dashed #c3dcca;color:var(--lp);}
+.gs .zmap{background:#141414;border:2px dashed rgba(200,150,60,.2);color:var(--gp);}
+.zpico{animation:zbounce 2s ease-in-out infinite;}
+@keyframes zbounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.zlist{list-style:none;display:flex;flex-direction:column;gap:.7rem;}
+.zlist li{display:flex;align-items:center;gap:.75rem;font-size:15px;}
+.ls .zlist li{color:#3a5447;}.gs .zlist li{color:#bbb;}
+.zdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.ls .zdot{background:var(--lm);}.gs .zdot{background:var(--gp);}
+
+/* CONTACT */
+.cgrid{display:grid;grid-template-columns:1fr 1.4fr;gap:3rem;align-items:start;}
+@media(max-width:700px){.cgrid{grid-template-columns:1fr;}}
+.cinfo p{font-size:15px;line-height:1.8;margin-bottom:1.5rem;}
+.ls .cinfo p{color:#4a6a58;}.gs .cinfo p{color:#888;}
+.cdet{display:flex;align-items:center;gap:.75rem;font-size:15px;font-weight:500;margin-bottom:.7rem;text-decoration:none;transition:color .2s;}
+.cdet svg{width:16px;height:16px;flex-shrink:0;}
+.ls .cdet{color:#0d2818;}.gs .cdet{color:#e0e0e0;}
+.ls .cdet:hover{color:var(--lp);}.gs .cdet:hover{color:var(--gp);}
+.cform{border-radius:20px;padding:2rem;}
+.ls .cform{background:var(--lb);border:1px solid #c3dcca;}
+.gs .cform{background:#111;border:1px solid rgba(200,150,60,.18);}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+@media(max-width:700px){.frow{grid-template-columns:1fr;}}
+.fld{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem;}
+.fld label{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;}
+.ls .fld label{color:var(--lp);}.gs .fld label{color:var(--gp);}
+.fld input,.fld textarea,.fld select{font-family:inherit;font-size:14px;padding:10px 13px;border-radius:8px;width:100%;outline:none;transition:border-color .25s,box-shadow .25s;appearance:none;}
+.ls .fld input,.ls .fld textarea,.ls .fld select{background:#fff;border:1px solid #c3dcca;color:#0d2818;}
+.ls .fld input:focus,.ls .fld textarea:focus,.ls .fld select:focus{border-color:var(--lp);box-shadow:0 0 0 3px rgba(42,96,65,.1);}
+.gs .fld input,.gs .fld textarea,.gs .fld select{background:#1a1a1a;border:1px solid rgba(200,150,60,.2);color:#f0f0f0;}
+.gs .fld input:focus,.gs .fld textarea:focus,.gs .fld select:focus{border-color:var(--gp);box-shadow:0 0 0 3px rgba(200,150,60,.1);}
+.fld textarea{resize:vertical;min-height:110px;}
+.fsub{width:100%;padding:13px;border-radius:8px;font-size:15px;font-weight:600;border:none;cursor:pointer;font-family:inherit;transition:all .25s;margin-top:.25rem;}
+.ls .fsub{background:var(--lp);color:#fff;}.ls .fsub:hover{background:#1e4d31;transform:translateY(-2px);}
+.gs .fsub{background:var(--gp);color:#0d0d0d;}.gs .fsub:hover{background:#b07a28;transform:translateY(-2px);}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .7s,transform .7s;}
+.rv.on{opacity:1;transform:none;}
+.d1{transition-delay:.08s;}.d2{transition-delay:.17s;}.d3{transition-delay:.26s;}.d4{transition-delay:.35s;}
+
+/* FOOTER */
+footer{text-align:center;padding:2rem;font-size:13px;border-top:1px solid;}
+body.lawn footer{background:var(--lb);color:#64748b;border-color:#c3dcca;}
+body.laser footer{background:#090909;color:#555;border-color:rgba(200,150,60,.1);}
+footer p+p{margin-top:.35rem;}
+footer a{font-weight:600;text-decoration:none;}
+body.lawn footer a{color:var(--lp);}.body.laser footer a{color:var(--gp);}
+body.laser footer a{color:var(--gp);}
+
+@media(max-width:700px){.hero{padding:4rem 1.25rem 4rem;}.sec{padding:3.5rem 1.25rem;}}
+
+/* LASER BURN TRAIL CURSOR */
+#lc-cvs{position:fixed;inset:0;pointer-events:none;z-index:9996;display:none;}
+body.laser #lc-cvs{display:block;}
+body.laser{cursor:none;}
+body.laser *{cursor:none;}
+
+/* SPARK CANVAS */
+#spark-cvs{position:fixed;inset:0;z-index:9970;pointer-events:none;display:none;}
+body.laser #spark-cvs{display:block;}
+
+/* LASER HERO CANVAS */
+#laser-hero-cvs{position:absolute;inset:0;z-index:1;pointer-events:none;width:100%;height:100%;}
+</style>
+</head>
+<body class="lawn">
+
+<!-- SVG SPRITES -->
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-mow" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="4" y="13" width="24" height="11" rx="2.5" stroke-width="2.2"/>
+    <line x1="26" y1="13" x2="35" y2="5" stroke-width="2.5"/>
+    <line x1="32" y1="5" x2="36" y2="5" stroke-width="2.5"/>
+    <circle cx="11" cy="27" r="5" stroke-width="2.2"/>
+    <circle cx="22" cy="27" r="5" stroke-width="2.2"/>
+    <circle cx="11" cy="27" r="1.5" fill="currentColor" stroke="none"/>
+    <circle cx="22" cy="27" r="1.5" fill="currentColor" stroke="none"/>
+  </symbol>
+  <symbol id="i-weed" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-linecap="round">
+    <line x1="20" y1="36" x2="20" y2="16" stroke-width="2.5"/>
+    <path d="M20 28 Q11 23 8 15 Q15 14 20 28" fill="currentColor" stroke="none" opacity=".8"/>
+    <path d="M20 21 Q29 16 32 8 Q25 7 20 21" fill="currentColor" stroke="none" opacity=".6"/>
+    <line x1="14" y1="38" x2="26" y2="38" stroke-width="2"/>
+  </symbol>
+  <symbol id="i-scissors" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-linecap="round">
+    <circle cx="10" cy="30" r="5" stroke-width="2.2"/>
+    <circle cx="30" cy="30" r="5" stroke-width="2.2"/>
+    <line x1="14" y1="27" x2="31" y2="9" stroke-width="2.2"/>
+    <line x1="26" y1="27" x2="9" y2="9" stroke-width="2.2"/>
+  </symbol>
+  <symbol id="i-shovel" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-linecap="round">
+    <line x1="20" y1="5" x2="20" y2="17" stroke-width="2.5"/>
+    <line x1="14" y1="5" x2="26" y2="5" stroke-width="2.5"/>
+    <path d="M13 17 L13 26 Q13 34 20 34 Q27 34 27 26 L27 17 Z" stroke-width="2.2"/>
+    <line x1="13" y1="21" x2="27" y2="21" stroke-width="1.5" opacity=".45"/>
+  </symbol>
+  <symbol id="i-gift" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-linecap="round">
+    <rect x="7" y="17" width="26" height="17" rx="2" stroke-width="2.2"/>
+    <rect x="6" y="11" width="28" height="7" rx="1.5" stroke-width="2.2"/>
+    <line x1="20" y1="11" x2="20" y2="34" stroke-width="2"/>
+    <path d="M20 11 C19 8 13 6 11 10 C9 14 14 15 20 11Z" stroke-width="1.5"/>
+    <path d="M20 11 C21 8 27 6 29 10 C31 14 26 15 20 11Z" stroke-width="1.5"/>
+  </symbol>
+  <symbol id="i-badge" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="20" cy="20" r="13" stroke-width="2.2"/>
+    <path d="M20 10L22.4 16.6L29.5 16.6L23.8 20.6L26.2 27.2L20 23.2L13.8 27.2L16.2 20.6L10.5 16.6L17.6 16.6Z" stroke-width="1.8"/>
+  </symbol>
+  <symbol id="i-trophy" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-linecap="round">
+    <path d="M12 7L28 7L27 19Q27 28 20 28Q13 28 13 19Z" stroke-width="2.2"/>
+    <path d="M12 11Q5 11 5 17Q5 23 13 21" stroke-width="2.2"/>
+    <path d="M28 11Q35 11 35 17Q35 23 27 21" stroke-width="2.2"/>
+    <line x1="20" y1="28" x2="20" y2="33" stroke-width="2.5"/>
+    <line x1="14" y1="33" x2="26" y2="33" stroke-width="2.5"/>
+  </symbol>
+  <symbol id="i-layers" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 28L20 33L34 28L20 23Z" stroke-width="2.2"/>
+    <path d="M6 22L20 27L34 22L20 17Z" stroke-width="2.2"/>
+    <path d="M6 16L20 21L34 16L20 11Z" stroke-width="2.2"/>
+  </symbol>
+  <symbol id="i-loc" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-linecap="round">
+    <path d="M20 5C14 5 9 10 9 16C9 24 20 35 20 35C20 35 31 24 31 16C31 10 26 5 20 5Z" stroke-width="2.2"/>
+    <circle cx="20" cy="16" r="4" stroke-width="2"/>
+  </symbol>
+  <symbol id="i-phone" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-linecap="round">
+    <rect x="13" y="6" width="14" height="28" rx="3" stroke-width="2.2"/>
+    <circle cx="20" cy="31" r="1.2" fill="currentColor" stroke="none"/>
+    <line x1="17" y1="9" x2="23" y2="9" stroke-width="1.5"/>
+  </symbol>
+  <symbol id="i-mail" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-linecap="round">
+    <rect x="5" y="10" width="30" height="20" rx="3" stroke-width="2.2"/>
+    <path d="M5 13L20 22L35 13" stroke-width="2"/>
+  </symbol>
+</svg>
+
+<!-- LASER BURN TRAIL CANVAS -->
+<canvas id="lc-cvs"></canvas>
+
+<!-- SPARK CANVAS -->
+<canvas id="spark-cvs"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#">Bel<em>'herbe</em></a>
+  <div class="tog">
+    <button class="tl" onclick="setSide('lawn')"><svg viewBox="0 0 40 40"><use href="#i-mow"/></svg>Gazon</button>
+    <button class="tg" onclick="setSide('laser')"><svg viewBox="0 0 40 40"><use href="#i-layers"/></svg>Gravure</button>
+  </div>
+  <div class="nlks">
+    <a href="#svc">Services</a><a href="#zone">Zone</a><a href="#contact">Contact</a>
+    <a href="tel:5148844710" class="np">514-884-4710</a>
+  </div>
+</nav>
+
+<!-- ===== LAWN ===== -->
+<div class="lw">
+  <section class="hero lhero">
+    <canvas id="pollen-cvs" style="position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;"></canvas>
+    <div class="hi" style="z-index:4;position:relative;">
+      <div class="hbadge ha"><svg width="12" height="12" viewBox="0 0 40 40"><use href="#i-weed"/></svg>Saint-Lazare &amp; environs</div>
+      <h1 class="ha">Un gazon impeccable,<span>sans vous en occuper.</span></h1>
+      <p class="hsub ha">Tonte, désherbage, taille de haie et travaux extérieurs. Fiable, soigné, local.</p>
+      <div class="btns ha"><a href="#contact" class="bp">Obtenir une soumission</a><a href="tel:5148844710" class="bs">514-884-4710</a></div>
+    </div>
+    <canvas id="grass-cvs"></canvas>
+  </section>
+
+  <section class="sec ls" id="svc">
+    <div class="si">
+      <div class="stag rv">Services</div>
+      <h2 class="rv d1">Ce qu'on fait pour vous</h2>
+      <p class="ssu rv d2">Des services extérieurs complets, adaptés à votre propriété et votre budget.</p>
+      <div class="svgrid">
+        <div class="svc rv d1"><div class="ico"><svg viewBox="0 0 40 40"><use href="#i-mow"/></svg></div><h3>Tonte de gazon</h3><p>Coupe régulière ou ponctuelle. Contrat saisonnier disponible pour la tranquillité d'esprit toute la saison.</p></div>
+        <div class="svc rv d2"><div class="ico"><svg viewBox="0 0 40 40"><use href="#i-weed"/></svg></div><h3>Désherbage</h3><p>Élimination des mauvaises herbes pour un gazon propre et uniforme du printemps à l'automne.</p></div>
+        <div class="svc rv d3"><div class="ico"><svg viewBox="0 0 40 40"><use href="#i-scissors"/></svg></div><h3>Taille de haie</h3><p>Haies, arbustes et bordures taillés avec précision pour une apparence soignée et professionnelle.</p></div>
+        <div class="svc rv d4"><div class="ico"><svg viewBox="0 0 40 40"><use href="#i-shovel"/></svg></div><h3>Travaux extérieurs</h3><p>Tout autre travail d'entretien selon vos besoins. Ponctuel ou récurrent, on s'adapte.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec ls alt" id="zone">
+    <div class="si">
+      <div class="stag rv">Zone desservie</div>
+      <h2 class="rv d1">On se déplace chez vous</h2>
+      <div class="zwrap rv d2">
+        <div>
+          <p class="ssu" style="margin-bottom:1.5rem;">Basé à Saint-Lazare, on couvre les municipalités voisines. Pas certain qu'on se rende chez vous? Appelez-nous.</p>
+          <ul class="zlist">
+            <li><span class="zdot"></span>Saint-Lazare</li><li><span class="zdot"></span>Hudson</li>
+            <li><span class="zdot"></span>Vaudreuil-Dorion</li><li><span class="zdot"></span>Pincourt</li>
+            <li><span class="zdot"></span>Les Cèdres</li><li><span class="zdot"></span>Rigaud et environs</li>
+          </ul>
+        </div>
+        <div class="zmap"><svg class="zpico" width="40" height="40" viewBox="0 0 40 40" style="color:var(--lp)"><use href="#i-loc"/></svg><span>Carte à intégrer</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec ls" id="contact">
+    <div class="si">
+      <div class="stag rv">Contact</div>
+      <h2 class="rv d1">Obtenez votre soumission</h2>
+      <div class="cgrid rv d2">
+        <div class="cinfo">
+          <p>Décrivez votre projet et on vous revient rapidement avec un prix. Contrat saisonnier ou service ponctuel, on s'adapte.</p>
+          <a class="cdet" href="tel:5148844710"><svg viewBox="0 0 40 40"><use href="#i-phone"/></svg>514-884-4710</a>
+          <a class="cdet" href="mailto:bel-herbe@hotmail.com"><svg viewBox="0 0 40 40"><use href="#i-mail"/></svg>bel-herbe@hotmail.com</a>
+          <a class="cdet" href="mailto:ericjubi@hotmail.com"><svg viewBox="0 0 40 40"><use href="#i-mail"/></svg>ericjubi@hotmail.com</a>
+          <span class="cdet"><svg viewBox="0 0 40 40"><use href="#i-loc"/></svg>Saint-Lazare, Québec</span>
+        </div>
+        <div class="cform">
+          <form action="https://formspree.io/f/REMPLACER_ICI" method="POST">
+            <input type="hidden" name="_subject" value="Demande Gazon"/>
+            <div class="frow"><div class="fld"><label>Prénom</label><input type="text" name="prenom" required/></div><div class="fld"><label>Nom</label><input type="text" name="nom" required/></div></div>
+            <div class="fld"><label>Téléphone</label><input type="tel" name="tel"/></div>
+            <div class="fld"><label>Service</label><select name="service"><option>Tonte de gazon</option><option>Désherbage</option><option>Taille de haie</option><option>Travaux extérieurs</option><option>Contrat saisonnier</option><option>Autre</option></select></div>
+            <div class="fld"><label>Message</label><textarea name="msg" placeholder="Superficie, fréquence souhaitée..."></textarea></div>
+            <button class="fsub" type="submit">Envoyer ma demande</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== LASER ===== -->
+<div class="gr">
+  <section class="hero ghero">
+    <canvas id="laser-hero-cvs"></canvas>
+    <div class="hi">
+      <div class="hbadge ha"><svg width="12" height="12" viewBox="0 0 40 40" style="color:var(--gp)"><use href="#i-layers"/></svg>Gravure sur mesure</div>
+      <h1 class="ha">Votre vision,<span>gravée pour toujours.</span></h1>
+      <p class="hsub ha">Gravure au laser sur presque tous les matériaux. Objets promotionnels, cadeaux personnalisés, trophées et médailles.</p>
+      <div class="btns ha"><a href="#contact-laser" class="bp">Demander une soumission</a><a href="tel:5148844710" class="bs">514-884-4710</a></div>
+    </div>
+  </section>
+
+  <section class="sec gs" id="svc-laser">
+    <div class="si">
+      <div class="stag rv">Services</div>
+      <h2 class="rv d1">Ce qu'on peut graver</h2>
+      <p class="ssu rv d2">Précision, durabilité et personnalisation pour chaque projet, petite ou grande quantité.</p>
+      <div class="svgrid">
+        <div class="svc rv d1"><div class="ico"><svg viewBox="0 0 40 40"><use href="#i-gift"/></svg></div><h3>Cadeaux personnalisés</h3><p>Verres, planches à découper, ardoises, porte-clés. Un cadeau unique qui marque les esprits.</p></div>
+        <div class="svc rv d2"><div class="ico"><svg viewBox="0 0 40 40"><use href="#i-badge"/></svg></div><h3>Objets promotionnels</h3><p>Votre logo gravé sur des articles de qualité pour renforcer votre image de marque.</p></div>
+        <div class="svc rv d3"><div class="ico"><svg viewBox="0 0 40 40"><use href="#i-trophy"/></svg></div><h3>Trophées &amp; médailles</h3><p>Récompensez vos équipes et vos gagnants avec des pièces durables et personnalisées.</p></div>
+        <div class="svc rv d4"><div class="ico"><svg viewBox="0 0 40 40"><use href="#i-layers"/></svg></div><h3>Matériaux variés</h3><p>Bois, ardoise, métal, verre, cuir, acrylique et plus. Apportez le vôtre ou choisissez parmi nos options.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec gs alt">
+    <div class="si">
+      <div class="stag rv">Réalisations</div>
+      <h2 class="rv d1">Quelques exemples</h2>
+      <p class="ssu rv d2">Chaque pièce est unique. Voici un aperçu de ce qu'on peut créer pour vous.</p>
+      <div class="gal rv d2">
+        <div class="gal-item">Photo à ajouter</div><div class="gal-item">Photo à ajouter</div>
+        <div class="gal-item">Photo à ajouter</div><div class="gal-item">Photo à ajouter</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec gs" id="zone-laser">
+    <div class="si">
+      <div class="stag rv">Zone de service</div>
+      <h2 class="rv d1">Livraison ou ramassage</h2>
+      <div class="zwrap rv d2">
+        <div>
+          <p class="ssu" style="margin-bottom:1.5rem;">Basé à Saint-Lazare. Ramassage sur place, livraison locale disponible, ou envoi postal.</p>
+          <ul class="zlist">
+            <li><span class="zdot"></span>Saint-Lazare</li><li><span class="zdot"></span>Hudson</li>
+            <li><span class="zdot"></span>Vaudreuil-Dorion</li><li><span class="zdot"></span>Pincourt</li>
+            <li><span class="zdot"></span>Les Cèdres</li><li><span class="zdot"></span>Envoi postal disponible</li>
+          </ul>
+        </div>
+        <div class="zmap"><svg class="zpico" width="40" height="40" viewBox="0 0 40 40" style="color:var(--gp)"><use href="#i-loc"/></svg><span>Carte à intégrer</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec gs alt" id="contact-laser">
+    <div class="si">
+      <div class="stag rv">Contact</div>
+      <h2 class="rv d1">Faites-nous part de votre projet</h2>
+      <div class="cgrid rv d2">
+        <div class="cinfo">
+          <p>Dites-nous ce que vous voulez graver, sur quel matériau et en quelle quantité. On vous revient rapidement.</p>
+          <a class="cdet" href="tel:5148844710"><svg viewBox="0 0 40 40"><use href="#i-phone"/></svg>514-884-4710</a>
+          <a class="cdet" href="mailto:bel-herbe@hotmail.com"><svg viewBox="0 0 40 40"><use href="#i-mail"/></svg>bel-herbe@hotmail.com</a>
+          <a class="cdet" href="mailto:ericjubi@hotmail.com"><svg viewBox="0 0 40 40"><use href="#i-mail"/></svg>ericjubi@hotmail.com</a>
+        </div>
+        <div class="cform">
+          <form action="https://formspree.io/f/REMPLACER_ICI" method="POST">
+            <input type="hidden" name="_subject" value="Demande Gravure laser"/>
+            <div class="frow"><div class="fld"><label>Prénom</label><input type="text" name="prenom" required/></div><div class="fld"><label>Nom</label><input type="text" name="nom" required/></div></div>
+            <div class="fld"><label>Téléphone ou courriel</label><input type="text" name="contact" required/></div>
+            <div class="fld"><label>Type de projet</label><select name="type"><option>Cadeau personnalisé</option><option>Objet promotionnel</option><option>Trophée / Médaille</option><option>Commande en lot</option><option>Autre</option></select></div>
+            <div class="fld"><label>Description</label><textarea name="msg" placeholder="Matériau, quantité, délai, logo disponible..."></textarea></div>
+            <button class="fsub" type="submit">Envoyer mon projet</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <p>© 2026 Bel'herbe · Eric Jubinville · Saint-Lazare, Québec · <a href="tel:5148844710">514-884-4710</a></p>
+  <p>Site web réalisé par <a href="https://norelo.ca">Norelo</a></p>
+</footer>
+
+<script>
+// ================================================================
+// SIDE TOGGLE
+// ================================================================
+let side = 'lawn';
+function setSide(s) {
+  if (s === side) return;
+  side = s;
+  document.body.className = s;
+  document.querySelector('.lw').style.display = s === 'lawn' ? 'block' : 'none';
+  document.querySelector('.gr').style.display = s === 'laser' ? 'block' : 'none';
+  window.scrollTo({top:0, behavior:'smooth'});
+  scheduleObserver();
+  if (s === 'lawn') { stopLaserHero(); startGrass(); startPollen(); }
+  else { stopGrass(); stopPollen(); startLaserHero(); }
+}
+
+// ================================================================
+// SCROLL REVEAL
+// ================================================================
+let obs = null;
+function scheduleObserver() {
+  if (obs) obs.disconnect();
+  obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); }});
+  }, {threshold: .12});
+  document.querySelectorAll('.rv:not(.on)').forEach(el => obs.observe(el));
+}
+
+// ================================================================
+// POLLEN — dandelion seeds drifting up
+// ================================================================
+let pollenRaf = null, seeds = [];
+function mkSeed(W,H,rand){
+  return {x:Math.random()*W, y:rand?Math.random()*H:H+8, vx:(Math.random()-.5)*.55, vy:-(0.18+Math.random()*.65), rot:Math.random()*Math.PI*2, rv:(Math.random()-.5)*.018, r:1.2+Math.random()*2, spokes:5+Math.floor(Math.random()*4), a:.25+Math.random()*.45, wobble:Math.random()*Math.PI*2, ws:.4+Math.random()*.7};
+}
+function startPollen(){
+  stopPollen();
+  const cvs=document.getElementById('pollen-cvs');
+  if(!cvs) return;
+  const hero=cvs.parentElement;
+  cvs.width=hero.offsetWidth; cvs.height=hero.offsetHeight;
+  const W=cvs.width, H=cvs.height;
+  seeds=Array.from({length:28},()=>mkSeed(W,H,true));
+  const ctx=cvs.getContext('2d');
+  let t=0;
+  function tick(){
+    ctx.clearRect(0,0,W,H);
+    const breeze=Math.sin(t*.22)*.4;
+    if(Math.random()<.04) seeds.push(mkSeed(W,H,false));
+    if(seeds.length>55) seeds.splice(0,seeds.length-55);
+    for(let i=seeds.length-1;i>=0;i--){
+      const s=seeds[i];
+      s.wobble+=.016; s.x+=s.vx+breeze+Math.sin(s.wobble*s.ws)*.22; s.y+=s.vy; s.rot+=s.rv;
+      if(s.x<-20) s.x=W+10; if(s.x>W+20) s.x=-10;
+      if(s.y<-20){Object.assign(s,mkSeed(W,H,false));continue;}
+      ctx.save(); ctx.translate(s.x,s.y); ctx.rotate(s.rot); ctx.globalAlpha=s.a;
+      ctx.beginPath(); ctx.arc(0,0,s.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(200,240,210,.9)'; ctx.shadowBlur=6; ctx.shadowColor='rgba(140,220,160,.7)'; ctx.fill(); ctx.shadowBlur=0;
+      ctx.strokeStyle='rgba(180,230,195,.65)'; ctx.lineWidth=.55;
+      for(let j=0;j<s.spokes;j++){
+        const ang=(j/s.spokes)*Math.PI*2, len=s.r*3.2;
+        ctx.beginPath(); ctx.moveTo(0,0);
+        ctx.quadraticCurveTo(Math.cos(ang+.3)*len*.5,Math.sin(ang+.3)*len*.5,Math.cos(ang)*len,Math.sin(ang)*len);
+        ctx.stroke();
+        ctx.beginPath(); ctx.arc(Math.cos(ang)*len,Math.sin(ang)*len,.8,0,Math.PI*2);
+        ctx.fillStyle='rgba(200,240,210,.8)'; ctx.fill();
+      }
+      ctx.restore();
+    }
+    t+=.016; pollenRaf=requestAnimationFrame(tick);
+  }
+  tick();
+}
+function stopPollen(){if(pollenRaf){cancelAnimationFrame(pollenRaf);pollenRaf=null;}}
+
+// ================================================================
+// LASER BURN TRAIL CURSOR
+// ================================================================
+(function(){
+  const cvs=document.getElementById('lc-cvs');
+  cvs.width=window.innerWidth; cvs.height=window.innerHeight;
+  window.addEventListener('resize',()=>{cvs.width=window.innerWidth;cvs.height=window.innerHeight;});
+  const ctx=cvs.getContext('2d');
+  const trail=[];
+  const MAX=30;
+  document.addEventListener('mousemove',e=>{
+    if(side!=='laser') return;
+    trail.push({x:e.clientX,y:e.clientY,age:1});
+    if(trail.length>MAX) trail.shift();
+  });
+  (function loop(){
+    if(side==='laser'){
+      ctx.clearRect(0,0,cvs.width,cvs.height);
+      for(const p of trail) p.age=Math.max(0,p.age-.04);
+      for(let i=1;i<trail.length;i++){
+        const p0=trail[i-1],p1=trail[i],a=p1.age;
+        if(a<=0) continue;
+        ctx.save();
+        ctx.beginPath(); ctx.moveTo(p0.x,p0.y); ctx.lineTo(p1.x,p1.y);
+        ctx.strokeStyle=`rgba(200,120,20,${a*.45})`; ctx.lineWidth=6*a; ctx.lineCap='round'; ctx.stroke();
+        ctx.strokeStyle=`rgba(255,230,140,${a*.85})`; ctx.lineWidth=2*a;
+        ctx.shadowBlur=8; ctx.shadowColor=`rgba(255,160,40,${a})`; ctx.stroke();
+        ctx.restore();
+      }
+      if(trail.length>0){
+        const tip=trail[trail.length-1];
+        const g=ctx.createRadialGradient(tip.x,tip.y,0,tip.x,tip.y,14);
+        g.addColorStop(0,'rgba(255,220,100,.55)'); g.addColorStop(.4,'rgba(200,100,20,.2)'); g.addColorStop(1,'transparent');
+        ctx.fillStyle=g; ctx.beginPath(); ctx.arc(tip.x,tip.y,14,0,Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(tip.x,tip.y,2.5,0,Math.PI*2);
+        ctx.fillStyle='#fff'; ctx.shadowBlur=12; ctx.shadowColor='#ffa020'; ctx.fill();
+      }
+    } else { ctx.clearRect(0,0,cvs.width,cvs.height); }
+    requestAnimationFrame(loop);
+  })();
+})();
+
+// ================================================================
+// GRASS
+// ================================================================
+let grassRaf = null, blades = [];
+
+function buildBlades() {
+  const cvs = document.getElementById('grass-cvs');
+  cvs.width = cvs.parentElement.offsetWidth;
+  cvs.height = 150;
+  blades = [];
+  const count = Math.floor(cvs.width / 5.2);
+  for (let i = 0; i < count; i++) {
+    const layer = Math.floor(Math.random() * 4);
+    blades.push({ x: Math.random() * cvs.width, h: 16 + layer * 20 + Math.random() * 16, w: 1.1 + layer * 0.45 + Math.random() * 0.5, phase: Math.random() * Math.PI * 2, spd: 0.4 + Math.random() * 0.7, lean: (Math.random() - 0.5) * 0.35, layer, grow: Math.random() * 0.3 });
+  }
+  blades.sort((a, b) => a.layer - b.layer);
+}
+
+function startGrass() {
+  stopGrass(); buildBlades();
+  const cvs = document.getElementById('grass-cvs');
+  const ctx = cvs.getContext('2d');
+  const cols = ['rgba(15,55,28,.5)','rgba(28,85,45,.68)','rgba(48,135,72,.84)','rgba(78,175,108,.98)'];
+  let t = 0;
+  function tick() {
+    ctx.clearRect(0, 0, cvs.width, cvs.height);
+    const H = cvs.height;
+    const wind = Math.sin(t * 0.32) * 0.40 + Math.sin(t * 0.71 + 0.8) * 0.18;
+    for (const b of blades) {
+      b.grow = Math.min(1, b.grow + 0.008);
+      const h = b.h * b.grow;
+      const sway = (Math.sin(t * b.spd + b.phase) * 0.16 + wind * 0.10) * (h / 55);
+      const lean = b.lean + sway;
+      ctx.beginPath();
+      ctx.moveTo(b.x, H);
+      ctx.quadraticCurveTo(b.x + lean * h * 0.5, H - h * 0.58, b.x + lean * h, H - h);
+      ctx.strokeStyle = cols[b.layer]; ctx.lineWidth = b.w; ctx.lineCap = 'round'; ctx.stroke();
+    }
+    const grd = ctx.createLinearGradient(0, H - 20, 0, H);
+    grd.addColorStop(0, 'transparent'); grd.addColorStop(1, 'rgba(12,45,22,.28)');
+    ctx.fillStyle = grd; ctx.fillRect(0, H - 20, cvs.width, 20);
+    t += 0.016; grassRaf = requestAnimationFrame(tick);
+  }
+  tick();
+}
+
+function stopGrass() { if (grassRaf) { cancelAnimationFrame(grassRaf); grassRaf = null; } }
+
+// ================================================================
+// LASER HERO: scan beam + floating embers
+// ================================================================
+let laserHeroRaf = null;
+
+function startLaserHero() {
+  stopLaserHero();
+  const cvs = document.getElementById('laser-hero-cvs');
+  if (!cvs) return;
+  const hero = cvs.closest('.hero');
+  cvs.width = hero.offsetWidth; cvs.height = hero.offsetHeight;
+  const ctx = cvs.getContext('2d');
+  const W = cvs.width, H = cvs.height;
+
+  // Embers pool
+  const EMBER_COLS = ['#ffd700','#ff8c00','#c8963c','#ffb347','#ff6600','#ffe066'];
+  function mkEmber(rand) {
+    return { x: Math.random()*W, y: rand ? Math.random()*H : H+6, vx: (Math.random()-.5)*.7, vy: -(0.3+Math.random()*1.1), r: .8+Math.random()*2.2, life: .5+Math.random()*.5, dec: .003+Math.random()*.005, col: EMBER_COLS[Math.floor(Math.random()*EMBER_COLS.length)], phase: Math.random()*Math.PI*2, t: Math.random()*10 };
+  }
+  const embers = Array.from({length:22}, () => mkEmber(true));
+
+  let scanX = 0;
+  const scanSparks = [];
+  let t = 0;
+
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+
+    // --- SCAN BEAM ---
+    // Soft glow column
+    const sg = ctx.createLinearGradient(scanX-28, 0, scanX+28, 0);
+    sg.addColorStop(0,'transparent'); sg.addColorStop(.38,'rgba(200,150,60,.13)');
+    sg.addColorStop(.5,'rgba(255,210,90,.42)'); sg.addColorStop(.62,'rgba(200,150,60,.13)'); sg.addColorStop(1,'transparent');
+    ctx.fillStyle = sg; ctx.fillRect(scanX-28, 0, 56, H);
+    // Core line
+    ctx.save(); ctx.beginPath(); ctx.moveTo(scanX, 0); ctx.lineTo(scanX, H);
+    ctx.strokeStyle = 'rgba(255,225,110,.65)'; ctx.lineWidth = 1.5;
+    ctx.shadowBlur = 14; ctx.shadowColor = '#c8963c'; ctx.stroke(); ctx.restore();
+
+    // Scan micro-sparks
+    if (Math.random() < .3) {
+      const ang = -Math.PI/2 + (Math.random()-.5)*Math.PI*.55;
+      const spd = 2 + Math.random()*5;
+      scanSparks.push({ x:scanX, y:Math.random()*H, vx:Math.cos(ang)*spd, vy:Math.sin(ang)*spd, life:1, dec:.05+Math.random()*.06, sz:1+Math.random()*2, col:EMBER_COLS[Math.floor(Math.random()*EMBER_COLS.length)] });
+    }
+    for (let i = scanSparks.length-1; i>=0; i--) {
+      const p = scanSparks[i];
+      p.x+=p.vx; p.y+=p.vy; p.vy+=.09; p.vx*=.97; p.life-=p.dec;
+      if (p.life<=0){scanSparks.splice(i,1);continue;}
+      ctx.save(); ctx.globalAlpha=p.life; ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(p.x-p.vx*2.5,p.y-p.vy*2.5);
+      ctx.strokeStyle=p.col; ctx.lineWidth=p.sz*p.life; ctx.lineCap='round';
+      ctx.shadowBlur=7; ctx.shadowColor=p.col; ctx.stroke(); ctx.restore();
+    }
+    scanX = (scanX + 1.8) % W;
+
+    // --- EMBERS ---
+    if (Math.random() < .18) embers.push(mkEmber(false));
+    if (embers.length > 50) embers.splice(0, embers.length-50);
+    for (let i = embers.length-1; i>=0; i--) {
+      const e = embers[i];
+      e.x += e.vx + Math.sin(e.t*.8+e.phase)*.3; e.y+=e.vy; e.t+=.016; e.life-=e.dec;
+      if(e.life<=0||e.y<-10){Object.assign(e, mkEmber(false));continue;}
+      ctx.save(); ctx.globalAlpha=e.life*.65;
+      ctx.beginPath(); ctx.arc(e.x,e.y,e.r*e.life,0,Math.PI*2);
+      ctx.fillStyle=e.col; ctx.shadowBlur=7; ctx.shadowColor=e.col; ctx.fill(); ctx.restore();
+    }
+
+    t+=.016; laserHeroRaf=requestAnimationFrame(tick);
+  }
+  tick();
+}
+
+function stopLaserHero() { if (laserHeroRaf) { cancelAnimationFrame(laserHeroRaf); laserHeroRaf = null; } }
+
+// ================================================================
+// CLICK SPARKS (laser side only)
+// ================================================================
+(function() {
+  const cvs = document.getElementById('spark-cvs');
+  cvs.width = window.innerWidth; cvs.height = window.innerHeight;
+  window.addEventListener('resize', () => { cvs.width=window.innerWidth; cvs.height=window.innerHeight; });
+
+  const ctx = cvs.getContext('2d');
+  const sparks = [], burns = [];
+  const COLS = ['#ffd700','#ff8c00','#ff4500','#fff','#ffb347','#c8963c','#ffe066','#ff6600'];
+
+  function burst(x, y) {
+    // Expanding burn rings
+    burns.push({x, y, r:2, maxR:20+Math.random()*14, life:1});
+    for(let i=0;i<3;i++) burns.push({x:x+(Math.random()-.5)*32,y:y+(Math.random()-.5)*32,r:1,maxR:5+Math.random()*10,life:.35+Math.random()*.35});
+
+    // Spark streak particles
+    const n = 110 + Math.floor(Math.random()*60);
+    for(let i=0;i<n;i++){
+      const ang=Math.random()*Math.PI*2, spd=1.5+Math.random()*9;
+      sparks.push({x,y,vx:Math.cos(ang)*spd,vy:Math.sin(ang)*spd-Math.random()*3.5,life:.7+Math.random()*.5,dec:.016+Math.random()*.028,sz:.6+Math.random()*2.8,ci:Math.floor(Math.random()*8),grav:.09+Math.random()*.14});
+    }
+
+    // Screen flash
+    const f=document.createElement('div');
+    Object.assign(f.style,{position:'fixed',inset:0,pointerEvents:'none',zIndex:'9960',background:`radial-gradient(circle at ${x}px ${y}px,rgba(255,200,80,.22) 0%,transparent 38%)`,transition:'opacity .35s'});
+    document.body.appendChild(f);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{f.style.opacity='0';setTimeout(()=>f.remove(),380);}));
+  }
+
+  // Engrave ripple on any clickable element in laser side
+  document.addEventListener('click', e => { if(side==='laser') burst(e.clientX, e.clientY); });
+  document.addEventListener('touchstart', e => { if(side==='laser'){const t=e.touches[0];burst(t.clientX,t.clientY);}},{passive:true});
+
+  function loop() {
+    ctx.clearRect(0,0,cvs.width,cvs.height);
+
+    // Burns
+    for(let i=burns.length-1;i>=0;i--){
+      const b=burns[i];
+      b.r=Math.min(b.r+1.1,b.maxR); b.life-=.009;
+      if(b.life<=0){burns.splice(i,1);continue;}
+      // Outer glow ring
+      ctx.save(); ctx.globalAlpha=b.life*.85;
+      ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(200,150,60,${b.life*.9})`; ctx.lineWidth=1.8;
+      ctx.shadowBlur=16; ctx.shadowColor='#c8963c'; ctx.stroke(); ctx.restore();
+      // Inner radial fill
+      const ig=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);
+      ig.addColorStop(0,`rgba(255,200,80,${b.life*.3})`);
+      ig.addColorStop(.4,`rgba(200,120,30,${b.life*.14})`);
+      ig.addColorStop(1,'transparent');
+      ctx.fillStyle=ig; ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2); ctx.fill();
+    }
+
+    // Sparks
+    for(let i=sparks.length-1;i>=0;i--){
+      const p=sparks[i];
+      p.x+=p.vx; p.y+=p.vy; p.vy+=p.grav; p.vx*=.986; p.life-=p.dec;
+      if(p.life<=0){sparks.splice(i,1);continue;}
+      ctx.save(); ctx.globalAlpha=Math.min(p.life,1);
+      ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(p.x-p.vx*2.5,p.y-p.vy*2.5);
+      ctx.strokeStyle=COLS[p.ci]; ctx.lineWidth=p.sz*p.life; ctx.lineCap='round';
+      ctx.shadowBlur=9; ctx.shadowColor=COLS[p.ci]; ctx.stroke(); ctx.restore();
+    }
+
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+// ================================================================
+// INIT
+// ================================================================
+document.querySelector('.lw').style.display = 'block';
+document.querySelector('.gr').style.display = 'none';
+startGrass();
+startPollen();
+scheduleObserver();
+
+window.addEventListener('resize', () => {
+  if (side === 'lawn') { stopGrass(); startGrass(); stopPollen(); startPollen(); }
+  else { stopLaserHero(); startLaserHero(); }
+});
+</script>
+</body>
+</html>
