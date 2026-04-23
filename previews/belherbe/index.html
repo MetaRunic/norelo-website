@@ -44,8 +44,7 @@ body.laser .nlks a{color:#888;}body.laser .nlks a:hover{color:var(--gp);}
 .hi{max-width:1100px;margin:0 auto;position:relative;z-index:4;width:100%;}
 
 /* LAWN HERO */
-.lhero{background:linear-gradient(155deg,#e8f4ec 0%,#cfe9d8 45%,#b8dfc7 100%);overflow:visible;}
-.lhero::after{content:'';position:absolute;top:-80px;right:-80px;width:480px;height:480px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,235,120,.28) 0%,transparent 68%);}
+.lhero{background:linear-gradient(155deg,#e8f4ec 0%,#cfe9d8 45%,#b8dfc7 100%);}
 #grass-cvs{position:absolute;bottom:0;left:0;width:100%;height:150px;z-index:3;pointer-events:none;}
 .lhero .hbadge{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:rgba(42,96,65,.1);color:var(--lp);border:1px solid rgba(42,96,65,.22);border-radius:20px;padding:6px 16px;margin-bottom:2rem;}
 .lhero h1{font-size:clamp(38px,5.5vw,72px);font-weight:800;line-height:1.04;letter-spacing:-2px;margin-bottom:1.5rem;color:#0d2818;}
@@ -168,20 +167,301 @@ body.laser .nlks a{color:#888;}body.laser .nlks a:hover{color:var(--gp);}
 #pollen-cvs{position:absolute;inset:0;pointer-events:none;z-index:2;width:100%;height:100%;}
 /* BIRD CANVAS — inside hero only */
 #bird-cvs{position:absolute;inset:0;pointer-events:none;z-index:2;width:100%;height:100%;}
+/* SKY CANVAS — sun, rays, clouds */
+#sky-cvs{position:absolute;inset:0;pointer-events:none;z-index:1;width:100%;height:100%;}
+/* BUTTERFLY CANVAS */
+/* Smooth hero content parallax */
+.lhero .hi{transition:transform .12s ease-out;}
 
-/* REVEAL */
+/* ============================================================
+   REDESIGNED SECTIONS — LAWN
+   ============================================================ */
+
+/* Diagonal separator hero → content */
+
+/* ── STATS STRIP ── */
+.l-stats{background:#091a0e;padding:3.5rem 2rem;}
+.l-dirt{
+  height:28px;
+  margin:-3.5rem -2rem 2rem;
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(to bottom,#6b4220 0%,#4a2c0e 50%,#3a2209 100%);
+}
+/* Subtle horizontal soil strata lines */
+.l-dirt::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(to right,transparent 0%,rgba(255,255,255,.04) 20%,transparent 40%,rgba(255,255,255,.03) 65%,transparent 85%),
+    linear-gradient(to right,transparent 10%,rgba(0,0,0,.12) 30%,transparent 55%,rgba(0,0,0,.1) 78%,transparent 95%);
+  background-size:100% 40%,100% 55%;
+  background-position:0 30%,0 65%;
+  background-repeat:no-repeat;
+}
+.l-stats-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+@media(max-width:700px){.l-stats-inner{grid-template-columns:repeat(2,1fr);gap:1px;background:rgba(255,255,255,.06);}.l-stat{background:#091a0e;}}
+.l-stat{display:flex;flex-direction:column;align-items:center;padding:1.5rem 1rem;position:relative;}
+.l-stat+.l-stat::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:1px;background:rgba(255,255,255,.08);}
+@media(max-width:700px){.l-stat+.l-stat::before{display:none;}}
+.l-stat-val{display:flex;align-items:baseline;gap:3px;}
+.l-stat-n{font-size:clamp(38px,4vw,58px);font-weight:900;color:#fff;line-height:1;letter-spacing:-2px;font-variant-numeric:tabular-nums;}
+.l-stat-sym{font-size:clamp(18px,2vw,26px);font-weight:800;color:var(--lm);letter-spacing:-1px;}
+.l-stat-l{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.38);margin-top:.5rem;font-weight:600;}
+
+/* ── LAWN SERVICES ── */
+.l-svc-sec{background:#091a0e;padding:6rem 2rem;}
+.l-svc-head{margin-bottom:4rem;}
+.l-svc-head h2{font-size:clamp(38px,5vw,64px);font-weight:900;color:#fff;line-height:1.0;letter-spacing:-2.5px;margin-top:.5rem;}
+.l-svc-head h2 em{font-style:normal;color:var(--lm);}
+.l-svc-head .stag{color:rgba(255,255,255,.35);}
+.l-svc-head .stag::before{background:rgba(255,255,255,.2);}
+.l-svc-rows{display:flex;flex-direction:column;gap:1px;background:rgba(255,255,255,.06);border-radius:20px;overflow:hidden;}
+.l-svc-row{
+  display:grid;grid-template-columns:64px 56px 1fr 48px;
+  align-items:center;background:#0e2416;gap:0;
+  position:relative;overflow:hidden;transition:background .3s,transform .25s;cursor:default;
+}
+.l-svc-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(to bottom,var(--lm),var(--lp));
+  transform:scaleY(0);transform-origin:bottom;transition:transform .4s cubic-bezier(.34,1.56,.64,1);}
+.l-svc-row:hover::before{transform:scaleY(1);}
+.l-svc-row:hover{background:#122b18;transform:translateX(4px);}
+.l-svc-row:hover .l-svc-num{color:rgba(82,183,136,.2);}
+.l-svc-row:hover .l-svc-arr{opacity:1;transform:translateX(0);}
+.l-svc-row:hover .l-row-ico svg{transform:scale(1.2) rotate(-8deg);color:var(--lm);}
+.l-svc-num{font-size:52px;font-weight:900;color:rgba(255,255,255,.05);padding:1.75rem 0 1.75rem 1.5rem;line-height:1;letter-spacing:-2px;transition:color .3s;font-variant-numeric:tabular-nums;}
+.l-row-ico{padding:0 .5rem;display:flex;align-items:center;justify-content:center;}
+.l-row-ico svg{width:26px;height:26px;color:rgba(255,255,255,.35);transition:transform .4s cubic-bezier(.34,1.56,.64,1),color .3s;}
+.l-svc-txt{padding:1.75rem 1.5rem;}
+.l-svc-txt h3{font-size:19px;font-weight:800;color:#fff;letter-spacing:-.4px;margin-bottom:.4rem;}
+.l-svc-txt p{font-size:13.5px;color:rgba(255,255,255,.42);line-height:1.65;max-width:500px;}
+.l-svc-tags{display:flex;gap:.5rem;margin-top:.7rem;flex-wrap:wrap;}
+.l-svc-tags span{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--lm);border:1px solid rgba(82,183,136,.25);border-radius:20px;padding:3px 10px;}
+.l-svc-arr{font-size:20px;color:var(--lm);padding-right:1.5rem;opacity:0;transform:translateX(-8px);transition:all .3s;}
+@media(max-width:700px){.l-svc-row{grid-template-columns:48px 1fr 36px;}.l-svc-num{font-size:36px;padding:1.25rem 0 1.25rem 1rem;}.l-svc-arr{font-size:16px;}}
+
+/* ── LAWN ZONE ── */
+.l-zone-sec{background:#f4fbf6;padding:6rem 2rem;}
+.l-zone-wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+@media(max-width:700px){.l-zone-wrap{grid-template-columns:1fr;gap:2.5rem;}}
+.l-zone-wrap h2{font-size:clamp(34px,4.5vw,58px);font-weight:900;color:#0d2818;line-height:1.0;letter-spacing:-2px;margin:.5rem 0 1.5rem;}
+.l-zone-wrap h2 em{font-style:normal;color:var(--lp);}
+.l-zone-wrap p{font-size:15px;color:#4a6a58;line-height:1.8;margin-bottom:2rem;}
+.l-cities{display:flex;flex-direction:column;gap:0;border-radius:14px;overflow:hidden;border:1px solid rgba(42,96,65,.1);}
+.l-city{display:flex;align-items:center;gap:.75rem;padding:.7rem 1rem;background:#fff;transition:background .2s,transform .2s;}
+.l-city:hover{background:#f0faf4;transform:translateX(3px);}
+.l-city+.l-city{border-top:1px solid rgba(42,96,65,.06);}
+.l-city-dot{width:7px;height:7px;border-radius:50%;background:var(--lm);flex-shrink:0;}
+.l-city-name{font-size:14px;font-weight:600;color:#0d2818;flex:1;}
+.l-city-dist{font-size:12px;font-weight:700;color:var(--lp);background:rgba(42,96,65,.08);padding:2px 8px;border-radius:10px;}
+.l-zone-svg-wrap{position:relative;display:flex;align-items:center;justify-content:center;}
+.l-zone-svg{width:100%;max-width:320px;filter:drop-shadow(0 8px 32px rgba(42,96,65,.12));}
+.l-zone-svg .zring{animation:zpulse 3s ease-in-out infinite;}
+.l-zone-svg .zring:nth-child(2){animation-delay:.4s;}
+.l-zone-svg .zring:nth-child(3){animation-delay:.8s;}
+@keyframes zpulse{0%,100%{opacity:1}50%{opacity:.6}}
+.l-zone-svg .zcity{font-size:9px;font-weight:700;fill:#4a6a58;}
+.l-zone-svg .zcenter-label{font-size:7.5px;font-weight:800;fill:#fff;text-anchor:middle;}
+
+/* ── LAWN CONTACT ── */
+.l-contact-sec{background:#091a0e;padding:6rem 2rem;position:relative;overflow:hidden;}
+.l-contact-sec::before{content:'PARLONS';position:absolute;right:-2rem;top:50%;transform:translateY(-50%);
+  font-size:clamp(80px,12vw,160px);font-weight:900;color:rgba(255,255,255,.025);
+  letter-spacing:-6px;pointer-events:none;white-space:nowrap;line-height:1;}
+.l-contact-wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1.35fr;gap:5rem;align-items:start;}
+@media(max-width:700px){.l-contact-wrap{grid-template-columns:1fr;gap:2.5rem;}}
+.l-contact-big{font-size:clamp(52px,6vw,88px);font-weight:900;color:#fff;letter-spacing:-3px;line-height:.95;margin:1rem 0 1.5rem;}
+.l-contact-big .l-green{color:var(--lm);}
+.l-contact-sub{font-size:15px;color:rgba(255,255,255,.45);line-height:1.8;max-width:360px;margin-bottom:2.5rem;}
+.l-clink{display:flex;align-items:center;gap:.75rem;text-decoration:none;padding:.65rem 0;font-size:15px;font-weight:500;color:rgba(255,255,255,.65);transition:color .2s;border-bottom:1px solid rgba(255,255,255,.06);}
+.l-clink:last-child{border-bottom:none;}
+.l-clink:hover{color:#fff;}
+.l-clink svg{width:16px;height:16px;opacity:.5;flex-shrink:0;}
+
+/* Floating label form */
+.l-form{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:2.25rem;}
+.l-form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:700px){.l-form-row{grid-template-columns:1fr;}}
+.l-fl{position:relative;margin-bottom:1.25rem;}
+.l-fl input,.l-fl textarea,.l-fl select{
+  width:100%;padding:22px 14px 8px;font-size:14px;font-family:inherit;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+  border-radius:10px;color:#fff;outline:none;appearance:none;
+  transition:border-color .25s,box-shadow .25s,background .25s;
+}
+.l-fl input:focus,.l-fl textarea:focus{
+  border-color:var(--lm);box-shadow:0 0 0 3px rgba(82,183,136,.12);background:rgba(255,255,255,.1);}
+.l-fl select option{background:#0e2416;color:#fff;}
+.l-fl label{
+  position:absolute;left:14px;top:16px;font-size:13px;color:rgba(255,255,255,.38);
+  pointer-events:none;transition:all .22s cubic-bezier(.34,1.56,.64,1);transform-origin:left;
+}
+.l-fl input:focus~label,.l-fl input:not(:placeholder-shown)~label,
+.l-fl textarea:focus~label,.l-fl textarea:not(:placeholder-shown)~label,
+.l-fl select:focus~label,.l-fl.has-val label{
+  top:8px;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--lm);}
+.l-fl textarea{resize:vertical;min-height:100px;}
+.l-fl select{color:rgba(255,255,255,.7);}
+.l-fsub{
+  width:100%;padding:14px;margin-top:.5rem;border-radius:10px;border:none;
+  font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;
+  background:linear-gradient(135deg,var(--lm),var(--lp));color:#fff;
+  position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s;
+  letter-spacing:.3px;
+}
+.l-fsub::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);opacity:0;transition:opacity .25s;}
+.l-fsub:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(42,96,65,.4);}
+.l-fsub:hover::after{opacity:1;}
+
+/* ============================================================
+   REDESIGNED SECTIONS — LASER
+   ============================================================ */
+
+/* ── LASER SERVICES ── */
+.g-svc-sec{background:#070707;padding:6rem 2rem;position:relative;overflow:hidden;}
+.g-svc-sec::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(200,150,60,.04) 39px,rgba(200,150,60,.04) 40px),
+  repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(200,150,60,.04) 39px,rgba(200,150,60,.04) 40px);}
+.g-svc-head{margin-bottom:4rem;}
+.g-svc-head h2{font-size:clamp(38px,5vw,64px);font-weight:900;color:#f0f0f0;line-height:1.0;letter-spacing:-2.5px;margin-top:.5rem;}
+.g-svc-head h2 em{font-style:normal;color:var(--gp);}
+.g-svc-head .stag{color:rgba(255,255,255,.25);}
+.g-svc-head .stag::before{background:var(--gp);}
+.g-grid-4{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5px;background:rgba(200,150,60,.12);border-radius:20px;overflow:hidden;}
+@media(max-width:700px){.g-grid-4{grid-template-columns:1fr;}}
+.g-card{background:#0e0e0e;padding:2.5rem;position:relative;overflow:hidden;transition:background .3s;}
+.g-card::after{content:'';position:absolute;inset:0;opacity:0;transition:opacity .4s;
+  background:radial-gradient(ellipse at 50% 0%,rgba(200,150,60,.08),transparent 70%);}
+.g-card:hover{background:#111;}
+.g-card:hover::after{opacity:1;}
+.g-card:hover .g-card-num{color:rgba(200,150,60,.18);}
+.g-card:hover .gc-ico svg{transform:scale(1.15) rotate(6deg);color:var(--gp);}
+.g-card-num{
+  position:absolute;right:1.5rem;top:1.5rem;
+  font-size:56px;font-weight:900;color:rgba(255,255,255,.04);
+  line-height:1;letter-spacing:-2px;transition:color .3s;font-variant-numeric:tabular-nums;}
+.gc-ico{width:48px;height:48px;border-radius:12px;background:rgba(200,150,60,.1);
+  display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;}
+.gc-ico svg{width:24px;height:24px;color:rgba(200,150,60,.65);transition:transform .4s cubic-bezier(.34,1.56,.64,1),color .3s;}
+.g-card h3{font-size:18px;font-weight:800;color:#f0f0f0;letter-spacing:-.3px;margin-bottom:.5rem;}
+.g-card p{font-size:13.5px;color:rgba(255,255,255,.38);line-height:1.65;}
+.g-card-mat{margin-top:1rem;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(200,150,60,.55);}
+/* Animated gold border on hover */
+.g-card{border:1px solid rgba(200,150,60,.1);}
+.g-card:hover{border-color:rgba(200,150,60,.35);}
+
+/* ── LASER GALLERY ── */
+.g-gal-sec{background:#0a0a0a;padding:6rem 2rem;}
+.g-gal-sec .stag{color:var(--gp);}
+.g-gal-sec .stag::before{background:var(--gp);}
+.g-gal-sec h2{font-size:clamp(26px,3.5vw,42px);font-weight:800;color:#f0f0f0;letter-spacing:-1.5px;margin-bottom:.75rem;}
+.g-gal-sec .ssu{color:#666;}
+.g-gal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5px;background:rgba(200,150,60,.1);border-radius:16px;overflow:hidden;margin-top:2.5rem;}
+@media(max-width:700px){.g-gal-grid{grid-template-columns:repeat(2,1fr);}}
+.g-gal-cell{aspect-ratio:1;background:#111;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:pointer;transition:background .3s;}
+.g-gal-cell:hover{background:#161616;}
+.g-gal-cell::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,150,60,.08),transparent);opacity:0;transition:opacity .4s;}
+.g-gal-cell:hover::before{opacity:1;}
+.g-gal-cell::after{
+  content:'';position:absolute;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(200,150,60,.6),transparent);
+  top:-2px;animation:gsweep 3s ease-in-out infinite;
+}
+.g-gal-cell:nth-child(2)::after{animation-delay:.75s;}
+.g-gal-cell:nth-child(3)::after{animation-delay:1.5s;}
+.g-gal-cell:nth-child(4)::after{animation-delay:2.25s;}
+@keyframes gsweep{0%{top:-2px;opacity:0}40%{opacity:1}100%{top:102%;opacity:0}}
+.g-gal-ph{display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:.3;transition:opacity .3s;}
+.g-gal-cell:hover .g-gal-ph{opacity:.6;}
+.g-gal-ph svg{width:22px;height:22px;color:var(--gp);}
+.g-gal-ph span{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gp);}
+
+/* ── LASER ZONE ── */
+.g-zone-sec{background:#070707;padding:6rem 2rem;position:relative;}
+.g-zone-sec::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at 80% 50%,rgba(200,150,60,.05) 0%,transparent 60%);}
+.g-zone-wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+@media(max-width:700px){.g-zone-wrap{grid-template-columns:1fr;gap:2.5rem;}}
+.g-zone-wrap h2{font-size:clamp(34px,4.5vw,54px);font-weight:900;color:#f0f0f0;line-height:1.0;letter-spacing:-2px;margin:.5rem 0 1.5rem;}
+.g-zone-wrap h2 em{font-style:normal;color:var(--gp);}
+.g-zone-wrap p{font-size:15px;color:rgba(255,255,255,.38);line-height:1.8;margin-bottom:2rem;}
+.g-cities{display:flex;flex-direction:column;gap:0;border-radius:14px;overflow:hidden;border:1px solid rgba(200,150,60,.12);}
+.g-city{display:flex;align-items:center;gap:.75rem;padding:.65rem 1rem;background:#0e0e0e;transition:background .2s,transform .2s;}
+.g-city:hover{background:#111;transform:translateX(3px);}
+.g-city+.g-city{border-top:1px solid rgba(200,150,60,.07);}
+.g-city-dot{width:6px;height:6px;border-radius:50%;background:var(--gp);flex-shrink:0;}
+.g-city-name{font-size:14px;font-weight:600;color:rgba(255,255,255,.8);flex:1;}
+.g-city-tag{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gp);opacity:.7;}
+.g-zone-box{border:1px solid rgba(200,150,60,.15);border-radius:16px;padding:2.5rem;background:#0e0e0e;display:flex;flex-direction:column;gap:1.25rem;}
+.g-zone-opt{display:flex;align-items:flex-start;gap:1rem;}
+.g-zone-opt-ic{width:36px;height:36px;border-radius:8px;background:rgba(200,150,60,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.g-zone-opt-ic svg{width:18px;height:18px;color:var(--gp);}
+.g-zone-opt-txt h4{font-size:14px;font-weight:700;color:#f0f0f0;margin-bottom:.2rem;}
+.g-zone-opt-txt p{font-size:13px;color:rgba(255,255,255,.38);line-height:1.6;}
+
+/* ── LASER CONTACT ── */
+.g-contact-sec{background:#050505;padding:6rem 2rem;position:relative;overflow:hidden;}
+.g-contact-sec::before{content:'GRAVER';position:absolute;right:-1rem;top:50%;transform:translateY(-50%);
+  font-size:clamp(70px,11vw,150px);font-weight:900;color:rgba(200,150,60,.025);
+  letter-spacing:-4px;pointer-events:none;white-space:nowrap;}
+.g-contact-wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1.35fr;gap:5rem;align-items:start;}
+@media(max-width:700px){.g-contact-wrap{grid-template-columns:1fr;gap:2.5rem;}}
+.g-contact-big{font-size:clamp(48px,6vw,82px);font-weight:900;color:#f0f0f0;letter-spacing:-3px;line-height:.95;margin:1rem 0 1.5rem;}
+.g-contact-big .g-gold{color:var(--gp);}
+.g-contact-sub{font-size:15px;color:rgba(255,255,255,.35);line-height:1.8;max-width:340px;margin-bottom:2.5rem;}
+.g-clink{display:flex;align-items:center;gap:.75rem;text-decoration:none;padding:.65rem 0;font-size:14px;font-weight:500;color:rgba(255,255,255,.45);transition:color .2s;border-bottom:1px solid rgba(255,255,255,.05);}
+.g-clink:last-child{border-bottom:none;}
+.g-clink:hover{color:var(--gp);}
+.g-clink svg{width:15px;height:15px;opacity:.4;flex-shrink:0;}
+.g-form{background:rgba(255,255,255,.03);border:1px solid rgba(200,150,60,.14);border-radius:20px;padding:2.25rem;}
+.g-fl{position:relative;margin-bottom:1.25rem;}
+.g-fl input,.g-fl textarea,.g-fl select{
+  width:100%;padding:22px 14px 8px;font-size:14px;font-family:inherit;
+  background:rgba(255,255,255,.05);border:1px solid rgba(200,150,60,.15);
+  border-radius:10px;color:#f0f0f0;outline:none;appearance:none;
+  transition:border-color .25s,box-shadow .25s,background .25s;
+}
+.g-fl input:focus,.g-fl textarea:focus{
+  border-color:var(--gp);box-shadow:0 0 0 3px rgba(200,150,60,.1);background:rgba(255,255,255,.07);}
+.g-fl select option{background:#111;color:#f0f0f0;}
+.g-fl label{
+  position:absolute;left:14px;top:16px;font-size:13px;color:rgba(255,255,255,.28);
+  pointer-events:none;transition:all .22s cubic-bezier(.34,1.56,.64,1);transform-origin:left;
+}
+.g-fl input:focus~label,.g-fl input:not(:placeholder-shown)~label,
+.g-fl textarea:focus~label,.g-fl textarea:not(:placeholder-shown)~label,
+.g-fl select:focus~label,.g-fl.has-val label{
+  top:8px;font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--gp);}
+.g-fl textarea{resize:vertical;min-height:100px;}
+.g-fl-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:700px){.g-fl-row{grid-template-columns:1fr;}}
+.g-fsub{
+  width:100%;padding:14px;margin-top:.5rem;border-radius:10px;border:none;
+  font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;
+  background:linear-gradient(135deg,rgba(200,150,60,.9),rgba(160,110,30,.9));color:#0d0d0d;
+  position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s;letter-spacing:.3px;
+}
+.g-fsub:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(200,150,60,.35);}
+
+/* ── FOOTER UPGRADE ── */
+.site-footer{background:#060f06;padding:3rem 2rem;text-align:center;border-top:1px solid rgba(255,255,255,.05);}
+body.laser .site-footer{background:#040404;border-color:rgba(200,150,60,.08);}
+.site-footer p{font-size:13px;color:rgba(255,255,255,.22);margin-bottom:.35rem;}
+.site-footer a{font-weight:700;text-decoration:none;}
+body.lawn .site-footer a{color:var(--lm);}
+body.laser .site-footer a{color:var(--gp);}
+.site-footer-logo{font-size:22px;font-weight:900;letter-spacing:-.8px;margin-bottom:1rem;}
+body.lawn .site-footer-logo{color:#fff;}
+body.laser .site-footer-logo{color:#f0f0f0;}
+.site-footer-logo em{font-style:normal;}
+body.lawn .site-footer-logo em{color:var(--lm);}
+body.laser .site-footer-logo em{color:var(--gp);}
 .rv{opacity:0;transform:translateY(28px);transition:opacity .7s,transform .7s;}
 .rv.on{opacity:1;transform:none;}
 .d1{transition-delay:.08s;}.d2{transition-delay:.17s;}.d3{transition-delay:.26s;}.d4{transition-delay:.35s;}
 
 /* FOOTER */
-footer{text-align:center;padding:2rem;font-size:13px;border-top:1px solid;}
-body.lawn footer{background:var(--lb);color:#64748b;border-color:#c3dcca;}
-body.laser footer{background:#090909;color:#555;border-color:rgba(200,150,60,.1);}
-footer p+p{margin-top:.35rem;}
-footer a{font-weight:600;text-decoration:none;}
-body.lawn footer a{color:var(--lp);}.body.laser footer a{color:var(--gp);}
-body.laser footer a{color:var(--gp);}
+
 
 @media(max-width:700px){
   .hero{padding:4rem 1.25rem 4rem;}
@@ -300,9 +580,10 @@ body.laser #spark-cvs{display:block;}
 <!-- ===== LAWN ===== -->
 <div class="lw">
   <section class="hero lhero">
-    <canvas id="bird-cvs"></canvas>
+    <canvas id="sky-cvs"></canvas>
     <canvas id="pollen-cvs"></canvas>
-    <div class="hi" style="z-index:4;position:relative;">
+    <canvas id="leaf-cvs" style="position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;"></canvas>
+    <div class="hi" id="lhero-hi" style="z-index:4;position:relative;">
       <div class="hbadge ha"><svg width="12" height="12" viewBox="0 0 40 40"><use href="#i-weed"/></svg>Saint-Lazare &amp; environs</div>
       <h1 class="ha">Un gazon impeccable,<span>sans vous en occuper.</span></h1>
       <p class="hsub ha">Tonte, désherbage, taille de haie et travaux extérieurs. Fiable, soigné, local.</p>
@@ -311,60 +592,149 @@ body.laser #spark-cvs{display:block;}
     <canvas id="grass-cvs"></canvas>
   </section>
 
-  <section class="sec ls" id="svc">
+  <!-- STATS STRIP -->
+  <div class="l-stats rv">
+    <div class="l-dirt"></div>
+    <div class="l-stats-inner">
+      <div class="l-stat"><div class="l-stat-val"><span class="l-stat-n" data-target="500">0</span><span class="l-stat-sym">$+</span></div><span class="l-stat-l">Prix de départ</span></div>
+      <div class="l-stat"><div class="l-stat-val"><span class="l-stat-n" data-target="24">0</span><span class="l-stat-sym">h</span></div><span class="l-stat-l">Délai de réponse</span></div>
+      <div class="l-stat"><div class="l-stat-val"><span class="l-stat-n" data-target="50">0</span><span class="l-stat-sym">km</span></div><span class="l-stat-l">Rayon de service</span></div>
+      <div class="l-stat"><div class="l-stat-val"><span class="l-stat-n" data-target="100">0</span><span class="l-stat-sym">%</span></div><span class="l-stat-l">Satisfaction client</span></div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="l-svc-sec" id="svc">
     <div class="si">
-      <div class="stag rv">Services</div>
-      <h2 class="rv d1">Ce qu'on fait pour vous</h2>
-      <p class="ssu rv d2">Des services extérieurs complets, adaptés à votre propriété et votre budget.</p>
-      <div class="svgrid">
-        <div class="svc rv d1"><div class="ico"><svg viewBox="0 0 40 40"><use href="#i-mow"/></svg></div><h3>Tonte de gazon</h3><p>Coupe régulière ou ponctuelle. Contrat saisonnier disponible pour la tranquillité d'esprit toute la saison.</p></div>
-        <div class="svc rv d2"><div class="ico"><svg viewBox="0 0 40 40"><use href="#i-weed"/></svg></div><h3>Désherbage</h3><p>Élimination des mauvaises herbes pour un gazon propre et uniforme du printemps à l'automne.</p></div>
-        <div class="svc rv d3"><div class="ico"><svg viewBox="0 0 40 40"><use href="#i-scissors"/></svg></div><h3>Taille de haie</h3><p>Haies, arbustes et bordures taillés avec précision pour une apparence soignée et professionnelle.</p></div>
-        <div class="svc rv d4"><div class="ico"><svg viewBox="0 0 40 40"><use href="#i-shovel"/></svg></div><h3>Travaux extérieurs</h3><p>Tout autre travail d'entretien selon vos besoins. Ponctuel ou récurrent, on s'adapte.</p></div>
+      <div class="l-svc-head rv">
+        <div class="stag">Services</div>
+        <h2>Ce qu'on fait<br><em>pour vous.</em></h2>
+      </div>
+      <div class="l-svc-rows">
+        <div class="l-svc-row rv d1">
+          <span class="l-svc-num">01</span>
+          <div class="l-row-ico"><svg viewBox="0 0 40 40"><use href="#i-mow"/></svg></div>
+          <div class="l-svc-txt">
+            <h3>Tonte de gazon</h3>
+            <p>Coupe régulière ou ponctuelle. Contrat saisonnier disponible pour la tranquillité d'esprit toute la saison.</p>
+            <div class="l-svc-tags"><span>Saisonnier</span><span>Ponctuel</span></div>
+          </div>
+          <div class="l-svc-arr">→</div>
+        </div>
+        <div class="l-svc-row rv d2">
+          <span class="l-svc-num">02</span>
+          <div class="l-row-ico"><svg viewBox="0 0 40 40"><use href="#i-weed"/></svg></div>
+          <div class="l-svc-txt">
+            <h3>Désherbage</h3>
+            <p>Élimination des mauvaises herbes pour un gazon propre et uniforme du printemps à l'automne.</p>
+            <div class="l-svc-tags"><span>Printemps</span><span>Été</span><span>Automne</span></div>
+          </div>
+          <div class="l-svc-arr">→</div>
+        </div>
+        <div class="l-svc-row rv d3">
+          <span class="l-svc-num">03</span>
+          <div class="l-row-ico"><svg viewBox="0 0 40 40"><use href="#i-scissors"/></svg></div>
+          <div class="l-svc-txt">
+            <h3>Taille de haie</h3>
+            <p>Haies, arbustes et bordures taillés avec précision pour une apparence soignée et professionnelle.</p>
+            <div class="l-svc-tags"><span>Haies</span><span>Arbustes</span><span>Bordures</span></div>
+          </div>
+          <div class="l-svc-arr">→</div>
+        </div>
+        <div class="l-svc-row rv d4">
+          <span class="l-svc-num">04</span>
+          <div class="l-row-ico"><svg viewBox="0 0 40 40"><use href="#i-shovel"/></svg></div>
+          <div class="l-svc-txt">
+            <h3>Travaux extérieurs</h3>
+            <p>Tout autre travail d'entretien selon vos besoins. Ponctuel ou récurrent, on s'adapte à votre réalité.</p>
+            <div class="l-svc-tags"><span>Sur mesure</span><span>Flexible</span></div>
+          </div>
+          <div class="l-svc-arr">→</div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="sec ls alt" id="zone">
-    <div class="si">
-      <div class="stag rv">Zone desservie</div>
-      <h2 class="rv d1">On se déplace chez vous</h2>
-      <div class="zwrap rv d2">
-        <div>
-          <p class="ssu" style="margin-bottom:1.5rem;">Basé à Saint-Lazare, on couvre les municipalités voisines. Pas certain qu'on se rende chez vous? Appelez-nous.</p>
-          <ul class="zlist">
-            <li><span class="zdot"></span>Saint-Lazare</li><li><span class="zdot"></span>Hudson</li>
-            <li><span class="zdot"></span>Vaudreuil-Dorion</li><li><span class="zdot"></span>Pincourt</li>
-            <li><span class="zdot"></span>Les Cèdres</li><li><span class="zdot"></span>Rigaud et environs</li>
-          </ul>
+  <!-- ZONE -->
+  <section class="l-zone-sec" id="zone">
+    <div class="l-zone-wrap">
+      <div class="rv">
+        <div class="stag" style="color:var(--lp)">Zone desservie</div>
+        <h2>On couvre<br>toute la<br><em>région.</em></h2>
+        <p>Basé à Saint-Lazare, on se déplace dans toutes les municipalités voisines. Pas certain? Appelez-nous.</p>
+        <div class="l-cities">
+          <div class="l-city"><span class="l-city-dot"></span><span class="l-city-name">Saint-Lazare</span><span class="l-city-dist">Base</span></div>
+          <div class="l-city"><span class="l-city-dot"></span><span class="l-city-name">Hudson</span><span class="l-city-dist">~8 min</span></div>
+          <div class="l-city"><span class="l-city-dot"></span><span class="l-city-name">Vaudreuil-Dorion</span><span class="l-city-dist">~15 min</span></div>
+          <div class="l-city"><span class="l-city-dot"></span><span class="l-city-name">Pincourt</span><span class="l-city-dist">~18 min</span></div>
+          <div class="l-city"><span class="l-city-dot"></span><span class="l-city-name">Les Cèdres</span><span class="l-city-dist">~12 min</span></div>
+          <div class="l-city"><span class="l-city-dot"></span><span class="l-city-name">Rigaud</span><span class="l-city-dist">~25 min</span></div>
         </div>
-        <div class="zmap"><svg class="zpico" width="40" height="40" viewBox="0 0 40 40" style="color:var(--lp)"><use href="#i-loc"/></svg><span>Carte à intégrer</span></div>
+      </div>
+      <div class="l-zone-svg-wrap rv d2">
+        <svg class="l-zone-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="rg1" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="rgba(82,183,136,.18)"/>
+              <stop offset="100%" stop-color="rgba(82,183,136,0)"/>
+            </radialGradient>
+          </defs>
+          <circle cx="150" cy="150" r="145" fill="url(#rg1)"/>
+          <circle class="zring" cx="150" cy="150" r="56" fill="none" stroke="#52b788" stroke-width="1.2" stroke-dasharray="5 5" opacity=".35"/>
+          <circle class="zring" cx="150" cy="150" r="98" fill="none" stroke="#52b788" stroke-width="1" stroke-dasharray="5 8" opacity=".2"/>
+          <circle class="zring" cx="150" cy="150" r="140" fill="none" stroke="#52b788" stroke-width=".8" stroke-dasharray="4 10" opacity=".1"/>
+          <!-- Saint-Lazare center -->
+          <circle cx="150" cy="150" r="9" fill="#2a6041"/>
+          <circle cx="150" cy="150" r="5" fill="#52b788"/>
+          <text x="150" y="175" text-anchor="middle" font-size="8.5" font-weight="800" fill="#2a6041" font-family="system-ui">Saint-Lazare</text>
+          <!-- City dots -->
+          <circle cx="98" cy="128" r="4" fill="#52b788" opacity=".7"/>
+          <text x="78" y="123" text-anchor="middle" font-size="7.5" fill="#4a6a58" font-family="system-ui" font-weight="700">Hudson</text>
+          <circle cx="192" cy="178" r="4" fill="#52b788" opacity=".7"/>
+          <text x="215" y="183" text-anchor="start" font-size="7.5" fill="#4a6a58" font-family="system-ui" font-weight="700">Vaudreuil</text>
+          <circle cx="175" cy="98" r="4" fill="#52b788" opacity=".7"/>
+          <text x="180" y="92" font-size="7.5" fill="#4a6a58" font-family="system-ui" font-weight="700">Pincourt</text>
+          <circle cx="80" cy="190" r="4" fill="#52b788" opacity=".5"/>
+          <text x="60" y="205" font-size="7.5" fill="#4a6a58" font-family="system-ui" font-weight="700">Les Cèdres</text>
+          <circle cx="52" cy="148" r="4" fill="#52b788" opacity=".4"/>
+          <text x="30" y="143" font-size="7.5" fill="#4a6a58" font-family="system-ui" font-weight="700">Rigaud</text>
+        </svg>
       </div>
     </div>
   </section>
 
-  <section class="sec ls" id="contact">
-    <div class="si">
-      <div class="stag rv">Contact</div>
-      <h2 class="rv d1">Obtenez votre soumission</h2>
-      <div class="cgrid rv d2">
-        <div class="cinfo">
-          <p>Décrivez votre projet et on vous revient rapidement avec un prix. Contrat saisonnier ou service ponctuel, on s'adapte.</p>
-          <a class="cdet" href="tel:5148844710"><svg viewBox="0 0 40 40"><use href="#i-phone"/></svg>514-884-4710</a>
-          <a class="cdet" href="mailto:bel-herbe@hotmail.com"><svg viewBox="0 0 40 40"><use href="#i-mail"/></svg>bel-herbe@hotmail.com</a>
-          <a class="cdet" href="mailto:ericjubi@hotmail.com"><svg viewBox="0 0 40 40"><use href="#i-mail"/></svg>ericjubi@hotmail.com</a>
-          <span class="cdet"><svg viewBox="0 0 40 40"><use href="#i-loc"/></svg>Saint-Lazare, Québec</span>
-        </div>
-        <div class="cform">
-          <form action="https://formspree.io/f/REMPLACER_ICI" method="POST">
-            <input type="hidden" name="_subject" value="Demande Gazon"/>
-            <div class="frow"><div class="fld"><label>Prénom</label><input type="text" name="prenom" required/></div><div class="fld"><label>Nom</label><input type="text" name="nom" required/></div></div>
-            <div class="fld"><label>Téléphone</label><input type="tel" name="tel"/></div>
-            <div class="fld"><label>Service</label><select name="service"><option>Tonte de gazon</option><option>Désherbage</option><option>Taille de haie</option><option>Travaux extérieurs</option><option>Contrat saisonnier</option><option>Autre</option></select></div>
-            <div class="fld"><label>Message</label><textarea name="msg" placeholder="Superficie, fréquence souhaitée..."></textarea></div>
-            <button class="fsub" type="submit">Envoyer ma demande</button>
-          </form>
-        </div>
+  <!-- CONTACT -->
+  <section class="l-contact-sec" id="contact">
+    <div class="l-contact-wrap">
+      <div class="rv">
+        <div class="stag" style="color:rgba(255,255,255,.3);margin-bottom:.75rem;">Contact</div>
+        <div class="l-contact-big">Parlons<span class="l-green">.</span></div>
+        <p class="l-contact-sub">Décrivez votre projet et on vous revient sous 24h avec un prix honnête. Contrat ou ponctuel, on s'adapte.</p>
+        <a class="l-clink" href="tel:5148844710"><svg viewBox="0 0 40 40"><use href="#i-phone"/></svg>514-884-4710</a>
+        <a class="l-clink" href="mailto:bel-herbe@hotmail.com"><svg viewBox="0 0 40 40"><use href="#i-mail"/></svg>bel-herbe@hotmail.com</a>
+        <a class="l-clink" href="mailto:ericjubi@hotmail.com"><svg viewBox="0 0 40 40"><use href="#i-mail"/></svg>ericjubi@hotmail.com</a>
+        <span class="l-clink"><svg viewBox="0 0 40 40"><use href="#i-loc"/></svg>Saint-Lazare, Québec</span>
+      </div>
+      <div class="rv d2">
+        <form class="l-form" action="https://formspree.io/f/REMPLACER_ICI" method="POST">
+          <input type="hidden" name="_subject" value="Demande Gazon"/>
+          <div class="l-form-row">
+            <div class="l-fl"><input type="text" name="prenom" placeholder=" " required/><label>Prénom</label></div>
+            <div class="l-fl"><input type="text" name="nom" placeholder=" " required/><label>Nom</label></div>
+          </div>
+          <div class="l-fl"><input type="tel" name="tel" placeholder=" "/><label>Téléphone</label></div>
+          <div class="l-fl">
+            <select name="service" onchange="this.closest('.l-fl').classList.toggle('has-val',this.selectedIndex>0)">
+              <option value="" disabled selected></option>
+              <option>Tonte de gazon</option><option>Désherbage</option>
+              <option>Taille de haie</option><option>Travaux extérieurs</option>
+              <option>Contrat saisonnier</option><option>Autre</option>
+            </select>
+            <label>Service souhaité</label>
+          </div>
+          <div class="l-fl"><textarea name="msg" placeholder=" "></textarea><label>Décrivez votre besoin...</label></div>
+          <button class="l-fsub" type="submit">Envoyer ma demande →</button>
+        </form>
       </div>
     </div>
   </section>
@@ -382,79 +752,131 @@ body.laser #spark-cvs{display:block;}
     </div>
   </section>
 
-  <section class="sec gs" id="svc-laser">
+  <!-- LASER SERVICES -->
+  <section class="g-svc-sec" id="svc-laser">
     <div class="si">
-      <div class="stag rv">Services</div>
-      <h2 class="rv d1">Ce qu'on peut graver</h2>
-      <p class="ssu rv d2">Précision, durabilité et personnalisation pour chaque projet, petite ou grande quantité.</p>
-      <div class="svgrid">
-        <div class="svc rv d1"><div class="ico"><svg viewBox="0 0 40 40"><use href="#i-gift"/></svg></div><h3>Cadeaux personnalisés</h3><p>Verres, planches à découper, ardoises, porte-clés. Un cadeau unique qui marque les esprits.</p></div>
-        <div class="svc rv d2"><div class="ico"><svg viewBox="0 0 40 40"><use href="#i-badge"/></svg></div><h3>Objets promotionnels</h3><p>Votre logo gravé sur des articles de qualité pour renforcer votre image de marque.</p></div>
-        <div class="svc rv d3"><div class="ico"><svg viewBox="0 0 40 40"><use href="#i-trophy"/></svg></div><h3>Trophées &amp; médailles</h3><p>Récompensez vos équipes et vos gagnants avec des pièces durables et personnalisées.</p></div>
-        <div class="svc rv d4"><div class="ico"><svg viewBox="0 0 40 40"><use href="#i-layers"/></svg></div><h3>Matériaux variés</h3><p>Bois, ardoise, métal, verre, cuir, acrylique et plus. Apportez le vôtre ou choisissez parmi nos options.</p></div>
+      <div class="g-svc-head rv">
+        <div class="stag">Services</div>
+        <h2>Précision<br><em>absolue.</em></h2>
+      </div>
+      <div class="g-grid-4">
+        <div class="g-card rv d1">
+          <span class="g-card-num">01</span>
+          <div class="gc-ico"><svg viewBox="0 0 40 40"><use href="#i-gift"/></svg></div>
+          <h3>Cadeaux personnalisés</h3>
+          <p>Verres, planches, ardoises, porte-clés. Un cadeau unique qui marque les esprits et dure dans le temps.</p>
+          <div class="g-card-mat">Bois · Ardoise · Verre · Métal</div>
+        </div>
+        <div class="g-card rv d2">
+          <span class="g-card-num">02</span>
+          <div class="gc-ico"><svg viewBox="0 0 40 40"><use href="#i-badge"/></svg></div>
+          <h3>Objets promotionnels</h3>
+          <p>Votre logo gravé sur des articles de qualité. Renforcez votre image de marque avec du matériel distinctif.</p>
+          <div class="g-card-mat">Logo · Branding · Quantités</div>
+        </div>
+        <div class="g-card rv d3">
+          <span class="g-card-num">03</span>
+          <div class="gc-ico"><svg viewBox="0 0 40 40"><use href="#i-trophy"/></svg></div>
+          <h3>Trophées &amp; médailles</h3>
+          <p>Récompensez vos équipes et vos gagnants avec des pièces durables et entièrement personnalisées.</p>
+          <div class="g-card-mat">Trophées · Plaques · Médailles</div>
+        </div>
+        <div class="g-card rv d4">
+          <span class="g-card-num">04</span>
+          <div class="gc-ico"><svg viewBox="0 0 40 40"><use href="#i-layers"/></svg></div>
+          <h3>Matériaux variés</h3>
+          <p>Bois, ardoise, métal, verre, cuir, acrylique et plus. Apportez le vôtre ou choisissez parmi nos options.</p>
+          <div class="g-card-mat">Apportez le vôtre · On s'adapte</div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="sec gs alt">
+  <!-- LASER GALLERY -->
+  <section class="g-gal-sec">
     <div class="si">
       <div class="stag rv">Réalisations</div>
       <h2 class="rv d1">Quelques exemples</h2>
-      <p class="ssu rv d2">Chaque pièce est unique. Voici un aperçu de ce qu'on peut créer pour vous.</p>
-      <div class="gal rv d2">
-        <div class="gal-item">Photo à ajouter</div><div class="gal-item">Photo à ajouter</div>
-        <div class="gal-item">Photo à ajouter</div><div class="gal-item">Photo à ajouter</div>
+      <p class="ssu rv d2" style="color:#555;">Chaque pièce est unique. Photos à venir — contactez-nous pour voir nos réalisations.</p>
+      <div class="g-gal-grid rv d2">
+        <div class="g-gal-cell"><div class="g-gal-ph"><svg viewBox="0 0 40 40"><use href="#i-layers"/></svg><span>Photo à ajouter</span></div></div>
+        <div class="g-gal-cell"><div class="g-gal-ph"><svg viewBox="0 0 40 40"><use href="#i-gift"/></svg><span>Photo à ajouter</span></div></div>
+        <div class="g-gal-cell"><div class="g-gal-ph"><svg viewBox="0 0 40 40"><use href="#i-trophy"/></svg><span>Photo à ajouter</span></div></div>
+        <div class="g-gal-cell"><div class="g-gal-ph"><svg viewBox="0 0 40 40"><use href="#i-badge"/></svg><span>Photo à ajouter</span></div></div>
       </div>
     </div>
   </section>
 
-  <section class="sec gs" id="zone-laser">
-    <div class="si">
-      <div class="stag rv">Zone de service</div>
-      <h2 class="rv d1">Livraison ou ramassage</h2>
-      <div class="zwrap rv d2">
-        <div>
-          <p class="ssu" style="margin-bottom:1.5rem;">Basé à Saint-Lazare. Ramassage sur place, livraison locale disponible, ou envoi postal.</p>
-          <ul class="zlist">
-            <li><span class="zdot"></span>Saint-Lazare</li><li><span class="zdot"></span>Hudson</li>
-            <li><span class="zdot"></span>Vaudreuil-Dorion</li><li><span class="zdot"></span>Pincourt</li>
-            <li><span class="zdot"></span>Les Cèdres</li><li><span class="zdot"></span>Envoi postal disponible</li>
-          </ul>
+  <!-- LASER ZONE -->
+  <section class="g-zone-sec" id="zone-laser">
+    <div class="g-zone-wrap">
+      <div class="rv">
+        <div class="stag" style="color:rgba(200,150,60,.6)">Zone de service</div>
+        <h2>On livre,<br>on cueille,<br><em>on envoie.</em></h2>
+        <p>Basé à Saint-Lazare. Ramassage sur place, livraison locale ou envoi postal partout au Québec.</p>
+        <div class="g-cities">
+          <div class="g-city"><span class="g-city-dot"></span><span class="g-city-name">Saint-Lazare</span><span class="g-city-tag">Base</span></div>
+          <div class="g-city"><span class="g-city-dot"></span><span class="g-city-name">Hudson · Vaudreuil</span><span class="g-city-tag">Livraison</span></div>
+          <div class="g-city"><span class="g-city-dot"></span><span class="g-city-name">Grand Montréal</span><span class="g-city-tag">Livraison</span></div>
+          <div class="g-city"><span class="g-city-dot"></span><span class="g-city-name">Partout au Québec</span><span class="g-city-tag">Envoi postal</span></div>
         </div>
-        <div class="zmap"><svg class="zpico" width="40" height="40" viewBox="0 0 40 40" style="color:var(--gp)"><use href="#i-loc"/></svg><span>Carte à intégrer</span></div>
+      </div>
+      <div class="g-zone-box rv d2">
+        <div class="g-zone-opt">
+          <div class="g-zone-opt-ic"><svg viewBox="0 0 40 40"><use href="#i-loc"/></svg></div>
+          <div class="g-zone-opt-txt"><h4>Ramassage sur place</h4><p>Venez déposer votre objet directement à Saint-Lazare. Prêt en quelques jours.</p></div>
+        </div>
+        <div class="g-zone-opt">
+          <div class="g-zone-opt-ic"><svg viewBox="0 0 40 40"><use href="#i-shovel"/></svg></div>
+          <div class="g-zone-opt-txt"><h4>Livraison locale</h4><p>On se déplace dans les municipalités voisines pour la livraison de vos commandes.</p></div>
+        </div>
+        <div class="g-zone-opt">
+          <div class="g-zone-opt-ic"><svg viewBox="0 0 40 40"><use href="#i-mail"/></svg></div>
+          <div class="g-zone-opt-txt"><h4>Envoi postal</h4><p>Pour les commandes à distance, on expédie partout au Québec en toute sécurité.</p></div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="sec gs alt" id="contact-laser">
-    <div class="si">
-      <div class="stag rv">Contact</div>
-      <h2 class="rv d1">Faites-nous part de votre projet</h2>
-      <div class="cgrid rv d2">
-        <div class="cinfo">
-          <p>Dites-nous ce que vous voulez graver, sur quel matériau et en quelle quantité. On vous revient rapidement.</p>
-          <a class="cdet" href="tel:5148844710"><svg viewBox="0 0 40 40"><use href="#i-phone"/></svg>514-884-4710</a>
-          <a class="cdet" href="mailto:bel-herbe@hotmail.com"><svg viewBox="0 0 40 40"><use href="#i-mail"/></svg>bel-herbe@hotmail.com</a>
-          <a class="cdet" href="mailto:ericjubi@hotmail.com"><svg viewBox="0 0 40 40"><use href="#i-mail"/></svg>ericjubi@hotmail.com</a>
-        </div>
-        <div class="cform">
-          <form action="https://formspree.io/f/REMPLACER_ICI" method="POST">
-            <input type="hidden" name="_subject" value="Demande Gravure laser"/>
-            <div class="frow"><div class="fld"><label>Prénom</label><input type="text" name="prenom" required/></div><div class="fld"><label>Nom</label><input type="text" name="nom" required/></div></div>
-            <div class="fld"><label>Téléphone ou courriel</label><input type="text" name="contact" required/></div>
-            <div class="fld"><label>Type de projet</label><select name="type"><option>Cadeau personnalisé</option><option>Objet promotionnel</option><option>Trophée / Médaille</option><option>Commande en lot</option><option>Autre</option></select></div>
-            <div class="fld"><label>Description</label><textarea name="msg" placeholder="Matériau, quantité, délai, logo disponible..."></textarea></div>
-            <button class="fsub" type="submit">Envoyer mon projet</button>
-          </form>
-        </div>
+  <!-- LASER CONTACT -->
+  <section class="g-contact-sec" id="contact-laser">
+    <div class="g-contact-wrap">
+      <div class="rv">
+        <div class="stag" style="color:rgba(200,150,60,.4);margin-bottom:.75rem;">Contact</div>
+        <div class="g-contact-big">Votre<br>projet,<br><span class="g-gold">gravé.</span></div>
+        <p class="g-contact-sub">Dites-nous ce que vous voulez graver, sur quel matériau et en quelle quantité. On vous revient rapidement.</p>
+        <a class="g-clink" href="tel:5148844710"><svg viewBox="0 0 40 40"><use href="#i-phone"/></svg>514-884-4710</a>
+        <a class="g-clink" href="mailto:bel-herbe@hotmail.com"><svg viewBox="0 0 40 40"><use href="#i-mail"/></svg>bel-herbe@hotmail.com</a>
+        <a class="g-clink" href="mailto:ericjubi@hotmail.com"><svg viewBox="0 0 40 40"><use href="#i-mail"/></svg>ericjubi@hotmail.com</a>
+      </div>
+      <div class="rv d2">
+        <form class="g-form" action="https://formspree.io/f/REMPLACER_ICI" method="POST">
+          <input type="hidden" name="_subject" value="Demande Gravure laser"/>
+          <div class="g-fl-row">
+            <div class="g-fl"><input type="text" name="prenom" placeholder=" " required/><label>Prénom</label></div>
+            <div class="g-fl"><input type="text" name="nom" placeholder=" " required/><label>Nom</label></div>
+          </div>
+          <div class="g-fl"><input type="text" name="contact" placeholder=" " required/><label>Téléphone ou courriel</label></div>
+          <div class="g-fl">
+            <select name="type" onchange="this.closest('.g-fl').classList.toggle('has-val',this.selectedIndex>0)">
+              <option value="" disabled selected></option>
+              <option>Cadeau personnalisé</option><option>Objet promotionnel</option>
+              <option>Trophée / Médaille</option><option>Commande en lot</option><option>Autre</option>
+            </select>
+            <label>Type de projet</label>
+          </div>
+          <div class="g-fl"><textarea name="msg" placeholder=" "></textarea><label>Matériau, quantité, délai, logo disponible...</label></div>
+          <button class="g-fsub" type="submit">Envoyer mon projet →</button>
+        </form>
       </div>
     </div>
   </section>
 </div>
 
-<footer>
-  <p>© 2026 Bel'herbe · Eric Jubinville · Saint-Lazare, Québec · <a href="tel:5148844710">514-884-4710</a></p>
-  <p>Site web réalisé par <a href="https://norelo.ca">Norelo</a></p>
+<footer class="site-footer">
+  <div class="site-footer-logo">Bel<em>'herbe</em></div>
+  <p>Eric Jubinville · Saint-Lazare, Québec · <a href="tel:5148844710">514-884-4710</a></p>
+  <p>© 2026 Bel'herbe · Site web réalisé par <a href="https://norelo.ca">Norelo</a></p>
 </footer>
 
 <script>
@@ -470,8 +892,8 @@ function setSide(s) {
   document.querySelector('.gr').style.display = s === 'laser' ? 'block' : 'none';
   window.scrollTo({top:0, behavior:'smooth'});
   scheduleObserver();
-  if (s === 'lawn') { stopLaserHero(); startGrass(); startPollen(); startBirds(); }
-  else { stopGrass(); stopPollen(); stopBirds(); startLaserHero(); }
+  if (s === 'lawn') { stopLaserHero(); startSky(); startGrass(); startPollen(); startLeaves(); }
+  else { stopSky(); stopGrass(); stopPollen(); stopLeaves(); startLaserHero(); }
 }
 
 // ================================================================
@@ -491,7 +913,7 @@ function scheduleObserver() {
 // ================================================================
 let pollenRaf = null, seeds = [];
 function mkSeed(W,H,rand){
-  return {x:Math.random()*W, y:rand?Math.random()*H:H+8, vx:(Math.random()-.5)*.55, vy:-(0.18+Math.random()*.65), rot:Math.random()*Math.PI*2, rv:(Math.random()-.5)*.018, r:1.2+Math.random()*2, spokes:5+Math.floor(Math.random()*4), a:.25+Math.random()*.45, wobble:Math.random()*Math.PI*2, ws:.4+Math.random()*.7};
+  return {x:Math.random()*W, y:rand?(H*0.35+Math.random()*H*0.65):H+8, vx:(Math.random()-.5)*.28, vy:-(0.08+Math.random()*.28), rot:Math.random()*Math.PI*2, rv:(Math.random()-.5)*.01, r:0.7+Math.random()*1.1, spokes:5+Math.floor(Math.random()*4), a:.28+Math.random()*.42, wobble:Math.random()*Math.PI*2, ws:.18+Math.random()*.3};
 }
 function startPollen(){
   stopPollen();
@@ -499,27 +921,36 @@ function startPollen(){
   if(!cvs) return;
   const hero=cvs.parentElement;
   cvs.width=hero.offsetWidth||window.innerWidth;
-  cvs.height=hero.offsetHeight||window.innerHeight;
+  cvs.height=Math.max(hero.offsetHeight||0, window.innerHeight);
   const W=cvs.width, H=cvs.height;
   seeds=Array.from({length:17},()=>mkSeed(W,H,true));
   const ctx=cvs.getContext('2d');
   let t=0;
   function tick(){
     ctx.clearRect(0,0,W,H);
-    const breeze=Math.sin(t*.22)*.4;
+    const breeze=Math.sin(t*.14)*.22;
     if(Math.random()<.025) seeds.push(mkSeed(W,H,false));
     if(seeds.length>33) seeds.splice(0,seeds.length-33);
     for(let i=seeds.length-1;i>=0;i--){
       const s=seeds[i];
       s.wobble+=.016; s.x+=s.vx+breeze+Math.sin(s.wobble*s.ws)*.22; s.y+=s.vy; s.rot+=s.rv;
-      if(s.x<-20) s.x=W+10; if(s.x>W+20) s.x=-10;
-      if(s.y<-20){Object.assign(s,mkSeed(W,H,false));continue;}
-      ctx.save(); ctx.translate(s.x,s.y); ctx.rotate(s.rot); ctx.globalAlpha=s.a;
+      const pad = s.r * 4 + 8;
+      if(s.x < -pad) s.x = W + pad;
+      if(s.x > W + pad) s.x = -pad;
+      if(s.y < H * 0.12){Object.assign(s, mkSeed(W,H,false)); continue;}
+      const edgePad = 22;
+      const edgeAlpha = Math.min(
+        s.x / edgePad, (W - s.x) / edgePad,
+        s.y / edgePad, (H - s.y) / edgePad,
+        1
+      );
+      if (edgeAlpha <= 0) continue;
+      ctx.save(); ctx.translate(s.x,s.y); ctx.rotate(s.rot); ctx.globalAlpha = s.a * edgeAlpha;
       ctx.beginPath(); ctx.arc(0,0,s.r,0,Math.PI*2);
       ctx.fillStyle='rgba(255,252,210,1)'; ctx.shadowBlur=8; ctx.shadowColor='rgba(255,230,100,.9)'; ctx.fill(); ctx.shadowBlur=0;
       ctx.strokeStyle='rgba(255,245,180,.9)'; ctx.lineWidth=.7;
       for(let j=0;j<s.spokes;j++){
-        const ang=(j/s.spokes)*Math.PI*2, len=s.r*3.2;
+        const ang=(j/s.spokes)*Math.PI*2, len=s.r*2.8;
         ctx.beginPath(); ctx.moveTo(0,0);
         ctx.quadraticCurveTo(Math.cos(ang+.3)*len*.5,Math.sin(ang+.3)*len*.5,Math.cos(ang)*len,Math.sin(ang)*len);
         ctx.stroke();
@@ -650,42 +1081,29 @@ function stopPollen(){
         ctx.shadowBlur = 8; ctx.shadowColor = 'rgba(82,183,136,.8)'; ctx.stroke();
         ctx.restore();
       } else {
-        // Animated leaf cursor: circle + two leaf lobes that wobble
-        const wobble = Math.sin(cursorT * 1.4) * 0.18;
+        // Clean arrow cursor — classic pointer shape, green with white outline
         ctx.save();
         ctx.translate(mx, my);
-
-        // Outer soft aura
-        const aura = ctx.createRadialGradient(0,0,0,0,0,18);
-        aura.addColorStop(0,'rgba(82,183,136,.18)'); aura.addColorStop(1,'transparent');
-        ctx.fillStyle = aura; ctx.beginPath(); ctx.arc(0,0,18,0,Math.PI*2); ctx.fill();
-
-        // Stem
-        ctx.save(); ctx.rotate(wobble);
-        ctx.beginPath(); ctx.moveTo(0,3); ctx.lineTo(0,11);
-        ctx.strokeStyle='rgba(42,96,65,.8)'; ctx.lineWidth=1.8; ctx.lineCap='round'; ctx.stroke();
-
-        // Left lobe
-        ctx.save(); ctx.rotate(-0.55 + wobble);
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = 'rgba(82,183,136,.55)';
+        // Arrow path (hotspot at tip = 0,0)
         ctx.beginPath();
-        ctx.ellipse(-2, -4, 4.5, 7.5, -0.4, 0, Math.PI*2);
-        ctx.fillStyle='rgba(42,130,70,.88)'; ctx.shadowBlur=6; ctx.shadowColor='rgba(82,183,136,.6)'; ctx.fill();
-        // vein
-        ctx.beginPath(); ctx.moveTo(-2,2); ctx.lineTo(-3,-7);
-        ctx.strokeStyle='rgba(200,255,210,.4)'; ctx.lineWidth=.6; ctx.stroke();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(0, 18);
+        ctx.lineTo(4.5, 13.5);
+        ctx.lineTo(7, 20);
+        ctx.lineTo(9.5, 19);
+        ctx.lineTo(7, 12.5);
+        ctx.lineTo(12, 12.5);
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(32,90,55,.92)';
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = 'rgba(255,255,255,.75)';
+        ctx.lineWidth = 1;
+        ctx.lineJoin = 'round';
+        ctx.stroke();
         ctx.restore();
-
-        // Right lobe
-        ctx.save(); ctx.rotate(0.55 + wobble);
-        ctx.beginPath();
-        ctx.ellipse(2, -4, 4.5, 7.5, 0.4, 0, Math.PI*2);
-        ctx.fillStyle='rgba(52,150,80,.88)'; ctx.shadowBlur=6; ctx.shadowColor='rgba(82,183,136,.6)'; ctx.fill();
-        ctx.beginPath(); ctx.moveTo(2,2); ctx.lineTo(3,-7);
-        ctx.strokeStyle='rgba(200,255,210,.4)'; ctx.lineWidth=.6; ctx.stroke();
-        ctx.restore();
-
-        ctx.restore(); // stem rotate
-        ctx.restore(); // translate
       }
     }
 
@@ -765,7 +1183,7 @@ function buildBlades() {
       h: 14 + layer * 22 + Math.random() * 18,
       w: 1.0 + layer * 0.5 + Math.random() * 0.6,
       phase: Math.random() * Math.PI * 2,
-      spd: 0.35 + Math.random() * 0.75,
+      spd: 0.22 + Math.random() * 0.45,
       lean: (Math.random() - 0.5) * 0.4,
       layer,
       grow: Math.random() * 0.25,
@@ -799,12 +1217,12 @@ function buildBlades() {
   for (let i = 0; i < 14; i++) {
     fireflies.push({
       x: Math.random() * W,
-      y: H * 0.1 + Math.random() * H * 0.7,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.25,
+      y: H * 0.55 + Math.random() * H * 0.38,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.18,
       phase: Math.random() * Math.PI * 2,
       blinkSpd: 0.6 + Math.random() * 1.4,
-      r: 1.2 + Math.random() * 1.4,
+      r: 0.7 + Math.random() * 0.8,
     });
   }
 }
@@ -816,14 +1234,16 @@ function startGrass() {
   const W = cvs.width, H = cvs.height;
   // Get hero rect for translating mouse into canvas space
   let heroRect = cvs.closest('.lhero')?.getBoundingClientRect() || {left:0,top:0};
-  let t = 0;
+  let t = 0, lastTs = 0;
 
-  function tick() {
+  function tick(ts) {
+    const dt = lastTs ? Math.min((ts - lastTs) / 1000, 0.04) : 0.016;
+    lastTs = ts;
     // Update heroRect occasionally
     if (Math.floor(t * 60) % 120 === 0) heroRect = cvs.closest('.lhero')?.getBoundingClientRect() || {left:0,top:0};
 
     ctx.clearRect(0, 0, W, H);
-    const wind = Math.sin(t * 0.32) * 0.42 + Math.sin(t * 0.71 + 0.8) * 0.20;
+    const wind = Math.sin(t * 0.26) * 0.34 + Math.sin(t * 0.58 + 0.8) * 0.16;
 
     // Mouse in canvas coords (for proximity sway)
     const mxC = grassMouseX - heroRect.left;
@@ -834,7 +1254,7 @@ function startGrass() {
     for (const b of blades) {
       b.grow = Math.min(1, b.grow + 0.007);
       const h = b.h * b.grow;
-      let sway = (Math.sin(t * b.spd + b.phase) * 0.16 + wind * 0.10) * (h / 55);
+      let sway = (Math.sin(t * b.spd + b.phase) * 0.13 + wind * 0.08) * (h / 55);
 
       // Mouse proximity push
       const dx = b.x - mxC;
@@ -883,16 +1303,16 @@ function startGrass() {
       ff.x += ff.vx + Math.sin(t*0.5+ff.phase)*0.18;
       ff.y += ff.vy + Math.cos(t*0.4+ff.phase)*0.12;
       if (ff.x < 0) ff.x = W; if (ff.x > W) ff.x = 0;
-      if (ff.y < 4) ff.y = 4; if (ff.y > H - 10) ff.y = H - 10;
+      if (ff.y < H * 0.45) ff.y = H * 0.45; if (ff.y > H - 6) ff.y = H - 6;
       const blink = Math.max(0, Math.sin(t * ff.blinkSpd + ff.phase));
       if (blink < 0.15) continue;
       ctx.save();
       ctx.globalAlpha = blink * 0.85;
-      const fg = ctx.createRadialGradient(ff.x,ff.y,0,ff.x,ff.y,ff.r*5);
+      const fg = ctx.createRadialGradient(ff.x,ff.y,0,ff.x,ff.y,ff.r*3);
       fg.addColorStop(0,'rgba(220,255,150,.9)'); fg.addColorStop(.4,'rgba(180,255,80,.4)'); fg.addColorStop(1,'transparent');
-      ctx.fillStyle = fg; ctx.beginPath(); ctx.arc(ff.x,ff.y,ff.r*5,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle = fg; ctx.beginPath(); ctx.arc(ff.x,ff.y,ff.r*3,0,Math.PI*2); ctx.fill();
       ctx.beginPath(); ctx.arc(ff.x,ff.y,ff.r,0,Math.PI*2);
-      ctx.fillStyle='rgba(230,255,160,1)'; ctx.shadowBlur=8; ctx.shadowColor='rgba(180,255,80,.9)'; ctx.fill();
+      ctx.fillStyle='rgba(230,255,160,1)'; ctx.shadowBlur=5; ctx.shadowColor='rgba(180,255,80,.9)'; ctx.fill();
       ctx.restore();
     }
 
@@ -901,7 +1321,27 @@ function startGrass() {
     grd.addColorStop(0,'transparent'); grd.addColorStop(1,'rgba(12,45,22,.3)');
     ctx.fillStyle = grd; ctx.fillRect(0, H-20, W, 20);
 
-    t += 0.016; grassRaf = requestAnimationFrame(tick);
+    // Dew sparkles — 4-point stars on grass tips
+    if (Math.random() < .06 && blades.length) {
+      const b = blades[Math.floor(Math.random()*blades.length)];
+      if (b.grow > 0.85) {
+        const h=b.h*b.grow, lean=b.lean+(Math.sin(t*b.spd+b.phase)*.16+wind*.1)*(h/55);
+        const tx=b.x+lean*h, ty=H-h;
+        const r=1.8+Math.random()*2.8;
+        ctx.save(); ctx.fillStyle='rgba(255,255,230,.92)';
+        ctx.shadowBlur=8; ctx.shadowColor='rgba(200,240,255,.95)';
+        for(let i=0;i<4;i++){
+          const a=i*Math.PI/2+t*2;
+          ctx.beginPath(); ctx.moveTo(tx,ty);
+          ctx.lineTo(tx+Math.cos(a)*r,ty+Math.sin(a)*r);
+          ctx.lineTo(tx+Math.cos(a+Math.PI/4)*r*.28,ty+Math.sin(a+Math.PI/4)*r*.28);
+          ctx.closePath(); ctx.fill();
+        }
+        ctx.restore();
+      }
+    }
+
+    t += dt; grassRaf = requestAnimationFrame(tick);
   }
   tick();
 }
@@ -1050,6 +1490,277 @@ function stopBirds() {
 }
 
 // ================================================================
+// SKY — animated sun, crepuscular rays, volumetric clouds
+// ================================================================
+let skyRaf = null;
+let skyMouseX = 0, skyMouseY = 0;
+document.addEventListener('mousemove', e => { skyMouseX = e.clientX; skyMouseY = e.clientY; });
+
+function startSky() {
+  stopSky();
+  const cvs = document.getElementById('sky-cvs');
+  if (!cvs) return;
+  const hero = cvs.parentElement;
+  cvs.width = hero.offsetWidth || window.innerWidth;
+  cvs.height = hero.offsetHeight || window.innerHeight;
+  const ctx = cvs.getContext('2d');
+  const W = cvs.width, H = cvs.height;
+  const SX = W * 0.83, SY = H * 0.13; // sun anchor
+
+  // Ray angles — stable, pre-computed
+  const rays = Array.from({length:14}, (_,i) => ({ang:(i/14)*Math.PI*2, len:W*1.6+Math.random()*200}));
+
+  // Clouds
+  const clouds = Array.from({length:5}, (_,i) => ({
+    x: Math.random()*W, y: H*(0.04+i*0.07+Math.random()*0.04),
+    w: 70+Math.random()*130, spd: 0.1+Math.random()*0.18,
+    alpha: 0.3+Math.random()*0.38, par: 0.5+Math.random()*0.9,
+  }));
+
+  function drawCloud(x, y, w, alpha) {
+    const ps = [{dx:0,dy:0,r:w*.28},{dx:w*.2,dy:-w*.1,r:w*.22},{dx:-w*.18,dy:-w*.08,r:w*.2},
+                {dx:w*.35,dy:.02*w,r:w*.17},{dx:-w*.32,dy:.02*w,r:w*.15},{dx:w*.08,dy:-w*.17,r:w*.19}];
+    ctx.save(); ctx.globalAlpha = alpha;
+    for (const p of ps) {
+      const cx=x+p.dx, cy=y+p.dy;
+      const g=ctx.createRadialGradient(cx,cy-p.r*.15,0,cx,cy,p.r);
+      g.addColorStop(0,'rgba(255,255,255,.96)'); g.addColorStop(.65,'rgba(248,252,255,.72)'); g.addColorStop(1,'rgba(230,240,255,0)');
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,p.r,0,Math.PI*2); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // Occasional lens flare sparkle
+  let flares = [];
+
+  let t = 0;
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Sky gradient (upper portion)
+    const skyG = ctx.createLinearGradient(0,0,0,H*.65);
+    skyG.addColorStop(0,'rgba(160,210,255,.42)'); skyG.addColorStop(.7,'rgba(180,220,200,.1)'); skyG.addColorStop(1,'transparent');
+    ctx.fillStyle=skyG; ctx.fillRect(0,0,W,H);
+
+    // Crepuscular rays
+    ctx.save();
+    for (const r of rays) {
+      const pulse = 0.025 + Math.sin(t*.45+r.ang)*0.009;
+      ctx.beginPath();
+      ctx.moveTo(SX+Math.cos(r.ang-.07)*88, SY+Math.sin(r.ang-.07)*88);
+      ctx.lineTo(SX+Math.cos(r.ang-.07)*r.len, SY+Math.sin(r.ang-.07)*r.len);
+      ctx.lineTo(SX+Math.cos(r.ang+.07)*r.len, SY+Math.sin(r.ang+.07)*r.len);
+      ctx.lineTo(SX+Math.cos(r.ang+.07)*88, SY+Math.sin(r.ang+.07)*88);
+      ctx.closePath();
+      ctx.fillStyle=`rgba(255,238,170,${pulse})`; ctx.fill();
+    }
+    ctx.restore();
+
+    // Sun outer bloom
+    const pulse = 1+Math.sin(t*.55)*.045;
+    const sg=ctx.createRadialGradient(SX,SY,0,SX,SY,140*pulse);
+    sg.addColorStop(0,'rgba(255,245,160,.72)'); sg.addColorStop(.22,'rgba(255,210,90,.4)');
+    sg.addColorStop(.55,'rgba(255,170,50,.14)'); sg.addColorStop(1,'rgba(255,130,10,0)');
+    ctx.fillStyle=sg; ctx.beginPath(); ctx.arc(SX,SY,140*pulse,0,Math.PI*2); ctx.fill();
+    // Sun core
+    const sc=ctx.createRadialGradient(SX,SY,0,SX,SY,24*pulse);
+    sc.addColorStop(0,'rgba(255,255,230,.98)'); sc.addColorStop(.5,'rgba(255,235,130,.75)'); sc.addColorStop(1,'rgba(255,200,60,0)');
+    ctx.fillStyle=sc; ctx.beginPath(); ctx.arc(SX,SY,24*pulse,0,Math.PI*2); ctx.fill();
+
+    // Clouds with subtle mouse parallax
+    const mxn = (skyMouseX/window.innerWidth-.5)*2;
+    for (const c of clouds) {
+      c.x += c.spd; if(c.x>W+c.w) c.x=-c.w;
+      drawCloud(c.x+mxn*c.par*10, c.y, c.w, c.alpha);
+    }
+
+    // Random lens flares near sun
+    if (Math.random()<.006) flares.push({x:SX+(Math.random()-.5)*60,y:SY+(Math.random()-.5)*60,life:1,r:1+Math.random()*3});
+    for (let i=flares.length-1;i>=0;i--) {
+      const f=flares[i]; f.life-=.04; if(f.life<=0){flares.splice(i,1);continue;}
+      ctx.save(); ctx.globalAlpha=f.life*.8;
+      for (let j=0;j<4;j++){
+        const a=j*Math.PI/2;
+        ctx.beginPath(); ctx.moveTo(f.x,f.y);
+        ctx.lineTo(f.x+Math.cos(a)*f.r*4,f.y+Math.sin(a)*f.r*4);
+        ctx.lineTo(f.x+Math.cos(a+Math.PI/4)*f.r*1.2,f.y+Math.sin(a+Math.PI/4)*f.r*1.2);
+        ctx.closePath(); ctx.fillStyle='rgba(255,255,220,.9)'; ctx.shadowBlur=6; ctx.shadowColor='rgba(255,230,100,.8)'; ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    t+=.016; skyRaf=requestAnimationFrame(tick);
+  }
+  tick();
+}
+function stopSky() {
+  if(skyRaf){cancelAnimationFrame(skyRaf);skyRaf=null;}
+  const cvs=document.getElementById('sky-cvs');
+  if(cvs){cvs.getContext('2d').clearRect(0,0,cvs.width,cvs.height);}
+}
+
+// ================================================================
+// BUTTERFLY — monarch with Lissajous flight
+// ================================================================
+let butterflyRaf = null;
+
+function drawButterfly(ctx, x, y, size, wp, dir, alpha) {
+  const open = Math.sin(wp)*.5+.5;
+  ctx.save(); ctx.translate(x,y); ctx.globalAlpha=alpha;
+  if(dir<0) ctx.scale(-1,1);
+  for (const s of [-1,1]) {
+    ctx.save(); ctx.scale(s,1);
+    const sp=open;
+    // Upper wing
+    ctx.beginPath(); ctx.moveTo(0,-size*.08);
+    ctx.bezierCurveTo(size*.36*sp,-size*.58,size*.88*sp,-size*.5,size*.96*sp,-size*.08);
+    ctx.bezierCurveTo(size*.72*sp,size*.2,size*.2*sp,size*.12,0,-size*.08);
+    ctx.fillStyle='rgba(218,95,8,.85)'; ctx.shadowBlur=size*.5; ctx.shadowColor='rgba(255,120,0,.28)'; ctx.fill(); ctx.shadowBlur=0;
+    ctx.strokeStyle='rgba(10,6,2,.52)'; ctx.lineWidth=size*.07; ctx.stroke();
+    for(let d=0;d<3;d++){ctx.beginPath();ctx.arc(size*sp*(.28+d*.22),-size*(.44-d*.14),size*.042,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,.72)';ctx.fill();}
+    // Lower wing
+    ctx.beginPath(); ctx.moveTo(0,0);
+    ctx.bezierCurveTo(size*.33*sp,size*.2,size*.68*sp,size*.48,size*.52*sp,size*.68);
+    ctx.bezierCurveTo(size*.28*sp,size*.82,size*.1*sp,size*.46,0,0);
+    ctx.fillStyle='rgba(188,68,4,.8)'; ctx.shadowBlur=size*.4; ctx.shadowColor='rgba(220,90,0,.22)'; ctx.fill(); ctx.shadowBlur=0;
+    ctx.strokeStyle='rgba(10,6,2,.46)'; ctx.lineWidth=size*.06; ctx.stroke();
+    ctx.restore();
+  }
+  // Body
+  ctx.beginPath(); ctx.ellipse(0,size*.06,size*.065,size*.38,0,0,Math.PI*2);
+  ctx.fillStyle='rgba(18,10,2,.9)'; ctx.fill();
+  // Antennae
+  ctx.strokeStyle='rgba(20,12,4,.65)'; ctx.lineWidth=size*.035; ctx.lineCap='round';
+  [[-1,1]].forEach(()=>{
+    [[-1,1],[1,1]].forEach(([sx])=>{
+      ctx.beginPath(); ctx.moveTo(sx*size*.04,-size*.28);
+      ctx.quadraticCurveTo(sx*size*.2,-size*.65,sx*size*.15,-size*.82); ctx.stroke();
+      ctx.beginPath(); ctx.arc(sx*size*.15,-size*.82,size*.055,0,Math.PI*2);
+      ctx.fillStyle='rgba(20,12,4,.7)'; ctx.fill();
+    });
+  });
+  ctx.restore();
+}
+
+function startButterfly() {
+  stopButterfly();
+  const cvs=document.getElementById('butterfly-cvs');
+  if(!cvs) return;
+  const hero=cvs.parentElement;
+  cvs.width=hero.offsetWidth||window.innerWidth;
+  cvs.height=hero.offsetHeight||window.innerHeight;
+  const ctx=cvs.getContext('2d');
+  const W=cvs.width, H=cvs.height;
+  const SZ=16;
+  let cx=W*.45,cy=H*.35,tcx=cx,tcy=cy;
+  let bt=0,wp=0,dir=1,alpha=0,isIdle=false,idleT=0,landT=140+Math.random()*160;
+
+  function tick(){
+    ctx.clearRect(0,0,W,H);
+    alpha=Math.min(1,alpha+.007);
+    if(Math.random()<.0035){tcx=W*(.18+Math.random()*.64);tcy=H*(.08+Math.random()*.42);}
+    cx+=(tcx-cx)*.005; cy+=(tcy-cy)*.005;
+
+    let bx,by,wSpd;
+    if(isIdle){
+      bx=cx+Math.sin(bt*.85)*10; by=cy+Math.cos(bt*.55)*5; wSpd=.055;
+      idleT--; if(idleT<=0){isIdle=false;landT=180+Math.random()*240;}
+    } else {
+      bx=cx+Math.sin(bt*.88)*58+Math.sin(bt*1.72+.5)*22;
+      by=cy+Math.cos(bt*.72)*28+Math.cos(bt*1.3+1.2)*14;
+      const vx=Math.cos(bt*.88)*58*.88+Math.cos(bt*1.72+.5)*22*1.72;
+      dir=vx>0?1:-1; wSpd=.13;
+      landT--; if(landT<=0){isIdle=true;idleT=70+Math.random()*110;}
+    }
+    wp+=wSpd; bt+=.016;
+    bx=Math.max(50,Math.min(W-50,bx)); by=Math.max(35,Math.min(H*.68,by));
+    drawButterfly(ctx,bx,by,SZ,wp,dir,alpha);
+    butterflyRaf=requestAnimationFrame(tick);
+  }
+  tick();
+}
+function stopButterfly(){
+  if(butterflyRaf){cancelAnimationFrame(butterflyRaf);butterflyRaf=null;}
+  const cvs=document.getElementById('butterfly-cvs');
+  if(cvs) cvs.getContext('2d').clearRect(0,0,cvs.width,cvs.height);
+}
+
+// ================================================================
+// CURSOR GRASS TRAIL — blades sprout at mouse position
+// ================================================================
+let trailRaf=null, trailBlades=[], trailCleanup=null;
+
+function startTrail(){
+  stopTrail();
+  const cvs=document.getElementById('trail-cvs');
+  if(!cvs) return;
+  const hero=cvs.parentElement;
+  cvs.width=hero.offsetWidth||window.innerWidth;
+  cvs.height=hero.offsetHeight||window.innerHeight;
+  const ctx=cvs.getContext('2d');
+  const W=cvs.width, H=cvs.height;
+
+  function onMove(e){
+    if(side!=='lawn') return;
+    const rect=cvs.getBoundingClientRect();
+    const rx=e.clientX-rect.left, ry=e.clientY-rect.top;
+    if(rx<0||ry<0||rx>W||ry>H) return;
+    if(Math.random()<.22){
+      trailBlades.push({
+        x:rx+(Math.random()-.5)*9, y:ry,
+        h:0, maxH:10+Math.random()*22,
+        w:.7+Math.random()*1.4,
+        phase:Math.random()*Math.PI*2, life:1,
+        dec:.004+Math.random()*.007,
+        hue:112+Math.random()*38,
+      });
+    }
+  }
+  document.addEventListener('mousemove',onMove);
+  trailCleanup=()=>document.removeEventListener('mousemove',onMove);
+
+  function tick(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=trailBlades.length-1;i>=0;i--){
+      const b=trailBlades[i];
+      b.h=Math.min(b.h+1.1,b.maxH); b.life-=b.dec; b.phase+=.04;
+      if(b.life<=0){trailBlades.splice(i,1);continue;}
+      const a=Math.min(b.life*1.6,1);
+      const sway=Math.sin(b.phase)*.14*b.h/b.maxH;
+      ctx.beginPath(); ctx.moveTo(b.x,b.y);
+      ctx.quadraticCurveTo(b.x+sway*b.h*.5,b.y-b.h*.58,b.x+sway*b.h,b.y-b.h);
+      ctx.strokeStyle=`hsla(${b.hue},72%,46%,${a*.82})`;
+      ctx.lineWidth=b.w; ctx.lineCap='round';
+      ctx.shadowBlur=4; ctx.shadowColor=`hsla(${b.hue},80%,58%,.5)`; ctx.stroke(); ctx.shadowBlur=0;
+    }
+    trailRaf=requestAnimationFrame(tick);
+  }
+  tick();
+}
+function stopTrail(){
+  if(trailRaf){cancelAnimationFrame(trailRaf);trailRaf=null;}
+  trailBlades=[];
+  if(trailCleanup){trailCleanup();trailCleanup=null;}
+}
+
+// ================================================================
+// HERO PARALLAX — mouse tilts content layers
+// ================================================================
+(function(){
+  const hi=document.getElementById('lhero-hi');
+  if(!hi) return;
+  document.addEventListener('mousemove',e=>{
+    if(side!=='lawn') return;
+    const hero=hi.closest('.lhero');
+    if(!hero) return;
+    const r=hero.getBoundingClientRect();
+    const mx=(e.clientX-r.left)/r.width-.5;
+    const my=(e.clientY-r.top)/r.height-.5;
+    hi.style.transform=`translate(${mx*10}px,${my*5}px)`;
+  });
+})();
+
+// ================================================================
 // LASER HERO: scan beam + floating embers
 // ================================================================
 let laserHeroRaf = null;
@@ -1135,23 +1846,28 @@ function stopLaserHero() { if (laserHeroRaf) { cancelAnimationFrame(laserHeroRaf
   const sparks = [], burns = [];
   const COLS = ['#ffd700','#ff8c00','#ff4500','#fff','#ffb347','#c8963c','#ffe066','#ff6600'];
 
-  function burst(x, y) {
-    // Expanding burn rings
-    burns.push({x, y, r:2, maxR:20+Math.random()*14, life:1});
-    for(let i=0;i<3;i++) burns.push({x:x+(Math.random()-.5)*32,y:y+(Math.random()-.5)*32,r:1,maxR:5+Math.random()*10,life:.35+Math.random()*.35});
+  const MAX_SPARKS = 250;
+  let lastBurst = 0;
 
-    // Spark streak particles
-    const n = 110 + Math.floor(Math.random()*60);
+  function burst(x, y) {
+    const now = Date.now();
+    if (now - lastBurst < 80) return; // throttle: max ~12 bursts/sec
+    lastBurst = now;
+    if (sparks.length > MAX_SPARKS) return; // drop if already saturated
+
+    burns.push({x, y, r:2, maxR:18+Math.random()*12, life:1});
+    for(let i=0;i<2;i++) burns.push({x:x+(Math.random()-.5)*28,y:y+(Math.random()-.5)*28,r:1,maxR:4+Math.random()*8,life:.3+Math.random()*.3});
+
+    const n = 55 + Math.floor(Math.random()*30);
     for(let i=0;i<n;i++){
-      const ang=Math.random()*Math.PI*2, spd=1.5+Math.random()*9;
-      sparks.push({x,y,vx:Math.cos(ang)*spd,vy:Math.sin(ang)*spd-Math.random()*3.5,life:.7+Math.random()*.5,dec:.016+Math.random()*.028,sz:.6+Math.random()*2.8,ci:Math.floor(Math.random()*8),grav:.09+Math.random()*.14});
+      const ang=Math.random()*Math.PI*2, spd=1.5+Math.random()*7;
+      sparks.push({x,y,vx:Math.cos(ang)*spd,vy:Math.sin(ang)*spd-Math.random()*3,life:.65+Math.random()*.4,dec:.022+Math.random()*.03,sz:.6+Math.random()*2.2,ci:Math.floor(Math.random()*8),grav:.09+Math.random()*.12});
     }
 
-    // Screen flash
     const f=document.createElement('div');
-    Object.assign(f.style,{position:'fixed',inset:0,pointerEvents:'none',zIndex:'9960',background:`radial-gradient(circle at ${x}px ${y}px,rgba(255,200,80,.22) 0%,transparent 38%)`,transition:'opacity .35s'});
+    Object.assign(f.style,{position:'fixed',inset:0,pointerEvents:'none',zIndex:'9960',background:`radial-gradient(circle at ${x}px ${y}px,rgba(255,200,80,.18) 0%,transparent 36%)`,transition:'opacity .28s'});
     document.body.appendChild(f);
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{f.style.opacity='0';setTimeout(()=>f.remove(),380);}));
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{f.style.opacity='0';setTimeout(()=>f.remove(),300);}));
   }
 
   // Engrave ripple on any clickable element in laser side
@@ -1170,7 +1886,7 @@ function stopLaserHero() { if (laserHeroRaf) { cancelAnimationFrame(laserHeroRaf
       ctx.save(); ctx.globalAlpha=b.life*.85;
       ctx.beginPath(); ctx.arc(b.x,b.y,b.r,0,Math.PI*2);
       ctx.strokeStyle=`rgba(200,150,60,${b.life*.9})`; ctx.lineWidth=1.8;
-      ctx.shadowBlur=16; ctx.shadowColor='#c8963c'; ctx.stroke(); ctx.restore();
+      ctx.shadowBlur=8; ctx.shadowColor='#c8963c'; ctx.stroke(); ctx.restore();
       // Inner radial fill
       const ig=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);
       ig.addColorStop(0,`rgba(255,200,80,${b.life*.3})`);
@@ -1187,7 +1903,7 @@ function stopLaserHero() { if (laserHeroRaf) { cancelAnimationFrame(laserHeroRaf
       ctx.save(); ctx.globalAlpha=Math.min(p.life,1);
       ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(p.x-p.vx*2.5,p.y-p.vy*2.5);
       ctx.strokeStyle=COLS[p.ci]; ctx.lineWidth=p.sz*p.life; ctx.lineCap='round';
-      ctx.shadowBlur=9; ctx.shadowColor=COLS[p.ci]; ctx.stroke(); ctx.restore();
+      ctx.shadowBlur=5; ctx.shadowColor=COLS[p.ci]; ctx.stroke(); ctx.restore();
     }
 
     requestAnimationFrame(loop);
@@ -1196,18 +1912,229 @@ function stopLaserHero() { if (laserHeroRaf) { cancelAnimationFrame(laserHeroRaf
 })();
 
 // ================================================================
-// INIT
+// LEAVES — elegant wind gusts
 // ================================================================
+let leafRaf = null, leafParticles = [], gustTimer = 0, nextGust = 90;
+
+const LEAF_COLS = [
+  '#6abf6e','#52a855','#8cc45c','#c8d44e',
+  '#d4a843','#c8823a','#b85e2a','#a8d060',
+];
+
+function drawLeaf(ctx, size, col, curl) {
+  // Elegant elliptical leaf with midrib
+  ctx.beginPath();
+  ctx.moveTo(0, -size);
+  ctx.bezierCurveTo( size*.7, -size*.5,  size*.85, size*.3,  0,  size);
+  ctx.bezierCurveTo(-size*.85, size*.3, -size*.7, -size*.5,  0, -size);
+  ctx.fillStyle = col;
+  ctx.fill();
+  // Midrib
+  ctx.beginPath();
+  ctx.moveTo(0, -size * .88);
+  ctx.quadraticCurveTo(size * curl * .25, 0, 0, size * .88);
+  ctx.strokeStyle = 'rgba(0,0,0,.18)';
+  ctx.lineWidth = size * .09;
+  ctx.lineCap = 'round';
+  ctx.stroke();
+  // Two secondary veins
+  ctx.strokeStyle = 'rgba(0,0,0,.1)';
+  ctx.lineWidth = size * .045;
+  for (const s of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(0, -size * .3);
+    ctx.quadraticCurveTo(s * size * .55, -size * .05, s * size * .7, size * .35);
+    ctx.stroke();
+  }
+}
+
+function spawnGust(W, H) {
+  const count = 4 + Math.floor(Math.random() * 5);
+  const fromLeft = Math.random() < .5;
+  const baseY = H * (.08 + Math.random() * .68);
+  const gustStr = .7 + Math.random() * 1.0;
+
+  for (let i = 0; i < count; i++) {
+    const size = 5 + Math.random() * 9;
+    const speed = (1.2 + Math.random() * 2.2) * gustStr;
+    const dir = fromLeft ? 1 : -1;
+    const delay = i * (8 + Math.random() * 18);
+    leafParticles.push({
+      x: fromLeft ? -size * 2 : W + size * 2,
+      y: baseY + (Math.random() - .5) * H * .18,
+      vx: dir * speed,
+      vy: (Math.random() - .5) * .6,
+      rot: Math.random() * Math.PI * 2,
+      // Flutter: oscillates realistically — not constant speed
+      rotV: 0,
+      rotAcc: (Math.random() - .5) * .012,
+      size,
+      col: LEAF_COLS[Math.floor(Math.random() * LEAF_COLS.length)],
+      curl: (Math.random() - .5) * .6,
+      alpha: 0,
+      alphaTarget: .38 + Math.random() * .18,
+      // Bezier drift path: control point offsets
+      driftAmp: (Math.random() - .5) * 55,
+      driftFreq: .018 + Math.random() * .022,
+      driftPhase: Math.random() * Math.PI * 2,
+      // Gust surge: speed pulses
+      surgePhase: Math.random() * Math.PI * 2,
+      surgeAmp: .35 + Math.random() * .55,
+      // Tumble: occasional full spin
+      tumble: Math.random() < .25,
+      life: 1,
+      delay,
+      age: 0,
+      scale: 1,
+      scaleTarget: .7 + Math.random() * .6,
+    });
+  }
+}
+
+function startLeaves() {
+  stopLeaves();
+  const cvs = document.getElementById('leaf-cvs');
+  if (!cvs) return;
+  const hero = cvs.parentElement;
+  cvs.width = hero.offsetWidth || window.innerWidth;
+  cvs.height = hero.offsetHeight || window.innerHeight;
+  const ctx = cvs.getContext('2d');
+  const W = cvs.width, H = cvs.height;
+  leafParticles = [];
+  gustTimer = 0;
+  nextGust = 60;
+  let t = 0;
+
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Gust spawner
+    gustTimer++;
+    if (gustTimer >= nextGust) {
+      spawnGust(W, H);
+      gustTimer = 0;
+      nextGust = 380 + Math.floor(Math.random() * 480);
+    }
+
+    for (let i = leafParticles.length - 1; i >= 0; i--) {
+      const l = leafParticles[i];
+
+      // Delay before activating
+      if (l.delay > 0) { l.delay--; continue; }
+
+      l.age++;
+
+      // Fade in
+      l.alpha = Math.min(l.alpha + .035, l.alphaTarget);
+
+      // Scale eases to target
+      l.scale += (l.scaleTarget - l.scale) * .02;
+
+      // Wind surge: speed pulses like a real gust
+      const surge = 1 + Math.sin(t * .04 + l.surgePhase) * l.surgeAmp;
+      const baseVx = l.vx > 0
+        ? Math.abs(l.vx) * surge
+        : -Math.abs(l.vx) * surge;
+
+      // Sinusoidal vertical drift — the elegant wave motion
+      const drift = Math.sin(t * l.driftFreq + l.driftPhase) * l.driftAmp * .018;
+
+      l.x += baseVx * .016 * 60;
+      l.y += l.vy + drift;
+
+      // Rotation — tumbling with organic acceleration
+      l.rotV += l.rotAcc;
+      l.rotV *= .97; // damping so it doesn't spin forever
+      if (Math.abs(l.rotV) > .12) l.rotV *= .85;
+      if (l.tumble) l.rotV += (Math.random() - .5) * .008;
+      l.rot += l.rotV;
+
+      // Fade out near edges
+      const edgeDist = Math.min(
+        Math.abs(l.x) / 80, Math.abs(W - l.x) / 80,
+        Math.abs(l.y) / 60, Math.abs(H - l.y) / 60, 1
+      );
+      const a = l.alpha * Math.min(edgeDist * 2, 1);
+
+      // Remove if fully off-screen
+      if (l.x < -80 || l.x > W + 80 || l.y < -80 || l.y > H + 80) {
+        leafParticles.splice(i, 1); continue;
+      }
+
+      ctx.save();
+      ctx.translate(l.x, l.y);
+      ctx.rotate(l.rot);
+      ctx.scale(l.scale, l.scale);
+      ctx.globalAlpha = a;
+      ctx.shadowBlur = 4;
+      ctx.shadowColor = 'rgba(0,0,0,.18)';
+      drawLeaf(ctx, l.size, l.col, l.curl);
+      ctx.restore();
+    }
+
+    t++;
+    leafRaf = requestAnimationFrame(tick);
+  }
+  tick();
+}
+
+function stopLeaves() {
+  if (leafRaf) { cancelAnimationFrame(leafRaf); leafRaf = null; }
+  leafParticles = [];
+  const cvs = document.getElementById('leaf-cvs');
+  if (cvs) cvs.getContext('2d').clearRect(0, 0, cvs.width, cvs.height);
+}
+
+
+function countUp(el) {
+  const target = +el.dataset.target;
+  const dur = 1800;
+  const start = performance.now();
+  function step(now) {
+    const p = Math.min((now - start) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.floor(ease * target);
+    if (p < 1) requestAnimationFrame(step);
+    else el.textContent = target;
+  }
+  requestAnimationFrame(step);
+}
+
+const countObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.l-stat-n').forEach(countUp);
+      countObs.unobserve(e.target);
+    }
+  });
+}, {threshold: .5});
+document.querySelectorAll('.l-stats').forEach(el => countObs.observe(el));
+
+// ================================================================
+// FLOATING LABEL — select fix (mark as has-val on load if needed)
+// ================================================================
+document.querySelectorAll('.l-fl select, .g-fl select').forEach(sel => {
+  sel.addEventListener('change', () => {
+    sel.closest('.l-fl, .g-fl').classList.toggle('has-val', sel.selectedIndex > 0);
+  });
+});
+
+
 document.querySelector('.lw').style.display = 'block';
 document.querySelector('.gr').style.display = 'none';
+startSky();
 startGrass();
 startPollen();
-startBirds();
+startLeaves();
 scheduleObserver();
 
 window.addEventListener('resize', () => {
-  if (side === 'lawn') { stopGrass(); startGrass(); stopPollen(); startPollen(); stopBirds(); startBirds(); }
-  else { stopLaserHero(); startLaserHero(); }
+  if (side === 'lawn') {
+    stopSky(); startSky();
+    stopGrass(); startGrass();
+    stopPollen(); startPollen();
+    stopLeaves(); startLeaves();
+  } else { stopLaserHero(); startLaserHero(); }
 });
 </script>
 </body>
