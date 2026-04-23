@@ -44,7 +44,7 @@ body.laser .nlks a{color:#888;}body.laser .nlks a:hover{color:var(--gp);}
 .hi{max-width:1100px;margin:0 auto;position:relative;z-index:4;width:100%;}
 
 /* LAWN HERO */
-.lhero{background:linear-gradient(155deg,#e8f4ec 0%,#cfe9d8 45%,#b8dfc7 100%);}
+.lhero{background:linear-gradient(155deg,#e8f4ec 0%,#cfe9d8 45%,#b8dfc7 100%);overflow:visible;}
 .lhero::after{content:'';position:absolute;top:-80px;right:-80px;width:480px;height:480px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,235,120,.28) 0%,transparent 68%);}
 #grass-cvs{position:absolute;bottom:0;left:0;width:100%;height:150px;z-index:3;pointer-events:none;}
 .lhero .hbadge{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;background:rgba(42,96,65,.1);color:var(--lp);border:1px solid rgba(42,96,65,.22);border-radius:20px;padding:6px 16px;margin-bottom:2rem;}
@@ -164,6 +164,11 @@ body.laser .nlks a{color:#888;}body.laser .nlks a:hover{color:var(--gp);}
 .ls .fsub{background:var(--lp);color:#fff;}.ls .fsub:hover{background:#1e4d31;transform:translateY(-2px);}
 .gs .fsub{background:var(--gp);color:#0d0d0d;}.gs .fsub:hover{background:#b07a28;transform:translateY(-2px);}
 
+/* POLLEN CANVAS — inside hero only */
+#pollen-cvs{position:absolute;inset:0;pointer-events:none;z-index:2;width:100%;height:100%;}
+/* BIRD CANVAS — inside hero only */
+#bird-cvs{position:absolute;inset:0;pointer-events:none;z-index:2;width:100%;height:100%;}
+
 /* REVEAL */
 .rv{opacity:0;transform:translateY(28px);transition:opacity .7s,transform .7s;}
 .rv.on{opacity:1;transform:none;}
@@ -178,7 +183,13 @@ footer a{font-weight:600;text-decoration:none;}
 body.lawn footer a{color:var(--lp);}.body.laser footer a{color:var(--gp);}
 body.laser footer a{color:var(--gp);}
 
-@media(max-width:700px){.hero{padding:4rem 1.25rem 4rem;}.sec{padding:3.5rem 1.25rem;}}
+@media(max-width:700px){
+  .hero{padding:4rem 1.25rem 4rem;}
+  .sec{padding:3.5rem 1.25rem;}
+  body.lawn,body.lawn *,body.laser,body.laser *{cursor:auto!important;}
+  #cur-cvs{display:none!important;}
+  .lhero{overflow:hidden;}
+}
 
 /* CUSTOM CURSORS — both sides */
 body.lawn{cursor:none;}
@@ -270,9 +281,6 @@ body.laser #spark-cvs{display:block;}
 <!-- UNIFIED CURSOR CANVAS -->
 <canvas id="cur-cvs" style="position:fixed;inset:0;pointer-events:none;z-index:9997;"></canvas>
 
-<!-- POLLEN CANVAS -->
-<canvas id="pollen-cvs" style="position:fixed;inset:0;pointer-events:none;z-index:5;display:none;"></canvas>
-
 <!-- SPARK CANVAS -->
 <canvas id="spark-cvs"></canvas>
 
@@ -292,6 +300,8 @@ body.laser #spark-cvs{display:block;}
 <!-- ===== LAWN ===== -->
 <div class="lw">
   <section class="hero lhero">
+    <canvas id="bird-cvs"></canvas>
+    <canvas id="pollen-cvs"></canvas>
     <div class="hi" style="z-index:4;position:relative;">
       <div class="hbadge ha"><svg width="12" height="12" viewBox="0 0 40 40"><use href="#i-weed"/></svg>Saint-Lazare &amp; environs</div>
       <h1 class="ha">Un gazon impeccable,<span>sans vous en occuper.</span></h1>
@@ -460,8 +470,8 @@ function setSide(s) {
   document.querySelector('.gr').style.display = s === 'laser' ? 'block' : 'none';
   window.scrollTo({top:0, behavior:'smooth'});
   scheduleObserver();
-  if (s === 'lawn') { stopLaserHero(); startGrass(); startPollen(); }
-  else { stopGrass(); stopPollen(); startLaserHero(); }
+  if (s === 'lawn') { stopLaserHero(); startGrass(); startPollen(); startBirds(); }
+  else { stopGrass(); stopPollen(); stopBirds(); startLaserHero(); }
 }
 
 // ================================================================
@@ -487,17 +497,18 @@ function startPollen(){
   stopPollen();
   const cvs=document.getElementById('pollen-cvs');
   if(!cvs) return;
-  cvs.style.display='block';
-  cvs.width=window.innerWidth; cvs.height=window.innerHeight;
+  const hero=cvs.parentElement;
+  cvs.width=hero.offsetWidth||window.innerWidth;
+  cvs.height=hero.offsetHeight||window.innerHeight;
   const W=cvs.width, H=cvs.height;
-  seeds=Array.from({length:28},()=>mkSeed(W,H,true));
+  seeds=Array.from({length:17},()=>mkSeed(W,H,true));
   const ctx=cvs.getContext('2d');
   let t=0;
   function tick(){
     ctx.clearRect(0,0,W,H);
     const breeze=Math.sin(t*.22)*.4;
-    if(Math.random()<.04) seeds.push(mkSeed(W,H,false));
-    if(seeds.length>55) seeds.splice(0,seeds.length-55);
+    if(Math.random()<.025) seeds.push(mkSeed(W,H,false));
+    if(seeds.length>33) seeds.splice(0,seeds.length-33);
     for(let i=seeds.length-1;i>=0;i--){
       const s=seeds[i];
       s.wobble+=.016; s.x+=s.vx+breeze+Math.sin(s.wobble*s.ws)*.22; s.y+=s.vy; s.rot+=s.rv;
@@ -523,8 +534,6 @@ function startPollen(){
 }
 function stopPollen(){
   if(pollenRaf){cancelAnimationFrame(pollenRaf);pollenRaf=null;}
-  const cvs=document.getElementById('pollen-cvs');
-  if(cvs) cvs.style.display='none';
 }
 
 // ================================================================
@@ -538,12 +547,12 @@ function stopPollen(){
 
   const trail = [];       // laser burn trail points
   const MAX_TRAIL = 32;
-  let mx = -300, my = -300, onText = false;
+  let mx = -9999, my = -9999, onText = false, hasMoved = false;
 
   // Track mouse position + text hover
   const TEXT_SEL = 'p,h1,h2,h3,h4,label,a,li,span,button,.stag,.hbadge,.hsub,.ssu,.cdet,.np,.logo';
   document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
+    mx = e.clientX; my = e.clientY; hasMoved = true;
     onText = !!e.target.closest(TEXT_SEL);
     if (side === 'laser') {
       trail.push({x:mx, y:my, age:1});
@@ -589,6 +598,8 @@ function stopPollen(){
   (function loop(){
     ctx.clearRect(0, 0, cvs.width, cvs.height);
     cursorT += 0.05;
+
+    if (!hasMoved) { requestAnimationFrame(loop); return; }
 
     // ---- LAWN CURSOR ----
     if (side === 'lawn') {
@@ -898,6 +909,147 @@ function startGrass() {
 function stopGrass() { if (grassRaf) { cancelAnimationFrame(grassRaf); grassRaf = null; } }
 
 // ================================================================
+// BIRDS — fly occasionally from tree to tree
+// ================================================================
+let birdRaf = null, birds = [], birdTimer = 0, nextBird = 220;
+
+function drawBird(ctx, x, y, size, wingPhase, dir) {
+  const flap = Math.sin(wingPhase) * size * 0.7;
+  ctx.save();
+  ctx.translate(x, y);
+  if (dir < 0) ctx.scale(-1, 1);
+
+  // Body
+  ctx.beginPath();
+  ctx.ellipse(0, 0, size * 0.55, size * 0.2, 0, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(28,20,12,.62)';
+  ctx.fill();
+
+  // Left wing (filled teardrop shape)
+  ctx.beginPath();
+  ctx.moveTo(-size * 0.25, 0);
+  ctx.bezierCurveTo(-size * 0.9, -flap * 0.6, -size * 1.8, -flap, -size * 2.4, -flap * 0.35);
+  ctx.bezierCurveTo(-size * 1.7, -flap * 0.55, -size * 0.8, flap * 0.05, -size * 0.25, 0);
+  ctx.fillStyle = 'rgba(28,20,12,.52)';
+  ctx.fill();
+
+  // Right wing
+  ctx.beginPath();
+  ctx.moveTo(size * 0.25, 0);
+  ctx.bezierCurveTo(size * 0.9, -flap * 0.6, size * 1.8, -flap, size * 2.4, -flap * 0.35);
+  ctx.bezierCurveTo(size * 1.7, -flap * 0.55, size * 0.8, flap * 0.05, size * 0.25, 0);
+  ctx.fillStyle = 'rgba(28,20,12,.52)';
+  ctx.fill();
+
+  // Tail
+  ctx.beginPath();
+  ctx.moveTo(-size * 0.3, size * 0.1);
+  ctx.lineTo(size * 0.3, size * 0.1);
+  ctx.lineTo(0, size * 0.55);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(28,20,12,.45)';
+  ctx.fill();
+
+  ctx.restore();
+}
+
+function drawTree(ctx, x, groundY, side) {
+  // Trunk
+  const trunkH = 55 + Math.random() * 0; // stable per frame via closure
+  ctx.save();
+  ctx.fillStyle = 'rgba(28,20,12,.38)';
+  ctx.fillRect(x - 4, groundY - trunkH, 8, trunkH);
+  // Layered pine canopy
+  const layers = 3;
+  for (let i = 0; i < layers; i++) {
+    const ly = groundY - trunkH - i * 28 + 18;
+    const lw = 42 - i * 10;
+    ctx.beginPath();
+    ctx.moveTo(x, ly - 32 + i * 4);
+    ctx.lineTo(x - lw, ly + 4);
+    ctx.lineTo(x + lw, ly + 4);
+    ctx.closePath();
+    ctx.fillStyle = `rgba(18,38,22,${0.28 + i * 0.05})`;
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+function startBirds() {
+  stopBirds();
+  const cvs = document.getElementById('bird-cvs');
+  if (!cvs) return;
+  const hero = cvs.parentElement;
+  cvs.width = hero.offsetWidth || window.innerWidth;
+  cvs.height = hero.offsetHeight || window.innerHeight;
+  const ctx = cvs.getContext('2d');
+  const W = cvs.width, H = cvs.height;
+  birds = []; birdTimer = 0;
+  nextBird = 180 + Math.floor(Math.random() * 200);
+
+  function perchY() { return H * 0.12 + Math.random() * H * 0.38; }
+
+  function spawnBird() {
+    const goRight = Math.random() < 0.5;
+    const y = perchY();
+    const speed = 1.0 + Math.random() * 0.8;
+    const size = 5 + Math.random() * 4;
+    birds.push({
+      x: goRight ? -20 : W + 20,
+      y, startY: y,
+      targetX: goRight ? W + 20 : -20,
+      startX: goRight ? -20 : W + 20,
+      vx: goRight ? speed : -speed,
+      dir: goRight ? 1 : -1,
+      size,
+      wingPhase: Math.random() * Math.PI * 2,
+      wingSpd: 0.09 + Math.random() * 0.07,
+    });
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+
+    birdTimer++;
+    if (birdTimer >= nextBird) {
+      spawnBird();
+      birdTimer = 0;
+      nextBird = 280 + Math.floor(Math.random() * 340);
+    }
+
+    for (let i = birds.length - 1; i >= 0; i--) {
+      const b = birds[i];
+      b.x += b.vx;
+      b.wingPhase += b.wingSpd;
+
+      const totalDist = b.targetX - b.startX;
+      const progress = Math.max(0, Math.min(1, (b.x - b.startX) / totalDist));
+      b.y = b.startY - Math.sin(progress * Math.PI) * 35;
+
+      const edgeFade = Math.min(1, Math.min(Math.abs(b.x), Math.abs(W - b.x)) / 60);
+
+      if ((b.dir > 0 && b.x >= b.targetX) || (b.dir < 0 && b.x <= b.targetX)) {
+        birds.splice(i, 1); continue;
+      }
+
+      ctx.globalAlpha = edgeFade;
+      drawBird(ctx, b.x, b.y, b.size, b.wingPhase, b.dir);
+      ctx.globalAlpha = 1;
+    }
+
+    birdRaf = requestAnimationFrame(tick);
+  }
+  tick();
+}
+
+function stopBirds() {
+  if (birdRaf) { cancelAnimationFrame(birdRaf); birdRaf = null; }
+  birds = [];
+  const cvs = document.getElementById('bird-cvs');
+  if (cvs) { const ctx = cvs.getContext('2d'); ctx.clearRect(0,0,cvs.width,cvs.height); }
+}
+
+// ================================================================
 // LASER HERO: scan beam + floating embers
 // ================================================================
 let laserHeroRaf = null;
@@ -1050,10 +1202,11 @@ document.querySelector('.lw').style.display = 'block';
 document.querySelector('.gr').style.display = 'none';
 startGrass();
 startPollen();
+startBirds();
 scheduleObserver();
 
 window.addEventListener('resize', () => {
-  if (side === 'lawn') { stopGrass(); startGrass(); stopPollen(); startPollen(); }
+  if (side === 'lawn') { stopGrass(); startGrass(); stopPollen(); startPollen(); stopBirds(); startBirds(); }
   else { stopLaserHero(); startLaserHero(); }
 });
 </script>
