@@ -1,0 +1,2346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="The Attari Heritage Project. Honouring the village of Attari, Punjab, founded by the Sidhu family in 1740. A patron's gift from Primal Sidhu, daughter of Attari, to her ancestral home.">
+<meta name="robots" content="noindex, nofollow">
+<title>The Attari Heritage Project · Primal Sidhu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Gurmukhi:wght@300;400;500;600;700&family=Noto+Serif+Gurmukhi:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+/* ============== RESET & BASE ============== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{
+  font-family:'Inter','-apple-system',BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:#0a1620;
+  color:#e8dfd0;
+  overflow-x:hidden;
+  line-height:1.7;
+  font-weight:300;
+  letter-spacing:0.01em;
+  -webkit-font-smoothing:antialiased;
+}
+
+::selection{background:#c9a961;color:#0a1620}
+
+/* ============== PUNJABI / GURMUKHI ============== */
+html[lang="pa"] body{
+  font-family:'Noto Sans Gurmukhi','Inter','-apple-system',BlinkMacSystemFont,sans-serif;
+  line-height:1.85;
+}
+html[lang="pa"] h1,
+html[lang="pa"] h2,
+html[lang="pa"] h3,
+html[lang="pa"] h4,
+html[lang="pa"] .serif,
+html[lang="pa"] .lead,
+html[lang="pa"] blockquote,
+html[lang="pa"] .signature,
+html[lang="pa"] .t-year,
+html[lang="pa"] .figure-num,
+html[lang="pa"] .invocation-mark,
+html[lang="pa"] .callout-mark,
+html[lang="pa"] .foot-mark,
+html[lang="pa"] .pillar-num,
+html[lang="pa"] .h-card-text .num,
+html[lang="pa"] .callout p{
+  font-family:'Noto Serif Gurmukhi','Cormorant Garamond',Georgia,serif;
+  letter-spacing:0;
+}
+html[lang="pa"] .eyebrow,
+html[lang="pa"] .nav-links a,
+html[lang="pa"] .figure-label,
+html[lang="pa"] .t-place,
+html[lang="pa"] .lbl,
+html[lang="pa"] .foot-meta,
+html[lang="pa"] .scroll-cue,
+html[lang="pa"] .hero-meta,
+html[lang="pa"] .g-item-label,
+html[lang="pa"] .btn span{
+  letter-spacing:0.04em;
+  text-transform:none;
+}
+html[lang="pa"] .eyebrow::before{margin-right:10px}
+
+/* ============== TOKENS ============== */
+:root{
+  --night:#0a1620;
+  --night2:#0f2030;
+  --ink:#06101a;
+  --gold:#c9a961;
+  --gold-bright:#e6c478;
+  --gold-deep:#9a7f3f;
+  --cream:#f5ebe0;
+  --ivory:#fefcf8;
+  --terra:#b8674a;
+  --maroon:#5a2026;
+  --mist:rgba(245,235,224,0.7);
+  --whisper:rgba(245,235,224,0.4);
+  --line:rgba(201,169,97,0.18);
+  --line-strong:rgba(201,169,97,0.4);
+}
+
+/* ============== TYPOGRAPHY ============== */
+h1,h2,h3,h4,.serif{
+  font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  font-weight:400;
+  line-height:1.15;
+  letter-spacing:-0.005em;
+}
+
+.eyebrow{
+  font-family:'Inter',sans-serif;
+  font-size:0.7rem;
+  font-weight:500;
+  letter-spacing:0.32em;
+  text-transform:uppercase;
+  color:var(--gold);
+  display:inline-block;
+}
+
+.eyebrow::before{
+  content:'';
+  display:inline-block;
+  width:32px;
+  height:1px;
+  background:var(--gold);
+  vertical-align:middle;
+  margin-right:14px;
+  transform:translateY(-2px);
+}
+
+/* ============== SCROLL PROGRESS ============== */
+.scroll-progress{
+  position:fixed;
+  top:0;
+  left:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-bright));
+  width:0%;
+  z-index:1100;
+  transition:width 0.1s ease;
+  box-shadow:0 0 12px rgba(201,169,97,0.5);
+}
+
+/* ============== NAV ============== */
+nav{
+  position:fixed;
+  top:0;
+  width:100%;
+  z-index:1000;
+  padding:1.4rem 3rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:rgba(10,22,32,0);
+  transition:background 0.5s ease,padding 0.5s ease,backdrop-filter 0.5s ease;
+}
+
+nav.scrolled{
+  background:rgba(10,22,32,0.85);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  padding:0.9rem 3rem;
+  border-bottom:1px solid var(--line);
+}
+
+.brand{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.3rem;
+  font-weight:500;
+  color:var(--cream);
+  text-decoration:none;
+  letter-spacing:0.04em;
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.brand-mark{
+  width:34px;
+  height:34px;
+  border:1px solid var(--gold);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  transition:transform 0.6s ease;
+}
+
+.brand-mark::after{
+  content:'';
+  position:absolute;
+  inset:5px;
+  border-radius:50%;
+  background:var(--gold);
+  opacity:0.85;
+}
+
+.brand:hover .brand-mark{transform:rotate(180deg)}
+
+.brand small{
+  display:block;
+  font-family:'Inter',sans-serif;
+  font-size:0.6rem;
+  font-weight:400;
+  letter-spacing:0.28em;
+  text-transform:uppercase;
+  color:var(--mist);
+  margin-top:2px;
+}
+
+.nav-links{
+  display:flex;
+  gap:2.4rem;
+  align-items:center;
+  list-style:none;
+}
+
+.nav-links a{
+  color:var(--cream);
+  text-decoration:none;
+  font-size:0.78rem;
+  font-weight:400;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  position:relative;
+  padding:6px 0;
+  transition:color 0.3s ease;
+}
+
+.nav-links a::after{
+  content:'';
+  position:absolute;
+  left:50%;
+  bottom:0;
+  width:0;
+  height:1px;
+  background:var(--gold);
+  transition:all 0.4s ease;
+  transform:translateX(-50%);
+}
+
+.nav-links a:hover{color:var(--gold-bright)}
+.nav-links a:hover::after{width:100%}
+
+.lt{display:flex;gap:4px;align-items:center}
+.lt button{
+  background:transparent;
+  border:1px solid var(--line);
+  color:var(--mist);
+  font-family:'Inter',sans-serif;
+  font-size:0.65rem;
+  font-weight:600;
+  letter-spacing:0.15em;
+  padding:6px 11px;
+  cursor:pointer;
+  transition:all 0.3s ease;
+  border-radius:2px;
+}
+.lt button.on{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.lt button:hover:not(.on){border-color:var(--gold);color:var(--gold)}
+
+.menu-btn{display:none;background:none;border:none;cursor:pointer;padding:8px;color:var(--cream)}
+.menu-btn span{display:block;width:22px;height:1px;background:var(--cream);margin:5px 0;transition:all 0.3s ease}
+
+/* ============== HERO ============== */
+.hero{
+  min-height:100vh;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  overflow:hidden;
+  padding:8rem 2rem 4rem;
+}
+
+.hero-bg{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background-image:
+    linear-gradient(180deg,rgba(10,22,32,0.55) 0%,rgba(10,22,32,0.7) 60%,rgba(10,22,32,0.95) 100%),
+    url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=2400&q=85');
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+  transform:scale(1.08);
+  animation:slowZoom 24s ease-in-out infinite alternate;
+  will-change:transform;
+}
+
+@keyframes slowZoom{
+  0%{transform:scale(1.08) translateY(0)}
+  100%{transform:scale(1.18) translateY(-2%)}
+}
+
+.hero-grain{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  opacity:0.35;
+  pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
+}
+
+.hero-inner{
+  position:relative;
+  z-index:3;
+  max-width:1100px;
+}
+
+.hero-eyebrow{
+  opacity:0;
+  animation:fadeUp 1.4s ease 0.4s forwards;
+}
+
+.hero h1{
+  font-size:clamp(3.5rem,11vw,9rem);
+  color:var(--ivory);
+  font-weight:300;
+  letter-spacing:0.02em;
+  line-height:1.05;
+  margin:1.5rem 0 1.5rem;
+}
+
+.hero h1 .letter{
+  display:inline-block;
+  opacity:0;
+  transform:translateY(80px) rotateX(60deg);
+  animation:letterIn 1.2s cubic-bezier(.2,.7,.3,1) forwards;
+}
+
+@keyframes letterIn{
+  to{opacity:1;transform:translateY(0) rotateX(0)}
+}
+
+.hero h1 em{
+  font-style:italic;
+  font-weight:300;
+  color:var(--gold-bright);
+  display:block;
+  font-size:0.55em;
+  margin-top:0.4em;
+  letter-spacing:0.04em;
+  opacity:0;
+  animation:fadeUp 1.4s ease 1.8s forwards;
+}
+
+.hero-tagline{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:clamp(1.05rem,2vw,1.4rem);
+  color:var(--mist);
+  max-width:640px;
+  margin:0 auto 2.6rem;
+  font-weight:300;
+  opacity:0;
+  animation:fadeUp 1.4s ease 2.2s forwards;
+}
+
+.hero-divider{
+  width:1px;
+  height:60px;
+  background:linear-gradient(180deg,transparent,var(--gold),transparent);
+  margin:0 auto 2.4rem;
+  opacity:0;
+  animation:dividerGrow 1.4s ease 2.6s forwards;
+}
+
+@keyframes dividerGrow{
+  from{height:0;opacity:0}
+  to{height:60px;opacity:1}
+}
+
+.hero-meta{
+  display:flex;
+  gap:3rem;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  font-size:0.72rem;
+  letter-spacing:0.28em;
+  text-transform:uppercase;
+  color:var(--whisper);
+  opacity:0;
+  animation:fadeUp 1.4s ease 3s forwards;
+}
+
+.hero-meta span{position:relative}
+.hero-meta span:not(:last-child)::after{
+  content:'';
+  position:absolute;
+  right:-1.5rem;
+  top:50%;
+  width:4px;
+  height:4px;
+  background:var(--gold);
+  border-radius:50%;
+  transform:translateY(-50%);
+}
+
+.scroll-cue{
+  position:absolute;
+  bottom:3rem;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:3;
+  font-size:0.62rem;
+  letter-spacing:0.32em;
+  text-transform:uppercase;
+  color:var(--whisper);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+  opacity:0;
+  animation:fadeUp 1.4s ease 3.4s forwards;
+}
+
+.scroll-cue::after{
+  content:'';
+  width:1px;
+  height:48px;
+  background:var(--whisper);
+  position:relative;
+  overflow:hidden;
+  animation:scrollDot 2.4s ease infinite;
+}
+
+@keyframes scrollDot{
+  0%{transform:scaleY(0);transform-origin:top}
+  50%{transform:scaleY(1);transform-origin:top}
+  51%{transform-origin:bottom}
+  100%{transform:scaleY(0);transform-origin:bottom}
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Floating ornaments */
+.ornament{
+  position:absolute;
+  pointer-events:none;
+  z-index:2;
+  opacity:0;
+  animation:floatIn 2s ease 1.6s forwards,float 9s ease-in-out infinite 3.6s;
+}
+
+.ornament svg{display:block}
+
+.ornament.left{top:18%;left:6%;width:90px;animation-delay:1.6s,3.6s}
+.ornament.right{top:24%;right:6%;width:90px;animation-delay:1.8s,3.8s;animation-duration:2s,11s}
+.ornament.bottom-left{bottom:18%;left:8%;width:60px;animation-delay:2s,4s;animation-duration:2s,8s}
+.ornament.bottom-right{bottom:22%;right:9%;width:60px;animation-delay:2.2s,4.2s;animation-duration:2s,10s}
+
+@keyframes floatIn{
+  to{opacity:0.5}
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(-18px) rotate(8deg)}
+}
+
+@media (max-width:700px){
+  .ornament{display:none}
+}
+
+/* ============== SECTIONS GENERAL ============== */
+section{
+  position:relative;
+  padding:9rem 2rem;
+}
+
+.wrap{max-width:1180px;margin:0 auto}
+.wrap-narrow{max-width:760px;margin:0 auto}
+
+.section-header{
+  text-align:center;
+  margin-bottom:5rem;
+}
+
+.section-header h2{
+  font-size:clamp(2.5rem,5.5vw,4.6rem);
+  color:var(--ivory);
+  margin-top:1.4rem;
+  font-weight:400;
+}
+
+.section-header h2 em{
+  font-style:italic;
+  color:var(--gold-bright);
+  font-weight:300;
+}
+
+.section-header p{
+  margin-top:1.6rem;
+  color:var(--mist);
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.25rem;
+  font-style:italic;
+  max-width:600px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* ============== REVEAL ANIMATIONS ============== */
+.reveal{opacity:0;transform:translateY(50px);transition:all 1.2s cubic-bezier(.2,.7,.3,1)}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+.reveal-left{opacity:0;transform:translateX(-60px);transition:all 1.2s cubic-bezier(.2,.7,.3,1)}
+.reveal-left.in{opacity:1;transform:translateX(0)}
+
+.reveal-right{opacity:0;transform:translateX(60px);transition:all 1.2s cubic-bezier(.2,.7,.3,1)}
+.reveal-right.in{opacity:1;transform:translateX(0)}
+
+.reveal-scale{opacity:0;transform:scale(0.92);transition:all 1.4s cubic-bezier(.2,.7,.3,1)}
+.reveal-scale.in{opacity:1;transform:scale(1)}
+
+.reveal-clip{
+  clip-path:inset(0 100% 0 0);
+  transition:clip-path 1.6s cubic-bezier(.7,0,.3,1);
+}
+.reveal-clip.in{clip-path:inset(0 0 0 0)}
+
+.reveal-img{
+  position:relative;
+  overflow:hidden;
+}
+.reveal-img img,.reveal-img .img{
+  transform:scale(1.2);
+  transition:transform 2s cubic-bezier(.2,.7,.3,1);
+}
+.reveal-img.in img,.reveal-img.in .img{transform:scale(1)}
+.reveal-img::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:var(--gold);
+  z-index:2;
+  transform-origin:left;
+  transition:transform 1.4s cubic-bezier(.7,0,.3,1);
+}
+.reveal-img.in::before{transform:scaleX(0);transform-origin:right;transition-delay:0.2s}
+
+[data-stagger]{transition-delay:calc(var(--i,0) * 120ms)}
+
+/* ============== INVOCATION SECTION ============== */
+.invocation{
+  background:var(--night);
+  text-align:center;
+  position:relative;
+}
+
+.invocation::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:60%;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--line-strong),transparent);
+}
+
+.invocation-mark{
+  font-family:'Cormorant Garamond',serif;
+  font-size:5rem;
+  color:var(--gold);
+  line-height:0;
+  display:inline-block;
+  margin-bottom:2rem;
+  font-style:italic;
+  opacity:0.6;
+}
+
+.invocation blockquote{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.6rem,3.4vw,2.6rem);
+  font-style:italic;
+  font-weight:300;
+  color:var(--ivory);
+  line-height:1.45;
+  max-width:900px;
+  margin:0 auto 2rem;
+}
+
+.invocation cite{
+  font-style:normal;
+  font-size:0.74rem;
+  letter-spacing:0.3em;
+  text-transform:uppercase;
+  color:var(--gold);
+  font-family:'Inter',sans-serif;
+}
+
+/* ============== STORY / VISION ============== */
+.story{
+  background:linear-gradient(180deg,var(--night) 0%,var(--night2) 100%);
+}
+
+.story-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6rem;
+  align-items:center;
+}
+
+.story-img{
+  position:relative;
+  aspect-ratio:4/5;
+  overflow:hidden;
+  border-radius:2px;
+}
+
+.story-img .img{
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  width:100%;
+  height:100%;
+}
+
+.story-img-1 .img{
+  background-image:url('https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1400&q=85');
+}
+
+.story-img::after{
+  content:'';
+  position:absolute;
+  bottom:-22px;
+  right:-22px;
+  width:100%;
+  height:100%;
+  border:1px solid var(--gold);
+  z-index:-1;
+  border-radius:2px;
+}
+
+.story-text h3{
+  font-size:clamp(2.2rem,4vw,3.2rem);
+  color:var(--ivory);
+  margin:1.4rem 0 2rem;
+  font-weight:400;
+}
+
+.story-text h3 em{
+  color:var(--gold-bright);
+  font-style:italic;
+}
+
+.story-text p{
+  color:var(--mist);
+  margin-bottom:1.4rem;
+  font-size:1.02rem;
+}
+
+.lead{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.4rem;
+  color:var(--ivory);
+  font-style:italic;
+  line-height:1.6;
+  font-weight:300;
+}
+
+.signature{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:1.3rem;
+  color:var(--gold);
+  margin-top:2rem;
+  display:block;
+}
+
+.signature::before{
+  content:'';
+  display:block;
+  width:40px;
+  height:1px;
+  background:var(--gold);
+  margin-bottom:14px;
+}
+
+/* ============== STATS / NUMBERS ============== */
+.figures{
+  background:var(--ink);
+  padding:6rem 2rem;
+  position:relative;
+  overflow:hidden;
+}
+
+.figures::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background-image:url('https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=2000&q=85');
+  background-size:cover;
+  background-position:center;
+  opacity:0.08;
+  filter:saturate(0.7);
+}
+
+.figures-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:2rem;
+  position:relative;
+  z-index:2;
+}
+
+.figure{
+  text-align:center;
+  padding:2rem 1rem;
+  border-left:1px solid var(--line);
+  position:relative;
+}
+
+.figure:first-child{border-left:none}
+
+.figure-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3rem,6vw,5rem);
+  color:var(--gold-bright);
+  font-weight:400;
+  line-height:1;
+  display:block;
+  margin-bottom:1rem;
+}
+
+.figure-num sub{
+  font-size:0.4em;
+  color:var(--gold);
+  vertical-align:baseline;
+  margin-left:4px;
+}
+
+.figure-label{
+  font-size:0.7rem;
+  letter-spacing:0.28em;
+  text-transform:uppercase;
+  color:var(--mist);
+  font-weight:500;
+}
+
+/* ============== ATARI - VILLAGE PROFILE ============== */
+.village{
+  background:var(--night);
+  position:relative;
+}
+
+.village-hero{
+  position:relative;
+  height:55vh;
+  min-height:420px;
+  margin:-9rem -2rem 5rem;
+  overflow:hidden;
+}
+
+.village-hero-bg{
+  position:absolute;
+  inset:0;
+  background-image:
+    linear-gradient(180deg,rgba(10,22,32,0.35) 0%,rgba(10,22,32,0.85) 100%),
+    url('https://images.unsplash.com/photo-1518002171953-a080ee817e1f?auto=format&fit=crop&w=2400&q=85');
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+}
+
+.village-hero-content{
+  position:absolute;
+  bottom:3rem;
+  left:50%;
+  transform:translateX(-50%);
+  text-align:center;
+  width:90%;
+  max-width:900px;
+}
+
+.village-hero-content .eyebrow{color:var(--gold-bright)}
+.village-hero-content h2{
+  font-size:clamp(2.6rem,6vw,5rem);
+  color:var(--ivory);
+  margin-top:1rem;
+}
+
+.village-grid{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:5rem;
+  align-items:start;
+}
+
+.village-card{
+  border:1px solid var(--line);
+  padding:3rem;
+  background:rgba(15,32,48,0.4);
+  position:relative;
+  transition:all 0.6s ease;
+}
+
+.village-card:hover{
+  border-color:var(--line-strong);
+  transform:translateY(-4px);
+  background:rgba(15,32,48,0.6);
+}
+
+.village-card h4{
+  font-size:1.7rem;
+  color:var(--ivory);
+  margin-bottom:1.2rem;
+}
+
+.village-card p{color:var(--mist);font-size:0.96rem}
+
+.village-card + .village-card{margin-top:1.5rem}
+
+.facts{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:1.4rem;
+}
+
+.fact{
+  display:flex;
+  gap:1.4rem;
+  padding-bottom:1.4rem;
+  border-bottom:1px solid var(--line);
+}
+
+.fact:last-child{border-bottom:none;padding-bottom:0}
+
+.fact-icon{
+  flex-shrink:0;
+  width:44px;
+  height:44px;
+  border:1px solid var(--gold);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--gold);
+}
+
+.fact-icon svg{width:20px;height:20px}
+
+.fact-text strong{
+  display:block;
+  color:var(--ivory);
+  font-weight:500;
+  font-size:0.95rem;
+  margin-bottom:4px;
+}
+
+.fact-text span{
+  color:var(--mist);
+  font-size:0.88rem;
+}
+
+/* ============== HERITAGE / CULTURE GRID ============== */
+.heritage{
+  background:linear-gradient(180deg,var(--night) 0%,var(--ink) 100%);
+}
+
+.heritage-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;
+}
+
+.h-card{
+  position:relative;
+  aspect-ratio:3/4;
+  overflow:hidden;
+  cursor:pointer;
+  border-radius:2px;
+}
+
+.h-card-bg{
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  transition:transform 1.4s cubic-bezier(.2,.7,.3,1);
+}
+
+.h-card:hover .h-card-bg{transform:scale(1.1)}
+
+.h-card::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,rgba(10,22,32,0.1) 0%,rgba(10,22,32,0.3) 50%,rgba(10,22,32,0.95) 100%);
+  transition:opacity 0.6s ease;
+}
+
+.h-card:hover::after{
+  background:linear-gradient(180deg,rgba(10,22,32,0.2) 0%,rgba(10,22,32,0.5) 50%,rgba(10,22,32,0.98) 100%);
+}
+
+.h-card-text{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  padding:2rem;
+  z-index:2;
+  transform:translateY(20px);
+  transition:transform 0.6s ease;
+}
+
+.h-card:hover .h-card-text{transform:translateY(0)}
+
+.h-card-text .num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.85rem;
+  font-style:italic;
+  color:var(--gold);
+  display:block;
+  margin-bottom:8px;
+}
+
+.h-card-text h4{
+  color:var(--ivory);
+  font-size:1.6rem;
+  margin-bottom:10px;
+  font-weight:400;
+}
+
+.h-card-text p{
+  color:var(--mist);
+  font-size:0.9rem;
+  opacity:0;
+  max-height:0;
+  overflow:hidden;
+  transition:all 0.6s ease;
+}
+
+.h-card:hover .h-card-text p{
+  opacity:1;
+  max-height:200px;
+}
+
+.h-card.c1 .h-card-bg{background-image:url('https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1200&q=85')}
+.h-card.c2 .h-card-bg{background-image:url('https://images.unsplash.com/photo-1587474260584-136574528ed5?auto=format&fit=crop&w=1200&q=85')}
+.h-card.c3 .h-card-bg{background-image:url('https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&w=1200&q=85')}
+.h-card.c4 .h-card-bg{background-image:url('https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=1200&q=85')}
+.h-card.c5 .h-card-bg{background-image:url('https://images.unsplash.com/photo-1532375810709-75b1da00537c?auto=format&fit=crop&w=1200&q=85')}
+.h-card.c6 .h-card-bg{background-image:url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=85')}
+
+/* ============== JOURNEY / TIMELINE ============== */
+.journey{
+  background:var(--night);
+  padding-bottom:11rem;
+}
+
+.timeline{
+  position:relative;
+  max-width:880px;
+  margin:0 auto;
+  padding:2rem 0;
+}
+
+.timeline::before{
+  content:'';
+  position:absolute;
+  left:50%;
+  top:0;
+  bottom:0;
+  width:1px;
+  background:linear-gradient(180deg,transparent,var(--line-strong) 8%,var(--line-strong) 92%,transparent);
+  transform:translateX(-50%);
+}
+
+.t-item{
+  position:relative;
+  width:50%;
+  padding:0 3.5rem;
+  margin-bottom:4rem;
+}
+
+.t-item:nth-child(odd){left:0;text-align:right}
+.t-item:nth-child(even){left:50%}
+
+.t-dot{
+  position:absolute;
+  top:8px;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  background:var(--night);
+  border:2px solid var(--gold);
+  z-index:2;
+  transition:all 0.6s ease;
+}
+
+.t-item:nth-child(odd) .t-dot{right:-7px}
+.t-item:nth-child(even) .t-dot{left:-7px}
+
+.t-item.in .t-dot{background:var(--gold);box-shadow:0 0 0 6px rgba(201,169,97,0.18)}
+
+.t-year{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.6rem;
+  font-style:italic;
+  color:var(--gold-bright);
+  font-weight:300;
+  line-height:1;
+  margin-bottom:0.6rem;
+}
+
+.t-place{
+  font-size:0.7rem;
+  letter-spacing:0.28em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:1rem;
+  display:block;
+}
+
+.t-item h4{
+  font-size:1.5rem;
+  color:var(--ivory);
+  margin-bottom:0.8rem;
+  font-weight:400;
+}
+
+.t-item p{color:var(--mist);font-size:0.96rem}
+
+/* ============== GALLERY ============== */
+.gallery-section{
+  background:var(--ink);
+  padding-bottom:11rem;
+}
+
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  grid-auto-rows:120px;
+  gap:1rem;
+  margin-top:3rem;
+}
+
+.g-item{
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+  border-radius:2px;
+}
+
+.g-item .g-bg{
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  transition:transform 1.4s cubic-bezier(.2,.7,.3,1),filter 0.6s ease;
+  filter:saturate(0.85) brightness(0.92);
+}
+
+.g-item:hover .g-bg{
+  transform:scale(1.08);
+  filter:saturate(1.15) brightness(1);
+}
+
+.g-item::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  border:1px solid transparent;
+  transition:border-color 0.6s ease;
+  pointer-events:none;
+}
+
+.g-item:hover::after{border-color:var(--gold)}
+
+.g-item-label{
+  position:absolute;
+  bottom:12px;
+  left:14px;
+  right:14px;
+  z-index:3;
+  font-size:0.68rem;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:var(--ivory);
+  opacity:0;
+  transform:translateY(8px);
+  transition:all 0.5s ease;
+  font-family:'Inter',sans-serif;
+  font-weight:500;
+}
+
+.g-item:hover .g-item-label{opacity:1;transform:translateY(0)}
+
+.g-item:nth-child(1){grid-column:span 3;grid-row:span 3}
+.g-item:nth-child(2){grid-column:span 3;grid-row:span 2}
+.g-item:nth-child(3){grid-column:span 2;grid-row:span 2}
+.g-item:nth-child(4){grid-column:span 2;grid-row:span 3}
+.g-item:nth-child(5){grid-column:span 2;grid-row:span 2}
+.g-item:nth-child(6){grid-column:span 3;grid-row:span 2}
+.g-item:nth-child(7){grid-column:span 3;grid-row:span 2}
+
+.g1 .g-bg{background-image:url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1400&q=85')}
+.g2 .g-bg{background-image:url('https://images.unsplash.com/photo-1605521413853-2eea9f0b6e23?auto=format&fit=crop&w=1200&q=85')}
+.g3 .g-bg{background-image:url('https://images.unsplash.com/photo-1532375810709-75b1da00537c?auto=format&fit=crop&w=1200&q=85')}
+.g4 .g-bg{background-image:url('https://images.unsplash.com/photo-1582550945154-66c1c44b7d59?auto=format&fit=crop&w=1200&q=85')}
+.g5 .g-bg{background-image:url('https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=1200&q=85')}
+.g6 .g-bg{background-image:url('https://images.unsplash.com/photo-1518002171953-a080ee817e1f?auto=format&fit=crop&w=1400&q=85')}
+.g7 .g-bg{background-image:url('https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=1400&q=85')}
+
+/* ============== MISSION / DONATION ============== */
+.mission{
+  background:linear-gradient(180deg,var(--ink) 0%,var(--night) 100%);
+  position:relative;
+  overflow:hidden;
+}
+
+.mission::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background-image:url('https://images.unsplash.com/photo-1605649487212-47bdab064df7?auto=format&fit=crop&w=2400&q=85');
+  background-size:cover;
+  background-position:center;
+  opacity:0.08;
+  filter:saturate(0.6);
+}
+
+.mission .wrap{position:relative;z-index:2}
+
+.pillars{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:2rem;
+  margin-top:4rem;
+}
+
+.pillar{
+  text-align:center;
+  padding:3rem 2rem;
+  background:rgba(10,22,32,0.6);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--line);
+  transition:all 0.6s ease;
+  position:relative;
+  overflow:hidden;
+}
+
+.pillar::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  width:0;
+  height:1px;
+  background:var(--gold);
+  transition:width 0.8s ease;
+}
+
+.pillar:hover{
+  border-color:var(--line-strong);
+  transform:translateY(-6px);
+  background:rgba(10,22,32,0.85);
+}
+
+.pillar:hover::before{width:100%}
+
+.pillar-num{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:0.9rem;
+  color:var(--gold);
+  display:block;
+  margin-bottom:1.6rem;
+  letter-spacing:0.15em;
+}
+
+.pillar-icon{
+  width:64px;
+  height:64px;
+  margin:0 auto 1.6rem;
+  border:1px solid var(--gold);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--gold);
+  transition:all 0.6s ease;
+}
+
+.pillar:hover .pillar-icon{
+  transform:rotate(360deg);
+  background:var(--gold);
+  color:var(--ink);
+}
+
+.pillar-icon svg{width:26px;height:26px}
+
+.pillar h4{
+  font-size:1.5rem;
+  color:var(--ivory);
+  margin-bottom:1rem;
+  font-weight:400;
+}
+
+.pillar p{
+  color:var(--mist);
+  font-size:0.94rem;
+}
+
+/* ============== QUOTE / CALLOUT ============== */
+.callout{
+  background:var(--ink);
+  padding:8rem 2rem;
+  text-align:center;
+  position:relative;
+}
+
+.callout-inner{
+  max-width:900px;
+  margin:0 auto;
+}
+
+.callout-mark{
+  font-family:'Cormorant Garamond',serif;
+  font-size:6rem;
+  color:var(--gold);
+  line-height:0;
+  display:inline-block;
+  margin-bottom:2rem;
+  opacity:0.4;
+}
+
+.callout p{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-weight:300;
+  font-size:clamp(1.4rem,3vw,2.2rem);
+  color:var(--ivory);
+  line-height:1.5;
+  margin-bottom:2rem;
+}
+
+.callout-line{
+  width:80px;
+  height:1px;
+  background:var(--gold);
+  margin:0 auto 1.4rem;
+}
+
+/* ============== CONNECT / CONTACT ============== */
+.connect{
+  background:var(--night);
+}
+
+.connect-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5rem;
+  align-items:center;
+}
+
+.connect-img{
+  position:relative;
+  aspect-ratio:1;
+  overflow:hidden;
+}
+
+.connect-img .img{
+  position:absolute;
+  inset:0;
+  background-image:url('https://images.unsplash.com/photo-1563288687-0f1e80b41fda?auto=format&fit=crop&w=1400&q=85');
+  background-size:cover;
+  background-position:center;
+}
+
+.connect-img::before{
+  content:'';
+  position:absolute;
+  bottom:-22px;
+  left:-22px;
+  width:100%;
+  height:100%;
+  border:1px solid var(--gold);
+  z-index:-1;
+}
+
+.connect-text h3{
+  font-size:clamp(2.2rem,4vw,3.4rem);
+  color:var(--ivory);
+  margin:1.4rem 0 1.6rem;
+}
+
+.connect-text h3 em{color:var(--gold-bright);font-style:italic}
+
+.connect-text > p{
+  color:var(--mist);
+  margin-bottom:2.4rem;
+  font-size:1.02rem;
+}
+
+.contact-list{
+  list-style:none;
+  margin-bottom:2.4rem;
+}
+
+.contact-list li{
+  display:flex;
+  gap:1.4rem;
+  align-items:center;
+  padding:1.2rem 0;
+  border-bottom:1px solid var(--line);
+}
+
+.contact-list li:last-child{border-bottom:none}
+
+.contact-list .ic{
+  width:40px;
+  height:40px;
+  border:1px solid var(--gold);
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--gold);
+  flex-shrink:0;
+  transition:all 0.4s ease;
+}
+
+.contact-list li:hover .ic{background:var(--gold);color:var(--ink)}
+
+.contact-list .ic svg{width:16px;height:16px}
+
+.contact-list .lbl{
+  font-size:0.65rem;
+  letter-spacing:0.28em;
+  text-transform:uppercase;
+  color:var(--whisper);
+  display:block;
+  margin-bottom:4px;
+}
+
+.contact-list .val{
+  color:var(--ivory);
+  font-size:0.96rem;
+  text-decoration:none;
+  transition:color 0.3s ease;
+}
+
+.contact-list a.val:hover{color:var(--gold-bright)}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:14px;
+  padding:1.1rem 2.4rem;
+  background:transparent;
+  border:1px solid var(--gold);
+  color:var(--gold);
+  text-decoration:none;
+  font-family:'Inter',sans-serif;
+  font-size:0.74rem;
+  font-weight:600;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:all 0.5s ease;
+  position:relative;
+  overflow:hidden;
+}
+
+.btn::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:var(--gold);
+  transform:translateX(-101%);
+  transition:transform 0.5s ease;
+  z-index:0;
+}
+
+.btn:hover::before{transform:translateX(0)}
+.btn:hover{color:var(--ink)}
+.btn span,.btn svg{position:relative;z-index:2}
+
+.btn svg{width:14px;height:14px;transition:transform 0.4s ease}
+.btn:hover svg{transform:translateX(4px)}
+
+/* ============== FOOTER ============== */
+footer{
+  background:var(--ink);
+  padding:5rem 2rem 3rem;
+  text-align:center;
+  border-top:1px solid var(--line);
+  position:relative;
+}
+
+.foot-mark{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2rem;
+  color:var(--gold);
+  font-style:italic;
+  margin-bottom:1rem;
+  letter-spacing:0.04em;
+}
+
+.foot-mark::before,.foot-mark::after{
+  content:'·';
+  margin:0 14px;
+  opacity:0.5;
+}
+
+footer p{
+  color:var(--mist);
+  font-size:0.86rem;
+  margin-bottom:0.5rem;
+  max-width:540px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.foot-line{
+  width:60px;
+  height:1px;
+  background:var(--gold);
+  margin:2.4rem auto 1.6rem;
+}
+
+.foot-meta{
+  font-size:0.7rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--whisper);
+}
+
+.foot-meta a{
+  color:var(--gold);
+  text-decoration:none;
+  transition:color 0.3s ease;
+}
+
+.foot-meta a:hover{color:var(--gold-bright)}
+
+/* ============== MOBILE ============== */
+@media (max-width:900px){
+  .figures-grid{grid-template-columns:repeat(2,1fr)}
+  .figure{border-left:none}
+  .figure:nth-child(odd){border-right:1px solid var(--line)}
+  .heritage-grid{grid-template-columns:repeat(2,1fr)}
+  .pillars{grid-template-columns:1fr;gap:1.4rem}
+  .gallery{grid-template-columns:repeat(4,1fr);grid-auto-rows:100px}
+  .g-item:nth-child(1){grid-column:span 4;grid-row:span 3}
+  .g-item:nth-child(2){grid-column:span 2;grid-row:span 2}
+  .g-item:nth-child(3){grid-column:span 2;grid-row:span 2}
+  .g-item:nth-child(4){grid-column:span 2;grid-row:span 2}
+  .g-item:nth-child(5){grid-column:span 2;grid-row:span 2}
+  .g-item:nth-child(6){grid-column:span 4;grid-row:span 2}
+  .g-item:nth-child(7){grid-column:span 4;grid-row:span 2}
+}
+
+@media (max-width:700px){
+  nav{padding:1rem 1.25rem}
+  nav.scrolled{padding:0.8rem 1.25rem}
+  .nav-links{display:none}
+  .menu-btn{display:block}
+  .brand{font-size:1.1rem}
+  .brand small{display:none}
+  section{padding:6rem 1.4rem}
+  .hero{padding:7rem 1.4rem 4rem;background-attachment:scroll}
+  .hero-bg{background-attachment:scroll}
+  .hero-meta{gap:1.4rem;font-size:0.65rem}
+  .hero-meta span:not(:last-child)::after{right:-0.7rem}
+  .scroll-cue{bottom:1.6rem}
+  .story-grid{grid-template-columns:1fr;gap:3rem}
+  .village-hero{margin:-6rem -1.4rem 4rem;height:50vh;min-height:340px}
+  .village-hero-bg{background-attachment:scroll}
+  .village-grid{grid-template-columns:1fr;gap:2rem}
+  .village-card{padding:2rem 1.6rem}
+  .heritage-grid{grid-template-columns:1fr;gap:1rem}
+  .timeline::before{left:14px}
+  .t-item{width:100%;left:0!important;padding:0 0 0 3rem;text-align:left!important}
+  .t-item .t-dot{left:7px!important;right:auto!important}
+  .gallery{grid-template-columns:repeat(2,1fr);grid-auto-rows:140px}
+  .g-item:nth-child(1){grid-column:span 2;grid-row:span 2}
+  .g-item:nth-child(2){grid-column:span 1;grid-row:span 2}
+  .g-item:nth-child(3){grid-column:span 1;grid-row:span 2}
+  .g-item:nth-child(4){grid-column:span 2;grid-row:span 2}
+  .g-item:nth-child(5){grid-column:span 1;grid-row:span 2}
+  .g-item:nth-child(6){grid-column:span 1;grid-row:span 2}
+  .g-item:nth-child(7){grid-column:span 2;grid-row:span 2}
+  .figures::before{background-attachment:scroll}
+  .mission::before{background-attachment:scroll}
+  .connect-grid{grid-template-columns:1fr;gap:3rem}
+  .connect-img::before{display:none}
+  .section-header{margin-bottom:3rem}
+  .figures{padding:5rem 1.4rem}
+  .callout{padding:5rem 1.4rem}
+  .figure{padding:1.4rem 0.6rem;border-right:none!important}
+  .figure-num{font-size:2.6rem}
+}
+
+/* Mobile menu drawer */
+.drawer{
+  position:fixed;
+  top:0;
+  right:-100%;
+  width:80%;
+  max-width:340px;
+  height:100vh;
+  background:var(--ink);
+  z-index:1200;
+  padding:6rem 2rem 2rem;
+  transition:right 0.5s cubic-bezier(.2,.7,.3,1);
+  border-left:1px solid var(--line);
+}
+
+.drawer.open{right:0}
+
+.drawer ul{list-style:none;display:flex;flex-direction:column;gap:1.6rem}
+
+.drawer a{
+  color:var(--cream);
+  text-decoration:none;
+  font-size:0.85rem;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  padding:8px 0;
+  border-bottom:1px solid var(--line);
+  display:block;
+}
+
+.drawer-close{
+  position:absolute;
+  top:80px;
+  right:24px;
+  background:none;
+  border:none;
+  color:var(--cream);
+  cursor:pointer;
+  font-size:1.5rem;
+}
+
+.drawer-lt{margin-top:2rem;display:flex;gap:6px}
+
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(6,16,26,0.7);
+  z-index:1100;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.4s ease;
+}
+
+.overlay.show{opacity:1;pointer-events:all}
+
+</style>
+</head>
+<body>
+
+<!-- SCROLL PROGRESS -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="brand">
+    <span class="brand-mark"></span>
+    <span>
+      <span id="brandName">Attari Heritage Project</span>
+      <small id="brandSub">Of the Sidhu Line · Since 1740</small>
+    </span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#story" id="navStory">The Story</a></li>
+    <li><a href="#village" id="navVillage">The Village</a></li>
+    <li><a href="#heritage" id="navHeritage">Heritage</a></li>
+    <li><a href="#mission" id="navMission">Mission</a></li>
+    <li><a href="#connect" id="navConnect">Connect</a></li>
+  </ul>
+  <div class="lt">
+    <button class="on" onclick="sL('en')">EN</button>
+    <button onclick="sL('pa')" lang="pa">ਪੰਜਾਬੀ</button>
+  </div>
+  <button class="menu-btn" onclick="openDrawer()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE DRAWER -->
+<div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+<aside class="drawer" id="drawer">
+  <button class="drawer-close" onclick="closeDrawer()">×</button>
+  <ul>
+    <li><a href="#story" onclick="closeDrawer()" id="dStory">The Story</a></li>
+    <li><a href="#village" onclick="closeDrawer()" id="dVillage">The Village</a></li>
+    <li><a href="#heritage" onclick="closeDrawer()" id="dHeritage">Heritage</a></li>
+    <li><a href="#mission" onclick="closeDrawer()" id="dMission">Mission</a></li>
+    <li><a href="#connect" onclick="closeDrawer()" id="dConnect">Connect</a></li>
+  </ul>
+  <div class="drawer-lt lt">
+    <button class="on" onclick="sL('en')">English</button>
+    <button onclick="sL('pa')" lang="pa">ਪੰਜਾਬੀ</button>
+  </div>
+</aside>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-grain"></div>
+
+  <div class="ornament left">
+    <svg viewBox="0 0 100 100" fill="none" stroke="#c9a961" stroke-width="0.6">
+      <circle cx="50" cy="50" r="40"/>
+      <circle cx="50" cy="50" r="28"/>
+      <circle cx="50" cy="50" r="16"/>
+      <path d="M50 10 L50 90 M10 50 L90 50 M22 22 L78 78 M22 78 L78 22"/>
+    </svg>
+  </div>
+  <div class="ornament right">
+    <svg viewBox="0 0 100 100" fill="none" stroke="#c9a961" stroke-width="0.6">
+      <path d="M50 5 Q70 30 50 50 Q30 30 50 5 Z M50 95 Q70 70 50 50 Q30 70 50 95 Z M5 50 Q30 30 50 50 Q30 70 5 50 Z M95 50 Q70 30 50 50 Q70 70 95 50 Z"/>
+      <circle cx="50" cy="50" r="4" fill="#c9a961"/>
+    </svg>
+  </div>
+  <div class="ornament bottom-left">
+    <svg viewBox="0 0 100 100" fill="none" stroke="#c9a961" stroke-width="0.7">
+      <path d="M50 10 L60 40 L90 50 L60 60 L50 90 L40 60 L10 50 L40 40 Z"/>
+    </svg>
+  </div>
+  <div class="ornament bottom-right">
+    <svg viewBox="0 0 100 100" fill="none" stroke="#c9a961" stroke-width="0.7">
+      <path d="M50 10 L60 40 L90 50 L60 60 L50 90 L40 60 L10 50 L40 40 Z"/>
+    </svg>
+  </div>
+
+  <div class="hero-inner">
+    <span class="eyebrow hero-eyebrow" id="heroEyebrow">A Tribute · Punjab · India</span>
+    <h1>
+      <span id="heroTitle"></span>
+      <em id="heroSubtitle">Daughter of the Border</em>
+    </h1>
+    <p class="hero-tagline" id="heroTagline">A village remembered. A homecoming written in light.</p>
+    <div class="hero-divider"></div>
+    <div class="hero-meta">
+      <span id="heroM1">Punjab, India</span>
+      <span id="heroM2">Founded with Love</span>
+      <span id="heroM3">By Primal Sidhu</span>
+    </div>
+  </div>
+  <div class="scroll-cue" id="scrollCue">Scroll</div>
+</header>
+
+<!-- INVOCATION -->
+<section class="invocation reveal">
+  <div class="wrap-narrow">
+    <div class="invocation-mark">"</div>
+    <blockquote id="invocationText">There are villages a person leaves with their feet. There are villages they never leave at all.</blockquote>
+    <cite id="invocationCite">A Daughter Returning</cite>
+  </div>
+</section>
+
+<!-- STORY / FOUNDER -->
+<section class="story" id="story">
+  <div class="wrap">
+    <div class="story-grid">
+      <div class="story-img reveal-img story-img-1">
+        <div class="img"></div>
+      </div>
+      <div class="story-text">
+        <span class="eyebrow reveal" id="storyEyebrow">The Founder's Letter</span>
+        <h3 class="reveal" id="storyHeading">A patron's <em>love letter</em> to the village her family <em>founded</em>.</h3>
+        <p class="lead reveal" id="storyLead">My name is Primal Sidhu. I was born in Attari, a village my own ancestors built on a green plain three kilometres from the line that now divides India and Pakistan. I left as a teenager. I never stopped belonging to it.</p>
+        <p class="reveal" id="storyP1">Around the year 1740, two Sidhu brothers, Gaur Singh and Kaur Singh, walked north from Ludhiana, took the Khande De Pahul at the Akal Takhat in Amritsar, and at the suggestion of an ascetic named Mool Dass, raised a village on a quiet mound in the Majha. They called it Attari. The village has carried the Sidhu name for nearly three centuries. I carry it still.</p>
+        <p class="reveal" id="storyP2">For decades I have lived in Seattle, half a world from the dust on the road to my grandmother's house. But the road never left me. Every season, every harvest, every face I cannot forget walks back to me from a place I now visit only in memory and in love.</p>
+        <p class="reveal" id="storyP3">This site is a small thing for so vast a feeling. It is a record of a village. It is a promise that as long as I am able, the place my forebears built will not be forgotten by anyone who comes here looking for it. I am not a foundation. I am not a charity. I am one daughter of the Sidhu line, choosing to be the patron her village deserves, alone if she has to be.</p>
+        <span class="signature reveal" id="storySignature">Primal Sidhu, Founder &amp; Patron</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FIGURES -->
+<section class="figures">
+  <div class="wrap">
+    <div class="figures-grid">
+      <div class="figure reveal" style="--i:0">
+        <span class="figure-num"><span class="counter" data-target="1740">0</span></span>
+        <span class="figure-label" id="fig1L">The Year It Was Founded</span>
+      </div>
+      <div class="figure reveal" style="--i:1">
+        <span class="figure-num"><span class="counter" data-target="3">0</span><sub id="fig2U">km</sub></span>
+        <span class="figure-label" id="fig2L">From The Wagah Border</span>
+      </div>
+      <div class="figure reveal" style="--i:2">
+        <span class="figure-num"><span class="counter" data-target="25">0</span><sub id="fig3U">km</sub></span>
+        <span class="figure-label" id="fig3L">West Of Amritsar</span>
+      </div>
+      <div class="figure reveal" style="--i:3">
+        <span class="figure-num">∞</span>
+        <span class="figure-label" id="fig4L">A Debt Of Belonging</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VILLAGE -->
+<section class="village" id="village">
+  <div class="village-hero">
+    <div class="village-hero-bg" id="villageHeroBg"></div>
+    <div class="village-hero-content reveal">
+      <span class="eyebrow" id="villageEyebrow">A Place On The Map</span>
+      <h2 id="villageH" class="reveal-up"><em>Attari</em>, Punjab</h2>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="village-grid">
+      <div>
+        <div class="village-card reveal-left">
+          <span class="eyebrow" id="vc1E">Founded by the Sidhus</span>
+          <h4 id="vc1H">A village raised by two brothers, around 1740.</h4>
+          <p id="vc1P">Attari was founded in roughly 1740 by Gaur Singh and Kaur Singh, two Sidhu Jat brothers who had crossed north from Kaonke in Ludhiana. They took the Khande De Pahul at the Akal Takhat in Amritsar, and on the counsel of a local ascetic named Mool Dass, they raised the village on a quiet earthen mound, a "theh," in the heart of the Majha. The Sidhu name has been folded into Attari ever since.</p>
+        </div>
+        <div class="village-card reveal-left" style="--i:1">
+          <span class="eyebrow" id="vc2E">A General's Hometown</span>
+          <h4 id="vc2H">Attari gave Punjab one of its great soldiers.</h4>
+          <p id="vc2P">The village is the native home of Sardar Sham Singh Attariwala, one of the celebrated generals of Maharaja Ranjit Singh's Sikh Empire. The British, surveying the Majha in the 1860s, called the Sikh Sardars of Attari "the best blood of the Manjha." The reputation was earned in battle, in court, and in the long memory of Punjab.</p>
+        </div>
+        <div class="village-card reveal-left" style="--i:2">
+          <span class="eyebrow" id="vc3E">Land &amp; Harvest</span>
+          <h4 id="vc3H">Wheat and rice on the alluvial plain.</h4>
+          <p id="vc3P">Attari farms the rice-wheat rotation typical of Punjab's fertile soils. Mustard turns the fields gold in February, wheat ripens in April, rice follows the rains. Punjabi is the spoken tongue here, written in Gurmukhi, and the Majhi dialect particular to this stretch of the Amritsar plain still flavours the way the village greets the morning.</p>
+        </div>
+        <div class="village-card reveal-left" style="--i:3">
+          <span class="eyebrow" id="vc4E">A Border, Drawn Overnight</span>
+          <h4 id="vc4H">In 1947, the world moved. Attari did not.</h4>
+          <p id="vc4P">When the Radcliffe Line was published on 17 August 1947, Attari woke up an Indian border village. The neighbouring village of Wagah, once part of the same continuous Punjabi countryside, was placed in Pakistan. Days later, two old army friends, Brigadier Mohinder Singh Chopra of India and Brigadier Nazir Ahmed of Pakistan, met at the line, set down stones in drums, and marked a border with a small swing gate. Attari has lived alongside that gate ever since.</p>
+        </div>
+      </div>
+
+      <div class="reveal-right">
+        <div class="village-card">
+          <span class="eyebrow" id="factsTitle">At A Glance</span>
+          <ul class="facts">
+            <li class="fact">
+              <div class="fact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2 L4 7 L4 17 L12 22 L20 17 L20 7 Z"/><path d="M12 2 L12 22"/></svg>
+              </div>
+              <div class="fact-text">
+                <strong id="f1S">District</strong>
+                <span id="f1V">Amritsar district, Punjab, India</span>
+              </div>
+            </li>
+            <li class="fact">
+              <div class="fact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12 L21 12"/><path d="M12 3 Q16 12 12 21 Q8 12 12 3"/></svg>
+              </div>
+              <div class="fact-text">
+                <strong id="f2S">From The Border</strong>
+                <span id="f2V">3 km from the Wagah crossing</span>
+              </div>
+            </li>
+            <li class="fact">
+              <div class="fact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 21 L3 9 L12 3 L21 9 L21 21 Z"/><path d="M9 21 L9 13 L15 13 L15 21"/></svg>
+              </div>
+              <div class="fact-text">
+                <strong id="f3S">Founded</strong>
+                <span id="f3V">c. 1740, by Gaur Singh and Kaur Singh Sidhu</span>
+              </div>
+            </li>
+            <li class="fact">
+              <div class="fact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2 L15 9 L22 10 L17 15 L18 22 L12 19 L6 22 L7 15 L2 10 L9 9 Z"/></svg>
+              </div>
+              <div class="fact-text">
+                <strong id="f4S">Region</strong>
+                <span id="f4V">The Majha · Grand Trunk Road · NH-1</span>
+              </div>
+            </li>
+            <li class="fact">
+              <div class="fact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6 L20 6 L20 20 L4 20 Z"/><path d="M4 10 L20 10"/><path d="M9 6 L9 4 M15 6 L15 4"/></svg>
+              </div>
+              <div class="fact-text">
+                <strong id="f5S">Faith &amp; Tongue</strong>
+                <span id="f5V">Sikh tradition · Punjabi (Majhi), Gurmukhi script</span>
+              </div>
+            </li>
+            <li class="fact">
+              <div class="fact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 22 C12 22 4 16 4 10 A8 8 0 0 1 20 10 C20 16 12 22 12 22 Z"/><circle cx="12" cy="10" r="3"/></svg>
+              </div>
+              <div class="fact-text">
+                <strong id="f6S">Patron</strong>
+                <span id="f6V">Primal Sidhu · Seattle, USA</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HERITAGE GRID -->
+<section class="heritage" id="heritage">
+  <div class="wrap">
+    <div class="section-header reveal">
+      <span class="eyebrow" id="hE">Heritage &amp; Culture</span>
+      <h2 id="hH">The threads that <em>still hold</em>.</h2>
+      <p id="hP">Six small windows into the world that shaped a girl who would one day, from very far away, decide to take care of it.</p>
+    </div>
+
+    <div class="heritage-grid">
+      <div class="h-card c1 reveal" style="--i:0">
+        <div class="h-card-bg"></div>
+        <div class="h-card-text">
+          <span class="num">01</span>
+          <h4 id="h1H">The Beating Retreat</h4>
+          <p id="h1P">Every evening since 1959, the BSF and the Pakistan Rangers have lowered the flags together at the Wagah-Attari gate. The drill is fierce. The handshake is daily. The dust on both sides is the same dust.</p>
+        </div>
+      </div>
+      <div class="h-card c2 reveal" style="--i:1">
+        <div class="h-card-bg"></div>
+        <div class="h-card-text">
+          <span class="num">02</span>
+          <h4 id="h2H">The Gurdwara &amp; Langar</h4>
+          <p id="h2P">A place of prayer, yes, but also a kitchen, a school, a refuge. The langar feeds anyone who walks through the door, no caste, no faith, no questions. In Attari, this is the rule, not the exception.</p>
+        </div>
+      </div>
+      <div class="h-card c3 reveal" style="--i:2">
+        <div class="h-card-bg"></div>
+        <div class="h-card-text">
+          <span class="num">03</span>
+          <h4 id="h3H">Sham Singh Attariwala</h4>
+          <p id="h3P">The general who fell at Sabraon in 1846, fighting for the Sikh Empire. He was a son of this village. Centuries on, his name is still spoken in Attari with the quiet pride reserved for one's own.</p>
+        </div>
+      </div>
+      <div class="h-card c4 reveal" style="--i:3">
+        <div class="h-card-bg"></div>
+        <div class="h-card-text">
+          <span class="num">04</span>
+          <h4 id="h4H">The Mustard Fields</h4>
+          <p id="h4P">In February the plain turns yellow from horizon to horizon. By April it is green wheat. By August it is rice and rain. The Punjab year is read in colour long before any calendar is consulted.</p>
+        </div>
+      </div>
+      <div class="h-card c5 reveal" style="--i:4">
+        <div class="h-card-bg"></div>
+        <div class="h-card-text">
+          <span class="num">05</span>
+          <h4 id="h5H">Vaisakhi</h4>
+          <p id="h5P">Spring harvest, Sikh new year, all in one day. Nagar kirtan winds through the lanes, gatka swords flash, and the langar pots will not be empty until the last guest is fed. April 13 or 14, every single year.</p>
+        </div>
+      </div>
+      <div class="h-card c6 reveal" style="--i:5">
+        <div class="h-card-bg"></div>
+        <div class="h-card-text">
+          <span class="num">06</span>
+          <h4 id="h6H">Bandi Chhor Divas</h4>
+          <p id="h6P">The Sikh observance that falls on Diwali, marking Guru Hargobind's release from Mughal captivity in 1619. The gurdwara is lit. Pinni and karah prasad are passed around. The fields glow with lamps.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOURNEY -->
+<section class="journey">
+  <div class="wrap">
+    <div class="section-header reveal">
+      <span class="eyebrow" id="jE">Three Centuries Of Attari</span>
+      <h2 id="jH">From <em>1740</em>, to a partition, and <em>home</em> again.</h2>
+      <p id="jP">The Sidhu line, the village, the border, and the daughter who came back to look after all three.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="t-item reveal-right">
+        <span class="t-dot"></span>
+        <div class="t-year">c. 1740</div>
+        <span class="t-place" id="tp1">Founding of Attari</span>
+        <h4 id="t1H">Two brothers raise a village.</h4>
+        <p id="t1P">Gaur Singh and Kaur Singh Sidhu, sons of Chaudhri Kahn Chand of Kaonke, walk north into the Majha. They take the Khande De Pahul at the Akal Takhat in Amritsar and, on the counsel of an ascetic named Mool Dass, raise a village on a quiet earthen mound. They call it Attari. The Sidhu line is rooted in this soil.</p>
+      </div>
+      <div class="t-item reveal-left">
+        <span class="t-dot"></span>
+        <div class="t-year">1846</div>
+        <span class="t-place" id="tp2">The General Falls</span>
+        <h4 id="t2H">Sham Singh Attariwala dies at Sabraon.</h4>
+        <p id="t2P">The Anglo-Sikh Wars come to the village by way of its most famous son. Sardar Sham Singh Attariwala, general of Maharaja Ranjit Singh's army, is killed at the Battle of Sabraon. His name is etched into Attari permanently, the way a wound becomes part of the body.</p>
+      </div>
+      <div class="t-item reveal-right">
+        <span class="t-dot"></span>
+        <div class="t-year">1947</div>
+        <span class="t-place" id="tp3">A Border, Overnight</span>
+        <h4 id="t3H">The Radcliffe Line passes between Attari and Wagah.</h4>
+        <p id="t3P">On 17 August, the new boundary is published. Attari, an interior Punjabi village a moment before, is now a border village. Days later, two old army friends, one Indian, one Pakistani, place stones in drums on the Grand Trunk Road and mark the line with a small swing gate. It is still there.</p>
+      </div>
+      <div class="t-item reveal-left">
+        <span class="t-dot"></span>
+        <div class="t-year">1959</div>
+        <span class="t-place" id="tp4">The Beating Retreat Begins</span>
+        <h4 id="t4H">The flag-lowering ceremony, codified.</h4>
+        <p id="t4P">The BSF and the Pakistan Rangers begin a daily ritual at the gate that will, in time, become one of the most-watched military ceremonies in the world. On Eid and Diwali, the soldiers exchange sweets across the line. They have done so, with interruptions, for more than sixty years.</p>
+      </div>
+      <div class="t-item reveal-right">
+        <span class="t-dot"></span>
+        <div class="t-year">A Childhood</div>
+        <span class="t-place" id="tp5">Attari, In Living Memory</span>
+        <h4 id="t5H">A Sidhu girl grows up at the edge of the country.</h4>
+        <p id="t5P">Primal Sidhu is born and raised in Attari. The village she walks home through every evening is the village her ancestors raised. She leaves as a teenager, the way a great many Punjabi children do, with the village folded carefully into her language and her cooking.</p>
+      </div>
+      <div class="t-item reveal-left">
+        <span class="t-dot"></span>
+        <div class="t-year">Today</div>
+        <span class="t-place" id="tp6">Seattle, To Attari</span>
+        <h4 id="t6H">A patron's decision, made alone.</h4>
+        <p id="t6P">From a city on the other side of the world, the daughter of Attari quietly returns. Not as a foundation. Not as a charity. As one woman of the Sidhu line, choosing to be the patron her village deserves. This site is the public face of that promise.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CALLOUT QUOTE -->
+<section class="callout reveal">
+  <div class="callout-inner">
+    <div class="callout-mark">"</div>
+    <p id="calloutText">If a village raised me, then it is my turn to raise the village. Quietly, patiently, on my own. For as long as I am able.</p>
+    <div class="callout-line"></div>
+    <cite class="eyebrow" id="calloutCite">Primal Sidhu</cite>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section">
+  <div class="wrap">
+    <div class="section-header reveal">
+      <span class="eyebrow" id="gE">A Visual Memory</span>
+      <h2 id="gH">Attari, in <em>colour</em>.</h2>
+      <p id="gP">The fields, the faces, the festivals. Photographs gathered to honour a place still very much alive.</p>
+    </div>
+
+    <div class="gallery">
+      <div class="g-item g1 reveal-scale" style="--i:0">
+        <div class="g-bg"></div>
+        <div class="g-item-label" id="gl1">Mustard fields, late winter</div>
+      </div>
+      <div class="g-item g2 reveal-scale" style="--i:1">
+        <div class="g-bg"></div>
+        <div class="g-item-label" id="gl2">Punjab afternoon</div>
+      </div>
+      <div class="g-item g3 reveal-scale" style="--i:2">
+        <div class="g-bg"></div>
+        <div class="g-item-label" id="gl3">Heritage</div>
+      </div>
+      <div class="g-item g4 reveal-scale" style="--i:3">
+        <div class="g-bg"></div>
+        <div class="g-item-label" id="gl4">Village pathways</div>
+      </div>
+      <div class="g-item g5 reveal-scale" style="--i:4">
+        <div class="g-bg"></div>
+        <div class="g-item-label" id="gl5">Plains and sky</div>
+      </div>
+      <div class="g-item g6 reveal-scale" style="--i:5">
+        <div class="g-bg"></div>
+        <div class="g-item-label" id="gl6">Last light, the fields</div>
+      </div>
+      <div class="g-item g7 reveal-scale" style="--i:6">
+        <div class="g-bg"></div>
+        <div class="g-item-label" id="gl7">A border at dusk</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION -->
+<section class="mission" id="mission">
+  <div class="wrap">
+    <div class="section-header reveal">
+      <span class="eyebrow" id="mE">The Mission</span>
+      <h2 id="mH">A patron's <em>quiet</em> work.</h2>
+      <p id="mP">No board. No fundraising. No campaigns. One person, three commitments, a village.</p>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar reveal" style="--i:0">
+        <span class="pillar-num">i.</span>
+        <div class="pillar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12 L7 7 L12 12 L17 7 L22 12 M2 17 L7 12 L12 17 L17 12 L22 17"/></svg>
+        </div>
+        <h4 id="p1H">To Remember</h4>
+        <p id="p1P">To gather, in one place, the photographs, voices, and small inheritances of a village that has never had a website written in its honour.</p>
+      </div>
+      <div class="pillar reveal" style="--i:1">
+        <span class="pillar-num">ii.</span>
+        <div class="pillar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2 L12 22 M2 12 L22 12"/><circle cx="12" cy="12" r="9"/></svg>
+        </div>
+        <h4 id="p2H">To Sustain</h4>
+        <p id="p2P">To direct private support, in modest, deliberate ways, toward the people and projects of Attari that need it most. Quietly, by hand, with no public fanfare.</p>
+      </div>
+      <div class="pillar reveal" style="--i:2">
+        <span class="pillar-num">iii.</span>
+        <div class="pillar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 12 L21 12 M12 3 L21 12 L12 21"/></svg>
+        </div>
+        <h4 id="p3H">To Pass On</h4>
+        <p id="p3P">To leave behind, for any child of Attari with a question, a record clear enough that they will not have to start their own search from nothing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONNECT -->
+<section class="connect" id="connect">
+  <div class="wrap">
+    <div class="connect-grid">
+      <div class="connect-img reveal-img">
+        <div class="img"></div>
+      </div>
+      <div class="connect-text">
+        <span class="eyebrow reveal" id="cE">Get In Touch</span>
+        <h3 class="reveal" id="cH">If Attari <em>belongs</em> to you too.</h3>
+        <p class="reveal" id="cP">If you grew up here. If your family came from here. If you have a photograph, a name, a memory, a recording, anything at all that belongs to the story of Attari, this site is open to you. Write privately. Send what you have. It will be received with care.</p>
+
+        <ul class="contact-list reveal">
+          <li>
+            <div class="ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7 L12 13 L21 7 M3 7 L3 17 L21 17 L21 7 L3 7 Z"/></svg>
+            </div>
+            <div>
+              <span class="lbl" id="ctl1">Private Email</span>
+              <a class="val" href="mailto:contact@attari-heritage.org">contact@attari-heritage.org</a>
+            </div>
+          </li>
+          <li>
+            <div class="ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22 C12 22 4 16 4 10 A8 8 0 0 1 20 10 C20 16 12 22 12 22 Z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <span class="lbl" id="ctl2">Patron's Residence</span>
+              <span class="val">Seattle, Washington · USA</span>
+            </div>
+          </li>
+          <li>
+            <div class="ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7 L12 12 L16 14"/></svg>
+            </div>
+            <div>
+              <span class="lbl" id="ctl3">Response Time</span>
+              <span class="val" id="ctl3v">Personally, within a few days</span>
+            </div>
+          </li>
+        </ul>
+
+        <a href="mailto:contact@attari-heritage.org" class="btn reveal">
+          <span id="ctaBtn">Write to the Patron</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12 L19 12 M13 6 L19 12 L13 18"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-mark">Attari</div>
+  <p id="footP">A heritage project of one. Founded, funded, and personally maintained by Primal Sidhu, daughter of Attari.</p>
+  <div class="foot-line"></div>
+  <p class="foot-meta">
+    <span id="footYear">© 2026 The Attari Heritage Project</span>
+    &nbsp;·&nbsp;
+    <a href="https://norelo.ca" target="_blank" rel="noopener">Site web réalisé par Norelo</a>
+  </p>
+</footer>
+
+<script>
+
+/* ============== LANGUAGE ============== */
+const T = {
+  en: {
+    brandName: 'Attari Heritage Project',
+    brandSub: 'Of the Sidhu Line · Since 1740',
+    navStory:'The Story', navVillage:'The Village', navHeritage:'Heritage', navMission:'Mission', navConnect:'Connect',
+    dStory:'The Story', dVillage:'The Village', dHeritage:'Heritage', dMission:'Mission', dConnect:'Connect',
+    heroEyebrow: 'A Tribute · Punjab · India',
+    heroSubtitle: 'Daughter of the Border',
+    heroTagline: 'A village remembered. A homecoming written in light.',
+    heroM1: 'Punjab, India',
+    heroM2: 'Founded c. 1740',
+    heroM3: 'By Primal Sidhu',
+    scrollCue: 'Scroll',
+    invocationText: 'There are villages a person leaves with their feet. There are villages they never leave at all.',
+    invocationCite: 'A Daughter Returning',
+    storyEyebrow: "The Founder's Letter",
+    storyHeading: "A patron's <em>love letter</em> to the village her family <em>founded</em>.",
+    storyLead: "My name is Primal Sidhu. I was born in Attari, a village my own ancestors built on a green plain three kilometres from the line that now divides India and Pakistan. I left as a teenager. I never stopped belonging to it.",
+    storyP1: "Around the year 1740, two Sidhu brothers, Gaur Singh and Kaur Singh, walked north from Ludhiana, took the Khande De Pahul at the Akal Takhat in Amritsar, and at the suggestion of an ascetic named Mool Dass, raised a village on a quiet mound in the Majha. They called it Attari. The village has carried the Sidhu name for nearly three centuries. I carry it still.",
+    storyP2: "For decades I have lived in Seattle, half a world from the dust on the road to my grandmother's house. But the road never left me. Every season, every harvest, every face I cannot forget walks back to me from a place I now visit only in memory and in love.",
+    storyP3: "This site is a small thing for so vast a feeling. It is a record of a village. It is a promise that as long as I am able, the place my forebears built will not be forgotten by anyone who comes here looking for it. I am not a foundation. I am not a charity. I am one daughter of the Sidhu line, choosing to be the patron her village deserves, alone if she has to be.",
+    storySignature: "Primal Sidhu, Founder &amp; Patron",
+    fig1L: 'The Year It Was Founded',
+    fig2U: 'km', fig2L: 'From The Wagah Border',
+    fig3U: 'km', fig3L: 'West Of Amritsar',
+    fig4L: 'A Debt Of Belonging',
+    villageEyebrow: 'A Place On The Map',
+    villageH: '<em>Attari</em>, Punjab',
+    vc1E: 'Founded by the Sidhus', vc1H: 'A village raised by two brothers, around 1740.',
+    vc1P: 'Attari was founded in roughly 1740 by Gaur Singh and Kaur Singh, two Sidhu Jat brothers who had crossed north from Kaonke in Ludhiana. They took the Khande De Pahul at the Akal Takhat in Amritsar, and on the counsel of a local ascetic named Mool Dass, they raised the village on a quiet earthen mound, a "theh," in the heart of the Majha. The Sidhu name has been folded into Attari ever since.',
+    vc2E: "A General's Hometown", vc2H: 'Attari gave Punjab one of its great soldiers.',
+    vc2P: 'The village is the native home of Sardar Sham Singh Attariwala, one of the celebrated generals of Maharaja Ranjit Singh\'s Sikh Empire. The British, surveying the Majha in the 1860s, called the Sikh Sardars of Attari "the best blood of the Manjha." The reputation was earned in battle, in court, and in the long memory of Punjab.',
+    vc3E: 'Land &amp; Harvest', vc3H: 'Wheat and rice on the alluvial plain.',
+    vc3P: 'Attari farms the rice-wheat rotation typical of Punjab\'s fertile soils. Mustard turns the fields gold in February, wheat ripens in April, rice follows the rains. Punjabi is the spoken tongue here, written in Gurmukhi, and the Majhi dialect particular to this stretch of the Amritsar plain still flavours the way the village greets the morning.',
+    vc4E: 'A Border, Drawn Overnight', vc4H: 'In 1947, the world moved. Attari did not.',
+    vc4P: 'When the Radcliffe Line was published on 17 August 1947, Attari woke up an Indian border village. The neighbouring village of Wagah, once part of the same continuous Punjabi countryside, was placed in Pakistan. Days later, two old army friends, Brigadier Mohinder Singh Chopra of India and Brigadier Nazir Ahmed of Pakistan, met at the line, set down stones in drums, and marked a border with a small swing gate. Attari has lived alongside that gate ever since.',
+    factsTitle: 'At A Glance',
+    f1S:'District', f1V:'Amritsar district, Punjab, India',
+    f2S:'From The Border', f2V:'3 km from the Wagah crossing',
+    f3S:'Founded', f3V:'c. 1740, by Gaur Singh and Kaur Singh Sidhu',
+    f4S:'Region', f4V:'The Majha · Grand Trunk Road · NH-1',
+    f5S:'Faith &amp; Tongue', f5V:'Sikh tradition · Punjabi (Majhi), Gurmukhi script',
+    f6S:'Patron', f6V:'Primal Sidhu · Seattle, USA',
+    hE: 'Heritage &amp; Culture',
+    hH: 'The threads that <em>still hold</em>.',
+    hP: 'Six small windows into the world that shaped a girl who would one day, from very far away, decide to take care of it.',
+    h1H:'The Beating Retreat', h1P:'Every evening since 1959, the BSF and the Pakistan Rangers have lowered the flags together at the Wagah-Attari gate. The drill is fierce. The handshake is daily. The dust on both sides is the same dust.',
+    h2H:'The Gurdwara &amp; Langar', h2P:'A place of prayer, yes, but also a kitchen, a school, a refuge. The langar feeds anyone who walks through the door, no caste, no faith, no questions. In Attari, this is the rule, not the exception.',
+    h3H:'Sham Singh Attariwala', h3P:'The general who fell at Sabraon in 1846, fighting for the Sikh Empire. He was a son of this village. Centuries on, his name is still spoken in Attari with the quiet pride reserved for one\'s own.',
+    h4H:'The Mustard Fields', h4P:'In February the plain turns yellow from horizon to horizon. By April it is green wheat. By August it is rice and rain. The Punjab year is read in colour long before any calendar is consulted.',
+    h5H:'Vaisakhi', h5P:'Spring harvest, Sikh new year, all in one day. Nagar kirtan winds through the lanes, gatka swords flash, and the langar pots will not be empty until the last guest is fed. April 13 or 14, every single year.',
+    h6H:'Bandi Chhor Divas', h6P:'The Sikh observance that falls on Diwali, marking Guru Hargobind\'s release from Mughal captivity in 1619. The gurdwara is lit. Pinni and karah prasad are passed around. The fields glow with lamps.',
+    jE: 'Three Centuries Of Attari',
+    jH: 'From <em>1740</em>, to a partition, and <em>home</em> again.',
+    jP: 'The Sidhu line, the village, the border, and the daughter who came back to look after all three.',
+    tp1:'Founding of Attari', t1H:'Two brothers raise a village.',
+    t1P:'Gaur Singh and Kaur Singh Sidhu, sons of Chaudhri Kahn Chand of Kaonke, walk north into the Majha. They take the Khande De Pahul at the Akal Takhat in Amritsar and, on the counsel of an ascetic named Mool Dass, raise a village on a quiet earthen mound. They call it Attari. The Sidhu line is rooted in this soil.',
+    tp2:'The General Falls', t2H:'Sham Singh Attariwala dies at Sabraon.',
+    t2P:'The Anglo-Sikh Wars come to the village by way of its most famous son. Sardar Sham Singh Attariwala, general of Maharaja Ranjit Singh\'s army, is killed at the Battle of Sabraon. His name is etched into Attari permanently, the way a wound becomes part of the body.',
+    tp3:'A Border, Overnight', t3H:'The Radcliffe Line passes between Attari and Wagah.',
+    t3P:'On 17 August, the new boundary is published. Attari, an interior Punjabi village a moment before, is now a border village. Days later, two old army friends, one Indian, one Pakistani, place stones in drums on the Grand Trunk Road and mark the line with a small swing gate. It is still there.',
+    tp4:'The Beating Retreat Begins', t4H:'The flag-lowering ceremony, codified.',
+    t4P:'The BSF and the Pakistan Rangers begin a daily ritual at the gate that will, in time, become one of the most-watched military ceremonies in the world. On Eid and Diwali, the soldiers exchange sweets across the line. They have done so, with interruptions, for more than sixty years.',
+    tp5:'Attari, In Living Memory', t5H:'A Sidhu girl grows up at the edge of the country.',
+    t5P:'Primal Sidhu is born and raised in Attari. The village she walks home through every evening is the village her ancestors raised. She leaves as a teenager, the way a great many Punjabi children do, with the village folded carefully into her language and her cooking.',
+    tp6:'Seattle, To Attari', t6H:"A patron's decision, made alone.",
+    t6P:'From a city on the other side of the world, the daughter of Attari quietly returns. Not as a foundation. Not as a charity. As one woman of the Sidhu line, choosing to be the patron her village deserves. This site is the public face of that promise.',
+    calloutText: 'If a village raised me, then it is my turn to raise the village. Quietly, patiently, on my own. For as long as I am able.',
+    calloutCite: 'Primal Sidhu',
+    gE: 'A Visual Memory', gH: 'Attari, in <em>colour</em>.',
+    gP: 'The fields, the faces, the festivals. Photographs gathered to honour a place still very much alive.',
+    gl1:'Mustard fields, late winter', gl2:'Punjab afternoon', gl3:'Heritage', gl4:'Village pathways',
+    gl5:'Plains and sky', gl6:'Last light, the fields', gl7:'A border at dusk',
+    mE: 'The Mission', mH: "A patron's <em>quiet</em> work.",
+    mP: 'No board. No fundraising. No campaigns. One person, three commitments, a village.',
+    p1H:'To Remember', p1P:'To gather, in one place, the photographs, voices, and small inheritances of a village that has carried the Sidhu name for nearly three centuries, and never had a website written in its honour.',
+    p2H:'To Sustain', p2P:'To direct private support, in modest, deliberate ways, toward the people and projects of Attari that need it most. Quietly, by hand, with no public fanfare.',
+    p3H:'To Pass On', p3P:'To leave behind, for any child of Attari with a question, a record clear enough that they will not have to start their own search from nothing.',
+    cE: 'Get In Touch', cH: 'If Attari <em>belongs</em> to you too.',
+    cP: 'If you grew up here. If your family came from here. If you have a photograph, a name, a memory, a recording, anything at all that belongs to the story of Attari, this site is open to you. Write privately. Send what you have. It will be received with care.',
+    ctl1:'Private Email', ctl2:"Patron's Residence", ctl3:'Response Time', ctl3v:'Personally, within a few days',
+    ctaBtn:'Write to the Patron',
+    footP:'A heritage project of one. Founded, funded, and personally maintained by Primal Sidhu, daughter of the Sidhu line that built Attari in 1740.',
+    footYear:'© 2026 The Attari Heritage Project'
+  },
+  pa: {
+    brandName: 'ਅਟਾਰੀ ਵਿਰਾਸਤ ਪ੍ਰੋਜੈਕਟ',
+    brandSub: 'ਸਿੱਧੂ ਵੰਸ਼ ਵੱਲੋਂ · 1740 ਤੋਂ',
+    navStory:'ਕਹਾਣੀ', navVillage:'ਪਿੰਡ', navHeritage:'ਵਿਰਾਸਤ', navMission:'ਮਿਸ਼ਨ', navConnect:'ਸੰਪਰਕ',
+    dStory:'ਕਹਾਣੀ', dVillage:'ਪਿੰਡ', dHeritage:'ਵਿਰਾਸਤ', dMission:'ਮਿਸ਼ਨ', dConnect:'ਸੰਪਰਕ',
+    heroEyebrow: 'ਇੱਕ ਸ਼ਰਧਾਂਜਲੀ · ਪੰਜਾਬ · ਭਾਰਤ',
+    heroSubtitle: 'ਸਰਹੱਦ ਦੀ ਧੀ',
+    heroTagline: 'ਇੱਕ ਪਿੰਡ ਜੋ ਯਾਦ ਹੈ। ਇੱਕ ਘਰ ਵਾਪਸੀ ਜੋ ਚਾਨਣ ਵਿੱਚ ਲਿਖੀ ਗਈ।',
+    heroM1: 'ਪੰਜਾਬ, ਭਾਰਤ',
+    heroM2: 'ਲਗਭਗ 1740 ਵਿੱਚ ਵਸਾਇਆ',
+    heroM3: 'ਪ੍ਰਿਮਲ ਸਿੱਧੂ ਵੱਲੋਂ',
+    scrollCue: 'ਹੇਠਾਂ ਜਾਓ',
+    invocationText: 'ਕੁਝ ਪਿੰਡ ਹਨ ਜੋ ਬੰਦਾ ਆਪਣੇ ਪੈਰਾਂ ਨਾਲ ਛੱਡ ਦਿੰਦਾ ਹੈ। ਕੁਝ ਪਿੰਡ ਹਨ ਜੋ ਉਹ ਕਦੇ ਵੀ ਨਹੀਂ ਛੱਡਦਾ।',
+    invocationCite: 'ਘਰ ਪਰਤਦੀ ਇੱਕ ਧੀ',
+    storyEyebrow: 'ਸੰਸਥਾਪਕ ਦੀ ਚਿੱਠੀ',
+    storyHeading: 'ਉਸ ਪਿੰਡ ਨੂੰ <em>ਪ੍ਰੇਮ ਪੱਤਰ</em> ਜੋ ਉਸਦੇ ਪਰਿਵਾਰ ਨੇ <em>ਵਸਾਇਆ</em> ਸੀ।',
+    storyLead: 'ਮੇਰਾ ਨਾਮ ਪ੍ਰਿਮਲ ਸਿੱਧੂ ਹੈ। ਮੈਂ ਅਟਾਰੀ ਵਿੱਚ ਜਨਮੀ, ਉਹ ਪਿੰਡ ਜੋ ਮੇਰੇ ਆਪਣੇ ਪੁਰਖਿਆਂ ਨੇ ਹਰੀ-ਭਰੀ ਮੈਦਾਨੀ ਜ਼ਮੀਨ ਉੱਤੇ ਵਸਾਇਆ ਸੀ, ਉਸ ਲਕੀਰ ਤੋਂ ਤਿੰਨ ਕਿਲੋਮੀਟਰ ਦੂਰ ਜੋ ਅੱਜ ਭਾਰਤ ਅਤੇ ਪਾਕਿਸਤਾਨ ਨੂੰ ਵੰਡਦੀ ਹੈ। ਮੈਂ ਨੌਜਵਾਨ ਉਮਰ ਵਿੱਚ ਪਿੰਡ ਛੱਡਿਆ। ਪਰ ਮੈਂ ਇਸ ਨਾਲ ਜੁੜੀ ਰਹਿਣਾ ਕਦੇ ਨਹੀਂ ਛੱਡਿਆ।',
+    storyP1: 'ਲਗਭਗ 1740 ਵਿੱਚ, ਦੋ ਸਿੱਧੂ ਭਰਾ, ਗੌਰ ਸਿੰਘ ਅਤੇ ਕੌਰ ਸਿੰਘ, ਲੁਧਿਆਣੇ ਤੋਂ ਉੱਤਰ ਵੱਲ ਤੁਰੇ, ਅੰਮ੍ਰਿਤਸਰ ਦੇ ਅਕਾਲ ਤਖ਼ਤ ਉੱਤੇ ਖੰਡੇ ਦੀ ਪਾਹੁਲ ਛਕੀ, ਅਤੇ ਇੱਕ ਸਾਧੂ ਮੂਲ ਦਾਸ ਦੀ ਸਲਾਹ ਉੱਤੇ, ਮਾਝੇ ਵਿੱਚ ਇੱਕ ਉੱਚੇ ਥੇਹ ਉੱਤੇ ਪਿੰਡ ਵਸਾਇਆ। ਉਨ੍ਹਾਂ ਨੇ ਇਸਦਾ ਨਾਮ ਅਟਾਰੀ ਰੱਖਿਆ। ਪਿੰਡ ਨੇ ਤਿੰਨ ਸਦੀਆਂ ਤੋਂ ਸਿੱਧੂ ਨਾਮ ਨੂੰ ਨਾਲ ਰੱਖਿਆ ਹੈ। ਮੈਂ ਅੱਜ ਵੀ ਉਹ ਨਾਮ ਚੁੱਕਦੀ ਹਾਂ।',
+    storyP2: 'ਦਹਾਕਿਆਂ ਤੋਂ ਮੈਂ ਸੀਐਟਲ ਵਿੱਚ ਰਹਿ ਰਹੀ ਹਾਂ, ਆਪਣੀ ਨਾਨੀ ਦੇ ਘਰ ਜਾਂਦੇ ਰਾਹ ਦੀ ਧੂੜ ਤੋਂ ਅੱਧੀ ਦੁਨੀਆਂ ਦੂਰ। ਪਰ ਉਸ ਰਾਹ ਨੇ ਮੈਨੂੰ ਕਦੇ ਨਹੀਂ ਛੱਡਿਆ। ਹਰ ਮੌਸਮ, ਹਰ ਫ਼ਸਲ, ਹਰ ਚਿਹਰਾ ਜੋ ਮੈਂ ਨਹੀਂ ਭੁੱਲ ਸਕਦੀ, ਉਸ ਥਾਂ ਤੋਂ ਮੇਰੇ ਕੋਲ ਵਾਪਸ ਆਉਂਦਾ ਹੈ ਜਿੱਥੇ ਮੈਂ ਹੁਣ ਸਿਰਫ਼ ਯਾਦ ਅਤੇ ਪਿਆਰ ਵਿੱਚ ਜਾਂਦੀ ਹਾਂ।',
+    storyP3: 'ਏਨੇ ਵੱਡੇ ਅਹਿਸਾਸ ਲਈ ਇਹ ਸਾਈਟ ਛੋਟੀ ਜਿਹੀ ਚੀਜ਼ ਹੈ। ਇਹ ਇੱਕ ਪਿੰਡ ਦਾ ਰਿਕਾਰਡ ਹੈ। ਇਹ ਵਾਅਦਾ ਹੈ ਕਿ ਜਿੰਨੀ ਦੇਰ ਮੈਂ ਯੋਗ ਹਾਂ, ਮੇਰੇ ਪੁਰਖਿਆਂ ਦਾ ਵਸਾਇਆ ਪਿੰਡ ਉਨ੍ਹਾਂ ਲੋਕਾਂ ਵਾਸਤੇ ਨਹੀਂ ਭੁੱਲੇਗਾ ਜੋ ਇਸਨੂੰ ਲੱਭਦੇ ਆਉਣਗੇ। ਮੈਂ ਕੋਈ ਫ਼ਾਊਂਡੇਸ਼ਨ ਨਹੀਂ। ਮੈਂ ਕੋਈ ਚੈਰਿਟੀ ਨਹੀਂ। ਮੈਂ ਸਿੱਧੂ ਵੰਸ਼ ਦੀ ਇੱਕ ਧੀ ਹਾਂ, ਜੋ ਆਪਣੇ ਪਿੰਡ ਦੀ ਉਹ ਸਰਪ੍ਰਸਤ ਬਣਨਾ ਚੁਣ ਰਹੀ ਹੈ ਜਿਸਦੀ ਉਸਨੂੰ ਲੋੜ ਹੈ, ਇਕੱਲੀ ਹੀ ਸਹੀ।',
+    storySignature: 'ਪ੍ਰਿਮਲ ਸਿੱਧੂ, ਸੰਸਥਾਪਕ ਅਤੇ ਸਰਪ੍ਰਸਤ',
+    fig1L: 'ਇਹ ਜਿਸ ਸਾਲ ਵਸਾਇਆ ਗਿਆ',
+    fig2U: 'ਕਿਮੀ', fig2L: 'ਵਾਘਾ ਸਰਹੱਦ ਤੋਂ',
+    fig3U: 'ਕਿਮੀ', fig3L: 'ਅੰਮ੍ਰਿਤਸਰ ਦੇ ਪੱਛਮ',
+    fig4L: 'ਆਪਣੇਪਣ ਦਾ ਕਰਜ਼ਾ',
+    villageEyebrow: 'ਨਕਸ਼ੇ ਉੱਤੇ ਇੱਕ ਥਾਂ',
+    villageH: '<em>ਅਟਾਰੀ</em>, ਪੰਜਾਬ',
+    vc1E: 'ਸਿੱਧੂਆਂ ਨੇ ਵਸਾਇਆ', vc1H: 'ਦੋ ਭਰਾਵਾਂ ਨੇ ਲਗਭਗ 1740 ਵਿੱਚ ਵਸਾਇਆ ਪਿੰਡ।',
+    vc1P: 'ਅਟਾਰੀ ਨੂੰ ਲਗਭਗ 1740 ਵਿੱਚ ਗੌਰ ਸਿੰਘ ਅਤੇ ਕੌਰ ਸਿੰਘ, ਦੋ ਸਿੱਧੂ ਜੱਟ ਭਰਾਵਾਂ ਨੇ ਵਸਾਇਆ ਸੀ, ਜੋ ਲੁਧਿਆਣੇ ਦੇ ਕਾਉਂਕੇ ਪਿੰਡ ਤੋਂ ਉੱਤਰ ਵੱਲ ਆਏ ਸਨ। ਉਨ੍ਹਾਂ ਨੇ ਅੰਮ੍ਰਿਤਸਰ ਦੇ ਅਕਾਲ ਤਖ਼ਤ ਉੱਤੇ ਖੰਡੇ ਦੀ ਪਾਹੁਲ ਛਕੀ, ਅਤੇ ਮੂਲ ਦਾਸ ਨਾਮਕ ਇੱਕ ਸਥਾਨਕ ਸਾਧੂ ਦੀ ਸਲਾਹ ਉੱਤੇ, ਮਾਝੇ ਦੇ ਦਿਲ ਵਿੱਚ ਇੱਕ ਥੇਹ ਉੱਤੇ ਪਿੰਡ ਵਸਾਇਆ। ਉਸ ਦਿਨ ਤੋਂ ਅਟਾਰੀ ਨਾਲ ਸਿੱਧੂ ਨਾਮ ਜੁੜਿਆ ਹੋਇਆ ਹੈ।',
+    vc2E: 'ਇੱਕ ਜਰਨੈਲ ਦਾ ਜੱਦੀ ਪਿੰਡ', vc2H: 'ਅਟਾਰੀ ਨੇ ਪੰਜਾਬ ਨੂੰ ਆਪਣਾ ਮਹਾਨ ਯੋਧਾ ਦਿੱਤਾ।',
+    vc2P: 'ਪਿੰਡ ਸਰਦਾਰ ਸ਼ਾਮ ਸਿੰਘ ਅਟਾਰੀਵਾਲਾ ਦਾ ਜੱਦੀ ਘਰ ਹੈ, ਜੋ ਮਹਾਰਾਜਾ ਰਣਜੀਤ ਸਿੰਘ ਦੀ ਸਿੱਖ ਫੌਜ ਦੇ ਮਸ਼ਹੂਰ ਜਰਨੈਲਾਂ ਵਿੱਚੋਂ ਇੱਕ ਸਨ। 1860ਵਿਆਂ ਵਿੱਚ ਮਾਝੇ ਦਾ ਸਰਵੇਖਣ ਕਰਦੇ ਹੋਏ ਅੰਗਰੇਜ਼ਾਂ ਨੇ ਅਟਾਰੀ ਦੇ ਸਿੱਖ ਸਰਦਾਰਾਂ ਨੂੰ "ਮਾਝੇ ਦਾ ਸਭ ਤੋਂ ਵਧੀਆ ਖੂਨ" ਕਿਹਾ ਸੀ। ਇਹ ਨਾਮ ਜੰਗ ਵਿੱਚ, ਦਰਬਾਰ ਵਿੱਚ, ਅਤੇ ਪੰਜਾਬ ਦੀ ਲੰਮੀ ਯਾਦ ਵਿੱਚ ਕਮਾਇਆ ਗਿਆ।',
+    vc3E: 'ਜ਼ਮੀਨ ਅਤੇ ਫ਼ਸਲ', vc3H: 'ਜਲੋਢ ਮੈਦਾਨ ਉੱਤੇ ਕਣਕ ਅਤੇ ਚਾਵਲ।',
+    vc3P: 'ਅਟਾਰੀ ਪੰਜਾਬ ਦੀ ਉਪਜਾਊ ਮਿੱਟੀ ਦੀ ਆਮ ਚਾਵਲ-ਕਣਕ ਫ਼ਸਲ ਚੱਕਰ ਨਾਲ ਖੇਤੀ ਕਰਦਾ ਹੈ। ਫਰਵਰੀ ਵਿੱਚ ਸਰ੍ਹੋਂ ਖੇਤਾਂ ਨੂੰ ਸੁਨਹਿਰਾ ਕਰ ਦਿੰਦੀ ਹੈ, ਅਪ੍ਰੈਲ ਵਿੱਚ ਕਣਕ ਪੱਕਦੀ ਹੈ, ਮੀਂਹਾਂ ਮਗਰੋਂ ਚਾਵਲ ਆਉਂਦਾ ਹੈ। ਇੱਥੇ ਪੰਜਾਬੀ ਬੋਲੀ ਜਾਂਦੀ ਹੈ, ਗੁਰਮੁਖੀ ਵਿੱਚ ਲਿਖੀ ਜਾਂਦੀ ਹੈ, ਅਤੇ ਅੰਮ੍ਰਿਤਸਰੀ ਮੈਦਾਨ ਦੀ ਮਾਝੀ ਉਪਭਾਸ਼ਾ ਅਜੇ ਵੀ ਪਿੰਡ ਦੀ ਸਵੇਰ ਨੂੰ ਆਪਣੀ ਖ਼ੁਸ਼ਬੂ ਦਿੰਦੀ ਹੈ।',
+    vc4E: 'ਇੱਕ ਰਾਤ ਵਿੱਚ ਖਿੱਚੀ ਸਰਹੱਦ', vc4H: '1947 ਵਿੱਚ ਦੁਨੀਆਂ ਹਿੱਲ ਗਈ। ਅਟਾਰੀ ਨਹੀਂ ਹਿੱਲਿਆ।',
+    vc4P: '17 ਅਗਸਤ 1947 ਨੂੰ ਜਦੋਂ ਰੈਡਕਲਿਫ਼ ਲਾਈਨ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋਈ, ਅਟਾਰੀ ਇੱਕ ਭਾਰਤੀ ਸਰਹੱਦੀ ਪਿੰਡ ਬਣ ਕੇ ਜਾਗਿਆ। ਨੇੜਲਾ ਪਿੰਡ ਵਾਘਾ, ਜੋ ਕਦੇ ਉਸੇ ਅਖੰਡ ਪੰਜਾਬੀ ਪੇਂਡੂ ਮੈਦਾਨ ਦਾ ਹਿੱਸਾ ਸੀ, ਪਾਕਿਸਤਾਨ ਵਿੱਚ ਚਲਾ ਗਿਆ। ਕੁਝ ਦਿਨਾਂ ਬਾਅਦ, ਫੌਜ ਦੇ ਦੋ ਪੁਰਾਣੇ ਦੋਸਤ, ਭਾਰਤ ਦੇ ਬ੍ਰਿਗੇਡੀਅਰ ਮੋਹਿੰਦਰ ਸਿੰਘ ਚੋਪੜਾ ਅਤੇ ਪਾਕਿਸਤਾਨ ਦੇ ਬ੍ਰਿਗੇਡੀਅਰ ਨਜ਼ੀਰ ਅਹਿਮਦ, ਲਾਈਨ ਉੱਤੇ ਮਿਲੇ, ਡਰੰਮਾਂ ਵਿੱਚ ਪੱਥਰ ਰੱਖੇ, ਅਤੇ ਇੱਕ ਛੋਟੇ ਫਾਟਕ ਨਾਲ ਸਰਹੱਦ ਨਿਸ਼ਾਨੀ ਕੀਤੀ। ਅਟਾਰੀ ਉਸ ਫਾਟਕ ਨਾਲ ਉਦੋਂ ਤੋਂ ਨਾਲ-ਨਾਲ ਜੀਅ ਰਿਹਾ ਹੈ।',
+    factsTitle: 'ਇੱਕ ਨਜ਼ਰ ਵਿੱਚ',
+    f1S:'ਜ਼ਿਲ੍ਹਾ', f1V:'ਅੰਮ੍ਰਿਤਸਰ ਜ਼ਿਲ੍ਹਾ, ਪੰਜਾਬ, ਭਾਰਤ',
+    f2S:'ਸਰਹੱਦ ਤੋਂ', f2V:'ਵਾਘਾ ਚੌਕੀ ਤੋਂ 3 ਕਿਲੋਮੀਟਰ',
+    f3S:'ਵਸਾਇਆ', f3V:'ਲਗਭਗ 1740, ਗੌਰ ਸਿੰਘ ਅਤੇ ਕੌਰ ਸਿੰਘ ਸਿੱਧੂ ਵੱਲੋਂ',
+    f4S:'ਖੇਤਰ', f4V:'ਮਾਝਾ · ਜੀ.ਟੀ. ਰੋਡ · ਐਨ.ਐਚ.-1',
+    f5S:'ਧਰਮ ਅਤੇ ਬੋਲੀ', f5V:'ਸਿੱਖ ਪਰੰਪਰਾ · ਪੰਜਾਬੀ (ਮਾਝੀ), ਗੁਰਮੁਖੀ',
+    f6S:'ਸਰਪ੍ਰਸਤ', f6V:'ਪ੍ਰਿਮਲ ਸਿੱਧੂ · ਸੀਐਟਲ, ਅਮਰੀਕਾ',
+    hE: 'ਵਿਰਾਸਤ ਅਤੇ ਸੱਭਿਆਚਾਰ',
+    hH: 'ਉਹ ਧਾਗੇ ਜੋ ਅਜੇ ਵੀ <em>ਜੁੜੇ ਹੋਏ ਹਨ</em>।',
+    hP: 'ਉਸ ਦੁਨੀਆਂ ਦੀਆਂ ਛੇ ਛੋਟੀਆਂ ਖਿੜਕੀਆਂ ਜਿਸਨੇ ਉਸ ਕੁੜੀ ਨੂੰ ਘੜਿਆ ਜੋ ਇੱਕ ਦਿਨ, ਬਹੁਤ ਦੂਰੋਂ, ਇਸਦੀ ਸੰਭਾਲ ਕਰਨ ਦਾ ਫ਼ੈਸਲਾ ਕਰੇਗੀ।',
+    h1H:'ਬੀਟਿੰਗ ਰਿਟ੍ਰੀਟ', h1P:'1959 ਤੋਂ ਹਰ ਸ਼ਾਮ, ਬੀ.ਐਸ.ਐਫ਼. ਅਤੇ ਪਾਕਿਸਤਾਨ ਰੇਂਜਰਜ਼ ਨੇ ਵਾਘਾ-ਅਟਾਰੀ ਫਾਟਕ ਉੱਤੇ ਇਕੱਠੇ ਝੰਡੇ ਉਤਾਰੇ ਹਨ। ਪਰੇਡ ਸਖ਼ਤ ਹੈ। ਹੱਥ ਮਿਲਾਉਣਾ ਰੋਜ਼ਾਨਾ ਹੈ। ਦੋਹਾਂ ਪਾਸਿਆਂ ਦੀ ਧੂੜ ਇੱਕੋ ਧੂੜ ਹੈ।',
+    h2H:'ਗੁਰਦੁਆਰਾ ਅਤੇ ਲੰਗਰ', h2P:'ਅਰਦਾਸ ਦੀ ਥਾਂ, ਹਾਂ, ਪਰ ਇੱਕ ਰਸੋਈ ਵੀ, ਇੱਕ ਸਕੂਲ, ਇੱਕ ਪਨਾਹ। ਲੰਗਰ ਹਰ ਉਸ ਨੂੰ ਖੁਆਉਂਦਾ ਹੈ ਜੋ ਦਰਵਾਜ਼ੇ ਅੰਦਰ ਆਉਂਦਾ ਹੈ, ਜਾਤ ਨਹੀਂ, ਧਰਮ ਨਹੀਂ, ਸਵਾਲ ਨਹੀਂ। ਅਟਾਰੀ ਵਿੱਚ ਇਹ ਨਿਯਮ ਹੈ, ਅਪਵਾਦ ਨਹੀਂ।',
+    h3H:'ਸ਼ਾਮ ਸਿੰਘ ਅਟਾਰੀਵਾਲਾ', h3P:'ਉਹ ਜਰਨੈਲ ਜੋ 1846 ਵਿੱਚ ਸਭਰਾਉਂ ਵਿਖੇ ਸਿੱਖ ਸਾਮਰਾਜ ਲਈ ਲੜਦਿਆਂ ਸ਼ਹੀਦ ਹੋਏ। ਉਹ ਇਸ ਪਿੰਡ ਦੇ ਪੁੱਤਰ ਸਨ। ਸਦੀਆਂ ਬਾਅਦ ਵੀ, ਉਨ੍ਹਾਂ ਦਾ ਨਾਮ ਅਟਾਰੀ ਵਿੱਚ ਉਸ ਚੁੱਪ ਮਾਣ ਨਾਲ ਲਿਆ ਜਾਂਦਾ ਹੈ ਜੋ ਆਪਣੇ ਲਈ ਰਾਖਵਾਂ ਹੁੰਦਾ ਹੈ।',
+    h4H:'ਸਰ੍ਹੋਂ ਦੇ ਖੇਤ', h4P:'ਫਰਵਰੀ ਵਿੱਚ ਮੈਦਾਨ ਖਿਤਿਜ ਤੋਂ ਖਿਤਿਜ ਤੱਕ ਪੀਲਾ ਹੋ ਜਾਂਦਾ ਹੈ। ਅਪ੍ਰੈਲ ਤੱਕ ਇਹ ਹਰੀ ਕਣਕ ਹੈ। ਅਗਸਤ ਤੱਕ ਚਾਵਲ ਅਤੇ ਮੀਂਹ ਹੈ। ਪੰਜਾਬ ਦਾ ਸਾਲ ਕੈਲੰਡਰ ਤੋਂ ਪਹਿਲਾਂ ਰੰਗ ਵਿੱਚ ਪੜ੍ਹਿਆ ਜਾਂਦਾ ਹੈ।',
+    h5H:'ਵਿਸਾਖੀ', h5P:'ਬਹਾਰ ਦੀ ਫ਼ਸਲ, ਸਿੱਖ ਨਵਾਂ ਸਾਲ, ਇੱਕੋ ਦਿਨ ਵਿੱਚ। ਨਗਰ ਕੀਰਤਨ ਗਲੀਆਂ ਵਿੱਚੋਂ ਨਿਕਲਦਾ ਹੈ, ਗਤਕਾ ਦੀਆਂ ਤਲਵਾਰਾਂ ਚਮਕਦੀਆਂ ਹਨ, ਅਤੇ ਲੰਗਰ ਦੀਆਂ ਦੇਗਾਂ ਉਦੋਂ ਤੱਕ ਖਾਲੀ ਨਹੀਂ ਹੁੰਦੀਆਂ ਜਦੋਂ ਤੱਕ ਆਖ਼ਰੀ ਪ੍ਰਾਹੁਣਾ ਖਾ ਨਹੀਂ ਲੈਂਦਾ। 13 ਜਾਂ 14 ਅਪ੍ਰੈਲ, ਹਰ ਇੱਕ ਸਾਲ।',
+    h6H:'ਬੰਦੀ ਛੋੜ ਦਿਵਸ', h6P:'ਸਿੱਖ ਤਿਉਹਾਰ ਜੋ ਦਿਵਾਲੀ ਉੱਤੇ ਆਉਂਦਾ ਹੈ, 1619 ਵਿੱਚ ਗੁਰੂ ਹਰਗੋਬਿੰਦ ਦੀ ਮੁਗ਼ਲ ਕੈਦ ਤੋਂ ਰਿਹਾਈ ਦੀ ਯਾਦ ਵਿੱਚ। ਗੁਰਦੁਆਰਾ ਰੋਸ਼ਨ ਹੁੰਦਾ ਹੈ। ਪਿੰਨੀਆਂ ਅਤੇ ਕੜਾਹ ਪ੍ਰਸ਼ਾਦ ਵੰਡੇ ਜਾਂਦੇ ਹਨ। ਖੇਤ ਦੀਵਿਆਂ ਨਾਲ ਚਮਕਦੇ ਹਨ।',
+    jE: 'ਅਟਾਰੀ ਦੀਆਂ ਤਿੰਨ ਸਦੀਆਂ',
+    jH: '<em>1740</em> ਤੋਂ, ਵੰਡ ਤੱਕ, ਅਤੇ <em>ਘਰ</em> ਵਾਪਸ।',
+    jP: 'ਸਿੱਧੂ ਵੰਸ਼, ਪਿੰਡ, ਸਰਹੱਦ, ਅਤੇ ਉਹ ਧੀ ਜੋ ਤਿੰਨਾਂ ਦੀ ਸੰਭਾਲ ਕਰਨ ਲਈ ਵਾਪਸ ਆਈ।',
+    tp1:'ਅਟਾਰੀ ਦੀ ਨੀਂਹ', t1H:'ਦੋ ਭਰਾਵਾਂ ਨੇ ਪਿੰਡ ਵਸਾਇਆ।',
+    t1P:'ਗੌਰ ਸਿੰਘ ਅਤੇ ਕੌਰ ਸਿੰਘ ਸਿੱਧੂ, ਕਾਉਂਕੇ ਦੇ ਚੌਧਰੀ ਖਾਨ ਚੰਦ ਦੇ ਪੁੱਤਰ, ਮਾਝੇ ਵਿੱਚ ਉੱਤਰ ਵੱਲ ਤੁਰੇ। ਉਨ੍ਹਾਂ ਨੇ ਅੰਮ੍ਰਿਤਸਰ ਦੇ ਅਕਾਲ ਤਖ਼ਤ ਉੱਤੇ ਖੰਡੇ ਦੀ ਪਾਹੁਲ ਛਕੀ ਅਤੇ, ਮੂਲ ਦਾਸ ਨਾਮਕ ਸਾਧੂ ਦੀ ਸਲਾਹ ਉੱਤੇ, ਇੱਕ ਚੁੱਪ ਥੇਹ ਉੱਤੇ ਪਿੰਡ ਵਸਾਇਆ। ਉਨ੍ਹਾਂ ਨੇ ਇਸਨੂੰ ਅਟਾਰੀ ਕਿਹਾ। ਸਿੱਧੂ ਵੰਸ਼ ਇਸ ਮਿੱਟੀ ਵਿੱਚ ਜੜ੍ਹਾਂ ਫੜਦਾ ਹੈ।',
+    tp2:'ਜਰਨੈਲ ਸ਼ਹੀਦ ਹੋਏ', t2H:'ਸ਼ਾਮ ਸਿੰਘ ਅਟਾਰੀਵਾਲਾ ਸਭਰਾਉਂ ਵਿਖੇ ਸ਼ਹੀਦ।',
+    t2P:'ਆਪਣੇ ਸਭ ਤੋਂ ਮਸ਼ਹੂਰ ਪੁੱਤਰ ਰਾਹੀਂ ਐਂਗਲੋ-ਸਿੱਖ ਜੰਗਾਂ ਪਿੰਡ ਤੱਕ ਪਹੁੰਚੀਆਂ। ਸਰਦਾਰ ਸ਼ਾਮ ਸਿੰਘ ਅਟਾਰੀਵਾਲਾ, ਮਹਾਰਾਜਾ ਰਣਜੀਤ ਸਿੰਘ ਦੀ ਫੌਜ ਦੇ ਜਰਨੈਲ, ਸਭਰਾਉਂ ਦੀ ਜੰਗ ਵਿੱਚ ਸ਼ਹੀਦ ਹੋਏ। ਉਨ੍ਹਾਂ ਦਾ ਨਾਮ ਅਟਾਰੀ ਵਿੱਚ ਉਸੇ ਤਰ੍ਹਾਂ ਪੱਕਾ ਉੱਕਰਿਆ ਗਿਆ ਜਿਵੇਂ ਜ਼ਖ਼ਮ ਸਰੀਰ ਦਾ ਹਿੱਸਾ ਬਣ ਜਾਂਦਾ ਹੈ।',
+    tp3:'ਇੱਕ ਰਾਤ ਦੀ ਸਰਹੱਦ', t3H:'ਰੈਡਕਲਿਫ਼ ਲਾਈਨ ਅਟਾਰੀ ਅਤੇ ਵਾਘੇ ਦੇ ਵਿਚਕਾਰੋਂ ਲੰਘੀ।',
+    t3P:'17 ਅਗਸਤ ਨੂੰ, ਨਵੀਂ ਹੱਦ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋਈ। ਅਟਾਰੀ, ਜੋ ਪਲ ਪਹਿਲਾਂ ਅੰਦਰੂਨੀ ਪੰਜਾਬੀ ਪਿੰਡ ਸੀ, ਹੁਣ ਸਰਹੱਦੀ ਪਿੰਡ ਬਣ ਗਿਆ। ਕੁਝ ਦਿਨਾਂ ਬਾਅਦ, ਫੌਜ ਦੇ ਦੋ ਪੁਰਾਣੇ ਦੋਸਤ, ਇੱਕ ਭਾਰਤੀ, ਇੱਕ ਪਾਕਿਸਤਾਨੀ, ਜੀ.ਟੀ. ਰੋਡ ਉੱਤੇ ਡਰੰਮਾਂ ਵਿੱਚ ਪੱਥਰ ਰੱਖਦੇ ਹਨ ਅਤੇ ਇੱਕ ਛੋਟੇ ਫਾਟਕ ਨਾਲ ਲਾਈਨ ਨਿਸ਼ਾਨੀ ਕਰਦੇ ਹਨ। ਉਹ ਅਜੇ ਵੀ ਉੱਥੇ ਹੈ।',
+    tp4:'ਬੀਟਿੰਗ ਰਿਟ੍ਰੀਟ ਸ਼ੁਰੂ ਹੁੰਦਾ ਹੈ', t4H:'ਝੰਡਾ ਉਤਾਰਨ ਦੀ ਰਸਮ ਨੀਯਤ ਹੋਈ।',
+    t4P:'ਬੀ.ਐਸ.ਐਫ਼. ਅਤੇ ਪਾਕਿਸਤਾਨ ਰੇਂਜਰਜ਼ ਫਾਟਕ ਉੱਤੇ ਰੋਜ਼ਾਨਾ ਰਸਮ ਸ਼ੁਰੂ ਕਰਦੇ ਹਨ ਜੋ, ਸਮੇਂ ਨਾਲ, ਦੁਨੀਆਂ ਦੀਆਂ ਸਭ ਤੋਂ ਵੱਧ ਵੇਖੀਆਂ ਜਾਣ ਵਾਲੀਆਂ ਫੌਜੀ ਰਸਮਾਂ ਵਿੱਚੋਂ ਇੱਕ ਬਣ ਜਾਂਦੀ ਹੈ। ਈਦ ਅਤੇ ਦਿਵਾਲੀ ਉੱਤੇ, ਫੌਜੀ ਲਾਈਨ ਦੇ ਪਾਰ ਮਠਿਆਈਆਂ ਵਟਾਂਦਰਾ ਕਰਦੇ ਹਨ। ਉਹ ਇਹ, ਰੁਕਾਵਟਾਂ ਨਾਲ, ਸੱਠ ਸਾਲਾਂ ਤੋਂ ਵੀ ਵੱਧ ਸਮੇਂ ਤੋਂ ਕਰਦੇ ਆ ਰਹੇ ਹਨ।',
+    tp5:'ਜਿਉਂਦੀ ਯਾਦ ਵਿੱਚ ਅਟਾਰੀ', t5H:'ਇੱਕ ਸਿੱਧੂ ਕੁੜੀ ਮੁਲਕ ਦੇ ਕਿਨਾਰੇ ਉੱਤੇ ਵੱਡੀ ਹੁੰਦੀ ਹੈ।',
+    t5P:'ਪ੍ਰਿਮਲ ਸਿੱਧੂ ਅਟਾਰੀ ਵਿੱਚ ਜਨਮਦੀ ਅਤੇ ਵੱਡੀ ਹੁੰਦੀ ਹੈ। ਜਿਸ ਪਿੰਡ ਵਿੱਚੋਂ ਉਹ ਹਰ ਸ਼ਾਮ ਘਰ ਆਉਂਦੀ ਹੈ ਉਹ ਉਸਦੇ ਪੁਰਖਿਆਂ ਦਾ ਵਸਾਇਆ ਪਿੰਡ ਹੈ। ਉਹ ਨੌਜਵਾਨ ਉਮਰ ਵਿੱਚ ਪਿੰਡ ਛੱਡ ਜਾਂਦੀ ਹੈ, ਜਿਵੇਂ ਬਹੁਤ ਸਾਰੇ ਪੰਜਾਬੀ ਬੱਚੇ ਛੱਡ ਜਾਂਦੇ ਹਨ, ਪਿੰਡ ਨੂੰ ਆਪਣੀ ਬੋਲੀ ਅਤੇ ਆਪਣੀ ਰਸੋਈ ਵਿੱਚ ਧਿਆਨ ਨਾਲ ਸਮੇਟ ਕੇ।',
+    tp6:'ਸੀਐਟਲ ਤੋਂ ਅਟਾਰੀ', t6H:'ਇੱਕ ਸਰਪ੍ਰਸਤ ਦਾ ਫ਼ੈਸਲਾ, ਇਕੱਲਿਆਂ ਲਿਆ।',
+    t6P:'ਦੁਨੀਆਂ ਦੇ ਦੂਜੇ ਪਾਸੇ ਦੇ ਇੱਕ ਸ਼ਹਿਰ ਤੋਂ, ਅਟਾਰੀ ਦੀ ਧੀ ਚੁੱਪ-ਚਾਪ ਪਰਤਦੀ ਹੈ। ਫ਼ਾਊਂਡੇਸ਼ਨ ਵਜੋਂ ਨਹੀਂ। ਚੈਰਿਟੀ ਵਜੋਂ ਨਹੀਂ। ਸਿੱਧੂ ਵੰਸ਼ ਦੀ ਇੱਕ ਔਰਤ ਵਜੋਂ, ਆਪਣੇ ਪਿੰਡ ਦੀ ਉਹ ਸਰਪ੍ਰਸਤ ਬਣਨਾ ਚੁਣਦੀ ਹੈ ਜਿਸਦੀ ਉਸਨੂੰ ਲੋੜ ਹੈ। ਇਹ ਸਾਈਟ ਉਸ ਵਾਅਦੇ ਦਾ ਜਨਤਕ ਚਿਹਰਾ ਹੈ।',
+    calloutText: 'ਜੇ ਪਿੰਡ ਨੇ ਮੈਨੂੰ ਪਾਲਿਆ, ਤਾਂ ਹੁਣ ਮੇਰੀ ਵਾਰੀ ਹੈ ਪਿੰਡ ਨੂੰ ਪਾਲਣ ਦੀ। ਚੁੱਪ-ਚਾਪ, ਧੀਰਜ ਨਾਲ, ਆਪਣੇ ਆਪ। ਜਿੰਨੀ ਦੇਰ ਮੈਂ ਯੋਗ ਹਾਂ।',
+    calloutCite: 'ਪ੍ਰਿਮਲ ਸਿੱਧੂ',
+    gE: 'ਇੱਕ ਦ੍ਰਿਸ਼ਟ ਯਾਦ', gH: 'ਅਟਾਰੀ, <em>ਰੰਗ</em> ਵਿੱਚ।',
+    gP: 'ਖੇਤ, ਚਿਹਰੇ, ਤਿਉਹਾਰ। ਉਸ ਥਾਂ ਨੂੰ ਮਾਣ ਦੇਣ ਲਈ ਤਸਵੀਰਾਂ ਇਕੱਠੀਆਂ ਕੀਤੀਆਂ ਜੋ ਅਜੇ ਵੀ ਬਹੁਤ ਜਿਉਂਦੀ ਹੈ।',
+    gl1:'ਸਰ੍ਹੋਂ ਦੇ ਖੇਤ, ਪੋਹ', gl2:'ਪੰਜਾਬੀ ਦੁਪਹਿਰ', gl3:'ਵਿਰਾਸਤ', gl4:'ਪਿੰਡ ਦੇ ਰਾਹ',
+    gl5:'ਮੈਦਾਨ ਅਤੇ ਅਸਮਾਨ', gl6:'ਆਖ਼ਰੀ ਚਾਨਣ, ਖੇਤ', gl7:'ਘੁਸਮੁਸੇ ਵੇਲੇ ਸਰਹੱਦ',
+    mE: 'ਮਿਸ਼ਨ', mH: 'ਇੱਕ ਸਰਪ੍ਰਸਤ ਦਾ <em>ਚੁੱਪ</em> ਕੰਮ।',
+    mP: 'ਕੋਈ ਬੋਰਡ ਨਹੀਂ। ਕੋਈ ਫੰਡ ਇਕੱਠਾ ਨਹੀਂ। ਕੋਈ ਮੁਹਿੰਮ ਨਹੀਂ। ਇੱਕ ਵਿਅਕਤੀ, ਤਿੰਨ ਵਚਨ, ਇੱਕ ਪਿੰਡ।',
+    p1H:'ਯਾਦ ਰੱਖਣ ਲਈ', p1P:'ਇੱਕ ਥਾਂ ਉੱਤੇ ਉਸ ਪਿੰਡ ਦੀਆਂ ਤਸਵੀਰਾਂ, ਆਵਾਜ਼ਾਂ, ਅਤੇ ਛੋਟੀਆਂ ਵਿਰਾਸਤਾਂ ਇਕੱਠੀਆਂ ਕਰਨ ਲਈ ਜਿਸਨੇ ਲਗਭਗ ਤਿੰਨ ਸਦੀਆਂ ਤੋਂ ਸਿੱਧੂ ਨਾਮ ਨਾਲ ਜਿਉਂਦਾ ਆਇਆ ਹੈ ਅਤੇ ਜਿਸਦੇ ਨਾਮ ਉੱਤੇ ਕਦੇ ਵੈੱਬਸਾਈਟ ਨਹੀਂ ਲਿਖੀ ਗਈ।',
+    p2H:'ਸੰਭਾਲਣ ਲਈ', p2P:'ਨਿੱਜੀ ਮਦਦ ਨੂੰ, ਸਾਦੇ, ਸੋਚ-ਸਮਝ ਕੇ ਤਰੀਕਿਆਂ ਨਾਲ, ਅਟਾਰੀ ਦੇ ਉਨ੍ਹਾਂ ਲੋਕਾਂ ਅਤੇ ਪ੍ਰੋਜੈਕਟਾਂ ਵੱਲ ਮੋੜਨ ਲਈ ਜਿਨ੍ਹਾਂ ਨੂੰ ਇਸਦੀ ਸਭ ਤੋਂ ਵੱਧ ਲੋੜ ਹੈ। ਚੁੱਪ-ਚਾਪ, ਆਪਣੇ ਹੱਥੀਂ, ਬਿਨਾਂ ਜਨਤਕ ਸ਼ੋਰ-ਸ਼ਰਾਬੇ ਦੇ।',
+    p3H:'ਅੱਗੇ ਪਹੁੰਚਾਉਣ ਲਈ', p3P:'ਅਟਾਰੀ ਦੇ ਕਿਸੇ ਵੀ ਬੱਚੇ ਲਈ ਜੋ ਸਵਾਲ ਪੁੱਛੇ, ਪਿੱਛੇ ਇੰਨਾ ਸਾਫ਼ ਰਿਕਾਰਡ ਛੱਡਣ ਲਈ ਕਿ ਉਸਨੂੰ ਆਪਣੀ ਖੋਜ ਜ਼ੀਰੋ ਤੋਂ ਸ਼ੁਰੂ ਨਾ ਕਰਨੀ ਪਵੇ।',
+    cE: 'ਸੰਪਰਕ ਕਰੋ', cH: 'ਜੇ ਅਟਾਰੀ ਤੁਹਾਡਾ ਵੀ <em>ਹੈ</em>।',
+    cP: 'ਜੇ ਤੁਸੀਂ ਇੱਥੇ ਵੱਡੇ ਹੋਏ। ਜੇ ਤੁਹਾਡਾ ਪਰਿਵਾਰ ਇੱਥੋਂ ਆਇਆ। ਜੇ ਤੁਹਾਡੇ ਕੋਲ ਕੋਈ ਤਸਵੀਰ ਹੈ, ਕੋਈ ਨਾਮ, ਕੋਈ ਯਾਦ, ਕੋਈ ਰਿਕਾਰਡਿੰਗ, ਕੁਝ ਵੀ ਜੋ ਅਟਾਰੀ ਦੀ ਕਹਾਣੀ ਨਾਲ ਜੁੜਦਾ ਹੈ, ਇਹ ਸਾਈਟ ਤੁਹਾਡੇ ਲਈ ਖੁੱਲ੍ਹੀ ਹੈ। ਨਿੱਜੀ ਤੌਰ ਉੱਤੇ ਲਿਖੋ। ਜੋ ਕੁਝ ਵੀ ਤੁਹਾਡੇ ਕੋਲ ਹੈ ਭੇਜੋ। ਇਹ ਧਿਆਨ ਨਾਲ ਪ੍ਰਾਪਤ ਕੀਤਾ ਜਾਵੇਗਾ।',
+    ctl1:'ਨਿੱਜੀ ਈਮੇਲ', ctl2:'ਸਰਪ੍ਰਸਤ ਦਾ ਨਿਵਾਸ', ctl3:'ਜਵਾਬ ਦਾ ਸਮਾਂ', ctl3v:'ਨਿੱਜੀ ਤੌਰ ਉੱਤੇ, ਕੁਝ ਦਿਨਾਂ ਵਿੱਚ',
+    ctaBtn:'ਸਰਪ੍ਰਸਤ ਨੂੰ ਲਿਖੋ',
+    footP:'ਇੱਕ ਵਿਅਕਤੀ ਦਾ ਵਿਰਾਸਤ ਪ੍ਰੋਜੈਕਟ। ਪ੍ਰਿਮਲ ਸਿੱਧੂ ਵੱਲੋਂ ਨਿੱਜੀ ਤੌਰ ਉੱਤੇ ਸਥਾਪਿਤ, ਫੰਡ ਕੀਤਾ ਅਤੇ ਸੰਭਾਲਿਆ ਗਿਆ, ਉਸ ਸਿੱਧੂ ਵੰਸ਼ ਦੀ ਧੀ ਜਿਸਨੇ 1740 ਵਿੱਚ ਅਟਾਰੀ ਵਸਾਇਆ ਸੀ।',
+    footYear:'© 2026 ਅਟਾਰੀ ਵਿਰਾਸਤ ਪ੍ਰੋਜੈਕਟ'
+  }
+};
+
+function sL(lang){
+  document.documentElement.lang = lang;
+  const dict = T[lang];
+  for(const k in dict){
+    const els = document.querySelectorAll('#'+k);
+    els.forEach(el => { el.innerHTML = dict[k]; });
+  }
+  // Toggle button states
+  document.querySelectorAll('.lt button').forEach(b => {
+    const t = b.textContent.trim().toLowerCase();
+    const isEN = (t === 'en' || t === 'english');
+    const isPA = (t === 'ਪੰਜਾਬੀ' || t === 'punjabi');
+    b.classList.toggle('on', (lang === 'en' && isEN) || (lang === 'pa' && isPA));
+  });
+  // Re-render hero title with letter-by-letter animation
+  renderHeroTitle();
+}
+
+/* ============== HERO TITLE LETTER ANIMATION ============== */
+function renderHeroTitle(){
+  const el = document.getElementById('heroTitle');
+  if(!el) return;
+  const word = 'ATARI';
+  el.innerHTML = '';
+  word.split('').forEach((ch, i) => {
+    const s = document.createElement('span');
+    s.className = 'letter';
+    s.textContent = ch;
+    s.style.animationDelay = (0.7 + i * 0.13) + 's';
+    el.appendChild(s);
+  });
+}
+
+/* ============== NAV SCROLL STATE ============== */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 80);
+
+  // Scroll progress
+  const h = document.documentElement;
+  const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight);
+  document.getElementById('scrollProgress').style.width = (scrolled * 100) + '%';
+});
+
+/* ============== INTERSECTION OBSERVER ============== */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      // Trigger counters
+      const c = e.target.querySelector('.counter');
+      if(c && !c.dataset.done){ animateCounter(c); c.dataset.done = '1'; }
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale,.reveal-clip,.reveal-img,.t-item').forEach(el => io.observe(el));
+
+/* ============== COUNTERS ============== */
+function animateCounter(el){
+  const target = parseInt(el.dataset.target, 10);
+  const noFormat = el.dataset.format === 'plain' || (target >= 1000 && target < 3000);
+  const duration = 1800;
+  const start = performance.now();
+  function tick(now){
+    const p = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    const val = Math.round(eased * target);
+    el.textContent = noFormat ? String(val) : val.toLocaleString('en-US');
+    if(p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+/* ============== PARALLAX HERO ============== */
+const heroBg = document.getElementById('heroBg');
+const villageHeroBg = document.getElementById('villageHeroBg');
+
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  if(heroBg && y < window.innerHeight){
+    heroBg.style.transform = `scale(1.08) translateY(${y * 0.3}px)`;
+  }
+});
+
+/* ============== MOBILE DRAWER ============== */
+function openDrawer(){
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('overlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+/* ============== INIT ============== */
+renderHeroTitle();
+
+</script>
+</body>
+</html>
