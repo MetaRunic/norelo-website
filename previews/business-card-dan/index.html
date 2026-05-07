@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Norelo · Daniel Bolduc · Bizay 94x54mm</title>
+<style>
+:root {
+  --dark: #070f2b;
+  --blue: #2563eb;
+  --bl: #4fa3e8;
+  --bp: #60a5fa;
+  --bdr: rgba(79,163,232,0.15);
+  --gr: #64748b;
+  --green: #22c55e;
+}
+
+* { box-sizing: border-box; }
+
+@page {
+  size: 94mm 54mm;
+  margin: 0;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #e8eaf0 0%, #d8dde8 100%);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* Full-bleed canvas: 94 x 54mm. Trim ~3mm in. Safe zone ~6mm in. */
+.card {
+  width: 94mm;
+  height: 54mm;
+  background: var(--dark);
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  page-break-after: always;
+  break-after: page;
+}
+
+.card:last-of-type {
+  page-break-after: auto;
+  break-after: auto;
+}
+
+/* ===== FRONT ===== */
+.card.front {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card.front::before {
+  content: '';
+  position: absolute;
+  top: -25mm;
+  right: -25mm;
+  width: 70mm;
+  height: 70mm;
+  background: radial-gradient(circle, rgba(79, 163, 232, 0.20) 0%, transparent 65%);
+  border-radius: 50%;
+}
+
+.card.front::after {
+  content: '';
+  position: absolute;
+  bottom: -20mm;
+  left: -20mm;
+  width: 55mm;
+  height: 55mm;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.14) 0%, transparent 65%);
+  border-radius: 50%;
+}
+
+.front .grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(79,163,232,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,163,232,0.04) 1px, transparent 1px);
+  background-size: 4mm 4mm;
+  mask-image: radial-gradient(circle at center, black 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 75%);
+}
+
+.logo {
+  font-size: 11mm;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  display: inline-flex;
+  align-items: baseline;
+  position: relative;
+  z-index: 2;
+  line-height: 1;
+}
+
+.logo .lo { color: var(--bl); }
+
+.logo .dot {
+  width: 2.1mm;
+  height: 2.1mm;
+  background: var(--green);
+  border-radius: 50%;
+  margin-left: 1.4mm;
+  align-self: flex-end;
+  margin-bottom: 7mm;
+  display: block;
+  flex-shrink: 0;
+}
+
+.tagline {
+  position: absolute;
+  bottom: 7mm;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: var(--bl);
+  font-size: 1.7mm;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  z-index: 2;
+}
+
+/* ===== BACK ===== */
+.card.back {
+  padding: 7mm 9mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Stripe extends through bleed: 3mm bleed + 0.7mm visible after trim */
+.card.back::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3.7mm;
+  height: 100%;
+  background: linear-gradient(180deg, var(--blue) 0%, var(--bl) 50%, var(--green) 100%);
+}
+
+.card.back::after {
+  content: '';
+  position: absolute;
+  top: -18mm;
+  right: -18mm;
+  width: 45mm;
+  height: 45mm;
+  background: radial-gradient(circle, rgba(79, 163, 232, 0.10) 0%, transparent 65%);
+  border-radius: 50%;
+}
+
+.back-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  z-index: 2;
+}
+
+.back-name {
+  font-size: 4.5mm;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 1mm 0;
+  letter-spacing: -0.015em;
+  line-height: 1;
+}
+
+.back-role {
+  font-size: 1.7mm;
+  color: var(--bl);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.back-logo {
+  font-size: 3mm;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: baseline;
+  letter-spacing: -0.01em;
+}
+
+.back-logo .lo { color: var(--bl); }
+
+.back-logo .dot {
+  width: 1.4mm;
+  height: 1.4mm;
+  background: var(--green);
+  border-radius: 50%;
+  margin-left: 0.7mm;
+  align-self: flex-end;
+  margin-bottom: 1.7mm;
+  display: block;
+  flex-shrink: 0;
+}
+
+.back-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 3mm;
+  position: relative;
+  z-index: 2;
+}
+
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5mm;
+}
+
+.contact-line {
+  display: flex;
+  align-items: center;
+  gap: 1.9mm;
+  font-size: 2.2mm;
+  color: #fff;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+.contact-line .ic {
+  width: 2.3mm;
+  height: 2.3mm;
+  color: var(--bl);
+  flex-shrink: 0;
+}
+
+.qr {
+  width: 12mm;
+  height: 12mm;
+  background: #fff;
+  border-radius: 1mm;
+  padding: 0.9mm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr img, .qr canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* ===== Screen-only preview ===== */
+@media screen {
+  body {
+    min-height: 100vh;
+    padding: 2.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .card {
+    box-shadow:
+      0 30px 60px -15px rgba(7, 15, 43, 0.4),
+      0 12px 24px -8px rgba(7, 15, 43, 0.2);
+    border-radius: 1.5mm;
+    transform: scale(2);
+    transform-origin: center top;
+    margin-bottom: 60mm;
+  }
+  .card:first-of-type { margin-top: 30mm; }
+
+  .guides {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+  }
+  .guides .cut {
+    position: absolute;
+    top: 3mm; left: 3mm;
+    right: 3mm; bottom: 3mm;
+    border: 0.15mm dashed rgba(255,255,255,0.4);
+  }
+  .guides .safe {
+    position: absolute;
+    top: 6mm; left: 6mm;
+    right: 6mm; bottom: 6mm;
+    border: 0.15mm dashed rgba(244, 114, 182, 0.5);
+  }
+
+  .label {
+    color: #475569;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 600;
+    margin-top: 1rem;
+  }
+  .instructions {
+    max-width: 680px;
+    background: #fff;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    padding: 1.5rem 1.75rem;
+    font-size: 0.9rem;
+    color: #334155;
+    line-height: 1.6;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  .instructions h3 {
+    margin: 0 0 0.75rem 0;
+    color: #070f2b;
+    font-size: 1.05rem;
+  }
+  .instructions ol { margin: 0.5rem 0 0 1.2rem; padding: 0; }
+  .instructions li { margin-bottom: 0.5rem; }
+  .instructions kbd {
+    background: #f1f5f9;
+    padding: 1px 7px;
+    border-radius: 3px;
+    border: 1px solid #cbd5e1;
+    font-family: ui-monospace, 'SF Mono', monospace;
+    font-size: 0.85em;
+    color: #070f2b;
+  }
+  .instructions strong { color: #070f2b; }
+  .instructions .legend {
+    display: flex;
+    gap: 1.25rem;
+    font-size: 0.8rem;
+    color: #64748b;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e2e8f0;
+    flex-wrap: wrap;
+  }
+  .instructions .legend .sw {
+    display: inline-block;
+    width: 18px;
+    height: 0;
+    margin-right: 6px;
+    vertical-align: middle;
+    border-top: 2px dashed;
+  }
+  .print-btn {
+    background: #070f2b;
+    color: #fff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1rem;
+    font-family: inherit;
+    transition: transform 0.15s ease, background 0.15s ease;
+  }
+  .print-btn:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+  }
+}
+
+@media print {
+  body {
+    background: none !important;
+    padding: 0 !important;
+    gap: 0 !important;
+  }
+  .label, .instructions, .print-btn, .guides { display: none !important; }
+  .card {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="instructions">
+  <h3>Bizay · Cartes d'affaires · 94 × 54 mm (avec fond perdu)</h3>
+  <ol>
+    <li>Ouvrir ce fichier dans <strong>Google Chrome</strong>.</li>
+    <li>Cliquer sur le bouton ci-dessous, ou <kbd>Ctrl</kbd>+<kbd>P</kbd> (Mac: <kbd>Cmd</kbd>+<kbd>P</kbd>).</li>
+    <li><strong>Destination:</strong> Enregistrer au format PDF.</li>
+    <li><strong>Plus de paramètres</strong> → <strong>Marges: Aucune</strong> → <strong>Cocher "Graphiques d'arrière-plan"</strong>.</li>
+    <li>Le format papier doit afficher <strong>94 × 54 mm</strong>.</li>
+    <li>Téléverser chez Bizay: page 1 = recto, page 2 = verso (ou télécharger les deux pages séparément).</li>
+  </ol>
+  <div class="legend">
+    <span><span class="sw" style="border-color: rgba(100,116,139,0.7);"></span>Ligne de coupe (trim, à 3mm)</span>
+    <span><span class="sw" style="border-color: rgba(244,114,182,0.8);"></span>Zone sécuritaire (à 6mm)</span>
+  </div>
+  <button class="print-btn" onclick="window.print()">Ouvrir l'impression</button>
+</div>
+
+<div class="label">Recto · Front (aperçu agrandi · canvas 94 × 54 mm)</div>
+<div class="card front">
+  <div class="grid"></div>
+  <span class="logo">
+    <span>Nore</span><span class="lo">lo</span><span class="dot"></span>
+  </span>
+  <div class="tagline">Sites web · Solutions numériques</div>
+  <div class="guides"><div class="cut"></div><div class="safe"></div></div>
+</div>
+
+<div class="label">Verso · Back (aperçu agrandi · canvas 94 × 54 mm)</div>
+<div class="card back">
+  <div class="back-top">
+    <div>
+      <h2 class="back-name">Daniel Bolduc</h2>
+      <p class="back-role">Fondateur</p>
+    </div>
+    <span class="back-logo">
+      <span>Nore</span><span class="lo">lo</span><span class="dot"></span>
+    </span>
+  </div>
+  <div class="back-bottom">
+    <div class="contact">
+      <div class="contact-line">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+        581-849-7700
+      </div>
+      <div class="contact-line">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <path d="m22 7-10 5L2 7"/>
+        </svg>
+        norelo.danielb@gmail.com
+      </div>
+      <div class="contact-line">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M2 12h20"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+        norelo.ca
+      </div>
+      <div class="contact-line">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 10c0 7-8 13-8 13s-8-6-8-13a8 8 0 0 1 16 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        Saint-Joseph-du-Lac, QC
+      </div>
+    </div>
+    <div class="qr" id="qr"></div>
+  </div>
+  <div class="guides"><div class="cut"></div><div class="safe"></div></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+new QRCode(document.getElementById("qr"), {
+  text: "https://norelo.ca",
+  width: 400,
+  height: 400,
+  colorDark: "#070f2b",
+  colorLight: "#ffffff",
+  correctLevel: QRCode.CorrectLevel.H
+});
+</script>
+
+</body>
+</html>
