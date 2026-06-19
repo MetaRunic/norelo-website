@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="fr-CA" data-attr="lang:html.lang">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#141414" data-attr="content:meta.themeColor" />
+
+  <title data-text="html.title">Armoires Tremblay, ébénisterie sur mesure</title>
+  <meta name="description" content="" data-attr="content:html.metaDescription" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="" data-attr="content:html.title" />
+  <meta property="og:description" content="" data-attr="content:html.metaDescription" />
+  <meta property="og:image" content="" data-attr="content:assets.ogImage" />
+
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" data-attr="href:assets.favicon" />
+
+  <!-- Typography: Playfair Display (display serif) + Inter (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- Skip link (a11y) -->
+  <a class="skip-link" href="#main">Aller au contenu</a>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header" id="site-header">
+    <div class="container header__inner">
+      <a class="brand" href="#top" aria-label="Armoires Tremblay, accueil">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="28" height="28" focusable="false">
+            <rect x="2" y="3" width="28" height="26" rx="2" class="brand__cab" />
+            <line x1="16" y1="5" x2="16" y2="27" class="brand__seam" />
+            <circle cx="13" cy="16" r="1.1" class="brand__knob" />
+            <circle cx="19" cy="16" r="1.1" class="brand__knob" />
+          </svg>
+        </span>
+        <span class="brand__name" data-text="meta.brand">Armoires Tremblay</span>
+      </a>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <ul class="nav__list" id="nav-links" data-list="nav.links"></ul>
+        <a class="btn btn--solid nav__cta" id="nav-cta" data-text="nav.cta.label" data-attr="href:nav.cta.href" href="#contact">Demander une soumission</a>
+      </nav>
+
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label="Ouvrir le menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile nav -->
+    <div class="mobile-nav" id="mobile-nav" hidden>
+      <ul class="mobile-nav__list" id="mobile-nav-links" data-list="nav.links"></ul>
+      <a class="btn btn--solid" id="mobile-nav-cta" data-text="nav.cta.label" data-attr="href:nav.cta.href" href="#contact">Demander une soumission</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <span id="top"></span>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="hero" aria-labelledby="hero-title">
+      <canvas class="hero__canvas" id="hero-canvas" aria-hidden="true"></canvas>
+      <div class="hero__scrim" aria-hidden="true"></div>
+
+      <div class="container hero__content">
+        <p class="eyebrow eyebrow--light" data-text="hero.eyebrow"></p>
+        <h1 class="hero__title" id="hero-title" data-text="hero.title"></h1>
+        <p class="hero__subtitle" data-text="hero.subtitle"></p>
+        <div class="hero__actions">
+          <a class="btn btn--solid btn--lg" data-text="hero.primaryCta.label" data-attr="href:hero.primaryCta.href" href="#contact"></a>
+          <a class="btn btn--ghost btn--lg" data-text="hero.secondaryCta.label" data-attr="href:hero.secondaryCta.href" href="#realisations"></a>
+        </div>
+      </div>
+
+      <a class="hero__scroll" href="#approche" aria-label="Défiler vers le bas">
+        <span data-text="hero.scrollHint"></span>
+        <span class="hero__scroll-line" aria-hidden="true"></span>
+      </a>
+    </section>
+
+    <!-- ============ APPROCHE / CLÉ EN MAIN ============ -->
+    <section class="section approche" id="approche" aria-labelledby="approche-title">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow" data-text="approche.eyebrow"></p>
+          <h2 class="section__title" id="approche-title" data-text="approche.title"></h2>
+          <p class="section__intro" data-text="approche.intro"></p>
+        </header>
+
+        <p class="approche__positioning reveal" data-text="approche.positioning"></p>
+
+        <div class="pillars" id="approche-pillars" data-list="approche.pillars"></div>
+      </div>
+    </section>
+
+    <!-- ============ STYLES / CATEGORIES ============ -->
+    <section class="section categories" id="services" aria-labelledby="categories-title">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow" data-text="categories.eyebrow"></p>
+          <h2 class="section__title" id="categories-title" data-text="categories.title"></h2>
+          <p class="section__intro" data-text="categories.intro"></p>
+        </header>
+
+        <div class="categories__grid" id="categories-grid" data-list="categories.items"></div>
+      </div>
+    </section>
+
+    <!-- ============ RÉALISATIONS / MEDIA SHOWCASE ============ -->
+    <section class="section realisations" id="realisations" aria-labelledby="realisations-title">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow" data-text="realisations.eyebrow"></p>
+          <h2 class="section__title" id="realisations-title" data-text="realisations.title"></h2>
+          <p class="section__intro" data-text="realisations.intro"></p>
+        </header>
+
+        <div class="showcase__filters" id="showcase-filters" aria-label="Filtrer les réalisations"></div>
+        <div class="showcase" id="showcase-grid" data-list="realisations.items"></div>
+      </div>
+    </section>
+
+    <!-- ============ TÉMOIGNAGES ============ -->
+    <section class="section testimonials" id="temoignages" aria-labelledby="temoignages-title">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow" data-text="temoignages.eyebrow"></p>
+          <h2 class="section__title" id="temoignages-title" data-text="temoignages.title"></h2>
+        </header>
+        <div class="testimonials__grid" id="testimonials-grid" data-list="temoignages.items"></div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="section contact" id="contact" aria-labelledby="contact-title">
+      <div class="container">
+        <header class="section__head section__head--center reveal">
+          <p class="eyebrow" data-text="contact.eyebrow"></p>
+          <h2 class="section__title" id="contact-title" data-text="contact.title"></h2>
+          <p class="section__intro" data-text="contact.intro"></p>
+        </header>
+
+        <div class="contact__actions reveal">
+          <a class="contact-cta contact-cta--phone" data-attr="href:contact.phone.href" href="tel:">
+            <span class="contact-cta__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#ic-phone"></use></svg></span>
+            <span class="contact-cta__label" data-text="contact.phone.label"></span>
+            <span class="contact-cta__value" data-text="contact.phone.value"></span>
+            <span class="contact-cta__note" data-text="contact.phone.note"></span>
+          </a>
+          <a class="contact-cta contact-cta--email" data-attr="href:contact.email.href" href="mailto:">
+            <span class="contact-cta__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#ic-mail"></use></svg></span>
+            <span class="contact-cta__label" data-text="contact.email.label"></span>
+            <span class="contact-cta__value" data-text="contact.email.value"></span>
+            <span class="contact-cta__note" data-text="contact.email.note"></span>
+          </a>
+        </div>
+
+        <div class="contact__support">
+          <ul class="assurances" id="contact-assurances" data-list="contact.assurances"></ul>
+          <div class="contact__aside">
+            <ul class="contact__details" id="contact-details" data-list="contact.details"></ul>
+            <figure class="host">
+              <figcaption class="host__cap">
+                <span class="host__line" data-text="contact.host.line"></span>
+                <span class="host__by"><span class="host__name" data-text="contact.host.name"></span>, <span class="host__role" data-text="contact.host.role"></span></span>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <span class="brand__name brand__name--footer" data-text="meta.brand"></span>
+        <p class="footer__blurb" data-text="footer.blurb"></p>
+      </div>
+      <div class="footer__cols" id="footer-cols" data-list="footer.columns"></div>
+    </div>
+    <div class="container footer__bar">
+      <p data-text="footer.legal"></p>
+      <p class="footer__credit" data-text="footer.credit"></p>
+    </div>
+  </footer>
+
+  <!-- SVG icon sprite (referenced by services + contact via <use>) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="ic-kitchen" viewBox="0 0 24 24"><path d="M4 3h16v8H4zM4 13h7v8H4zM13 13h7v8h-7zM8 6v2M16 6v2" /></symbol>
+      <symbol id="ic-vanity" viewBox="0 0 24 24"><path d="M4 4h16v6H4zM6 10v10M18 10v10M4 14h16M9 7h1M14 7h1" /></symbol>
+      <symbol id="ic-closet" viewBox="0 0 24 24"><path d="M4 3h16v18H4zM12 3v18M9 9v3M15 9v3" /></symbol>
+      <symbol id="ic-library" viewBox="0 0 24 24"><path d="M5 3v18M9 3v18M13 4l4 17M3 21h18M13 8h4M12 3h2v18" /></symbol>
+      <symbol id="ic-wood" viewBox="0 0 24 24"><path d="M3 6c4 0 4 12 8 12s4-12 8-12M3 12c4 0 4 6 8 6M3 18h18" /></symbol>
+      <symbol id="ic-handshake" viewBox="0 0 24 24"><path d="M3 10l5-4 4 3 4-3 5 4M7 12l3 3 2-2 2 2 3-3M8 15l2 4M16 15l-2 4" /></symbol>
+      <symbol id="ic-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-3 2a12 12 0 005 5l2-3 5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z" /></symbol>
+      <symbol id="ic-mail" viewBox="0 0 24 24"><path d="M3 6h18v12H3zM3 7l9 6 9-6" /></symbol>
+      <symbol id="ic-pin" viewBox="0 0 24 24"><path d="M12 22s7-7 7-12a7 7 0 10-14 0c0 5 7 12 7 12z" /><circle cx="12" cy="10" r="2.5" /></symbol>
+      <symbol id="ic-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 3" /></symbol>
+      <symbol id="ic-design" viewBox="0 0 24 24"><path d="M16.5 4.5l3 3M4 20l1-4L17 4l3 3L8 19l-4 1z" /><path d="M14.5 6.5l3 3" /></symbol>
+      <symbol id="ic-fabrication" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2" /><path d="M12 3v2.4M12 18.6V21M3 12h2.4M18.6 12H21M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7" /></symbol>
+      <symbol id="ic-installation" viewBox="0 0 24 24"><path d="M20.5 4.5a4 4 0 01-5.3 5.3L5 20l-1-1L14.2 8.8A4 4 0 0119.5 3.5z" /><path d="M5 19l1 1" /></symbol>
+      <symbol id="ic-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.6-9.3-9A4.6 4.6 0 0112 5a4.6 4.6 0 019.3 6c-2.3 4.4-9.3 9-9.3 9z" /></symbol>
+    </defs>
+  </svg>
+
+  <!-- ============ LIGHTBOX (portfolio gallery) ============ -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Galerie des réalisations" hidden>
+    <button class="lightbox__close" id="lightbox-close" type="button" aria-label="Fermer la galerie">&times;</button>
+    <button class="lightbox__nav lightbox__nav--prev" id="lightbox-prev" type="button" aria-label="Projet précédent">&#8249;</button>
+    <figure class="lightbox__frame">
+      <div class="lightbox__stage" id="lightbox-stage"></div>
+      <figcaption class="lightbox__caption" id="lightbox-caption"></figcaption>
+    </figure>
+    <button class="lightbox__nav lightbox__nav--next" id="lightbox-next" type="button" aria-label="Projet suivant">&#8250;</button>
+    <div class="lightbox__counter" id="lightbox-counter" aria-hidden="true"></div>
+  </div>
+
+  <!-- App logic - Three.js for the hero is lazy-loaded from app.js after first paint -->
+  <script src="app.js" defer></script>
+</body>
+</html>
