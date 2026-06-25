@@ -2,6 +2,19 @@
 <html lang="fr-CA" data-attr="lang:html.lang">
 <head>
   <meta charset="UTF-8" />
+  <script>
+    /* Hosted in a subfolder on Vercel. If this page is opened WITHOUT a trailing
+       slash, the browser resolves style.css / app.js / content.json against the
+       domain root and they 404 (page loads unstyled). Adding the slash makes every
+       relative path resolve to this folder. No-op at the site root or in local
+       testing (paths that already end in "/" or in a file like index.html). */
+    (function () {
+      var p = location.pathname;
+      if (p.charAt(p.length - 1) !== "/" && !/\.[a-z0-9]+$/i.test(p)) {
+        location.replace(p + "/" + location.search + location.hash);
+      }
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#f6f2ea" data-attr="content:meta.themeColor" />
 
