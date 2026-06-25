@@ -4,7 +4,7 @@
     "defaultLocale": "fr",
     "locales": ["fr"],
     "tagline": "Ébénisterie sur mesure, service clé en main",
-    "themeColor": "#141414"
+    "themeColor": "#f6f2ea"
   },
 
   "assets": {
@@ -24,11 +24,11 @@
       "nav": {
         "links": [
           { "label": "Approche", "href": "#approche" },
-          { "label": "Styles", "href": "#services" },
           { "label": "Réalisations", "href": "#realisations" },
+          { "label": "Carrières", "href": "#carrieres" },
           { "label": "Contact", "href": "#contact" }
         ],
-        "cta": { "label": "Demander une soumission", "href": "#contact" }
+        "cta": { "label": "Parler à un expert", "href": "tel:+14504462182" }
       },
 
       "hero": {
@@ -83,7 +83,7 @@
         "items": [
           { "name": "Cuisines", "filter": "cuisine", "folder": "Cuisine", "icon": "kitchen", "styles": ["Classique", "Contemporain", "Urbain", "Champêtre"] },
           { "name": "Salles de bain", "filter": "salle-de-bain", "folder": "SalleDeBain", "icon": "vanity", "styles": ["Classique", "Contemporain", "Urbain", "Champêtre"] },
-          { "name": "Autres", "filter": "autres", "folder": "Autres", "icon": "closet", "styles": [] }
+          { "name": "Sur-mesure", "filter": "autres", "folder": "Autres", "icon": "closet", "styles": [] }
         ]
       },
 
@@ -130,24 +130,26 @@
       },
 
       "contact": {
-        "eyebrow": "Parlons de vive voix",
+        "eyebrow": "Plus de 40 ans de savoir-faire",
         "title": "Un beau projet commence par un appel.",
         "intro": "Pas de formulaire à remplir, pas de file d'attente. Décrochez le téléphone : un vrai ébéniste vous répond, vous écoute et vous conseille, sans engagement.",
         "phone": {
           "label": "Appelez-nous",
-          "value": "514 555-0182",
-          "href": "tel:+15145550182",
-          "note": "Une vraie personne répond, du lundi au vendredi, de 8 h à 17 h."
+          "tag": "Ligne directe · Réponse immédiate",
+          "value": "450 446-2182",
+          "href": "tel:+14504462182",
+          "note": "Salle de montre (poste 1) ou usine (poste 2). Du lundi au vendredi, de 8 h à 17 h."
         },
         "email": {
           "label": "Ou écrivez-nous",
-          "value": "projet@armoirestremblay.ca",
-          "href": "mailto:projet@armoirestremblay.ca?subject=Mon%20projet%20sur%20mesure",
+          "value": "info@armoirestremblay.com",
+          "href": "mailto:info@armoirestremblay.com?subject=Mon%20projet%20sur%20mesure",
           "note": "Réponse personnelle en moins de 48 h ouvrables."
         },
         "details": [
-          { "label": "Atelier & salle de montre", "value": "1450, rue des Artisans, Québec (QC)", "href": "https://maps.google.com/?q=1450+rue+des+Artisans+Quebec", "icon": "pin" },
-          { "label": "Heures d'ouverture", "value": "Lundi au vendredi, 8 h à 17 h. Samedi sur rendez-vous", "href": "", "icon": "clock" }
+          { "label": "Salle de montre", "value": "600, boul. Bernard-Pilon, McMasterville (QC) J3G 1L2", "href": "https://maps.google.com/?q=600+boulevard+Bernard-Pilon+McMasterville+QC+J3G+1L2", "icon": "pin", "sub": "Téléphone : 450 446-2182, poste 1" },
+          { "label": "Usine", "value": "3108, boul. Bernard-Pilon, St-Mathieu-de-Beloeil (QC) J3G 4S5", "href": "https://maps.google.com/?q=3108+boulevard+Bernard-Pilon+Saint-Mathieu-de-Beloeil+QC+J3G+4S5", "icon": "pin", "sub": "Téléphone : 450 446-2182, poste 2" },
+          { "label": "Heures d'ouverture", "value": "Lundi au vendredi : 8 h à 17 h", "href": "", "icon": "clock", "sub": "Soir et samedi : sur rendez-vous uniquement" }
         ],
         "assurances": [
           { "icon": "handshake", "title": "Un seul interlocuteur", "text": "La même équipe vous suit, du premier croquis à la garantie." },
@@ -155,9 +157,9 @@
           { "icon": "heart", "title": "Service attentionné", "text": "On prend le temps de comprendre votre projet avant même de parler de prix." }
         ],
         "host": {
-          "name": "Louis Tremblay",
-          "role": "maître ébéniste & fondateur",
-          "line": "« Chaque projet qui sort de l'atelier, je le suis personnellement. C'est une question de fierté. »"
+          "name": "Patrick Tremblay",
+          "role": "propriétaire, deuxième génération",
+          "line": "« Mon père a fondé cet atelier il y a plus de 40 ans. Je poursuis aujourd'hui son métier avec la même passion : chaque projet, je le suis personnellement. C'est une question de fierté et de tradition familiale. »"
         }
       },
 
@@ -168,27 +170,26 @@
             "title": "Navigation",
             "links": [
               { "label": "Approche", "href": "#approche" },
-              { "label": "Styles", "href": "#services" },
               { "label": "Réalisations", "href": "#realisations" },
+              { "label": "Carrières", "href": "#carrieres" },
               { "label": "Contact", "href": "#contact" }
             ]
           },
           {
             "title": "Coordonnées",
             "links": [
-              { "label": "514 555-0182", "href": "tel:+15145550182" },
-              { "label": "projet@armoirestremblay.ca", "href": "mailto:projet@armoirestremblay.ca" },
-              { "label": "1450, rue des Artisans, Québec", "href": "https://maps.google.com/?q=1450+rue+des+Artisans+Quebec" }
-            ]
-          },
-          {
-            "title": "Suivez l'atelier",
-            "links": [
-              { "label": "Instagram", "href": "https://instagram.com" },
-              { "label": "Facebook", "href": "https://facebook.com" },
-              { "label": "Pinterest", "href": "https://pinterest.com" }
+              { "label": "450 446-2182", "href": "tel:+14504462182" },
+              { "label": "info@armoirestremblay.com", "href": "mailto:info@armoirestremblay.com" },
+              { "label": "Salle de montre, McMasterville", "href": "https://maps.google.com/?q=600+boulevard+Bernard-Pilon+McMasterville+QC+J3G+1L2" },
+              { "label": "Usine, St-Mathieu-de-Beloeil", "href": "https://maps.google.com/?q=3108+boulevard+Bernard-Pilon+Saint-Mathieu-de-Beloeil+QC+J3G+4S5" }
             ]
           }
+        ],
+        "socials": [
+          { "label": "Facebook", "href": "https://www.facebook.com/ArmoiresTremblay", "icon": "facebook", "brand": "facebook" },
+          { "label": "LinkedIn", "href": "https://ca.linkedin.com/company/armoirestremblay", "icon": "linkedin", "brand": "linkedin" },
+          { "label": "Houzz", "href": "https://www.houzz.com/professionals/kitchen-and-bath-designers/armoires-tremblay-pfvwus-pf~2049055562", "icon": "houzz", "brand": "houzz" },
+          { "label": "Indeed", "href": "https://emplois.ca.indeed.com/cmp/Armoires-Tremblay", "icon": "indeed", "brand": "indeed" }
         ],
         "legal": "© 2026 Armoires Tremblay. Tous droits réservés. RBQ : 0000-0000-00.",
         "credit": "Ébénisterie sur mesure, Québec"

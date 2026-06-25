@@ -100,6 +100,80 @@
     initLightbox(gallery);
     initHero(ctx);
     setFooterYear();
+    initRouter();
+    initCareers();
+  }
+
+  /* ---------- careers view: hash router + accordions ---------- */
+  function initRouter() {
+    const home = $("#view-home");
+    const careers = $("#view-careers");
+    if (!careers) return;
+    let first = true;
+    const apply = () => {
+      const isCareers = location.hash === "#carrieres";
+      const active = isCareers ? careers : home;
+      const inactive = isCareers ? home : careers;
+      if (inactive) inactive.hidden = true;
+      if (active) {
+        active.hidden = false;
+        if (!first) {
+          active.classList.remove("is-entering");
+          void active.offsetWidth;          /* restart the fade */
+          active.classList.add("is-entering");
+        }
+      }
+      if (isCareers || location.hash === "#top" || !location.hash) {
+        window.scrollTo({ top: 0, behavior: first ? "auto" : "smooth" });
+      } else {
+        const t = document.querySelector(location.hash);
+        if (t) requestAnimationFrame(() => t.scrollIntoView({ behavior: "smooth", block: "start" }));
+      }
+      first = false;
+    };
+    window.addEventListener("hashchange", apply);
+    apply();
+  }
+
+  function initCareers() {
+    const view = $("#view-careers");
+    if (!view) return;
+    $$(".career__head", view).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const item = btn.closest(".career");
+        const open = item.classList.toggle("is-open");
+        btn.setAttribute("aria-expanded", String(open));
+      });
+    });
+
+    /* "Postuler" -> jump to the form and preselect the matching poste */
+    const posteSelect = $("#apply-poste");
+    const applyBlock = $("#careers-apply");
+    $$(".career__apply", view).forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const poste = btn.getAttribute("data-poste") || "";
+        if (posteSelect) posteSelect.value = poste;
+        if (applyBlock) applyBlock.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+
+    /* application form -> compose an email (static site, no backend) */
+    const form = $("#apply-form");
+    if (form) {
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const val = (id) => { const n = $(id); return n ? n.value.trim() : ""; };
+        const subject = encodeURIComponent("Candidature - " + val("#apply-poste"));
+        const body = encodeURIComponent(
+          "Nom complet : " + val("#apply-nom") +
+          "\nTéléphone : " + val("#apply-tel") +
+          "\nCourriel : " + val("#apply-courriel") +
+          "\nPoste : " + val("#apply-poste") +
+          "\n\n(N'oubliez pas de joindre votre CV a ce courriel.)"
+        );
+        window.location.href = "mailto:rh@armoirestremblay.com?subject=" + subject + "&body=" + body;
+      });
+    }
   }
 
   /* ---------- locale ---------- */
@@ -150,6 +224,7 @@
       "contact-details": renderContactDetails,
       "contact-assurances": renderAssurances,
       "footer-cols": renderFooterCols,
+      "footer-socials": renderFooterSocials,
     };
     $$("[data-list]").forEach((container) => {
       const items = get(ctx, container.dataset.list);
@@ -188,12 +263,9 @@
   function renderAssurances(container, items) {
     items.forEach((a) => {
       container.appendChild(
-        el("li", { class: "assurance" }, [
-          el("span", { class: "assurance__icon" }, icon(a.icon || "handshake")),
-          el("div", { class: "assurance__body" }, [
-            el("span", { class: "assurance__title", text: a.title }),
-            el("span", { class: "assurance__text", text: a.text }),
-          ]),
+        el("li", { class: "contact__value" }, [
+          el("span", { class: "contact__value-title", text: a.title }),
+          el("span", { class: "contact__value-text", text: a.text }),
         ])
       );
     });
@@ -227,6 +299,58 @@
   }
 
   /* ---------- gallery grid: one tile per project ---------- */
+  /* ---------- bento layout: assign span roles by VISIBLE order ----------------
+     Repeating 6-card module (hero 2x2, cell, cell, tall 1x2, wide 2x1, wide 2x1)
+     = a perfect 3-col x 4-row block, so the grid always ends on a flat baseline.
+     The tail (count % 6) uses rectangle-perfect mini-layouts, and the whole grid
+     re-packs whenever a filter hides/shows tiles.                              */
+  const BENTO_MODULE = ["hero", "cell", "cell", "tall", "wide", "wide"];
+  /* small / leftover counts: taller, balanced shapes (never a short full-width strip) */
+  const BENTO_SMALL = {
+    1: ["full2"],
+    2: ["hero", "tall"],
+    3: ["tall", "tall", "tall"],
+    4: ["tall", "tall", "cell", "cell"],
+    5: ["hero", "tall", "cell", "cell", "cell"],
+  };
+  const BENTO_ROLES = ["hero", "tall", "wide", "cell", "full", "full2"];
+  function bentoRoles(n) {
+    if (n <= 0) return [];
+    if (n <= 5) return BENTO_SMALL[n].slice();
+    const roles = [];
+    const full = Math.floor(n / 6) * 6;
+    for (let i = 0; i < full; i++) roles.push(BENTO_MODULE[i % 6]);
+    const r = n - full;
+    if (r) (BENTO_SMALL[r] || []).forEach((x) => roles.push(x));
+    return roles;
+  }
+  function layoutBento(grid) {
+    if (!grid) return;
+    const all = Array.from(grid.children);
+    all.forEach((t) => BENTO_ROLES.forEach((r) => t.classList.remove("showcase__item--" + r)));
+    const visible = all.filter((t) => !t.classList.contains("is-hidden"));
+    const roles = bentoRoles(visible.length);
+    visible.forEach((t, i) => { if (roles[i]) t.classList.add("showcase__item--" + roles[i]); });
+  }
+
+  /* ---------- curate order: bright/modern first, heavy/traditional further down */
+  const STYLE_RANK = { contemporain: 0, urbain: 1, classique: 2, champetre: 3 };
+  const CAT_RANK = { cuisine: 0, "salle-de-bain": 1, autres: 2 };
+  function curate(items) {
+    return items
+      .map((it, i) => ({ it, i }))
+      .sort((a, b) => {
+        const sa = STYLE_RANK[a.it.styleSlug] != null ? STYLE_RANK[a.it.styleSlug] : 5;
+        const sb = STYLE_RANK[b.it.styleSlug] != null ? STYLE_RANK[b.it.styleSlug] : 5;
+        if (sa !== sb) return sa - sb;
+        const ca = CAT_RANK[a.it.category] != null ? CAT_RANK[a.it.category] : 9;
+        const cb = CAT_RANK[b.it.category] != null ? CAT_RANK[b.it.category] : 9;
+        if (ca !== cb) return ca - cb;
+        return a.i - b.i;
+      })
+      .map((x) => x.it);
+  }
+
   function renderGrid(container, items) {
     container.innerHTML = "";
     items.forEach((it, i) => {
@@ -253,15 +377,16 @@
       ]));
       container.appendChild(tile);
     });
+    layoutBento(container);
   }
 
   /* ---------- dynamic gallery from the /Photos folder --------------------------
      Photos/<Category>/<Style>/<Project>/*.jpg   (Cuisine, SalleDeBain)
      Photos/Autres/<Project>/*.jpg               (no style level)
      Read at runtime from the server's directory listing, so the client just
-     adds / removes photos in the folder and the gallery follows. Needs a server
-     that lists folders (e.g. `python -m http.server`); otherwise it falls back
-     to the items in content.json.                                              */
+     adds / removes photos in the folder and the gallery follows. Works with any
+     server that lists folders (VS Code Live Server, `python -m http.server`,
+     and similar). Otherwise it falls back to the items in content.json.        */
   const PHOTOS_ROOT = "Photos/";
   const STYLE_LABEL = { classique: "Classique", contemporaine: "Contemporain", contemporain: "Contemporain", urbain: "Urbain", champetre: "Champêtre" };
   const isMedia = (n) => { n = n.toLowerCase(); return [".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif", ".mp4", ".webm", ".mov"].some((e) => n.endsWith(e)); };
@@ -271,13 +396,32 @@
     try {
       const res = await fetch(path, { cache: "no-cache" });
       if (!res.ok) return [];
+      const baseUrl = res.url || new URL(path, location.href).href;
+      const origin = new URL(baseUrl).origin;
+      const basePath = new URL(baseUrl).pathname.replace(/\/+$/, "");
       const doc = new DOMParser().parseFromString(await res.text(), "text/html");
       const out = [];
+      const seen = new Set();
       doc.querySelectorAll("a[href]").forEach((aEl) => {
-        const href = aEl.getAttribute("href");
-        if (!href || href === "../" || href.charAt(0) === "?" || href.charAt(0) === "/" || href.indexOf("://") !== -1) return;
-        const isDir = href.charAt(href.length - 1) === "/";
-        out.push({ href, name: decodeURIComponent(isDir ? href.slice(0, -1) : href), isDir });
+        let href = aEl.getAttribute("href");
+        if (!href) return;
+        href = href.split("#")[0].split("?")[0];
+        if (!href || href.indexOf("://") !== -1) return;
+        let abs;
+        try { abs = new URL(href, baseUrl); } catch (e) { return; }
+        if (abs.origin !== origin) return;
+        const childPath = abs.pathname.replace(/\/+$/, "");
+        if (!childPath || childPath === basePath) return;            // self
+        if (basePath && childPath.indexOf(basePath + "/") !== 0) return; // not under this dir (breadcrumbs/parent)
+        const rest = childPath.slice(basePath.length + 1);
+        if (!rest || rest.indexOf("/") !== -1) return;              // only direct children
+        const name = decodeURIComponent(rest);
+        if (!name || name === "." || name === "..") return;
+        if (seen.has(name)) return;
+        seen.add(name);
+        const cls = aEl.getAttribute("class") || "";
+        const isDir = /\/$/.test(href) || /icon-directory/.test(cls); // python: trailing slash; serve-index: css class
+        out.push({ name, isDir, url: abs.href });
       });
       return out;
     } catch (e) { return []; }
@@ -291,20 +435,19 @@
     for (const cat of cats) {
       const dir = root.find((d) => d.isDir && slug(d.name) === slug(cat.folder || cat.name));
       if (!dir) continue;
-      const base = PHOTOS_ROOT + dir.href;
-      const lvl1 = (await listDir(base)).filter((e) => e.isDir);
+      const lvl1 = (await listDir(dir.url)).filter((e) => e.isDir);
       const projects = [];
       if (cat.styles && cat.styles.length) {
         await Promise.all(lvl1.map(async (st) => {
           const label = STYLE_LABEL[slug(st.name)] || prettify(st.name);
-          (await listDir(base + st.href)).filter((e) => e.isDir)
-            .forEach((p) => projects.push({ url: base + st.href + p.href, name: p.name, styleLabel: label }));
+          (await listDir(st.url)).filter((e) => e.isDir)
+            .forEach((p) => projects.push({ url: p.url, name: p.name, styleLabel: label }));
         }));
       } else {
-        lvl1.forEach((p) => projects.push({ url: base + p.href, name: p.name, styleLabel: "" }));
+        lvl1.forEach((p) => projects.push({ url: p.url, name: p.name, styleLabel: "" }));
       }
       await Promise.all(projects.map(async (proj) => {
-        const photos = (await listDir(proj.url)).filter((f) => !f.isDir && isMedia(f.name)).map((f) => proj.url + f.href);
+        const photos = (await listDir(proj.url)).filter((f) => !f.isDir && isMedia(f.name)).map((f) => f.url);
         if (photos.length) out.push({
           category: cat.filter,
           styleLabel: proj.styleLabel,
@@ -332,11 +475,11 @@
   async function buildGallery(ctx) {
     const grid = $("#showcase-grid");
     if (!grid) return [];
-    let gallery = fallbackItems(ctx);
+    let gallery = curate(fallbackItems(ctx));
     renderGrid(grid, gallery);
     try {
       const scanned = await scanPhotos(ctx);
-      if (scanned.length) { gallery = scanned; renderGrid(grid, gallery); }
+      if (scanned.length) { gallery = curate(scanned); renderGrid(grid, gallery); }
     } catch (e) { /* keep fallback */ }
     return gallery;
   }
@@ -359,17 +502,14 @@
   function renderContactDetails(container, details) {
     details.forEach((d) => {
       const valueNode = d.href
-        ? el("a", { class: "contact__detail-value", href: d.href, text: d.value })
-        : el("span", { class: "contact__detail-value", text: d.value });
-      container.appendChild(
-        el("li", {}, [
-          icon(d.icon || "pin"),
-          el("div", {}, [
-            el("div", { class: "contact__detail-label", text: d.label }),
-            valueNode,
-          ]),
-        ])
-      );
+        ? el("a", { class: "contact__place-value", href: d.href, text: d.value })
+        : el("span", { class: "contact__place-value", text: d.value });
+      const li = el("li", { class: "contact__place" }, [
+        el("span", { class: "contact__place-label", text: d.label }),
+        valueNode,
+      ]);
+      if (d.sub) li.appendChild(el("span", { class: "contact__place-sub", text: d.sub }));
+      container.appendChild(li);
     });
   }
 
@@ -385,6 +525,25 @@
           ul,
         ])
       );
+    });
+  }
+
+  function renderFooterSocials(container, socials) {
+    socials.forEach((s) => {
+      const link = el(
+        "a",
+        {
+          class: "footer__social",
+          href: s.href,
+          target: "_blank",
+          rel: "noopener noreferrer",
+          "aria-label": s.label,
+          title: s.label,
+          "data-brand": s.brand || slug(s.label),
+        },
+        icon(s.icon)
+      );
+      container.appendChild(el("li", {}, link));
     });
   }
 
@@ -518,34 +677,87 @@
   function initShowcaseFilter(ctx) {
     const grid = $("#showcase-grid");
     if (!grid) return;
-    const bar = $("#showcase-filters");
+    const catBar = $("#filter-cats");
+    const styleBar = $("#filter-styles");
+    const empty = $("#showcase-empty");
     const cats = get(ctx, "categories.items") || [];
 
-    if (bar) {
-      bar.innerHTML = "";
-      const mk = (label, cat) => el("button", { class: "filter-chip", type: "button", text: label, "data-filter-cat": cat });
-      bar.appendChild(mk("Tout", "all"));
-      cats.forEach((c) => bar.appendChild(mk(c.name, c.filter)));
-    }
+    // unique, ordered style list drawn from the categories' own styles
+    const FILTER_ORDER = { contemporain: 0, classique: 1, urbain: 2, champetre: 3 };
+    const styleMap = new Map();
+    cats.forEach((c) => (c.styles || []).forEach((st) => {
+      const sl = slug(st);
+      if (sl && !styleMap.has(sl)) styleMap.set(sl, st);
+    }));
+    const styleList = Array.from(styleMap, (entry) => ({ sl: entry[0], label: entry[1] }))
+      .sort((a, b) => (FILTER_ORDER[a.sl] != null ? FILTER_ORDER[a.sl] : 9) - (FILTER_ORDER[b.sl] != null ? FILTER_ORDER[b.sl] : 9));
 
-    const tiles = () => $$("[data-index]", grid);
-    const apply = (cat, style) => {
-      tiles().forEach((t) => {
-        const ok = cat === "all" || (t.dataset.category === cat && (!style || t.dataset.style === style));
-        t.classList.toggle("is-hidden", !ok);
-      });
-      if (bar) $$(".filter-chip", bar).forEach((ch) => ch.classList.toggle("is-active", (ch.dataset.filterCat || "all") === cat));
+    const mkTag = (label, value, kind) => {
+      const attrs = { class: "filter-tag", type: "button", text: label };
+      attrs["data-" + kind] = value;
+      return el("button", attrs);
     };
 
-    document.addEventListener("click", (e) => {
-      const t = e.target.closest("[data-filter-cat]");
-      if (!t) return;
-      apply(t.dataset.filterCat || "all", t.dataset.filterStyle || "");
-      const r = $("#realisations");
-      if (r) r.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (catBar) {
+      catBar.innerHTML = "";
+      catBar.appendChild(mkTag("Tout", "all", "cat"));
+      cats.forEach((c) => catBar.appendChild(mkTag(c.name, c.filter, "cat")));
+    }
+    if (styleBar) {
+      styleBar.innerHTML = "";
+      styleBar.appendChild(mkTag("Tous les styles", "all", "style"));
+      styleList.forEach((s) => styleBar.appendChild(mkTag(s.label, s.sl, "style")));
+    }
+
+    let activeCat = "all";
+    let activeStyle = "all";
+
+    const markActive = () => {
+      if (catBar) $$(".filter-tag", catBar).forEach((b) => b.classList.toggle("is-active", (b.dataset.cat || "all") === activeCat));
+      if (styleBar) $$(".filter-tag", styleBar).forEach((b) => b.classList.toggle("is-active", (b.dataset.style || "all") === activeStyle));
+    };
+
+    const apply = () => {
+      // categories without styles (e.g. Sur-mesure) ignore + disable the style row
+      const catCfg = cats.find((c) => c.filter === activeCat);
+      const catHasStyles = activeCat === "all" || !catCfg || !!(catCfg.styles && catCfg.styles.length);
+      if (!catHasStyles) activeStyle = "all";
+      if (styleBar) styleBar.classList.toggle("is-disabled", !catHasStyles);
+      let shown = 0;
+      $$("[data-index]", grid).forEach((t) => {
+        const okCat = activeCat === "all" || t.dataset.category === activeCat;
+        const okStyle = activeStyle === "all" || t.dataset.style === activeStyle;
+        const ok = okCat && okStyle;
+        t.classList.toggle("is-hidden", !ok);
+        if (ok) shown += 1;
+      });
+      layoutBento(grid);
+      if (empty) empty.hidden = shown !== 0;
+      markActive();
+    };
+
+    const change = () => {
+      grid.classList.add("is-rearranging");
+      window.setTimeout(() => {
+        apply();
+        grid.classList.remove("is-rearranging");
+      }, 200);
+    };
+
+    if (catBar) catBar.addEventListener("click", (e) => {
+      const b = e.target.closest(".filter-tag");
+      if (!b) return;
+      activeCat = b.dataset.cat || "all";
+      change();
+    });
+    if (styleBar) styleBar.addEventListener("click", (e) => {
+      const b = e.target.closest(".filter-tag");
+      if (!b) return;
+      activeStyle = b.dataset.style || "all";
+      change();
     });
 
-    apply("all", "");
+    apply();
   }
 
   /* ===================================================================
@@ -673,11 +885,11 @@
     renderer.setClearColor(0x000000, 0);
     if ("outputEncoding" in renderer) renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.0;
+    renderer.toneMappingExposure = 0.7;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-    const BG = 0x141414;
+    const BG = 0xf6f2ea;
     const scene = new THREE.Scene();
     scene.fog = new THREE.Fog(BG, 8.5, 20);
     const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 100);
@@ -729,24 +941,24 @@
     }
 
     /* materials (shared) */
-    const oak = new THREE.MeshStandardMaterial({ map: makeWoodTexture(), color: 0xffffff, roughness: 0.65, metalness: 0.0, envMapIntensity: 0.4 });
+    const oak = new THREE.MeshStandardMaterial({ map: makeWoodTexture(), color: 0xbf9f6e, roughness: 0.7, metalness: 0.0, envMapIntensity: 0.35 });
     const charcoal = new THREE.MeshStandardMaterial({ color: 0x1f1f1f, roughness: 0.7, metalness: 0.0, envMapIntensity: 0.35 });
     const carcass = new THREE.MeshStandardMaterial({ color: 0x121212, roughness: 0.95, metalness: 0.0, envMapIntensity: 0.3 });
-    const stone = new THREE.MeshStandardMaterial({ color: 0xe4e1d8, roughness: 0.2, metalness: 0.1, envMapIntensity: 0.8 });
+    const stone = new THREE.MeshStandardMaterial({ color: 0xd0c7b2, roughness: 0.3, metalness: 0.08, envMapIntensity: 0.6 });
     const brass = new THREE.MeshStandardMaterial({ color: 0xc5a880, roughness: 0.26, metalness: 0.92, envMapIntensity: 1.0 });
     const glass = new THREE.MeshStandardMaterial({ color: 0x0d0e12, roughness: 0.16, metalness: 0.55, envMapIntensity: 1.0 });
     const steel = new THREE.MeshStandardMaterial({ color: 0x8d9296, roughness: 0.4, metalness: 0.85, envMapIntensity: 1.0 });
     const floorMat = new THREE.MeshStandardMaterial({ map: makeFloorTexture(), color: 0xffffff, roughness: 0.55, metalness: 0.05, envMapIntensity: 0.4 });
-    const wallMat = new THREE.MeshStandardMaterial({ color: 0x1e1e1e, roughness: 1.0, metalness: 0.0, envMapIntensity: 0.25 });
+    const wallMat = new THREE.MeshStandardMaterial({ color: 0xbeb29a, roughness: 1.0, metalness: 0.0, envMapIntensity: 0.2 });
     const fadeMats = [oak, charcoal, stone, brass, glass, steel];
 
     const box = (w, h, d, mat) => { const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat); m.castShadow = true; m.receiveShadow = true; return m; };
     const cyl = (rt, rb, h, mat, seg) => { const m = new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg || 20), mat); m.castShadow = true; m.receiveShadow = true; return m; };
 
     /* lighting: low ambient + strong raking window sun = deep, chiselled contrast */
-    scene.add(new THREE.AmbientLight(0xffe7c8, 0.25));
-    scene.add(new THREE.HemisphereLight(0xfff2df, 0x141414, 0.18));
-    const sun = new THREE.DirectionalLight(0xfff0d2, 3.5);
+    scene.add(new THREE.AmbientLight(0xffe7c8, 0.20));
+    scene.add(new THREE.HemisphereLight(0xfff6ec, 0xbfae95, 0.18));
+    const sun = new THREE.DirectionalLight(0xfff0d2, 1.5);
     sun.position.set(-10, 6, 5);              // raking from the left to carve the door gaps
     sun.castShadow = true;
     sun.shadow.mapSize.set(2048, 2048);
@@ -757,7 +969,7 @@
     sun.shadow.camera.updateProjectionMatrix();
     scene.add(sun);
     const fill = new THREE.DirectionalLight(0xcfe0ff, 0.38); fill.position.set(8, 4.5, 5); scene.add(fill);
-    const fridgeFill = new THREE.PointLight(0xffe6c4, 0.55, 11, 2); fridgeFill.position.set(4.0, 2.3, 1.2); scene.add(fridgeFill); // reveals the far-right fridge
+    const fridgeFill = new THREE.PointLight(0xffe6c4, 0.32, 11, 2); fridgeFill.position.set(4.0, 2.3, 1.2); scene.add(fridgeFill); // reveals the far-right fridge
     const bounce = new THREE.PointLight(0xffc188, 0.2, 16, 2); bounce.position.set(2.4, 1.1, 3.6); scene.add(bounce);
     const wineGlow = new THREE.PointLight(0xffcf9a, 0.5, 2.6, 2); wineGlow.position.set(-3.25, 0.6, -2.9); scene.add(wineGlow);
 
@@ -775,7 +987,7 @@
     // back soffit / bulkhead over the cabinetry + warm linear ceiling coves
     // (soffit removed: it intersected the full-height cabinet tops, causing z-fighting at the top of the armoires)
     // invisible warm downlights pooling over the island + counter (no visible fixtures)
-    const counterLight = new THREE.PointLight(0xffe6c4, 0.3, 8, 2); counterLight.position.set(-0.9, 2.6, -2.2); scene.add(counterLight);
+    const counterLight = new THREE.PointLight(0xffe6c4, 0.45, 8, 2); counterLight.position.set(-0.9, 2.6, -2.2); scene.add(counterLight);
     // large minimalist window on the LEFT wall (mullions cast pane shadows)
     const win = new THREE.Group(); win.position.set(-6.32, 1.55, 1.2); scene.add(win);
     const WW = 3.4, WH = 2.5;
@@ -858,8 +1070,12 @@
 
     // (A) open oak shelving bay (1.03..2.08) - flush to counter run (L) and fridge gable (R)
     front(rightRunG, 1.525, 0.56, 1.02, 0.86, charcoal); pullH(rightRunG, 1.525, 0.92, 0.55); // lower cabinet
-    const sBack = box(0.9, 1.4, 0.03, oak); sBack.position.set(1.525, 1.78, WALLZ - 0.18); rightRunG.add(sBack);
-    [1.26, 1.78, 2.3].forEach((sy) => { const sh = box(0.9, 0.05, 0.34, oak); sh.position.set(1.525, sy, WALLZ - 0.02); rightRunG.add(sh); });
+    // full oak back panel that fills the whole bay (no dark show-through behind)
+    const sBack = box(1.06, 1.6, 0.03, oak); sBack.position.set(1.525, 1.76, WALLZ - 0.18); rightRunG.add(sBack);
+    // oak top + bottom caps close the bay (nothing visible through the top or bottom)
+    [1.0, 2.52].forEach((sy) => { const cap = box(1.0, 0.06, 0.36, oak); cap.position.set(1.525, sy, WALLZ - 0.03); rightRunG.add(cap); });
+    // the three display shelves
+    [1.26, 1.78, 2.3].forEach((sy) => { const sh = box(0.95, 0.05, 0.34, oak); sh.position.set(1.525, sy, WALLZ - 0.02); rightRunG.add(sh); });
     const rv = cyl(0.05, 0.07, 0.24, charcoal, 18); rv.position.set(1.32, 1.38, WALLZ - 0.04); rightRunG.add(rv);
     const rbo = new THREE.Mesh(new THREE.SphereGeometry(0.085, 18, 12), stone); rbo.scale.y = 0.6; rbo.position.set(1.72, 2.4, WALLZ - 0.04); rightRunG.add(rbo);
     const rk = box(0.2, 0.16, 0.18, brass); rk.position.set(1.6, 1.9, WALLZ - 0.04); rightRunG.add(rk);
@@ -929,13 +1145,13 @@
 
     /* hanging luxury pendant lights over the island */
     const pendants = new THREE.Group(); scene.add(pendants);
-    const bulbMat = new THREE.MeshStandardMaterial({ color: 0x2a2a2a, emissive: 0xffdca8, emissiveIntensity: 1.3, roughness: 0.5 });
+    const bulbMat = new THREE.MeshStandardMaterial({ color: 0x2a2a2a, emissive: 0xffdca8, emissiveIntensity: 3.0, roughness: 0.5 });
     [0.35, 1.05, 1.75].forEach((px) => {
       const pg = new THREE.Group(); pg.position.set(px, 0, 0.4);
       const cord = cyl(0.008, 0.008, 1.15, carcass, 8); cord.position.y = 2.32; pg.add(cord);          // ceiling -> housing
       const housing = cyl(0.02, 0.12, 0.2, brass, 20); housing.position.y = 1.72; pg.add(housing);     // sleek brass shade
       const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.05, 16, 12), bulbMat); bulb.position.y = 1.6; bulb.castShadow = false; pg.add(bulb);
-      const glow = new THREE.PointLight(0xffe2b0, 0.45, 4.2, 2); glow.position.set(0, 1.55, 0); glow.castShadow = false; pg.add(glow);
+      const glow = new THREE.PointLight(0xffe2b0, 3.4, 6, 2); glow.position.set(0, 1.5, 0); glow.castShadow = false; pg.add(glow);
       pendants.add(pg);
     });
     reg(pendants, V(0, 0.5, 0), 0.45);

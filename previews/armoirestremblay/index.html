@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#141414" data-attr="content:meta.themeColor" />
+  <meta name="theme-color" content="#f6f2ea" data-attr="content:meta.themeColor" />
 
   <title data-text="html.title">Armoires Tremblay, ébénisterie sur mesure</title>
   <meta name="description" content="" data-attr="content:html.metaDescription" />
@@ -64,6 +64,8 @@
   <main id="main">
     <span id="top"></span>
 
+    <div id="view-home" class="page-view">
+
     <!-- ============ HERO ============ -->
     <section class="hero" id="hero" aria-labelledby="hero-title">
       <canvas class="hero__canvas" id="hero-canvas" aria-hidden="true"></canvas>
@@ -100,19 +102,6 @@
       </div>
     </section>
 
-    <!-- ============ STYLES / CATEGORIES ============ -->
-    <section class="section categories" id="services" aria-labelledby="categories-title">
-      <div class="container">
-        <header class="section__head reveal">
-          <p class="eyebrow" data-text="categories.eyebrow"></p>
-          <h2 class="section__title" id="categories-title" data-text="categories.title"></h2>
-          <p class="section__intro" data-text="categories.intro"></p>
-        </header>
-
-        <div class="categories__grid" id="categories-grid" data-list="categories.items"></div>
-      </div>
-    </section>
-
     <!-- ============ RÉALISATIONS / MEDIA SHOWCASE ============ -->
     <section class="section realisations" id="realisations" aria-labelledby="realisations-title">
       <div class="container">
@@ -122,8 +111,12 @@
           <p class="section__intro" data-text="realisations.intro"></p>
         </header>
 
-        <div class="showcase__filters" id="showcase-filters" aria-label="Filtrer les réalisations"></div>
+        <div class="portfolio-filters" id="showcase-filters">
+          <div class="filter-row filter-row--cats" id="filter-cats" role="group" aria-label="Filtrer par type de pièce"></div>
+          <div class="filter-row filter-row--styles" id="filter-styles" role="group" aria-label="Filtrer par style"></div>
+        </div>
         <div class="showcase" id="showcase-grid" data-list="realisations.items"></div>
+        <p class="showcase__empty" id="showcase-empty" hidden>Aucune réalisation ne correspond à cette combinaison pour le moment.</p>
       </div>
     </section>
 
@@ -141,41 +134,250 @@
     <!-- ============ CONTACT ============ -->
     <section class="section contact" id="contact" aria-labelledby="contact-title">
       <div class="container">
-        <header class="section__head section__head--center reveal">
+        <header class="section__head reveal">
           <p class="eyebrow" data-text="contact.eyebrow"></p>
           <h2 class="section__title" id="contact-title" data-text="contact.title"></h2>
           <p class="section__intro" data-text="contact.intro"></p>
         </header>
 
-        <div class="contact__actions reveal">
-          <a class="contact-cta contact-cta--phone" data-attr="href:contact.phone.href" href="tel:">
-            <span class="contact-cta__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#ic-phone"></use></svg></span>
-            <span class="contact-cta__label" data-text="contact.phone.label"></span>
-            <span class="contact-cta__value" data-text="contact.phone.value"></span>
-            <span class="contact-cta__note" data-text="contact.phone.note"></span>
+        <div class="contact__primary reveal">
+          <a class="contact__vector contact__vector--phone" data-attr="href:contact.phone.href" href="tel:">
+            <span class="contact__vector-label" data-text="contact.phone.label"></span>
+            <span class="contact__vector-value" data-text="contact.phone.value"></span>
+            <span class="contact__vector-tag" data-text="contact.phone.tag"></span>
           </a>
-          <a class="contact-cta contact-cta--email" data-attr="href:contact.email.href" href="mailto:">
-            <span class="contact-cta__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#ic-mail"></use></svg></span>
-            <span class="contact-cta__label" data-text="contact.email.label"></span>
-            <span class="contact-cta__value" data-text="contact.email.value"></span>
-            <span class="contact-cta__note" data-text="contact.email.note"></span>
+          <a class="contact__vector contact__vector--email" data-attr="href:contact.email.href" href="mailto:">
+            <span class="contact__vector-label" data-text="contact.email.label"></span>
+            <span class="contact__vector-value" data-text="contact.email.value"></span>
           </a>
         </div>
 
-        <div class="contact__support">
-          <ul class="assurances" id="contact-assurances" data-list="contact.assurances"></ul>
-          <div class="contact__aside">
-            <ul class="contact__details" id="contact-details" data-list="contact.details"></ul>
-            <figure class="host">
-              <figcaption class="host__cap">
-                <span class="host__line" data-text="contact.host.line"></span>
-                <span class="host__by"><span class="host__name" data-text="contact.host.name"></span>, <span class="host__role" data-text="contact.host.role"></span></span>
-              </figcaption>
+        <div class="contact__grid reveal">
+          <div class="contact__col">
+            <h3 class="contact__col-title">Notre philosophie</h3>
+            <ul class="contact__values" id="contact-assurances" data-list="contact.assurances"></ul>
+          </div>
+          <div class="contact__col">
+            <h3 class="contact__col-title">Nos espaces</h3>
+            <ul class="contact__places" id="contact-details" data-list="contact.details"></ul>
+          </div>
+          <div class="contact__col">
+            <h3 class="contact__col-title">Notre héritage</h3>
+            <figure class="contact__signature">
+              <blockquote class="contact__quote" data-text="contact.host.line"></blockquote>
+              <figcaption class="contact__signature-by"><span class="contact__signature-name" data-text="contact.host.name"></span>, <span data-text="contact.host.role"></span></figcaption>
             </figure>
           </div>
         </div>
       </div>
     </section>
+
+    </div><!-- /#view-home -->
+
+    <div id="view-careers" class="page-view" hidden>
+      <section class="careers" aria-labelledby="careers-title">
+        <div class="container">
+          <a class="careers__back" href="#top"><span class="careers__back-arrow" aria-hidden="true">&#8592;</span> Retour au site</a>
+
+          <header class="careers__head">
+            <h1 class="careers__title" id="careers-title">Carrières</h1>
+            <p class="careers__lead">Depuis bientôt 40 ans, Armoires Tremblay se positionne comme chef de file en matière d’ébénisterie sur-mesure pour les projets résidentiels. Située sur la Rive-Sud de Montréal, l’entreprise familiale possède 2 succursales situées à Saint-Mathieu-de-Beloeil et McMasterville et assure un service maison complet, de la conception à l’installation afin de garantir une expérience client optimale.</p>
+            <p class="careers__lead">Aujourd’hui, l’entreprise prend de l’expansion et est en quête de trouver des travailleurs motivés pour joindre son équipe dynamique et chaleureuse. Avec sa vision axée sur l’humain, Armoires Tremblay offre une expérience de travail fabriquée d’un bel équilibre. Puisque que l’entreprise effectue exclusivement des projets sur-mesure, aucune journée ne se ressemble!</p>
+          </header>
+
+          <div class="careers__list">
+            <article class="career">
+              <button class="career__head" type="button" aria-expanded="false" aria-controls="job-designer-cuisiniste">
+                <span class="career__title">Designer-cuisiniste</span>
+                <span class="career__meta">
+                  <span class="career__meta-item"><span class="career__meta-k">Type</span> Temps plein</span>
+                  <span class="career__meta-item"><span class="career__meta-k">Taux horaire</span> Selon votre expérience</span>
+                  <span class="career__meta-item"><span class="career__meta-k">Succursale</span> McMasterville, St-Mathieu-de-Beloeil</span>
+                </span>
+                <span class="career__chevron" aria-hidden="true"></span>
+              </button>
+              <div class="career__panel" id="job-designer-cuisiniste" role="region" aria-label="Designer-cuisiniste">
+                <div class="career__panel-inner">
+                  <div class="career__body">
+                    <h3 class="career__subtitle">Être Designer-cuisiniste chez Armoires Tremblay c'est :</h3>
+                    <ul class="career__points">
+                      <li>Accueillir les clients, faire l’étude de leurs besoins</li>
+                      <li>Préparer les plans et les soumissions</li>
+                      <li>Organiser les rencontrer clients à des fins de présentation</li>
+                      <li>Préparer les dossiers clients afin de les transférer au département technique</li>
+                      <li>Assurer un suivi sur ses projets avec le client et l'équipe technique</li>
+                    </ul>
+                    <h3 class="career__subtitle">Ce que vous devez apporter :</h3>
+                    <ul class="career__points">
+                      <li>DEC en design ou formation jugée équivalente;</li>
+                      <li>Minimum 2 ans d’expérience dans le domaine</li>
+                      <li>Maîtrise de Microvellum un atout</li>
+                      <li>Maîtrise de Autocad un atout</li>
+                      <li>Bilinguisme un atout</li>
+                      <li>Capacité à travailler sous pression</li>
+                      <li>Capacité de travailler sur plusieurs dossiers à la fois</li>
+                    </ul>
+                    <button class="career__apply" type="button" data-poste="Designer-cuisiniste">Postuler</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+            <article class="career">
+              <button class="career__head" type="button" aria-expanded="false" aria-controls="job-cuisiniste-technique">
+                <span class="career__title">Cuisiniste technique</span>
+                <span class="career__meta">
+                  <span class="career__meta-item"><span class="career__meta-k">Type</span> Temps plein</span>
+                  <span class="career__meta-item"><span class="career__meta-k">Taux horaire</span> Selon votre expérience</span>
+                  <span class="career__meta-item"><span class="career__meta-k">Succursale</span> St-Mathieu-de-Beloeil</span>
+                </span>
+                <span class="career__chevron" aria-hidden="true"></span>
+              </button>
+              <div class="career__panel" id="job-cuisiniste-technique" role="region" aria-label="Cuisiniste technique">
+                <div class="career__panel-inner">
+                  <div class="career__body">
+                    <h3 class="career__subtitle">Être Cuisiniste technique chez Armoires Tremblay c'est :</h3>
+                    <ul class="career__points">
+                      <li>Préparer les plan techniques avant l’envoi en production</li>
+                      <li>Collaborer avec les Designer-cuisiniste pour coordonner tous les détails du projet</li>
+                      <li>Analyser la faisabilité d’un projet d’un point de vue technique</li>
+                      <li>Valider les matériaux et accessoires</li>
+                    </ul>
+                    <h3 class="career__subtitle">Ce que vous devez apporter :</h3>
+                    <ul class="career__points">
+                      <li>Minimum 2 ans d’expérience dans le domaine</li>
+                      <li>Maîtrise de Microvellum un atout</li>
+                      <li>Maîtrise de Autocad un atout</li>
+                      <li>Capacité à travailler sous pression</li>
+                      <li>Capacité de travailler sur plusieurs dossiers à la fois</li>
+                      <li>Bilinguisme un atout</li>
+                    </ul>
+                    <button class="career__apply" type="button" data-poste="Cuisiniste technique">Postuler</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+            <article class="career">
+              <button class="career__head" type="button" aria-expanded="false" aria-controls="job-operateur-cnc">
+                <span class="career__title">Opérateur CNC</span>
+                <span class="career__meta">
+                  <span class="career__meta-item"><span class="career__meta-k">Type</span> Temps plein</span>
+                  <span class="career__meta-item"><span class="career__meta-k">Taux horaire</span> 22$ à 28$</span>
+                  <span class="career__meta-item"><span class="career__meta-k">Succursale</span> St-Mathieu-de-Beloeil</span>
+                </span>
+                <span class="career__chevron" aria-hidden="true"></span>
+              </button>
+              <div class="career__panel" id="job-operateur-cnc" role="region" aria-label="Opérateur CNC">
+                <div class="career__panel-inner">
+                  <div class="career__body">
+                    <h3 class="career__subtitle">Être Opérateur CNC chez Armoires Tremblay c'est :</h3>
+                    <ul class="career__points">
+                      <li>Opérer et procéder aux différents réglages des machines CNC</li>
+                      <li>Procéder à l’inspection des matériaux dès leur réception</li>
+                      <li>Identifier les non-conformités et veiller à leur correction</li>
+                      <li>Déplacer les pièces façonnées de la machine et les déposer à l’endroit convenu</li>
+                      <li>Garder le département propre et en ordre</li>
+                      <li>Autres tâches connexes en lien avec votre emploi</li>
+                    </ul>
+                    <h3 class="career__subtitle">Ce que vous devez apporter :</h3>
+                    <ul class="career__points">
+                      <li>Attitude positive</li>
+                      <li>Capacité à travailler sous pression</li>
+                      <li>Être physiquement en forme</li>
+                      <li>Capacité de lire et interpréter les plans</li>
+                      <li>Désir d’innover dans son travail et de résoudre des problèmes</li>
+                    </ul>
+                    <button class="career__apply" type="button" data-poste="Opérateur CNC">Postuler</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+            <article class="career">
+              <button class="career__head" type="button" aria-expanded="false" aria-controls="job-assembleur">
+                <span class="career__title">Assembleur de meuble</span>
+                <span class="career__meta">
+                  <span class="career__meta-item"><span class="career__meta-k">Type</span> Temps plein</span>
+                  <span class="career__meta-item"><span class="career__meta-k">Taux horaire</span> 20$ à 26$</span>
+                  <span class="career__meta-item"><span class="career__meta-k">Succursale</span> St-Mathieu-de-Beloeil</span>
+                </span>
+                <span class="career__chevron" aria-hidden="true"></span>
+              </button>
+              <div class="career__panel" id="job-assembleur" role="region" aria-label="Assembleur de meuble">
+                <div class="career__panel-inner">
+                  <div class="career__body">
+                    <h3 class="career__subtitle">Ce que vous devez apporter :</h3>
+                    <ul class="career__points">
+                      <li>Attitude positive</li>
+                      <li>Capacité à travailler sous pression</li>
+                      <li>Être physiquement en forme</li>
+                      <li>Capacité de lire et interpréter les plans</li>
+                      <li>Désir d’innover dans son travail et de résoudre des problèmes</li>
+                    </ul>
+                    <button class="career__apply" type="button" data-poste="Assembleur de meuble">Postuler</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+            <article class="career">
+              <button class="career__head" type="button" aria-expanded="false" aria-controls="job-installateur">
+                <span class="career__title">Installateur</span>
+                <span class="career__meta">
+                  <span class="career__meta-item"><span class="career__meta-k">Type</span> Temps plein</span>
+                  <span class="career__meta-item"><span class="career__meta-k">Taux horaire</span> 25$ à 35$</span>
+                  <span class="career__meta-item"><span class="career__meta-k">Succursale</span> St-Mathieu-de-Beloeil</span>
+                </span>
+                <span class="career__chevron" aria-hidden="true"></span>
+              </button>
+              <div class="career__panel" id="job-installateur" role="region" aria-label="Installateur">
+                <div class="career__panel-inner">
+                  <div class="career__body">
+                    <h3 class="career__subtitle">Ce que vous devez apporter :</h3>
+                    <ul class="career__points">
+                      <li>Capacité de lire et interpréter les plans</li>
+                      <li>2 ans d'expérience en installation d'armoires</li>
+                      <li>Capacité à travailler sous pression</li>
+                      <li>Être en bonne condition physique</li>
+                      <li>Détenir un permis de conduire</li>
+                    </ul>
+                    <button class="career__apply" type="button" data-poste="Installateur">Postuler</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <div class="careers__apply" id="careers-apply">
+            <h2 class="careers__apply-title">Appliquez maintenant</h2>
+            <p class="careers__apply-sub">Utilisez le formulaire pour nous envoyer votre CV ou envoyez-nous un courriel au <a href="mailto:rh@armoirestremblay.com">rh@armoirestremblay.com</a></p>
+            <form class="apply-form" id="apply-form">
+              <div class="apply-field">
+                <label for="apply-nom">Nom complet <span aria-hidden="true">*</span></label>
+                <input id="apply-nom" name="nom" type="text" required autocomplete="name">
+              </div>
+              <div class="apply-field">
+                <label for="apply-tel">Téléphone <span aria-hidden="true">*</span></label>
+                <input id="apply-tel" name="telephone" type="tel" required autocomplete="tel">
+              </div>
+              <div class="apply-field">
+                <label for="apply-courriel">Courriel <span aria-hidden="true">*</span></label>
+                <input id="apply-courriel" name="courriel" type="email" required autocomplete="email">
+              </div>
+              <div class="apply-field">
+                <label for="apply-poste">Poste <span aria-hidden="true">*</span></label>
+                <select id="apply-poste" name="poste" required>
+                  <option value="" disabled selected>Choisir un poste</option>
+                  <option value="Designer-cuisiniste">Designer-cuisiniste</option>
+                  <option value="Cuisiniste technique">Cuisiniste technique</option>
+                  <option value="Opérateur CNC">Opérateur CNC</option>
+                  <option value="Assembleur de meuble">Assembleur de meuble</option>
+                  <option value="Installateur">Installateur</option>
+                </select>
+              </div>
+              <button class="btn btn--solid apply-form__submit" type="submit">Soumettre ma candidature</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
 
   <!-- ============ FOOTER ============ -->
@@ -184,6 +386,7 @@
       <div class="footer__brand">
         <span class="brand__name brand__name--footer" data-text="meta.brand"></span>
         <p class="footer__blurb" data-text="footer.blurb"></p>
+        <ul class="footer__socials" id="footer-socials" data-list="footer.socials" aria-label="Suivez Armoires Tremblay"></ul>
       </div>
       <div class="footer__cols" id="footer-cols" data-list="footer.columns"></div>
     </div>
@@ -210,6 +413,10 @@
       <symbol id="ic-fabrication" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2" /><path d="M12 3v2.4M12 18.6V21M3 12h2.4M18.6 12H21M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7" /></symbol>
       <symbol id="ic-installation" viewBox="0 0 24 24"><path d="M20.5 4.5a4 4 0 01-5.3 5.3L5 20l-1-1L14.2 8.8A4 4 0 0119.5 3.5z" /><path d="M5 19l1 1" /></symbol>
       <symbol id="ic-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.6-9.3-9A4.6 4.6 0 0112 5a4.6 4.6 0 019.3 6c-2.3 4.4-9.3 9-9.3 9z" /></symbol>
+      <symbol id="ic-facebook" viewBox="0 0 24 24"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z" /></symbol>
+      <symbol id="ic-linkedin" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z" /></symbol>
+      <symbol id="ic-houzz" viewBox="0 0 24 24"><path d="M7 3h2.6v18H7zM14.4 10h2.6v11h-2.6zM7 10h10v2.6H7z" /></symbol>
+      <symbol id="ic-indeed" viewBox="0 0 24 24"><path d="M12 3.3a1.7 1.7 0 1 1 0 3.4 1.7 1.7 0 0 1 0-3.4zM10.3 8.4h3.4v12.6h-3.4z" /></symbol>
     </defs>
   </svg>
 
