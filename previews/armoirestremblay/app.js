@@ -477,10 +477,20 @@
     if (!grid) return [];
     let gallery = curate(fallbackItems(ctx));
     renderGrid(grid, gallery);
+    // 1) live folder scan - works on servers that list directories (local dev),
+    //    so the gallery auto-updates when photos are added/removed.
     try {
       const scanned = await scanPhotos(ctx);
-      if (scanned.length) { gallery = curate(scanned); renderGrid(grid, gallery); }
-    } catch (e) { /* keep fallback */ }
+      if (scanned.length) { gallery = curate(scanned); renderGrid(grid, gallery); return gallery; }
+    } catch (e) { /* no directory listing -> fall through to the manifest */ }
+    // 2) prebuilt manifest - works on any static host (Vercel, GitHub Pages...).
+    try {
+      const res = await fetch("photos.json", { cache: "no-cache" });
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data) && data.length) { gallery = curate(data); renderGrid(grid, gallery); }
+      }
+    } catch (e) { /* keep the content.json fallback */ }
     return gallery;
   }
 
