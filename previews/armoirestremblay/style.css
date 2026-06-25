@@ -580,17 +580,46 @@ button, input, select, textarea { font: inherit; color: inherit; }
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
   gap: clamp(1.2rem, 0.8rem + 1.5vw, 2rem);
 }
+/* Google rating badge */
+.greview {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 0.9rem 1.6rem;
+  margin-bottom: clamp(2.4rem, 1.8rem + 2vw, 3.6rem);
+}
+.greview__g { width: 26px; height: 26px; display: inline-grid; place-items: center; }
+.greview__g svg { width: 100%; height: 100%; fill: #4285f4; }
+.greview__num { font-family: var(--font-display); font-size: clamp(2.2rem, 1.6rem + 1.6vw, 3rem); line-height: 1; color: var(--text); }
+.greview__meta { display: grid; gap: 0.25rem; }
+.greview__stars { display: inline-flex; gap: 2px; }
+.greview__stars svg { width: 18px; height: 18px; fill: #e0a836; }
+.greview__count { color: var(--text-soft); font-size: 0.92rem; }
+.greview__count strong { color: var(--text); font-weight: 600; }
+.greview__cta {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  border: 1px solid var(--brass); color: var(--accent-strong);
+  padding: 0.62rem 1.35rem; border-radius: 999px;
+  font-size: 0.9rem; letter-spacing: 0.02em; cursor: pointer;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+}
+.greview__cta:hover, .greview__cta:focus-visible { background: var(--brass); color: #fff; outline: none; }
+
+/* review cards */
 .quote {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 2rem;
   box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column;
 }
-.quote__mark { font-family: var(--font-display); font-size: 3rem; line-height: 0.6; color: var(--wood-light); }
-.quote__text { font-family: var(--font-display); font-style: italic; font-size: 1.18rem; color: var(--text); margin: 0.6rem 0 1.4rem; line-height: 1.5; }
+.quote__stars { display: inline-flex; gap: 2px; margin-bottom: 1rem; }
+.quote__stars svg { width: 18px; height: 18px; fill: #e0a836; }
+.quote__text { font-family: var(--font-display); font-style: italic; font-size: 1.12rem; color: var(--text); margin: 0 0 1.4rem; line-height: 1.55; }
+.quote__by { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; margin-top: auto; }
 .quote__author { font-weight: 600; }
 .quote__loc { color: var(--text-faint); font-size: 0.9rem; }
+.quote__source { display: inline-flex; align-items: center; gap: 0.35rem; color: var(--text-faint); font-size: 0.78rem; white-space: nowrap; }
+.quote__source svg { width: 14px; height: 14px; fill: currentColor; }
 
 /* Contact */
 /* =====================================================================

@@ -110,21 +110,25 @@
       "temoignages": {
         "eyebrow": "Ce qu'on en dit",
         "title": "La confiance, projet après projet.",
+        "rating": { "score": "4.9", "count": "121", "url": "https://www.google.com/maps/search/?api=1&query=Armoires+Tremblay+McMasterville", "cta": "Lire nos avis sur Google" },
         "items": [
           {
             "quote": "On a parlé à une seule équipe du début à la fin. Aucun stress de coordination, et le résultat dépasse nos attentes.",
             "author": "Marie-Claude L.",
-            "location": "Outremont"
+            "location": "Outremont",
+            "stars": 5
           },
           {
             "quote": "Le souci du détail est partout. On sent l'amour du métier dans chaque assemblage.",
             "author": "Étienne R.",
-            "location": "Lac-Beauport"
+            "location": "Lac-Beauport",
+            "stars": 5
           },
           {
             "quote": "Des artisans, pas des vendeurs. Ils nous ont guidés sans jamais nous presser.",
             "author": "Sophie & Marc D.",
-            "location": "Boucherville"
+            "location": "Boucherville",
+            "stars": 5
           }
         ]
       },

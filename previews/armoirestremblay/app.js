@@ -496,13 +496,19 @@
 
   function renderTestimonials(container, items) {
     items.forEach((t, i) => {
+      const n = t.stars || 5;
+      const stars = el("div", { class: "quote__stars", "aria-label": n + " étoiles sur 5" });
+      for (let s = 0; s < n; s++) stars.appendChild(icon("star"));
       container.appendChild(
         el("figure", { class: "quote reveal", style: `--reveal-delay:${i * 80}ms` }, [
-          el("div", { class: "quote__mark", "aria-hidden": "true", text: "“" }),
+          stars,
           el("blockquote", { class: "quote__text", text: t.quote }),
-          el("figcaption", {}, [
-            el("div", { class: "quote__author", text: t.author }),
-            t.location ? el("div", { class: "quote__loc", text: t.location }) : null,
+          el("figcaption", { class: "quote__by" }, [
+            el("div", {}, [
+              el("div", { class: "quote__author", text: t.author }),
+              t.location ? el("div", { class: "quote__loc", text: t.location }) : null,
+            ]),
+            el("span", { class: "quote__source" }, [icon("google"), "Avis Google"]),
           ]),
         ])
       );
