@@ -254,8 +254,9 @@ footer{border-top:1px solid var(--bdr);padding:2.6rem 2rem 3.4rem;background:var
 /* Process machine demos */
 #processus{padding-top:6.5rem;padding-bottom:6.5rem}
 .psteps{gap:1.6rem}
-.pstep{padding:1rem .5rem}
-.pdemo{position:relative;width:100%;max-width:176px;aspect-ratio:1/1;margin:1.3rem auto 0;border-radius:12px;overflow:hidden;background:#06131a;border:1px solid #1b3947;box-shadow:inset 0 0 26px rgba(0,0,0,.55),0 10px 22px rgba(15,60,80,.12)}
+.pstep{padding:1rem .5rem;display:flex;flex-direction:column}
+.pstep p{margin-bottom:1.3rem}
+.pdemo{position:relative;width:100%;max-width:176px;aspect-ratio:1/1;margin:auto auto 0;border-radius:12px;overflow:hidden;background:#06131a;border:1px solid #1b3947;box-shadow:inset 0 0 26px rgba(0,0,0,.55),0 10px 22px rgba(15,60,80,.12)}
 .pdemo .gridbg{position:absolute;inset:0;background-image:linear-gradient(rgba(125,243,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(125,243,255,.06) 1px,transparent 1px);background-size:15px 15px}
 .pdemo svg{position:absolute;inset:0;width:100%;height:100%}
 .pscan{position:absolute;left:0;right:0;top:-12%;height:26px;background:linear-gradient(180deg,rgba(125,243,255,.16),transparent);border-top:1px solid rgba(125,243,255,.55);opacity:0}
