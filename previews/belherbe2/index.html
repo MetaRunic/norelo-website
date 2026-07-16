@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Bel'herbe | Gravure laser sur mesure | Montréal, Laurentides et Est de l'Ontario</title>
+<meta name="description" content="Bel'herbe : gravure laser personnalisée sur métal, verre, pierre, cuir, plastique et bois. Trophées, plaques, cadeaux personnalisés. Grand Montréal et Est de l'Ontario. Custom laser engraving, Montreal area and Eastern Ontario.">
+<meta name="keywords" content="gravure laser, laser engraving, Montréal, Laval, Rive-Nord, Laurentides, Ontario, trophées, plaques, cadeaux personnalisés, métal, verre, bois, cuir">
+<meta property="og:title" content="Bel'herbe | Gravure laser sur mesure">
+<meta property="og:description" content="Gravure laser personnalisée sur métal, verre, pierre, cuir, plastique et bois. Région de Montréal et Est de l'Ontario.">
+<meta property="og:type" content="website">
+<style>
+:root{
+--dark:#06131a;--dark2:#091b24;--panel:#0c2230;--blue:#0f9bc4;--bl:#38bfe4;--bp:#8edcf4;
+--laser:#7df3ff;--silver:#cfe4ec;--bdr:rgba(80,190,230,.16);--gr:#7f96a3;
+--f:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+--fs:Georgia,'Times New Roman',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow-x:hidden}
+html{scroll-behavior:smooth}
+.lcs,.lcs *{cursor:none!important}
+#lcur{position:fixed;inset:0;z-index:9998;pointer-events:none}
+body{background:var(--dark);color:var(--silver);font-family:var(--f);line-height:1.6}
+::selection{background:var(--blue);color:#fff}
+
+/* Draft watermark */
+.wm{position:fixed;bottom:0;left:0;right:0;z-index:999;background:#eab308;color:#111;text-align:center;font-size:.78rem;font-weight:700;padding:.35rem 1rem;letter-spacing:.5px}
+
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 3rem;background:rgba(6,19,26,.9);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr);transition:padding .3s}
+.nlogo{display:flex;align-items:center;gap:.7rem;text-decoration:none;color:#fff}
+.nlogo .nt{font-family:var(--fs);font-size:1.35rem;letter-spacing:.5px;color:#fff}
+.nlogo .nt small{display:block;font-family:var(--f);font-size:.55rem;letter-spacing:3.5px;color:var(--bp);text-transform:uppercase;margin-top:-2px}
+.nlinks{display:flex;gap:1.8rem;align-items:center}
+.nlinks a{color:var(--silver);text-decoration:none;font-size:.92rem;opacity:.85;transition:.25s}
+.nlinks a:hover{color:var(--bp);opacity:1}
+.lt{display:flex;gap:.3rem;border:1px solid var(--bdr);border-radius:5px;padding:.2rem}
+.lt button{background:none;border:none;color:var(--gr);font-family:var(--f);font-size:.78rem;font-weight:600;padding:.25rem .7rem;border-radius:3px;cursor:pointer;transition:.25s}
+.lt button.on{background:var(--blue);color:#fff}
+.ncta{background:var(--blue);color:#fff!important;padding:.55rem 1.25rem;font-weight:700;font-size:.8rem;letter-spacing:1px;text-transform:uppercase;opacity:1!important;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);transition:.25s;filter:drop-shadow(0 3px 10px rgba(15,155,196,.4))}
+.ncta:hover{background:var(--bl);filter:drop-shadow(0 4px 14px rgba(56,191,228,.55))}
+
+/* Hero */
+#hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:7.5rem 2rem 4rem;overflow:hidden;background:radial-gradient(1100px 650px at 78% 18%,rgba(15,155,196,.10),transparent 65%),radial-gradient(850px 550px at 12% 88%,rgba(125,243,255,.05),transparent 60%)}
+.hwrap{position:relative;z-index:2;display:flex;align-items:center;gap:4rem;max-width:1150px;width:100%;justify-content:center;flex-wrap:wrap}
+.hlogo{flex:0 0 340px;max-width:340px;position:relative}
+.hlogo img{width:100%;display:block;filter:invert(1);mix-blend-mode:screen;clip-path:inset(0 0 100% 0);animation:heng 2.4s .35s cubic-bezier(.45,0,.25,1) forwards}
+.nlimg{height:44px;width:44px;object-fit:contain;filter:invert(1);mix-blend-mode:screen}
+.bhbadge{width:44px;height:44px;border:2px solid #fff;border-radius:50%;align-items:center;justify-content:center;font-family:'Bodoni MT',Didot,Georgia,serif;color:#fff;font-size:1.15rem;letter-spacing:1px;display:none}
+.hfall{flex-direction:column;gap:1.1rem;text-align:center;clip-path:inset(0 0 100% 0);animation:heng 2.4s .35s cubic-bezier(.45,0,.25,1) forwards}
+.hfbh{font-family:'Bodoni MT',Didot,Georgia,serif;font-size:4.6rem;color:#fff;border:3px solid #eaf6fb;border-radius:50%;width:150px;height:150px;display:flex;align-items:center;justify-content:center;margin:0 auto}
+.hfname{font-family:'Bodoni MT',Didot,Georgia,serif;font-size:3rem;color:#fff;display:block}
+.hftag{letter-spacing:7px;color:var(--bp);font-size:.85rem;display:block}
+@keyframes heng{to{clip-path:inset(0 0 -2% 0)}}
+.hlz{position:absolute;left:-8%;right:-8%;top:0;height:3px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--laser) 18%,#fff 50%,var(--laser) 82%,transparent);box-shadow:0 0 16px var(--laser),0 0 44px rgba(125,243,255,.55);opacity:0;animation:hlzm 2.4s .35s cubic-bezier(.45,0,.25,1) forwards;pointer-events:none;z-index:3}
+@keyframes hlzm{0%{top:0;opacity:0}3%{opacity:1}95%{opacity:1}100%{top:101%;opacity:0}}
+.htxt{flex:1 1 420px;max-width:560px}
+.hkick{display:inline-flex;align-items:center;gap:.65rem;font-size:.78rem;letter-spacing:3px;text-transform:uppercase;color:var(--bp);padding:.55rem 1.3rem;margin-bottom:1.3rem;position:relative}
+.hkick::before,.hkick::after{content:"";position:absolute;width:14px;height:14px;border:1px solid rgba(125,243,255,.75)}
+.hkick::before{left:0;top:0;border-right:0;border-bottom:0}
+.hkick::after{right:0;bottom:0;border-left:0;border-top:0}
+.xh{width:11px;height:11px;position:relative;flex-shrink:0;animation:blk 2.6s infinite}
+.xh::before,.xh::after{content:"";position:absolute;background:var(--laser)}
+.xh::before{left:50%;top:0;bottom:0;width:1.5px;transform:translateX(-50%)}
+.xh::after{top:50%;left:0;right:0;height:1.5px;transform:translateY(-50%)}
+@keyframes blk{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes pu{0%,100%{box-shadow:0 0 0 0 rgba(125,243,255,.55)}50%{box-shadow:0 0 0 7px rgba(125,243,255,0)}}
+h1{font-family:var(--fs);font-size:clamp(2.3rem,5vw,3.6rem);line-height:1.12;color:#fff;font-weight:400;margin-bottom:1.2rem}
+h1 em{font-style:normal;color:var(--bp);position:relative;white-space:nowrap}
+h1 em::after{content:"";position:absolute;left:0;right:0;bottom:4px;height:2px;background:linear-gradient(90deg,transparent,var(--laser),transparent);animation:lz 3.2s ease-in-out infinite}
+@keyframes lz{0%,100%{opacity:.35;transform:scaleX(.6)}50%{opacity:1;transform:scaleX(1)}}
+.hsub{color:var(--gr);font-size:1.08rem;margin-bottom:2rem;max-width:480px}
+.hbtns{display:flex;gap:1rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;padding:.9rem 1.9rem;text-decoration:none;font-weight:700;font-size:.88rem;letter-spacing:1.1px;text-transform:uppercase;transition:.28s;border:none;cursor:pointer;font-family:var(--f);position:relative}
+.btn-p{background:var(--blue);color:#fff;clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -10px 20px rgba(4,20,28,.22);filter:drop-shadow(0 6px 16px rgba(15,155,196,.45))}
+.btn-p:hover{background:var(--bl);filter:drop-shadow(0 8px 22px rgba(56,191,228,.6))}
+.btn-s{background:transparent;color:var(--bp);border:1px solid rgba(80,190,230,.25)}
+.btn-s::before,.btn-s::after{content:"";position:absolute;width:12px;height:12px;border:1px solid var(--laser);transition:width .3s ease,height .3s ease;pointer-events:none}
+.btn-s::before{left:-1px;top:-1px;border-right:0;border-bottom:0}
+.btn-s::after{right:-1px;bottom:-1px;border-left:0;border-top:0}
+.btn-s:hover::before,.btn-s:hover::after{width:calc(100% + 1px);height:calc(100% + 1px)}
+.btn-s:hover{background:rgba(15,155,196,.1);color:#fff}
+.hmats{display:flex;gap:.55rem;flex-wrap:wrap;margin-top:2.2rem}
+.hmat{font-size:.78rem;color:var(--gr);border:1px solid var(--bdr);border-left:2px solid rgba(125,243,255,.45);padding:.28rem .85rem;border-radius:2px;background:rgba(12,34,48,.5);transition:.3s}
+.hmat:hover{color:var(--bp);border-color:var(--bp)}
+
+.hgrid{position:absolute;left:-20%;right:-20%;bottom:-14%;height:58%;background-image:linear-gradient(rgba(125,243,255,.13) 1px,transparent 1px),linear-gradient(90deg,rgba(125,243,255,.13) 1px,transparent 1px);background-size:56px 56px;transform:perspective(620px) rotateX(63deg);transform-origin:center bottom;-webkit-mask-image:linear-gradient(180deg,transparent,#000 40%,transparent 97%);mask-image:linear-gradient(180deg,transparent,#000 40%,transparent 97%);animation:gmv 8s linear infinite;z-index:0;pointer-events:none}
+@keyframes gmv{to{background-position:0 56px,0 56px}}
+#hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 52%,rgba(2,8,12,.55));pointer-events:none;z-index:1}
+.ember{position:absolute;border-radius:50%;background:radial-gradient(circle,#ffdca6 0%,#ff9a4d 55%,transparent 72%);opacity:0;animation-name:emb;animation-timing-function:linear;animation-iteration-count:infinite;z-index:1;pointer-events:none}
+@keyframes emb{0%{transform:translate(0,0);opacity:0}8%{opacity:.85}55%{opacity:.5;transform:translate(16px,-48vh)}100%{transform:translate(-12px,-94vh);opacity:0}}
+.scr{position:absolute;bottom:2.6rem;left:50%;transform:translateX(-50%);z-index:2;color:var(--gr);font-size:.72rem;letter-spacing:2px;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:.4rem;opacity:.7}
+.scr::after{content:"";width:1px;height:34px;background:linear-gradient(180deg,var(--bp),transparent);animation:scr 1.8s infinite}
+@keyframes scr{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* Sections */
+/* Scroll progress laser */
+#sprog{position:fixed;top:0;left:0;height:2px;width:100%;transform-origin:0 0;transform:scaleX(0);background:linear-gradient(90deg,var(--blue),var(--laser));box-shadow:0 0 10px var(--laser);z-index:1000;pointer-events:none}
+/* Film grain */
+body::before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");opacity:.035;pointer-events:none;z-index:2000;mix-blend-mode:overlay}
+/* Custom scrollbar */
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:var(--dark)}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--blue),rgba(125,243,255,.5));border-radius:5px;border:2px solid var(--dark)}
+/* Engrave-in text */
+.etch{transform:none!important}
+.etch.vis{animation:etch 1.15s cubic-bezier(.3,0,.3,1) both}
+@keyframes etch{0%{opacity:0;clip-path:inset(-15% 102% -15% -2%);filter:blur(4px);text-shadow:0 0 22px rgba(125,243,255,.95),0 0 6px rgba(255,255,255,.9)}45%{opacity:1;filter:blur(1px)}100%{opacity:1;clip-path:inset(-15% -2% -15% -2%);filter:blur(0);text-shadow:0 0 0 rgba(125,243,255,0),0 0 0 rgba(255,255,255,0)}}
+h1{animation:etch 1.5s .25s cubic-bezier(.3,0,.3,1) both}
+/* Tilt + glare */
+.tl{will-change:transform;transition:transform .18s ease-out,opacity .7s ease}
+.glare{position:absolute;inset:0;pointer-events:none;z-index:4;border-radius:inherit}
+/* Process line draw + sequential ignition */
+.psteps::before{transform:scaleX(0);transform-origin:left;transition:transform 1.3s ease .15s}
+.psteps.vis::before{transform:scaleX(1)}
+.psteps.vis .pnum{border-color:var(--laser);color:#fff;box-shadow:0 0 0 6px var(--dark),0 0 18px rgba(125,243,255,.3)}
+.psteps.vis .pstep:nth-child(1) .pnum{transition-delay:.25s}
+.psteps.vis .pstep:nth-child(2) .pnum{transition-delay:.55s}
+.psteps.vis .pstep:nth-child(3) .pnum{transition-delay:.85s}
+.psteps.vis .pstep:nth-child(4) .pnum{transition-delay:1.15s}
+
+section{padding:5.5rem 2rem;position:relative}
+section::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:min(1150px,88%);height:1px;background:linear-gradient(90deg,transparent,rgba(125,243,255,.22),transparent)}
+.wrap{max-width:1150px;margin:0 auto;position:relative;z-index:2}
+.sk{font-size:.75rem;letter-spacing:3px;text-transform:uppercase;color:var(--bl);margin-bottom:.8rem;display:block}
+h2{font-family:var(--fs);font-size:clamp(1.7rem,3.4vw,2.5rem);color:#fff;font-weight:400;margin-bottom:1rem;line-height:1.2}
+.slead{color:var(--gr);max-width:640px;margin-bottom:3rem;font-size:1.02rem}
+.rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.rv.vis{opacity:1;transform:none}
+
+/* Materials */
+#materiaux{background:linear-gradient(180deg,var(--dark) 0%,var(--dark2) 100%)}
+.matx{display:grid;grid-template-columns:280px 1fr;gap:1.6rem;align-items:stretch}
+.mtabs{display:flex;flex-direction:column;gap:.45rem}
+.mtab{display:flex;align-items:center;gap:.8rem;background:var(--panel);border:1px solid var(--bdr);border-radius:12px;padding:.85rem 1.1rem;color:var(--silver);font-family:var(--f);font-size:.95rem;font-weight:600;transition:.25s;text-align:left}
+.mtab svg{width:22px;height:22px;stroke:var(--bp);fill:none;stroke-width:1.6;flex-shrink:0}
+.mtab:hover{border-color:rgba(125,243,255,.4);transform:translateX(4px)}
+.mtab.on{background:linear-gradient(90deg,rgba(15,155,196,.25),var(--panel));border-color:var(--bl);box-shadow:0 0 18px rgba(15,155,196,.25)}
+.mstage{display:flex;flex-direction:column;gap:1rem}
+.mslab{position:relative;flex:1;min-height:300px;border-radius:16px;overflow:hidden;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.12);transition:background .4s}
+.mslab::before{content:"";position:absolute;inset:0;pointer-events:none}
+.mlaser{position:absolute;left:0;right:0;top:-4px;height:3px;background:linear-gradient(90deg,transparent,var(--laser),transparent);box-shadow:0 0 16px var(--laser);opacity:0;z-index:2}
+.go .mlaser{animation:msw 1s ease forwards}
+@keyframes msw{0%{top:0;opacity:1}88%{opacity:1}100%{top:100%;opacity:0}}
+.meng{position:relative;z-index:1;font-family:'Bodoni MT',Didot,Georgia,serif;font-size:clamp(2.2rem,5vw,3.6rem);letter-spacing:2px;color:rgba(10,14,18,.55);text-shadow:0 1px 1px rgba(255,255,255,.3),0 -1px 2px rgba(0,0,0,.35)}
+.go .meng{animation:men 1.05s ease both}
+@keyframes men{0%{opacity:0;filter:blur(7px)}55%{opacity:1}100%{opacity:1;filter:blur(0)}}
+.s-metal{background-color:#7c8e99;background-image:repeating-linear-gradient(92deg,rgba(255,255,255,.09) 0 1px,transparent 1px 3px),linear-gradient(135deg,#aebfc9,#7c8e99 35%,#a3b4bf 55%,#66777f 80%,#8a9ba6)}
+.s-glass{background-color:rgba(30,60,80,.35);background-image:linear-gradient(150deg,rgba(190,235,250,.30),rgba(80,140,170,.10) 45%,rgba(190,235,250,.22) 70%,rgba(60,110,140,.12));border-color:rgba(200,240,255,.35)!important}
+.s-glass::before{background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.16) 38%,transparent 46%)}
+.s-stone{background-color:#5b6169;background-image:radial-gradient(rgba(255,255,255,.10) 1px,transparent 1.4px),radial-gradient(rgba(0,0,0,.28) 1px,transparent 1.4px);background-size:26px 26px,19px 19px;background-position:0 0,9px 7px}
+.s-leather{background-color:#5e4634;background-image:radial-gradient(rgba(0,0,0,.22) 1.2px,transparent 1.6px),radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.4px);background-size:15px 15px,23px 23px}
+.s-plastic{background-color:rgba(25,80,105,.4);background-image:linear-gradient(150deg,rgba(80,200,235,.45),rgba(20,90,120,.30) 60%,rgba(80,200,235,.35))}
+.s-plastic::before{background:linear-gradient(105deg,transparent 55%,rgba(255,255,255,.14) 62%,transparent 70%)}
+.s-wood{background-color:#775636;background-image:
+radial-gradient(circle at 70% 38%,rgba(40,24,12,.8) 0 5px,rgba(40,24,12,.32) 9px,transparent 15px),
+repeating-radial-gradient(circle at 70% 38%,rgba(52,32,16,.20) 0 2px,transparent 2px 12px),
+radial-gradient(ellipse 340px 70px at 28% 62%,rgba(58,36,18,.26) 40%,transparent 72%),
+radial-gradient(ellipse 260px 55px at 45% 25%,rgba(58,36,18,.20) 40%,transparent 72%),
+repeating-linear-gradient(177deg,transparent 0 5px,rgba(58,36,18,.34) 5px 7px,transparent 7px 13px,rgba(128,98,62,.20) 13px 16px,transparent 16px 24px),
+linear-gradient(180deg,#8a6a42,#6d4f2e 35%,#7d5c38 60%,#66492a 85%,#7c5c38)}
+.s-glass .meng,.s-plastic .meng{color:rgba(255,255,255,.88);text-shadow:0 0 12px rgba(200,240,255,.5),0 1px 2px rgba(0,30,40,.4)}
+.mdesc{color:var(--silver);font-size:.95rem;background:var(--panel);border:1px solid var(--bdr);border-radius:12px;padding:1rem 1.2rem;margin:0;line-height:1.6}
+
+/* Catalogue */
+.cflex{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;align-items:stretch}
+.cbox{background:var(--panel);border:1px solid var(--bdr);border-radius:16px;padding:2rem;display:flex;flex-direction:column;transition:border-color .3s,transform .3s}
+.cbox:hover{border-color:rgba(125,243,255,.35)}
+.cbox h3{color:#fff;font-family:var(--fs);font-weight:400;font-size:1.35rem;margin-bottom:.7rem}
+.cbox p{color:var(--gr);font-size:.94rem;margin-bottom:1.4rem;flex:1}
+.cframe{position:relative;width:100%;border-radius:12px;overflow:hidden;border:1px solid var(--bdr);background:#03060f;margin-bottom:1.2rem;aspect-ratio:16/10}
+.cframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.cnote{font-size:.78rem;color:var(--gr);opacity:.8;margin-top:1rem}
+
+/* Gallery */
+#realisations{background:var(--dark2)}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.3rem}
+.gcard{background:var(--panel);border:1px solid var(--bdr);border-radius:14px;overflow:hidden;transition:transform .32s,border-color .32s,box-shadow .32s}
+.gcard:hover{border-color:rgba(125,243,255,.4);box-shadow:0 16px 40px rgba(2,10,14,.65)}
+.gimg{position:relative;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(circle at 50% 40%,#10303f 0%,#091b24 75%)}
+.gimg svg{width:64px;height:64px;stroke:rgba(142,220,244,.55);fill:none;stroke-width:1.3;transition:.35s}
+.gcard:hover .gimg svg{stroke:var(--laser);transform:scale(1.08)}
+.gimg::after{content:"";position:absolute;left:-30%;top:0;bottom:0;width:20%;background:linear-gradient(100deg,transparent,rgba(125,243,255,.1),transparent);transform:skewX(-12deg);transition:left .7s}
+.gcard:hover .gimg::after{left:130%}
+.gtxt{padding:1.2rem 1.3rem 1.4rem}
+.gtxt h3{color:#fff;font-size:1rem;font-weight:600;margin-bottom:.35rem}
+.gtxt p{color:var(--gr);font-size:.85rem;line-height:1.5}
+.gsoon{display:inline-block;margin-top:2rem;font-size:.82rem;color:var(--bp);border:1px dashed rgba(80,190,230,.4);border-left:3px solid rgba(125,243,255,.5);padding:.5rem 1.2rem;border-radius:2px}
+
+/* Process */
+.psteps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;position:relative}
+.psteps::before{content:"";position:absolute;top:52px;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(80,190,230,.4),rgba(80,190,230,.4),transparent);z-index:0}
+.pstep{position:relative;z-index:1;text-align:center;padding:1rem .6rem}
+.pnum{width:64px;height:64px;margin:0 auto 1.1rem;border-radius:50%;background:var(--panel);border:1px solid rgba(80,190,230,.4);display:flex;align-items:center;justify-content:center;font-family:var(--fs);font-size:1.4rem;color:var(--bp);transition:.3s;box-shadow:0 0 0 6px var(--dark)}
+.pstep:hover .pnum{border-color:var(--laser);color:#fff;box-shadow:0 0 0 6px var(--dark),0 0 22px rgba(125,243,255,.35)}
+.pstep h3{color:#fff;font-size:.98rem;font-weight:600;margin-bottom:.4rem}
+.pstep p{color:var(--gr);font-size:.84rem;line-height:1.5}
+
+/* Contact */
+#contact{background:linear-gradient(180deg,var(--dark2) 0%,var(--dark) 100%)}
+.cgrid{display:grid;grid-template-columns:1.1fr .9fr;gap:2.2rem;align-items:start}
+.ccard{background:var(--panel);border:1px solid var(--bdr);border-radius:16px;padding:2.1rem}
+.ccard h3{color:#fff;font-family:var(--fs);font-weight:400;font-size:1.3rem;margin-bottom:1.2rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.1rem}
+.chip{border:1px solid var(--bdr);border-left:3px solid rgba(125,243,255,.5);background:rgba(6,19,26,.6);color:var(--silver);font-size:.83rem;padding:.4rem 1rem;border-radius:2px;cursor:pointer;transition:.22s;font-family:var(--f)}
+.chip.sel{background:var(--blue);border-color:var(--blue);border-left-color:#fff;color:#fff;box-shadow:0 0 14px rgba(15,155,196,.4)}
+.ccard textarea{width:100%;min-height:120px;background:rgba(6,19,26,.7);border:1px solid var(--bdr);border-radius:10px;color:var(--silver);font-family:var(--f);font-size:.92rem;padding:.9rem 1rem;resize:vertical;margin-bottom:1.2rem;transition:border-color .25s}
+.ccard textarea:focus{outline:none;border-color:var(--bl)}
+.chint{font-size:.78rem;color:var(--gr);margin-top:.8rem;opacity:.85}
+.cinfo{display:flex;flex-direction:column;gap:1rem}
+.cline{background:var(--panel);border:1px solid var(--bdr);border-radius:14px;padding:1.3rem 1.5rem;display:flex;align-items:center;gap:1rem;transition:border-color .3s,transform .3s}
+.cline:hover{border-color:rgba(125,243,255,.4);transform:translateX(4px)}
+.cline svg{width:26px;height:26px;stroke:var(--bp);fill:none;stroke-width:1.7;flex-shrink:0}
+.cline .cl-l{font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gr);display:block}
+.cline a,.cline .cv{color:#fff;text-decoration:none;font-size:1rem;font-weight:600}
+.cline a:hover{color:var(--bp)}
+.rvl{background:none;border:1px solid rgba(80,190,230,.4);border-left:3px solid rgba(125,243,255,.6);color:var(--bp);font-size:.82rem;padding:.3rem .9rem;border-radius:2px;cursor:pointer;font-family:var(--f);transition:.22s}
+.rvl:hover{background:rgba(15,155,196,.12);border-color:var(--bp)}
+.cbadge{display:flex;align-items:center;gap:.55rem;font-size:.85rem;color:var(--gr)}
+.cbadge .dot{width:8px;height:8px;border-radius:50%;background:#22c55e;animation:pu 2s infinite}
+
+/* Footer */
+footer{border-top:1px solid var(--bdr);padding:2.6rem 2rem 3.4rem;background:var(--dark)}
+.fwrap{max-width:1150px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap}
+.fl{display:flex;align-items:center;gap:.8rem}
+.fl .nlimg{height:40px;width:40px}
+.fl span{font-family:var(--fs);color:#fff;font-size:1.15rem}
+.fr-{text-align:right;color:var(--gr);font-size:.82rem;line-height:1.9}
+.fr- a{color:var(--bp);text-decoration:none}
+.fr- a:hover{text-decoration:underline}
+
+@media(max-width:700px){
+nav{padding:1rem 1.25rem}
+.nlinks a:not(.ncta){display:none}
+.hwrap{gap:2.2rem}
+.hlogo{flex:0 0 230px;max-width:230px}
+section{padding:3.6rem 1.2rem}
+.cflex,.cgrid,.matx{grid-template-columns:1fr}
+.mtabs{flex-direction:row;overflow-x:auto;padding-bottom:.3rem}
+.mtab{flex-shrink:0;padding:.6rem .9rem;font-size:.85rem}
+.mslab{min-height:200px}
+.psteps{grid-template-columns:1fr 1fr;gap:1.6rem}
+.psteps::before{display:none}
+.fwrap{flex-direction:column;text-align:center}
+.fr-{text-align:center}
+.wm{font-size:.68rem}
+}
+</style>
+</head>
+<body>
+<div id="sprog"></div>
+
+
+
+<nav>
+  <a href="#hero" class="nlogo">
+    <img class="nlimg" src="logo-badge.png" alt="Bel'herbe" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <span class="bhbadge" style="display:none">BH</span>
+    <span class="nt">Bel'herbe<small id="ntg">Gravure laser</small></span>
+  </a>
+  <div class="nlinks">
+    <a href="#materiaux" id="nv1">Matériaux</a>
+    <a href="#catalogue" id="nv2">Catalogue</a>
+    <a href="#realisations" id="nv3">Réalisations</a>
+    <a href="#processus" id="nv4">Processus</a>
+    <div class="lt"><button id="bfr" class="on" onclick="sL('fr')">FR</button><button id="ben" onclick="sL('en')">EN</button></div>
+    <a href="#contact" class="ncta" id="nv5">Soumission</a>
+  </div>
+</nav>
+
+<header id="hero">
+  <div class="hgrid"></div>
+  <div class="hwrap">
+    <div class="hlogo" data-depth="10">
+      <img id="hlimg" src="logo.png" alt="Logo Bel'herbe" onerror="this.style.display='none';document.getElementById('hlsvg').style.display='flex'">
+      <div id="hlsvg" class="hfall" style="display:none">
+        <span class="hfbh">BH</span>
+        <span class="hfname">Bel'herbe</span>
+        <span class="hftag" id="hftag">GRAVURE LASER</span>
+      </div>
+      <div class="hlz"></div>
+    </div>
+    <div class="htxt">
+      <span class="hkick"><span class="xh"></span><span id="hk">Gravure laser de précision</span></span>
+      <h1 id="ht">Vos idées, gravées <em>pour durer</em></h1>
+      <p class="hsub" id="hs">Métal, verre, pierre, cuir, plastique ou bois : nous gravons vos objets ou ceux de notre catalogue avec une précision laser. Trophées, plaques, cadeaux personnalisés et plus encore.</p>
+      <div class="hbtns">
+        <a href="#contact" class="btn btn-p" id="hb1">Parlez-nous de votre projet</a>
+        <a href="#catalogue" class="btn btn-s" id="hb2">Explorer le catalogue</a>
+      </div>
+      <div class="hmats">
+        <span class="hmat" id="hm1">Métal</span><span class="hmat" id="hm2">Verre</span><span class="hmat" id="hm3">Pierre</span><span class="hmat" id="hm4">Cuir</span><span class="hmat" id="hm5">Plastique</span><span class="hmat" id="hm6">Bois</span>
+      </div>
+    </div>
+  </div>
+  <div class="scr" id="scrt">Défiler</div>
+</header>
+<section id="materiaux">
+  <div class="wrap">
+    <span class="sk rv etch" id="mk">Matériaux</span>
+    <h2 class="rv etch" id="mt">Six matériaux, une infinité de possibilités</h2>
+    <p class="slead rv" id="ms">Notre laser s'adapte à presque toutes les surfaces. Apportez votre objet ou choisissez-en un dans le catalogue.</p>
+    <div class="matx rv">
+      <div class="mtabs">
+        <button class="mtab on"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="1"/><path d="M3 10h18M7 6v12"/></svg><span id="mc1t">Métal</span></button>
+        <button class="mtab"><svg viewBox="0 0 24 24"><path d="M8 2h8l-1 9c0 2-1.5 3.5-3 3.5S9 13 9 11L8 2zM12 14.5V20M8 20h8"/></svg><span id="mc2t">Verre</span></button>
+        <button class="mtab"><svg viewBox="0 0 24 24"><path d="M6 18L3 12l4-7h10l4 7-3 6z"/><path d="M7 5l5 7 5-7M12 12v6"/></svg><span id="mc3t">Pierre</span></button>
+        <button class="mtab"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M16 14h2"/></svg><span id="mc4t">Cuir</span></button>
+        <button class="mtab"><svg viewBox="0 0 24 24"><path d="M4 8l8-4 8 4v8l-8 4-8-4z"/><path d="M4 8l8 4 8-4M12 12v8"/></svg><span id="mc5t">Plastique</span></button>
+        <button class="mtab"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="2"/></svg><span id="mc6t">Bois</span></button>
+      </div>
+      <div class="mstage">
+        <div class="mslab s-metal" id="mslab">
+          <div class="mlaser"></div>
+          <span class="meng" id="meng">Métal</span>
+        </div>
+        <div class="mdescs">
+          <p class="mdesc" id="mc1p">Plaques, outils, bijoux, cartes d'affaires en aluminium anodisé et acier inoxydable.</p>
+          <p class="mdesc" id="mc2p" style="display:none">Verres, bouteilles, miroirs et trophées gravés avec une finition givrée élégante.</p>
+          <p class="mdesc" id="mc3p" style="display:none">Ardoise, granit et roche naturelle pour des pièces commémoratives uniques.</p>
+          <p class="mdesc" id="mc4p" style="display:none">Portefeuilles, ceintures, étuis et étiquettes marqués de façon permanente.</p>
+          <p class="mdesc" id="mc5p" style="display:none">Acrylique, plaques signalétiques et objets promotionnels aux détails nets.</p>
+          <p class="mdesc" id="mc6p" style="display:none">Planches, cadres, boîtes et décorations avec un fini brûlé chaleureux.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="catalogue">
+  <div class="wrap">
+    <span class="sk rv etch" id="ck">Catalogue</span>
+    <h2 class="rv etch" id="ct">Choisissez un objet ou apportez le vôtre</h2>
+    <p class="slead rv" id="cs">Vous avez deux options : faire graver un objet qui vous appartient déjà, ou choisir parmi des centaines d'objets de notre catalogue, trophées, tasses, gourdes, crayons et plus. Les prix varient selon le marché : contactez-nous pour une soumission à jour.</p>
+    <div class="cflex">
+      <div class="cbox rv">
+        <h3 id="cb1t">Catalogue de composantes 2026</h3>
+        <p id="cb1p">Feuilletez le catalogue directement ici : trophées, plaques, médailles, articles en acrylique et bien plus.</p>
+        <div class="cframe"><iframe src="https://user-til5eyi.cld.bz/PDU-Components-Catalogue" loading="lazy" title="Catalogue de composantes 2026" allowfullscreen></iframe></div>
+        <a class="btn btn-s" href="https://user-til5eyi.cld.bz/PDU-Components-Catalogue" target="_blank" rel="noopener" id="cb1b">Ouvrir en plein écran</a>
+      </div>
+      <div class="cbox rv">
+        <h3 id="cb2t">Objets à personnaliser</h3>
+        <p id="cb2p">Parcourez le catalogue complet d'objets prêts à graver : tasses, gourdes, crayons, articles cadeaux et récompenses de toutes sortes.</p>
+        <div class="cframe"><iframe src="https://www.plasticdressup.ca/" loading="lazy" title="Catalogue Plastic Dress-Up"></iframe></div>
+        <a class="btn btn-s" href="https://www.plasticdressup.ca/" target="_blank" rel="noopener" id="cb2b">Visiter le catalogue complet</a>
+      </div>
+    </div>
+    <p class="cnote rv" id="cn">Vous avez repéré un item? Notez son numéro ou prenez une capture d'écran et envoyez-nous le tout avec votre idée de gravure.</p>
+  </div>
+</section>
+
+<section id="realisations">
+  <div class="wrap">
+    <span class="sk rv etch" id="rk">Réalisations</span>
+    <h2 class="rv etch" id="rt">Un aperçu de ce que le laser peut faire</h2>
+    <p class="slead rv" id="rs">Chaque projet est unique. Voici quelques exemples de demandes typiques de nos clients.</p>
+    <div class="ggrid">
+      <div class="gcard rv"><div class="gimg"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4zM7 5H4a3 3 0 003 4M17 5h3a3 3 0 01-3 4"/></svg></div><div class="gtxt"><h3 id="g1t">Trophées et récompenses</h3><p id="g1p">Reconnaissance d'employés, tournois sportifs et galas, gravés sur acrylique ou métal.</p></div></div>
+      <div class="gcard rv"><div class="gimg"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M7 9h10M7 12.5h7M7 16h4"/></svg></div><div class="gtxt"><h3 id="g2t">Plaques commémoratives</h3><p id="g2p">Hommages, inaugurations et dédicaces sur métal, pierre ou bois.</p></div></div>
+      <div class="gcard rv"><div class="gimg"><svg viewBox="0 0 24 24"><path d="M9 3h6l-.8 8.5a2.2 2.2 0 01-4.4 0L9 3zM12 13.5V19M9 19h6"/></svg></div><div class="gtxt"><h3 id="g3t">Verres personnalisés</h3><p id="g3p">Mariages, anniversaires et événements corporatifs sur verre ou bouteille.</p></div></div>
+      <div class="gcard rv"><div class="gimg"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 11h18M15 15h3"/></svg></div><div class="gtxt"><h3 id="g4t">Cuir et accessoires</h3><p id="g4p">Portefeuilles, étuis et bracelets marqués d'initiales ou de logos.</p></div></div>
+      <div class="gcard rv"><div class="gimg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a13 13 0 000 18M12 3a13 13 0 010 18M3.5 9h17M3.5 15h17"/></svg></div><div class="gtxt"><h3 id="g5t">Bois gravé</h3><p id="g5p">Planches à découper, enseignes et cadeaux d'hôte au fini chaleureux.</p></div></div>
+      <div class="gcard rv"><div class="gimg"><svg viewBox="0 0 24 24"><path d="M12 3l7 4v10l-7 4-7-4V7z"/><path d="M12 3v18M5 7l14 10M19 7L5 17"/></svg></div><div class="gtxt"><h3 id="g6t">Objets promotionnels</h3><p id="g6p">Tasses, gourdes, crayons et articles à l'image de votre entreprise.</p></div></div>
+    </div>
+    <span class="gsoon rv" id="gs">Photos haute résolution de nos réalisations à venir sous peu. En attendant, visitez notre page Facebook.</span>
+  </div>
+</section>
+
+<section id="processus">
+  <div class="wrap">
+    <span class="sk rv etch" id="pk">Processus</span>
+    <h2 class="rv etch" id="pt">Simple, du début à la fin</h2>
+    <p class="slead rv" id="ps">Quatre étapes entre votre idée et l'objet fini entre vos mains.</p>
+    <div class="psteps">
+      <div class="pstep rv"><div class="pnum">1</div><h3 id="p1t">Choisissez l'objet</h3><p id="p1p">Un item du catalogue ou un objet qui vous appartient déjà.</p></div>
+      <div class="pstep rv"><div class="pnum">2</div><h3 id="p2t">Décrivez votre idée</h3><p id="p2p">Texte, logo, photo ou dessin : envoyez-nous ce que vous imaginez.</p></div>
+      <div class="pstep rv"><div class="pnum">3</div><h3 id="p3t">Gravure laser</h3><p id="p3p">Nous gravons votre pièce avec précision et vous tenons au courant.</p></div>
+      <div class="pstep rv"><div class="pnum">4</div><h3 id="p4t">Ramassage ou livraison</h3><p id="p4p">Récupérez votre pièce ou faites-la expédier chez vous moyennant des frais d'envoi.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <span class="sk rv etch" id="kk">Contact</span>
+    <h2 class="rv etch" id="kt">Parlez-nous de votre projet</h2>
+    <p class="slead rv" id="ks">Décrivez ce que vous voulez faire graver et nous vous répondrons avec une soumission. Réponse en moins de 24h.</p>
+    <div class="cgrid">
+      <div class="ccard rv">
+        <h3 id="cc1">Décrivez votre projet</h3>
+        <div class="chips" id="chips">
+          <button class="chip" data-m="Métal|Metal">Métal</button>
+          <button class="chip" data-m="Verre|Glass">Verre</button>
+          <button class="chip" data-m="Pierre|Stone">Pierre</button>
+          <button class="chip" data-m="Cuir|Leather">Cuir</button>
+          <button class="chip" data-m="Plastique|Plastic">Plastique</button>
+          <button class="chip" data-m="Bois|Wood">Bois</button>
+          <button class="chip" data-m="Objet du catalogue|Catalogue item">Objet du catalogue</button>
+        </div>
+        <textarea id="pmsg" placeholder="Ex. : je voudrais faire graver le logo de mon entreprise sur 12 verres pour un événement..."></textarea>
+        <button class="btn btn-p" id="mailgo" onclick="goMail()">Envoyer par courriel</button>
+        <p class="chint" id="ch">Ce bouton ouvre votre application de courriel avec votre message déjà rédigé. Aucune donnée n'est envoyée à un serveur : votre message part directement de votre boîte courriel, à l'abri des robots.</p>
+      </div>
+      <div class="cinfo">
+        <div class="cline rv"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><div><span class="cl-l" id="ci1">Courriel</span><a href="#" id="eml" onclick="return rvE(this)">Cliquez pour afficher</a></div></div>
+        <div class="cline rv"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg><div><span class="cl-l" id="ci2">Téléphone</span><a href="#" id="tel" onclick="return rvT(this)">Cliquez pour afficher</a></div></div>
+        <div class="cline rv"><svg viewBox="0 0 24 24"><path d="M15 3h-2a4 4 0 00-4 4v3H6v4h3v7h4v-7h3l1-4h-4V7a1 1 0 011-1h3z"/></svg><div><span class="cl-l">Facebook</span><a href="https://www.facebook.com/profile.php?id=61589045588973" target="_blank" rel="noopener" id="fbl">Suivez nos réalisations</a></div></div>
+        <div class="cline rv"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0114 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><div><span class="cl-l" id="ci3">Zone desservie</span><span class="cv" id="ci3v">Grand Montréal et Est de l'Ontario</span></div></div>
+        <div class="cline rv"><div class="cbadge"><span class="dot"></span><span id="ci4">Réponse en moins de 24h · Expédition disponible partout</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fwrap">
+    <div class="fl">
+      <img class="nlimg" src="logo-badge.png" alt="Bel'herbe" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <span class="bhbadge" style="display:none">BH</span>
+      <span>Bel'herbe</span>
+    </div>
+    <div class="fr-">
+      <span id="f1">© 2026 Bel'herbe. Tous droits réservés.</span><br>
+      <a href="https://www.facebook.com/profile.php?id=61589045588973" target="_blank" rel="noopener">Facebook</a> · <a href="https://norelo.ca" target="_blank" rel="noopener" id="f2">Site web réalisé par Norelo</a>
+    </div>
+  </div>
+</footer>
+
+<div class="wm" id="wm">VERSION PRÉLIMINAIRE : site en cours de conception, présenté pour approbation. Ne pas diffuser.</div>
+<script>
+var T={
+fr:{
+wm:"VERSION PRÉLIMINAIRE : site en cours de conception, présenté pour approbation. Ne pas diffuser.",
+nv1:"Matériaux",nv2:"Catalogue",nv3:"Réalisations",nv4:"Processus",nv5:"Soumission",
+hk:"Gravure laser de précision",
+ntg:"Gravure laser",hftag:"GRAVURE LASER",
+ht:"Vos idées, gravées <em>pour durer</em>",
+hs:"Métal, verre, pierre, cuir, plastique ou bois : nous gravons vos objets ou ceux de notre catalogue avec une précision laser. Trophées, plaques, cadeaux personnalisés et plus encore.",
+hb1:"Parlez-nous de votre projet",hb2:"Explorer le catalogue",
+hm1:"Métal",hm2:"Verre",hm3:"Pierre",hm4:"Cuir",hm5:"Plastique",hm6:"Bois",
+scrt:"Défiler",
+mk:"Matériaux",mt:"Six matériaux, une infinité de possibilités",
+ms:"Notre laser s'adapte à presque toutes les surfaces. Apportez votre objet ou choisissez-en un dans le catalogue.",
+mc1t:"Métal",mc1p:"Plaques, outils, bijoux, cartes d'affaires en aluminium anodisé et acier inoxydable.",
+mc2t:"Verre",mc2p:"Verres, bouteilles, miroirs et trophées gravés avec une finition givrée élégante.",
+mc3t:"Pierre",mc3p:"Ardoise, granit et roche naturelle pour des pièces commémoratives uniques.",
+mc4t:"Cuir",mc4p:"Portefeuilles, ceintures, étuis et étiquettes marqués de façon permanente.",
+mc5t:"Plastique",mc5p:"Acrylique, plaques signalétiques et objets promotionnels aux détails nets.",
+mc6t:"Bois",mc6p:"Planches, cadres, boîtes et décorations avec un fini brûlé chaleureux.",
+ck:"Catalogue",ct:"Choisissez un objet ou apportez le vôtre",
+cs:"Vous avez deux options : faire graver un objet qui vous appartient déjà, ou choisir parmi des centaines d'objets de notre catalogue, trophées, tasses, gourdes, crayons et plus. Les prix varient selon le marché : contactez-nous pour une soumission à jour.",
+cb1t:"Catalogue de composantes 2026",cb1p:"Feuilletez le catalogue directement ici : trophées, plaques, médailles, articles en acrylique et bien plus.",cb1b:"Ouvrir en plein écran",
+cb2t:"Objets à personnaliser",cb2p:"Parcourez le catalogue complet d'objets prêts à graver : tasses, gourdes, crayons, articles cadeaux et récompenses de toutes sortes.",cb2b:"Visiter le catalogue complet",
+cn:"Vous avez repéré un item? Notez son numéro ou prenez une capture d'écran et envoyez-nous le tout avec votre idée de gravure.",
+rk:"Réalisations",rt:"Un aperçu de ce que le laser peut faire",
+rs:"Chaque projet est unique. Voici quelques exemples de demandes typiques de nos clients.",
+g1t:"Trophées et récompenses",g1p:"Reconnaissance d'employés, tournois sportifs et galas, gravés sur acrylique ou métal.",
+g2t:"Plaques commémoratives",g2p:"Hommages, inaugurations et dédicaces sur métal, pierre ou bois.",
+g3t:"Verres personnalisés",g3p:"Mariages, anniversaires et événements corporatifs sur verre ou bouteille.",
+g4t:"Cuir et accessoires",g4p:"Portefeuilles, étuis et bracelets marqués d'initiales ou de logos.",
+g5t:"Bois gravé",g5p:"Planches à découper, enseignes et cadeaux d'hôte au fini chaleureux.",
+g6t:"Objets promotionnels",g6p:"Tasses, gourdes, crayons et articles à l'image de votre entreprise.",
+gs:"Photos haute résolution de nos réalisations à venir sous peu. En attendant, visitez notre page Facebook.",
+pk:"Processus",pt:"Simple, du début à la fin",
+ps:"Quatre étapes entre votre idée et l'objet fini entre vos mains.",
+p1t:"Choisissez l'objet",p1p:"Un item du catalogue ou un objet qui vous appartient déjà.",
+p2t:"Décrivez votre idée",p2p:"Texte, logo, photo ou dessin : envoyez-nous ce que vous imaginez.",
+p3t:"Gravure laser",p3p:"Nous gravons votre pièce avec précision et vous tenons au courant.",
+p4t:"Ramassage ou livraison",p4p:"Récupérez votre pièce ou faites-la expédier chez vous moyennant des frais d'envoi.",
+kk:"Contact",kt:"Parlez-nous de votre projet",
+ks:"Décrivez ce que vous voulez faire graver et nous vous répondrons avec une soumission. Réponse en moins de 24h.",
+cc1:"Décrivez votre projet",
+mailgo:"Envoyer par courriel",
+ch:"Ce bouton ouvre votre application de courriel avec votre message déjà rédigé. Aucune donnée n'est envoyée à un serveur : votre message part directement de votre boîte courriel, à l'abri des robots.",
+ci1:"Courriel",ci2:"Téléphone",ci3:"Zone desservie",ci3v:"Grand Montréal et Est de l'Ontario",
+ci4:"Réponse en moins de 24h · Expédition disponible partout",
+fbl:"Suivez nos réalisations",
+f1:"© 2026 Bel'herbe. Tous droits réservés.",f2:"Site web réalisé par Norelo",
+rvl:"Cliquez pour afficher",
+ph:"Ex. : je voudrais faire graver le logo de mon entreprise sur 12 verres pour un événement...",
+sub:"Demande de soumission : gravure laser",bmat:"Matériaux ou objet : ",bmsg:"Description du projet : ",
+ttl:"Bel'herbe | Gravure laser sur mesure | Montréal, Laurentides et Est de l'Ontario"
+},
+en:{
+wm:"PRELIMINARY VERSION: website under construction, presented for approval. Do not share.",
+nv1:"Materials",nv2:"Catalogue",nv3:"Our work",nv4:"Process",nv5:"Get a quote",
+hk:"Precision laser engraving",
+ntg:"Laser engraving",hftag:"LASER ENGRAVING",
+ht:"Your ideas, engraved <em>to last</em>",
+hs:"Metal, glass, stone, leather, plastic or wood: we engrave your items or those from our catalogue with laser precision. Trophies, plaques, personalized gifts and more.",
+hb1:"Tell us about your project",hb2:"Browse the catalogue",
+hm1:"Metal",hm2:"Glass",hm3:"Stone",hm4:"Leather",hm5:"Plastic",hm6:"Wood",
+scrt:"Scroll",
+mk:"Materials",mt:"Six materials, endless possibilities",
+ms:"Our laser adapts to almost any surface. Bring your own item or pick one from the catalogue.",
+mc1t:"Metal",mc1p:"Plaques, tools, jewelry and business cards in anodized aluminum and stainless steel.",
+mc2t:"Glass",mc2p:"Glasses, bottles, mirrors and trophies engraved with an elegant frosted finish.",
+mc3t:"Stone",mc3p:"Slate, granite and natural rock for unique commemorative pieces.",
+mc4t:"Leather",mc4p:"Wallets, belts, cases and tags marked permanently.",
+mc5t:"Plastic",mc5p:"Acrylic, name plates and promotional items with crisp detail.",
+mc6t:"Wood",mc6p:"Boards, frames, boxes and decor with a warm burnt finish.",
+ck:"Catalogue",ct:"Pick an item or bring your own",
+cs:"You have two options: engrave an item you already own, or choose from hundreds of items in our catalogue, trophies, mugs, water bottles, pens and more. Prices vary with the market: contact us for an up to date quote.",
+cb1t:"2026 Components Catalogue",cb1p:"Flip through the catalogue right here: trophies, plaques, medals, acrylic pieces and much more.",cb1b:"Open full screen",
+cb2t:"Items to personalize",cb2p:"Browse the full catalogue of ready to engrave items: mugs, water bottles, pens, gift items and awards of all kinds.",cb2b:"Visit the full catalogue",
+cn:"Spotted an item? Note its number or take a screenshot and send it to us along with your engraving idea.",
+rk:"Our work",rt:"A glimpse of what the laser can do",
+rs:"Every project is unique. Here are a few examples of typical client requests.",
+g1t:"Trophies and awards",g1p:"Employee recognition, sports tournaments and galas, engraved on acrylic or metal.",
+g2t:"Commemorative plaques",g2p:"Tributes, inaugurations and dedications on metal, stone or wood.",
+g3t:"Personalized glassware",g3p:"Weddings, birthdays and corporate events on glass or bottles.",
+g4t:"Leather and accessories",g4p:"Wallets, cases and bracelets marked with initials or logos.",
+g5t:"Engraved wood",g5p:"Cutting boards, signs and host gifts with a warm finish.",
+g6t:"Promotional items",g6p:"Mugs, water bottles, pens and items branded with your company image.",
+gs:"High resolution photos of our work coming soon. In the meantime, visit our Facebook page.",
+pk:"Process",pt:"Simple, start to finish",
+ps:"Four steps between your idea and the finished piece in your hands.",
+p1t:"Choose the item",p1p:"A catalogue item or something you already own.",
+p2t:"Describe your idea",p2p:"Text, logo, photo or drawing: send us what you have in mind.",
+p3t:"Laser engraving",p3p:"We engrave your piece with precision and keep you posted.",
+p4t:"Pickup or delivery",p4p:"Pick up your piece or have it shipped to you for an additional fee.",
+kk:"Contact",kt:"Tell us about your project",
+ks:"Describe what you want engraved and we will get back to you with a quote. Reply within 24h.",
+cc1:"Describe your project",
+mailgo:"Send by email",
+ch:"This button opens your email app with your message already written. No data is sent to any server: your message goes straight from your own inbox, safe from bots.",
+ci1:"Email",ci2:"Phone",ci3:"Service area",ci3v:"Greater Montreal and Eastern Ontario",
+ci4:"Reply within 24h · Shipping available everywhere",
+fbl:"Follow our work",
+f1:"© 2026 Bel'herbe. All rights reserved.",f2:"Website by Norelo",
+rvl:"Click to reveal",
+ph:"E.g.: I would like my company logo engraved on 12 glasses for an event...",
+sub:"Quote request: laser engraving",bmat:"Materials or item: ",bmsg:"Project description: ",
+ttl:"Bel'herbe | Custom Laser Engraving | Montreal, Laurentians and Eastern Ontario"
+}};
+var L='fr';
+function sL(l){L=l;var t=T[l];
+for(var k in t){var el=document.getElementById(k);if(el&&k!=='ph'&&k!=='sub'&&k!=='bmat'&&k!=='bmsg'&&k!=='ttl'&&k!=='rvl')el.innerHTML=t[k];}
+document.getElementById('pmsg').placeholder=t.ph;
+document.title=t.ttl;
+document.documentElement.lang=l;
+document.getElementById('bfr').classList.toggle('on',l==='fr');
+document.getElementById('ben').classList.toggle('on',l==='en');
+var em=document.getElementById('eml'),tl=document.getElementById('tel');
+if(!em.dataset.r)em.innerHTML=t.rvl;
+if(!tl.dataset.r)tl.innerHTML=t.rvl;
+document.querySelectorAll('.chip').forEach(function(c){var p=c.dataset.m.split('|');c.textContent=(l==='fr'?p[0]:p[1]);});
+if(typeof swM==='function')swM(curM,false);
+}
+/* Bot-protected contact: assembled at click time only */
+function mkE(){return ['b','el','-','he','rbe'].join('')+String.fromCharCode(64)+['hot','mail','.c','om'].join('');}
+function mkT(){return ['514','884','4710'].join(String.fromCharCode(45));}
+function rvE(a){var e=mkE();a.textContent=e;a.href='mailto:'+e;a.dataset.r=1;a.onclick=null;return false;}
+function rvT(a){var p=mkT();a.textContent=p;a.href='tel:+1'+p.replace(/-/g,'');a.dataset.r=1;a.onclick=null;return false;}
+function goMail(){
+var mats=[].map.call(document.querySelectorAll('.chip.sel'),function(c){return c.textContent;}).join(', ');
+var msg=document.getElementById('pmsg').value;
+var t=T[L];
+var body=(mats?t.bmat+mats+'\n\n':'')+(msg?t.bmsg+'\n'+msg:'');
+location.href='mailto:'+mkE()+'?subject='+encodeURIComponent(t.sub)+'&body='+encodeURIComponent(body);
+}
+/* Materials showcase */
+/* Materials showcase */
+var curM=0,mAuto=null,mStop=false,mNames=['metal','glass','stone','leather','plastic','wood'];
+function swM(i,an){curM=i;
+var sl=document.getElementById('mslab');if(!sl)return;
+sl.className='mslab s-'+mNames[i];
+if(an!==false){void sl.offsetWidth;sl.classList.add('go');}
+document.querySelectorAll('.mtab').forEach(function(t,j){t.classList.toggle('on',j===i);});
+document.getElementById('meng').textContent=document.getElementById('mc'+(i+1)+'t').textContent;
+for(var j=1;j<=6;j++)document.getElementById('mc'+j+'p').style.display=(j===i+1)?'block':'none';
+}
+document.querySelectorAll('.mtab').forEach(function(t,i){t.addEventListener('click',function(){mStop=true;clearInterval(mAuto);swM(i,true);});});
+var mio=new IntersectionObserver(function(es){es.forEach(function(e){
+if(e.isIntersecting&&!mAuto&&!mStop){swM(curM,true);mAuto=setInterval(function(){if(!mStop)swM((curM+1)%6,true);},3800);}
+if(!e.isIntersecting&&mAuto&&!mStop){clearInterval(mAuto);mAuto=null;}
+});},{threshold:.35});
+if(document.getElementById('mslab'))mio.observe(document.getElementById('mslab'));
+
+/* Chips */
+document.querySelectorAll('.chip').forEach(function(c){c.addEventListener('click',function(){c.classList.toggle('sel');});});
+/* Scroll reveal */
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target);setTimeout(function(){e.target.style.transitionDelay='';},1300);}});},{threshold:.12});
+document.querySelectorAll('.rv').forEach(function(el){io.observe(el);});
+/* Mouse parallax */
+var pls=document.querySelectorAll('[data-depth]'),mx=0,my=0,cx=0,cy=0;
+window.addEventListener('mousemove',function(e){mx=(e.clientX/window.innerWidth-.5);my=(e.clientY/window.innerHeight-.5);});
+(function plx(){cx+=(mx-cx)*.06;cy+=(my-cy)*.06;
+pls.forEach(function(el){var d=+el.dataset.depth;el.style.transform='translate3d('+(-cx*d)+'px,'+(-cy*d)+'px,0)';});
+requestAnimationFrame(plx);})();
+
+
+
+
+
+/* Scroll progress */
+(function(){var sp=document.getElementById('sprog'),tk=false;
+function up(){var m=document.documentElement.scrollHeight-innerHeight;
+sp.style.transform='scaleX('+(m>0?scrollY/m:0)+')';tk=false;}
+addEventListener('scroll',function(){if(!tk){tk=true;requestAnimationFrame(up);}});up();})();
+/* 3D tilt + glare */
+function tilt(sel,mx2){document.querySelectorAll(sel).forEach(function(el){
+el.classList.add('tl');
+var gl=document.createElement('div');gl.className='glare';el.appendChild(gl);
+el.addEventListener('mousemove',function(e){var r=el.getBoundingClientRect();
+var px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
+el.style.transform='perspective(700px) rotateX('+(-py*mx2).toFixed(2)+'deg) rotateY('+(px*mx2).toFixed(2)+'deg) translateY(-4px)';
+gl.style.background='radial-gradient(circle at '+((px+.5)*100).toFixed(1)+'% '+((py+.5)*100).toFixed(1)+'%,rgba(255,255,255,.13),transparent 55%)';});
+el.addEventListener('mouseleave',function(){el.style.transform='';gl.style.background='none';});});}
+if(matchMedia('(pointer:fine)').matches){tilt('.gcard',7);tilt('.mslab',5);tilt('.cbox',3);}
+/* Magnetic buttons */
+if(matchMedia('(pointer:fine)').matches){
+document.querySelectorAll('.btn-p,.ncta').forEach(function(b){
+b.addEventListener('mousemove',function(e){var r=b.getBoundingClientRect();
+b.style.transform='translate('+((e.clientX-r.left-r.width/2)*.18).toFixed(1)+'px,'+((e.clientY-r.top-r.height/2)*.3).toFixed(1)+'px)';});
+b.addEventListener('mouseleave',function(){b.style.transform='';});});}
+/* Staggered reveals */
+document.querySelectorAll('.rv').forEach(function(el){
+var sibs=[].filter.call(el.parentNode.children,function(c){return c.classList&&c.classList.contains('rv');});
+el.style.transitionDelay=((sibs.indexOf(el)%8)*80)+'ms';});
+/* Process sequence */
+var pst=document.querySelector('.psteps');if(pst)io.observe(pst);
+
+/* Rising engraving embers in hero */
+(function(){var hr=document.getElementById('hero');if(!hr)return;
+for(var i=0;i<14;i++){var d=document.createElement('span');d.className='ember';
+d.style.left=(5+Math.random()*90)+'%';
+d.style.bottom=(-4-Math.random()*8)+'%';
+var du=6+Math.random()*7,sz=2+Math.random()*3;
+d.style.width=sz+'px';d.style.height=sz+'px';
+d.style.animationDuration=du+'s';
+d.style.animationDelay=(-Math.random()*du)+'s';
+hr.appendChild(d);}})();
+
+/* Laser cursor: morphing reticle + engraving trail + capped sparks */
+(function(){
+if(!matchMedia('(pointer:fine)').matches)return;
+document.documentElement.classList.add('lcs');
+var c=document.createElement('canvas');c.id='lcur';document.body.appendChild(c);
+var g2=c.getContext('2d'),W,H,tr=[],sp=[],mx=-100,my=-100,lastB=0;
+var mode='dot',rr=6.5,cr=3,bm=0,rot=0;
+function rs2(){W=c.width=innerWidth;H=c.height=innerHeight}rs2();addEventListener('resize',rs2);
+addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;
+var t=e.target;
+if(t&&t.closest){
+if(t.closest('a,button,.chip,.mtab,.lt'))mode='link';
+else if(t.closest('textarea,input,h1,h2,h3,p,li,td,label,small,.hmat,.sk'))mode='text';
+else mode='dot';}
+tr.push({x:mx,y:my,t:performance.now()});if(tr.length>90)tr.shift();});
+document.addEventListener('mouseleave',function(){mx=-100;my=-100;});
+addEventListener('mousedown',function(e){var n=performance.now();
+if(n-lastB<90||sp.length>80)return;lastB=n;
+for(var i=0;i<12;i++){var a=Math.random()*6.283,v=Math.random()*3.4+1.2;
+sp.push({x:e.clientX,y:e.clientY,vx:Math.cos(a)*v,vy:Math.sin(a)*v-1.6,l:1,r:Math.random()*1.8+.8});}});
+function dr2(){var n=performance.now();g2.clearRect(0,0,W,H);
+g2.lineCap='round';
+for(var i=1;i<tr.length;i++){var p0=tr[i-1],p1=tr[i],ag=(n-p1.t)/900;if(ag>=1)continue;
+var a=1-ag;
+g2.strokeStyle='rgba(255,'+Math.round(140+90*a)+','+Math.round(60+140*a)+','+(a*.5).toFixed(3)+')';
+g2.lineWidth=2.2*a+.4;g2.beginPath();g2.moveTo(p0.x,p0.y);g2.lineTo(p1.x,p1.y);g2.stroke();}
+while(tr.length&&n-tr[0].t>900)tr.shift();
+for(var j=sp.length-1;j>=0;j--){var s=sp[j];s.x+=s.vx;s.y+=s.vy;s.vy+=.14;s.l-=.022;
+if(s.l<=0){sp.splice(j,1);continue;}
+g2.beginPath();g2.arc(s.x,s.y,s.r*s.l,0,6.283);
+g2.fillStyle='rgba(255,'+Math.round(150+105*s.l)+','+Math.round(70+120*s.l)+','+s.l.toFixed(3)+')';g2.fill();}
+if(mx>=0){
+var R=mode==='link'?15:(mode==='text'?2.2:6.5);
+var CR=mode==='text'?1.3:3;
+var BM=mode==='text'?10:0;
+rr+=(R-rr)*.2;cr+=(CR-cr)*.2;bm+=(BM-bm)*.2;
+if(mode==='link')rot+=.055;
+var rg=g2.createRadialGradient(mx,my,0,mx,my,18);
+rg.addColorStop(0,'rgba(125,243,255,.5)');rg.addColorStop(1,'rgba(125,243,255,0)');
+g2.fillStyle=rg;g2.beginPath();g2.arc(mx,my,18,0,6.283);g2.fill();
+if(bm>0.6){g2.strokeStyle='rgba(234,252,255,.95)';g2.lineWidth=1.6;
+g2.beginPath();g2.moveTo(mx,my-bm);g2.lineTo(mx,my+bm);g2.stroke();
+g2.beginPath();g2.moveTo(mx-3.5,my-bm);g2.lineTo(mx+3.5,my-bm);g2.moveTo(mx-3.5,my+bm);g2.lineTo(mx+3.5,my+bm);g2.stroke();}
+if(cr>0.3){g2.beginPath();g2.arc(mx,my,cr,0,6.283);g2.fillStyle='#eafcff';g2.fill();}
+if(rr>3){g2.save();g2.translate(mx,my);g2.rotate(rot);
+if(mode==='link')g2.setLineDash([6,7]);
+g2.strokeStyle='rgba(125,243,255,.85)';g2.lineWidth=1.3;
+g2.beginPath();g2.arc(0,0,rr,0,6.283);g2.stroke();g2.setLineDash([]);
+if(mode==='link'){g2.lineWidth=1.5;
+[[0,-1],[0,1],[-1,0],[1,0]].forEach(function(d){g2.beginPath();g2.moveTo(d[0]*(rr+3),d[1]*(rr+3));g2.lineTo(d[0]*(rr+7),d[1]*(rr+7));g2.stroke();});}
+g2.restore();}
+}
+requestAnimationFrame(dr2);}
+requestAnimationFrame(dr2);
+})();
+</script>
+</body>
+</html>
