@@ -210,7 +210,9 @@ linear-gradient(180deg,#8a6a42,#6d4f2e 35%,#7d5c38 60%,#66492a 85%,#7c5c38)}
 .ccard textarea:focus{outline:none;border-color:var(--bl)}
 .chint{font-size:.78rem;color:var(--gr);margin-top:.8rem;opacity:.85}
 .cinfo{display:flex;flex-direction:column;gap:1rem}
-.cline{background:var(--panel);border:1px solid var(--bdr);border-radius:14px;padding:1.3rem 1.5rem;display:flex;align-items:center;gap:1rem;transition:border-color .3s,transform .3s}
+.cline{position:relative;background:var(--panel);border:1px solid var(--bdr);border-radius:14px;padding:1.3rem 1.5rem;display:flex;align-items:center;gap:1rem;transition:border-color .3s,transform .3s}
+.cline a::after{content:"";position:absolute;inset:0;z-index:2}
+.cline:has(a){cursor:pointer}
 .cline:hover{border-color:rgba(125,243,255,.4);transform:translateX(4px)}
 .cline svg{width:26px;height:26px;stroke:var(--bp);fill:none;stroke-width:1.7;flex-shrink:0}
 .cline .cl-l{font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gr);display:block}
