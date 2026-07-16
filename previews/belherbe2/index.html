@@ -610,7 +610,7 @@ var px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
 el.style.transform='perspective(700px) rotateX('+(-py*mx2).toFixed(2)+'deg) rotateY('+(px*mx2).toFixed(2)+'deg) translateY(-4px)';
 gl.style.background='radial-gradient(circle at '+((px+.5)*100).toFixed(1)+'% '+((py+.5)*100).toFixed(1)+'%,rgba(255,255,255,.13),transparent 55%)';});
 el.addEventListener('mouseleave',function(){el.style.transform='';gl.style.background='none';});});}
-if(matchMedia('(pointer:fine)').matches){tilt('.gcard',7);tilt('.mslab',5);tilt('.cbox',3);}
+if(matchMedia('(pointer:fine)').matches){tilt('.gcard',7);tilt('.cbox',3);}
 /* Magnetic buttons */
 if(matchMedia('(pointer:fine)').matches){
 document.querySelectorAll('.btn-p,.ncta').forEach(function(b){
