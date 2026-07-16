@@ -253,7 +253,7 @@ footer{border-top:1px solid var(--bdr);padding:2.6rem 2rem 3.4rem;background:var
 #processus{padding-top:6.5rem;padding-bottom:6.5rem}
 .psteps{gap:1.6rem}
 .pstep{padding:1rem .5rem}
-.pdemo{position:relative;width:100%;max-width:176px;aspect-ratio:1/1;margin:0 auto 1.3rem;border-radius:12px;overflow:hidden;background:#06131a;border:1px solid #1b3947;box-shadow:inset 0 0 26px rgba(0,0,0,.55),0 10px 22px rgba(15,60,80,.12)}
+.pdemo{position:relative;width:100%;max-width:176px;aspect-ratio:1/1;margin:1.3rem auto 0;border-radius:12px;overflow:hidden;background:#06131a;border:1px solid #1b3947;box-shadow:inset 0 0 26px rgba(0,0,0,.55),0 10px 22px rgba(15,60,80,.12)}
 .pdemo .gridbg{position:absolute;inset:0;background-image:linear-gradient(rgba(125,243,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(125,243,255,.06) 1px,transparent 1px);background-size:15px 15px}
 .pdemo svg{position:absolute;inset:0;width:100%;height:100%}
 .pscan{position:absolute;left:0;right:0;top:-12%;height:26px;background:linear-gradient(180deg,rgba(125,243,255,.16),transparent);border-top:1px solid rgba(125,243,255,.55);opacity:0}
@@ -437,7 +437,7 @@ section{padding:3.6rem 1.2rem}
     <h2 class="rv etch" id="pt">Simple, du début à la fin</h2>
     <p class="slead rv" id="ps">Quatre étapes entre votre idée et l'objet fini entre vos mains.</p>
     <div class="psteps">
-      <div class="pstep rv"><div class="pnum">1</div><div class="pdemo"><div class="gridbg"></div><div class="pscan anim"></div><svg viewBox="0 0 120 120">
+      <div class="pstep rv"><div class="pnum">1</div><h3 id="p1t">Choisissez l'objet</h3><p id="p1p">Un item du catalogue ou un objet qui vous appartient déjà.</p><div class="pdemo"><div class="gridbg"></div><div class="pscan anim"></div><svg viewBox="0 0 120 120">
 <g fill="none" stroke="#4a7d92" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 <g transform="translate(24,60)"><rect x="-8" y="-9" width="16" height="19" rx="2"/><path d="M8 -4 h5 a4 4 0 0 1 0 10 h-5"/></g>
 <g class="d1pick anim" transform="translate(60,58)"><path d="M-9 -11 h18 v4 a9 9 0 0 1 -18 0 z"/><path d="M0 2 v6 M-6 11 h12"/></g>
@@ -446,16 +446,16 @@ section{padding:3.6rem 1.2rem}
 <rect class="d1sel anim" x="47" y="41" width="26" height="33" rx="3" fill="none" stroke="#7df3ff" stroke-width="2"/>
 <circle class="d1ring anim" cx="60" cy="58" r="6" fill="none" stroke="#7df3ff" stroke-width="2"/>
 <g class="d1cur anim" stroke="#eafcff" stroke-width="1.6" fill="none"><circle cx="60" cy="58" r="7"/><path d="M60 47 v4 M60 65 v4 M49 58 h4 M67 58 h4"/></g>
-</svg></div><h3 id="p1t">Choisissez l'objet</h3><p id="p1p">Un item du catalogue ou un objet qui vous appartient déjà.</p></div>
-      <div class="pstep rv"><div class="pnum">2</div><div class="pdemo"><div class="gridbg"></div><div class="pscan anim"></div><div class="d2wrap"><div class="d2card"><div class="d2line"><span class="d2txt anim">Logo + « Merci »</span><span class="d2car anim"></span></div><div class="d2sub">Votre message</div></div></div></div><h3 id="p2t">Décrivez votre idée</h3><p id="p2p">Texte, logo, photo ou dessin : envoyez-nous ce que vous imaginez.</p></div>
-      <div class="pstep rv"><div class="pnum">3</div><div class="pdemo"><div class="gridbg"></div><div class="pscan anim"></div><svg viewBox="0 0 120 120">
+</svg></div></div>
+      <div class="pstep rv"><div class="pnum">2</div><h3 id="p2t">Décrivez votre idée</h3><p id="p2p">Texte, logo, photo ou dessin : envoyez-nous ce que vous imaginez.</p><div class="pdemo"><div class="gridbg"></div><div class="pscan anim"></div><div class="d2wrap"><div class="d2card"><div class="d2line"><span class="d2txt anim">Logo + « Merci »</span><span class="d2car anim"></span></div><div class="d2sub">Votre message</div></div></div></div></div>
+      <div class="pstep rv"><div class="pnum">3</div><h3 id="p3t">Gravure laser</h3><p id="p3p">Nous gravons votre pièce avec précision et vous tenons au courant.</p><div class="pdemo"><div class="gridbg"></div><div class="pscan anim"></div><svg viewBox="0 0 120 120">
 <path d="M18 74 q14 -34 30 -14 q10 12 22 0 q14 -16 30 -2" fill="none" stroke="#153244" stroke-width="3.5" stroke-linecap="round"/>
 <path class="d3glow anim" d="M18 74 q14 -34 30 -14 q10 12 22 0 q14 -16 30 -2" fill="none" stroke="#7df3ff" stroke-width="5" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="220" opacity=".35"/>
 <path class="d3ink anim" d="M18 74 q14 -34 30 -14 q10 12 22 0 q14 -16 30 -2" fill="none" stroke="#eafcff" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="220" stroke-dashoffset="220"/>
 <g class="d3head anim"><rect x="-7" y="-9" width="14" height="8" rx="1" fill="#2b5566" stroke="#7df3ff" stroke-width="1"/><path d="M-4 -1 L4 -1 L0 6 Z" fill="#7df3ff"/></g>
 <circle class="d3tip anim" r="3.4" fill="#fff"/>
-</svg></div><h3 id="p3t">Gravure laser</h3><p id="p3p">Nous gravons votre pièce avec précision et vous tenons au courant.</p></div>
-      <div class="pstep rv"><div class="pnum">4</div><div class="pdemo"><div class="gridbg"></div><div class="pscan anim"></div><svg viewBox="0 0 120 120">
+</svg></div></div>
+      <div class="pstep rv"><div class="pnum">4</div><h3 id="p4t">Ramassage ou livraison</h3><p id="p4p">Récupérez votre pièce ou faites-la expédier chez vous moyennant des frais d'envoi.</p><div class="pdemo"><div class="gridbg"></div><div class="pscan anim"></div><svg viewBox="0 0 120 120">
 <line x1="8" y1="88" x2="112" y2="88" stroke="#1b3947" stroke-width="2" stroke-dasharray="6 6"/>
 <g class="d4check anim"><circle cx="60" cy="32" r="12" fill="none" stroke="#7df3ff" stroke-width="2"/><path d="M54 32 l4 4 l8 -9" fill="none" stroke="#7df3ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></g>
 <g class="d4truck anim">
@@ -465,7 +465,7 @@ section{padding:3.6rem 1.2rem}
 <g class="d4wheel anim"><circle cx="27" cy="84" r="7" fill="#06131a" stroke="#7df3ff" stroke-width="2"/><path d="M27 78 v12 M21 84 h12" stroke="#4a7d92" stroke-width="1.4"/></g>
 <g class="d4wheel anim"><circle cx="65" cy="84" r="7" fill="#06131a" stroke="#7df3ff" stroke-width="2"/><path d="M65 78 v12 M59 84 h12" stroke="#4a7d92" stroke-width="1.4"/></g>
 </g>
-</svg></div><h3 id="p4t">Ramassage ou livraison</h3><p id="p4p">Récupérez votre pièce ou faites-la expédier chez vous moyennant des frais d'envoi.</p></div>
+</svg></div></div>
     </div>
   </div>
 </section>
