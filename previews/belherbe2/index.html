@@ -165,7 +165,7 @@ linear-gradient(180deg,#8a6a42,#6d4f2e 35%,#7d5c38 60%,#66492a 85%,#7c5c38)}
 .mdesc{color:var(--silver);font-size:.95rem;background:var(--panel);border:1px solid var(--bdr);border-radius:12px;padding:1rem 1.2rem;margin:0;line-height:1.6}
 
 /* Catalogue */
-.cflex{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;align-items:stretch}
+.cflex{display:grid;grid-template-columns:1fr;gap:1.8rem;align-items:stretch}
 .cbox{background:var(--panel);border:1px solid var(--bdr);border-radius:16px;padding:2rem;display:flex;flex-direction:column;transition:border-color .3s,transform .3s}
 .cbox:hover{border-color:rgba(125,243,255,.35)}
 .cbox h3{color:#fff;font-family:var(--fs);font-weight:400;font-size:1.35rem;margin-bottom:.7rem}
@@ -240,6 +240,7 @@ footer{border-top:1px solid var(--bdr);padding:2.6rem 2rem 3.4rem;background:var
 #catalogue .slead,#processus .slead{color:#4a636e}
 #catalogue::before,#processus::before{background:linear-gradient(90deg,transparent,rgba(11,112,145,.22),transparent)}
 #catalogue .cbox,#catalogue .cframe{background:#f5f8fa;border-color:#d3e0e5}
+#catalogue .cframe{aspect-ratio:16/9}
 #catalogue .cbox:hover{border-color:#0f9bc4}
 #catalogue .cbox h3{color:#06131a}
 #catalogue .cbox p{color:#5a7480}
@@ -401,16 +402,22 @@ section{padding:3.6rem 1.2rem}
     <p class="slead rv" id="cs">Vous avez deux options : faire graver un objet qui vous appartient déjà, ou choisir parmi des centaines d'objets de notre catalogue, trophées, tasses, gourdes, crayons et plus. Les prix varient selon le marché : contactez-nous pour une soumission à jour.</p>
     <div class="cflex">
       <div class="cbox rv">
-        <h3 id="cb1t">Catalogue de composantes 2026</h3>
-        <p id="cb1p">Feuilletez le catalogue directement ici : trophées, plaques, médailles, articles en acrylique et bien plus.</p>
-        <div class="cframe"><iframe src="https://user-til5eyi.cld.bz/PDU-Components-Catalogue" loading="lazy" title="Catalogue de composantes 2026" allowfullscreen></iframe></div>
-        <a class="btn btn-s" href="https://user-til5eyi.cld.bz/PDU-Components-Catalogue" target="_blank" rel="noopener" id="cb1b">Ouvrir en plein écran</a>
+        <h3 id="cb1t">Awards of Distinction</h3>
+        <p id="cb1p">Trophées, plaques, médailles et récompenses de distinction. Feuilletez le catalogue complet.</p>
+        <div class="cframe"><iframe src="https://www.awardsofdistinction.ca/" loading="lazy" title="Awards of Distinction" allowfullscreen></iframe></div>
+        <a class="btn btn-s" href="https://www.awardsofdistinction.ca/" target="_blank" rel="noopener" id="cb1b">Visiter le catalogue</a>
       </div>
       <div class="cbox rv">
-        <h3 id="cb2t">Objets à personnaliser</h3>
-        <p id="cb2p">Parcourez le catalogue complet d'objets prêts à graver : tasses, gourdes, crayons, articles cadeaux et récompenses de toutes sortes.</p>
-        <div class="cframe"><iframe src="https://www.plasticdressup.ca/" loading="lazy" title="Catalogue Plastic Dress-Up"></iframe></div>
-        <a class="btn btn-s" href="https://www.plasticdressup.ca/" target="_blank" rel="noopener" id="cb2b">Visiter le catalogue complet</a>
+        <h3 id="cb2t">Five Star Recognition</h3>
+        <p id="cb2p">Prix de reconnaissance, cristal, verre et cadeaux corporatifs haut de gamme.</p>
+        <div class="cframe"><iframe src="https://www.fivestarrecognition.ca/" loading="lazy" title="Five Star Recognition" allowfullscreen></iframe></div>
+        <a class="btn btn-s" href="https://www.fivestarrecognition.ca/" target="_blank" rel="noopener" id="cb2b">Visiter le catalogue</a>
+      </div>
+      <div class="cbox rv">
+        <h3 id="cb3t">Catalogue de composantes</h3>
+        <p id="cb3p">Composantes, colonnes, figurines et pièces pour trophées personnalisés.</p>
+        <div class="cframe"><iframe src="https://www.awardsofdistinction.ca/components.html" loading="lazy" title="Catalogue de composantes" allowfullscreen></iframe></div>
+        <a class="btn btn-s" href="https://www.awardsofdistinction.ca/components.html" target="_blank" rel="noopener" id="cb3b">Ouvrir le catalogue</a>
       </div>
     </div>
     <p class="cnote rv" id="cn">Vous avez repéré un item? Notez son numéro ou prenez une capture d'écran et envoyez-nous le tout avec votre idée de gravure.</p>
@@ -428,7 +435,7 @@ section{padding:3.6rem 1.2rem}
       <div class="gcard rv"><div class="gimg"><svg viewBox="0 0 24 24"><path d="M9 3h6l-.8 8.5a2.2 2.2 0 01-4.4 0L9 3zM12 13.5V19M9 19h6"/></svg></div><div class="gtxt"><h3 id="g3t">Verres personnalisés</h3><p id="g3p">Mariages, anniversaires et événements corporatifs sur verre ou bouteille.</p></div></div>
       <div class="gcard rv"><div class="gimg"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 11h18M15 15h3"/></svg></div><div class="gtxt"><h3 id="g4t">Cuir et accessoires</h3><p id="g4p">Portefeuilles, étuis et bracelets marqués d'initiales ou de logos.</p></div></div>
       <div class="gcard rv"><div class="gimg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a13 13 0 000 18M12 3a13 13 0 010 18M3.5 9h17M3.5 15h17"/></svg></div><div class="gtxt"><h3 id="g5t">Bois gravé</h3><p id="g5p">Planches à découper, enseignes et cadeaux d'hôte au fini chaleureux.</p></div></div>
-      <div class="gcard rv"><div class="gimg"><svg viewBox="0 0 24 24"><path d="M12 3l7 4v10l-7 4-7-4V7z"/><path d="M12 3v18M5 7l14 10M19 7L5 17"/></svg></div><div class="gtxt"><h3 id="g6t">Objets promotionnels</h3><p id="g6p">Tasses, gourdes, crayons et articles à l'image de votre entreprise.</p></div></div>
+      <div class="gcard rv"><div class="gimg"><svg viewBox="0 0 24 24"><path d="M12 3l7 4v10l-7 4-7-4V7z"/><path d="M12 3v18M5 7l14 10M19 7L5 17"/></svg></div><div class="gtxt"><h3 id="g6t">Objets promotionnels</h3><p id="g6p">Tasses, gourdes, crayons et articles à l'image de votre entreprise ou association.</p></div></div>
     </div>
     <span class="gsoon rv" id="gs">Photos haute résolution de nos réalisations à venir sous peu. En attendant, visitez notre page Facebook.</span>
   </div>
@@ -542,8 +549,9 @@ mc5t:"Plastique",mc5p:"Acrylique, plaques signalétiques et objets promotionnels
 mc6t:"Bois",mc6p:"Planches, cadres, boîtes et décorations avec un fini brûlé chaleureux.",
 ck:"Catalogue",ct:"Choisissez un objet ou apportez le vôtre",
 cs:"Vous avez deux options : faire graver un objet qui vous appartient déjà, ou choisir parmi des centaines d'objets de notre catalogue, trophées, tasses, gourdes, crayons et plus. Les prix varient selon le marché : contactez-nous pour une soumission à jour.",
-cb1t:"Catalogue de composantes 2026",cb1p:"Feuilletez le catalogue directement ici : trophées, plaques, médailles, articles en acrylique et bien plus.",cb1b:"Ouvrir en plein écran",
-cb2t:"Objets à personnaliser",cb2p:"Parcourez le catalogue complet d'objets prêts à graver : tasses, gourdes, crayons, articles cadeaux et récompenses de toutes sortes.",cb2b:"Visiter le catalogue complet",
+cb1t:"Awards of Distinction",cb1p:"Trophées, plaques, médailles et récompenses de distinction. Feuilletez le catalogue complet.",cb1b:"Visiter le catalogue",
+cb2t:"Five Star Recognition",cb2p:"Prix de reconnaissance, cristal, verre et cadeaux corporatifs haut de gamme.",cb2b:"Visiter le catalogue",
+cb3t:"Catalogue de composantes",cb3p:"Composantes, colonnes, figurines et pièces pour trophées personnalisés.",cb3b:"Ouvrir le catalogue",
 cn:"Vous avez repéré un item? Notez son numéro ou prenez une capture d'écran et envoyez-nous le tout avec votre idée de gravure.",
 rk:"Réalisations",rt:"Un aperçu de ce que le laser peut faire",
 rs:"Chaque projet est unique. Voici quelques exemples de demandes typiques de nos clients.",
@@ -552,7 +560,7 @@ g2t:"Plaques commémoratives",g2p:"Hommages, inaugurations et dédicaces sur mé
 g3t:"Verres personnalisés",g3p:"Mariages, anniversaires et événements corporatifs sur verre ou bouteille.",
 g4t:"Cuir et accessoires",g4p:"Portefeuilles, étuis et bracelets marqués d'initiales ou de logos.",
 g5t:"Bois gravé",g5p:"Planches à découper, enseignes et cadeaux d'hôte au fini chaleureux.",
-g6t:"Objets promotionnels",g6p:"Tasses, gourdes, crayons et articles à l'image de votre entreprise.",
+g6t:"Objets promotionnels",g6p:"Tasses, gourdes, crayons et articles à l'image de votre entreprise ou association.",
 gs:"Photos haute résolution de nos réalisations à venir sous peu. En attendant, visitez notre page Facebook.",
 pk:"Processus",pt:"Simple, du début à la fin",
 ps:"Quatre étapes entre votre idée et l'objet fini entre vos mains.",
@@ -594,8 +602,9 @@ mc5t:"Plastic",mc5p:"Acrylic, name plates and promotional items with crisp detai
 mc6t:"Wood",mc6p:"Boards, frames, boxes and decor with a warm burnt finish.",
 ck:"Catalogue",ct:"Pick an item or bring your own",
 cs:"You have two options: engrave an item you already own, or choose from hundreds of items in our catalogue, trophies, mugs, water bottles, pens and more. Prices vary with the market: contact us for an up to date quote.",
-cb1t:"2026 Components Catalogue",cb1p:"Flip through the catalogue right here: trophies, plaques, medals, acrylic pieces and much more.",cb1b:"Open full screen",
-cb2t:"Items to personalize",cb2p:"Browse the full catalogue of ready to engrave items: mugs, water bottles, pens, gift items and awards of all kinds.",cb2b:"Visit the full catalogue",
+cb1t:"Awards of Distinction",cb1p:"Trophies, plaques, medals and distinction awards. Browse the full catalogue.",cb1b:"Visit the catalogue",
+cb2t:"Five Star Recognition",cb2p:"Recognition awards, crystal, glass and premium corporate gifts.",cb2b:"Visit the catalogue",
+cb3t:"Components catalogue",cb3p:"Components, columns, figures and parts for custom trophies.",cb3b:"Open the catalogue",
 cn:"Spotted an item? Note its number or take a screenshot and send it to us along with your engraving idea.",
 rk:"Our work",rt:"A glimpse of what the laser can do",
 rs:"Every project is unique. Here are a few examples of typical client requests.",
@@ -604,7 +613,7 @@ g2t:"Commemorative plaques",g2p:"Tributes, inaugurations and dedications on meta
 g3t:"Personalized glassware",g3p:"Weddings, birthdays and corporate events on glass or bottles.",
 g4t:"Leather and accessories",g4p:"Wallets, cases and bracelets marked with initials or logos.",
 g5t:"Engraved wood",g5p:"Cutting boards, signs and host gifts with a warm finish.",
-g6t:"Promotional items",g6p:"Mugs, water bottles, pens and items branded with your company image.",
+g6t:"Promotional items",g6p:"Mugs, water bottles, pens and items branded with your company or association.",
 gs:"High resolution photos of our work coming soon. In the meantime, visit our Facebook page.",
 pk:"Process",pt:"Simple, start to finish",
 ps:"Four steps between your idea and the finished piece in your hands.",
