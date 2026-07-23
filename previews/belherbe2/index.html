@@ -171,7 +171,7 @@ linear-gradient(180deg,#8a6a42,#6d4f2e 35%,#7d5c38 60%,#66492a 85%,#7c5c38)}
 .cbox h3{color:#fff;font-family:var(--fs);font-weight:400;font-size:1.35rem;margin-bottom:.7rem}
 .cbox p{color:var(--gr);font-size:.94rem;margin-bottom:1.4rem;flex:1}
 .cframe{position:relative;width:100%;border-radius:12px;overflow:hidden;border:1px solid var(--bdr);background:#03060f;margin-bottom:1.2rem;aspect-ratio:16/10}
-.cframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.cframe iframe{position:absolute;top:0;left:0;width:125%;height:125%;border:0;transform:scale(.8);transform-origin:0 0}
 .cnote{font-size:.78rem;color:var(--gr);opacity:.8;margin-top:1rem}
 
 /* Gallery */
@@ -402,15 +402,15 @@ section{padding:3.6rem 1.2rem}
     <p class="slead rv" id="cs">Vous avez deux options : faire graver un objet qui vous appartient déjà, ou choisir parmi des centaines d'objets de notre catalogue, trophées, tasses, gourdes, crayons et plus. Les prix varient selon le marché : contactez-nous pour une soumission à jour.</p>
     <div class="cflex">
       <div class="cbox rv">
-        <h3 id="cb1t">Awards of Distinction</h3>
+        <h3 id="cb1t">Trophées et récompenses</h3>
         <p id="cb1p">Trophées, plaques, médailles et récompenses de distinction. Feuilletez le catalogue complet.</p>
-        <div class="cframe"><iframe src="https://www.awardsofdistinction.ca/" loading="lazy" title="Awards of Distinction" allowfullscreen></iframe></div>
+        <div class="cframe"><iframe src="https://www.awardsofdistinction.ca/" loading="lazy" title="Trophées et récompenses" allowfullscreen></iframe></div>
         <a class="btn btn-s" href="https://www.awardsofdistinction.ca/" target="_blank" rel="noopener" id="cb1b">Visiter le catalogue</a>
       </div>
       <div class="cbox rv">
-        <h3 id="cb2t">Five Star Recognition</h3>
+        <h3 id="cb2t">Prix et cadeaux corporatifs</h3>
         <p id="cb2p">Prix de reconnaissance, cristal, verre et cadeaux corporatifs haut de gamme.</p>
-        <div class="cframe"><iframe src="https://www.fivestarrecognition.ca/" loading="lazy" title="Five Star Recognition" allowfullscreen></iframe></div>
+        <div class="cframe"><iframe src="https://www.fivestarrecognition.ca/" loading="lazy" title="Prix et cadeaux corporatifs" allowfullscreen></iframe></div>
         <a class="btn btn-s" href="https://www.fivestarrecognition.ca/" target="_blank" rel="noopener" id="cb2b">Visiter le catalogue</a>
       </div>
       <div class="cbox rv">
@@ -549,8 +549,8 @@ mc5t:"Plastique",mc5p:"Acrylique, plaques signalétiques et objets promotionnels
 mc6t:"Bois",mc6p:"Planches, cadres, boîtes et décorations avec un fini brûlé chaleureux.",
 ck:"Catalogue",ct:"Choisissez un objet ou apportez le vôtre",
 cs:"Vous avez deux options : faire graver un objet qui vous appartient déjà, ou choisir parmi des centaines d'objets de notre catalogue, trophées, tasses, gourdes, crayons et plus. Les prix varient selon le marché : contactez-nous pour une soumission à jour.",
-cb1t:"Awards of Distinction",cb1p:"Trophées, plaques, médailles et récompenses de distinction. Feuilletez le catalogue complet.",cb1b:"Visiter le catalogue",
-cb2t:"Five Star Recognition",cb2p:"Prix de reconnaissance, cristal, verre et cadeaux corporatifs haut de gamme.",cb2b:"Visiter le catalogue",
+cb1t:"Trophées et récompenses",cb1p:"Trophées, plaques, médailles et récompenses de distinction. Feuilletez le catalogue complet.",cb1b:"Visiter le catalogue",
+cb2t:"Prix et cadeaux corporatifs",cb2p:"Prix de reconnaissance, cristal, verre et cadeaux corporatifs haut de gamme.",cb2b:"Visiter le catalogue",
 cb3t:"Catalogue de composantes",cb3p:"Composantes, colonnes, figurines et pièces pour trophées personnalisés.",cb3b:"Ouvrir le catalogue",
 cn:"Vous avez repéré un item? Notez son numéro ou prenez une capture d'écran et envoyez-nous le tout avec votre idée de gravure.",
 rk:"Réalisations",rt:"Un aperçu de ce que le laser peut faire",
@@ -602,8 +602,8 @@ mc5t:"Plastic",mc5p:"Acrylic, name plates and promotional items with crisp detai
 mc6t:"Wood",mc6p:"Boards, frames, boxes and decor with a warm burnt finish.",
 ck:"Catalogue",ct:"Pick an item or bring your own",
 cs:"You have two options: engrave an item you already own, or choose from hundreds of items in our catalogue, trophies, mugs, water bottles, pens and more. Prices vary with the market: contact us for an up to date quote.",
-cb1t:"Awards of Distinction",cb1p:"Trophies, plaques, medals and distinction awards. Browse the full catalogue.",cb1b:"Visit the catalogue",
-cb2t:"Five Star Recognition",cb2p:"Recognition awards, crystal, glass and premium corporate gifts.",cb2b:"Visit the catalogue",
+cb1t:"Trophies and awards",cb1p:"Trophies, plaques, medals and distinction awards. Browse the full catalogue.",cb1b:"Visit the catalogue",
+cb2t:"Awards and corporate gifts",cb2p:"Recognition awards, crystal, glass and premium corporate gifts.",cb2b:"Visit the catalogue",
 cb3t:"Components catalogue",cb3p:"Components, columns, figures and parts for custom trophies.",cb3b:"Open the catalogue",
 cn:"Spotted an item? Note its number or take a screenshot and send it to us along with your engraving idea.",
 rk:"Our work",rt:"A glimpse of what the laser can do",
@@ -709,7 +709,7 @@ var px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
 el.style.transform='perspective(700px) rotateX('+(-py*mx2).toFixed(2)+'deg) rotateY('+(px*mx2).toFixed(2)+'deg) translateY(-4px)';
 gl.style.background='radial-gradient(circle at '+((px+.5)*100).toFixed(1)+'% '+((py+.5)*100).toFixed(1)+'%,rgba(255,255,255,.13),transparent 55%)';});
 el.addEventListener('mouseleave',function(){el.style.transform='';gl.style.background='none';});});}
-if(matchMedia('(pointer:fine)').matches){tilt('.gcard',7);tilt('.cbox',3);}
+if(matchMedia('(pointer:fine)').matches){tilt('.gcard',7);}
 /* Magnetic buttons */
 if(matchMedia('(pointer:fine)').matches){
 document.querySelectorAll('.btn-p,.ncta').forEach(function(b){
