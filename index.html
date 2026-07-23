@@ -938,27 +938,21 @@ function sub(){
   btn.textContent=lang==='fr'?'Envoi...':'Sending...';
   btn.disabled=true;
   const services=[...sel].map(k=>lang==='fr'?PR[k].fr:PR[k].en).join(', ');
-  fetch('https://formspree.io/f/xeevernj',{
+  const data=new URLSearchParams({name:name,email:email,services:services||'-',message:msg});
+  fetch('https://script.google.com/macros/s/AKfycbyE4yF8i_GWZBNeKX_kE_r_u9Y7X8Hf6qKFaemTS6pB0CaH5gbw9u0e3Sl39W6Q-jebEA/exec',{
     method:'POST',
-    headers:{'Accept':'application/json','Content-Type':'application/json'},
-    body:JSON.stringify({name:name,email:email,services:services||'—',message:msg,_subject:'Nouveau message - norelo.ca'})
-  }).then(r=>{
-    if(r.ok){
-      document.getElementById('fok').style.display='block';
-      document.getElementById('iname').value='';
-      document.getElementById('iemail').value='';
-      document.getElementById('imsg').value='';
-      sel.clear();
-      document.querySelectorAll('.sch.sel').forEach(el=>el.classList.remove('sel'));
-      uEst();
-      btn.textContent=T[lang]['fbtn'];
-      btn.disabled=false;
-    }else{
-      r.json().then(d=>{
-        btn.textContent=lang==='fr'?'Erreur, réessayez':'Error, try again';
-        btn.disabled=false;
-      });
-    }
+    mode:'no-cors',
+    body:data
+  }).then(()=>{
+    document.getElementById('fok').style.display='block';
+    document.getElementById('iname').value='';
+    document.getElementById('iemail').value='';
+    document.getElementById('imsg').value='';
+    sel.clear();
+    document.querySelectorAll('.sch.sel').forEach(el=>el.classList.remove('sel'));
+    uEst();
+    btn.textContent=T[lang]['fbtn'];
+    btn.disabled=false;
   }).catch(()=>{
     btn.textContent=lang==='fr'?'Erreur, réessayez':'Error, try again';
     btn.disabled=false;
