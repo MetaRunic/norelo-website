@@ -720,7 +720,9 @@ function rvCard(c,type){var cta=c.querySelector('.cm-cta');
 if(c.dataset.r){location.href=(type==='tel'?'tel:+1'+mkT().replace(/-/g,''):'mailto:'+mkE());return false;}
 if(type==='tel'){var p=mkT();cta.textContent=p;c.href='tel:+1'+p.replace(/-/g,'');}else{var e=mkE();cta.textContent=e;c.href='mailto:'+e;}
 c.dataset.r=1;cta.classList.add('lit');return false;}
-function loadCat(el){if(el.dataset.loaded)return;el.dataset.loaded=1;el.style.cursor='default';var f=document.createElement('iframe');f.src=el.dataset.src;f.setAttribute('loading','lazy');f.setAttribute('allowfullscreen','');el.innerHTML='';el.appendChild(f);}
+function catFacade(){return '<div class="cfz-in"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h12v16H6a2 2 0 00-2 2z"/><path d="M18 3v16"/><path d="M8 7.5h6M8 11h6"/></svg><span class="cfz-btn">'+(((typeof T!=='undefined')&&T[L]&&T[L].czb)||'Ouvrir le catalogue interactif')+'</span></div>';}
+function unloadCat(el){if(!el.dataset.loaded)return;var f=el.querySelector('iframe');if(f)f.src='about:blank';el.innerHTML=catFacade();delete el.dataset.loaded;el.style.cursor='pointer';}
+function loadCat(el){if(el.dataset.loaded)return;document.querySelectorAll('.cfz[data-loaded]').forEach(unloadCat);el.dataset.loaded=1;el.style.cursor='default';var f=document.createElement('iframe');f.src=el.dataset.src;f.setAttribute('loading','lazy');f.setAttribute('allowfullscreen','');el.innerHTML='';el.appendChild(f);}
 /* Materials showcase */
 /* Materials showcase */
 var curM=0,mAuto=null,mStop=false,mNames=['metal','glass','stone','leather','plastic','wood'];
