@@ -227,11 +227,10 @@ linear-gradient(180deg,#8a6a42,#6d4f2e 35%,#7d5c38 60%,#66492a 85%,#7c5c38)}
 footer{border-top:1px solid var(--bdr);background:linear-gradient(180deg,var(--dark),#040d13);position:relative}
 footer::before{content:"";position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:min(1150px,88%);height:1px;background:linear-gradient(90deg,transparent,rgba(125,243,255,.3),transparent)}
 .fwrap{max-width:1150px;margin:0 auto;padding:2.4rem 2rem 1.8rem;display:flex;justify-content:space-between;align-items:flex-start;gap:2.5rem;flex-wrap:wrap}
-.fbrand{max-width:330px}
 .fl{display:flex;align-items:center;gap:.7rem;margin-bottom:.9rem}
 .fl .nlimg{height:44px;width:44px;object-fit:contain;filter:invert(1);mix-blend-mode:screen}
 .fl span{font-family:var(--fs);color:#fff;font-size:1.3rem}
-.ftag{color:var(--gr);font-size:.85rem;line-height:1.6}
+.ftag{color:var(--gr);font-size:.85rem;line-height:1.6;white-space:nowrap}
 .fnav{display:flex;flex-direction:column;gap:.6rem}
 .fnav a{color:var(--silver);text-decoration:none;font-size:.9rem;opacity:.82;transition:color .2s,opacity .2s}
 .fnav a:hover{color:var(--bp);opacity:1}
@@ -358,7 +357,7 @@ section{padding:3.6rem 1.2rem}
 .psteps{grid-template-columns:1fr 1fr;gap:1.6rem}
 .psteps::before{display:none}
 .fwrap{flex-direction:column;gap:1.8rem}
-.fnav{flex-direction:row;flex-wrap:wrap;gap:.5rem 1.3rem}
+.ftag{white-space:normal}
 .fbot{flex-direction:column;gap:.5rem}
 .fdiv{display:none}
 .wm{font-size:.68rem}
@@ -578,13 +577,6 @@ section{padding:3.6rem 1.2rem}
       </div>
       <p class="ftag" id="ftag">Gravure laser sur mesure · Grand Montréal et Est de l'Ontario</p>
     </div>
-    <div class="fnav">
-      <a href="#materiaux" id="fn1">Matériaux</a>
-      <a href="#catalogue" id="fn2">Catalogue</a>
-      <a href="#realisations" id="fn3">Réalisations</a>
-      <a href="#processus" id="fn4">Processus</a>
-      <a href="#contact" id="fn5">Contact</a>
-    </div>
     <div class="fsocial">
       <a href="https://m.me/61589045588973" target="_blank" rel="noopener" aria-label="Messenger"><svg viewBox="0 0 24 24"><path d="M12 3C6.9 3 3 6.6 3 11c0 2.3 1.1 4.4 2.9 5.8V21l3.2-1.8c.9.2 1.9.4 2.9.4 5.1 0 9-3.6 9-8.6S17.1 3 12 3z"/><path d="M7.5 12.5l3-3 2 1.8 2.9-2.3"/></svg></a>
       <a href="https://www.facebook.com/profile.php?id=61589045588973" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M15 3h-2a4 4 0 00-4 4v3H6v4h3v7h4v-7h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
@@ -648,7 +640,7 @@ ch:"Ce bouton ouvre votre application de courriel avec votre message déjà réd
 ci0:"Messenger",msgr:"Clavardez avec nous sur Facebook",ci1:"Courriel",ci2:"Téléphone",ci3:"Zone desservie",ci3v:"Grand Montréal et Est de l'Ontario",
 ci4:"Réponse en moins de 24h · Expédition disponible partout",cm1t:"Messenger",cm1d:"Clavardez avec nous en direct",cm1c:"Ouvrir Messenger &#8594;",cmtag:"Le plus rapide",cm2t:"Téléphone",cm2d:"Appelez-nous directement",cm3t:"Courriel",cm3d:"Écrivez-nous votre projet",tr1:"Réponse en moins de 24h",tr3:"Expédition disponible partout",czb:"Ouvrir le catalogue interactif",
 fbl:"Suivez nos réalisations",
-f1:"© 2026 Bel'herbe. Tous droits réservés.",f2:"Site web réalisé par Norelo",f3:"Mentions légales et politique de confidentialité",ftag:"Gravure laser sur mesure · Grand Montréal et Est de l'Ontario",fn1:"Matériaux",fn2:"Catalogue",fn3:"Réalisations",fn4:"Processus",fn5:"Contact",
+f1:"© 2026 Bel'herbe. Tous droits réservés.",f2:"Site web réalisé par Norelo",f3:"Mentions légales et politique de confidentialité",ftag:"Gravure laser sur mesure · Grand Montréal et Est de l'Ontario",
 rvl:"Cliquez pour afficher",
 ph:"Ex. : je voudrais faire graver le logo de mon entreprise sur 12 verres pour un événement...",
 sub:"Demande de soumission : gravure laser",bmat:"Matériaux ou objet : ",bmsg:"Description du projet : ",
@@ -701,7 +693,7 @@ ch:"This button opens your email app with your message already written. No data 
 ci0:"Messenger",msgr:"Chat with us on Facebook",ci1:"Email",ci2:"Phone",ci3:"Service area",ci3v:"Greater Montreal and Eastern Ontario",
 ci4:"Reply within 24h · Shipping available everywhere",cm1t:"Messenger",cm1d:"Chat with us live",cm1c:"Open Messenger &#8594;",cmtag:"Fastest reply",cm2t:"Phone",cm2d:"Call us directly",cm3t:"Email",cm3d:"Send us your project",tr1:"Reply within 24h",tr3:"Shipping available everywhere",czb:"Open the interactive catalogue",
 fbl:"Follow our work",
-f1:"© 2026 Bel'herbe. All rights reserved.",f2:"Website by Norelo",f3:"Legal notice and privacy policy",ftag:"Custom laser engraving · Greater Montreal and Eastern Ontario",fn1:"Materials",fn2:"Catalogue",fn3:"Our work",fn4:"Process",fn5:"Contact",
+f1:"© 2026 Bel'herbe. All rights reserved.",f2:"Website by Norelo",f3:"Legal notice and privacy policy",ftag:"Custom laser engraving · Greater Montreal and Eastern Ontario",
 rvl:"Click to reveal",
 ph:"E.g.: I would like my company logo engraved on 12 glasses for an event...",
 sub:"Quote request: laser engraving",bmat:"Materials or item: ",bmsg:"Project description: ",
