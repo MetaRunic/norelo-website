@@ -297,6 +297,35 @@ footer{border-top:1px solid var(--bdr);padding:2.6rem 2rem 3.4rem;background:var
 @keyframes d4spin{to{transform:rotate(360deg)}}
 .d4check{transform-box:fill-box;transform-origin:center;opacity:0;animation:d4check 4.4s ease infinite}
 @keyframes d4check{0%,36%{opacity:0;transform:scale(.6)}44%{opacity:1;transform:scale(1)}60%{opacity:1;transform:scale(1)}67%{opacity:0}100%{opacity:0}}
+/* Impactful contact channels */
+#contact .sk,#contact h2,#contact .slead{text-align:center}
+#contact .slead{margin-left:auto;margin-right:auto}
+.cmeth{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;max-width:880px;margin:0 auto}
+.cm{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:.6rem;padding:2.4rem 1.4rem 1.9rem;background:linear-gradient(180deg,rgba(12,34,48,.85),rgba(6,19,26,.55));border:1px solid var(--bdr);border-radius:14px;text-decoration:none;color:var(--silver);transition:transform .3s,border-color .3s,box-shadow .3s;overflow:hidden}
+.cm::before,.cm::after{content:"";position:absolute;width:15px;height:15px;border:2px solid var(--laser);opacity:.45;transition:.3s;pointer-events:none}
+.cm::before{left:11px;top:11px;border-right:0;border-bottom:0}
+.cm::after{right:11px;bottom:11px;border-left:0;border-top:0}
+.cm:hover{transform:translateY(-6px);border-color:rgba(125,243,255,.5);box-shadow:0 22px 46px rgba(2,10,14,.5),0 0 30px rgba(15,155,196,.2)}
+.cm:hover::before,.cm:hover::after{opacity:1;width:26px;height:26px}
+.cm-hl{border-color:rgba(125,243,255,.4);box-shadow:0 0 26px rgba(15,155,196,.14)}
+.cm-tag{position:absolute;top:0;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;font-size:.64rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:.28rem .95rem;border-radius:0 0 7px 7px}
+.cm-ico{width:66px;height:66px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,rgba(15,155,196,.3),rgba(6,19,26,.35));border:1px solid rgba(125,243,255,.4);box-shadow:0 0 0 6px rgba(125,243,255,.05),0 0 22px rgba(15,155,196,.28);margin-top:.4rem}
+.cm-ico svg{width:30px;height:30px;stroke:var(--laser);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.cm:hover .cm-ico{animation:pu 1.6s infinite}
+.cm-t{font-family:var(--fs);font-size:1.3rem;color:#fff}
+.cm-d{font-size:.86rem;color:var(--gr);min-height:2.6em;line-height:1.4}
+.cm-cta{margin-top:.3rem;font-size:.8rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--bp)}
+.cm:hover .cm-cta{color:var(--laser)}
+.cm-cta.lit{text-transform:none;letter-spacing:.3px;font-size:.92rem;color:var(--laser)}
+.cm-scan{position:absolute;left:0;right:0;top:-40%;height:40%;background:linear-gradient(180deg,rgba(125,243,255,.14),transparent);opacity:0;pointer-events:none}
+.cm:hover .cm-scan{animation:cmscan 1.1s ease}
+@keyframes cmscan{0%{top:-40%;opacity:.85}100%{top:120%;opacity:0}}
+.ctrust{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:.9rem 2rem;margin-top:2.4rem}
+.ctrust>span,.ctrust>a{display:inline-flex;align-items:center;gap:.5rem;font-size:.85rem;color:var(--gr);text-decoration:none}
+.ctrust a:hover{color:var(--bp)}
+.ctrust svg{width:16px;height:16px;stroke:var(--bp);fill:none;stroke-width:1.7;flex-shrink:0}
+.ctrust .tdot{width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;animation:pu 2s infinite}
+@media(max-width:760px){.cmeth{grid-template-columns:1fr;max-width:360px}.cm-d{min-height:0}}
 @media(max-width:700px){
 nav{padding:1rem 1.25rem}
 .nlinks a:not(.ncta){display:none}
@@ -485,13 +514,35 @@ section{padding:3.6rem 1.2rem}
     <span class="sk rv etch" id="kk">Contact</span>
     <h2 class="rv etch" id="kt">Parlez-nous de votre projet</h2>
     <p class="slead rv" id="ks">Contactez-nous par le moyen qui vous convient et décrivez votre projet de gravure. Réponse en moins de 24h.</p>
-    <div class="cinfo rv" style="max-width:600px;margin:0 auto">
-        <div class="cline"><svg viewBox="0 0 24 24"><path d="M12 3C6.9 3 3 6.6 3 11c0 2.3 1.1 4.4 2.9 5.8V21l3.2-1.8c.9.2 1.9.4 2.9.4 5.1 0 9-3.6 9-8.6S17.1 3 12 3z"/><path d="M7.5 12.5l3-3 2 1.8 2.9-2.3"/></svg><div><span class="cl-l" id="ci0">Messenger</span><a href="https://m.me/61589045588973" target="_blank" rel="noopener" id="msgr">Clavardez avec nous sur Facebook</a></div></div>
-        <div class="cline"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg><div><span class="cl-l" id="ci2">Téléphone</span><a href="#" id="tel" onclick="return rvT(this)">Cliquez pour afficher</a></div></div>
-        <div class="cline"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><div><span class="cl-l" id="ci1">Courriel</span><a href="#" id="eml" onclick="return rvE(this)">Cliquez pour afficher</a></div></div>
-        <div class="cline"><svg viewBox="0 0 24 24"><path d="M15 3h-2a4 4 0 00-4 4v3H6v4h3v7h4v-7h3l1-4h-4V7a1 1 0 011-1h3z"/></svg><div><span class="cl-l">Facebook</span><a href="https://www.facebook.com/profile.php?id=61589045588973" target="_blank" rel="noopener" id="fbl">Suivez nos réalisations</a></div></div>
-        <div class="cline"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0114 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><div><span class="cl-l" id="ci3">Zone desservie</span><span class="cv" id="ci3v">Grand Montréal et Est de l'Ontario</span></div></div>
-        <div class="cline"><div class="cbadge"><span class="dot"></span><span id="ci4">Réponse en moins de 24h · Expédition disponible partout</span></div></div>
+    <div class="cmeth rv">
+      <a class="cm cm-hl" href="https://m.me/61589045588973" target="_blank" rel="noopener">
+        <span class="cm-scan"></span>
+        <span class="cm-tag" id="cmtag">Le plus rapide</span>
+        <span class="cm-ico"><svg viewBox="0 0 24 24"><path d="M12 3C6.9 3 3 6.6 3 11c0 2.3 1.1 4.4 2.9 5.8V21l3.2-1.8c.9.2 1.9.4 2.9.4 5.1 0 9-3.6 9-8.6S17.1 3 12 3z"/><path d="M7.5 12.5l3-3 2 1.8 2.9-2.3"/></svg></span>
+        <span class="cm-t" id="cm1t">Messenger</span>
+        <span class="cm-d" id="cm1d">Clavardez avec nous en direct</span>
+        <span class="cm-cta" id="cm1c">Ouvrir Messenger &#8594;</span>
+      </a>
+      <a class="cm cm-revl" href="#" onclick="return rvCard(this,'tel')">
+        <span class="cm-scan"></span>
+        <span class="cm-ico"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg></span>
+        <span class="cm-t" id="cm2t">Téléphone</span>
+        <span class="cm-d" id="cm2d">Appelez-nous directement</span>
+        <span class="cm-cta">Cliquez pour afficher</span>
+      </a>
+      <a class="cm cm-revl" href="#" onclick="return rvCard(this,'eml')">
+        <span class="cm-scan"></span>
+        <span class="cm-ico"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+        <span class="cm-t" id="cm3t">Courriel</span>
+        <span class="cm-d" id="cm3d">Écrivez-nous votre projet</span>
+        <span class="cm-cta">Cliquez pour afficher</span>
+      </a>
+    </div>
+    <div class="ctrust rv">
+      <span><span class="tdot"></span><span id="tr1">Réponse en moins de 24h</span></span>
+      <span><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0114 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span id="ci3v">Grand Montréal et Est de l'Ontario</span></span>
+      <span><svg viewBox="0 0 24 24"><path d="M3 7h10v8H3zM13 10h4l3 3v2h-7z"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/></svg><span id="tr3">Expédition disponible partout</span></span>
+      <a href="https://www.facebook.com/profile.php?id=61589045588973" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M15 3h-2a4 4 0 00-4 4v3H6v4h3v7h4v-7h3l1-4h-4V7a1 1 0 011-1h3z"/></svg><span id="fbl">Suivez nos réalisations</span></a>
     </div>
   </div>
 </section>
@@ -557,7 +608,7 @@ cc1:"Décrivez votre projet",
 mailgo:"Envoyer par courriel",
 ch:"Ce bouton ouvre votre application de courriel avec votre message déjà rédigé. Aucune donnée n'est envoyée à un serveur : votre message part directement de votre boîte courriel, à l'abri des robots.",
 ci0:"Messenger",msgr:"Clavardez avec nous sur Facebook",ci1:"Courriel",ci2:"Téléphone",ci3:"Zone desservie",ci3v:"Grand Montréal et Est de l'Ontario",
-ci4:"Réponse en moins de 24h · Expédition disponible partout",
+ci4:"Réponse en moins de 24h · Expédition disponible partout",cm1t:"Messenger",cm1d:"Clavardez avec nous en direct",cm1c:"Ouvrir Messenger &#8594;",cmtag:"Le plus rapide",cm2t:"Téléphone",cm2d:"Appelez-nous directement",cm3t:"Courriel",cm3d:"Écrivez-nous votre projet",tr1:"Réponse en moins de 24h",tr3:"Expédition disponible partout",
 fbl:"Suivez nos réalisations",
 f1:"© 2026 Bel'herbe. Tous droits réservés.",f2:"Site web réalisé par Norelo",f3:"Mentions légales et politique de confidentialité",
 rvl:"Cliquez pour afficher",
@@ -610,7 +661,7 @@ cc1:"Describe your project",
 mailgo:"Send by email",
 ch:"This button opens your email app with your message already written. No data is sent to any server: your message goes straight from your own inbox, safe from bots.",
 ci0:"Messenger",msgr:"Chat with us on Facebook",ci1:"Email",ci2:"Phone",ci3:"Service area",ci3v:"Greater Montreal and Eastern Ontario",
-ci4:"Reply within 24h · Shipping available everywhere",
+ci4:"Reply within 24h · Shipping available everywhere",cm1t:"Messenger",cm1d:"Chat with us live",cm1c:"Open Messenger &#8594;",cmtag:"Fastest reply",cm2t:"Phone",cm2d:"Call us directly",cm3t:"Email",cm3d:"Send us your project",tr1:"Reply within 24h",tr3:"Shipping available everywhere",
 fbl:"Follow our work",
 f1:"© 2026 Bel'herbe. All rights reserved.",f2:"Website by Norelo",f3:"Legal notice and privacy policy",
 rvl:"Click to reveal",
@@ -625,9 +676,7 @@ document.title=t.ttl;
 document.documentElement.lang=l;
 document.getElementById('bfr').classList.toggle('on',l==='fr');
 document.getElementById('ben').classList.toggle('on',l==='en');
-var em=document.getElementById('eml'),tl=document.getElementById('tel');
-if(!em.dataset.r)em.innerHTML=t.rvl;
-if(!tl.dataset.r)tl.innerHTML=t.rvl;
+document.querySelectorAll('.cm-revl').forEach(function(c){if(!c.dataset.r){var q=c.querySelector('.cm-cta');q.textContent=t.rvl;q.classList.remove('lit');}});
 document.querySelectorAll('.chip').forEach(function(c){var p=c.dataset.m.split('|');c.textContent=(l==='fr'?p[0]:p[1]);});
 if(typeof swM==='function')swM(curM,false);
 }
@@ -636,6 +685,10 @@ function mkE(){return ['b','el','-','he','rbe'].join('')+String.fromCharCode(64)
 function mkT(){return ['514','884','4710'].join(String.fromCharCode(45));}
 function rvE(a){var e=mkE();a.textContent=e;a.href='mailto:'+e;a.dataset.r=1;a.onclick=null;return false;}
 function rvT(a){var p=mkT();a.textContent=p;a.href='tel:+1'+p.replace(/-/g,'');a.dataset.r=1;a.onclick=null;return false;}
+function rvCard(c,type){var cta=c.querySelector('.cm-cta');
+if(c.dataset.r){location.href=(type==='tel'?'tel:+1'+mkT().replace(/-/g,''):'mailto:'+mkE());return false;}
+if(type==='tel'){var p=mkT();cta.textContent=p;c.href='tel:+1'+p.replace(/-/g,'');}else{var e=mkE();cta.textContent=e;c.href='mailto:'+e;}
+c.dataset.r=1;cta.classList.add('lit');return false;}
 /* Materials showcase */
 /* Materials showcase */
 var curM=0,mAuto=null,mStop=false,mNames=['metal','glass','stone','leather','plastic','wood'];
