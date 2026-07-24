@@ -326,6 +326,14 @@ footer{border-top:1px solid var(--bdr);padding:2.6rem 2rem 3.4rem;background:var
 .ctrust svg{width:16px;height:16px;stroke:var(--bp);fill:none;stroke-width:1.7;flex-shrink:0}
 .ctrust .tdot{width:8px;height:8px;border-radius:50%;background:#22c55e;display:inline-block;animation:pu 2s infinite}
 @media(max-width:760px){.cmeth{grid-template-columns:1fr;max-width:360px}.cm-d{min-height:0}}
+/* Click-to-load catalogue (memory: no live iframes until opened) */
+.cfz{cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .3s,box-shadow .3s}
+.cfz:hover{border-color:#0f9bc4;box-shadow:inset 0 0 0 1px rgba(15,155,196,.3)}
+.cfz-in{display:flex;flex-direction:column;align-items:center;gap:1rem;text-align:center;padding:1.5rem}
+.cfz-in svg{width:48px;height:48px;stroke:#3a8fb0;fill:none;stroke-width:1.4}
+.cfz:hover .cfz-in svg{stroke:#0f9bc4}
+.cfz-btn{font-size:.82rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#fff;background:var(--blue);padding:.7rem 1.4rem;border-radius:6px;transition:background .25s}
+.cfz:hover .cfz-btn{background:var(--bl)}
 @media(max-width:700px){
 nav{padding:1rem 1.25rem}
 .nlinks a:not(.ncta){display:none}
@@ -433,19 +441,19 @@ section{padding:3.6rem 1.2rem}
       <div class="cbox rv">
         <h3 id="cb1t">Trophées et récompenses</h3>
         <p id="cb1p">Trophées, plaques, médailles et récompenses de distinction. Feuilletez le catalogue complet.</p>
-        <div class="cframe"><iframe src="https://www.awardsofdistinction.ca/" loading="lazy" title="Trophées et récompenses" allowfullscreen></iframe></div>
+        <div class="cframe cfz" data-src="https://www.awardsofdistinction.ca/" role="button" tabindex="0" onclick="loadCat(this)" onkeydown="if(event.key==='Enter'||event.key===' ')loadCat(this)"><div class="cfz-in"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h12v16H6a2 2 0 00-2 2z"/><path d="M18 3v16"/><path d="M8 7.5h6M8 11h6"/></svg><span class="cfz-btn">Ouvrir le catalogue interactif</span></div></div>
         <a class="btn btn-s" href="https://www.awardsofdistinction.ca/" target="_blank" rel="noopener" id="cb1b">Visiter le catalogue</a>
       </div>
       <div class="cbox rv">
         <h3 id="cb2t">Prix et cadeaux corporatifs</h3>
         <p id="cb2p">Prix de reconnaissance, cristal, verre et cadeaux corporatifs haut de gamme.</p>
-        <div class="cframe"><iframe src="https://www.fivestarrecognition.ca/" loading="lazy" title="Prix et cadeaux corporatifs" allowfullscreen></iframe></div>
+        <div class="cframe cfz" data-src="https://www.fivestarrecognition.ca/" role="button" tabindex="0" onclick="loadCat(this)" onkeydown="if(event.key==='Enter'||event.key===' ')loadCat(this)"><div class="cfz-in"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h12v16H6a2 2 0 00-2 2z"/><path d="M18 3v16"/><path d="M8 7.5h6M8 11h6"/></svg><span class="cfz-btn">Ouvrir le catalogue interactif</span></div></div>
         <a class="btn btn-s" href="https://www.fivestarrecognition.ca/" target="_blank" rel="noopener" id="cb2b">Visiter le catalogue</a>
       </div>
       <div class="cbox rv">
         <h3 id="cb3t">Catalogue de composantes</h3>
         <p id="cb3p">Composantes, colonnes, figurines et pièces pour trophées personnalisés.</p>
-        <div class="cframe"><iframe src="https://www.awardsofdistinction.ca/components.html" loading="lazy" title="Catalogue de composantes" allowfullscreen></iframe></div>
+        <div class="cframe cfz" data-src="https://www.awardsofdistinction.ca/components.html" role="button" tabindex="0" onclick="loadCat(this)" onkeydown="if(event.key==='Enter'||event.key===' ')loadCat(this)"><div class="cfz-in"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h12v16H6a2 2 0 00-2 2z"/><path d="M18 3v16"/><path d="M8 7.5h6M8 11h6"/></svg><span class="cfz-btn">Ouvrir le catalogue interactif</span></div></div>
         <a class="btn btn-s" href="https://www.awardsofdistinction.ca/components.html" target="_blank" rel="noopener" id="cb3b">Ouvrir le catalogue</a>
       </div>
     </div>
@@ -608,7 +616,7 @@ cc1:"Décrivez votre projet",
 mailgo:"Envoyer par courriel",
 ch:"Ce bouton ouvre votre application de courriel avec votre message déjà rédigé. Aucune donnée n'est envoyée à un serveur : votre message part directement de votre boîte courriel, à l'abri des robots.",
 ci0:"Messenger",msgr:"Clavardez avec nous sur Facebook",ci1:"Courriel",ci2:"Téléphone",ci3:"Zone desservie",ci3v:"Grand Montréal et Est de l'Ontario",
-ci4:"Réponse en moins de 24h · Expédition disponible partout",cm1t:"Messenger",cm1d:"Clavardez avec nous en direct",cm1c:"Ouvrir Messenger &#8594;",cmtag:"Le plus rapide",cm2t:"Téléphone",cm2d:"Appelez-nous directement",cm3t:"Courriel",cm3d:"Écrivez-nous votre projet",tr1:"Réponse en moins de 24h",tr3:"Expédition disponible partout",
+ci4:"Réponse en moins de 24h · Expédition disponible partout",cm1t:"Messenger",cm1d:"Clavardez avec nous en direct",cm1c:"Ouvrir Messenger &#8594;",cmtag:"Le plus rapide",cm2t:"Téléphone",cm2d:"Appelez-nous directement",cm3t:"Courriel",cm3d:"Écrivez-nous votre projet",tr1:"Réponse en moins de 24h",tr3:"Expédition disponible partout",czb:"Ouvrir le catalogue interactif",
 fbl:"Suivez nos réalisations",
 f1:"© 2026 Bel'herbe. Tous droits réservés.",f2:"Site web réalisé par Norelo",f3:"Mentions légales et politique de confidentialité",
 rvl:"Cliquez pour afficher",
@@ -661,7 +669,7 @@ cc1:"Describe your project",
 mailgo:"Send by email",
 ch:"This button opens your email app with your message already written. No data is sent to any server: your message goes straight from your own inbox, safe from bots.",
 ci0:"Messenger",msgr:"Chat with us on Facebook",ci1:"Email",ci2:"Phone",ci3:"Service area",ci3v:"Greater Montreal and Eastern Ontario",
-ci4:"Reply within 24h · Shipping available everywhere",cm1t:"Messenger",cm1d:"Chat with us live",cm1c:"Open Messenger &#8594;",cmtag:"Fastest reply",cm2t:"Phone",cm2d:"Call us directly",cm3t:"Email",cm3d:"Send us your project",tr1:"Reply within 24h",tr3:"Shipping available everywhere",
+ci4:"Reply within 24h · Shipping available everywhere",cm1t:"Messenger",cm1d:"Chat with us live",cm1c:"Open Messenger &#8594;",cmtag:"Fastest reply",cm2t:"Phone",cm2d:"Call us directly",cm3t:"Email",cm3d:"Send us your project",tr1:"Reply within 24h",tr3:"Shipping available everywhere",czb:"Open the interactive catalogue",
 fbl:"Follow our work",
 f1:"© 2026 Bel'herbe. All rights reserved.",f2:"Website by Norelo",f3:"Legal notice and privacy policy",
 rvl:"Click to reveal",
@@ -677,6 +685,7 @@ document.documentElement.lang=l;
 document.getElementById('bfr').classList.toggle('on',l==='fr');
 document.getElementById('ben').classList.toggle('on',l==='en');
 document.querySelectorAll('.cm-revl').forEach(function(c){if(!c.dataset.r){var q=c.querySelector('.cm-cta');q.textContent=t.rvl;q.classList.remove('lit');}});
+document.querySelectorAll('.cfz-btn').forEach(function(b){b.textContent=t.czb;});
 document.querySelectorAll('.chip').forEach(function(c){var p=c.dataset.m.split('|');c.textContent=(l==='fr'?p[0]:p[1]);});
 if(typeof swM==='function')swM(curM,false);
 }
@@ -689,6 +698,7 @@ function rvCard(c,type){var cta=c.querySelector('.cm-cta');
 if(c.dataset.r){location.href=(type==='tel'?'tel:+1'+mkT().replace(/-/g,''):'mailto:'+mkE());return false;}
 if(type==='tel'){var p=mkT();cta.textContent=p;c.href='tel:+1'+p.replace(/-/g,'');}else{var e=mkE();cta.textContent=e;c.href='mailto:'+e;}
 c.dataset.r=1;cta.classList.add('lit');return false;}
+function loadCat(el){if(el.dataset.loaded)return;el.dataset.loaded=1;el.style.cursor='default';var f=document.createElement('iframe');f.src=el.dataset.src;f.setAttribute('loading','lazy');f.setAttribute('allowfullscreen','');el.innerHTML='';el.appendChild(f);}
 /* Materials showcase */
 /* Materials showcase */
 var curM=0,mAuto=null,mStop=false,mNames=['metal','glass','stone','leather','plastic','wood'];
@@ -780,7 +790,7 @@ else if(t.closest('textarea,input,h1,h2,h3,p,li,td,label,small,.hmat,.sk'))mode=
 else mode='dot';}
 tr.push({x:mx,y:my,t:performance.now()});if(tr.length>44)tr.shift();
 var dx=mx-px,dy=my-py,spd=Math.hypot(dx,dy);
-if(spd>3&&Math.random()<Math.min(1,spd/26)){var back=Math.atan2(dy,dx)+Math.PI,cnt=spd>22?2:1;
+if(spd>3&&sp.length<80&&Math.random()<Math.min(1,spd/26)){var back=Math.atan2(dy,dx)+Math.PI,cnt=spd>22?2:1;
 for(var k=0;k<cnt;k++)spark(mx,my,back,1.7,.4,1.9,.055+Math.random()*.03);}
 px=mx;py=my;});
 document.addEventListener('mouseleave',function(){mx=-100;my=-100;});
