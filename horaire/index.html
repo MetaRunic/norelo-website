@@ -210,6 +210,9 @@ h2{font-size:20px;font-weight:800;}
 .credlbl{font-size:12px;color:var(--gr);font-weight:700;}
 .cred{padding:9px 11px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:14px;flex:1;min-width:120px;}
 .cred:focus{outline:none;border-color:var(--accent);}
+#toast{position:fixed;left:50%;bottom:calc(78px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(16px);background:var(--leaf);color:#04240f;font-weight:800;font-size:15px;padding:12px 22px;border-radius:30px;box-shadow:0 8px 30px rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:500;display:flex;align-items:center;gap:8px;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+#toast.err{background:var(--red);color:#fff;}
 .logrow{background:var(--panel);border:1px solid var(--bdr);border-radius:10px;padding:12px 14px;margin-bottom:.5rem;}
 .logtop{display:flex;justify-content:space-between;align-items:center;gap:1rem;}
 .logact{font-weight:800;font-size:15px;color:var(--accent-l);}
@@ -369,7 +372,8 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     <button data-tab="emp"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16.5 5.3a3 3 0 0 1 0 5.4M18 19a5.5 5.5 0 0 0-3-4.9"/></svg><span data-i="tEmp">Employes</span></button>
     <button data-tab="log"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6M9 8h2"/></svg><span data-i="tLog">Journal</span></button>
   </nav>
-  <footer>Norelo &middot; Outil interne &middot; Donnees stockees sur cet appareil</footer>
+  <div id="toast"></div>
+  <footer>Norelo &middot; Outil interne &middot; Donnees dans le nuage (Supabase)</footer>
 </div>
 
 <!-- week picker sheet -->
@@ -567,9 +571,13 @@ async function applyTime(v){if(!timeCtx)return;const ctx=timeCtx;const w=state.w
  const prev={start:day.start,end:day.end};day[ctx.f]=v;closeTimePicker();
  if(ctx.mode==='day'){renderDayList();renderCalendar(document.getElementById('calAdmin'),null);}else{renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);}
  renderWeekBar();
+ showToast(lang==='fr'?'Enregistrement...':'Saving...',true);
  const err=await saveShift(empId,state.current,dayIdx,day);
- if(err){day.start=prev.start;day.end=prev.end;alert(lang==='fr'?'Enregistrement refuse (jour verrouille ou permission).':'Save refused (locked day or permission).');
-   if(ctx.mode==='day')renderDayList();else renderEmp();renderWeekBar();}}
+ if(err){day.start=prev.start;day.end=prev.end;showToast(lang==='fr'?'Non enregistre':'Not saved',false);alert(lang==='fr'?'Enregistrement refuse (jour verrouille ou permission).':'Save refused (locked day or permission).');
+   if(ctx.mode==='day')renderDayList();else renderEmp();renderWeekBar();}
+ else showToast(lang==='fr'?'Enregistre':'Saved',true);}
+let toastT;
+function showToast(msg,ok){const el=document.getElementById('toast');if(!el)return;el.innerHTML=(ok?'&#10003; ':'')+esc(msg);el.classList.toggle('err',!ok);el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),1600);}
 function gotoWeek(delta){const keys=wkKeys();let i=keys.indexOf(state.current);i=Math.max(0,Math.min(keys.length-1,i+delta));state.current=keys[i];save();renderAll();}
 function renderDayPick(){const w=state.weeks[state.current];const t=T[lang];const tISO=realTodayISO();
  document.getElementById('daypick').innerHTML=t.sdays.map((d,i)=>{const isT=addDaysISO(w.start,i)===tISO;return '<button class="daybtn'+(i===selDay?' on':'')+(isT?' today':'')+'" data-day="'+i+'"><div class="dn">'+d+'</div><div class="dd">'+fmtDate(w.start,i)+'</div></button>';}).join('');}
