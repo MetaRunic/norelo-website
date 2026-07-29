@@ -330,7 +330,6 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
           <h3 data-i="employees">Employes et taux</h3>
           <div class="frow" style="margin-bottom:1rem">
             <input class="name" id="empName" placeholder="Nom"/>
-            <select id="empRole"></select>
             <select id="empTeam"><option value="ext" data-i="teamExt">Exterieur</option><option value="int" data-i="teamInt">Interieur</option></select>
             <input class="rate" id="empRate" type="number" step="0.25" placeholder="$/h"/>
             <input id="empUser" placeholder="Nom d'utilisateur" style="width:160px" autocomplete="off"/>
@@ -590,7 +589,7 @@ function renderLegend(){const counts={};state.employees.forEach(e=>counts[e.role
  document.getElementById('legendBox').innerHTML=ROLES.map(r=>{const n=counts[r.name]||0;const need=r.min===r.max?r.min:r.min+'-'+r.max;
   let cov=r.max>0?'<span class="cov '+(n>=r.min?'ok':'under')+'">'+n+' / '+need+'</span>':'<span class="cov na">'+n+'</span>';
   return '<div class="leg"><span class="lname"><span class="legdot" style="background:var(--gr)"></span>'+r.name+'</span>'+cov+'</div>';}).join('');}
-function renderRoleOptions(){document.getElementById('empRole').innerHTML=ROLES.map(r=>'<option>'+r.name+'</option>').join('');}
+function renderRoleOptions(){const el=document.getElementById('empRole');if(el)el.innerHTML=ROLES.map(r=>'<option>'+r.name+'</option>').join('');}
 function renderMgr(){const t=T[lang];const w=state.weeks[state.current];let th=0,tp=0,paid=0,unpaid=0;const to={ext:0,int:1};
  const emps=adminEmps();
  emps.forEach(e=>{const p=empPay(e.id);tp+=p;th+=empHours(e.id);if(w.paid[e.id])paid+=p;else unpaid+=p;});
@@ -671,7 +670,18 @@ function bindApp(){
   document.getElementById('daypick').addEventListener('click',e=>{const b=e.target.closest('[data-day]');if(!b)return;selDay=+b.getAttribute('data-day');renderDayPick();renderDayList();setTitle();});
   document.getElementById('dayList').addEventListener('click',e=>{const b=e.target.closest('.tbtn');if(!b||b.disabled)return;const c=b.closest('.ecard');const f=b.getAttribute('data-f');
    openTimePicker({mode:'day',id:c.getAttribute('data-id'),f:f,cur:b.getAttribute('data-val'),title:f==='start'?T[lang].start:T[lang].end});});
-  document.getElementById('addEmp').onclick=()=>alert(lang==='fr'?"La creation de comptes employes arrive a la prochaine etape (fonction securisee).":'Employee account creation is coming in the next step (secure function).');
+  document.getElementById('addEmp').onclick=async()=>{
+   const name=document.getElementById('empName').value.trim();const username=document.getElementById('empUser').value.trim().toLowerCase();
+   const password=document.getElementById('empPass').value;const team=document.getElementById('empTeam').value;const rate=document.getElementById('empRate').value;
+   if(!name||!username||!password){alert(lang==='fr'?'Nom, utilisateur et mot de passe requis.':'Name, username and password required.');return;}
+   if(password.length<6){alert(lang==='fr'?'Mot de passe: 6 caracteres minimum.':'Password: at least 6 characters.');return;}
+   const btn=document.getElementById('addEmp');btn.disabled=true;
+   const {data,error}=await sb.functions.invoke('create-employee',{body:{name,username,password,team,rate}});
+   btn.disabled=false;
+   if(error||!data||!data.ok){alert((data&&data.error)||(error&&error.message)||'Erreur');return;}
+   ['empName','empUser','empPass','empRate'].forEach(id=>document.getElementById(id).value='');
+   await loadAll();renderAll();
+  };
   document.getElementById('empAdmin').addEventListener('input',e=>{if(!e.target.hasAttribute('data-rate'))return;const row=e.target.closest('.emprow');const emp=state.employees.find(x=>x.id===row.getAttribute('data-id'));if(!emp)return;emp.rate=+e.target.value||0;sb.from('profiles').update({rate:emp.rate}).eq('id',emp.id).then(()=>{});});
   document.getElementById('empAdmin').addEventListener('change',e=>{if(!e.target.classList.contains('teamsel'))return;const id=e.target.closest('.emprow').getAttribute('data-id');const emp=state.employees.find(x=>x.id===id);emp.team=e.target.value;sb.from('profiles').update({team:emp.team}).eq('id',emp.id).then(()=>renderAll());});
   document.getElementById('teamBar').addEventListener('click',e=>{const b=e.target.closest('[data-team]');if(!b)return;teamFilter=b.getAttribute('data-team');document.querySelectorAll('#teamBar .tf').forEach(x=>x.classList.toggle('on',x===b));renderAll();});
