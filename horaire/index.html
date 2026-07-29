@@ -4,6 +4,9 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
 <meta name="robots" content="noindex,nofollow"/>
+<link rel="icon" type="image/png" href="/favicon.png"/>
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon.png"/>
+<link rel="apple-touch-icon" href="/favicon.png"/>
 <title>Norelo - Horaire</title>
 <style>
 :root{--dark:#0e1319;--panel:#161d27;--panel2:#1e2733;--soft:#252f3d;--bdr:rgba(148,163,184,0.16);--txt:#f1f5f9;--gr:#94a3b8;--accent:#e0473b;--accent-d:#bf3a30;--accent-l:#f5786c;--leaf:#34d399;--red:#f0655a;--head:#cbd5e1;}
@@ -387,7 +390,7 @@ const T={
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Debut',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
    paid:'Paye',unpaid:'A payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Deja paye',kUnpaid:'Reste a payer',del:'Retirer cet employe?',user:"Nom d'utilisateur",
    chooseWeek:'Choisir une semaine',ws_past:'Passee',ws_cur:'En cours',ws_up:'A venir',
-   locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui"},
+   locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.<br><strong>Un jour verrouille a corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui"},
  en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',logout:'Log out',
    employees:'Employees and rates',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
@@ -399,7 +402,7 @@ const T={
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
    paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Total hours',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',del:'Remove this employee?',user:'Username',
    chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',
-   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.',timeChecking:'Checking time...',todayLbl:'Today'}
+   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today'}
 };
 const ROLES=[
  {name:'Accueil',emoji:'👋',min:1,max:1,color:'#22c55e'},
