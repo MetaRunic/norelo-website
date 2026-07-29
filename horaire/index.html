@@ -26,6 +26,11 @@ optgroup{color:var(--gr);font-weight:700;}
 .lsub{color:var(--gr);font-size:16px;margin:.5rem 0 1.8rem;}
 #login input{width:100%;padding:16px;background:var(--soft);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:18px;margin-bottom:1rem;text-align:center;}
 #login input:focus{outline:none;border-color:var(--accent);}
+.pwrap{position:relative;margin-bottom:1rem;}
+.pwrap input{margin-bottom:0 !important;padding-right:50px !important;}
+.pweye{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--gr);padding:8px;display:flex;align-items:center;justify-content:center;}
+.pweye:hover{color:var(--txt);}
+.pweye svg{width:22px;height:22px;}
 .btn{background:var(--accent);color:#04170f;border:none;border-radius:8px;padding:15px 22px;font-size:17px;font-weight:700;transition:background .2s,transform .12s;}
 .btn:hover{background:var(--accent-d);}.btn:active{transform:scale(.98);}
 .btn.full{width:100%;}
@@ -216,7 +221,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     <div class="lsub" id="lsub">Horaire des employes</div>
     <div class="lerr" id="lerr"></div>
     <input type="text" id="luser" placeholder="Nom d'utilisateur" autocomplete="off"/>
-    <input type="password" id="lpass" placeholder="Mot de passe" autocomplete="off"/>
+    <div class="pwrap"><input type="password" id="lpass" placeholder="Mot de passe" autocomplete="off"/><button type="button" class="pweye" id="lpassEye" aria-label="Afficher le mot de passe"></button></div>
     <button class="btn full" id="lbtn">Entrer</button>
     <div class="lt"><button data-l="fr" class="on">FR</button><button data-l="en">EN</button></div>
     <div class="lhint" id="lhint">Acces reserve. Vos donnees restent sur cet appareil.</div>
@@ -276,7 +281,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
         <h2 data-i="mgrLockT">Connexion gestionnaire</h2>
         <p class="muted" style="margin:.6rem 0 1.3rem" data-i="mgrLockS">Cette section demande un mot de passe distinct.</p>
         <div class="lerr" id="merr"></div>
-        <input type="password" id="mpass" placeholder="Mot de passe gestionnaire" autocomplete="off"/>
+        <div class="pwrap"><input type="password" id="mpass" placeholder="Mot de passe gestionnaire" autocomplete="off"/><button type="button" class="pweye" id="mpassEye" aria-label="Afficher le mot de passe"></button></div>
         <button class="btn full" id="mbtn" data-i="unlock">Deverrouiller</button>
       </div>
       <div id="mgrContent" style="display:none">
@@ -343,6 +348,9 @@ const ACCOUNTS=[
 ];
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const LOCK_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+const EYE_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
+const EYEOFF_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.9 4.24A9.1 9.1 0 0 1 12 4c6.5 0 10 8 10 8a18 18 0 0 1-2.16 3.19M6.6 6.6A17.8 17.8 0 0 0 2 12s3.5 7 10 7a9 9 0 0 0 5.4-1.6"/><path d="M14.12 14.12A3 3 0 1 1 9.9 9.9"/><path d="M2 2l20 20"/></svg>';
+function initEye(inpId,btnId){const i=document.getElementById(inpId),b=document.getElementById(btnId);if(!i||!b)return;b.innerHTML=EYE_SVG;b.onclick=()=>{const hidden=i.type==='password';i.type=hidden?'text':'password';b.innerHTML=hidden?EYEOFF_SVG:EYE_SVG;i.focus();};}
 const DAYS=['mon','tue','wed','thu','fri','sat','sun'];
 const T={
  fr:{tDay:'Jour',tWeek:'Semaine',tMgr:'Gestion',logout:'Quitter',
@@ -527,7 +535,7 @@ function renderAll(){renderWeekBar();if(isEmployee){renderCalendar(document.getE
 function setTitle(){if(isEmployee)return;const t=T[lang];const cur=document.querySelector('.tabs button.on').id;
  document.getElementById('viewTitle').textContent=cur==='tabDay'?t.days[selDay]:cur==='tabWeek'?t.week:t.payTitle;}
 
-function boot(){state=load();selDay=todayIdx();renderRoleOptions();
+function boot(){state=load();selDay=todayIdx();renderRoleOptions();initEye('lpass','lpassEye');initEye('mpass','mpassEye');
  document.querySelectorAll('.lt,.hlt').forEach(box=>box.addEventListener('click',e=>{if(e.target.tagName!=='BUTTON')return;lang=e.target.getAttribute('data-l');
   document.querySelectorAll('.lt button,.hlt button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-l')===lang));applyLang();}));
  document.getElementById('lbtn').onclick=doLogin;
