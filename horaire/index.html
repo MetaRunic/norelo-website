@@ -450,7 +450,7 @@ async function loadAll(){
  const keys=Object.keys(state.weeks).sort();if(!keys.length)return;
  const startKey=keys[0],endKey=addDaysISO(keys[keys.length-1],6);
  const {data:shifts}=await sb.from('shifts').select('employee_id,work_date,start_time,end_time').gte('work_date',startKey).lte('work_date',endKey);
- (shifts||[]).forEach(r=>{const dd=new Date(r.work_date+'T00:00:00');const wk=weekKeyForDate(dd);const di=(dd.getDay()+6)%7;const w=state.weeks[wk];if(w&&w.data[r.employee_id])w.data[r.employee_id][DAYS[di]]={start:r.start_time||'',end:r.end_time||''};});
+ (shifts||[]).forEach(r=>{const dd=new Date(r.work_date+'T00:00:00');const wk=weekKeyForDate(dd);const di=(dd.getDay()+6)%7;const w=state.weeks[wk];if(w&&w.data[r.employee_id])w.data[r.employee_id][DAYS[di]]={start:validTime(r.start_time),end:validTime(r.end_time)};});
  const {data:paid}=await sb.from('paid_weeks').select('employee_id,week_start,paid').gte('week_start',startKey).lte('week_start',keys[keys.length-1]);
  (paid||[]).forEach(r=>{const w=state.weeks[r.week_start];if(w&&r.paid)w.paid[r.employee_id]=true;});
 }
@@ -458,7 +458,7 @@ async function saveShift(empId,weekKey,dayIdx,day){const work_date=addDaysISO(we
 function subscribeRealtime(){
  sb.channel('rt-horaire')
   .on('postgres_changes',{event:'*',schema:'public',table:'shifts'},p=>{const r=p.new||p.old;if(!r)return;const dd=new Date(r.work_date+'T00:00:00');const wk=weekKeyForDate(dd);const w=state.weeks[wk];if(!w||!w.data[r.employee_id])return;const di=(dd.getDay()+6)%7;
-    if(p.eventType==='DELETE')w.data[r.employee_id][DAYS[di]]=blankDay();else w.data[r.employee_id][DAYS[di]]={start:p.new.start_time||'',end:p.new.end_time||''};
+    if(p.eventType==='DELETE')w.data[r.employee_id][DAYS[di]]=blankDay();else w.data[r.employee_id][DAYS[di]]={start:validTime(p.new.start_time),end:validTime(p.new.end_time)};
     if(wk===state.current){if(isEmployee){renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);}else{renderDayList();renderWeek();renderCalendar(document.getElementById('calAdmin'),null);if(mgrUnlocked)renderMgr();}renderWeekBar();}})
   .on('postgres_changes',{event:'*',schema:'public',table:'paid_weeks'},p=>{const r=p.new||p.old;if(!r)return;const w=state.weeks[r.week_start];if(!w)return;if(p.eventType==='DELETE')delete w.paid[r.employee_id];else w.paid[r.employee_id]=!!p.new.paid;if(!isEmployee&&r.week_start===state.current)renderMgr();})
   .subscribe();
@@ -471,6 +471,8 @@ function save(){/* cloud: writes happen per-action */}
 function roleObj(r){return ROLES.find(o=>o.name===r)||{color:'#94a3b8',emoji:''};}
 function money(n){return '$'+(Math.round(n*100)/100).toFixed(2);}
 function hround(n){return n%1?n.toFixed(1):String(n);}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function validTime(v){return /^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(v)?v:'';}
 function hrs(day){if(!day||!day.start||!day.end)return 0;const a=day.start.split(':'),b=day.end.split(':');let m=(+b[0]*60+ +b[1])-(+a[0]*60+ +a[1]);return m<=0?0:Math.round(m/60*100)/100;}
 function empHours(id){const w=state.weeks[state.current];let t=0;DAYS.forEach(d=>t+=hrs(w.data[id][d]));return Math.round(t*100)/100;}
 function empPay(id){const e=state.employees.find(x=>x.id===id);return Math.round(empHours(id)*(e?e.rate:0)*100)/100;}
@@ -554,7 +556,7 @@ function renderDayList(){
  adminEmps().forEach(e=>{const tm=empTeam(e);
   if(tm!==lastTeam){h+='<div class="rolehdr">'+teamLabel(tm)+'</div>';lastTeam=tm;}
   const day=w.data[e.id][dk];const hh=hrs(day);
-  h+='<div class="ecard" data-id="'+e.id+'"><div><div class="en">'+e.name+'</div><div class="ecrole">'+e.role+'</div></div>'
+  h+='<div class="ecard" data-id="'+e.id+'"><div><div class="en">'+esc(e.name)+'</div><div class="ecrole">'+e.role+'</div></div>'
    +'<div class="etime"><div class="tfield"><label>'+t.start+'</label>'+timeInput('start',day.start,false)+'</div>'
    +'<div class="tfield"><label>'+t.end+'</label>'+timeInput('end',day.end,false)+'</div></div>'
    +'<div class="ecalc"><div class="eh">'+hh.toFixed(2)+'h</div></div></div>';});
@@ -579,7 +581,7 @@ function renderWeek(){
  let h='<thead><tr><th style="text-align:left">'+t.name+'</th>';t.sdays.forEach(d=>h+='<th>'+d+'</th>');h+='<th>'+t.tot+'</th></tr></thead><tbody>';
  let lastTeam=null,th=0;
  adminEmps().forEach(e=>{const tm=empTeam(e);if(tm!==lastTeam){h+='<tr class="teamrow"><td colspan="9">'+teamLabel(tm)+'</td></tr>';lastTeam=tm;}
-  h+='<tr><td class="nm">'+e.name+'<div class="muted" style="font-size:13px">'+e.role+'</div></td>';
+  h+='<tr><td class="nm">'+esc(e.name)+'<div class="muted" style="font-size:13px">'+e.role+'</div></td>';
   DAYS.forEach(d=>{const hh=hrs(w.data[e.id][d]);h+='<td class="'+(hh?'':'z')+'">'+(hh?hh.toFixed(2):'-')+'</td>';});
   const eh=empHours(e.id);th+=eh;h+='<td class="tot">'+eh.toFixed(2)+'h</td></tr>';});
  h+='</tbody><tfoot><tr><td style="text-align:left">'+t.tot+'</td>';for(let i=0;i<7;i++)h+='<td></td>';h+='<td class="tot">'+th.toFixed(2)+'h</td></tr></tfoot>';
@@ -597,11 +599,11 @@ function renderMgr(){const t=T[lang];const w=state.weeks[state.current];let th=0
  let rows='<tr><th>'+t.name+'</th><th>'+t.rate+'</th><th style="text-align:right">'+t.hours+'</th><th style="text-align:right">'+t.pay+'</th><th style="text-align:right">'+t.paid+'</th></tr>';
  let lastTeam=null;
  [...emps].sort((a,b)=>(to[empTeam(a)]-to[empTeam(b)])||empPay(b.id)-empPay(a.id)).forEach(e=>{const tm=empTeam(e);if(tm!==lastTeam){rows+='<tr class="teamrow"><td colspan="5">'+teamLabel(tm)+'</td></tr>';lastTeam=tm;}const yes=!!w.paid[e.id];
-  rows+='<tr><td>'+e.name+'</td><td>'+money(e.rate)+'/h</td><td class="num">'+empHours(e.id).toFixed(2)+'h</td><td class="num">'+money(empPay(e.id))+'</td><td style="text-align:right"><button class="paidbtn '+(yes?'yes':'')+'" data-paid="'+e.id+'">'+(yes?t.paid:t.unpaid)+'</button></td></tr>';});
+  rows+='<tr><td>'+esc(e.name)+'</td><td>'+money(e.rate)+'/h</td><td class="num">'+empHours(e.id).toFixed(2)+'h</td><td class="num">'+money(empPay(e.id))+'</td><td style="text-align:right"><button class="paidbtn '+(yes?'yes':'')+'" data-paid="'+e.id+'">'+(yes?t.paid:t.unpaid)+'</button></td></tr>';});
  document.getElementById('mgrTable').innerHTML=rows;renderEmpAdmin();
 }
 function renderEmpAdmin(){const t=T[lang];document.getElementById('empAdmin').innerHTML=sortedEmps().map(e=>{
- return '<div class="emprow" data-id="'+e.id+'"><span class="enm">'+e.name+'</span><span class="erl">'+(e.username?('@'+e.username):'')+'</span>'
+ return '<div class="emprow" data-id="'+e.id+'"><span class="enm">'+esc(e.name)+'</span><span class="erl">'+(e.username?('@'+esc(e.username)):'')+'</span>'
   +'<select class="teamsel" data-team><option value="ext"'+(empTeam(e)==='ext'?' selected':'')+'>'+t.teamExt+'</option><option value="int"'+(empTeam(e)==='int'?' selected':'')+'>'+t.teamInt+'</option></select>'
   +'<input class="rate" type="number" step="0.25" value="'+e.rate+'" data-rate/><span class="erl">/h</span><button class="delx" data-del>&times;</button></div>';}).join('');}
 function kpi(v,k,c){return '<div class="kpi"><div class="v '+c+'">'+v+'</div><div class="k">'+k+'</div></div>';}
@@ -718,7 +720,7 @@ function tab(which){
 }
 function calcTips(){const pool=+document.getElementById('tipPool').value||0;const t=T[lang];const sh=adminEmps().map(e=>({e,h:empHours(e.id)}));const tot=sh.reduce((s,x)=>s+x.h,0);
  let rows='<tr><th>'+t.name+'</th><th style="text-align:right">'+t.hours+'</th><th style="text-align:right">'+t.share+'</th></tr>';
- sh.filter(x=>x.h>0).sort((a,b)=>b.h-a.h).forEach(x=>{rows+='<tr><td>'+x.e.name+'</td><td class="num">'+x.h.toFixed(2)+'h</td><td class="num">'+money(tot>0?pool*x.h/tot:0)+'</td></tr>';});
+ sh.filter(x=>x.h>0).sort((a,b)=>b.h-a.h).forEach(x=>{rows+='<tr><td>'+esc(x.e.name)+'</td><td class="num">'+x.h.toFixed(2)+'h</td><td class="num">'+money(tot>0?pool*x.h/tot:0)+'</td></tr>';});
  document.getElementById('mgrTable').innerHTML=rows;}
 
 boot();
