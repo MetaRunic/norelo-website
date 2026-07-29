@@ -233,7 +233,8 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
 
 /* bottom nav (mobile) */
 #bottomNav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:60;background:rgba(16,22,30,.98);backdrop-filter:blur(18px);border-top:1px solid var(--bdr);padding:.35rem .3rem calc(.35rem + env(safe-area-inset-bottom));}
-#bottomNav button{flex:1;background:transparent;border:none;color:var(--gr);font-size:12px;font-weight:700;padding:8px 4px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;border-radius:8px;min-height:52px;}
+#bottomNav button{flex:1;min-width:0;background:transparent;border:none;color:var(--gr);font-size:10.5px;font-weight:700;padding:8px 1px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;border-radius:8px;min-height:52px;}
+#bottomNav button span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 #bottomNav button .navic{width:24px;height:24px;}
 #bottomNav button.on{color:var(--accent-l);}
 .lockbadge svg{width:13px;height:13px;vertical-align:-2px;margin-right:1px;}
@@ -293,6 +294,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
       <button id="tabMgr" data-i="tMgr">Gestion</button>
       <button id="tabEmp" data-i="tEmp">Employes</button>
       <button id="tabLog" data-i="tLog">Journal</button>
+      <button id="tabBak" data-i="tBak">Sauvegardes</button>
     </div>
     <div class="spacer"></div>
     <div class="hlt"><button data-l="fr" class="on">FR</button><button data-l="en">EN</button></div>
@@ -369,6 +371,9 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
         </div>
         <div id="empAdmin"></div>
       </div>
+    </div>
+
+    <div id="backupView" style="display:none">
       <div class="card">
         <h3 data-i="backupsT">Sauvegardes</h3>
         <button class="btn sm" id="backupNow" data-i="backupNow">Sauvegarder maintenant</button>
@@ -393,6 +398,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     <button data-tab="mgr"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M14.5 9.3c-.4-.9-1.4-1.5-2.6-1.5-1.5 0-2.6.8-2.6 1.9 0 1 .8 1.6 2.6 2 1.9.4 2.7 1 2.7 2.1 0 1.1-1.2 1.9-2.7 1.9-1.3 0-2.4-.6-2.8-1.6"/></svg><span data-i="tMgr">Gestion</span></button>
     <button data-tab="emp"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16.5 5.3a3 3 0 0 1 0 5.4M18 19a5.5 5.5 0 0 0-3-4.9"/></svg><span data-i="tEmp">Employes</span></button>
     <button data-tab="log"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6M9 8h2"/></svg><span data-i="tLog">Journal</span></button>
+    <button data-tab="bak"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v5h7"/><rect x="8" y="13" width="8" height="5"/></svg><span data-i="tBak">Sauvegardes</span></button>
   </nav>
   <div id="toast"></div>
   <footer>Norelo &middot; Outil interne &middot; <span id="footVer"></span></footer>
@@ -444,7 +450,7 @@ const EYEOFF_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 function initEye(inpId,btnId){const i=document.getElementById(inpId),b=document.getElementById(btnId);if(!i||!b)return;b.innerHTML=EYE_SVG;b.onclick=()=>{const hidden=i.type==='password';i.type=hidden?'text':'password';b.innerHTML=hidden?EYEOFF_SVG:EYE_SVG;i.focus();};}
 const DAYS=['mon','tue','wed','thu','fri','sat','sun'];
 const T={
- fr:{tDay:'Jour',tWeek:'Semaine',tMgr:'Gestion',tEmp:'Employes',tLog:'Journal',logout:'Quitter',
+ fr:{tDay:'Jour',tWeek:'Semaine',tMgr:'Gestion',tEmp:'Employes',tLog:'Journal',tBak:'Sauvegardes',logout:'Quitter',
    employees:'Employes et taux',add:'Ajouter',legend:'Postes et besoins',export:'Sauvegarder une copie',import:'Restaurer',
    mgrLockT:'Connexion gestionnaire',mgrLockS:'Cette section demande un mot de passe distinct.',unlock:'Deverrouiller',
    payTitle:'Paiements et totaux',tipsT:'Calculateur de pourboires',tipsPool:'Cagnotte totale ($)',tipSplit:'Repartir par heures',
@@ -456,7 +462,7 @@ const T={
    paid:'Paye',unpaid:'A payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Deja paye',kUnpaid:'Reste a payer',del:'Retirer cet employe?',user:"Nom d'utilisateur",
    chooseWeek:'Choisir une semaine',ws_past:'Passee',ws_cur:'En cours',ws_up:'A venir',teamAll:'Toutes',teamExt:'Exterieur',teamInt:'Interieur',roleEmp:'Employe',roleMgr:'Gestionnaire',resetPwd:'MDP',clearF:'Effacer',backupsT:'Sauvegardes',backupNow:'Sauvegarder maintenant',versionT:'Version et mise a jour',forceUpd:'Forcer la mise a jour pour tous',
    locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.<br><strong>Un jour verrouille a corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit etre apres l'heure de debut.",hoursHi:'Heures de quart regulieres en surbrillance'},
- en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',tEmp:'Employees',tLog:'Activity',logout:'Log out',
+ en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',tEmp:'Employees',tLog:'Activity',tBak:'Backups',logout:'Log out',
    employees:'Employees and rates',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
    payTitle:'Payments and totals',tipsT:'Tip calculator',tipsPool:'Total pool ($)',tipSplit:'Split by hours',
@@ -655,7 +661,7 @@ function applyLang(){document.querySelectorAll('[data-i]').forEach(el=>{const k=
  document.documentElement.lang=lang;if(document.getElementById('app').style.display==='block')renderAll();}
 function renderAll(){renderWeekBar();if(isEmployee){renderCalendar(document.getElementById('calEmp'),currentEmp);renderEmp();}else{renderCalendar(document.getElementById('calAdmin'),null);renderDayPick();renderDayList();renderWeek();setTitle();if(mgrUnlocked){renderMgr();renderEmpAdmin();}}}
 function setTitle(){if(isEmployee)return;const t=T[lang];const cur=document.querySelector('.tabs button.on').id;
- document.getElementById('viewTitle').textContent=cur==='tabDay'?t.days[selDay]:cur==='tabWeek'?t.week:cur==='tabEmp'?t.employees:cur==='tabLog'?t.tLog:t.payTitle;}
+ document.getElementById('viewTitle').textContent=cur==='tabDay'?t.days[selDay]:cur==='tabWeek'?t.week:cur==='tabEmp'?t.employees:cur==='tabLog'?t.tLog:cur==='tabBak'?t.backupsT:t.payTitle;}
 
 async function boot(){selDay=todayIdx();initEye('lpass','lpassEye');initEye('pwdInput','pwdEye');bindPwdModal();
  document.querySelectorAll('.lt,.hlt').forEach(box=>box.addEventListener('click',e=>{if(e.target.tagName!=='BUTTON')return;lang=e.target.getAttribute('data-l');
@@ -713,6 +719,7 @@ function bindApp(){
   document.getElementById('tabMgr').onclick=()=>tab('mgr');
   document.getElementById('tabEmp').onclick=()=>tab('emp');
   document.getElementById('tabLog').onclick=()=>tab('log');
+  document.getElementById('tabBak').onclick=()=>tab('bak');
   document.getElementById('daypick').addEventListener('click',e=>{const b=e.target.closest('[data-day]');if(!b)return;selDay=+b.getAttribute('data-day');renderDayPick();renderDayList();setTitle();});
   document.getElementById('dayList').addEventListener('click',e=>{const b=e.target.closest('.tbtn');if(!b||b.disabled)return;const c=b.closest('.ecard');const f=b.getAttribute('data-f');
    openTimePicker({mode:'day',id:c.getAttribute('data-id'),f:f,cur:b.getAttribute('data-val'),title:f==='start'?T[lang].start:T[lang].end});});
@@ -795,13 +802,16 @@ function tab(which){
  document.getElementById('tabDay').classList.toggle('on',which==='day');document.getElementById('tabWeek').classList.toggle('on',which==='week');document.getElementById('tabMgr').classList.toggle('on',which==='mgr');
  const te=document.getElementById('tabEmp');if(te)te.classList.toggle('on',which==='emp');
  const tl=document.getElementById('tabLog');if(tl)tl.classList.toggle('on',which==='log');
+ const tbk=document.getElementById('tabBak');if(tbk)tbk.classList.toggle('on',which==='bak');
  document.querySelectorAll('#bottomNav button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-tab')===which));
  document.getElementById('dayView').style.display=which==='day'?'block':'none';document.getElementById('weekView').style.display=which==='week'?'block':'none';document.getElementById('mgr').style.display=which==='mgr'?'block':'none';
  document.getElementById('empAdminView').style.display=which==='emp'?'block':'none';
  document.getElementById('logView').style.display=which==='log'?'block':'none';
+ document.getElementById('backupView').style.display=which==='bak'?'block':'none';
  if(which==='mgr'){const ml=document.getElementById('mgrLock');if(ml)ml.style.display='none';document.getElementById('mgrContent').style.display='block';renderMgr();}
- if(which==='emp'){renderEmpAdmin();renderBackups();}
+ if(which==='emp')renderEmpAdmin();
  if(which==='log')renderLog();
+ if(which==='bak')renderBackups();
  setTitle();window.scrollTo(0,0);
 }
 function calcTips(){const pool=+document.getElementById('tipPool').value||0;const t=T[lang];const sh=adminEmps().map(e=>({e,h:empHours(e.id)}));const tot=sh.reduce((s,x)=>s+x.h,0);
