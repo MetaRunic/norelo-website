@@ -7,6 +7,7 @@
 <link rel="icon" type="image/png" href="/favicon.png"/>
 <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png"/>
 <link rel="apple-touch-icon" href="/favicon.png"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <title>Norelo - Horaire</title>
 <style>
 :root{--dark:#0e1319;--panel:#161d27;--panel2:#1e2733;--soft:#252f3d;--bdr:rgba(148,163,184,0.16);--txt:#f1f5f9;--gr:#94a3b8;--accent:#e0473b;--accent-d:#bf3a30;--accent-l:#f5786c;--leaf:#34d399;--red:#f0655a;--head:#cbd5e1;}
@@ -302,11 +303,6 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
 
     <div id="weekView" style="display:none">
       <div class="wscroll"><table class="wtable" id="wtable"></table></div>
-      <div class="rowtop" style="margin-top:1.4rem">
-        <button class="btn ghost sm" id="exportBtn" data-i="export">Sauvegarder une copie</button>
-        <button class="btn ghost sm" id="importBtn" data-i="import">Restaurer</button>
-        <input type="file" id="importFile" accept="application/json" style="display:none"/>
-      </div>
     </div>
 
     <div id="mgr">
@@ -373,23 +369,14 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
 
 <script>
 /* ============================================================
-   NORELO HORAIRE - light client-side gate. Passwords live in
-   this file (visible in page source). Fine for testing; real
-   privacy comes with the Supabase backend (Phase 2).
+   NORELO HORAIRE - Phase 2 (Supabase cloud, secure).
+   Auth + data live in Supabase; Row Level Security enforces
+   the 24h edit window and team/role permissions server-side.
    ============================================================ */
-const CONFIG={staffPassword:'pommes2025',managerPassword:'chef2025'};
-const ADMIN={u:'patron',p:CONFIG.staffPassword};
-const ACCOUNTS=[
- {u:'evens',p:'pomme41',name:'Evens D.'},{u:'judy',p:'verger52',name:'Judy S.'},
- {u:'bernard',p:'cidre18',name:'Bernard'},{u:'jasmine',p:'soleil73',name:'Jasmine L.'},
- {u:'maxime',p:'panier29',name:'Maxime A.'},{u:'mikael',p:'feuille64',name:'Mikael T.'},
- {u:'daniel',p:'jardin37',name:'Daniel B.'},{u:'sydney',p:'saison85',name:'Sydney D.'},
- {u:'jack',p:'recolte12',name:'Jack Dube'},{u:'jael',p:'branche56',name:'Jael K.'},
- {u:'laurie',p:'fruit48',name:'Laurie K.'},{u:'maelie',p:'terroir93',name:'Maelie Auclair'},
- {u:'kevin',p:'rustik27',name:'Kevin K.'},{u:'lili',p:'verger61',name:'Lili Bergeron'},
- {u:'maria',p:'pomme39',name:'Maria Henneuse'},{u:'danny',p:'panier74',name:'Danny Parker'},
- {u:'mathilde',p:'soleil16',name:'Mathilde H.'}
-];
+const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
+const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
+const EMAIL_DOMAIN='@norelo-verger.app';
+const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const LOCK_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
 const EYE_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
@@ -446,8 +433,7 @@ const SEED_EMP=[
  ['Maria Henneuse','Stationnement',16,'ext'],['Danny Parker','Stationnement',16,'ext'],['Mathilde H.','Stationnement',16,'ext']
 ];
 
-const KEY='norelo_horaire_v3';
-let state,lang='fr',selDay=0,mgrUnlocked=false,isEmployee=false,currentEmp=null,teamFilter='all';
+let state={employees:[],weeks:{},current:null},lang='fr',selDay=0,mgrUnlocked=false,isEmployee=false,currentEmp=null,teamFilter='all';
 
 function isoLocal(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function todayMonday(){const d=new Date();const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return isoLocal(d);}
@@ -458,15 +444,31 @@ function fmtLong(iso){const d=new Date(iso+'T00:00:00');const day=d.getDate(),mo
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
 function blankDay(){return {start:'',end:''};}
 function blankWeekFor(emps){const o={};emps.forEach(e=>{o[e.id]={};DAYS.forEach(d=>o[e.id][d]=blankDay());});return o;}
-function newEmp(n,r,rate,team,user,pass){return {id:'e'+Date.now()+Math.random().toString(36).slice(2,6),name:n,role:r,rate:+rate||0,team:team||'ext',user:user||'',pass:pass||''};}
-function seedCreds(emps){emps.forEach(e=>{if(!e.user){const a=ACCOUNTS.find(x=>x.name===e.name);if(a){e.user=a.u;e.pass=a.p;}}});}
-function freshState(){const emps=SEED_EMP.map(e=>newEmp(e[0],e[1],e[2],e[3]));seedCreds(emps);const weeks=seasonWeeks(emps);const wk=todayMonday();const current=weeks[wk]?wk:Object.keys(weeks).sort()[0];return {employees:emps,weeks,current};}
-function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.employees){s.employees.forEach(e=>{if(!e.team)e.team=(e.name==='Lili Bergeron'||e.name==='Sydney D.')?'int':'ext';});seedCreds(s.employees);return s;}}catch(e){}return freshState();}
+async function loadAll(){
+ const {data:profs}=await sb.from('profiles').select('id,username,name,role,team,rate');
+ state.employees=(profs||[]).map(p=>({id:p.id,name:p.name,role:'',team:p.team||'ext',rate:+p.rate||0,username:p.username,prole:p.role}));
+ state.weeks=seasonWeeks(state.employees);
+ const keys=Object.keys(state.weeks).sort();if(!keys.length)return;
+ const startKey=keys[0],endKey=addDaysISO(keys[keys.length-1],6);
+ const {data:shifts}=await sb.from('shifts').select('employee_id,work_date,start_time,end_time').gte('work_date',startKey).lte('work_date',endKey);
+ (shifts||[]).forEach(r=>{const dd=new Date(r.work_date+'T00:00:00');const wk=weekKeyForDate(dd);const di=(dd.getDay()+6)%7;const w=state.weeks[wk];if(w&&w.data[r.employee_id])w.data[r.employee_id][DAYS[di]]={start:r.start_time||'',end:r.end_time||''};});
+ const {data:paid}=await sb.from('paid_weeks').select('employee_id,week_start,paid').gte('week_start',startKey).lte('week_start',keys[keys.length-1]);
+ (paid||[]).forEach(r=>{const w=state.weeks[r.week_start];if(w&&r.paid)w.paid[r.employee_id]=true;});
+}
+async function saveShift(empId,weekKey,dayIdx,day){const work_date=addDaysISO(weekKey,dayIdx);const {error}=await sb.from('shifts').upsert({employee_id:empId,work_date,start_time:day.start||null,end_time:day.end||null},{onConflict:'employee_id,work_date'});return error;}
+function subscribeRealtime(){
+ sb.channel('rt-horaire')
+  .on('postgres_changes',{event:'*',schema:'public',table:'shifts'},p=>{const r=p.new||p.old;if(!r)return;const dd=new Date(r.work_date+'T00:00:00');const wk=weekKeyForDate(dd);const w=state.weeks[wk];if(!w||!w.data[r.employee_id])return;const di=(dd.getDay()+6)%7;
+    if(p.eventType==='DELETE')w.data[r.employee_id][DAYS[di]]=blankDay();else w.data[r.employee_id][DAYS[di]]={start:p.new.start_time||'',end:p.new.end_time||''};
+    if(wk===state.current){if(isEmployee){renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);}else{renderDayList();renderWeek();renderCalendar(document.getElementById('calAdmin'),null);if(mgrUnlocked)renderMgr();}renderWeekBar();}})
+  .on('postgres_changes',{event:'*',schema:'public',table:'paid_weeks'},p=>{const r=p.new||p.old;if(!r)return;const w=state.weeks[r.week_start];if(!w)return;if(p.eventType==='DELETE')delete w.paid[r.employee_id];else w.paid[r.employee_id]=!!p.new.paid;if(!isEmployee&&r.week_start===state.current)renderMgr();})
+  .subscribe();
+}
 function empTeam(e){return e.team||'ext';}
 function teamLabel(tm){return tm==='int'?T[lang].teamInt:T[lang].teamExt;}
 function inTeam(e){return teamFilter==='all'||empTeam(e)===teamFilter;}
 function adminEmps(){return sortedEmps().filter(inTeam);}
-function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+function save(){/* cloud: writes happen per-action */}
 function roleObj(r){return ROLES.find(o=>o.name===r)||{color:'#94a3b8',emoji:''};}
 function money(n){return '$'+(Math.round(n*100)/100).toFixed(2);}
 function hround(n){return n%1?n.toFixed(1):String(n);}
@@ -534,14 +536,17 @@ function openTimePicker(ctx){timeCtx=ctx;document.getElementById('timeSheetTitle
  document.getElementById('timeGrid').innerHTML=h;document.getElementById('timeSheet').style.display='flex';
  const sel=document.querySelector('#timeGrid .tcell.on');if(sel)setTimeout(()=>sel.scrollIntoView({block:'center'}),0);}
 function closeTimePicker(){document.getElementById('timeSheet').style.display='none';timeCtx=null;}
-function applyTime(v){if(!timeCtx)return;const ctx=timeCtx;const w=state.weeks[state.current];let day;
- if(ctx.mode==='day')day=w.data[ctx.id][DAYS[selDay]];
- else{const dISO=addDaysISO(w.start,ctx.dayIdx);if(!dayEditable(dISO)){closeTimePicker();return;}day=w.data[currentEmp][DAYS[ctx.dayIdx]];}
+async function applyTime(v){if(!timeCtx)return;const ctx=timeCtx;const w=state.weeks[state.current];let day,empId,dayIdx;
+ if(ctx.mode==='day'){empId=ctx.id;dayIdx=selDay;day=w.data[empId][DAYS[selDay]];}
+ else{empId=currentEmp;dayIdx=ctx.dayIdx;const dISO=addDaysISO(w.start,ctx.dayIdx);if(!dayEditable(dISO)){closeTimePicker();return;}day=w.data[empId][DAYS[ctx.dayIdx]];}
  const start=ctx.f==='start'?v:day.start;const end=ctx.f==='end'?v:day.end;
  if(start&&end&&tmin(end)<=tmin(start)){alert(T[lang].badTime);return;}
- day[ctx.f]=v;save();closeTimePicker();
+ const prev={start:day.start,end:day.end};day[ctx.f]=v;closeTimePicker();
  if(ctx.mode==='day'){renderDayList();renderCalendar(document.getElementById('calAdmin'),null);}else{renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);}
- renderWeekBar();}
+ renderWeekBar();
+ const err=await saveShift(empId,state.current,dayIdx,day);
+ if(err){day.start=prev.start;day.end=prev.end;alert(lang==='fr'?'Enregistrement refuse (jour verrouille ou permission).':'Save refused (locked day or permission).');
+   if(ctx.mode==='day')renderDayList();else renderEmp();renderWeekBar();}}
 function gotoWeek(delta){const keys=wkKeys();let i=keys.indexOf(state.current);i=Math.max(0,Math.min(keys.length-1,i+delta));state.current=keys[i];save();renderAll();}
 function renderDayPick(){const w=state.weeks[state.current];const t=T[lang];const tISO=realTodayISO();
  document.getElementById('daypick').innerHTML=t.sdays.map((d,i)=>{const isT=addDaysISO(w.start,i)===tISO;return '<button class="daybtn'+(i===selDay?' on':'')+(isT?' today':'')+'" data-day="'+i+'"><div class="dn">'+d+'</div><div class="dd">'+fmtDate(w.start,i)+'</div></button>';}).join('');}
@@ -597,11 +602,9 @@ function renderMgr(){const t=T[lang];const w=state.weeks[state.current];let th=0
  document.getElementById('mgrTable').innerHTML=rows;renderEmpAdmin();
 }
 function renderEmpAdmin(){const t=T[lang];document.getElementById('empAdmin').innerHTML=sortedEmps().map(e=>{
- return '<div class="emprow" data-id="'+e.id+'"><span class="enm">'+e.name+'</span><span class="erl">'+e.role+'</span>'
+ return '<div class="emprow" data-id="'+e.id+'"><span class="enm">'+e.name+'</span><span class="erl">'+(e.username?('@'+e.username):'')+'</span>'
   +'<select class="teamsel" data-team><option value="ext"'+(empTeam(e)==='ext'?' selected':'')+'>'+t.teamExt+'</option><option value="int"'+(empTeam(e)==='int'?' selected':'')+'>'+t.teamInt+'</option></select>'
-  +'<input class="rate" type="number" step="0.25" value="'+e.rate+'" data-rate/><span class="erl">/h</span><button class="delx" data-del>&times;</button>'
-  +'<div class="emplogin"><span class="credlbl">'+t.user+'</span><input class="cred" data-cred="user" value="'+(e.user||'')+'" autocomplete="off"/><span class="credlbl">'+(lang==='fr'?'Mot de passe':'Password')+'</span><input class="cred" data-cred="pass" value="'+(e.pass||'')+'" autocomplete="off"/></div>'
-  +'</div>';}).join('');}
+  +'<input class="rate" type="number" step="0.25" value="'+e.rate+'" data-rate/><span class="erl">/h</span></div>';}).join('');}
 function kpi(v,k,c){return '<div class="kpi"><div class="v '+c+'">'+v+'</div><div class="k">'+k+'</div></div>';}
 
 function applyLang(){document.querySelectorAll('[data-i]').forEach(el=>{const k=el.getAttribute('data-i');if(T[lang][k])el.textContent=T[lang][k];});
@@ -614,21 +617,27 @@ function renderAll(){renderWeekBar();if(isEmployee){renderCalendar(document.getE
 function setTitle(){if(isEmployee)return;const t=T[lang];const cur=document.querySelector('.tabs button.on').id;
  document.getElementById('viewTitle').textContent=cur==='tabDay'?t.days[selDay]:cur==='tabWeek'?t.week:t.payTitle;}
 
-function boot(){state=load();selDay=todayIdx();renderRoleOptions();initEye('lpass','lpassEye');initEye('mpass','mpassEye');
+async function boot(){selDay=todayIdx();renderRoleOptions();initEye('lpass','lpassEye');
  document.querySelectorAll('.lt,.hlt').forEach(box=>box.addEventListener('click',e=>{if(e.target.tagName!=='BUTTON')return;lang=e.target.getAttribute('data-l');
   document.querySelectorAll('.lt button,.hlt button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-l')===lang));applyLang();}));
  document.getElementById('lbtn').onclick=doLogin;
  document.getElementById('lpass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
- document.getElementById('luser').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('lpass').focus();});}
-function doLogin(){
+ document.getElementById('luser').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('lpass').focus();});
+ const {data:{session}}=await sb.auth.getSession();if(session&&session.user)await enterApp(session.user);}
+async function doLogin(){
  const u=(document.getElementById('luser').value||'').trim().toLowerCase();const p=document.getElementById('lpass').value;
- if(u===ADMIN.u&&p===ADMIN.p){startApp(false,null);return;}
- const a=state.employees.find(e=>e.user&&(e.user||'').toLowerCase()===u&&e.pass===p);
- if(a){startApp(true,a.id);return;}
- document.getElementById('lerr').textContent=T[lang].wrong;
+ if(!u||!p)return;const btn=document.getElementById('lbtn');btn.disabled=true;document.getElementById('lerr').textContent='';
+ const {data,error}=await sb.auth.signInWithPassword({email:u+EMAIL_DOMAIN,password:p});
+ btn.disabled=false;
+ if(error||!data.user){document.getElementById('lerr').textContent=T[lang].wrong;return;}
+ await enterApp(data.user);
 }
-async function startApp(asEmp,empId){
- isEmployee=asEmp;currentEmp=empId;
+async function enterApp(user){
+ const {data:me,error}=await sb.from('profiles').select('*').eq('id',user.id).maybeSingle();
+ if(error||!me){document.getElementById('lerr').textContent=T[lang].wrong;await sb.auth.signOut();return;}
+ const asEmp=me.role!=='manager';
+ await loadAll();
+ isEmployee=asEmp;currentEmp=asEmp?me.id:null;mgrUnlocked=!asEmp;
  document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';
  document.querySelector('.tabs').classList.toggle('hide',asEmp);
  document.getElementById('bottomNav').style.display=asEmp?'none':'';
@@ -636,21 +645,21 @@ async function startApp(asEmp,empId){
  document.getElementById('dayView').style.display=asEmp?'none':'block';
  document.getElementById('empView').style.display=asEmp?'block':'none';
  document.getElementById('weekView').style.display='none';document.getElementById('mgr').style.display='none';
- if(asEmp){const dw=pickDefaultWeek();if(dw)state.current=dw;}
- bindApp();renderAll();
- if(asEmp){await fetchTrustedTime();const dw=pickDefaultWeek();if(dw){state.current=dw;save();}renderAll();}
+ await fetchTrustedTime();
+ const dw=pickDefaultWeek();if(dw)state.current=dw;
+ bindApp();renderAll();subscribeRealtime();
 }
 function bindApp(){
- document.getElementById('logout').onclick=()=>location.reload();
+ document.getElementById('logout').onclick=async()=>{await sb.auth.signOut();location.reload();};
  document.getElementById('wprev').onclick=()=>gotoWeek(-1);
  document.getElementById('wnext').onclick=()=>gotoWeek(1);
  document.getElementById('weekBtn').onclick=openWeekSheet;
  document.getElementById('sheetClose').onclick=closeWeekSheet;
  document.getElementById('weekSheet').addEventListener('click',e=>{if(e.target.id==='weekSheet')closeWeekSheet();});
- document.getElementById('weekList').addEventListener('click',e=>{const r=e.target.closest('.wkrow');if(!r)return;state.current=r.getAttribute('data-key');save();closeWeekSheet();renderAll();});
+ document.getElementById('weekList').addEventListener('click',e=>{const r=e.target.closest('.wkrow');if(!r)return;state.current=r.getAttribute('data-key');closeWeekSheet();renderAll();});
  ['calAdmin','calEmp'].forEach(idc=>{const el=document.getElementById(idc);if(el)el.addEventListener('click',e=>{const c=e.target.closest('.caday');if(!c||c.classList.contains('empty'))return;
   const iso=c.getAttribute('data-date');const dd=new Date(iso+'T00:00:00');const key=weekKeyForDate(dd);if(!state.weeks[key])return;
-  state.current=key;if(!isEmployee)selDay=(dd.getDay()+6)%7;save();renderAll();});});
+  state.current=key;if(!isEmployee)selDay=(dd.getDay()+6)%7;renderAll();});});
  document.getElementById('bottomNav').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;tab(b.getAttribute('data-tab'));});
  document.getElementById('timeClose').onclick=closeTimePicker;
  document.getElementById('timeSheet').addEventListener('click',e=>{if(e.target.id==='timeSheet')closeTimePicker();});
@@ -662,32 +671,13 @@ function bindApp(){
   document.getElementById('daypick').addEventListener('click',e=>{const b=e.target.closest('[data-day]');if(!b)return;selDay=+b.getAttribute('data-day');renderDayPick();renderDayList();setTitle();});
   document.getElementById('dayList').addEventListener('click',e=>{const b=e.target.closest('.tbtn');if(!b||b.disabled)return;const c=b.closest('.ecard');const f=b.getAttribute('data-f');
    openTimePicker({mode:'day',id:c.getAttribute('data-id'),f:f,cur:b.getAttribute('data-val'),title:f==='start'?T[lang].start:T[lang].end});});
-  document.getElementById('addEmp').onclick=()=>{const n=document.getElementById('empName').value.trim();if(!n)return;
-   const user=document.getElementById('empUser').value.trim();const pass=document.getElementById('empPass').value;
-   if(user&&state.employees.some(x=>(x.user||'').toLowerCase()===user.toLowerCase())){alert(lang==='fr'?"Ce nom d'utilisateur existe deja.":'That username already exists.');return;}
-   const e=newEmp(n,document.getElementById('empRole').value,document.getElementById('empRate').value,document.getElementById('empTeam').value,user,pass);state.employees.push(e);
-   Object.values(state.weeks).forEach(w=>{w.data[e.id]={};DAYS.forEach(d=>w.data[e.id][d]=blankDay());});
-   document.getElementById('empName').value='';document.getElementById('empRate').value='';document.getElementById('empUser').value='';document.getElementById('empPass').value='';save();renderAll();};
-  document.getElementById('empAdmin').addEventListener('input',e=>{const row=e.target.closest('.emprow');if(!row)return;const emp=state.employees.find(x=>x.id===row.getAttribute('data-id'));if(!emp)return;
-   if(e.target.hasAttribute('data-rate'))emp.rate=+e.target.value||0;
-   else if(e.target.dataset.cred==='user')emp.user=e.target.value.trim();
-   else if(e.target.dataset.cred==='pass')emp.pass=e.target.value;
-   else return;save();});
-  document.getElementById('empAdmin').addEventListener('change',e=>{if(!e.target.classList.contains('teamsel'))return;const id=e.target.closest('.emprow').getAttribute('data-id');const emp=state.employees.find(x=>x.id===id);emp.team=e.target.value;save();renderAll();});
+  document.getElementById('addEmp').onclick=()=>alert(lang==='fr'?"La creation de comptes employes arrive a la prochaine etape (fonction securisee).":'Employee account creation is coming in the next step (secure function).');
+  document.getElementById('empAdmin').addEventListener('input',e=>{if(!e.target.hasAttribute('data-rate'))return;const row=e.target.closest('.emprow');const emp=state.employees.find(x=>x.id===row.getAttribute('data-id'));if(!emp)return;emp.rate=+e.target.value||0;sb.from('profiles').update({rate:emp.rate}).eq('id',emp.id).then(()=>{});});
+  document.getElementById('empAdmin').addEventListener('change',e=>{if(!e.target.classList.contains('teamsel'))return;const id=e.target.closest('.emprow').getAttribute('data-id');const emp=state.employees.find(x=>x.id===id);emp.team=e.target.value;sb.from('profiles').update({team:emp.team}).eq('id',emp.id).then(()=>renderAll());});
   document.getElementById('teamBar').addEventListener('click',e=>{const b=e.target.closest('[data-team]');if(!b)return;teamFilter=b.getAttribute('data-team');document.querySelectorAll('#teamBar .tf').forEach(x=>x.classList.toggle('on',x===b));renderAll();});
-  document.getElementById('empAdmin').addEventListener('click',e=>{if(!e.target.hasAttribute('data-del'))return;
-   const id=e.target.closest('.emprow').getAttribute('data-id');const emp=state.employees.find(x=>x.id===id);const th=empTotalAllWeeks(id);
-   let msg=(lang==='fr'?'Retirer ':'Remove ')+(emp?emp.name:'')+'?';
-   if(th>0)msg+='\n\n'+(lang==='fr'?('ATTENTION: '+th+' h enregistrees seront effacees definitivement (toutes les semaines).'):('WARNING: '+th+' logged hours will be permanently erased (all weeks).'));
-   if(!confirm(msg))return;
-   const pw=prompt(lang==='fr'?'Confirmation: entrez le mot de passe gestionnaire pour supprimer ce profil.':'Confirm: enter the manager password to delete this profile.');
-   if(pw===null)return;
-   if(pw!==CONFIG.managerPassword){alert(lang==='fr'?'Mot de passe incorrect. Suppression annulee.':'Wrong password. Deletion cancelled.');return;}
-   state.employees=state.employees.filter(x=>x.id!==id);Object.values(state.weeks).forEach(w=>{delete w.data[id];delete w.paid[id];});save();renderAll();});
-  document.getElementById('exportBtn').onclick=doExport;document.getElementById('importBtn').onclick=()=>document.getElementById('importFile').click();
-  document.getElementById('importFile').onchange=doImport;
-  document.getElementById('mbtn').onclick=mgrLogin;document.getElementById('mpass').addEventListener('keydown',e=>{if(e.key==='Enter')mgrLogin();});
-  document.getElementById('mgrTable').addEventListener('click',e=>{if(!e.target.dataset.paid)return;const w=state.weeks[state.current];w.paid[e.target.dataset.paid]=!w.paid[e.target.dataset.paid];save();renderMgr();});
+  document.getElementById('mgrTable').addEventListener('click',async e=>{if(!e.target.dataset.paid)return;const id=e.target.dataset.paid;const w=state.weeks[state.current];const nv=!w.paid[id];w.paid[id]=nv;renderMgr();
+   const {error}=await sb.from('paid_weeks').upsert({employee_id:id,week_start:state.current,paid:nv},{onConflict:'employee_id,week_start'});
+   if(error){w.paid[id]=!nv;renderMgr();alert(lang==='fr'?'Action refusee.':'Action refused.');}});
   document.getElementById('tipCalc').onclick=calcTips;
  }else{
   document.getElementById('empSheet').addEventListener('click',e=>{const b=e.target.closest('.tbtn');if(!b||b.disabled)return;const c=b.closest('.ecard');const di=+c.getAttribute('data-day');
@@ -699,12 +689,9 @@ function tab(which){
  document.getElementById('tabDay').classList.toggle('on',which==='day');document.getElementById('tabWeek').classList.toggle('on',which==='week');document.getElementById('tabMgr').classList.toggle('on',which==='mgr');
  document.querySelectorAll('#bottomNav button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-tab')===which));
  document.getElementById('dayView').style.display=which==='day'?'block':'none';document.getElementById('weekView').style.display=which==='week'?'block':'none';document.getElementById('mgr').style.display=which==='mgr'?'block':'none';
- if(which==='mgr'){document.getElementById('mgrLock').style.display=mgrUnlocked?'none':'block';document.getElementById('mgrContent').style.display=mgrUnlocked?'block':'none';if(mgrUnlocked)renderMgr();}
+ if(which==='mgr'){const ml=document.getElementById('mgrLock');if(ml)ml.style.display='none';document.getElementById('mgrContent').style.display='block';renderMgr();}
  setTitle();window.scrollTo(0,0);
 }
-function mgrLogin(){if(document.getElementById('mpass').value===CONFIG.managerPassword){mgrUnlocked=true;document.getElementById('mgrLock').style.display='none';document.getElementById('mgrContent').style.display='block';renderMgr();}else document.getElementById('merr').textContent=T[lang].wrong;}
-function doExport(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='norelo-horaire-'+new Date().toISOString().slice(0,10)+'.json';a.click();}
-function doImport(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const s=JSON.parse(r.result);if(s.employees&&s.weeks){state=s;save();renderAll();}}catch(err){alert('Fichier invalide');}};r.readAsText(f);}
 function calcTips(){const pool=+document.getElementById('tipPool').value||0;const t=T[lang];const sh=adminEmps().map(e=>({e,h:empHours(e.id)}));const tot=sh.reduce((s,x)=>s+x.h,0);
  let rows='<tr><th>'+t.name+'</th><th style="text-align:right">'+t.hours+'</th><th style="text-align:right">'+t.share+'</th></tr>';
  sh.filter(x=>x.h>0).sort((a,b)=>b.h-a.h).forEach(x=>{rows+='<tr><td>'+x.e.name+'</td><td class="num">'+x.h.toFixed(2)+'h</td><td class="num">'+money(tot>0?pool*x.h/tot:0)+'</td></tr>';});
