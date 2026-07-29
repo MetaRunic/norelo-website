@@ -574,7 +574,8 @@ async function applyTime(v){if(!timeCtx)return;const ctx=timeCtx;const w=state.w
  const err=await saveShift(empId,state.current,dayIdx,day);
  if(err){day.start=prev.start;day.end=prev.end;showToast(lang==='fr'?'Non enregistre':'Not saved',false);alert(lang==='fr'?'Enregistrement refuse (jour verrouille ou permission).':'Save refused (locked day or permission).');
    if(ctx.mode==='day')renderDayList();else renderEmp();renderWeekBar();}
- else showToast(lang==='fr'?'Enregistre':'Saved',true);}
+ else{showToast(lang==='fr'?'Enregistre':'Saved',true);
+   if(!isEmployee&&empId!==myId){const em=state.employees.find(x=>x.id===empId);logAction('edit_hours',(em?em.name:'')+' '+addDaysISO(state.current,dayIdx)+' '+(day.start||'--')+'-'+(day.end||'--'));}}}
 let toastT;
 function showToast(msg,ok){const el=document.getElementById('toast');if(!el)return;el.innerHTML=(ok?'&#10003; ':'')+esc(msg);el.classList.toggle('err',!ok);el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),1600);}
 function gotoWeek(delta){const keys=wkKeys();let i=keys.indexOf(state.current);i=Math.max(0,Math.min(keys.length-1,i+delta));state.current=keys[i];renderAll();}
@@ -788,7 +789,7 @@ function calcTips(){const pool=+document.getElementById('tipPool').value||0;cons
  document.getElementById('mgrTable').innerHTML=rows;}
 
 function logAction(action,detail){const me=state.employees.find(x=>x.id===myId);sb.from('audit_log').insert({actor_id:myId,actor_name:me?me.name:'',action:action,detail:detail||null}).then(()=>{});}
-function actLabel(a){const M={fr:{create_account:'Compte cree',delete_account:'Compte supprime',reset_password:'Mot de passe reinitialise',rename_user:'Utilisateur renomme',change_name:'Nom modifie',change_role:'Role modifie',change_team:'Equipe modifiee',change_rate:'Taux modifie',mark_paid:'Marque paye',mark_unpaid:'Marque non paye'},en:{create_account:'Account created',delete_account:'Account deleted',reset_password:'Password reset',rename_user:'Username changed',change_name:'Name changed',change_role:'Role changed',change_team:'Team changed',change_rate:'Rate changed',mark_paid:'Marked paid',mark_unpaid:'Marked unpaid'}};return (M[lang]&&M[lang][a])||a;}
+function actLabel(a){const M={fr:{create_account:'Compte cree',delete_account:'Compte supprime',reset_password:'Mot de passe reinitialise',rename_user:'Utilisateur renomme',change_name:'Nom modifie',change_role:'Role modifie',change_team:'Equipe modifiee',change_rate:'Taux modifie',mark_paid:'Marque paye',mark_unpaid:'Marque non paye',edit_hours:'Heures modifiees'},en:{create_account:'Account created',delete_account:'Account deleted',reset_password:'Password reset',rename_user:'Username changed',change_name:'Name changed',change_role:'Role changed',change_team:'Team changed',change_rate:'Rate changed',mark_paid:'Marked paid',mark_unpaid:'Marked unpaid',edit_hours:'Hours changed'}};return (M[lang]&&M[lang][a])||a;}
 let logCache=[];
 async function renderLog(){const el=document.getElementById('logList');if(!el)return;el.innerHTML='<div class="muted" style="padding:1rem">...</div>';
  const {data,error}=await sb.from('audit_log').select('*').order('created_at',{ascending:false}).limit(500);
