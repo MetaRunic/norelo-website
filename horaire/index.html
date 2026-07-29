@@ -173,8 +173,12 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
 /* bottom nav (mobile) */
 #bottomNav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:60;background:rgba(16,22,30,.98);backdrop-filter:blur(18px);border-top:1px solid var(--bdr);padding:.35rem .3rem calc(.35rem + env(safe-area-inset-bottom));}
 #bottomNav button{flex:1;background:transparent;border:none;color:var(--gr);font-size:12px;font-weight:700;padding:8px 4px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;border-radius:8px;min-height:52px;}
-#bottomNav button .bi{font-size:21px;line-height:1;}
+#bottomNav button .navic{width:24px;height:24px;}
 #bottomNav button.on{color:var(--accent-l);}
+.lockbadge svg{width:13px;height:13px;vertical-align:-2px;margin-right:1px;}
+.daybtn.today{outline:2px solid var(--amber);outline-offset:2px;}
+.ecard.today{border-color:var(--amber);}
+.todaytag{display:inline-block;font-size:11px;font-weight:800;color:#1a1206;background:var(--amber);padding:2px 9px;border-radius:20px;margin-left:6px;vertical-align:middle;text-transform:uppercase;letter-spacing:.3px;}
 
 @media(max-width:760px){
  main{padding:1.2rem 1rem 6.5rem;}
@@ -303,9 +307,9 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
   </main>
 
   <nav id="bottomNav">
-    <button data-tab="day"><span class="bi">&#128197;</span><span data-i="tDay">Jour</span></button>
-    <button data-tab="week"><span class="bi">&#128198;</span><span data-i="tWeek">Semaine</span></button>
-    <button data-tab="mgr"><span class="bi">&#128176;</span><span data-i="tMgr">Gestion</span></button>
+    <button data-tab="day"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/><rect x="6.5" y="12.5" width="4.5" height="4.5" rx="1" fill="currentColor" stroke="none"/></svg><span data-i="tDay">Jour</span></button>
+    <button data-tab="week"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2.5v4M16 2.5v4M7 13h2M11 13h2M15 13h2M7 17h2M11 17h2"/></svg><span data-i="tWeek">Semaine</span></button>
+    <button data-tab="mgr"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M14.5 9.3c-.4-.9-1.4-1.5-2.6-1.5-1.5 0-2.6.8-2.6 1.9 0 1 .8 1.6 2.6 2 1.9.4 2.7 1 2.7 2.1 0 1.1-1.2 1.9-2.7 1.9-1.3 0-2.4-.6-2.8-1.6"/></svg><span data-i="tMgr">Gestion</span></button>
   </nav>
   <footer>Norelo &middot; Outil interne &middot; Donnees stockees sur cet appareil</footer>
 </div>
@@ -338,6 +342,7 @@ const ACCOUNTS=[
  {u:'mathilde',p:'soleil16',name:'Mathilde H.'}
 ];
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
+const LOCK_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
 const DAYS=['mon','tue','wed','thu','fri','sat','sun'];
 const T={
  fr:{tDay:'Jour',tWeek:'Semaine',tMgr:'Gestion',logout:'Quitter',
@@ -351,7 +356,7 @@ const T={
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Debut',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
    paid:'Paye',unpaid:'A payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Deja paye',kUnpaid:'Reste a payer',del:'Retirer cet employe?',user:"Nom d'utilisateur",
    chooseWeek:'Choisir une semaine',ws_past:'Passee',ws_cur:'En cours',ws_up:'A venir',
-   locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.",timeChecking:'Verification de l\'heure...'},
+   locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui"},
  en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',logout:'Log out',
    employees:'Employees and rates',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
@@ -363,7 +368,7 @@ const T={
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
    paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Total hours',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',del:'Remove this employee?',user:'Username',
    chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',
-   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.',timeChecking:'Checking time...'}
+   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.',timeChecking:'Checking time...',todayLbl:'Today'}
 };
 const ROLES=[
  {name:'Accueil',emoji:'👋',min:1,max:1,color:'#22c55e'},
@@ -428,6 +433,7 @@ async function fetchTrustedTime(){
 }
 function now(){if(trustedBaseMs==null)return new Date();return new Date(trustedBaseMs+(performance.now()-perfBase));}
 function addDaysISO(iso,off){const d=new Date(iso+'T00:00:00');d.setDate(d.getDate()+off);return isoLocal(d);}
+function realTodayISO(){return isoLocal(trustedBaseMs!=null?now():new Date());}
 function dayEditable(dayISO){if(!isEmployee)return true;if(trustedBaseMs==null)return false;const a=new Date(isoLocal(now())+'T00:00:00');const b=new Date(dayISO+'T00:00:00');const diff=Math.round((a-b)/86400000);return diff===0||diff===1;}
 
 function renderCalendar(el,empId){
@@ -457,12 +463,12 @@ function renderWeekList(){
 function openWeekSheet(){renderWeekList();document.getElementById('weekSheet').style.display='flex';}
 function closeWeekSheet(){document.getElementById('weekSheet').style.display='none';}
 function gotoWeek(delta){const keys=wkKeys();let i=keys.indexOf(state.current);i=Math.max(0,Math.min(keys.length-1,i+delta));state.current=keys[i];save();renderAll();}
-function renderDayPick(){const w=state.weeks[state.current];const t=T[lang];
- document.getElementById('daypick').innerHTML=t.sdays.map((d,i)=>'<button class="daybtn'+(i===selDay?' on':'')+'" data-day="'+i+'"><div class="dn">'+d+'</div><div class="dd">'+fmtDate(w.start,i)+'</div></button>').join('');}
+function renderDayPick(){const w=state.weeks[state.current];const t=T[lang];const tISO=realTodayISO();
+ document.getElementById('daypick').innerHTML=t.sdays.map((d,i)=>{const isT=addDaysISO(w.start,i)===tISO;return '<button class="daybtn'+(i===selDay?' on':'')+(isT?' today':'')+'" data-day="'+i+'"><div class="dn">'+d+'</div><div class="dd">'+fmtDate(w.start,i)+'</div></button>';}).join('');}
 function renderDayList(){
  const w=state.weeks[state.current];const t=T[lang];const dk=DAYS[selDay];let h='',lastRole=null;
  sortedEmps().forEach(e=>{const ro=roleObj(e.role);
-  if(e.role!==lastRole){h+='<div class="rolehdr"><span class="rd" style="background:'+ro.color+'"></span>'+ro.emoji+' '+e.role+'</div>';lastRole=e.role;}
+  if(e.role!==lastRole){h+='<div class="rolehdr"><span class="rd" style="background:'+ro.color+'"></span>'+e.role+'</div>';lastRole=e.role;}
   const day=w.data[e.id][dk];const hh=hrs(day);
   h+='<div class="ecard" data-id="'+e.id+'"><div class="en">'+e.name+'</div>'
    +'<div class="etime"><div class="tfield"><label>'+t.start+'</label><select data-f="start">'+timeOpts(day.start)+'</select></div>'
@@ -476,8 +482,8 @@ function renderEmp(){
  if(!emp){document.getElementById('empSheet').innerHTML='';return;}
  let h='<div class="hintbar">'+(trustedBaseMs==null?t.timeChecking:t.editHint)+'</div>',tot=0;
  DAYS.forEach((dk,i)=>{const day=w.data[emp.id][dk];const hh=hrs(day);tot+=hh;
-  const dISO=addDaysISO(w.start,i);const ed=dayEditable(dISO);const dis=ed?'':' disabled';
-  h+='<div class="ecard'+(ed?'':' locked')+'" data-day="'+i+'"><div class="en">'+t.days[i]+' <span class="muted" style="font-weight:600">'+fmtDate(w.start,i)+'</span>'+(ed?'':' <span class="lockbadge">&#128274; '+t.locked+'</span>')+'</div>'
+  const dISO=addDaysISO(w.start,i);const ed=dayEditable(dISO);const dis=ed?'':' disabled';const isT=dISO===realTodayISO();
+  h+='<div class="ecard'+(ed?'':' locked')+(isT?' today':'')+'" data-day="'+i+'"><div class="en">'+t.days[i]+' <span class="muted" style="font-weight:600">'+fmtDate(w.start,i)+'</span>'+(isT?' <span class="todaytag">'+t.todayLbl+'</span>':'')+(ed?'':' <span class="lockbadge">'+LOCK_SVG+' '+t.locked+'</span>')+'</div>'
    +'<div class="etime"><div class="tfield"><label>'+t.start+'</label><select data-f="start"'+dis+'>'+timeOpts(day.start)+'</select></div>'
    +'<div class="tfield"><label>'+t.end+'</label><select data-f="end"'+dis+'>'+timeOpts(day.end)+'</select></div></div>'
    +'<div class="ecalc"><div class="eh">'+hh.toFixed(2)+'h</div></div></div>';});
@@ -488,7 +494,7 @@ function renderWeek(){
  const w=state.weeks[state.current];const t=T[lang];
  let h='<thead><tr><th style="text-align:left">'+t.name+'</th>';t.sdays.forEach(d=>h+='<th>'+d+'</th>');h+='<th>'+t.tot+'</th></tr></thead><tbody>';
  sortedEmps().forEach(e=>{const ro=roleObj(e.role);
-  h+='<tr><td class="nm">'+e.name+'<div class="muted" style="font-size:13px">'+ro.emoji+' '+e.role+'</div></td>';
+  h+='<tr><td class="nm">'+e.name+'<div class="muted" style="font-size:13px;display:flex;align-items:center;gap:6px"><span class="legdot" style="width:9px;height:9px;background:'+ro.color+'"></span>'+e.role+'</div></td>';
   DAYS.forEach(d=>{const hh=hrs(w.data[e.id][d]);h+='<td class="'+(hh?'':'z')+'">'+(hh?hh.toFixed(2):'-')+'</td>';});
   h+='<td class="tot">'+empHours(e.id).toFixed(2)+'h</td></tr>';});
  let th=0;state.employees.forEach(e=>th+=empHours(e.id));
@@ -498,7 +504,7 @@ function renderWeek(){
 function renderLegend(){const counts={};state.employees.forEach(e=>counts[e.role]=(counts[e.role]||0)+1);
  document.getElementById('legendBox').innerHTML=ROLES.map(r=>{const n=counts[r.name]||0;const need=r.min===r.max?r.min:r.min+'-'+r.max;
   let cov=r.max>0?'<span class="cov '+(n>=r.min?'ok':'under')+'">'+n+' / '+need+'</span>':'<span class="cov na">'+n+'</span>';
-  return '<div class="leg"><span class="lname"><span class="legdot" style="background:'+r.color+'"></span>'+r.emoji+' '+r.name+'</span>'+cov+'</div>';}).join('');}
+  return '<div class="leg"><span class="lname"><span class="legdot" style="background:'+r.color+'"></span>'+r.name+'</span>'+cov+'</div>';}).join('');}
 function renderRoleOptions(){document.getElementById('empRole').innerHTML=ROLES.map(r=>'<option>'+r.name+'</option>').join('');}
 function renderMgr(){const t=T[lang];const w=state.weeks[state.current];let th=0,tp=0,paid=0,unpaid=0;
  state.employees.forEach(e=>{const p=empPay(e.id);tp+=p;th+=empHours(e.id);if(w.paid[e.id])paid+=p;else unpaid+=p;});
@@ -509,7 +515,7 @@ function renderMgr(){const t=T[lang];const w=state.weeks[state.current];let th=0
  document.getElementById('mgrTable').innerHTML=rows;renderEmpAdmin();
 }
 function renderEmpAdmin(){document.getElementById('empAdmin').innerHTML=sortedEmps().map(e=>{const ro=roleObj(e.role);
- return '<div class="emprow" data-id="'+e.id+'"><span class="enm">'+e.name+'</span><span class="erl">'+ro.emoji+' '+e.role+'</span><input class="rate" type="number" step="0.25" value="'+e.rate+'" data-rate/><span class="erl">/h</span><button class="delx" data-del>&times;</button></div>';}).join('');}
+ return '<div class="emprow" data-id="'+e.id+'"><span class="enm">'+e.name+'</span><span class="erl" style="display:inline-flex;align-items:center;gap:6px"><span class="legdot" style="width:9px;height:9px;background:'+ro.color+'"></span>'+e.role+'</span><input class="rate" type="number" step="0.25" value="'+e.rate+'" data-rate/><span class="erl">/h</span><button class="delx" data-del>&times;</button></div>';}).join('');}
 function kpi(v,k,c){return '<div class="kpi"><div class="v '+c+'">'+v+'</div><div class="k">'+k+'</div></div>';}
 
 function applyLang(){document.querySelectorAll('[data-i]').forEach(el=>{const k=el.getAttribute('data-i');if(T[lang][k])el.textContent=T[lang][k];});
