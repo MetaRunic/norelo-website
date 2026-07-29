@@ -114,6 +114,10 @@ h2{font-size:20px;font-weight:800;}
 .tfield select:focus{outline:none;border-color:var(--accent);}
 .ecalc{text-align:right;min-width:88px;}
 .ecalc .eh{font-size:24px;font-weight:800;color:var(--accent-l);}
+.hintbar{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.32);color:var(--amber);border-radius:9px;padding:11px 14px;font-size:14px;font-weight:600;margin-bottom:1rem;line-height:1.45;}
+.ecard.locked{opacity:.6;}
+.ecard.locked select{cursor:not-allowed;}
+.lockbadge{font-size:12px;font-weight:700;color:var(--amber);margin-left:6px;white-space:nowrap;}
 
 .wtable{width:100%;border-collapse:collapse;background:var(--panel);border-radius:11px;overflow:hidden;min-width:680px;}
 .wtable th,.wtable td{padding:14px 12px;text-align:center;font-size:16px;}
@@ -346,7 +350,8 @@ const T={
    months:['janvier','fevrier','mars','avril','mai','juin','juillet','aout','septembre','octobre','novembre','decembre'],
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Debut',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
    paid:'Paye',unpaid:'A payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Deja paye',kUnpaid:'Reste a payer',del:'Retirer cet employe?',user:"Nom d'utilisateur",
-   chooseWeek:'Choisir une semaine',ws_past:'Passee',ws_cur:'En cours',ws_up:'A venir'},
+   chooseWeek:'Choisir une semaine',ws_past:'Passee',ws_cur:'En cours',ws_up:'A venir',
+   locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.",timeChecking:'Verification de l\'heure...'},
  en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',logout:'Log out',
    employees:'Employees and rates',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
@@ -357,7 +362,8 @@ const T={
    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
    paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Total hours',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',del:'Remove this employee?',user:'Username',
-   chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming'}
+   chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',
+   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.',timeChecking:'Checking time...'}
 };
 const ROLES=[
  {name:'Accueil',emoji:'👋',min:1,max:1,color:'#22c55e'},
@@ -413,6 +419,17 @@ function hoursForDate(d,empId){const key=weekKeyForDate(d);const w=state.weeks[k
 function weekTotal(key,empId){const w=state.weeks[key];if(!w)return 0;let t=0;const ids=empId?[empId]:state.employees.map(e=>e.id);ids.forEach(id=>{if(w.data[id])DAYS.forEach(d=>t+=hrs(w.data[id][d]));});return Math.round(t*100)/100;}
 function weekStatus(key){const mon=new Date(key+'T00:00:00');const sun=new Date(mon);sun.setDate(sun.getDate()+6);const t=new Date();t.setHours(0,0,0,0);if(sun<t)return 'past';if(mon>t)return 'up';return 'cur';}
 
+/* trusted time: server Date header (same origin, not user-clock) + monotonic elapsed */
+let trustedBaseMs=null,perfBase=0;
+async function fetchTrustedTime(){
+ try{const r=await fetch(location.href,{method:'HEAD',cache:'no-store'});const d=r.headers.get('date');
+  if(d){const ms=new Date(d).getTime();if(!isNaN(ms)){trustedBaseMs=ms;perfBase=performance.now();return;}}}catch(e){}
+ trustedBaseMs=Date.now();perfBase=performance.now(); // offline fallback (best effort)
+}
+function now(){if(trustedBaseMs==null)return new Date();return new Date(trustedBaseMs+(performance.now()-perfBase));}
+function addDaysISO(iso,off){const d=new Date(iso+'T00:00:00');d.setDate(d.getDate()+off);return isoLocal(d);}
+function dayEditable(dayISO){if(!isEmployee)return true;if(trustedBaseMs==null)return false;const a=new Date(isoLocal(now())+'T00:00:00');const b=new Date(dayISO+'T00:00:00');const diff=Math.round((a-b)/86400000);return diff===0||diff===1;}
+
 function renderCalendar(el,empId){
  if(!el)return;const d0=new Date(state.current+'T00:00:00');const y=d0.getFullYear(),m=d0.getMonth();const t=T[lang];
  const first=new Date(y,m,1);const pad=(first.getDay()+6)%7;const dim=new Date(y,m+1,0).getDate();const todayI=isoLocal(new Date());
@@ -457,11 +474,12 @@ function renderEmp(){
  const w=state.weeks[state.current];const emp=state.employees.find(e=>e.id===currentEmp);const t=T[lang];
  document.getElementById('viewTitle').textContent=t.hi+(emp?emp.name:'');
  if(!emp){document.getElementById('empSheet').innerHTML='';return;}
- let h='',tot=0;
+ let h='<div class="hintbar">'+(trustedBaseMs==null?t.timeChecking:t.editHint)+'</div>',tot=0;
  DAYS.forEach((dk,i)=>{const day=w.data[emp.id][dk];const hh=hrs(day);tot+=hh;
-  h+='<div class="ecard" data-day="'+i+'"><div class="en">'+t.days[i]+' <span class="muted" style="font-weight:600">'+fmtDate(w.start,i)+'</span></div>'
-   +'<div class="etime"><div class="tfield"><label>'+t.start+'</label><select data-f="start">'+timeOpts(day.start)+'</select></div>'
-   +'<div class="tfield"><label>'+t.end+'</label><select data-f="end">'+timeOpts(day.end)+'</select></div></div>'
+  const dISO=addDaysISO(w.start,i);const ed=dayEditable(dISO);const dis=ed?'':' disabled';
+  h+='<div class="ecard'+(ed?'':' locked')+'" data-day="'+i+'"><div class="en">'+t.days[i]+' <span class="muted" style="font-weight:600">'+fmtDate(w.start,i)+'</span>'+(ed?'':' <span class="lockbadge">&#128274; '+t.locked+'</span>')+'</div>'
+   +'<div class="etime"><div class="tfield"><label>'+t.start+'</label><select data-f="start"'+dis+'>'+timeOpts(day.start)+'</select></div>'
+   +'<div class="tfield"><label>'+t.end+'</label><select data-f="end"'+dis+'>'+timeOpts(day.end)+'</select></div></div>'
    +'<div class="ecalc"><div class="eh">'+hh.toFixed(2)+'h</div></div></div>';});
  h+='<div class="card" style="display:flex;justify-content:space-between;align-items:center"><span style="font-weight:800;font-size:18px">'+t.tot+'</span><span style="font-weight:800;font-size:24px;color:var(--accent-l)">'+tot.toFixed(2)+'h</span></div>';
  document.getElementById('empSheet').innerHTML=h;
@@ -516,7 +534,7 @@ function doLogin(){
  if(a){const emp=state.employees.find(e=>e.name===a.name);startApp(true,emp?emp.id:null);return;}
  document.getElementById('lerr').textContent=T[lang].wrong;
 }
-function startApp(asEmp,empId){
+async function startApp(asEmp,empId){
  isEmployee=asEmp;currentEmp=empId;
  document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';
  document.querySelector('.tabs').classList.toggle('hide',asEmp);
@@ -525,6 +543,7 @@ function startApp(asEmp,empId){
  document.getElementById('empView').style.display=asEmp?'block':'none';
  document.getElementById('weekView').style.display='none';document.getElementById('mgr').style.display='none';
  bindApp();renderAll();
+ if(asEmp){await fetchTrustedTime();renderAll();}
 }
 function bindApp(){
  document.getElementById('logout').onclick=()=>location.reload();
@@ -558,8 +577,9 @@ function bindApp(){
   document.getElementById('mgrTable').addEventListener('click',e=>{if(!e.target.dataset.paid)return;const w=state.weeks[state.current];w.paid[e.target.dataset.paid]=!w.paid[e.target.dataset.paid];save();renderMgr();});
   document.getElementById('tipCalc').onclick=calcTips;
  }else{
-  document.getElementById('empSheet').addEventListener('change',e=>{if(e.target.tagName!=='SELECT')return;const c=e.target.closest('.ecard');const di=+c.getAttribute('data-day');const f=e.target.getAttribute('data-f');
-   state.weeks[state.current].data[currentEmp][DAYS[di]][f]=e.target.value;save();renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);renderWeekBar();});
+  document.getElementById('empSheet').addEventListener('change',e=>{if(e.target.tagName!=='SELECT')return;const c=e.target.closest('.ecard');const di=+c.getAttribute('data-day');
+   const dISO=addDaysISO(state.weeks[state.current].start,di);if(!dayEditable(dISO)){renderEmp();return;}
+   const f=e.target.getAttribute('data-f');state.weeks[state.current].data[currentEmp][DAYS[di]][f]=e.target.value;save();renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);renderWeekBar();});
  }
 }
 function tab(which){
