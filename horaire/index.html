@@ -502,7 +502,7 @@ function renderWeek(){
  const w=state.weeks[state.current];const t=T[lang];
  let h='<thead><tr><th style="text-align:left">'+t.name+'</th>';t.sdays.forEach(d=>h+='<th>'+d+'</th>');h+='<th>'+t.tot+'</th></tr></thead><tbody>';
  sortedEmps().forEach(e=>{const ro=roleObj(e.role);
-  h+='<tr><td class="nm">'+e.name+'<div class="muted" style="font-size:13px;display:flex;align-items:center;gap:6px"><span class="legdot" style="width:9px;height:9px;background:'+ro.color+'"></span>'+e.role+'</div></td>';
+  h+='<tr><td class="nm">'+e.name+'<div class="muted" style="font-size:13px;display:flex;align-items:center;gap:6px"><span class="legdot" style="width:9px;height:9px;background:var(--gr)"></span>'+e.role+'</div></td>';
   DAYS.forEach(d=>{const hh=hrs(w.data[e.id][d]);h+='<td class="'+(hh?'':'z')+'">'+(hh?hh.toFixed(2):'-')+'</td>';});
   h+='<td class="tot">'+empHours(e.id).toFixed(2)+'h</td></tr>';});
  let th=0;state.employees.forEach(e=>th+=empHours(e.id));
@@ -512,7 +512,7 @@ function renderWeek(){
 function renderLegend(){const counts={};state.employees.forEach(e=>counts[e.role]=(counts[e.role]||0)+1);
  document.getElementById('legendBox').innerHTML=ROLES.map(r=>{const n=counts[r.name]||0;const need=r.min===r.max?r.min:r.min+'-'+r.max;
   let cov=r.max>0?'<span class="cov '+(n>=r.min?'ok':'under')+'">'+n+' / '+need+'</span>':'<span class="cov na">'+n+'</span>';
-  return '<div class="leg"><span class="lname"><span class="legdot" style="background:'+r.color+'"></span>'+r.name+'</span>'+cov+'</div>';}).join('');}
+  return '<div class="leg"><span class="lname"><span class="legdot" style="background:var(--gr)"></span>'+r.name+'</span>'+cov+'</div>';}).join('');}
 function renderRoleOptions(){document.getElementById('empRole').innerHTML=ROLES.map(r=>'<option>'+r.name+'</option>').join('');}
 function renderMgr(){const t=T[lang];const w=state.weeks[state.current];let th=0,tp=0,paid=0,unpaid=0;
  state.employees.forEach(e=>{const p=empPay(e.id);tp+=p;th+=empHours(e.id);if(w.paid[e.id])paid+=p;else unpaid+=p;});
@@ -523,7 +523,7 @@ function renderMgr(){const t=T[lang];const w=state.weeks[state.current];let th=0
  document.getElementById('mgrTable').innerHTML=rows;renderEmpAdmin();
 }
 function renderEmpAdmin(){document.getElementById('empAdmin').innerHTML=sortedEmps().map(e=>{const ro=roleObj(e.role);
- return '<div class="emprow" data-id="'+e.id+'"><span class="enm">'+e.name+'</span><span class="erl" style="display:inline-flex;align-items:center;gap:6px"><span class="legdot" style="width:9px;height:9px;background:'+ro.color+'"></span>'+e.role+'</span><input class="rate" type="number" step="0.25" value="'+e.rate+'" data-rate/><span class="erl">/h</span><button class="delx" data-del>&times;</button></div>';}).join('');}
+ return '<div class="emprow" data-id="'+e.id+'"><span class="enm">'+e.name+'</span><span class="erl" style="display:inline-flex;align-items:center;gap:6px"><span class="legdot" style="width:9px;height:9px;background:var(--gr)"></span>'+e.role+'</span><input class="rate" type="number" step="0.25" value="'+e.rate+'" data-rate/><span class="erl">/h</span><button class="delx" data-del>&times;</button></div>';}).join('');}
 function kpi(v,k,c){return '<div class="kpi"><div class="v '+c+'">'+v+'</div><div class="k">'+k+'</div></div>';}
 
 function applyLang(){document.querySelectorAll('[data-i]').forEach(el=>{const k=el.getAttribute('data-i');if(T[lang][k])el.textContent=T[lang][k];});
