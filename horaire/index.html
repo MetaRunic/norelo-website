@@ -534,13 +534,13 @@ function openTimePicker(ctx){timeCtx=ctx;document.getElementById('timeSheetTitle
  document.getElementById('timeGrid').innerHTML=h;document.getElementById('timeSheet').style.display='flex';
  const sel=document.querySelector('#timeGrid .tcell.on');if(sel)setTimeout(()=>sel.scrollIntoView({block:'center'}),0);}
 function closeTimePicker(){document.getElementById('timeSheet').style.display='none';timeCtx=null;}
-function applyTime(v){if(!timeCtx)return;const w=state.weeks[state.current];let day;
- if(timeCtx.mode==='day')day=w.data[timeCtx.id][DAYS[selDay]];
- else{const dISO=addDaysISO(w.start,timeCtx.dayIdx);if(!dayEditable(dISO)){closeTimePicker();return;}day=w.data[currentEmp][DAYS[timeCtx.dayIdx]];}
- const start=timeCtx.f==='start'?v:day.start;const end=timeCtx.f==='end'?v:day.end;
+function applyTime(v){if(!timeCtx)return;const ctx=timeCtx;const w=state.weeks[state.current];let day;
+ if(ctx.mode==='day')day=w.data[ctx.id][DAYS[selDay]];
+ else{const dISO=addDaysISO(w.start,ctx.dayIdx);if(!dayEditable(dISO)){closeTimePicker();return;}day=w.data[currentEmp][DAYS[ctx.dayIdx]];}
+ const start=ctx.f==='start'?v:day.start;const end=ctx.f==='end'?v:day.end;
  if(start&&end&&tmin(end)<=tmin(start)){alert(T[lang].badTime);return;}
- day[timeCtx.f]=v;save();closeTimePicker();
- if(timeCtx.mode==='day'){renderDayList();renderCalendar(document.getElementById('calAdmin'),null);}else{renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);}
+ day[ctx.f]=v;save();closeTimePicker();
+ if(ctx.mode==='day'){renderDayList();renderCalendar(document.getElementById('calAdmin'),null);}else{renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);}
  renderWeekBar();}
 function gotoWeek(delta){const keys=wkKeys();let i=keys.indexOf(state.current);i=Math.max(0,Math.min(keys.length-1,i+delta));state.current=keys[i];save();renderAll();}
 function renderDayPick(){const w=state.weeks[state.current];const t=T[lang];const tISO=realTodayISO();
