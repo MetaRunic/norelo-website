@@ -283,10 +283,6 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
 
     <div id="weekView" style="display:none">
       <div class="wscroll"><table class="wtable" id="wtable"></table></div>
-      <div class="card">
-        <h3 data-i="legend">Postes et besoins</h3>
-        <div id="legendBox"></div>
-      </div>
       <div class="rowtop" style="margin-top:1.4rem">
         <button class="btn ghost sm" id="exportBtn" data-i="export">Sauvegarder une copie</button>
         <button class="btn ghost sm" id="importBtn" data-i="import">Restaurer</button>
@@ -450,6 +446,7 @@ function hround(n){return n%1?n.toFixed(1):String(n);}
 function hrs(day){if(!day||!day.start||!day.end)return 0;const a=day.start.split(':'),b=day.end.split(':');let m=(+b[0]*60+ +b[1])-(+a[0]*60+ +a[1]);return m<=0?0:Math.round(m/60*100)/100;}
 function empHours(id){const w=state.weeks[state.current];let t=0;DAYS.forEach(d=>t+=hrs(w.data[id][d]));return Math.round(t*100)/100;}
 function empPay(id){const e=state.employees.find(x=>x.id===id);return Math.round(empHours(id)*(e?e.rate:0)*100)/100;}
+function empTotalAllWeeks(id){let t=0;Object.values(state.weeks).forEach(w=>{if(w.data[id])DAYS.forEach(d=>t+=hrs(w.data[id][d]));});return Math.round(t*100)/100;}
 function sortedEmps(){return [...state.employees].sort((a,b)=>a.role.localeCompare(b.role)||a.name.localeCompare(b.name));}
 function wkKeys(){return Object.keys(state.weeks).sort();}
 function timeInput(f,val,disabled){return '<button type="button" class="tbtn" data-f="'+f+'" data-val="'+(val||'')+'"'+(disabled?' disabled':'')+'>'+(val||'--:--')+'</button>';}
@@ -569,7 +566,7 @@ function applyLang(){document.querySelectorAll('[data-i]').forEach(el=>{const k=
  document.getElementById('lbtn').textContent=T[lang].enter;
  document.getElementById('luser').placeholder=T[lang].user;document.getElementById('lpass').placeholder=lang==='fr'?'Mot de passe':'Password';
  document.documentElement.lang=lang;if(document.getElementById('app').style.display==='block')renderAll();}
-function renderAll(){renderWeekBar();if(isEmployee){renderCalendar(document.getElementById('calEmp'),currentEmp);renderEmp();}else{renderCalendar(document.getElementById('calAdmin'),null);renderDayPick();renderDayList();renderWeek();renderLegend();setTitle();if(mgrUnlocked)renderMgr();}}
+function renderAll(){renderWeekBar();if(isEmployee){renderCalendar(document.getElementById('calEmp'),currentEmp);renderEmp();}else{renderCalendar(document.getElementById('calAdmin'),null);renderDayPick();renderDayList();renderWeek();setTitle();if(mgrUnlocked)renderMgr();}}
 function setTitle(){if(isEmployee)return;const t=T[lang];const cur=document.querySelector('.tabs button.on').id;
  document.getElementById('viewTitle').textContent=cur==='tabDay'?t.days[selDay]:cur==='tabWeek'?t.week:t.payTitle;}
 
@@ -625,7 +622,15 @@ function bindApp(){
    Object.values(state.weeks).forEach(w=>{w.data[e.id]={};DAYS.forEach(d=>w.data[e.id][d]=blankDay());});
    document.getElementById('empName').value='';document.getElementById('empRate').value='';save();renderAll();};
   document.getElementById('empAdmin').addEventListener('input',e=>{if(!e.target.hasAttribute('data-rate'))return;const id=e.target.closest('.emprow').getAttribute('data-id');const emp=state.employees.find(x=>x.id===id);emp.rate=+e.target.value||0;save();});
-  document.getElementById('empAdmin').addEventListener('click',e=>{if(!e.target.hasAttribute('data-del'))return;if(!confirm(T[lang].del))return;const id=e.target.closest('.emprow').getAttribute('data-id');state.employees=state.employees.filter(x=>x.id!==id);Object.values(state.weeks).forEach(w=>{delete w.data[id];delete w.paid[id];});save();renderAll();});
+  document.getElementById('empAdmin').addEventListener('click',e=>{if(!e.target.hasAttribute('data-del'))return;
+   const id=e.target.closest('.emprow').getAttribute('data-id');const emp=state.employees.find(x=>x.id===id);const th=empTotalAllWeeks(id);
+   let msg=(lang==='fr'?'Retirer ':'Remove ')+(emp?emp.name:'')+'?';
+   if(th>0)msg+='\n\n'+(lang==='fr'?('ATTENTION: '+th+' h enregistrees seront effacees definitivement (toutes les semaines).'):('WARNING: '+th+' logged hours will be permanently erased (all weeks).'));
+   if(!confirm(msg))return;
+   const pw=prompt(lang==='fr'?'Confirmation: entrez le mot de passe gestionnaire pour supprimer ce profil.':'Confirm: enter the manager password to delete this profile.');
+   if(pw===null)return;
+   if(pw!==CONFIG.managerPassword){alert(lang==='fr'?'Mot de passe incorrect. Suppression annulee.':'Wrong password. Deletion cancelled.');return;}
+   state.employees=state.employees.filter(x=>x.id!==id);Object.values(state.weeks).forEach(w=>{delete w.data[id];delete w.paid[id];});save();renderAll();});
   document.getElementById('exportBtn').onclick=doExport;document.getElementById('importBtn').onclick=()=>document.getElementById('importFile').click();
   document.getElementById('importFile').onchange=doImport;
   document.getElementById('mbtn').onclick=mgrLogin;document.getElementById('mpass').addEventListener('keydown',e=>{if(e.key==='Enter')mgrLogin();});
