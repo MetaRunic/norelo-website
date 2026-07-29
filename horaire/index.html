@@ -267,6 +267,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
       <button id="tabDay" class="on" data-i="tDay">Jour</button>
       <button id="tabWeek" data-i="tWeek">Semaine</button>
       <button id="tabMgr" data-i="tMgr">Gestion</button>
+      <button id="tabEmp" data-i="tEmp">Employes</button>
     </div>
     <div class="spacer"></div>
     <div class="hlt"><button data-l="fr" class="on">FR</button><button data-l="en">EN</button></div>
@@ -326,18 +327,21 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
           <div class="muted" data-i="tipsHint">Repartit la cagnotte selon les heures travaillees.</div>
         </div>
         <div class="card"><div class="mtscroll"><table class="mtable" id="mgrTable"></table></div></div>
-        <div class="card">
-          <h3 data-i="employees">Employes et taux</h3>
-          <div class="frow" style="margin-bottom:1rem">
-            <input class="name" id="empName" placeholder="Nom"/>
-            <select id="empTeam"><option value="ext" data-i="teamExt">Exterieur</option><option value="int" data-i="teamInt">Interieur</option></select>
-            <input class="rate" id="empRate" type="number" step="0.25" placeholder="$/h"/>
-            <input id="empUser" placeholder="Nom d'utilisateur" style="width:160px" autocomplete="off"/>
-            <input id="empPass" placeholder="Mot de passe" style="width:150px" autocomplete="off"/>
-            <button class="btn sm" id="addEmp" data-i="add">Ajouter</button>
-          </div>
-          <div id="empAdmin"></div>
+      </div>
+    </div>
+
+    <div id="empAdminView" style="display:none">
+      <div class="card">
+        <h3 data-i="employees">Employes et taux</h3>
+        <div class="frow" style="margin-bottom:1rem">
+          <input class="name" id="empName" placeholder="Nom"/>
+          <select id="empTeam"><option value="ext" data-i="teamExt">Exterieur</option><option value="int" data-i="teamInt">Interieur</option></select>
+          <input class="rate" id="empRate" type="number" step="0.25" placeholder="$/h"/>
+          <input id="empUser" placeholder="Nom d'utilisateur" style="width:160px" autocomplete="off"/>
+          <input id="empPass" placeholder="Mot de passe" style="width:150px" autocomplete="off"/>
+          <button class="btn sm" id="addEmp" data-i="add">Ajouter</button>
         </div>
+        <div id="empAdmin"></div>
       </div>
     </div>
   </main>
@@ -346,6 +350,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     <button data-tab="day"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/><rect x="6.5" y="12.5" width="4.5" height="4.5" rx="1" fill="currentColor" stroke="none"/></svg><span data-i="tDay">Jour</span></button>
     <button data-tab="week"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2.5v4M16 2.5v4M7 13h2M11 13h2M15 13h2M7 17h2M11 17h2"/></svg><span data-i="tWeek">Semaine</span></button>
     <button data-tab="mgr"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M14.5 9.3c-.4-.9-1.4-1.5-2.6-1.5-1.5 0-2.6.8-2.6 1.9 0 1 .8 1.6 2.6 2 1.9.4 2.7 1 2.7 2.1 0 1.1-1.2 1.9-2.7 1.9-1.3 0-2.4-.6-2.8-1.6"/></svg><span data-i="tMgr">Gestion</span></button>
+    <button data-tab="emp"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16.5 5.3a3 3 0 0 1 0 5.4M18 19a5.5 5.5 0 0 0-3-4.9"/></svg><span data-i="tEmp">Employes</span></button>
   </nav>
   <footer>Norelo &middot; Outil interne &middot; Donnees stockees sur cet appareil</footer>
 </div>
@@ -383,7 +388,7 @@ const EYEOFF_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 function initEye(inpId,btnId){const i=document.getElementById(inpId),b=document.getElementById(btnId);if(!i||!b)return;b.innerHTML=EYE_SVG;b.onclick=()=>{const hidden=i.type==='password';i.type=hidden?'text':'password';b.innerHTML=hidden?EYEOFF_SVG:EYE_SVG;i.focus();};}
 const DAYS=['mon','tue','wed','thu','fri','sat','sun'];
 const T={
- fr:{tDay:'Jour',tWeek:'Semaine',tMgr:'Gestion',logout:'Quitter',
+ fr:{tDay:'Jour',tWeek:'Semaine',tMgr:'Gestion',tEmp:'Employes',logout:'Quitter',
    employees:'Employes et taux',add:'Ajouter',legend:'Postes et besoins',export:'Sauvegarder une copie',import:'Restaurer',
    mgrLockT:'Connexion gestionnaire',mgrLockS:'Cette section demande un mot de passe distinct.',unlock:'Deverrouiller',
    payTitle:'Paiements et totaux',tipsT:'Calculateur de pourboires',tipsPool:'Cagnotte totale ($)',tipSplit:'Repartir par heures',
@@ -395,7 +400,7 @@ const T={
    paid:'Paye',unpaid:'A payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Deja paye',kUnpaid:'Reste a payer',del:'Retirer cet employe?',user:"Nom d'utilisateur",
    chooseWeek:'Choisir une semaine',ws_past:'Passee',ws_cur:'En cours',ws_up:'A venir',teamAll:'Toutes',teamExt:'Exterieur',teamInt:'Interieur',
    locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.<br><strong>Un jour verrouille a corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit etre apres l'heure de debut.",hoursHi:'Heures de quart regulieres en surbrillance'},
- en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',logout:'Log out',
+ en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',tEmp:'Employees',logout:'Log out',
    employees:'Employees and rates',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
    payTitle:'Payments and totals',tipsT:'Tip calculator',tipsPool:'Total pool ($)',tipSplit:'Split by hours',
@@ -600,7 +605,7 @@ function renderMgr(){const t=T[lang];const w=state.weeks[state.current];let th=0
  let lastTeam=null;
  [...emps].sort((a,b)=>(to[empTeam(a)]-to[empTeam(b)])||empPay(b.id)-empPay(a.id)).forEach(e=>{const tm=empTeam(e);if(tm!==lastTeam){rows+='<tr class="teamrow"><td colspan="5">'+teamLabel(tm)+'</td></tr>';lastTeam=tm;}const yes=!!w.paid[e.id];
   rows+='<tr><td>'+esc(e.name)+'</td><td>'+money(e.rate)+'/h</td><td class="num">'+empHours(e.id).toFixed(2)+'h</td><td class="num">'+money(empPay(e.id))+'</td><td style="text-align:right"><button class="paidbtn '+(yes?'yes':'')+'" data-paid="'+e.id+'">'+(yes?t.paid:t.unpaid)+'</button></td></tr>';});
- document.getElementById('mgrTable').innerHTML=rows;renderEmpAdmin();
+ document.getElementById('mgrTable').innerHTML=rows;
 }
 function renderEmpAdmin(){const t=T[lang];document.getElementById('empAdmin').innerHTML=sortedEmps().map(e=>{
  return '<div class="emprow" data-id="'+e.id+'"><span class="enm">'+esc(e.name)+'</span><span class="erl">'+(e.username?('@'+esc(e.username)):'')+'</span>'
@@ -614,9 +619,9 @@ function applyLang(){document.querySelectorAll('[data-i]').forEach(el=>{const k=
  document.getElementById('luser').placeholder=T[lang].user;document.getElementById('lpass').placeholder=lang==='fr'?'Mot de passe':'Password';
  document.getElementById('empUser').placeholder=T[lang].user;document.getElementById('empPass').placeholder=lang==='fr'?'Mot de passe':'Password';
  document.documentElement.lang=lang;if(document.getElementById('app').style.display==='block')renderAll();}
-function renderAll(){renderWeekBar();if(isEmployee){renderCalendar(document.getElementById('calEmp'),currentEmp);renderEmp();}else{renderCalendar(document.getElementById('calAdmin'),null);renderDayPick();renderDayList();renderWeek();setTitle();if(mgrUnlocked)renderMgr();}}
+function renderAll(){renderWeekBar();if(isEmployee){renderCalendar(document.getElementById('calEmp'),currentEmp);renderEmp();}else{renderCalendar(document.getElementById('calAdmin'),null);renderDayPick();renderDayList();renderWeek();setTitle();if(mgrUnlocked){renderMgr();renderEmpAdmin();}}}
 function setTitle(){if(isEmployee)return;const t=T[lang];const cur=document.querySelector('.tabs button.on').id;
- document.getElementById('viewTitle').textContent=cur==='tabDay'?t.days[selDay]:cur==='tabWeek'?t.week:t.payTitle;}
+ document.getElementById('viewTitle').textContent=cur==='tabDay'?t.days[selDay]:cur==='tabWeek'?t.week:cur==='tabEmp'?t.employees:t.payTitle;}
 
 async function boot(){selDay=todayIdx();renderRoleOptions();initEye('lpass','lpassEye');
  document.querySelectorAll('.lt,.hlt').forEach(box=>box.addEventListener('click',e=>{if(e.target.tagName!=='BUTTON')return;lang=e.target.getAttribute('data-l');
@@ -669,6 +674,7 @@ function bindApp(){
   document.getElementById('tabDay').onclick=()=>tab('day');
   document.getElementById('tabWeek').onclick=()=>tab('week');
   document.getElementById('tabMgr').onclick=()=>tab('mgr');
+  document.getElementById('tabEmp').onclick=()=>tab('emp');
   document.getElementById('daypick').addEventListener('click',e=>{const b=e.target.closest('[data-day]');if(!b)return;selDay=+b.getAttribute('data-day');renderDayPick();renderDayList();setTitle();});
   document.getElementById('dayList').addEventListener('click',e=>{const b=e.target.closest('.tbtn');if(!b||b.disabled)return;const c=b.closest('.ecard');const f=b.getAttribute('data-f');
    openTimePicker({mode:'day',id:c.getAttribute('data-id'),f:f,cur:b.getAttribute('data-val'),title:f==='start'?T[lang].start:T[lang].end});});
@@ -713,9 +719,12 @@ function bindApp(){
 }
 function tab(which){
  document.getElementById('tabDay').classList.toggle('on',which==='day');document.getElementById('tabWeek').classList.toggle('on',which==='week');document.getElementById('tabMgr').classList.toggle('on',which==='mgr');
+ const te=document.getElementById('tabEmp');if(te)te.classList.toggle('on',which==='emp');
  document.querySelectorAll('#bottomNav button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-tab')===which));
  document.getElementById('dayView').style.display=which==='day'?'block':'none';document.getElementById('weekView').style.display=which==='week'?'block':'none';document.getElementById('mgr').style.display=which==='mgr'?'block':'none';
+ document.getElementById('empAdminView').style.display=which==='emp'?'block':'none';
  if(which==='mgr'){const ml=document.getElementById('mgrLock');if(ml)ml.style.display='none';document.getElementById('mgrContent').style.display='block';renderMgr();}
+ if(which==='emp')renderEmpAdmin();
  setTitle();window.scrollTo(0,0);
 }
 function calcTips(){const pool=+document.getElementById('tipPool').value||0;const t=T[lang];const sh=adminEmps().map(e=>({e,h:empHours(e.id)}));const tot=sh.reduce((s,x)=>s+x.h,0);
