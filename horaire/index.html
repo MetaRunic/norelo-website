@@ -6,557 +6,469 @@
 <meta name="robots" content="noindex,nofollow"/>
 <title>Norelo - Horaire</title>
 <style>
-:root{--dark:#070f2b;--blue:#2563eb;--bl:#4fa3e8;--bp:#60a5fa;--bdr:rgba(79,163,232,0.15);--gr:#64748b;--green:#22c55e;--red:#ef4444;--panel:#0c1533;--panel2:#111c3f;--txt:#e6edf7;}
+:root{--dark:#070f2b;--blue:#2563eb;--bl:#4fa3e8;--bp:#7cc0ff;--bdr:rgba(120,170,230,0.22);--gr:#9fb2cc;--green:#22c55e;--red:#f04747;--txt:#eef3fb;--panel:#0e1a3d;--panel2:#16244f;--soft:#1b2c5c;}
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{overflow-x:hidden;}
-body{background:var(--dark);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;line-height:1.4;min-height:100vh;}
+body{background:var(--dark);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:17px;line-height:1.5;min-height:100vh;-webkit-text-size-adjust:100%;}
 button{font-family:inherit;cursor:pointer;}
 input,select{font-family:inherit;}
 
-/* Login */
+/* LOGIN */
 #login{position:fixed;inset:0;background:var(--dark);display:flex;align-items:center;justify-content:center;z-index:1000;padding:1.5rem;}
-.lbox{width:100%;max-width:380px;background:var(--panel);border:1px solid var(--bdr);border-radius:18px;padding:2.2rem;text-align:center;}
-.logo{font-size:26px;font-weight:800;letter-spacing:-1px;margin-bottom:.3rem;}
+.lbox{width:100%;max-width:420px;background:var(--panel);border:1px solid var(--bdr);border-radius:22px;padding:2.6rem 2.2rem;text-align:center;}
+.logo{font-size:32px;font-weight:800;letter-spacing:-1px;}
 .logo .lo{color:var(--bl);}
-.logo .dot{display:inline-block;width:5px;height:5px;background:var(--green);border-radius:50%;margin-left:5px;vertical-align:middle;animation:pu 2s infinite;}
+.logo .dot{display:inline-block;width:6px;height:6px;background:var(--green);border-radius:50%;margin-left:6px;vertical-align:middle;animation:pu 2s infinite;}
 @keyframes pu{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
-.lsub{color:var(--gr);font-size:13px;margin-bottom:1.6rem;}
-#login input{width:100%;padding:12px 14px;background:var(--panel2);border:1px solid var(--bdr);border-radius:10px;color:var(--txt);font-size:15px;margin-bottom:.8rem;}
+.lsub{color:var(--gr);font-size:16px;margin:.5rem 0 1.8rem;}
+#login input{width:100%;padding:16px 16px;background:var(--soft);border:1px solid var(--bdr);border-radius:12px;color:var(--txt);font-size:18px;margin-bottom:1rem;text-align:center;}
 #login input:focus{outline:none;border-color:var(--blue);}
-.btn{background:var(--blue);color:#fff;border:none;border-radius:10px;padding:12px 18px;font-size:14px;font-weight:600;transition:background .2s,transform .15s;}
-.btn:hover{background:#1d4ed8;transform:translateY(-1px);}
+.btn{background:var(--blue);color:#fff;border:none;border-radius:12px;padding:15px 22px;font-size:17px;font-weight:700;transition:background .2s,transform .12s;}
+.btn:hover{background:#1d4ed8;}
+.btn:active{transform:scale(.98);}
 .btn.full{width:100%;}
-.btn.ghost{background:transparent;border:1px solid var(--bdr);color:var(--txt);}
-.btn.ghost:hover{background:rgba(255,255,255,.05);}
-.btn.sm{padding:7px 12px;font-size:12px;border-radius:8px;}
-.lerr{color:var(--red);font-size:12px;height:16px;margin-bottom:.5rem;}
-.lhint{color:var(--gr);font-size:11px;margin-top:1rem;line-height:1.6;}
-
-/* Top bar */
-#app{display:none;}
-header{position:sticky;top:0;z-index:50;background:rgba(8,16,42,.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr);padding:.9rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
-header .logo{font-size:20px;margin:0;}
-.spacer{flex:1;}
-.wsel{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
-.wsel select{padding:8px 12px;background:var(--panel2);border:1px solid var(--bdr);border-radius:9px;color:var(--txt);font-size:13px;}
-.lt{display:inline-flex;border:1px solid var(--bdr);border-radius:8px;overflow:hidden;}
-.lt button{background:transparent;color:var(--gr);border:none;padding:6px 11px;font-size:12px;font-weight:600;}
+.btn.ghost{background:transparent;border:1.5px solid var(--bdr);color:var(--txt);}
+.btn.ghost:hover{background:rgba(255,255,255,.06);}
+.btn.sm{padding:11px 16px;font-size:15px;}
+.lerr{color:var(--red);font-size:14px;min-height:18px;margin-bottom:.5rem;font-weight:600;}
+.lhint{color:var(--gr);font-size:13px;margin-top:1.4rem;line-height:1.6;}
+.lt{display:inline-flex;border:1.5px solid var(--bdr);border-radius:12px;overflow:hidden;margin-top:1.2rem;}
+.lt button{background:transparent;color:var(--gr);border:none;padding:10px 18px;font-size:15px;font-weight:700;}
 .lt button.on{background:var(--blue);color:#fff;}
 
-main{padding:1.3rem 1.5rem 4rem;}
-.bar{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem;}
-h2{font-size:16px;font-weight:700;}
-.muted{color:var(--gr);font-size:12px;}
-
-/* Grid */
-.gwrap{overflow-x:auto;border:1px solid var(--bdr);border-radius:14px;background:var(--panel);}
-table{border-collapse:collapse;width:100%;min-width:900px;}
-th,td{border-bottom:1px solid rgba(255,255,255,.05);border-right:1px solid rgba(255,255,255,.04);padding:6px 8px;text-align:center;vertical-align:middle;}
-thead th{position:sticky;top:0;background:var(--panel2);font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--bp);font-weight:700;padding:9px 8px;z-index:2;}
-thead th .dt{display:block;color:var(--gr);font-size:10px;font-weight:500;margin-top:2px;}
-.cName{position:sticky;left:0;background:var(--panel);text-align:left;min-width:150px;z-index:1;border-left:3px solid var(--gr);}
-thead .cName{z-index:3;background:var(--panel2);}
-.eName{font-weight:600;font-size:13px;}
-.eRole{font-size:11px;color:var(--gr);}
-.daycell{min-width:96px;}
-.tinputs{display:flex;flex-direction:column;gap:3px;align-items:center;}
-.tinputs input{width:74px;padding:3px 4px;background:var(--panel2);border:1px solid var(--bdr);border-radius:6px;color:var(--txt);font-size:11px;text-align:center;color-scheme:dark;}
-.tinputs input:focus{outline:none;border-color:var(--blue);}
-.stat{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--gr);background:transparent;margin-top:3px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;line-height:1;transition:all .15s;}
-.stat.present{background:rgba(34,197,94,.18);border-color:var(--green);color:var(--green);}
-.stat.absent{background:rgba(239,68,68,.18);border-color:var(--red);color:var(--red);}
-.cTot{background:var(--panel2);font-weight:700;min-width:78px;}
-.cTot .h{color:var(--bl);}
-.cTot .p{color:var(--green);font-size:12px;}
-tfoot td{background:var(--panel2);font-weight:700;font-size:13px;border-top:2px solid var(--bdr);}
-.rowdel{background:none;border:none;color:var(--gr);font-size:14px;padding:0 2px;}
-.rowdel:hover{color:var(--red);}
-
-/* Legend + panels */
-.cols{display:grid;grid-template-columns:1fr;gap:1.3rem;margin-top:1.4rem;}
-@media(min-width:960px){.cols{grid-template-columns:1.4fr 1fr;}}
-.card{background:var(--panel);border:1px solid var(--bdr);border-radius:14px;padding:1.1rem 1.2rem;}
-.card h3{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--bp);margin-bottom:.9rem;font-weight:700;}
-.leg{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;}
-.leg:last-child{border:none;}
-.leg .lname{display:flex;align-items:center;gap:8px;}
-.legdot{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
-.leg .need{color:var(--gr);font-size:12px;font-weight:600;}
-.leg .cov{font-size:11px;font-weight:700;padding:2px 7px;border-radius:20px;}
-.cov.ok{background:rgba(34,197,94,.15);color:var(--green);}
-.cov.under{background:rgba(239,68,68,.15);color:var(--red);}
-
-/* Forms rows */
-.frow{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin-bottom:.6rem;}
-.frow input,.frow select{padding:8px 10px;background:var(--panel2);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:13px;}
-.frow input.name{flex:1;min-width:120px;}
-.frow input.rate{width:80px;}
-
-/* Manager */
-#mgr{display:none;}
-.mtable{width:100%;border-collapse:collapse;font-size:13px;}
-.mtable th,.mtable td{padding:9px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.06);}
-.mtable th{font-size:11px;text-transform:uppercase;color:var(--bp);letter-spacing:.5px;}
-.mtable td.num{text-align:right;font-variant-numeric:tabular-nums;}
-.paidbtn{border:1px solid var(--bdr);background:transparent;color:var(--gr);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;}
-.paidbtn.yes{background:rgba(34,197,94,.15);border-color:var(--green);color:var(--green);}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;margin-bottom:1.3rem;}
-.kpi{background:var(--panel);border:1px solid var(--bdr);border-radius:12px;padding:1rem 1.1rem;}
-.kpi .v{font-size:24px;font-weight:800;color:var(--bl);}
-.kpi .v.g{color:var(--green);}
-.kpi .v.r{color:var(--red);}
-.kpi .k{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--gr);margin-top:2px;}
-.tips{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:1rem;}
-.tips input{width:130px;padding:9px 11px;background:var(--panel2);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:14px;}
-.tag{display:inline-block;font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(96,165,250,.12);color:var(--bp);margin-left:.5rem;vertical-align:middle;}
-.mgrlock{max-width:360px;margin:3rem auto;text-align:center;}
-.mgrlock input{width:100%;padding:12px 14px;background:var(--panel2);border:1px solid var(--bdr);border-radius:10px;color:var(--txt);font-size:15px;margin-bottom:.8rem;}
-footer{text-align:center;color:var(--gr);font-size:11px;padding:2rem 1rem;border-top:1px solid var(--bdr);}
-.tabs{display:inline-flex;gap:.3rem;background:var(--panel2);border:1px solid var(--bdr);border-radius:10px;padding:3px;}
-.tabs button{background:transparent;border:none;color:var(--gr);padding:7px 14px;font-size:13px;font-weight:600;border-radius:7px;}
+/* APP */
+#app{display:none;}
+header{position:sticky;top:0;z-index:50;background:rgba(10,18,45,.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--bdr);padding:1rem 1.4rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+header .logo{font-size:24px;}
+.spacer{flex:1;}
+.tabs{display:inline-flex;gap:.35rem;background:var(--soft);border:1px solid var(--bdr);border-radius:14px;padding:5px;}
+.tabs button{background:transparent;border:none;color:var(--gr);padding:12px 22px;font-size:16px;font-weight:700;border-radius:10px;}
 .tabs button.on{background:var(--blue);color:#fff;}
+.hlt{display:inline-flex;border:1.5px solid var(--bdr);border-radius:12px;overflow:hidden;}
+.hlt button{background:transparent;color:var(--gr);border:none;padding:9px 15px;font-size:14px;font-weight:700;}
+.hlt button.on{background:var(--blue);color:#fff;}
+
+main{max-width:1100px;margin:0 auto;padding:1.6rem 1.4rem 5rem;}
+.rowtop{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem;}
+h1{font-size:26px;font-weight:800;letter-spacing:-.5px;}
+h2{font-size:20px;font-weight:800;}
+.muted{color:var(--gr);font-size:15px;}
+select.week{padding:12px 16px;background:var(--soft);border:1px solid var(--bdr);border-radius:12px;color:var(--txt);font-size:16px;font-weight:600;}
+
+/* DAY PICKER */
+.daypick{display:grid;grid-template-columns:repeat(7,1fr);gap:.5rem;margin-bottom:1.6rem;}
+.daybtn{background:var(--panel);border:2px solid var(--bdr);border-radius:14px;padding:12px 6px;text-align:center;color:var(--txt);transition:all .15s;}
+.daybtn .dn{font-size:15px;font-weight:800;}
+.daybtn .dd{font-size:12px;color:var(--gr);margin-top:2px;}
+.daybtn.on{background:var(--blue);border-color:var(--blue);}
+.daybtn.on .dd{color:rgba(255,255,255,.8);}
+@media(max-width:640px){.daypick{grid-template-columns:repeat(4,1fr);}.daybtn .dn{font-size:14px;}}
+
+/* EMPLOYEE CARD (day view) */
+.rolehdr{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--bp);margin:1.4rem 0 .7rem;}
+.rolehdr .rd{width:12px;height:12px;border-radius:4px;}
+.ecard{display:grid;grid-template-columns:1.4fr 1.6fr 1.5fr auto;gap:1rem;align-items:center;background:var(--panel);border:1px solid var(--bdr);border-radius:16px;padding:1.1rem 1.2rem;margin-bottom:.7rem;border-left:5px solid var(--gr);}
+.en{font-size:19px;font-weight:800;}
+.er{font-size:14px;color:var(--gr);margin-top:2px;}
+.etime{display:flex;gap:.8rem;}
+.tfield{flex:1;}
+.tfield label{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gr);margin-bottom:5px;}
+.tfield input{width:100%;padding:12px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:11px;color:var(--txt);font-size:18px;text-align:center;color-scheme:dark;font-weight:600;}
+.tfield input:focus{outline:none;border-color:var(--blue);}
+.seg{display:flex;gap:.5rem;}
+.segb{flex:1;padding:13px 6px;border-radius:11px;border:1.5px solid var(--bdr);background:var(--soft);color:var(--gr);font-size:15px;font-weight:800;min-height:48px;}
+.segb.on.pr{background:var(--green);border-color:var(--green);color:#04240f;}
+.segb.on.ab{background:var(--red);border-color:var(--red);color:#2a0606;}
+.ecalc{text-align:right;min-width:92px;}
+.ecalc .eh{font-size:22px;font-weight:800;color:var(--bl);}
+.ecalc .ep{font-size:16px;font-weight:700;color:var(--green);}
+@media(max-width:820px){
+  .ecard{grid-template-columns:1fr;gap:.9rem;border-left-width:6px;}
+  .ecalc{text-align:left;display:flex;gap:1.2rem;align-items:baseline;}
+}
+
+/* WEEK TABLE */
+.wtable{width:100%;border-collapse:collapse;background:var(--panel);border-radius:14px;overflow:hidden;}
+.wtable th,.wtable td{padding:14px 12px;text-align:center;font-size:16px;}
+.wtable thead th{background:var(--soft);font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:var(--bp);font-weight:800;}
+.wtable tbody tr:nth-child(even){background:rgba(255,255,255,.03);}
+.wtable td.nm{text-align:left;font-weight:700;font-size:17px;border-left:5px solid var(--gr);}
+.wtable td.z{color:var(--gr);}
+.wtable .tot{font-weight:800;color:var(--bl);}
+.wtable .pay{font-weight:800;color:var(--green);}
+.wtable tfoot td{background:var(--soft);font-weight:800;font-size:17px;}
+.wscroll{overflow-x:auto;border-radius:14px;}
+.wtable{min-width:720px;}
+
+/* CARDS / forms */
+.card{background:var(--panel);border:1px solid var(--bdr);border-radius:16px;padding:1.3rem 1.4rem;margin-top:1.4rem;}
+.card h3{font-size:15px;text-transform:uppercase;letter-spacing:1px;color:var(--bp);margin-bottom:1rem;font-weight:800;}
+.frow{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;}
+.frow input,.frow select{padding:13px 14px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:11px;color:var(--txt);font-size:16px;}
+.frow input.name{flex:1;min-width:140px;}
+.frow input.rate{width:100px;}
+.leg{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:16px;}
+.leg:last-child{border:none;}
+.leg .lname{display:flex;align-items:center;gap:11px;}
+.legdot{width:13px;height:13px;border-radius:4px;}
+.cov{font-size:14px;font-weight:800;padding:4px 12px;border-radius:20px;}
+.cov.ok{background:rgba(34,197,94,.16);color:var(--green);}
+.cov.under{background:rgba(240,71,71,.16);color:var(--red);}
+.cov.na{color:var(--gr);font-weight:700;}
+.delx{background:none;border:none;color:var(--gr);font-size:20px;padding:2px 8px;}
+.delx:hover{color:var(--red);}
+
+/* MANAGER */
+#mgr{display:none;}
+.mgrlock{max-width:400px;margin:3.5rem auto;text-align:center;}
+.mgrlock input{width:100%;padding:16px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:12px;color:var(--txt);font-size:18px;margin-bottom:1rem;text-align:center;}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1rem;margin-bottom:1.6rem;}
+.kpi{background:var(--panel);border:1px solid var(--bdr);border-radius:16px;padding:1.3rem;}
+.kpi .v{font-size:30px;font-weight:800;color:var(--bl);}
+.kpi .v.g{color:var(--green);}.kpi .v.r{color:var(--red);}
+.kpi .k{font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:var(--gr);margin-top:4px;}
+.mtable{width:100%;border-collapse:collapse;}
+.mtable th,.mtable td{padding:14px 12px;text-align:left;border-bottom:1px solid rgba(255,255,255,.07);font-size:16px;}
+.mtable th{font-size:13px;text-transform:uppercase;color:var(--bp);letter-spacing:.5px;font-weight:800;}
+.mtable td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;}
+.paidbtn{border:1.5px solid var(--bdr);background:var(--soft);color:var(--gr);border-radius:22px;padding:9px 18px;font-size:14px;font-weight:800;min-height:44px;}
+.paidbtn.yes{background:rgba(34,197,94,.16);border-color:var(--green);color:var(--green);}
+.tips{display:flex;gap:.7rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem;}
+.tips input{width:150px;padding:13px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:11px;color:var(--txt);font-size:17px;}
+.tag{font-size:11px;padding:3px 9px;border-radius:20px;background:rgba(124,192,255,.14);color:var(--bp);margin-left:.5rem;vertical-align:middle;font-weight:700;}
+footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;border-top:1px solid var(--bdr);}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="login">
   <div class="lbox">
     <div class="logo">Nore<span class="lo">lo</span><span class="dot"></span></div>
-    <div class="lsub" id="lsub">Horaire et gestion des employes</div>
+    <div class="lsub" id="lsub">Horaire des employes</div>
     <div class="lerr" id="lerr"></div>
     <input type="password" id="lpass" placeholder="Mot de passe" autocomplete="off"/>
     <button class="btn full" id="lbtn">Entrer</button>
-    <div class="lt" style="margin-top:1rem;">
-      <button data-l="fr" class="on">FR</button><button data-l="en">EN</button>
-    </div>
-    <div class="lhint" id="lhint">Acces reserve. Vos donnees restent uniquement sur cet appareil.</div>
+    <div class="lt"><button data-l="fr" class="on">FR</button><button data-l="en">EN</button></div>
+    <div class="lhint" id="lhint">Acces reserve. Vos donnees restent sur cet appareil.</div>
   </div>
 </div>
 
-<!-- APP -->
 <div id="app">
   <header>
     <div class="logo">Nore<span class="lo">lo</span><span class="dot"></span></div>
     <div class="tabs">
-      <button id="tabSched" class="on" data-i="tSched">Horaire</button>
+      <button id="tabDay" class="on" data-i="tDay">Jour</button>
+      <button id="tabWeek" data-i="tWeek">Semaine</button>
       <button id="tabMgr" data-i="tMgr">Gestion</button>
     </div>
     <div class="spacer"></div>
-    <div class="wsel">
-      <select id="weekSel"></select>
-      <button class="btn ghost sm" id="newWeek" data-i="newW">+ Semaine</button>
-      <button class="btn ghost sm" id="dupWeek" data-i="dupW">Dupliquer</button>
-    </div>
-    <div class="lt">
-      <button data-l="fr" class="on">FR</button><button data-l="en">EN</button>
-    </div>
+    <div class="hlt"><button data-l="fr" class="on">FR</button><button data-l="en">EN</button></div>
     <button class="btn ghost sm" id="logout" data-i="logout">Quitter</button>
   </header>
 
   <main>
-    <!-- SCHEDULE VIEW -->
-    <div id="sched">
-      <div class="bar">
-        <h2 data-i="planTitle">Planification hebdomadaire</h2>
-        <span class="muted" id="weekLabel"></span>
-        <div class="spacer"></div>
-        <button class="btn ghost sm" id="exportBtn" data-i="export">Sauvegarder</button>
+    <div class="rowtop">
+      <h1 id="viewTitle">Aujourd'hui</h1>
+      <span class="muted" id="weekLabel"></span>
+      <div class="spacer"></div>
+      <select class="week" id="weekSel"></select>
+      <button class="btn ghost sm" id="newWeek" data-i="newW">+ Semaine</button>
+      <button class="btn ghost sm" id="dupWeek" data-i="dupW">Dupliquer</button>
+    </div>
+
+    <!-- DAY VIEW -->
+    <div id="dayView">
+      <div class="daypick" id="daypick"></div>
+      <div id="dayList"></div>
+    </div>
+
+    <!-- WEEK VIEW -->
+    <div id="weekView" style="display:none">
+      <div class="wscroll"><table class="wtable" id="wtable"></table></div>
+      <div class="card">
+        <h3 data-i="employees">Employes</h3>
+        <div class="frow">
+          <input class="name" id="empName" placeholder="Nom"/>
+          <select id="empRole"></select>
+          <input class="rate" id="empRate" type="number" step="0.25" placeholder="$/h"/>
+          <button class="btn sm" id="addEmp" data-i="add">Ajouter</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3 data-i="legend">Postes et besoins</h3>
+        <div id="legendBox"></div>
+      </div>
+      <div class="rowtop" style="margin-top:1.4rem">
+        <button class="btn ghost sm" id="exportBtn" data-i="export">Sauvegarder une copie</button>
         <button class="btn ghost sm" id="importBtn" data-i="import">Restaurer</button>
         <input type="file" id="importFile" accept="application/json" style="display:none"/>
       </div>
-
-      <div class="gwrap">
-        <table id="grid">
-          <thead id="gridHead"></thead>
-          <tbody id="gridBody"></tbody>
-          <tfoot id="gridFoot"></tfoot>
-        </table>
-      </div>
-
-      <div class="cols">
-        <div class="card">
-          <h3 data-i="employees">Employes</h3>
-          <div class="frow">
-            <input class="name" id="empName" placeholder="Nom"/>
-            <select id="empRole"></select>
-            <input class="rate" id="empRate" type="number" step="0.25" placeholder="$/h"/>
-            <button class="btn sm" id="addEmp" data-i="add">Ajouter</button>
-          </div>
-          <div class="muted" data-i="empHint">Chaque employe a son taux horaire. Cliquez le X pour retirer.</div>
-        </div>
-        <div class="card">
-          <h3 data-i="legend">Postes et besoins</h3>
-          <div id="legendBox"></div>
-        </div>
-      </div>
     </div>
 
-    <!-- MANAGER VIEW -->
+    <!-- MANAGER -->
     <div id="mgr">
       <div id="mgrLock" class="mgrlock">
         <h2 data-i="mgrLockT">Connexion gestionnaire</h2>
-        <p class="muted" style="margin:.5rem 0 1.2rem" data-i="mgrLockS">Cette section demande un mot de passe distinct.</p>
+        <p class="muted" style="margin:.6rem 0 1.3rem" data-i="mgrLockS">Cette section demande un mot de passe distinct.</p>
         <div class="lerr" id="merr"></div>
         <input type="password" id="mpass" placeholder="Mot de passe gestionnaire" autocomplete="off"/>
         <button class="btn full" id="mbtn" data-i="unlock">Deverrouiller</button>
       </div>
-
       <div id="mgrContent" style="display:none">
-        <div class="bar">
-          <h2 data-i="payTitle">Paiements et totaux</h2>
-          <span class="muted" id="mgrWeekLabel"></span>
-        </div>
+        <h2 data-i="payTitle" style="margin-bottom:1.2rem">Paiements et totaux</h2>
         <div class="kpis" id="mgrKpis"></div>
-        <div class="card" style="margin-bottom:1.3rem">
+        <div class="card">
           <h3 data-i="tipsT">Calculateur de pourboires <span class="tag">beta</span></h3>
           <div class="tips">
             <span class="muted" data-i="tipsPool">Cagnotte totale ($)</span>
             <input type="number" id="tipPool" step="1" placeholder="0"/>
             <button class="btn sm" id="tipCalc" data-i="tipSplit">Repartir par heures</button>
           </div>
-          <div class="muted" data-i="tipsHint">Repartit la cagnotte proportionnellement aux heures travaillees (presence confirmee).</div>
+          <div class="muted" data-i="tipsHint">Repartit la cagnotte selon les heures confirmees.</div>
         </div>
-        <div class="card">
-          <table class="mtable" id="mgrTable"></table>
-        </div>
+        <div class="card"><table class="mtable" id="mgrTable"></table></div>
       </div>
     </div>
   </main>
-
-  <footer>Norelo &middot; Outil interne &middot; Les donnees sont stockees sur cet appareil uniquement</footer>
+  <footer>Norelo &middot; Outil interne &middot; Donnees stockees sur cet appareil</footer>
 </div>
 
 <script>
 /* ============================================================
-   NORELO HORAIRE - single file tool
-   CHANGE THESE PASSWORDS. They are checked in the browser, so
-   treat them as a light gate, not strong security. The real
-   employee data never leaves this device (stored in localStorage).
+   NORELO HORAIRE - CHANGE THESE PASSWORDS (light gate only).
+   Data stays in this browser (localStorage).
    ============================================================ */
-const CONFIG = {
-  staffPassword:   'pommes2025',   // <-- change: opens the schedule
-  managerPassword: 'chef2025'      // <-- change: opens the payments page
+const CONFIG = { staffPassword:'pommes2025', managerPassword:'chef2025' };
+
+const DAYS=['mon','tue','wed','thu','fri','sat','sun'];
+const T={
+ fr:{tDay:'Jour',tWeek:'Semaine',tMgr:'Gestion',logout:'Quitter',newW:'+ Semaine',dupW:'Dupliquer',
+   employees:'Employes',add:'Ajouter',legend:'Postes et besoins',export:'Sauvegarder une copie',import:'Restaurer',
+   mgrLockT:'Connexion gestionnaire',mgrLockS:'Cette section demande un mot de passe distinct.',unlock:'Deverrouiller',
+   payTitle:'Paiements et totaux',tipsT:'Calculateur de pourboires',tipsPool:'Cagnotte totale ($)',tipSplit:'Repartir par heures',
+   tipsHint:'Repartit la cagnotte selon les heures confirmees.',lsub:'Horaire des employes',
+   lhint:'Acces reserve. Vos donnees restent sur cet appareil.',enter:'Entrer',wrong:'Mot de passe invalide',
+   days:['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'],
+   sdays:['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'],
+   start:'Debut',end:'Fin',present:'Present',absent:'Absent',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',
+   tot:'Total',paid:'Paye',unpaid:'A payer',confirmed:'Heures',share:'Part',week:'Semaine',today:"Aujourd'hui",
+   kHours:'Heures totales',kPay:'Paie brute',kPaid:'Deja paye',kUnpaid:'Reste a payer',del:'Retirer cet employe?'},
+ en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',logout:'Log out',newW:'+ Week',dupW:'Duplicate',
+   employees:'Employees',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
+   mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
+   payTitle:'Payments and totals',tipsT:'Tip calculator',tipsPool:'Total pool ($)',tipSplit:'Split by hours',
+   tipsHint:'Splits the pool by confirmed hours.',lsub:'Employee schedule',
+   lhint:'Restricted access. Your data stays on this device.',enter:'Enter',wrong:'Invalid password',
+   days:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+   sdays:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+   start:'Start',end:'End',present:'Present',absent:'Absent',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',
+   tot:'Total',paid:'Paid',unpaid:'To pay',confirmed:'Hours',share:'Share',week:'Week',today:'Today',
+   kHours:'Total hours',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',del:'Remove this employee?'}
 };
 
-const DAYS = ['mon','tue','wed','thu','fri','sat','sun'];
-const T = {
-  fr:{tSched:'Horaire',tMgr:'Gestion',newW:'+ Semaine',dupW:'Dupliquer',logout:'Quitter',
-    planTitle:'Planification hebdomadaire',export:'Sauvegarder',import:'Restaurer',
-    employees:'Employes',add:'Ajouter',empHint:'Chaque employe a son taux horaire. Cliquez le X pour retirer.',
-    legend:'Postes et besoins',mgrLockT:'Connexion gestionnaire',mgrLockS:'Cette section demande un mot de passe distinct.',
-    unlock:'Deverrouiller',payTitle:'Paiements et totaux',tipsT:'Calculateur de pourboires',
-    tipsPool:'Cagnotte totale ($)',tipSplit:'Repartir par heures',tipsHint:'Repartit la cagnotte proportionnellement aux heures travaillees (presence confirmee).',
-    lsub:'Horaire et gestion des employes',lhint:'Acces reserve. Vos donnees restent uniquement sur cet appareil.',
-    enter:'Entrer',wrong:'Mot de passe invalide',
-    days:['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'],
-    tot:'Total',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',paid:'Paye',unpaid:'A payer',
-    payroll:'Masse salariale',confirmed:'Heures confirmees',share:'Part',week:'Semaine',
-    kHours:'Heures totales',kPay:'Paie brute totale',kPaid:'Deja paye',kUnpaid:'Reste a payer',
-    del:'Supprimer cet employe?'},
-  en:{tSched:'Schedule',tMgr:'Manager',newW:'+ Week',dupW:'Duplicate',logout:'Log out',
-    planTitle:'Weekly schedule',export:'Backup',import:'Restore',
-    employees:'Employees',add:'Add',empHint:'Each employee has their own hourly rate. Click the X to remove.',
-    legend:'Roles and needs',mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',
-    unlock:'Unlock',payTitle:'Payments and totals',tipsT:'Tip calculator',
-    tipsPool:'Total pool ($)',tipSplit:'Split by hours',tipsHint:'Splits the pool proportionally to hours worked (confirmed present).',
-    lsub:'Employee schedule and management',lhint:'Restricted access. Your data stays on this device only.',
-    enter:'Enter',wrong:'Invalid password',
-    days:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
-    tot:'Total',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',paid:'Paid',unpaid:'To pay',
-    payroll:'Payroll',confirmed:'Confirmed hours',share:'Share',week:'Week',
-    kHours:'Total hours',kPay:'Total gross pay',kPaid:'Already paid',kUnpaid:'Still owed',
-    del:'Remove this employee?'}
-};
-
-const ROLES = [
-  {name:'Accueil',emoji:'👋',min:1,max:1,color:'#22c55e'},
-  {name:'Caisse (Sacs)',emoji:'🛍️',min:4,max:6,color:'#ef4444'},
-  {name:'Chauffeur',emoji:'🚜',min:1,max:2,color:'#16a34a'},
-  {name:'Chauffeur 4 Roues',emoji:'🚗',min:1,max:2,color:'#0ea5e9'},
-  {name:'Kiosque',emoji:'🧺',min:2,max:4,color:'#06b6d4'},
-  {name:'Speech',emoji:'🎤',min:2,max:3,color:'#a855f7'},
-  {name:'Patisserie',emoji:'🧁',min:3,max:4,color:'#ec4899'},
-  {name:'Stationnement',emoji:'🅿️',min:5,max:7,color:'#3b82f6'},
-  {name:'Stationnement (Chef)',emoji:'🧭',min:1,max:1,color:'#2563eb'},
-  {name:'Flexible',emoji:'💪',min:0,max:0,color:'#eab308'},
-  {name:'Entretien Menager',emoji:'🧹',min:1,max:2,color:'#14b8a6'},
-  {name:'Manager',emoji:'💼',min:2,max:2,color:'#f59e0b'},
-  {name:'Pommes',emoji:'🍎',min:0,max:0,color:'#84cc16'}
+const ROLES=[
+ {name:'Accueil',emoji:'👋',min:1,max:1,color:'#22c55e'},
+ {name:'Caisse (Sacs)',emoji:'🛍️',min:4,max:6,color:'#ef4444'},
+ {name:'Chauffeur',emoji:'🚜',min:1,max:2,color:'#16a34a'},
+ {name:'Chauffeur 4 Roues',emoji:'🚗',min:1,max:2,color:'#0ea5e9'},
+ {name:'Kiosque',emoji:'🧺',min:2,max:4,color:'#06b6d4'},
+ {name:'Speech',emoji:'🎤',min:2,max:3,color:'#a855f7'},
+ {name:'Patisserie',emoji:'🧁',min:3,max:4,color:'#ec4899'},
+ {name:'Stationnement',emoji:'🅿️',min:5,max:7,color:'#3b82f6'},
+ {name:'Stationnement (Chef)',emoji:'🧭',min:1,max:1,color:'#2563eb'},
+ {name:'Flexible',emoji:'💪',min:0,max:0,color:'#eab308'},
+ {name:'Entretien Menager',emoji:'🧹',min:1,max:2,color:'#14b8a6'},
+ {name:'Manager',emoji:'💼',min:2,max:2,color:'#f59e0b'},
+ {name:'Pommes',emoji:'🍎',min:0,max:0,color:'#84cc16'}
+];
+const SEED_EMP=[
+ ['Evens D.','Accueil',16],['Judy S.','Caisse (Sacs)',16],['Bernard','Chauffeur',18],
+ ['Jasmine L.','Flexible',16],['Maxime A.','Flexible',16],['Mikael T.','Flexible',16],
+ ['Daniel B.','Manager',24],['Sydney D.','Manager',22],['Jack Dube','Pommes',16],
+ ['Jael K.','Speech',16.5],['Laurie K.','Speech',16.5],['Maelie Auclair','Speech',16.5],
+ ['Kevin K.','Stationnement (Chef)',18],['Lili Bergeron','Stationnement',16],
+ ['Maria Henneuse','Stationnement',16],['Danny Parker','Stationnement',16],['Mathilde H.','Stationnement',16]
 ];
 
-const SEED_EMP = [
-  ['Evens D.','Accueil',16],['Camille P.','Caisse (Sacs)',16],['Judy S.','Caisse (Sacs)',16],
-  ['Vickie P.','Caisse (Sacs)',16],['Bernard','Chauffeur',18],['Jacques L.','Chauffeur',18],
-  ['Jasmine L.','Flexible',16],['Maxime A.','Flexible',16],['Mikael T.','Flexible',16],
-  ['Daniel B.','Manager',24],['Sydney D.','Manager',22],['Jack Dube','Pommes',16],
-  ['Jael K.','Speech',16.5],['Laurie K.','Speech',16.5],['Maelie Auclair','Speech',16.5],
-  ['Kevin K.','Stationnement (Chef)',18],['Lili Bergeron','Stationnement',16],
-  ['Maria Henneuse','Stationnement',16],['Danny Parker','Stationnement',16],['Mathilde H.','Stationnement',16]
-];
+const KEY='norelo_horaire_v2';
+let state,lang='fr',selDay=0,mgrUnlocked=false;
 
-const KEY='norelo_horaire_v1';
-let state, lang='fr';
-
-function todayMonday(){
-  const d=new Date();const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);
-  return d.toISOString().slice(0,10);
-}
-function fmtDate(iso,off){const d=new Date(iso+'T00:00:00');d.setDate(d.getDate()+off);
-  return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');}
+function todayMonday(){const d=new Date();const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return d.toISOString().slice(0,10);}
+function todayIdx(){return (new Date().getDay()+6)%7;}
+function fmtDate(iso,off){const d=new Date(iso+'T00:00:00');d.setDate(d.getDate()+off);return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');}
 function blankDay(){return {start:'',end:'',status:'pending'};}
-function blankEmpWeek(){const o={};DAYS.forEach(d=>o[d]=blankDay());return o;}
-
-function newEmp(name,role,rate){return {id:'e'+Date.now()+Math.random().toString(36).slice(2,6),name,role,rate:+rate||0};}
-
-function freshState(){
-  const emps=SEED_EMP.map(e=>newEmp(e[0],e[1],e[2]));
-  const wk=todayMonday();
-  const data={};emps.forEach(e=>data[e.id]=blankEmpWeek());
-  return {employees:emps,weeks:{[wk]:{start:wk,data,paid:{}}},current:wk};
-}
+function blankWeekFor(emps){const o={};emps.forEach(e=>o[e.id]={});emps.forEach(e=>DAYS.forEach(d=>o[e.id][d]=blankDay()));return o;}
+function newEmp(n,r,rate){return {id:'e'+Date.now()+Math.random().toString(36).slice(2,6),name:n,role:r,rate:+rate||0};}
+function freshState(){const emps=SEED_EMP.map(e=>newEmp(e[0],e[1],e[2]));const wk=todayMonday();return {employees:emps,weeks:{[wk]:{start:wk,data:blankWeekFor(emps),paid:{}}},current:wk};}
 function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.employees)return s;}catch(e){}return freshState();}
 function save(){localStorage.setItem(KEY,JSON.stringify(state));}
-
-function roleColor(r){const x=ROLES.find(o=>o.name===r);return x?x.color:'#64748b';}
-function roleEmoji(r){const x=ROLES.find(o=>o.name===r);return x?x.emoji:'';}
-
-function hrs(day){
-  if(day.status==='absent')return 0;
-  if(!day.start||!day.end)return 0;
-  const a=day.start.split(':'),b=day.end.split(':');
-  let m=(+b[0]*60+ +b[1])-(+a[0]*60+ +a[1]);
-  if(m<=0)return 0;return Math.round(m/60*100)/100;
-}
-function empHours(id){const w=state.weeks[state.current];let t=0;DAYS.forEach(d=>t+=hrs(w.data[id][d]));return Math.round(t*100)/100;}
-function empConfirmedHours(id){const w=state.weeks[state.current];let t=0;DAYS.forEach(d=>{if(w.data[id][d].status==='present')t+=hrs(w.data[id][d]);});return Math.round(t*100)/100;}
-function empPay(id){const e=state.employees.find(x=>x.id===id);return Math.round(empHours(id)*(e?e.rate:0)*100)/100;}
+function roleObj(r){return ROLES.find(o=>o.name===r)||{color:'#9fb2cc',emoji:''};}
 function money(n){return '$'+(Math.round(n*100)/100).toFixed(2);}
+function hrs(day){if(!day||day.status==='absent')return 0;if(!day.start||!day.end)return 0;const a=day.start.split(':'),b=day.end.split(':');let m=(+b[0]*60+ +b[1])-(+a[0]*60+ +a[1]);return m<=0?0:Math.round(m/60*100)/100;}
+function empHours(id){const w=state.weeks[state.current];let t=0;DAYS.forEach(d=>t+=hrs(w.data[id][d]));return Math.round(t*100)/100;}
+function empConfHours(id){const w=state.weeks[state.current];let t=0;DAYS.forEach(d=>{if(w.data[id][d].status==='present')t+=hrs(w.data[id][d]);});return Math.round(t*100)/100;}
+function empPay(id){const e=state.employees.find(x=>x.id===id);return Math.round(empHours(id)*(e?e.rate:0)*100)/100;}
+function sortedEmps(){return [...state.employees].sort((a,b)=>a.role.localeCompare(b.role)||a.name.localeCompare(b.name));}
 
-/* ---------- render schedule ---------- */
-function renderHead(){
-  const w=state.weeks[state.current];const t=T[lang];
-  let h='<tr><th class="cName">'+t.name+'</th>';
-  t.days.forEach((d,i)=>{h+='<th class="daycell">'+d+'<span class="dt">'+fmtDate(w.start,i)+'</span></th>';});
-  h+='<th class="cTot">'+t.hours+' / '+t.pay+'</th><th></th></tr>';
-  document.getElementById('gridHead').innerHTML=h;
+/* ---- DAY VIEW ---- */
+function renderDayPick(){
+ const w=state.weeks[state.current];const t=T[lang];
+ document.getElementById('daypick').innerHTML=t.sdays.map((d,i)=>
+  '<button class="daybtn'+(i===selDay?' on':'')+'" data-day="'+i+'"><div class="dn">'+d+'</div><div class="dd">'+fmtDate(w.start,i)+'</div></button>').join('');
 }
-function renderBody(){
-  const w=state.weeks[state.current];
-  const emps=[...state.employees].sort((a,b)=>a.role.localeCompare(b.role)||a.name.localeCompare(b.name));
-  let h='';
-  emps.forEach(e=>{
-    const c=roleColor(e.role);
-    h+='<tr data-id="'+e.id+'">';
-    h+='<td class="cName" style="border-left-color:'+c+'"><div class="eName">'+e.name+'</div><div class="eRole">'+roleEmoji(e.role)+' '+e.role+' &middot; '+money(e.rate)+'/h</div></td>';
-    DAYS.forEach(d=>{
-      const day=w.data[e.id][d];
-      h+='<td class="daycell"><div class="tinputs">'+
-         '<input type="time" data-d="'+d+'" data-f="start" value="'+day.start+'"/>'+
-         '<input type="time" data-d="'+d+'" data-f="end" value="'+day.end+'"/>'+
-         '<button class="stat '+(day.status==='pending'?'':day.status)+'" data-d="'+d+'">'+(day.status==='present'?'✓':day.status==='absent'?'✕':'')+'</button>'+
-         '</div></td>';
-    });
-    h+='<td class="cTot"><div class="h">'+empHours(e.id).toFixed(2)+'h</div><div class="p">'+money(empPay(e.id))+'</div></td>';
-    h+='<td><button class="rowdel" title="X">✕</button></td>';
-    h+='</tr>';
-  });
-  document.getElementById('gridBody').innerHTML=h;
+function renderDayList(){
+ const w=state.weeks[state.current];const t=T[lang];const dk=DAYS[selDay];
+ let h='';let lastRole=null;
+ sortedEmps().forEach(e=>{
+  const ro=roleObj(e.role);
+  if(e.role!==lastRole){h+='<div class="rolehdr"><span class="rd" style="background:'+ro.color+'"></span>'+ro.emoji+' '+e.role+'</div>';lastRole=e.role;}
+  const day=w.data[e.id][dk];const hh=hrs(day);
+  h+='<div class="ecard" data-id="'+e.id+'" style="border-left-color:'+ro.color+'">'
+   +'<div><div class="en">'+e.name+'</div><div class="er">'+money(e.rate)+'/h</div></div>'
+   +'<div class="etime">'
+     +'<div class="tfield"><label>'+t.start+'</label><input type="time" data-f="start" value="'+day.start+'"/></div>'
+     +'<div class="tfield"><label>'+t.end+'</label><input type="time" data-f="end" value="'+day.end+'"/></div>'
+   +'</div>'
+   +'<div class="seg">'
+     +'<button class="segb pr'+(day.status==='present'?' on':'')+'" data-s="present">'+t.present+'</button>'
+     +'<button class="segb ab'+(day.status==='absent'?' on':'')+'" data-s="absent">'+t.absent+'</button>'
+   +'</div>'
+   +'<div class="ecalc"><div class="eh">'+hh.toFixed(2)+'h</div><div class="ep">'+money(hh*e.rate)+'</div></div>'
+   +'</div>';
+ });
+ document.getElementById('dayList').innerHTML=h;
 }
-function renderFoot(){
-  const t=T[lang];let th=0,tp=0;
-  state.employees.forEach(e=>{th+=empHours(e.id);tp+=empPay(e.id);});
-  let h='<tr><td class="cName">'+t.tot+'</td>';
-  for(let i=0;i<7;i++)h+='<td></td>';
-  h+='<td class="cTot"><div class="h">'+th.toFixed(2)+'h</div><div class="p">'+money(tp)+'</div></td><td></td></tr>';
-  document.getElementById('gridFoot').innerHTML=h;
+
+/* ---- WEEK VIEW ---- */
+function renderWeek(){
+ const w=state.weeks[state.current];const t=T[lang];
+ let h='<thead><tr><th style="text-align:left">'+t.name+'</th>';
+ t.sdays.forEach(d=>h+='<th>'+d+'</th>');
+ h+='<th>'+t.tot+'</th><th>'+t.pay+'</th><th></th></tr></thead><tbody>';
+ sortedEmps().forEach(e=>{
+  const ro=roleObj(e.role);
+  h+='<tr><td class="nm" style="border-left-color:'+ro.color+'">'+e.name+'<div class="muted" style="font-size:13px">'+ro.emoji+' '+e.role+'</div></td>';
+  DAYS.forEach(d=>{const hh=hrs(w.data[e.id][d]);h+='<td class="'+(hh?'':'z')+'">'+(hh?hh.toFixed(2):'-')+'</td>';});
+  h+='<td class="tot">'+empHours(e.id).toFixed(2)+'h</td><td class="pay">'+money(empPay(e.id))+'</td><td><button class="delx" data-del="'+e.id+'">✕</button></td></tr>';
+ });
+ let th=0,tp=0;state.employees.forEach(e=>{th+=empHours(e.id);tp+=empPay(e.id);});
+ h+='</tbody><tfoot><tr><td style="text-align:left">'+t.tot+'</td>';
+ for(let i=0;i<7;i++)h+='<td></td>';
+ h+='<td class="tot">'+th.toFixed(2)+'h</td><td class="pay">'+money(tp)+'</td><td></td></tr></tfoot>';
+ document.getElementById('wtable').innerHTML=h;
 }
 function renderLegend(){
-  const counts={};state.employees.forEach(e=>counts[e.role]=(counts[e.role]||0)+1);
-  let h='';
-  ROLES.forEach(r=>{
-    const n=counts[r.name]||0;const need=r.max>0?(r.min===r.max?r.min:r.min+'-'+r.max):'-';
-    let cov='';
-    if(r.max>0){const ok=n>=r.min;cov='<span class="cov '+(ok?'ok':'under')+'">'+n+'/'+need+'</span>';}
-    else cov='<span class="need">'+n+'</span>';
-    h+='<div class="leg"><span class="lname"><span class="legdot" style="background:'+r.color+'"></span>'+r.emoji+' '+r.name+'</span>'+cov+'</div>';
-  });
-  document.getElementById('legendBox').innerHTML=h;
+ const counts={};state.employees.forEach(e=>counts[e.role]=(counts[e.role]||0)+1);
+ document.getElementById('legendBox').innerHTML=ROLES.map(r=>{
+  const n=counts[r.name]||0;const need=r.min===r.max?r.min:r.min+'-'+r.max;
+  let cov=r.max>0?'<span class="cov '+(n>=r.min?'ok':'under')+'">'+n+' / '+need+'</span>':'<span class="cov na">'+n+'</span>';
+  return '<div class="leg"><span class="lname"><span class="legdot" style="background:'+r.color+'"></span>'+r.emoji+' '+r.name+'</span>'+cov+'</div>';
+ }).join('');
 }
+function renderRoleOptions(){document.getElementById('empRole').innerHTML=ROLES.map(r=>'<option>'+r.name+'</option>').join('');}
 function renderWeekSel(){
-  const sel=document.getElementById('weekSel');
-  const keys=Object.keys(state.weeks).sort().reverse();
-  sel.innerHTML=keys.map(k=>'<option value="'+k+'"'+(k===state.current?' selected':'')+'>'+T[lang].week+' '+fmtDate(k,0)+' - '+fmtDate(k,6)+'</option>').join('');
-  const lbl=T[lang].week+' '+fmtDate(state.current,0)+' au '+fmtDate(state.current,6);
-  document.getElementById('weekLabel').textContent=lbl;
-  document.getElementById('mgrWeekLabel').textContent=lbl;
+ const sel=document.getElementById('weekSel');const keys=Object.keys(state.weeks).sort().reverse();
+ sel.innerHTML=keys.map(k=>'<option value="'+k+'"'+(k===state.current?' selected':'')+'>'+T[lang].week+' '+fmtDate(k,0)+' - '+fmtDate(k,6)+'</option>').join('');
+ const lbl=fmtDate(state.current,0)+' au '+fmtDate(state.current,6);
+ document.getElementById('weekLabel').textContent=lbl;
 }
-function renderRoleOptions(){
-  document.getElementById('empRole').innerHTML=ROLES.map(r=>'<option>'+r.name+'</option>').join('');
-}
-function renderSched(){renderHead();renderBody();renderFoot();renderLegend();renderWeekSel();}
 
-/* ---------- render manager ---------- */
+/* ---- MANAGER ---- */
 function renderMgr(){
-  const t=T[lang];const w=state.weeks[state.current];
-  let th=0,tp=0,paid=0,unpaid=0;
-  const emps=[...state.employees].sort((a,b)=>b.id.localeCompare(a.id)?empPay(b.id)-empPay(a.id):0);
-  state.employees.forEach(e=>{const p=empPay(e.id);tp+=p;th+=empHours(e.id);if(w.paid[e.id])paid+=p;else unpaid+=p;});
-  document.getElementById('mgrKpis').innerHTML=
-    kpi(th.toFixed(1)+'h',t.kHours)+kpi(money(tp),t.kPay,'')+kpi(money(paid),t.kPaid,'g')+kpi(money(unpaid),t.kUnpaid,'r');
-  let rows='<tr><th>'+t.name+'</th><th>'+t.rate+'</th><th style="text-align:right">'+t.hours+'</th><th style="text-align:right">'+t.pay+'</th><th style="text-align:right">'+t.paid+'</th></tr>';
-  [...state.employees].sort((a,b)=>empPay(b.id)-empPay(a.id)).forEach(e=>{
-    const yes=!!w.paid[e.id];
-    rows+='<tr><td>'+e.name+'</td><td>'+money(e.rate)+'/h</td><td class="num">'+empHours(e.id).toFixed(2)+'h</td><td class="num">'+money(empPay(e.id))+'</td>'+
-      '<td style="text-align:right"><button class="paidbtn '+(yes?'yes':'')+'" data-paid="'+e.id+'">'+(yes?t.paid:t.unpaid)+'</button></td></tr>';
-  });
-  document.getElementById('mgrTable').innerHTML=rows;
+ const t=T[lang];const w=state.weeks[state.current];let th=0,tp=0,paid=0,unpaid=0;
+ state.employees.forEach(e=>{const p=empPay(e.id);tp+=p;th+=empHours(e.id);if(w.paid[e.id])paid+=p;else unpaid+=p;});
+ document.getElementById('mgrKpis').innerHTML=kpi(th.toFixed(1)+'h',t.kHours,'')+kpi(money(tp),t.kPay,'')+kpi(money(paid),t.kPaid,'g')+kpi(money(unpaid),t.kUnpaid,'r');
+ let rows='<tr><th>'+t.name+'</th><th>'+t.rate+'</th><th style="text-align:right">'+t.hours+'</th><th style="text-align:right">'+t.pay+'</th><th style="text-align:right">'+t.paid+'</th></tr>';
+ [...state.employees].sort((a,b)=>empPay(b.id)-empPay(a.id)).forEach(e=>{
+  const yes=!!w.paid[e.id];
+  rows+='<tr><td>'+e.name+'</td><td>'+money(e.rate)+'/h</td><td class="num">'+empHours(e.id).toFixed(2)+'h</td><td class="num">'+money(empPay(e.id))+'</td><td style="text-align:right"><button class="paidbtn '+(yes?'yes':'')+'" data-paid="'+e.id+'">'+(yes?t.paid:t.unpaid)+'</button></td></tr>';
+ });
+ document.getElementById('mgrTable').innerHTML=rows;
 }
-function kpi(v,k,cls){return '<div class="kpi"><div class="v '+(cls||'')+'">'+v+'</div><div class="k">'+k+'</div></div>';}
+function kpi(v,k,c){return '<div class="kpi"><div class="v '+c+'">'+v+'</div><div class="k">'+k+'</div></div>';}
 
-/* ---------- i18n ---------- */
+/* ---- i18n ---- */
 function applyLang(){
-  document.querySelectorAll('[data-i]').forEach(el=>{const k=el.getAttribute('data-i');if(T[lang][k])el.textContent=T[lang][k];});
-  document.getElementById('lsub').textContent=T[lang].lsub;
-  document.getElementById('lhint').textContent=T[lang].lhint;
-  document.getElementById('lbtn').textContent=T[lang].enter;
-  document.getElementById('lpass').placeholder=lang==='fr'?'Mot de passe':'Password';
-  document.documentElement.lang=lang;
-  if(document.getElementById('app').style.display==='block'){renderSched();if(mgrUnlocked)renderMgr();}
+ document.querySelectorAll('[data-i]').forEach(el=>{const k=el.getAttribute('data-i');if(T[lang][k])el.textContent=T[lang][k];});
+ document.getElementById('lsub').textContent=T[lang].lsub;document.getElementById('lhint').textContent=T[lang].lhint;
+ document.getElementById('lbtn').textContent=T[lang].enter;document.getElementById('lpass').placeholder=lang==='fr'?'Mot de passe':'Password';
+ document.documentElement.lang=lang;
+ if(document.getElementById('app').style.display==='block')renderAll();
 }
+function renderAll(){renderWeekSel();renderDayPick();renderDayList();renderWeek();renderLegend();setTitle();if(mgrUnlocked)renderMgr();}
+function setTitle(){const t=T[lang];const cur=document.querySelector('.tabs button.on').id;
+ document.getElementById('viewTitle').textContent=cur==='tabDay'?t.days[selDay]:cur==='tabWeek'?t.week:t.payTitle;}
 
-/* ---------- events ---------- */
-let mgrUnlocked=false;
+/* ---- events ---- */
 function boot(){
-  state=load();renderRoleOptions();
-  // language toggles
-  document.querySelectorAll('.lt').forEach(box=>box.addEventListener('click',e=>{
-    if(e.target.tagName!=='BUTTON')return;lang=e.target.getAttribute('data-l');
-    document.querySelectorAll('.lt button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-l')===lang));
-    applyLang();
-  }));
-  // login
-  document.getElementById('lbtn').onclick=doLogin;
-  document.getElementById('lpass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+ state=load();selDay=todayIdx();renderRoleOptions();
+ document.querySelectorAll('.lt,.hlt').forEach(box=>box.addEventListener('click',e=>{
+  if(e.target.tagName!=='BUTTON')return;lang=e.target.getAttribute('data-l');
+  document.querySelectorAll('.lt button,.hlt button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-l')===lang));applyLang();}));
+ document.getElementById('lbtn').onclick=doLogin;
+ document.getElementById('lpass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 }
 function doLogin(){
-  const v=document.getElementById('lpass').value;
-  if(v===CONFIG.staffPassword){
-    document.getElementById('login').style.display='none';
-    document.getElementById('app').style.display='block';
-    bindApp();renderSched();
-  }else{document.getElementById('lerr').textContent=T[lang].wrong;}
+ if(document.getElementById('lpass').value===CONFIG.staffPassword){
+  document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';
+  bindApp();renderAll();
+ }else document.getElementById('lerr').textContent=T[lang].wrong;
 }
 function bindApp(){
-  document.getElementById('logout').onclick=()=>location.reload();
-  // tabs
-  document.getElementById('tabSched').onclick=()=>switchTab('sched');
-  document.getElementById('tabMgr').onclick=()=>switchTab('mgr');
-  // week controls
-  document.getElementById('weekSel').onchange=e=>{state.current=e.target.value;save();renderSched();if(mgrUnlocked)renderMgr();};
-  document.getElementById('newWeek').onclick=addWeek;
-  document.getElementById('dupWeek').onclick=dupWeek;
-  // employee add
-  document.getElementById('addEmp').onclick=()=>{
-    const n=document.getElementById('empName').value.trim();if(!n)return;
-    const r=document.getElementById('empRole').value;const rate=document.getElementById('empRate').value;
-    const e=newEmp(n,r,rate);state.employees.push(e);
-    Object.values(state.weeks).forEach(w=>w.data[e.id]=blankEmpWeek());
-    document.getElementById('empName').value='';document.getElementById('empRate').value='';
-    save();renderSched();
-  };
-  // grid delegation
-  const body=document.getElementById('gridBody');
-  body.addEventListener('input',e=>{
-    const tr=e.target.closest('tr');if(!tr)return;const id=tr.getAttribute('data-id');
-    if(e.target.matches('input[type=time]')){
-      const d=e.target.getAttribute('data-d'),f=e.target.getAttribute('data-f');
-      state.weeks[state.current].data[id][d][f]=e.target.value;
-      updateRowTotals(tr,id);renderFoot();save();
-    }
-  });
-  body.addEventListener('click',e=>{
-    const tr=e.target.closest('tr');if(!tr)return;const id=tr.getAttribute('data-id');
-    if(e.target.classList.contains('stat')){
-      const d=e.target.getAttribute('data-d');const cur=state.weeks[state.current].data[id][d].status;
-      const next=cur==='pending'?'present':cur==='present'?'absent':'pending';
-      state.weeks[state.current].data[id][d].status=next;
-      e.target.className='stat '+(next==='pending'?'':next);
-      e.target.textContent=next==='present'?'✓':next==='absent'?'✕':'';
-      updateRowTotals(tr,id);renderFoot();save();
-    }
-    if(e.target.classList.contains('rowdel')){
-      if(!confirm(T[lang].del))return;
-      state.employees=state.employees.filter(x=>x.id!==id);
-      Object.values(state.weeks).forEach(w=>{delete w.data[id];delete w.paid[id];});
-      save();renderSched();
-    }
-  });
-  // export/import
-  document.getElementById('exportBtn').onclick=doExport;
-  document.getElementById('importBtn').onclick=()=>document.getElementById('importFile').click();
-  document.getElementById('importFile').onchange=doImport;
-  // manager
-  document.getElementById('mbtn').onclick=mgrLogin;
-  document.getElementById('mpass').addEventListener('keydown',e=>{if(e.key==='Enter')mgrLogin();});
-  document.getElementById('mgrTable').addEventListener('click',e=>{
-    if(e.target.dataset.paid){const id=e.target.dataset.paid;const w=state.weeks[state.current];
-      w.paid[id]=!w.paid[id];save();renderMgr();}
-  });
-  document.getElementById('tipCalc').onclick=calcTips;
+ document.getElementById('logout').onclick=()=>location.reload();
+ document.getElementById('tabDay').onclick=()=>tab('day');
+ document.getElementById('tabWeek').onclick=()=>tab('week');
+ document.getElementById('tabMgr').onclick=()=>tab('mgr');
+ document.getElementById('weekSel').onchange=e=>{state.current=e.target.value;save();renderAll();};
+ document.getElementById('newWeek').onclick=addWeek;
+ document.getElementById('dupWeek').onclick=dupWeek;
+ document.getElementById('daypick').addEventListener('click',e=>{const b=e.target.closest('[data-day]');if(!b)return;selDay=+b.getAttribute('data-day');renderDayPick();renderDayList();setTitle();});
+ const list=document.getElementById('dayList');
+ list.addEventListener('input',e=>{const c=e.target.closest('.ecard');if(!c||!e.target.matches('input[type=time]'))return;
+  const id=c.getAttribute('data-id'),f=e.target.getAttribute('data-f');
+  state.weeks[state.current].data[id][DAYS[selDay]][f]=e.target.value;
+  const e2=state.employees.find(x=>x.id===id);const hh=hrs(state.weeks[state.current].data[id][DAYS[selDay]]);
+  c.querySelector('.eh').textContent=hh.toFixed(2)+'h';c.querySelector('.ep').textContent=money(hh*e2.rate);save();});
+ list.addEventListener('click',e=>{const c=e.target.closest('.ecard');if(!c||!e.target.classList.contains('segb'))return;
+  const id=c.getAttribute('data-id');const s=e.target.getAttribute('data-s');const day=state.weeks[state.current].data[id][DAYS[selDay]];
+  day.status=day.status===s?'pending':s;
+  c.querySelectorAll('.segb').forEach(b=>b.classList.toggle('on',b.getAttribute('data-s')===day.status));
+  const e2=state.employees.find(x=>x.id===id);const hh=hrs(day);
+  c.querySelector('.eh').textContent=hh.toFixed(2)+'h';c.querySelector('.ep').textContent=money(hh*e2.rate);save();});
+ document.getElementById('addEmp').onclick=()=>{const n=document.getElementById('empName').value.trim();if(!n)return;
+  const e=newEmp(n,document.getElementById('empRole').value,document.getElementById('empRate').value);
+  state.employees.push(e);Object.values(state.weeks).forEach(w=>{w.data[e.id]={};DAYS.forEach(d=>w.data[e.id][d]=blankDay());});
+  document.getElementById('empName').value='';document.getElementById('empRate').value='';save();renderAll();};
+ document.getElementById('wtable').addEventListener('click',e=>{if(!e.target.dataset.del)return;
+  if(!confirm(T[lang].del))return;const id=e.target.dataset.del;state.employees=state.employees.filter(x=>x.id!==id);
+  Object.values(state.weeks).forEach(w=>{delete w.data[id];delete w.paid[id];});save();renderAll();});
+ document.getElementById('exportBtn').onclick=doExport;
+ document.getElementById('importBtn').onclick=()=>document.getElementById('importFile').click();
+ document.getElementById('importFile').onchange=doImport;
+ document.getElementById('mbtn').onclick=mgrLogin;
+ document.getElementById('mpass').addEventListener('keydown',e=>{if(e.key==='Enter')mgrLogin();});
+ document.getElementById('mgrTable').addEventListener('click',e=>{if(!e.target.dataset.paid)return;const w=state.weeks[state.current];const id=e.target.dataset.paid;w.paid[id]=!w.paid[id];save();renderMgr();});
+ document.getElementById('tipCalc').onclick=calcTips;
 }
-function updateRowTotals(tr,id){tr.querySelector('.cTot .h').textContent=empHours(id).toFixed(2)+'h';tr.querySelector('.cTot .p').textContent=money(empPay(id));}
-function switchTab(which){
-  document.getElementById('tabSched').classList.toggle('on',which==='sched');
-  document.getElementById('tabMgr').classList.toggle('on',which==='mgr');
-  document.getElementById('sched').style.display=which==='sched'?'block':'none';
-  document.getElementById('mgr').style.display=which==='mgr'?'block':'none';
-  if(which==='mgr'){
-    document.getElementById('mgrLock').style.display=mgrUnlocked?'none':'block';
-    document.getElementById('mgrContent').style.display=mgrUnlocked?'block':'none';
-    if(mgrUnlocked)renderMgr();
-  }
+function tab(which){
+ document.getElementById('tabDay').classList.toggle('on',which==='day');
+ document.getElementById('tabWeek').classList.toggle('on',which==='week');
+ document.getElementById('tabMgr').classList.toggle('on',which==='mgr');
+ document.getElementById('dayView').style.display=which==='day'?'block':'none';
+ document.getElementById('weekView').style.display=which==='week'?'block':'none';
+ document.getElementById('mgr').style.display=which==='mgr'?'block':'none';
+ if(which==='mgr'){document.getElementById('mgrLock').style.display=mgrUnlocked?'none':'block';document.getElementById('mgrContent').style.display=mgrUnlocked?'block':'none';if(mgrUnlocked)renderMgr();}
+ setTitle();
 }
-function mgrLogin(){
-  if(document.getElementById('mpass').value===CONFIG.managerPassword){
-    mgrUnlocked=true;document.getElementById('mgrLock').style.display='none';
-    document.getElementById('mgrContent').style.display='block';renderMgr();
-  }else{document.getElementById('merr').textContent=T[lang].wrong;}
-}
-function addWeek(){
-  const keys=Object.keys(state.weeks).sort();const last=keys[keys.length-1];
-  const d=new Date(last+'T00:00:00');d.setDate(d.getDate()+7);const nk=d.toISOString().slice(0,10);
-  if(!state.weeks[nk]){const data={};state.employees.forEach(e=>data[e.id]=blankEmpWeek());state.weeks[nk]={start:nk,data,paid:{}};}
-  state.current=nk;save();renderSched();
-}
-function dupWeek(){
-  const src=state.weeks[state.current];const d=new Date(state.current+'T00:00:00');d.setDate(d.getDate()+7);
-  const nk=d.toISOString().slice(0,10);const data={};
-  state.employees.forEach(e=>{const s=src.data[e.id]||blankEmpWeek();const o={};
-    DAYS.forEach(dd=>o[dd]={start:s[dd].start,end:s[dd].end,status:'pending'});data[e.id]=o;});
-  state.weeks[nk]={start:nk,data,paid:{}};state.current=nk;save();renderSched();
-}
-function doExport(){
-  const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  a.download='norelo-horaire-'+new Date().toISOString().slice(0,10)+'.json';a.click();
-}
-function doImport(e){
-  const f=e.target.files[0];if(!f)return;const r=new FileReader();
-  r.onload=()=>{try{const s=JSON.parse(r.result);if(s.employees&&s.weeks){state=s;save();renderSched();if(mgrUnlocked)renderMgr();}}catch(err){alert('Fichier invalide');}};
-  r.readAsText(f);
-}
-function calcTips(){
-  const pool=+document.getElementById('tipPool').value||0;
-  const shares=state.employees.map(e=>({e,h:empConfirmedHours(e.id)}));
-  const tot=shares.reduce((s,x)=>s+x.h,0);const t=T[lang];
-  let rows='<tr><th>'+t.name+'</th><th style="text-align:right">'+t.confirmed+'</th><th style="text-align:right">'+t.share+'</th></tr>';
-  shares.filter(x=>x.h>0).sort((a,b)=>b.h-a.h).forEach(x=>{
-    const share=tot>0?pool*x.h/tot:0;
-    rows+='<tr><td>'+x.e.name+'</td><td class="num">'+x.h.toFixed(2)+'h</td><td class="num">'+money(share)+'</td></tr>';
-  });
-  document.getElementById('mgrTable').innerHTML=rows;
-}
+function mgrLogin(){if(document.getElementById('mpass').value===CONFIG.managerPassword){mgrUnlocked=true;document.getElementById('mgrLock').style.display='none';document.getElementById('mgrContent').style.display='block';renderMgr();}else document.getElementById('merr').textContent=T[lang].wrong;}
+function addWeek(){const keys=Object.keys(state.weeks).sort();const last=keys[keys.length-1];const d=new Date(last+'T00:00:00');d.setDate(d.getDate()+7);const nk=d.toISOString().slice(0,10);if(!state.weeks[nk]){state.weeks[nk]={start:nk,data:blankWeekFor(state.employees),paid:{}};}state.current=nk;save();renderAll();}
+function dupWeek(){const src=state.weeks[state.current];const d=new Date(state.current+'T00:00:00');d.setDate(d.getDate()+7);const nk=d.toISOString().slice(0,10);const data={};state.employees.forEach(e=>{const s=src.data[e.id]||{};data[e.id]={};DAYS.forEach(dd=>data[e.id][dd]={start:(s[dd]||{}).start||'',end:(s[dd]||{}).end||'',status:'pending'});});state.weeks[nk]={start:nk,data,paid:{}};state.current=nk;save();renderAll();}
+function doExport(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='norelo-horaire-'+new Date().toISOString().slice(0,10)+'.json';a.click();}
+function doImport(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const s=JSON.parse(r.result);if(s.employees&&s.weeks){state=s;save();renderAll();}}catch(err){alert('Fichier invalide');}};r.readAsText(f);}
+function calcTips(){const pool=+document.getElementById('tipPool').value||0;const t=T[lang];const sh=state.employees.map(e=>({e,h:empConfHours(e.id)}));const tot=sh.reduce((s,x)=>s+x.h,0);
+ let rows='<tr><th>'+t.name+'</th><th style="text-align:right">'+t.confirmed+'</th><th style="text-align:right">'+t.share+'</th></tr>';
+ sh.filter(x=>x.h>0).sort((a,b)=>b.h-a.h).forEach(x=>{rows+='<tr><td>'+x.e.name+'</td><td class="num">'+x.h.toFixed(2)+'h</td><td class="num">'+money(tot>0?pool*x.h/tot:0)+'</td></tr>';});
+ document.getElementById('mgrTable').innerHTML=rows;}
 
 boot();
 </script>
