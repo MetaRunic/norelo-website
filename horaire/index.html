@@ -157,8 +157,6 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
       <span class="muted" id="weekLabel"></span>
       <div class="spacer"></div>
       <select class="week" id="weekSel"></select>
-      <button class="btn ghost sm" id="newWeek" data-i="newW">+ Semaine</button>
-      <button class="btn ghost sm" id="dupWeek" data-i="dupW">Dupliquer</button>
     </div>
 
     <div id="dayView">
@@ -269,16 +267,18 @@ const SEED_EMP=[
  ['Maria Henneuse','Stationnement',16],['Danny Parker','Stationnement',16],['Mathilde H.','Stationnement',16]
 ];
 
-const KEY='norelo_horaire_v2';
+const KEY='norelo_horaire_v3';
 let state,lang='fr',selDay=0,mgrUnlocked=false;
 
-function todayMonday(){const d=new Date();const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return d.toISOString().slice(0,10);}
+function isoLocal(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function todayMonday(){const d=new Date();const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return isoLocal(d);}
+function seasonWeeks(emps){const year=new Date().getFullYear();let d=new Date(year,7,1);const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);const end=new Date(year,9,31);const weeks={};while(d<=end){const k=isoLocal(d);weeks[k]={start:k,data:blankWeekFor(emps),paid:{}};d.setDate(d.getDate()+7);}return weeks;}
 function todayIdx(){return (new Date().getDay()+6)%7;}
 function fmtDate(iso,off){const d=new Date(iso+'T00:00:00');d.setDate(d.getDate()+off);return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');}
 function blankDay(){return {start:'',end:''};}
 function blankWeekFor(emps){const o={};emps.forEach(e=>{o[e.id]={};DAYS.forEach(d=>o[e.id][d]=blankDay());});return o;}
 function newEmp(n,r,rate){return {id:'e'+Date.now()+Math.random().toString(36).slice(2,6),name:n,role:r,rate:+rate||0};}
-function freshState(){const emps=SEED_EMP.map(e=>newEmp(e[0],e[1],e[2]));const wk=todayMonday();return {employees:emps,weeks:{[wk]:{start:wk,data:blankWeekFor(emps),paid:{}}},current:wk};}
+function freshState(){const emps=SEED_EMP.map(e=>newEmp(e[0],e[1],e[2]));const weeks=seasonWeeks(emps);const wk=todayMonday();const current=weeks[wk]?wk:Object.keys(weeks).sort()[0];return {employees:emps,weeks,current};}
 function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.employees)return s;}catch(e){}return freshState();}
 function save(){localStorage.setItem(KEY,JSON.stringify(state));}
 function roleObj(r){return ROLES.find(o=>o.name===r)||{color:'#9fb2cc',emoji:''};}
@@ -364,7 +364,6 @@ function bindApp(){
  document.getElementById('tabWeek').onclick=()=>tab('week');
  document.getElementById('tabMgr').onclick=()=>tab('mgr');
  document.getElementById('weekSel').onchange=e=>{state.current=e.target.value;save();renderAll();};
- document.getElementById('newWeek').onclick=addWeek;document.getElementById('dupWeek').onclick=dupWeek;
  document.getElementById('daypick').addEventListener('click',e=>{const b=e.target.closest('[data-day]');if(!b)return;selDay=+b.getAttribute('data-day');renderDayPick();renderDayList();setTitle();});
  document.getElementById('dayList').addEventListener('change',e=>{const c=e.target.closest('.ecard');if(!c||e.target.tagName!=='SELECT')return;
   const id=c.getAttribute('data-id'),f=e.target.getAttribute('data-f');state.weeks[state.current].data[id][DAYS[selDay]][f]=e.target.value;
