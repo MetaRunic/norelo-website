@@ -132,6 +132,8 @@ h2{font-size:20px;font-weight:800;}
 .tbtn[data-val=""]{color:var(--gr);font-weight:700;}
 #timeGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;padding:.9rem;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .tcell{padding:15px 6px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:9px;color:var(--txt);font-size:18px;font-weight:700;min-height:56px;}
+.tcell.hour{border-color:rgba(224,71,59,.55);background:rgba(224,71,59,.1);font-weight:800;}
+.tnote{grid-column:1/-1;font-size:12px;color:var(--gr);text-align:center;padding:2px 0 6px;font-weight:600;}
 .tcell:hover{border-color:var(--accent);}
 .tcell.on{background:var(--accent);border-color:var(--accent);color:#fff;}
 .tcell.clear{grid-column:1/-1;color:var(--gr);font-weight:800;}
@@ -197,6 +199,10 @@ h2{font-size:20px;font-weight:800;}
 .teambar .tf.on{background:var(--accent);color:#fff;}
 .teamrow td{background:var(--panel2);color:var(--head);font-weight:800;text-transform:uppercase;letter-spacing:.6px;font-size:12px;padding:9px 12px !important;text-align:left !important;}
 .teamsel{padding:9px 10px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:14px;}
+.emplogin{flex-basis:100%;display:flex;gap:.5rem;align-items:center;margin-top:4px;flex-wrap:wrap;}
+.credlbl{font-size:12px;color:var(--gr);font-weight:700;}
+.cred{padding:9px 11px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:14px;flex:1;min-width:120px;}
+.cred:focus{outline:none;border-color:var(--accent);}
 footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;border-top:1px solid var(--bdr);}
 
 /* bottom nav (mobile) */
@@ -330,6 +336,8 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
             <select id="empRole"></select>
             <select id="empTeam"><option value="ext" data-i="teamExt">Exterieur</option><option value="int" data-i="teamInt">Interieur</option></select>
             <input class="rate" id="empRate" type="number" step="0.25" placeholder="$/h"/>
+            <input id="empUser" placeholder="Nom d'utilisateur" style="width:160px" autocomplete="off"/>
+            <input id="empPass" placeholder="Mot de passe" style="width:150px" autocomplete="off"/>
             <button class="btn sm" id="addEmp" data-i="add">Ajouter</button>
           </div>
           <div id="empAdmin"></div>
@@ -399,7 +407,7 @@ const T={
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Debut',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
    paid:'Paye',unpaid:'A payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Deja paye',kUnpaid:'Reste a payer',del:'Retirer cet employe?',user:"Nom d'utilisateur",
    chooseWeek:'Choisir une semaine',ws_past:'Passee',ws_cur:'En cours',ws_up:'A venir',teamAll:'Toutes',teamExt:'Exterieur',teamInt:'Interieur',
-   locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.<br><strong>Un jour verrouille a corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui"},
+   locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.<br><strong>Un jour verrouille a corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit etre apres l'heure de debut.",hoursHi:'Heures pleines en surbrillance'},
  en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',logout:'Log out',
    employees:'Employees and rates',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
@@ -411,7 +419,7 @@ const T={
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
    paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Total hours',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',del:'Remove this employee?',user:'Username',
    chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',teamExt:'Exterior',teamInt:'Interior',
-   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today'}
+   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Full hours highlighted'}
 };
 const ROLES=[
  {name:'Accueil',emoji:'👋',min:1,max:1,color:'#22c55e'},
@@ -449,9 +457,10 @@ function fmtLong(iso){const d=new Date(iso+'T00:00:00');const day=d.getDate(),mo
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
 function blankDay(){return {start:'',end:''};}
 function blankWeekFor(emps){const o={};emps.forEach(e=>{o[e.id]={};DAYS.forEach(d=>o[e.id][d]=blankDay());});return o;}
-function newEmp(n,r,rate,team){return {id:'e'+Date.now()+Math.random().toString(36).slice(2,6),name:n,role:r,rate:+rate||0,team:team||'ext'};}
-function freshState(){const emps=SEED_EMP.map(e=>newEmp(e[0],e[1],e[2],e[3]));const weeks=seasonWeeks(emps);const wk=todayMonday();const current=weeks[wk]?wk:Object.keys(weeks).sort()[0];return {employees:emps,weeks,current};}
-function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.employees){s.employees.forEach(e=>{if(!e.team)e.team=(e.name==='Lili Bergeron'||e.name==='Sydney D.')?'int':'ext';});return s;}}catch(e){}return freshState();}
+function newEmp(n,r,rate,team,user,pass){return {id:'e'+Date.now()+Math.random().toString(36).slice(2,6),name:n,role:r,rate:+rate||0,team:team||'ext',user:user||'',pass:pass||''};}
+function seedCreds(emps){emps.forEach(e=>{if(!e.user){const a=ACCOUNTS.find(x=>x.name===e.name);if(a){e.user=a.u;e.pass=a.p;}}});}
+function freshState(){const emps=SEED_EMP.map(e=>newEmp(e[0],e[1],e[2],e[3]));seedCreds(emps);const weeks=seasonWeeks(emps);const wk=todayMonday();const current=weeks[wk]?wk:Object.keys(weeks).sort()[0];return {employees:emps,weeks,current};}
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.employees){s.employees.forEach(e=>{if(!e.team)e.team=(e.name==='Lili Bergeron'||e.name==='Sydney D.')?'int':'ext';});seedCreds(s.employees);return s;}}catch(e){}return freshState();}
 function empTeam(e){return e.team||'ext';}
 function teamLabel(tm){return tm==='int'?T[lang].teamInt:T[lang].teamExt;}
 function inTeam(e){return teamFilter==='all'||empTeam(e)===teamFilter;}
@@ -468,6 +477,7 @@ function sortedEmps(){const to={ext:0,int:1};return [...state.employees].sort((a
 function wkKeys(){return Object.keys(state.weeks).sort();}
 function timeInput(f,val,disabled){return '<button type="button" class="tbtn" data-f="'+f+'" data-val="'+(val||'')+'"'+(disabled?' disabled':'')+'>'+(val||'--:--')+'</button>';}
 function clampTime(v){if(!v)return '';const p=v.split(':');let hh=+p[0],mm=+p[1];if(isNaN(hh)||isNaN(mm))return '';let m=Math.round((hh*60+mm)/STEP)*STEP;if(m<OPEN_MIN)m=OPEN_MIN;if(m>CLOSE_MIN)m=CLOSE_MIN;return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');}
+function tmin(t){const p=(t||'').split(':');return (+p[0]||0)*60+(+p[1]||0);}
 function pickDefaultWeek(){const keys=wkKeys();if(!keys.length)return null;const wk=weekKeyForDate(now());if(state.weeks[wk])return wk;return wk<keys[0]?keys[0]:keys[keys.length-1];}
 function weekKeyForDate(d){const x=new Date(d);const day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);return isoLocal(x);}
 function hoursForDate(d,empId){const key=weekKeyForDate(d);const w=state.weeks[key];if(!w)return 0;const dk=DAYS[(d.getDay()+6)%7];if(empId){return w.data[empId]?hrs(w.data[empId][dk]):0;}let t=0;state.employees.filter(inTeam).forEach(e=>t+=hrs(w.data[e.id][dk]));return Math.round(t*100)/100;}
@@ -514,14 +524,19 @@ function openWeekSheet(){renderWeekList();document.getElementById('weekSheet').s
 function closeWeekSheet(){document.getElementById('weekSheet').style.display='none';}
 let timeCtx=null;
 function openTimePicker(ctx){timeCtx=ctx;document.getElementById('timeSheetTitle').textContent=ctx.title;
- let h='<button class="tcell clear" data-t="">--:--</button>';
- for(let m=OPEN_MIN;m<=CLOSE_MIN;m+=STEP){const v=String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');h+='<button class="tcell'+(v===ctx.cur?' on':'')+'" data-t="'+v+'">'+v+'</button>';}
+ let h='<div class="tnote">'+T[lang].hoursHi+'</div><button class="tcell clear" data-t="">--:--</button>';
+ for(let m=OPEN_MIN;m<=CLOSE_MIN;m+=STEP){const v=String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');h+='<button class="tcell'+(m%60===0?' hour':'')+(v===ctx.cur?' on':'')+'" data-t="'+v+'">'+v+'</button>';}
  document.getElementById('timeGrid').innerHTML=h;document.getElementById('timeSheet').style.display='flex';
  const sel=document.querySelector('#timeGrid .tcell.on');if(sel)setTimeout(()=>sel.scrollIntoView({block:'center'}),0);}
 function closeTimePicker(){document.getElementById('timeSheet').style.display='none';timeCtx=null;}
-function applyTime(v){if(!timeCtx)return;const w=state.weeks[state.current];
- if(timeCtx.mode==='day'){w.data[timeCtx.id][DAYS[selDay]][timeCtx.f]=v;save();closeTimePicker();renderDayList();renderCalendar(document.getElementById('calAdmin'),null);renderWeekBar();}
- else{const dISO=addDaysISO(w.start,timeCtx.dayIdx);if(!dayEditable(dISO)){closeTimePicker();return;}w.data[currentEmp][DAYS[timeCtx.dayIdx]][timeCtx.f]=v;save();closeTimePicker();renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);renderWeekBar();}}
+function applyTime(v){if(!timeCtx)return;const w=state.weeks[state.current];let day;
+ if(timeCtx.mode==='day')day=w.data[timeCtx.id][DAYS[selDay]];
+ else{const dISO=addDaysISO(w.start,timeCtx.dayIdx);if(!dayEditable(dISO)){closeTimePicker();return;}day=w.data[currentEmp][DAYS[timeCtx.dayIdx]];}
+ const start=timeCtx.f==='start'?v:day.start;const end=timeCtx.f==='end'?v:day.end;
+ if(start&&end&&tmin(end)<=tmin(start)){alert(T[lang].badTime);return;}
+ day[timeCtx.f]=v;save();closeTimePicker();
+ if(timeCtx.mode==='day'){renderDayList();renderCalendar(document.getElementById('calAdmin'),null);}else{renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);}
+ renderWeekBar();}
 function gotoWeek(delta){const keys=wkKeys();let i=keys.indexOf(state.current);i=Math.max(0,Math.min(keys.length-1,i+delta));state.current=keys[i];save();renderAll();}
 function renderDayPick(){const w=state.weeks[state.current];const t=T[lang];const tISO=realTodayISO();
  document.getElementById('daypick').innerHTML=t.sdays.map((d,i)=>{const isT=addDaysISO(w.start,i)===tISO;return '<button class="daybtn'+(i===selDay?' on':'')+(isT?' today':'')+'" data-day="'+i+'"><div class="dn">'+d+'</div><div class="dd">'+fmtDate(w.start,i)+'</div></button>';}).join('');}
@@ -579,13 +594,16 @@ function renderMgr(){const t=T[lang];const w=state.weeks[state.current];let th=0
 function renderEmpAdmin(){const t=T[lang];document.getElementById('empAdmin').innerHTML=sortedEmps().map(e=>{
  return '<div class="emprow" data-id="'+e.id+'"><span class="enm">'+e.name+'</span><span class="erl">'+e.role+'</span>'
   +'<select class="teamsel" data-team><option value="ext"'+(empTeam(e)==='ext'?' selected':'')+'>'+t.teamExt+'</option><option value="int"'+(empTeam(e)==='int'?' selected':'')+'>'+t.teamInt+'</option></select>'
-  +'<input class="rate" type="number" step="0.25" value="'+e.rate+'" data-rate/><span class="erl">/h</span><button class="delx" data-del>&times;</button></div>';}).join('');}
+  +'<input class="rate" type="number" step="0.25" value="'+e.rate+'" data-rate/><span class="erl">/h</span><button class="delx" data-del>&times;</button>'
+  +'<div class="emplogin"><span class="credlbl">'+t.user+'</span><input class="cred" data-cred="user" value="'+(e.user||'')+'" autocomplete="off"/><span class="credlbl">'+(lang==='fr'?'Mot de passe':'Password')+'</span><input class="cred" data-cred="pass" value="'+(e.pass||'')+'" autocomplete="off"/></div>'
+  +'</div>';}).join('');}
 function kpi(v,k,c){return '<div class="kpi"><div class="v '+c+'">'+v+'</div><div class="k">'+k+'</div></div>';}
 
 function applyLang(){document.querySelectorAll('[data-i]').forEach(el=>{const k=el.getAttribute('data-i');if(T[lang][k])el.textContent=T[lang][k];});
  document.getElementById('lsub').textContent=T[lang].lsub;document.getElementById('lhint').textContent=T[lang].lhint;
  document.getElementById('lbtn').textContent=T[lang].enter;
  document.getElementById('luser').placeholder=T[lang].user;document.getElementById('lpass').placeholder=lang==='fr'?'Mot de passe':'Password';
+ document.getElementById('empUser').placeholder=T[lang].user;document.getElementById('empPass').placeholder=lang==='fr'?'Mot de passe':'Password';
  document.documentElement.lang=lang;if(document.getElementById('app').style.display==='block')renderAll();}
 function renderAll(){renderWeekBar();if(isEmployee){renderCalendar(document.getElementById('calEmp'),currentEmp);renderEmp();}else{renderCalendar(document.getElementById('calAdmin'),null);renderDayPick();renderDayList();renderWeek();setTitle();if(mgrUnlocked)renderMgr();}}
 function setTitle(){if(isEmployee)return;const t=T[lang];const cur=document.querySelector('.tabs button.on').id;
@@ -600,8 +618,8 @@ function boot(){state=load();selDay=todayIdx();renderRoleOptions();initEye('lpas
 function doLogin(){
  const u=(document.getElementById('luser').value||'').trim().toLowerCase();const p=document.getElementById('lpass').value;
  if(u===ADMIN.u&&p===ADMIN.p){startApp(false,null);return;}
- const a=ACCOUNTS.find(x=>x.u===u&&x.p===p);
- if(a){const emp=state.employees.find(e=>e.name===a.name);startApp(true,emp?emp.id:null);return;}
+ const a=state.employees.find(e=>e.user&&(e.user||'').toLowerCase()===u&&e.pass===p);
+ if(a){startApp(true,a.id);return;}
  document.getElementById('lerr').textContent=T[lang].wrong;
 }
 async function startApp(asEmp,empId){
@@ -640,10 +658,16 @@ function bindApp(){
   document.getElementById('dayList').addEventListener('click',e=>{const b=e.target.closest('.tbtn');if(!b||b.disabled)return;const c=b.closest('.ecard');const f=b.getAttribute('data-f');
    openTimePicker({mode:'day',id:c.getAttribute('data-id'),f:f,cur:b.getAttribute('data-val'),title:f==='start'?T[lang].start:T[lang].end});});
   document.getElementById('addEmp').onclick=()=>{const n=document.getElementById('empName').value.trim();if(!n)return;
-   const e=newEmp(n,document.getElementById('empRole').value,document.getElementById('empRate').value,document.getElementById('empTeam').value);state.employees.push(e);
+   const user=document.getElementById('empUser').value.trim();const pass=document.getElementById('empPass').value;
+   if(user&&state.employees.some(x=>(x.user||'').toLowerCase()===user.toLowerCase())){alert(lang==='fr'?"Ce nom d'utilisateur existe deja.":'That username already exists.');return;}
+   const e=newEmp(n,document.getElementById('empRole').value,document.getElementById('empRate').value,document.getElementById('empTeam').value,user,pass);state.employees.push(e);
    Object.values(state.weeks).forEach(w=>{w.data[e.id]={};DAYS.forEach(d=>w.data[e.id][d]=blankDay());});
-   document.getElementById('empName').value='';document.getElementById('empRate').value='';save();renderAll();};
-  document.getElementById('empAdmin').addEventListener('input',e=>{if(!e.target.hasAttribute('data-rate'))return;const id=e.target.closest('.emprow').getAttribute('data-id');const emp=state.employees.find(x=>x.id===id);emp.rate=+e.target.value||0;save();});
+   document.getElementById('empName').value='';document.getElementById('empRate').value='';document.getElementById('empUser').value='';document.getElementById('empPass').value='';save();renderAll();};
+  document.getElementById('empAdmin').addEventListener('input',e=>{const row=e.target.closest('.emprow');if(!row)return;const emp=state.employees.find(x=>x.id===row.getAttribute('data-id'));if(!emp)return;
+   if(e.target.hasAttribute('data-rate'))emp.rate=+e.target.value||0;
+   else if(e.target.dataset.cred==='user')emp.user=e.target.value.trim();
+   else if(e.target.dataset.cred==='pass')emp.pass=e.target.value;
+   else return;save();});
   document.getElementById('empAdmin').addEventListener('change',e=>{if(!e.target.classList.contains('teamsel'))return;const id=e.target.closest('.emprow').getAttribute('data-id');const emp=state.employees.find(x=>x.id===id);emp.team=e.target.value;save();renderAll();});
   document.getElementById('teamBar').addEventListener('click',e=>{const b=e.target.closest('[data-team]');if(!b)return;teamFilter=b.getAttribute('data-team');document.querySelectorAll('#teamBar .tf').forEach(x=>x.classList.toggle('on',x===b));renderAll();});
   document.getElementById('empAdmin').addEventListener('click',e=>{if(!e.target.hasAttribute('data-del'))return;
