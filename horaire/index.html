@@ -733,11 +733,11 @@ function bindApp(){
    btn.disabled=false;
    if(error||!data||!data.ok){alert((data&&data.error)||(error&&error.message)||'Erreur');return;}
    ['empName','empUser','empPass','empRate'].forEach(id=>document.getElementById(id).value='');
-   logAction('create_account',username+' ('+role+')');await loadAll();renderAll();
+   logAction('create_account',username+' ('+role+')');await loadAll();renderAll();showToast(lang==='fr'?'Compte cree':'Account created',true);
   };
   document.getElementById('empAdmin').addEventListener('input',e=>{if(!e.target.hasAttribute('data-rate'))return;const row=e.target.closest('.emprow');const emp=state.employees.find(x=>x.id===row.getAttribute('data-id'));if(!emp)return;emp.rate=+e.target.value||0;sb.from('profiles').update({rate:emp.rate}).eq('id',emp.id).then(()=>{});});
   document.getElementById('empAdmin').addEventListener('change',async e=>{const row=e.target.closest('.emprow');if(!row)return;const id=row.getAttribute('data-id');const emp=state.employees.find(x=>x.id===id);if(!emp)return;
-   if(e.target.classList.contains('teamsel')){emp.team=e.target.value;await sb.from('profiles').update({team:emp.team}).eq('id',id);logAction('change_team',emp.name+' -> '+teamLabel(emp.team));renderAll();}
+   if(e.target.classList.contains('teamsel')){emp.team=e.target.value;await sb.from('profiles').update({team:emp.team}).eq('id',id);logAction('change_team',emp.name+' -> '+teamLabel(emp.team));showToast(lang==='fr'?'Equipe modifiee':'Team changed',true);renderAll();}
    else if(e.target.classList.contains('rolesel')){const newRole=e.target.value;
     if(id===myId){alert(lang==='fr'?'Vous ne pouvez pas changer votre propre role.':"You can't change your own role.");renderEmpAdmin();return;}
     if(newRole==='employee'&&OWNERS.includes((emp.username||'').toLowerCase())){alert(lang==='fr'?'Ce compte proprietaire est protege et ne peut pas etre retrograde.':'This owner account is protected and cannot be demoted.');renderEmpAdmin();return;}
@@ -747,13 +747,13 @@ function bindApp(){
     if(ae){alert(lang==='fr'?'Mot de passe incorrect.':'Wrong password.');renderEmpAdmin();return;}
     const {data,error}=await sb.functions.invoke('quick-api',{body:{action:'update',id,role:newRole}});
     if(error||!data||!data.ok){alert((data&&data.error)||'Erreur');renderEmpAdmin();return;}
-    emp.prole=newRole;logAction('change_role',emp.name+' -> '+(newRole==='manager'?T[lang].roleMgr:T[lang].roleEmp));renderEmpAdmin();}
-   else if(e.target.hasAttribute('data-rate')){logAction('change_rate',emp.name+' -> '+emp.rate+'$/h');}
-   else if(e.target.hasAttribute('data-name')){emp.name=e.target.value.trim();await sb.from('profiles').update({name:emp.name}).eq('id',id);logAction('change_name',emp.name);renderAll();}
+    emp.prole=newRole;logAction('change_role',emp.name+' -> '+(newRole==='manager'?T[lang].roleMgr:T[lang].roleEmp));renderEmpAdmin();showToast(lang==='fr'?'Role modifie':'Role changed',true);}
+   else if(e.target.hasAttribute('data-rate')){logAction('change_rate',emp.name+' -> '+emp.rate+'$/h');showToast(lang==='fr'?'Taux modifie':'Rate changed',true);}
+   else if(e.target.hasAttribute('data-name')){emp.name=e.target.value.trim();await sb.from('profiles').update({name:emp.name}).eq('id',id);logAction('change_name',emp.name);showToast(lang==='fr'?'Nom modifie':'Name changed',true);renderAll();}
    else if(e.target.hasAttribute('data-uname')){const old=emp.username;const nu=e.target.value.trim().toLowerCase();if(!nu){renderEmpAdmin();return;}
     const {data,error}=await sb.functions.invoke('quick-api',{body:{action:'update',id,username:nu}});
     if(error||!data||!data.ok){alert((data&&data.error)||'Erreur');renderEmpAdmin();return;}
-    emp.username=nu;if(id===myId)myEmail=nu+EMAIL_DOMAIN;logAction('rename_user',(old||'')+' -> '+nu);renderEmpAdmin();}});
+    emp.username=nu;if(id===myId)myEmail=nu+EMAIL_DOMAIN;logAction('rename_user',(old||'')+' -> '+nu);renderEmpAdmin();showToast(lang==='fr'?'Utilisateur modifie':'Username changed',true);}});
   document.getElementById('teamBar').addEventListener('click',e=>{const b=e.target.closest('[data-team]');if(!b)return;teamFilter=b.getAttribute('data-team');document.querySelectorAll('#teamBar .tf').forEach(x=>x.classList.toggle('on',x===b));renderAll();});
   document.getElementById('empAdmin').addEventListener('click',async e=>{
    if(e.target.hasAttribute('data-pwd')){const rid=e.target.closest('.emprow').getAttribute('data-id');const em=state.employees.find(x=>x.id===rid);
@@ -763,7 +763,7 @@ function bindApp(){
     const {error:ae}=await sb.auth.signInWithPassword({email:myEmail,password:cpw});if(ae){alert(lang==='fr'?'Mot de passe incorrect.':'Wrong password.');return;}
     const r=await sb.functions.invoke('quick-api',{body:{action:'update',id:rid,password:np}});
     if(r.error||!r.data||!r.data.ok){alert((r.data&&r.data.error)||'Erreur');return;}
-    logAction('reset_password',em?em.name:'');alert(lang==='fr'?'Mot de passe change.':'Password changed.');return;}
+    logAction('reset_password',em?em.name:'');showToast(lang==='fr'?'Mot de passe change':'Password changed',true);return;}
    if(!e.target.hasAttribute('data-del'))return;
    const id=e.target.closest('.emprow').getAttribute('data-id');const emp=state.employees.find(x=>x.id===id);
    if(id===myId){alert(lang==='fr'?'Vous ne pouvez pas supprimer votre propre compte.':"You can't delete your own account.");return;}
@@ -777,10 +777,10 @@ function bindApp(){
    e.target.disabled=true;
    const {data,error}=await sb.functions.invoke('quick-api',{body:{action:'delete',id}});
    if(error||!data||!data.ok){e.target.disabled=false;alert((data&&data.error)||(error&&error.message)||'Erreur');return;}
-   logAction('delete_account',emp?emp.name:'');await loadAll();renderAll();});
+   logAction('delete_account',emp?emp.name:'');await loadAll();renderAll();showToast(lang==='fr'?'Compte supprime':'Account deleted',true);});
   document.getElementById('mgrTable').addEventListener('click',async e=>{if(!e.target.dataset.paid)return;const id=e.target.dataset.paid;const w=state.weeks[state.current];const nv=!w.paid[id];w.paid[id]=nv;renderMgr();
    const {error}=await sb.from('paid_weeks').upsert({employee_id:id,week_start:state.current,paid:nv},{onConflict:'employee_id,week_start'});
-   if(error){w.paid[id]=!nv;renderMgr();alert(lang==='fr'?'Action refusee.':'Action refused.');}else{const em=state.employees.find(x=>x.id===id);logAction(nv?'mark_paid':'mark_unpaid',(em?em.name:'')+' ('+state.current+')');}});
+   if(error){w.paid[id]=!nv;renderMgr();alert(lang==='fr'?'Action refusee.':'Action refused.');}else{const em=state.employees.find(x=>x.id===id);logAction(nv?'mark_paid':'mark_unpaid',(em?em.name:'')+' ('+state.current+')');showToast(nv?(lang==='fr'?'Marque paye':'Marked paid'):(lang==='fr'?'Marque non paye':'Marked unpaid'),true);}});
   document.getElementById('tipCalc').onclick=calcTips;
   ['fltPerson','fltAction','fltDate'].forEach(fid=>document.getElementById(fid).addEventListener('change',applyLogFilter));
   document.getElementById('fltClear').onclick=()=>{document.getElementById('fltPerson').value='';document.getElementById('fltAction').value='';document.getElementById('fltDate').value='';applyLogFilter();};
@@ -791,7 +791,7 @@ function bindApp(){
    const {error:ae}=await sb.auth.signInWithPassword({email:myEmail,password:pw});if(ae){alert(lang==='fr'?'Mot de passe incorrect.':'Wrong password.');return;}
    b.disabled=true;const {data,error}=await sb.functions.invoke('quick-api',{body:{action:'restore',id}});
    if(error||!data||!data.ok){b.disabled=false;alert((data&&data.error)||'Erreur');return;}
-   logAction('restore_backup','');await loadAll();renderAll();renderBackups();alert(lang==='fr'?'Restauration terminee.':'Restore complete.');});
+   logAction('restore_backup','');await loadAll();renderAll();renderBackups();showToast(lang==='fr'?'Restauration terminee':'Restore complete',true);});
  }else{
   document.getElementById('empSheet').addEventListener('click',e=>{const b=e.target.closest('.tbtn');if(!b||b.disabled)return;const c=b.closest('.ecard');const di=+c.getAttribute('data-day');
    const dISO=addDaysISO(state.weeks[state.current].start,di);if(!dayEditable(dISO))return;
