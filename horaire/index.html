@@ -220,6 +220,10 @@ h2{font-size:20px;font-weight:800;}
 .logmid{font-size:14px;margin-top:3px;}
 .logact{font-weight:700;color:var(--accent-l);}
 .logtarget{color:var(--gr);}
+.bkrow{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.06);}
+.bkrow:last-child{border:none;}
+.bklabel{font-weight:700;font-size:15px;}
+.bkmeta{font-size:12px;color:var(--gr);margin-top:1px;}
 .logfilters{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem;}
 .logfilters select,.logfilters input{padding:10px 12px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:14px;color-scheme:dark;}
 .metag{display:inline-block;font-size:11px;font-weight:800;background:var(--accent);color:#fff;padding:2px 8px;border-radius:20px;margin-left:6px;vertical-align:middle;text-transform:uppercase;letter-spacing:.3px;}
@@ -365,6 +369,16 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
         </div>
         <div id="empAdmin"></div>
       </div>
+      <div class="card">
+        <h3 data-i="backupsT">Sauvegardes</h3>
+        <button class="btn sm" id="backupNow" data-i="backupNow">Sauvegarder maintenant</button>
+        <div id="backupList" style="margin-top:1rem"></div>
+      </div>
+      <div class="card">
+        <h3 data-i="versionT">Version et mise a jour</h3>
+        <div class="muted" style="margin-bottom:.8rem">Version: <span id="appVer"></span></div>
+        <button class="btn ghost sm" id="forceUpdate" data-i="forceUpd">Forcer la mise a jour pour tous</button>
+      </div>
     </div>
 
     <div id="logView" style="display:none">
@@ -426,6 +440,7 @@ const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
 const EMAIL_DOMAIN='@norelo-verger.app';
 const OWNERS=['dan','gill','sydney','patron'];
+const APP_VERSION=1; // bump this on each release, then click "Force update"
 const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const LOCK_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
@@ -444,7 +459,7 @@ const T={
    months:['janvier','fevrier','mars','avril','mai','juin','juillet','aout','septembre','octobre','novembre','decembre'],
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Debut',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
    paid:'Paye',unpaid:'A payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Deja paye',kUnpaid:'Reste a payer',del:'Retirer cet employe?',user:"Nom d'utilisateur",
-   chooseWeek:'Choisir une semaine',ws_past:'Passee',ws_cur:'En cours',ws_up:'A venir',teamAll:'Toutes',teamExt:'Exterieur',teamInt:'Interieur',roleEmp:'Employe',roleMgr:'Gestionnaire',resetPwd:'MDP',clearF:'Effacer',
+   chooseWeek:'Choisir une semaine',ws_past:'Passee',ws_cur:'En cours',ws_up:'A venir',teamAll:'Toutes',teamExt:'Exterieur',teamInt:'Interieur',roleEmp:'Employe',roleMgr:'Gestionnaire',resetPwd:'MDP',clearF:'Effacer',backupsT:'Sauvegardes',backupNow:'Sauvegarder maintenant',versionT:'Version et mise a jour',forceUpd:'Forcer la mise a jour pour tous',
    locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.<br><strong>Un jour verrouille a corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit etre apres l'heure de debut.",hoursHi:'Heures de quart regulieres en surbrillance'},
  en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',tEmp:'Employees',tLog:'Activity',logout:'Log out',
    employees:'Employees and rates',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
@@ -456,7 +471,7 @@ const T={
    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
    paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Total hours',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',del:'Remove this employee?',user:'Username',
-   chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',teamExt:'Exterior',teamInt:'Interior',roleEmp:'Employee',roleMgr:'Manager',resetPwd:'PW',clearF:'Clear',
+   chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',teamExt:'Exterior',teamInt:'Interior',roleEmp:'Employee',roleMgr:'Manager',resetPwd:'PW',clearF:'Clear',backupsT:'Backups',backupNow:'Backup now',versionT:'Version and update',forceUpd:'Force update for everyone',
    locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted'}
 };
 let state={employees:[],weeks:{},current:null},lang='fr',selDay=0,mgrUnlocked=false,isEmployee=false,currentEmp=null,teamFilter='all',myId=null,myEmail='';
@@ -678,6 +693,9 @@ async function enterApp(user){
  await fetchTrustedTime();
  const dw=pickDefaultWeek();if(dw)state.current=dw;
  bindApp();renderAll();subscribeRealtime();
+ const av=document.getElementById('appVer');if(av)av.textContent='v'+APP_VERSION;
+ checkVersion();setInterval(checkVersion,5*60*1000);window.addEventListener('focus',checkVersion);
+ if(!asEmp){(async()=>{const {data:last}=await sb.from('backups').select('created_at').order('created_at',{ascending:false}).limit(1);if(!last||!last.length||(Date.now()-new Date(last[0].created_at).getTime())>12*3600*1000)createBackup('Automatique');})();}
 }
 function bindApp(){
  document.getElementById('logout').onclick=async()=>{await sb.auth.signOut();location.reload();};
@@ -764,6 +782,15 @@ function bindApp(){
   document.getElementById('tipCalc').onclick=calcTips;
   ['fltPerson','fltAction','fltDate'].forEach(fid=>document.getElementById(fid).addEventListener('change',applyLogFilter));
   document.getElementById('fltClear').onclick=()=>{document.getElementById('fltPerson').value='';document.getElementById('fltAction').value='';document.getElementById('fltDate').value='';applyLogFilter();};
+  document.getElementById('backupNow').onclick=async()=>{const btn=document.getElementById('backupNow');btn.disabled=true;const err=await createBackup('Manuelle');btn.disabled=false;if(err){alert(err.message||'Erreur');return;}logAction('backup','Manuelle');renderBackups();showToast(lang==='fr'?'Sauvegarde creee':'Backup created',true);};
+  document.getElementById('forceUpdate').onclick=async()=>{if(!confirm(lang==='fr'?'Forcer tous les appareils a recharger la nouvelle version?':'Force all devices to reload the new version?'))return;const {error}=await sb.from('app_config').update({min_version:APP_VERSION}).eq('id',1);if(error){alert(error.message||'Erreur');return;}logAction('force_update','v'+APP_VERSION);alert(lang==='fr'?'Fait. Les autres appareils vont recharger.':'Done. Other devices will reload.');};
+  document.getElementById('backupList').addEventListener('click',async e=>{const b=e.target.closest('[data-restore]');if(!b)return;const id=b.getAttribute('data-restore');
+   if(!confirm(lang==='fr'?'Restaurer cette sauvegarde? Les heures actuelles seront remplacees (une sauvegarde de securite est creee).':'Restore this backup? Current hours will be replaced (a safety backup is created).'))return;
+   const pw=await promptPwd(lang==='fr'?'Entrez VOTRE mot de passe pour confirmer la restauration :':'Enter YOUR password to confirm the restore:');if(!pw)return;
+   const {error:ae}=await sb.auth.signInWithPassword({email:myEmail,password:pw});if(ae){alert(lang==='fr'?'Mot de passe incorrect.':'Wrong password.');return;}
+   b.disabled=true;const {data,error}=await sb.functions.invoke('quick-api',{body:{action:'restore',id}});
+   if(error||!data||!data.ok){b.disabled=false;alert((data&&data.error)||'Erreur');return;}
+   logAction('restore_backup','');await loadAll();renderAll();renderBackups();alert(lang==='fr'?'Restauration terminee.':'Restore complete.');});
  }else{
   document.getElementById('empSheet').addEventListener('click',e=>{const b=e.target.closest('.tbtn');if(!b||b.disabled)return;const c=b.closest('.ecard');const di=+c.getAttribute('data-day');
    const dISO=addDaysISO(state.weeks[state.current].start,di);if(!dayEditable(dISO))return;
@@ -779,7 +806,7 @@ function tab(which){
  document.getElementById('empAdminView').style.display=which==='emp'?'block':'none';
  document.getElementById('logView').style.display=which==='log'?'block':'none';
  if(which==='mgr'){const ml=document.getElementById('mgrLock');if(ml)ml.style.display='none';document.getElementById('mgrContent').style.display='block';renderMgr();}
- if(which==='emp')renderEmpAdmin();
+ if(which==='emp'){renderEmpAdmin();renderBackups();}
  if(which==='log')renderLog();
  setTitle();window.scrollTo(0,0);
 }
@@ -789,7 +816,7 @@ function calcTips(){const pool=+document.getElementById('tipPool').value||0;cons
  document.getElementById('mgrTable').innerHTML=rows;}
 
 function logAction(action,detail){const me=state.employees.find(x=>x.id===myId);sb.from('audit_log').insert({actor_id:myId,actor_name:me?me.name:'',action:action,detail:detail||null}).then(()=>{});}
-function actLabel(a){const M={fr:{create_account:'Compte cree',delete_account:'Compte supprime',reset_password:'Mot de passe reinitialise',rename_user:'Utilisateur renomme',change_name:'Nom modifie',change_role:'Role modifie',change_team:'Equipe modifiee',change_rate:'Taux modifie',mark_paid:'Marque paye',mark_unpaid:'Marque non paye',edit_hours:'Heures modifiees'},en:{create_account:'Account created',delete_account:'Account deleted',reset_password:'Password reset',rename_user:'Username changed',change_name:'Name changed',change_role:'Role changed',change_team:'Team changed',change_rate:'Rate changed',mark_paid:'Marked paid',mark_unpaid:'Marked unpaid',edit_hours:'Hours changed'}};return (M[lang]&&M[lang][a])||a;}
+function actLabel(a){const M={fr:{create_account:'Compte cree',delete_account:'Compte supprime',reset_password:'Mot de passe reinitialise',rename_user:'Utilisateur renomme',change_name:'Nom modifie',change_role:'Role modifie',change_team:'Equipe modifiee',change_rate:'Taux modifie',mark_paid:'Marque paye',mark_unpaid:'Marque non paye',edit_hours:'Heures modifiees',backup:'Sauvegarde creee',restore_backup:'Restauration',force_update:'Mise a jour forcee'},en:{create_account:'Account created',delete_account:'Account deleted',reset_password:'Password reset',rename_user:'Username changed',change_name:'Name changed',change_role:'Role changed',change_team:'Team changed',change_rate:'Rate changed',mark_paid:'Marked paid',mark_unpaid:'Marked unpaid',edit_hours:'Hours changed',backup:'Backup created',restore_backup:'Restore',force_update:'Forced update'}};return (M[lang]&&M[lang][a])||a;}
 let logCache=[];
 async function renderLog(){const el=document.getElementById('logList');if(!el)return;el.innerHTML='<div class="muted" style="padding:1rem">...</div>';
  const {data,error}=await sb.from('audit_log').select('*').order('created_at',{ascending:false}).limit(500);
@@ -812,6 +839,15 @@ function closePwd(v){document.getElementById('pwdModal').style.display='none';co
 function bindPwdModal(){document.getElementById('pwdOk').onclick=()=>closePwd(document.getElementById('pwdInput').value);document.getElementById('pwdCancel').onclick=()=>closePwd(null);
  document.getElementById('pwdModal').addEventListener('click',e=>{if(e.target.id==='pwdModal')closePwd(null);});
  document.getElementById('pwdInput').addEventListener('keydown',e=>{if(e.key==='Enter')closePwd(document.getElementById('pwdInput').value);});}
+async function checkVersion(){try{const {data}=await sb.from('app_config').select('min_version').eq('id',1).maybeSingle();
+ if(data&&data.min_version&&APP_VERSION<data.min_version){document.body.innerHTML='<div style="color:#eef3fb;font-family:sans-serif;text-align:center;padding:3rem;font-size:18px">'+(lang==='fr'?'Nouvelle version. Rechargement...':'New version. Reloading...')+'</div>';setTimeout(()=>location.reload(),500);}}catch(e){}}
+async function createBackup(label){const {data:shifts}=await sb.from('shifts').select('*');const {data:paid}=await sb.from('paid_weeks').select('*');const me=state.employees.find(x=>x.id===myId);const {error}=await sb.from('backups').insert({created_by:me?me.name:'',label:label||'Manuelle',data:{shifts:shifts||[],paid:paid||[]}});return error;}
+async function renderBackups(){const el=document.getElementById('backupList');if(!el)return;el.innerHTML='<div class="muted" style="padding:.5rem">...</div>';
+ const {data,error}=await sb.from('backups').select('id,created_at,created_by,label').order('created_at',{ascending:false}).limit(60);
+ if(error){el.innerHTML='<div class="muted" style="padding:.5rem">Erreur</div>';return;}
+ if(!data||!data.length){el.innerHTML='<div class="muted" style="padding:.5rem">'+(lang==='fr'?'Aucune sauvegarde.':'No backups.')+'</div>';return;}
+ el.innerHTML=data.map(b=>{const d=new Date(b.created_at);const when=d.toLocaleString(lang==='fr'?'fr-CA':'en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+  return '<div class="bkrow"><div><div class="bklabel">'+esc(b.label||'')+'</div><div class="bkmeta">'+esc(when)+' &middot; '+esc(b.created_by||'')+'</div></div><button class="btn ghost sm" data-restore="'+b.id+'">'+(lang==='fr'?'Restaurer':'Restore')+'</button></div>';}).join('');}
 boot();
 </script>
 </body>
