@@ -132,9 +132,10 @@ h2{font-size:20px;font-weight:800;}
 .tbtn[data-val=""]{color:var(--gr);font-weight:700;}
 #timeGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;padding:.9rem;overflow-y:auto;-webkit-overflow-scrolling:touch;}
 .tcell{padding:15px 6px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:9px;color:var(--txt);font-size:18px;font-weight:700;min-height:56px;}
-.tcell.hour{border-color:rgba(224,71,59,.55);background:rgba(224,71,59,.1);font-weight:800;}
+.tcell.reg{border-color:rgba(224,71,59,.55);background:rgba(224,71,59,.1);font-weight:800;}
+.tcell:disabled{opacity:.3;cursor:not-allowed;background:var(--panel2);border-color:transparent;color:var(--gr);}
 .tnote{grid-column:1/-1;font-size:12px;color:var(--gr);text-align:center;padding:2px 0 6px;font-weight:600;}
-.tcell:hover{border-color:var(--accent);}
+.tcell:not(:disabled):hover{border-color:var(--accent);}
 .tcell.on{background:var(--accent);border-color:var(--accent);color:#fff;}
 .tcell.clear{grid-column:1/-1;color:var(--gr);font-weight:800;}
 @media(max-width:520px){#timeGrid{grid-template-columns:repeat(3,1fr);}}
@@ -407,7 +408,7 @@ const T={
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Debut',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
    paid:'Paye',unpaid:'A payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Deja paye',kUnpaid:'Reste a payer',del:'Retirer cet employe?',user:"Nom d'utilisateur",
    chooseWeek:'Choisir une semaine',ws_past:'Passee',ws_cur:'En cours',ws_up:'A venir',teamAll:'Toutes',teamExt:'Exterieur',teamInt:'Interieur',
-   locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.<br><strong>Un jour verrouille a corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit etre apres l'heure de debut.",hoursHi:'Heures pleines en surbrillance'},
+   locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.<br><strong>Un jour verrouille a corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit etre apres l'heure de debut.",hoursHi:'Heures de quart regulieres en surbrillance'},
  en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',logout:'Log out',
    employees:'Employees and rates',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
@@ -419,7 +420,7 @@ const T={
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
    paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Total hours',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',del:'Remove this employee?',user:'Username',
    chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',teamExt:'Exterior',teamInt:'Interior',
-   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Full hours highlighted'}
+   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted'}
 };
 const ROLES=[
  {name:'Accueil',emoji:'👋',min:1,max:1,color:'#22c55e'},
@@ -524,8 +525,12 @@ function openWeekSheet(){renderWeekList();document.getElementById('weekSheet').s
 function closeWeekSheet(){document.getElementById('weekSheet').style.display='none';}
 let timeCtx=null;
 function openTimePicker(ctx){timeCtx=ctx;document.getElementById('timeSheetTitle').textContent=ctx.title;
+ let day;if(ctx.mode==='day')day=state.weeks[state.current].data[ctx.id][DAYS[selDay]];else day=state.weeks[state.current].data[currentEmp][DAYS[ctx.dayIdx]];
+ const reg=ctx.f==='start'?['08:00','09:00']:['17:00','18:00'];
  let h='<div class="tnote">'+T[lang].hoursHi+'</div><button class="tcell clear" data-t="">--:--</button>';
- for(let m=OPEN_MIN;m<=CLOSE_MIN;m+=STEP){const v=String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');h+='<button class="tcell'+(m%60===0?' hour':'')+(v===ctx.cur?' on':'')+'" data-t="'+v+'">'+v+'</button>';}
+ for(let m=OPEN_MIN;m<=CLOSE_MIN;m+=STEP){const v=String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
+  const dis=(ctx.f==='end'&&day.start&&tmin(v)<=tmin(day.start))||(ctx.f==='start'&&day.end&&tmin(v)>=tmin(day.end));
+  h+='<button class="tcell'+(reg.includes(v)?' reg':'')+(v===ctx.cur?' on':'')+'" data-t="'+v+'"'+(dis?' disabled':'')+'>'+v+'</button>';}
  document.getElementById('timeGrid').innerHTML=h;document.getElementById('timeSheet').style.display='flex';
  const sel=document.querySelector('#timeGrid .tcell.on');if(sel)setTimeout(()=>sel.scrollIntoView({block:'center'}),0);}
 function closeTimePicker(){document.getElementById('timeSheet').style.display='none';timeCtx=null;}
