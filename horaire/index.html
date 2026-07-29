@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex,nofollow"/>
 <title>Norelo - Horaire</title>
 <style>
-:root{--dark:#070f2b;--blue:#2563eb;--bl:#4fa3e8;--bp:#7cc0ff;--bdr:rgba(120,170,230,0.22);--gr:#9fb2cc;--green:#22c55e;--red:#f04747;--txt:#eef3fb;--panel:#0e1a3d;--panel2:#16244f;--soft:#1b2c5c;}
+:root{--dark:#0e1319;--panel:#161d27;--panel2:#1e2733;--soft:#252f3d;--bdr:rgba(148,163,184,0.16);--txt:#f1f5f9;--gr:#94a3b8;--accent:#10b981;--accent-d:#059669;--accent-l:#34d399;--amber:#f59e0b;--red:#f0655a;--head:#cbd5e1;}
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{overflow-x:hidden;}
 body{background:var(--dark);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:17px;line-height:1.5;min-height:100vh;-webkit-text-size-adjust:100%;}
@@ -16,34 +16,34 @@ input,select{font-family:inherit;}
 #login{position:fixed;inset:0;background:var(--dark);display:flex;align-items:center;justify-content:center;z-index:1000;padding:1.5rem;}
 .lbox{width:100%;max-width:420px;background:var(--panel);border:1px solid var(--bdr);border-radius:22px;padding:2.6rem 2.2rem;text-align:center;}
 .logo{font-size:32px;font-weight:800;letter-spacing:-1px;}
-.logo .lo{color:var(--bl);}
-.logo .dot{display:inline-block;width:6px;height:6px;background:var(--green);border-radius:50%;margin-left:6px;vertical-align:middle;animation:pu 2s infinite;}
+.logo .lo{color:var(--accent-l);}
+.logo .dot{display:inline-block;width:6px;height:6px;background:var(--amber);border-radius:50%;margin-left:6px;vertical-align:middle;animation:pu 2s infinite;}
 @keyframes pu{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
 .lsub{color:var(--gr);font-size:16px;margin:.5rem 0 1.8rem;}
 #login input{width:100%;padding:16px;background:var(--soft);border:1px solid var(--bdr);border-radius:12px;color:var(--txt);font-size:18px;margin-bottom:1rem;text-align:center;}
-#login input:focus{outline:none;border-color:var(--blue);}
-.btn{background:var(--blue);color:#fff;border:none;border-radius:12px;padding:15px 22px;font-size:17px;font-weight:700;transition:background .2s,transform .12s;}
-.btn:hover{background:#1d4ed8;}.btn:active{transform:scale(.98);}
+#login input:focus{outline:none;border-color:var(--accent);}
+.btn{background:var(--accent);color:#04170f;border:none;border-radius:12px;padding:15px 22px;font-size:17px;font-weight:700;transition:background .2s,transform .12s;}
+.btn:hover{background:var(--accent-d);}.btn:active{transform:scale(.98);}
 .btn.full{width:100%;}
 .btn.ghost{background:transparent;border:1.5px solid var(--bdr);color:var(--txt);}
-.btn.ghost:hover{background:rgba(255,255,255,.06);}
+.btn.ghost:hover{background:rgba(255,255,255,.05);}
 .btn.sm{padding:11px 16px;font-size:15px;}
 .lerr{color:var(--red);font-size:14px;min-height:18px;margin-bottom:.5rem;font-weight:600;}
 .lhint{color:var(--gr);font-size:13px;margin-top:1.4rem;line-height:1.6;}
 .lt{display:inline-flex;border:1.5px solid var(--bdr);border-radius:12px;overflow:hidden;margin-top:1.2rem;}
 .lt button{background:transparent;color:var(--gr);border:none;padding:10px 18px;font-size:15px;font-weight:700;}
-.lt button.on{background:var(--blue);color:#fff;}
+.lt button.on{background:var(--accent);color:#04170f;}
 
 #app{display:none;}
-header{position:sticky;top:0;z-index:50;background:rgba(10,18,45,.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--bdr);padding:1rem 1.4rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+header{position:sticky;top:0;z-index:50;background:rgba(16,22,30,.95);backdrop-filter:blur(18px);border-bottom:1px solid var(--bdr);padding:1rem 1.4rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
 header .logo{font-size:24px;}
 .spacer{flex:1;}
 .tabs{display:inline-flex;gap:.35rem;background:var(--soft);border:1px solid var(--bdr);border-radius:14px;padding:5px;}
 .tabs button{background:transparent;border:none;color:var(--gr);padding:12px 22px;font-size:16px;font-weight:700;border-radius:10px;}
-.tabs button.on{background:var(--blue);color:#fff;}
+.tabs button.on{background:var(--accent);color:#04170f;}
 .hlt{display:inline-flex;border:1.5px solid var(--bdr);border-radius:12px;overflow:hidden;}
 .hlt button{background:transparent;color:var(--gr);border:none;padding:9px 15px;font-size:14px;font-weight:700;}
-.hlt button.on{background:var(--blue);color:#fff;}
+.hlt button.on{background:var(--accent);color:#04170f;}
 
 main{max-width:1100px;margin:0 auto;padding:1.6rem 1.4rem 5rem;}
 .rowtop{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem;}
@@ -51,48 +51,60 @@ h1{font-size:26px;font-weight:800;letter-spacing:-.5px;}
 h2{font-size:20px;font-weight:800;}
 .muted{color:var(--gr);font-size:15px;}
 
-/* week navigator */
 .weeknav{display:flex;align-items:center;gap:.6rem;}
 .wnav{width:50px;height:50px;border-radius:13px;border:1.5px solid var(--bdr);background:var(--soft);color:var(--txt);font-size:22px;font-weight:800;line-height:1;}
-.wnav:hover:not(:disabled){border-color:var(--blue);}
+.wnav:hover:not(:disabled){border-color:var(--accent);}
 .wnav:disabled{opacity:.3;cursor:default;}
 .wcur{text-align:center;min-width:210px;}
 .wlabel{font-size:19px;font-weight:800;}
 .wcur select{margin-top:4px;width:100%;padding:8px 10px;background:transparent;border:1px solid var(--bdr);border-radius:10px;color:var(--gr);font-size:13px;}
 
+/* mini calendar */
+.calcard{background:var(--panel);border:1px solid var(--bdr);border-radius:16px;padding:1.1rem 1.2rem;margin-bottom:1.4rem;}
+.calhdr{font-size:15px;font-weight:800;margin-bottom:.8rem;text-align:center;letter-spacing:.3px;}
+.calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+.cawd{text-align:center;font-size:11px;font-weight:800;color:var(--gr);text-transform:uppercase;padding-bottom:2px;}
+.caday{min-height:46px;border-radius:10px;background:var(--soft);padding:5px 3px;text-align:center;border:1.5px solid transparent;transition:border-color .12s;}
+.caday.empty{background:transparent;}
+.caday .cadn{font-size:14px;font-weight:700;}
+.caday .cahh{font-size:11px;color:var(--accent-l);font-weight:800;margin-top:1px;}
+.caday.inweek{border-color:var(--accent);background:rgba(16,185,129,.13);}
+.caday.today{outline:2px solid var(--amber);outline-offset:-2px;}
+.caday:not(.empty):hover{border-color:var(--gr);cursor:pointer;}
+
 .daypick{display:grid;grid-template-columns:repeat(7,1fr);gap:.5rem;margin-bottom:1.6rem;}
 .daybtn{background:var(--panel);border:2px solid var(--bdr);border-radius:14px;padding:12px 6px;text-align:center;color:var(--txt);transition:all .15s;}
 .daybtn .dn{font-size:15px;font-weight:800;}
 .daybtn .dd{font-size:12px;color:var(--gr);margin-top:2px;}
-.daybtn.on{background:var(--blue);border-color:var(--blue);}
-.daybtn.on .dd{color:rgba(255,255,255,.8);}
+.daybtn.on{background:var(--accent);border-color:var(--accent);color:#04170f;}
+.daybtn.on .dd{color:rgba(4,23,15,.7);}
 @media(max-width:640px){.daypick{grid-template-columns:repeat(4,1fr);}}
 
-.rolehdr{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--bp);margin:1.4rem 0 .7rem;}
-.rolehdr .rd{width:12px;height:12px;border-radius:4px;}
-.ecard{display:grid;grid-template-columns:1.3fr 2fr auto;gap:1.1rem;align-items:center;background:var(--panel);border:1px solid var(--bdr);border-radius:16px;padding:1.1rem 1.2rem;margin-bottom:.7rem;border-left:5px solid var(--gr);}
+.rolehdr{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--head);margin:1.4rem 0 .7rem;}
+.rolehdr .rd{width:11px;height:11px;border-radius:3px;}
+.ecard{display:grid;grid-template-columns:1.3fr 2fr auto;gap:1.1rem;align-items:center;background:var(--panel);border:1px solid var(--bdr);border-radius:16px;padding:1.1rem 1.2rem;margin-bottom:.7rem;}
 .en{font-size:20px;font-weight:800;}
 .etime{display:flex;gap:.8rem;}
 .tfield{flex:1;}
 .tfield label{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gr);margin-bottom:5px;}
 .tfield select{width:100%;padding:13px 10px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:11px;color:var(--txt);font-size:19px;text-align:center;font-weight:700;}
-.tfield select:focus{outline:none;border-color:var(--blue);}
+.tfield select:focus{outline:none;border-color:var(--accent);}
 .ecalc{text-align:right;min-width:88px;}
-.ecalc .eh{font-size:24px;font-weight:800;color:var(--bl);}
-@media(max-width:760px){.ecard{grid-template-columns:1fr;gap:.9rem;border-left-width:6px;}.ecalc{text-align:left;}}
+.ecalc .eh{font-size:24px;font-weight:800;color:var(--accent-l);}
+@media(max-width:760px){.ecard{grid-template-columns:1fr;gap:.9rem;}.ecalc{text-align:left;}}
 
 .wtable{width:100%;border-collapse:collapse;background:var(--panel);border-radius:14px;overflow:hidden;min-width:680px;}
 .wtable th,.wtable td{padding:14px 12px;text-align:center;font-size:16px;}
-.wtable thead th{background:var(--soft);font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:var(--bp);font-weight:800;}
+.wtable thead th{background:var(--soft);font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:var(--head);font-weight:800;}
 .wtable tbody tr:nth-child(even){background:rgba(255,255,255,.03);}
-.wtable td.nm{text-align:left;font-weight:700;font-size:17px;border-left:5px solid var(--gr);}
+.wtable td.nm{text-align:left;font-weight:700;font-size:17px;}
 .wtable td.z{color:var(--gr);}
-.wtable .tot{font-weight:800;color:var(--bl);}
+.wtable .tot{font-weight:800;color:var(--accent-l);}
 .wtable tfoot td{background:var(--soft);font-weight:800;font-size:17px;}
 .wscroll{overflow-x:auto;border-radius:14px;}
 
 .card{background:var(--panel);border:1px solid var(--bdr);border-radius:16px;padding:1.3rem 1.4rem;margin-top:1.4rem;}
-.card h3{font-size:15px;text-transform:uppercase;letter-spacing:1px;color:var(--bp);margin-bottom:1rem;font-weight:800;}
+.card h3{font-size:15px;text-transform:uppercase;letter-spacing:1px;color:var(--head);margin-bottom:1rem;font-weight:800;}
 .frow{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;}
 .frow input,.frow select{padding:13px 14px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:11px;color:var(--txt);font-size:16px;}
 .frow input.name{flex:1;min-width:140px;}
@@ -102,8 +114,8 @@ h2{font-size:20px;font-weight:800;}
 .leg .lname{display:flex;align-items:center;gap:11px;}
 .legdot{width:13px;height:13px;border-radius:4px;}
 .cov{font-size:14px;font-weight:800;padding:4px 12px;border-radius:20px;}
-.cov.ok{background:rgba(34,197,94,.16);color:var(--green);}
-.cov.under{background:rgba(240,71,71,.16);color:var(--red);}
+.cov.ok{background:rgba(16,185,129,.16);color:var(--accent-l);}
+.cov.under{background:rgba(240,101,90,.16);color:var(--red);}
 .cov.na{color:var(--gr);font-weight:700;}
 .emprow{display:flex;align-items:center;gap:.7rem;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06);}
 .emprow .enm{flex:1;font-weight:700;}
@@ -117,18 +129,18 @@ h2{font-size:20px;font-weight:800;}
 .mgrlock input{width:100%;padding:16px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:12px;color:var(--txt);font-size:18px;margin-bottom:1rem;text-align:center;}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1rem;margin-bottom:1.6rem;}
 .kpi{background:var(--panel);border:1px solid var(--bdr);border-radius:16px;padding:1.3rem;}
-.kpi .v{font-size:30px;font-weight:800;color:var(--bl);}
-.kpi .v.g{color:var(--green);}.kpi .v.r{color:var(--red);}
+.kpi .v{font-size:30px;font-weight:800;color:var(--accent-l);}
+.kpi .v.g{color:var(--accent-l);}.kpi .v.r{color:var(--red);}
 .kpi .k{font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:var(--gr);margin-top:4px;}
 .mtable{width:100%;border-collapse:collapse;}
 .mtable th,.mtable td{padding:14px 12px;text-align:left;border-bottom:1px solid rgba(255,255,255,.07);font-size:16px;}
-.mtable th{font-size:13px;text-transform:uppercase;color:var(--bp);letter-spacing:.5px;font-weight:800;}
+.mtable th{font-size:13px;text-transform:uppercase;color:var(--head);letter-spacing:.5px;font-weight:800;}
 .mtable td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;}
 .paidbtn{border:1.5px solid var(--bdr);background:var(--soft);color:var(--gr);border-radius:22px;padding:9px 18px;font-size:14px;font-weight:800;min-height:44px;}
-.paidbtn.yes{background:rgba(34,197,94,.16);border-color:var(--green);color:var(--green);}
+.paidbtn.yes{background:rgba(16,185,129,.16);border-color:var(--accent);color:var(--accent-l);}
 .tips{display:flex;gap:.7rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem;}
 .tips input{width:150px;padding:13px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:11px;color:var(--txt);font-size:17px;}
-.tag{font-size:11px;padding:3px 9px;border-radius:20px;background:rgba(124,192,255,.14);color:var(--bp);margin-left:.5rem;vertical-align:middle;font-weight:700;}
+.tag{font-size:11px;padding:3px 9px;border-radius:20px;background:rgba(245,158,11,.16);color:var(--amber);margin-left:.5rem;vertical-align:middle;font-weight:700;}
 footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;border-top:1px solid var(--bdr);}
 </style>
 </head>
@@ -172,11 +184,13 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     </div>
 
     <div id="dayView">
+      <div class="calcard" id="calAdmin"></div>
       <div class="daypick" id="daypick"></div>
       <div id="dayList"></div>
     </div>
 
     <div id="empView" style="display:none">
+      <div class="calcard" id="calEmp"></div>
       <div id="empSheet"></div>
     </div>
 
@@ -233,32 +247,23 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
 <script>
 /* ============================================================
    NORELO HORAIRE - light client-side gate. Passwords live in
-   this file, so they are visible in page source. Fine for
-   testing; real privacy comes with the Supabase backend (Phase 2).
+   this file (visible in page source). Fine for testing; real
+   privacy comes with the Supabase backend (Phase 2).
    ============================================================ */
 const CONFIG={staffPassword:'pommes2025',managerPassword:'chef2025'};
 const ADMIN={u:'patron',p:CONFIG.staffPassword};
 const ACCOUNTS=[
- {u:'evens',p:'pomme41',name:'Evens D.'},
- {u:'judy',p:'verger52',name:'Judy S.'},
- {u:'bernard',p:'cidre18',name:'Bernard'},
- {u:'jasmine',p:'soleil73',name:'Jasmine L.'},
- {u:'maxime',p:'panier29',name:'Maxime A.'},
- {u:'mikael',p:'feuille64',name:'Mikael T.'},
- {u:'daniel',p:'jardin37',name:'Daniel B.'},
- {u:'sydney',p:'saison85',name:'Sydney D.'},
- {u:'jack',p:'recolte12',name:'Jack Dube'},
- {u:'jael',p:'branche56',name:'Jael K.'},
- {u:'laurie',p:'fruit48',name:'Laurie K.'},
- {u:'maelie',p:'terroir93',name:'Maelie Auclair'},
- {u:'kevin',p:'rustik27',name:'Kevin K.'},
- {u:'lili',p:'verger61',name:'Lili Bergeron'},
- {u:'maria',p:'pomme39',name:'Maria Henneuse'},
- {u:'danny',p:'panier74',name:'Danny Parker'},
+ {u:'evens',p:'pomme41',name:'Evens D.'},{u:'judy',p:'verger52',name:'Judy S.'},
+ {u:'bernard',p:'cidre18',name:'Bernard'},{u:'jasmine',p:'soleil73',name:'Jasmine L.'},
+ {u:'maxime',p:'panier29',name:'Maxime A.'},{u:'mikael',p:'feuille64',name:'Mikael T.'},
+ {u:'daniel',p:'jardin37',name:'Daniel B.'},{u:'sydney',p:'saison85',name:'Sydney D.'},
+ {u:'jack',p:'recolte12',name:'Jack Dube'},{u:'jael',p:'branche56',name:'Jael K.'},
+ {u:'laurie',p:'fruit48',name:'Laurie K.'},{u:'maelie',p:'terroir93',name:'Maelie Auclair'},
+ {u:'kevin',p:'rustik27',name:'Kevin K.'},{u:'lili',p:'verger61',name:'Lili Bergeron'},
+ {u:'maria',p:'pomme39',name:'Maria Henneuse'},{u:'danny',p:'panier74',name:'Danny Parker'},
  {u:'mathilde',p:'soleil16',name:'Mathilde H.'}
 ];
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
-
 const DAYS=['mon','tue','wed','thu','fri','sat','sun'];
 const T={
  fr:{tDay:'Jour',tWeek:'Semaine',tMgr:'Gestion',logout:'Quitter',
@@ -270,8 +275,7 @@ const T={
    days:['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'],sdays:['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'],
    months:['janvier','fevrier','mars','avril','mai','juin','juillet','aout','septembre','octobre','novembre','decembre'],
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Debut',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
-   paid:'Paye',unpaid:'A payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Deja paye',kUnpaid:'Reste a payer',del:'Retirer cet employe?',
-   user:"Nom d'utilisateur"},
+   paid:'Paye',unpaid:'A payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Deja paye',kUnpaid:'Reste a payer',del:'Retirer cet employe?',user:"Nom d'utilisateur"},
  en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',logout:'Log out',
    employees:'Employees and rates',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
@@ -281,23 +285,22 @@ const T={
    days:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],sdays:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
-   paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Total hours',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',del:'Remove this employee?',
-   user:'Username'}
+   paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Total hours',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',del:'Remove this employee?',user:'Username'}
 };
 const ROLES=[
  {name:'Accueil',emoji:'👋',min:1,max:1,color:'#22c55e'},
- {name:'Caisse (Sacs)',emoji:'🛍️',min:4,max:6,color:'#ef4444'},
- {name:'Chauffeur',emoji:'🚜',min:1,max:2,color:'#16a34a'},
- {name:'Chauffeur 4 Roues',emoji:'🚗',min:1,max:2,color:'#0ea5e9'},
+ {name:'Caisse (Sacs)',emoji:'🛍️',min:4,max:6,color:'#f59e0b'},
+ {name:'Chauffeur',emoji:'🚜',min:1,max:2,color:'#84cc16'},
+ {name:'Chauffeur 4 Roues',emoji:'🚗',min:1,max:2,color:'#14b8a6'},
  {name:'Kiosque',emoji:'🧺',min:2,max:4,color:'#06b6d4'},
  {name:'Speech',emoji:'🎤',min:2,max:3,color:'#a855f7'},
  {name:'Patisserie',emoji:'🧁',min:3,max:4,color:'#ec4899'},
  {name:'Stationnement',emoji:'🅿️',min:5,max:7,color:'#3b82f6'},
- {name:'Stationnement (Chef)',emoji:'🧭',min:1,max:1,color:'#2563eb'},
+ {name:'Stationnement (Chef)',emoji:'🧭',min:1,max:1,color:'#6366f1'},
  {name:'Flexible',emoji:'💪',min:0,max:0,color:'#eab308'},
- {name:'Entretien Menager',emoji:'🧹',min:1,max:2,color:'#14b8a6'},
- {name:'Manager',emoji:'💼',min:2,max:2,color:'#f59e0b'},
- {name:'Pommes',emoji:'🍎',min:0,max:0,color:'#84cc16'}
+ {name:'Entretien Menager',emoji:'🧹',min:1,max:2,color:'#0ea5e9'},
+ {name:'Manager',emoji:'💼',min:2,max:2,color:'#fb923c'},
+ {name:'Pommes',emoji:'🍎',min:0,max:0,color:'#ef4444'}
 ];
 const SEED_EMP=[
  ['Evens D.','Accueil',16],['Judy S.','Caisse (Sacs)',16],['Bernard','Chauffeur',18],
@@ -324,7 +327,7 @@ function newEmp(n,r,rate){return {id:'e'+Date.now()+Math.random().toString(36).s
 function freshState(){const emps=SEED_EMP.map(e=>newEmp(e[0],e[1],e[2]));const weeks=seasonWeeks(emps);const wk=todayMonday();const current=weeks[wk]?wk:Object.keys(weeks).sort()[0];return {employees:emps,weeks,current};}
 function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.employees)return s;}catch(e){}return freshState();}
 function save(){localStorage.setItem(KEY,JSON.stringify(state));}
-function roleObj(r){return ROLES.find(o=>o.name===r)||{color:'#9fb2cc',emoji:''};}
+function roleObj(r){return ROLES.find(o=>o.name===r)||{color:'#94a3b8',emoji:''};}
 function money(n){return '$'+(Math.round(n*100)/100).toFixed(2);}
 function hrs(day){if(!day||!day.start||!day.end)return 0;const a=day.start.split(':'),b=day.end.split(':');let m=(+b[0]*60+ +b[1])-(+a[0]*60+ +a[1]);return m<=0?0:Math.round(m/60*100)/100;}
 function empHours(id){const w=state.weeks[state.current];let t=0;DAYS.forEach(d=>t+=hrs(w.data[id][d]));return Math.round(t*100)/100;}
@@ -332,7 +335,19 @@ function empPay(id){const e=state.employees.find(x=>x.id===id);return Math.round
 function sortedEmps(){return [...state.employees].sort((a,b)=>a.role.localeCompare(b.role)||a.name.localeCompare(b.name));}
 function wkKeys(){return Object.keys(state.weeks).sort();}
 function timeOpts(sel){let o='<option value="">--:--</option>';for(let m=OPEN_MIN;m<=CLOSE_MIN;m+=STEP){const v=String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');o+='<option value="'+v+'"'+(v===sel?' selected':'')+'>'+v+'</option>';}return o;}
+function weekKeyForDate(d){const x=new Date(d);const day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);return isoLocal(x);}
+function hoursForDate(d,empId){const key=weekKeyForDate(d);const w=state.weeks[key];if(!w)return 0;const dk=DAYS[(d.getDay()+6)%7];if(empId){return w.data[empId]?hrs(w.data[empId][dk]):0;}let t=0;state.employees.forEach(e=>t+=hrs(w.data[e.id][dk]));return Math.round(t*100)/100;}
 
+function renderCalendar(el,empId){
+ if(!el)return;const d0=new Date(state.current+'T00:00:00');const y=d0.getFullYear(),m=d0.getMonth();const t=T[lang];
+ const first=new Date(y,m,1);const pad=(first.getDay()+6)%7;const dim=new Date(y,m+1,0).getDate();const todayI=isoLocal(new Date());
+ let h='<div class="calhdr">'+cap(t.months[m])+' '+y+'</div><div class="calgrid">';
+ t.sdays.forEach(d=>h+='<div class="cawd">'+d+'</div>');
+ for(let i=0;i<pad;i++)h+='<div class="caday empty"></div>';
+ for(let dn=1;dn<=dim;dn++){const c=new Date(y,m,dn);const iso=isoLocal(c);const hh=hoursForDate(c,empId);const inw=weekKeyForDate(c)===state.current;
+  h+='<div class="caday'+(inw?' inweek':'')+(iso===todayI?' today':'')+'" data-date="'+iso+'"><div class="cadn">'+dn+'</div>'+(hh>0?'<div class="cahh">'+(hh%1?hh.toFixed(1):hh)+'h</div>':'')+'</div>';}
+ h+='</div>';el.innerHTML=h;
+}
 function renderWeekSel(){
  const sel=document.getElementById('weekSel');const keys=wkKeys();let html='',curMonth=null;
  keys.forEach(k=>{const d=new Date(k+'T00:00:00');const mo=T[lang].months[d.getMonth()];
@@ -344,7 +359,6 @@ function renderWeekSel(){
  document.getElementById('wprev').disabled=idx<=0;document.getElementById('wnext').disabled=idx>=keys.length-1;
 }
 function gotoWeek(delta){const keys=wkKeys();let i=keys.indexOf(state.current);i=Math.max(0,Math.min(keys.length-1,i+delta));state.current=keys[i];save();renderAll();}
-
 function renderDayPick(){const w=state.weeks[state.current];const t=T[lang];
  document.getElementById('daypick').innerHTML=t.sdays.map((d,i)=>'<button class="daybtn'+(i===selDay?' on':'')+'" data-day="'+i+'"><div class="dn">'+d+'</div><div class="dd">'+fmtDate(w.start,i)+'</div></button>').join('');}
 function renderDayList(){
@@ -352,7 +366,7 @@ function renderDayList(){
  sortedEmps().forEach(e=>{const ro=roleObj(e.role);
   if(e.role!==lastRole){h+='<div class="rolehdr"><span class="rd" style="background:'+ro.color+'"></span>'+ro.emoji+' '+e.role+'</div>';lastRole=e.role;}
   const day=w.data[e.id][dk];const hh=hrs(day);
-  h+='<div class="ecard" data-id="'+e.id+'" style="border-left-color:'+ro.color+'"><div class="en">'+e.name+'</div>'
+  h+='<div class="ecard" data-id="'+e.id+'"><div class="en">'+e.name+'</div>'
    +'<div class="etime"><div class="tfield"><label>'+t.start+'</label><select data-f="start">'+timeOpts(day.start)+'</select></div>'
    +'<div class="tfield"><label>'+t.end+'</label><select data-f="end">'+timeOpts(day.end)+'</select></div></div>'
    +'<div class="ecalc"><div class="eh">'+hh.toFixed(2)+'h</div></div></div>';});
@@ -362,20 +376,20 @@ function renderEmp(){
  const w=state.weeks[state.current];const emp=state.employees.find(e=>e.id===currentEmp);const t=T[lang];
  document.getElementById('viewTitle').textContent=t.hi+(emp?emp.name:'');
  if(!emp){document.getElementById('empSheet').innerHTML='';return;}
- const ro=roleObj(emp.role);let h='',tot=0;
+ let h='',tot=0;
  DAYS.forEach((dk,i)=>{const day=w.data[emp.id][dk];const hh=hrs(day);tot+=hh;
-  h+='<div class="ecard" data-day="'+i+'" style="border-left-color:'+ro.color+'"><div class="en">'+t.days[i]+' <span class="muted" style="font-weight:600">'+fmtDate(w.start,i)+'</span></div>'
+  h+='<div class="ecard" data-day="'+i+'"><div class="en">'+t.days[i]+' <span class="muted" style="font-weight:600">'+fmtDate(w.start,i)+'</span></div>'
    +'<div class="etime"><div class="tfield"><label>'+t.start+'</label><select data-f="start">'+timeOpts(day.start)+'</select></div>'
    +'<div class="tfield"><label>'+t.end+'</label><select data-f="end">'+timeOpts(day.end)+'</select></div></div>'
    +'<div class="ecalc"><div class="eh">'+hh.toFixed(2)+'h</div></div></div>';});
- h+='<div class="card" style="display:flex;justify-content:space-between;align-items:center"><span style="font-weight:800;font-size:18px">'+t.tot+'</span><span style="font-weight:800;font-size:24px;color:var(--bl)">'+tot.toFixed(2)+'h</span></div>';
+ h+='<div class="card" style="display:flex;justify-content:space-between;align-items:center"><span style="font-weight:800;font-size:18px">'+t.tot+'</span><span style="font-weight:800;font-size:24px;color:var(--accent-l)">'+tot.toFixed(2)+'h</span></div>';
  document.getElementById('empSheet').innerHTML=h;
 }
 function renderWeek(){
  const w=state.weeks[state.current];const t=T[lang];
  let h='<thead><tr><th style="text-align:left">'+t.name+'</th>';t.sdays.forEach(d=>h+='<th>'+d+'</th>');h+='<th>'+t.tot+'</th></tr></thead><tbody>';
  sortedEmps().forEach(e=>{const ro=roleObj(e.role);
-  h+='<tr><td class="nm" style="border-left-color:'+ro.color+'">'+e.name+'<div class="muted" style="font-size:13px">'+ro.emoji+' '+e.role+'</div></td>';
+  h+='<tr><td class="nm">'+e.name+'<div class="muted" style="font-size:13px">'+ro.emoji+' '+e.role+'</div></td>';
   DAYS.forEach(d=>{const hh=hrs(w.data[e.id][d]);h+='<td class="'+(hh?'':'z')+'">'+(hh?hh.toFixed(2):'-')+'</td>';});
   h+='<td class="tot">'+empHours(e.id).toFixed(2)+'h</td></tr>';});
  let th=0;state.employees.forEach(e=>th+=empHours(e.id));
@@ -404,7 +418,7 @@ function applyLang(){document.querySelectorAll('[data-i]').forEach(el=>{const k=
  document.getElementById('lbtn').textContent=T[lang].enter;
  document.getElementById('luser').placeholder=T[lang].user;document.getElementById('lpass').placeholder=lang==='fr'?'Mot de passe':'Password';
  document.documentElement.lang=lang;if(document.getElementById('app').style.display==='block')renderAll();}
-function renderAll(){renderWeekSel();if(isEmployee){renderEmp();}else{renderDayPick();renderDayList();renderWeek();renderLegend();setTitle();if(mgrUnlocked)renderMgr();}}
+function renderAll(){renderWeekSel();if(isEmployee){renderCalendar(document.getElementById('calEmp'),currentEmp);renderEmp();}else{renderCalendar(document.getElementById('calAdmin'),null);renderDayPick();renderDayList();renderWeek();renderLegend();setTitle();if(mgrUnlocked)renderMgr();}}
 function setTitle(){if(isEmployee)return;const t=T[lang];const cur=document.querySelector('.tabs button.on').id;
  document.getElementById('viewTitle').textContent=cur==='tabDay'?t.days[selDay]:cur==='tabWeek'?t.week:t.payTitle;}
 
@@ -435,6 +449,9 @@ function bindApp(){
  document.getElementById('wprev').onclick=()=>gotoWeek(-1);
  document.getElementById('wnext').onclick=()=>gotoWeek(1);
  document.getElementById('weekSel').onchange=e=>{state.current=e.target.value;save();renderAll();};
+ ['calAdmin','calEmp'].forEach(idc=>{const el=document.getElementById(idc);if(el)el.addEventListener('click',e=>{const c=e.target.closest('.caday');if(!c||c.classList.contains('empty'))return;
+  const iso=c.getAttribute('data-date');const dd=new Date(iso+'T00:00:00');const key=weekKeyForDate(dd);if(!state.weeks[key])return;
+  state.current=key;if(!isEmployee)selDay=(dd.getDay()+6)%7;save();renderAll();});});
  if(!isEmployee){
   document.getElementById('tabDay').onclick=()=>tab('day');
   document.getElementById('tabWeek').onclick=()=>tab('week');
@@ -442,7 +459,7 @@ function bindApp(){
   document.getElementById('daypick').addEventListener('click',e=>{const b=e.target.closest('[data-day]');if(!b)return;selDay=+b.getAttribute('data-day');renderDayPick();renderDayList();setTitle();});
   document.getElementById('dayList').addEventListener('change',e=>{const c=e.target.closest('.ecard');if(!c||e.target.tagName!=='SELECT')return;
    const id=c.getAttribute('data-id'),f=e.target.getAttribute('data-f');state.weeks[state.current].data[id][DAYS[selDay]][f]=e.target.value;
-   c.querySelector('.eh').textContent=hrs(state.weeks[state.current].data[id][DAYS[selDay]]).toFixed(2)+'h';save();});
+   c.querySelector('.eh').textContent=hrs(state.weeks[state.current].data[id][DAYS[selDay]]).toFixed(2)+'h';save();renderCalendar(document.getElementById('calAdmin'),null);});
   document.getElementById('addEmp').onclick=()=>{const n=document.getElementById('empName').value.trim();if(!n)return;
    const e=newEmp(n,document.getElementById('empRole').value,document.getElementById('empRate').value);state.employees.push(e);
    Object.values(state.weeks).forEach(w=>{w.data[e.id]={};DAYS.forEach(d=>w.data[e.id][d]=blankDay());});
@@ -456,7 +473,7 @@ function bindApp(){
   document.getElementById('tipCalc').onclick=calcTips;
  }else{
   document.getElementById('empSheet').addEventListener('change',e=>{if(e.target.tagName!=='SELECT')return;const c=e.target.closest('.ecard');const di=+c.getAttribute('data-day');const f=e.target.getAttribute('data-f');
-   state.weeks[state.current].data[currentEmp][DAYS[di]][f]=e.target.value;save();renderEmp();});
+   state.weeks[state.current].data[currentEmp][DAYS[di]][f]=e.target.value;save();renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);});
  }
 }
 function tab(which){document.getElementById('tabDay').classList.toggle('on',which==='day');document.getElementById('tabWeek').classList.toggle('on',which==='week');document.getElementById('tabMgr').classList.toggle('on',which==='mgr');
