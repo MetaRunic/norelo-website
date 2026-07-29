@@ -432,7 +432,7 @@ const SEED_EMP=[
  ['Maria Henneuse','Stationnement',16,'ext'],['Danny Parker','Stationnement',16,'ext'],['Mathilde H.','Stationnement',16,'ext']
 ];
 
-let state={employees:[],weeks:{},current:null},lang='fr',selDay=0,mgrUnlocked=false,isEmployee=false,currentEmp=null,teamFilter='all',myId=null;
+let state={employees:[],weeks:{},current:null},lang='fr',selDay=0,mgrUnlocked=false,isEmployee=false,currentEmp=null,teamFilter='all',myId=null,myEmail='';
 
 function isoLocal(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function todayMonday(){const d=new Date();const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return isoLocal(d);}
@@ -634,7 +634,7 @@ async function doLogin(){
 async function enterApp(user){
  const {data:me,error}=await sb.from('profiles').select('*').eq('id',user.id).maybeSingle();
  if(error||!me){document.getElementById('lerr').textContent=T[lang].wrong;await sb.auth.signOut();return;}
- const asEmp=me.role!=='manager';myId=me.id;
+ const asEmp=me.role!=='manager';myId=me.id;myEmail=(me.username||'')+EMAIL_DOMAIN;
  await loadAll();
  isEmployee=asEmp;currentEmp=asEmp?me.id:null;mgrUnlocked=!asEmp;
  document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';
@@ -690,7 +690,12 @@ function bindApp(){
    if(id===myId){alert(lang==='fr'?'Vous ne pouvez pas supprimer votre propre compte.':"You can't delete your own account.");return;}
    const th=empTotalAllWeeks(id);let msg=(lang==='fr'?'Supprimer le compte de ':'Delete account of ')+(emp?emp.name:'')+'?';
    if(th>0)msg+='\n\n'+(lang==='fr'?('ATTENTION: '+th+' h enregistrees seront effacees definitivement.'):('WARNING: '+th+' logged hours will be permanently erased.'));
-   if(!confirm(msg))return;e.target.disabled=true;
+   if(!confirm(msg))return;
+   const pw=prompt(lang==='fr'?'Entrez VOTRE mot de passe gestionnaire pour confirmer la suppression :':'Enter YOUR manager password to confirm deletion:');
+   if(!pw)return;
+   const {error:authErr}=await sb.auth.signInWithPassword({email:myEmail,password:pw});
+   if(authErr){alert(lang==='fr'?'Mot de passe incorrect. Suppression annulee.':'Wrong password. Deletion cancelled.');return;}
+   e.target.disabled=true;
    const {data,error}=await sb.functions.invoke('quick-api',{body:{action:'delete',id}});
    if(error||!data||!data.ok){e.target.disabled=false;alert((data&&data.error)||(error&&error.message)||'Erreur');return;}
    await loadAll();renderAll();});
