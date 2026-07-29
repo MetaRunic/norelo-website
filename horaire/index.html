@@ -122,6 +122,7 @@ h2{font-size:20px;font-weight:800;}
 .rolehdr .rd{width:11px;height:11px;border-radius:3px;}
 .ecard{display:grid;grid-template-columns:1.3fr 2fr auto;gap:1.1rem;align-items:center;background:var(--panel);border:1px solid var(--bdr);border-radius:11px;padding:1.1rem 1.2rem;margin-bottom:.7rem;}
 .en{font-size:20px;font-weight:800;}
+.ecrole{font-size:13px;color:var(--gr);font-weight:600;margin-top:2px;}
 .etime{display:flex;gap:.8rem;}
 .tfield{flex:1;}
 .tfield label{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gr);margin-bottom:5px;}
@@ -191,6 +192,11 @@ h2{font-size:20px;font-weight:800;}
 .tips{display:flex;gap:.7rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem;}
 .tips input{width:150px;padding:13px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:17px;}
 .tag{font-size:11px;padding:3px 9px;border-radius:20px;background:rgba(224,71,59,.16);color:var(--accent-l);margin-left:.5rem;vertical-align:middle;font-weight:700;}
+.teambar{display:inline-flex;gap:.3rem;background:var(--soft);border:1px solid var(--bdr);border-radius:9px;padding:4px;margin-bottom:1.3rem;flex-wrap:wrap;}
+.teambar .tf{background:transparent;border:none;color:var(--gr);padding:10px 18px;font-size:14px;font-weight:700;border-radius:6px;}
+.teambar .tf.on{background:var(--accent);color:#fff;}
+.teamrow td{background:var(--panel2);color:var(--head);font-weight:800;text-transform:uppercase;letter-spacing:.6px;font-size:12px;padding:9px 12px !important;text-align:left !important;}
+.teamsel{padding:9px 10px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:14px;}
 footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;border-top:1px solid var(--bdr);}
 
 /* bottom nav (mobile) */
@@ -270,6 +276,12 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
       </div>
     </div>
 
+    <div id="teamBar" class="teambar">
+      <button class="tf on" data-team="all" data-i="teamAll">Toutes</button>
+      <button class="tf" data-team="ext" data-i="teamExt">Exterieur</button>
+      <button class="tf" data-team="int" data-i="teamInt">Interieur</button>
+    </div>
+
     <div id="dayView">
       <div class="calcard" id="calAdmin"></div>
       <div class="daypick" id="daypick"></div>
@@ -316,6 +328,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
           <div class="frow" style="margin-bottom:1rem">
             <input class="name" id="empName" placeholder="Nom"/>
             <select id="empRole"></select>
+            <select id="empTeam"><option value="ext" data-i="teamExt">Exterieur</option><option value="int" data-i="teamInt">Interieur</option></select>
             <input class="rate" id="empRate" type="number" step="0.25" placeholder="$/h"/>
             <button class="btn sm" id="addEmp" data-i="add">Ajouter</button>
           </div>
@@ -385,7 +398,7 @@ const T={
    months:['janvier','fevrier','mars','avril','mai','juin','juillet','aout','septembre','octobre','novembre','decembre'],
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Debut',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
    paid:'Paye',unpaid:'A payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Deja paye',kUnpaid:'Reste a payer',del:'Retirer cet employe?',user:"Nom d'utilisateur",
-   chooseWeek:'Choisir une semaine',ws_past:'Passee',ws_cur:'En cours',ws_up:'A venir',
+   chooseWeek:'Choisir une semaine',ws_past:'Passee',ws_cur:'En cours',ws_up:'A venir',teamAll:'Toutes',teamExt:'Exterieur',teamInt:'Interieur',
    locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.<br><strong>Un jour verrouille a corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui"},
  en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',logout:'Log out',
    employees:'Employees and rates',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
@@ -397,7 +410,7 @@ const T={
    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
    paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Total hours',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',del:'Remove this employee?',user:'Username',
-   chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',
+   chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',teamExt:'Exterior',teamInt:'Interior',
    locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today'}
 };
 const ROLES=[
@@ -416,16 +429,16 @@ const ROLES=[
  {name:'Pommes',emoji:'🍎',min:0,max:0,color:'#ef4444'}
 ];
 const SEED_EMP=[
- ['Evens D.','Accueil',16],['Judy S.','Caisse (Sacs)',16],['Bernard','Chauffeur',18],
- ['Jasmine L.','Flexible',16],['Maxime A.','Flexible',16],['Mikael T.','Flexible',16],
- ['Daniel B.','Manager',24],['Sydney D.','Manager',22],['Jack Dube','Pommes',16],
- ['Jael K.','Speech',16.5],['Laurie K.','Speech',16.5],['Maelie Auclair','Speech',16.5],
- ['Kevin K.','Stationnement (Chef)',18],['Lili Bergeron','Stationnement',16],
- ['Maria Henneuse','Stationnement',16],['Danny Parker','Stationnement',16],['Mathilde H.','Stationnement',16]
+ ['Evens D.','Accueil',16,'ext'],['Judy S.','Caisse (Sacs)',16,'ext'],['Bernard','Chauffeur',18,'ext'],
+ ['Jasmine L.','Flexible',16,'ext'],['Maxime A.','Flexible',16,'ext'],['Mikael T.','Flexible',16,'ext'],
+ ['Daniel B.','Manager',24,'ext'],['Sydney D.','Manager',22,'int'],['Jack Dube','Pommes',16,'ext'],
+ ['Jael K.','Speech',16.5,'ext'],['Laurie K.','Speech',16.5,'ext'],['Maelie Auclair','Speech',16.5,'ext'],
+ ['Kevin K.','Stationnement (Chef)',18,'ext'],['Lili Bergeron','Stationnement',16,'int'],
+ ['Maria Henneuse','Stationnement',16,'ext'],['Danny Parker','Stationnement',16,'ext'],['Mathilde H.','Stationnement',16,'ext']
 ];
 
 const KEY='norelo_horaire_v3';
-let state,lang='fr',selDay=0,mgrUnlocked=false,isEmployee=false,currentEmp=null;
+let state,lang='fr',selDay=0,mgrUnlocked=false,isEmployee=false,currentEmp=null,teamFilter='all';
 
 function isoLocal(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function todayMonday(){const d=new Date();const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return isoLocal(d);}
@@ -436,9 +449,13 @@ function fmtLong(iso){const d=new Date(iso+'T00:00:00');const day=d.getDate(),mo
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
 function blankDay(){return {start:'',end:''};}
 function blankWeekFor(emps){const o={};emps.forEach(e=>{o[e.id]={};DAYS.forEach(d=>o[e.id][d]=blankDay());});return o;}
-function newEmp(n,r,rate){return {id:'e'+Date.now()+Math.random().toString(36).slice(2,6),name:n,role:r,rate:+rate||0};}
-function freshState(){const emps=SEED_EMP.map(e=>newEmp(e[0],e[1],e[2]));const weeks=seasonWeeks(emps);const wk=todayMonday();const current=weeks[wk]?wk:Object.keys(weeks).sort()[0];return {employees:emps,weeks,current};}
-function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.employees)return s;}catch(e){}return freshState();}
+function newEmp(n,r,rate,team){return {id:'e'+Date.now()+Math.random().toString(36).slice(2,6),name:n,role:r,rate:+rate||0,team:team||'ext'};}
+function freshState(){const emps=SEED_EMP.map(e=>newEmp(e[0],e[1],e[2],e[3]));const weeks=seasonWeeks(emps);const wk=todayMonday();const current=weeks[wk]?wk:Object.keys(weeks).sort()[0];return {employees:emps,weeks,current};}
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.employees){s.employees.forEach(e=>{if(!e.team)e.team=(e.name==='Lili Bergeron'||e.name==='Sydney D.')?'int':'ext';});return s;}}catch(e){}return freshState();}
+function empTeam(e){return e.team||'ext';}
+function teamLabel(tm){return tm==='int'?T[lang].teamInt:T[lang].teamExt;}
+function inTeam(e){return teamFilter==='all'||empTeam(e)===teamFilter;}
+function adminEmps(){return sortedEmps().filter(inTeam);}
 function save(){localStorage.setItem(KEY,JSON.stringify(state));}
 function roleObj(r){return ROLES.find(o=>o.name===r)||{color:'#94a3b8',emoji:''};}
 function money(n){return '$'+(Math.round(n*100)/100).toFixed(2);}
@@ -447,14 +464,14 @@ function hrs(day){if(!day||!day.start||!day.end)return 0;const a=day.start.split
 function empHours(id){const w=state.weeks[state.current];let t=0;DAYS.forEach(d=>t+=hrs(w.data[id][d]));return Math.round(t*100)/100;}
 function empPay(id){const e=state.employees.find(x=>x.id===id);return Math.round(empHours(id)*(e?e.rate:0)*100)/100;}
 function empTotalAllWeeks(id){let t=0;Object.values(state.weeks).forEach(w=>{if(w.data[id])DAYS.forEach(d=>t+=hrs(w.data[id][d]));});return Math.round(t*100)/100;}
-function sortedEmps(){return [...state.employees].sort((a,b)=>a.role.localeCompare(b.role)||a.name.localeCompare(b.name));}
+function sortedEmps(){const to={ext:0,int:1};return [...state.employees].sort((a,b)=>(to[empTeam(a)]-to[empTeam(b)])||a.name.localeCompare(b.name));}
 function wkKeys(){return Object.keys(state.weeks).sort();}
 function timeInput(f,val,disabled){return '<button type="button" class="tbtn" data-f="'+f+'" data-val="'+(val||'')+'"'+(disabled?' disabled':'')+'>'+(val||'--:--')+'</button>';}
 function clampTime(v){if(!v)return '';const p=v.split(':');let hh=+p[0],mm=+p[1];if(isNaN(hh)||isNaN(mm))return '';let m=Math.round((hh*60+mm)/STEP)*STEP;if(m<OPEN_MIN)m=OPEN_MIN;if(m>CLOSE_MIN)m=CLOSE_MIN;return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');}
 function pickDefaultWeek(){const keys=wkKeys();if(!keys.length)return null;const wk=weekKeyForDate(now());if(state.weeks[wk])return wk;return wk<keys[0]?keys[0]:keys[keys.length-1];}
 function weekKeyForDate(d){const x=new Date(d);const day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);return isoLocal(x);}
-function hoursForDate(d,empId){const key=weekKeyForDate(d);const w=state.weeks[key];if(!w)return 0;const dk=DAYS[(d.getDay()+6)%7];if(empId){return w.data[empId]?hrs(w.data[empId][dk]):0;}let t=0;state.employees.forEach(e=>t+=hrs(w.data[e.id][dk]));return Math.round(t*100)/100;}
-function weekTotal(key,empId){const w=state.weeks[key];if(!w)return 0;let t=0;const ids=empId?[empId]:state.employees.map(e=>e.id);ids.forEach(id=>{if(w.data[id])DAYS.forEach(d=>t+=hrs(w.data[id][d]));});return Math.round(t*100)/100;}
+function hoursForDate(d,empId){const key=weekKeyForDate(d);const w=state.weeks[key];if(!w)return 0;const dk=DAYS[(d.getDay()+6)%7];if(empId){return w.data[empId]?hrs(w.data[empId][dk]):0;}let t=0;state.employees.filter(inTeam).forEach(e=>t+=hrs(w.data[e.id][dk]));return Math.round(t*100)/100;}
+function weekTotal(key,empId){const w=state.weeks[key];if(!w)return 0;let t=0;const ids=empId?[empId]:state.employees.filter(inTeam).map(e=>e.id);ids.forEach(id=>{if(w.data[id])DAYS.forEach(d=>t+=hrs(w.data[id][d]));});return Math.round(t*100)/100;}
 function weekStatus(key){const mon=new Date(key+'T00:00:00');const sun=new Date(mon);sun.setDate(sun.getDate()+6);const t=new Date();t.setHours(0,0,0,0);if(sun<t)return 'past';if(mon>t)return 'up';return 'cur';}
 
 /* trusted time: server Date header (same origin, not user-clock) + monotonic elapsed */
@@ -509,11 +526,11 @@ function gotoWeek(delta){const keys=wkKeys();let i=keys.indexOf(state.current);i
 function renderDayPick(){const w=state.weeks[state.current];const t=T[lang];const tISO=realTodayISO();
  document.getElementById('daypick').innerHTML=t.sdays.map((d,i)=>{const isT=addDaysISO(w.start,i)===tISO;return '<button class="daybtn'+(i===selDay?' on':'')+(isT?' today':'')+'" data-day="'+i+'"><div class="dn">'+d+'</div><div class="dd">'+fmtDate(w.start,i)+'</div></button>';}).join('');}
 function renderDayList(){
- const w=state.weeks[state.current];const t=T[lang];const dk=DAYS[selDay];let h='',lastRole=null;
- sortedEmps().forEach(e=>{const ro=roleObj(e.role);
-  if(e.role!==lastRole){h+='<div class="rolehdr"><span class="rd" style="background:var(--gr)"></span>'+e.role+'</div>';lastRole=e.role;}
+ const w=state.weeks[state.current];const t=T[lang];const dk=DAYS[selDay];let h='',lastTeam=null;
+ adminEmps().forEach(e=>{const tm=empTeam(e);
+  if(tm!==lastTeam){h+='<div class="rolehdr">'+teamLabel(tm)+'</div>';lastTeam=tm;}
   const day=w.data[e.id][dk];const hh=hrs(day);
-  h+='<div class="ecard" data-id="'+e.id+'"><div class="en">'+e.name+'</div>'
+  h+='<div class="ecard" data-id="'+e.id+'"><div><div class="en">'+e.name+'</div><div class="ecrole">'+e.role+'</div></div>'
    +'<div class="etime"><div class="tfield"><label>'+t.start+'</label>'+timeInput('start',day.start,false)+'</div>'
    +'<div class="tfield"><label>'+t.end+'</label>'+timeInput('end',day.end,false)+'</div></div>'
    +'<div class="ecalc"><div class="eh">'+hh.toFixed(2)+'h</div></div></div>';});
@@ -536,11 +553,11 @@ function renderEmp(){
 function renderWeek(){
  const w=state.weeks[state.current];const t=T[lang];
  let h='<thead><tr><th style="text-align:left">'+t.name+'</th>';t.sdays.forEach(d=>h+='<th>'+d+'</th>');h+='<th>'+t.tot+'</th></tr></thead><tbody>';
- sortedEmps().forEach(e=>{const ro=roleObj(e.role);
-  h+='<tr><td class="nm">'+e.name+'<div class="muted" style="font-size:13px;display:flex;align-items:center;gap:6px"><span class="legdot" style="width:9px;height:9px;background:var(--gr)"></span>'+e.role+'</div></td>';
+ let lastTeam=null,th=0;
+ adminEmps().forEach(e=>{const tm=empTeam(e);if(tm!==lastTeam){h+='<tr class="teamrow"><td colspan="9">'+teamLabel(tm)+'</td></tr>';lastTeam=tm;}
+  h+='<tr><td class="nm">'+e.name+'<div class="muted" style="font-size:13px">'+e.role+'</div></td>';
   DAYS.forEach(d=>{const hh=hrs(w.data[e.id][d]);h+='<td class="'+(hh?'':'z')+'">'+(hh?hh.toFixed(2):'-')+'</td>';});
-  h+='<td class="tot">'+empHours(e.id).toFixed(2)+'h</td></tr>';});
- let th=0;state.employees.forEach(e=>th+=empHours(e.id));
+  const eh=empHours(e.id);th+=eh;h+='<td class="tot">'+eh.toFixed(2)+'h</td></tr>';});
  h+='</tbody><tfoot><tr><td style="text-align:left">'+t.tot+'</td>';for(let i=0;i<7;i++)h+='<td></td>';h+='<td class="tot">'+th.toFixed(2)+'h</td></tr></tfoot>';
  document.getElementById('wtable').innerHTML=h;
 }
@@ -549,16 +566,20 @@ function renderLegend(){const counts={};state.employees.forEach(e=>counts[e.role
   let cov=r.max>0?'<span class="cov '+(n>=r.min?'ok':'under')+'">'+n+' / '+need+'</span>':'<span class="cov na">'+n+'</span>';
   return '<div class="leg"><span class="lname"><span class="legdot" style="background:var(--gr)"></span>'+r.name+'</span>'+cov+'</div>';}).join('');}
 function renderRoleOptions(){document.getElementById('empRole').innerHTML=ROLES.map(r=>'<option>'+r.name+'</option>').join('');}
-function renderMgr(){const t=T[lang];const w=state.weeks[state.current];let th=0,tp=0,paid=0,unpaid=0;
- state.employees.forEach(e=>{const p=empPay(e.id);tp+=p;th+=empHours(e.id);if(w.paid[e.id])paid+=p;else unpaid+=p;});
+function renderMgr(){const t=T[lang];const w=state.weeks[state.current];let th=0,tp=0,paid=0,unpaid=0;const to={ext:0,int:1};
+ const emps=adminEmps();
+ emps.forEach(e=>{const p=empPay(e.id);tp+=p;th+=empHours(e.id);if(w.paid[e.id])paid+=p;else unpaid+=p;});
  document.getElementById('mgrKpis').innerHTML=kpi(th.toFixed(1)+'h',t.kHours,'')+kpi(money(tp),t.kPay,'')+kpi(money(paid),t.kPaid,'g')+kpi(money(unpaid),t.kUnpaid,'r');
  let rows='<tr><th>'+t.name+'</th><th>'+t.rate+'</th><th style="text-align:right">'+t.hours+'</th><th style="text-align:right">'+t.pay+'</th><th style="text-align:right">'+t.paid+'</th></tr>';
- [...state.employees].sort((a,b)=>empPay(b.id)-empPay(a.id)).forEach(e=>{const yes=!!w.paid[e.id];
+ let lastTeam=null;
+ [...emps].sort((a,b)=>(to[empTeam(a)]-to[empTeam(b)])||empPay(b.id)-empPay(a.id)).forEach(e=>{const tm=empTeam(e);if(tm!==lastTeam){rows+='<tr class="teamrow"><td colspan="5">'+teamLabel(tm)+'</td></tr>';lastTeam=tm;}const yes=!!w.paid[e.id];
   rows+='<tr><td>'+e.name+'</td><td>'+money(e.rate)+'/h</td><td class="num">'+empHours(e.id).toFixed(2)+'h</td><td class="num">'+money(empPay(e.id))+'</td><td style="text-align:right"><button class="paidbtn '+(yes?'yes':'')+'" data-paid="'+e.id+'">'+(yes?t.paid:t.unpaid)+'</button></td></tr>';});
  document.getElementById('mgrTable').innerHTML=rows;renderEmpAdmin();
 }
-function renderEmpAdmin(){document.getElementById('empAdmin').innerHTML=sortedEmps().map(e=>{const ro=roleObj(e.role);
- return '<div class="emprow" data-id="'+e.id+'"><span class="enm">'+e.name+'</span><span class="erl" style="display:inline-flex;align-items:center;gap:6px"><span class="legdot" style="width:9px;height:9px;background:var(--gr)"></span>'+e.role+'</span><input class="rate" type="number" step="0.25" value="'+e.rate+'" data-rate/><span class="erl">/h</span><button class="delx" data-del>&times;</button></div>';}).join('');}
+function renderEmpAdmin(){const t=T[lang];document.getElementById('empAdmin').innerHTML=sortedEmps().map(e=>{
+ return '<div class="emprow" data-id="'+e.id+'"><span class="enm">'+e.name+'</span><span class="erl">'+e.role+'</span>'
+  +'<select class="teamsel" data-team><option value="ext"'+(empTeam(e)==='ext'?' selected':'')+'>'+t.teamExt+'</option><option value="int"'+(empTeam(e)==='int'?' selected':'')+'>'+t.teamInt+'</option></select>'
+  +'<input class="rate" type="number" step="0.25" value="'+e.rate+'" data-rate/><span class="erl">/h</span><button class="delx" data-del>&times;</button></div>';}).join('');}
 function kpi(v,k,c){return '<div class="kpi"><div class="v '+c+'">'+v+'</div><div class="k">'+k+'</div></div>';}
 
 function applyLang(){document.querySelectorAll('[data-i]').forEach(el=>{const k=el.getAttribute('data-i');if(T[lang][k])el.textContent=T[lang][k];});
@@ -588,6 +609,7 @@ async function startApp(asEmp,empId){
  document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';
  document.querySelector('.tabs').classList.toggle('hide',asEmp);
  document.getElementById('bottomNav').style.display=asEmp?'none':'';
+ document.getElementById('teamBar').style.display=asEmp?'none':'';
  document.getElementById('dayView').style.display=asEmp?'none':'block';
  document.getElementById('empView').style.display=asEmp?'block':'none';
  document.getElementById('weekView').style.display='none';document.getElementById('mgr').style.display='none';
@@ -618,10 +640,12 @@ function bindApp(){
   document.getElementById('dayList').addEventListener('click',e=>{const b=e.target.closest('.tbtn');if(!b||b.disabled)return;const c=b.closest('.ecard');const f=b.getAttribute('data-f');
    openTimePicker({mode:'day',id:c.getAttribute('data-id'),f:f,cur:b.getAttribute('data-val'),title:f==='start'?T[lang].start:T[lang].end});});
   document.getElementById('addEmp').onclick=()=>{const n=document.getElementById('empName').value.trim();if(!n)return;
-   const e=newEmp(n,document.getElementById('empRole').value,document.getElementById('empRate').value);state.employees.push(e);
+   const e=newEmp(n,document.getElementById('empRole').value,document.getElementById('empRate').value,document.getElementById('empTeam').value);state.employees.push(e);
    Object.values(state.weeks).forEach(w=>{w.data[e.id]={};DAYS.forEach(d=>w.data[e.id][d]=blankDay());});
    document.getElementById('empName').value='';document.getElementById('empRate').value='';save();renderAll();};
   document.getElementById('empAdmin').addEventListener('input',e=>{if(!e.target.hasAttribute('data-rate'))return;const id=e.target.closest('.emprow').getAttribute('data-id');const emp=state.employees.find(x=>x.id===id);emp.rate=+e.target.value||0;save();});
+  document.getElementById('empAdmin').addEventListener('change',e=>{if(!e.target.classList.contains('teamsel'))return;const id=e.target.closest('.emprow').getAttribute('data-id');const emp=state.employees.find(x=>x.id===id);emp.team=e.target.value;save();renderAll();});
+  document.getElementById('teamBar').addEventListener('click',e=>{const b=e.target.closest('[data-team]');if(!b)return;teamFilter=b.getAttribute('data-team');document.querySelectorAll('#teamBar .tf').forEach(x=>x.classList.toggle('on',x===b));renderAll();});
   document.getElementById('empAdmin').addEventListener('click',e=>{if(!e.target.hasAttribute('data-del'))return;
    const id=e.target.closest('.emprow').getAttribute('data-id');const emp=state.employees.find(x=>x.id===id);const th=empTotalAllWeeks(id);
    let msg=(lang==='fr'?'Retirer ':'Remove ')+(emp?emp.name:'')+'?';
@@ -652,7 +676,7 @@ function tab(which){
 function mgrLogin(){if(document.getElementById('mpass').value===CONFIG.managerPassword){mgrUnlocked=true;document.getElementById('mgrLock').style.display='none';document.getElementById('mgrContent').style.display='block';renderMgr();}else document.getElementById('merr').textContent=T[lang].wrong;}
 function doExport(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='norelo-horaire-'+new Date().toISOString().slice(0,10)+'.json';a.click();}
 function doImport(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const s=JSON.parse(r.result);if(s.employees&&s.weeks){state=s;save();renderAll();}}catch(err){alert('Fichier invalide');}};r.readAsText(f);}
-function calcTips(){const pool=+document.getElementById('tipPool').value||0;const t=T[lang];const sh=state.employees.map(e=>({e,h:empHours(e.id)}));const tot=sh.reduce((s,x)=>s+x.h,0);
+function calcTips(){const pool=+document.getElementById('tipPool').value||0;const t=T[lang];const sh=adminEmps().map(e=>({e,h:empHours(e.id)}));const tot=sh.reduce((s,x)=>s+x.h,0);
  let rows='<tr><th>'+t.name+'</th><th style="text-align:right">'+t.hours+'</th><th style="text-align:right">'+t.share+'</th></tr>';
  sh.filter(x=>x.h>0).sort((a,b)=>b.h-a.h).forEach(x=>{rows+='<tr><td>'+x.e.name+'</td><td class="num">'+x.h.toFixed(2)+'h</td><td class="num">'+money(tot>0?pool*x.h/tot:0)+'</td></tr>';});
  document.getElementById('mgrTable').innerHTML=rows;}
