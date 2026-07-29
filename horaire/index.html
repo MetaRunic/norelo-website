@@ -676,7 +676,7 @@ function bindApp(){
    if(!name||!username||!password){alert(lang==='fr'?'Nom, utilisateur et mot de passe requis.':'Name, username and password required.');return;}
    if(password.length<6){alert(lang==='fr'?'Mot de passe: 6 caracteres minimum.':'Password: at least 6 characters.');return;}
    const btn=document.getElementById('addEmp');btn.disabled=true;
-   const {data,error}=await sb.functions.invoke('create-employee',{body:{name,username,password,team,rate}});
+   const {data,error}=await sb.functions.invoke('quick-api',{body:{name,username,password,team,rate}});
    btn.disabled=false;
    if(error||!data||!data.ok){alert((data&&data.error)||(error&&error.message)||'Erreur');return;}
    ['empName','empUser','empPass','empRate'].forEach(id=>document.getElementById(id).value='');
