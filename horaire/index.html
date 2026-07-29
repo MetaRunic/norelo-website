@@ -122,9 +122,16 @@ h2{font-size:20px;font-weight:800;}
 .etime{display:flex;gap:.8rem;}
 .tfield{flex:1;}
 .tfield label{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gr);margin-bottom:5px;}
-.tfield select,.tfield input[type=time]{width:100%;padding:13px 10px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:19px;text-align:center;font-weight:700;color-scheme:dark;}
-.tfield input[type=time]{min-height:50px;}
-.tfield select:focus,.tfield input[type=time]:focus{outline:none;border-color:var(--accent);}
+.tbtn{width:100%;padding:13px 10px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:20px;text-align:center;font-weight:800;min-height:52px;letter-spacing:.5px;}
+.tbtn:hover:not(:disabled){border-color:var(--accent);}
+.tbtn:disabled{opacity:.6;cursor:not-allowed;}
+.tbtn[data-val=""]{color:var(--gr);font-weight:700;}
+#timeGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;padding:.9rem;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.tcell{padding:15px 6px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:9px;color:var(--txt);font-size:18px;font-weight:700;min-height:56px;}
+.tcell:hover{border-color:var(--accent);}
+.tcell.on{background:var(--accent);border-color:var(--accent);color:#fff;}
+.tcell.clear{grid-column:1/-1;color:var(--gr);font-weight:800;}
+@media(max-width:520px){#timeGrid{grid-template-columns:repeat(3,1fr);}}
 .ecalc{text-align:right;min-width:88px;}
 .ecalc .eh{font-size:24px;font-weight:800;color:var(--accent-l);}
 .hintbar{background:rgba(224,71,59,.1);border:1px solid rgba(224,71,59,.32);color:var(--accent-l);border-radius:9px;padding:11px 14px;font-size:14px;font-weight:600;margin-bottom:1rem;line-height:1.45;}
@@ -335,6 +342,14 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
   </div>
 </div>
 
+<!-- time picker sheet -->
+<div id="timeSheet" class="sheet" style="display:none">
+  <div class="sheetbox">
+    <div class="sheethdr"><span id="timeSheetTitle">Debut</span><button id="timeClose">&times;</button></div>
+    <div id="timeGrid"></div>
+  </div>
+</div>
+
 <script>
 /* ============================================================
    NORELO HORAIRE - light client-side gate. Passwords live in
@@ -434,7 +449,7 @@ function empHours(id){const w=state.weeks[state.current];let t=0;DAYS.forEach(d=
 function empPay(id){const e=state.employees.find(x=>x.id===id);return Math.round(empHours(id)*(e?e.rate:0)*100)/100;}
 function sortedEmps(){return [...state.employees].sort((a,b)=>a.role.localeCompare(b.role)||a.name.localeCompare(b.name));}
 function wkKeys(){return Object.keys(state.weeks).sort();}
-function timeInput(f,val,disabled){return '<input type="time" step="900" min="07:00" max="19:00" data-f="'+f+'" value="'+(val||'')+'"'+(disabled?' disabled':'')+'/>';}
+function timeInput(f,val,disabled){return '<button type="button" class="tbtn" data-f="'+f+'" data-val="'+(val||'')+'"'+(disabled?' disabled':'')+'>'+(val||'--:--')+'</button>';}
 function clampTime(v){if(!v)return '';const p=v.split(':');let hh=+p[0],mm=+p[1];if(isNaN(hh)||isNaN(mm))return '';let m=Math.round((hh*60+mm)/STEP)*STEP;if(m<OPEN_MIN)m=OPEN_MIN;if(m>CLOSE_MIN)m=CLOSE_MIN;return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');}
 function pickDefaultWeek(){const keys=wkKeys();if(!keys.length)return null;const wk=weekKeyForDate(now());if(state.weeks[wk])return wk;return wk<keys[0]?keys[0]:keys[keys.length-1];}
 function weekKeyForDate(d){const x=new Date(d);const day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);return isoLocal(x);}
@@ -480,6 +495,16 @@ function renderWeekList(){
 }
 function openWeekSheet(){renderWeekList();document.getElementById('weekSheet').style.display='flex';}
 function closeWeekSheet(){document.getElementById('weekSheet').style.display='none';}
+let timeCtx=null;
+function openTimePicker(ctx){timeCtx=ctx;document.getElementById('timeSheetTitle').textContent=ctx.title;
+ let h='<button class="tcell clear" data-t="">--:--</button>';
+ for(let m=OPEN_MIN;m<=CLOSE_MIN;m+=STEP){const v=String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');h+='<button class="tcell'+(v===ctx.cur?' on':'')+'" data-t="'+v+'">'+v+'</button>';}
+ document.getElementById('timeGrid').innerHTML=h;document.getElementById('timeSheet').style.display='flex';
+ const sel=document.querySelector('#timeGrid .tcell.on');if(sel)setTimeout(()=>sel.scrollIntoView({block:'center'}),0);}
+function closeTimePicker(){document.getElementById('timeSheet').style.display='none';timeCtx=null;}
+function applyTime(v){if(!timeCtx)return;const w=state.weeks[state.current];
+ if(timeCtx.mode==='day'){w.data[timeCtx.id][DAYS[selDay]][timeCtx.f]=v;save();closeTimePicker();renderDayList();renderCalendar(document.getElementById('calAdmin'),null);renderWeekBar();}
+ else{const dISO=addDaysISO(w.start,timeCtx.dayIdx);if(!dayEditable(dISO)){closeTimePicker();return;}w.data[currentEmp][DAYS[timeCtx.dayIdx]][timeCtx.f]=v;save();closeTimePicker();renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);renderWeekBar();}}
 function gotoWeek(delta){const keys=wkKeys();let i=keys.indexOf(state.current);i=Math.max(0,Math.min(keys.length-1,i+delta));state.current=keys[i];save();renderAll();}
 function renderDayPick(){const w=state.weeks[state.current];const t=T[lang];const tISO=realTodayISO();
  document.getElementById('daypick').innerHTML=t.sdays.map((d,i)=>{const isT=addDaysISO(w.start,i)===tISO;return '<button class="daybtn'+(i===selDay?' on':'')+(isT?' today':'')+'" data-day="'+i+'"><div class="dn">'+d+'</div><div class="dd">'+fmtDate(w.start,i)+'</div></button>';}).join('');}
@@ -582,14 +607,16 @@ function bindApp(){
   const iso=c.getAttribute('data-date');const dd=new Date(iso+'T00:00:00');const key=weekKeyForDate(dd);if(!state.weeks[key])return;
   state.current=key;if(!isEmployee)selDay=(dd.getDay()+6)%7;save();renderAll();});});
  document.getElementById('bottomNav').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;tab(b.getAttribute('data-tab'));});
+ document.getElementById('timeClose').onclick=closeTimePicker;
+ document.getElementById('timeSheet').addEventListener('click',e=>{if(e.target.id==='timeSheet')closeTimePicker();});
+ document.getElementById('timeGrid').addEventListener('click',e=>{const b=e.target.closest('.tcell');if(!b)return;applyTime(b.getAttribute('data-t'));});
  if(!isEmployee){
   document.getElementById('tabDay').onclick=()=>tab('day');
   document.getElementById('tabWeek').onclick=()=>tab('week');
   document.getElementById('tabMgr').onclick=()=>tab('mgr');
   document.getElementById('daypick').addEventListener('click',e=>{const b=e.target.closest('[data-day]');if(!b)return;selDay=+b.getAttribute('data-day');renderDayPick();renderDayList();setTitle();});
-  document.getElementById('dayList').addEventListener('change',e=>{if(!e.target.hasAttribute('data-f'))return;const c=e.target.closest('.ecard');if(!c)return;
-   const id=c.getAttribute('data-id'),f=e.target.getAttribute('data-f');const v=clampTime(e.target.value);e.target.value=v;state.weeks[state.current].data[id][DAYS[selDay]][f]=v;
-   c.querySelector('.eh').textContent=hrs(state.weeks[state.current].data[id][DAYS[selDay]]).toFixed(2)+'h';save();renderCalendar(document.getElementById('calAdmin'),null);renderWeekBar();});
+  document.getElementById('dayList').addEventListener('click',e=>{const b=e.target.closest('.tbtn');if(!b||b.disabled)return;const c=b.closest('.ecard');const f=b.getAttribute('data-f');
+   openTimePicker({mode:'day',id:c.getAttribute('data-id'),f:f,cur:b.getAttribute('data-val'),title:f==='start'?T[lang].start:T[lang].end});});
   document.getElementById('addEmp').onclick=()=>{const n=document.getElementById('empName').value.trim();if(!n)return;
    const e=newEmp(n,document.getElementById('empRole').value,document.getElementById('empRate').value);state.employees.push(e);
    Object.values(state.weeks).forEach(w=>{w.data[e.id]={};DAYS.forEach(d=>w.data[e.id][d]=blankDay());});
@@ -602,9 +629,9 @@ function bindApp(){
   document.getElementById('mgrTable').addEventListener('click',e=>{if(!e.target.dataset.paid)return;const w=state.weeks[state.current];w.paid[e.target.dataset.paid]=!w.paid[e.target.dataset.paid];save();renderMgr();});
   document.getElementById('tipCalc').onclick=calcTips;
  }else{
-  document.getElementById('empSheet').addEventListener('change',e=>{if(!e.target.hasAttribute('data-f'))return;const c=e.target.closest('.ecard');const di=+c.getAttribute('data-day');
-   const dISO=addDaysISO(state.weeks[state.current].start,di);if(!dayEditable(dISO)){renderEmp();return;}
-   const f=e.target.getAttribute('data-f');const v=clampTime(e.target.value);e.target.value=v;state.weeks[state.current].data[currentEmp][DAYS[di]][f]=v;save();renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);renderWeekBar();});
+  document.getElementById('empSheet').addEventListener('click',e=>{const b=e.target.closest('.tbtn');if(!b||b.disabled)return;const c=b.closest('.ecard');const di=+c.getAttribute('data-day');
+   const dISO=addDaysISO(state.weeks[state.current].start,di);if(!dayEditable(dISO))return;
+   const f=b.getAttribute('data-f');openTimePicker({mode:'emp',dayIdx:di,f:f,cur:b.getAttribute('data-val'),title:f==='start'?T[lang].start:T[lang].end});});
  }
 }
 function tab(which){
