@@ -400,7 +400,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     <button data-tab="log"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6M9 8h2"/></svg><span data-i="tLog">Journal</span></button>
   </nav>
   <div id="toast"></div>
-  <footer>Norelo &middot; Outil interne &middot; Donnees dans le nuage (Supabase)</footer>
+  <footer>Norelo &middot; Outil interne &middot; <span id="footVer"></span></footer>
 </div>
 
 <!-- week picker sheet -->
@@ -694,6 +694,7 @@ async function enterApp(user){
  const dw=pickDefaultWeek();if(dw)state.current=dw;
  bindApp();renderAll();subscribeRealtime();
  const av=document.getElementById('appVer');if(av)av.textContent='v'+APP_VERSION;
+ const fv=document.getElementById('footVer');if(fv)fv.textContent='Version '+APP_VERSION;
  checkVersion();setInterval(checkVersion,5*60*1000);window.addEventListener('focus',checkVersion);
  if(!asEmp){(async()=>{const {data:last}=await sb.from('backups').select('created_at').order('created_at',{ascending:false}).limit(1);if(!last||!last.length||(Date.now()-new Date(last[0].created_at).getTime())>12*3600*1000)createBackup('Automatique');})();}
 }
