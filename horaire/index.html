@@ -432,7 +432,7 @@ const SEED_EMP=[
  ['Maria Henneuse','Stationnement',16,'ext'],['Danny Parker','Stationnement',16,'ext'],['Mathilde H.','Stationnement',16,'ext']
 ];
 
-let state={employees:[],weeks:{},current:null},lang='fr',selDay=0,mgrUnlocked=false,isEmployee=false,currentEmp=null,teamFilter='all';
+let state={employees:[],weeks:{},current:null},lang='fr',selDay=0,mgrUnlocked=false,isEmployee=false,currentEmp=null,teamFilter='all',myId=null;
 
 function isoLocal(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function todayMonday(){const d=new Date();const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return isoLocal(d);}
@@ -603,7 +603,7 @@ function renderMgr(){const t=T[lang];const w=state.weeks[state.current];let th=0
 function renderEmpAdmin(){const t=T[lang];document.getElementById('empAdmin').innerHTML=sortedEmps().map(e=>{
  return '<div class="emprow" data-id="'+e.id+'"><span class="enm">'+e.name+'</span><span class="erl">'+(e.username?('@'+e.username):'')+'</span>'
   +'<select class="teamsel" data-team><option value="ext"'+(empTeam(e)==='ext'?' selected':'')+'>'+t.teamExt+'</option><option value="int"'+(empTeam(e)==='int'?' selected':'')+'>'+t.teamInt+'</option></select>'
-  +'<input class="rate" type="number" step="0.25" value="'+e.rate+'" data-rate/><span class="erl">/h</span></div>';}).join('');}
+  +'<input class="rate" type="number" step="0.25" value="'+e.rate+'" data-rate/><span class="erl">/h</span><button class="delx" data-del>&times;</button></div>';}).join('');}
 function kpi(v,k,c){return '<div class="kpi"><div class="v '+c+'">'+v+'</div><div class="k">'+k+'</div></div>';}
 
 function applyLang(){document.querySelectorAll('[data-i]').forEach(el=>{const k=el.getAttribute('data-i');if(T[lang][k])el.textContent=T[lang][k];});
@@ -634,7 +634,7 @@ async function doLogin(){
 async function enterApp(user){
  const {data:me,error}=await sb.from('profiles').select('*').eq('id',user.id).maybeSingle();
  if(error||!me){document.getElementById('lerr').textContent=T[lang].wrong;await sb.auth.signOut();return;}
- const asEmp=me.role!=='manager';
+ const asEmp=me.role!=='manager';myId=me.id;
  await loadAll();
  isEmployee=asEmp;currentEmp=asEmp?me.id:null;mgrUnlocked=!asEmp;
  document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';
@@ -685,6 +685,15 @@ function bindApp(){
   document.getElementById('empAdmin').addEventListener('input',e=>{if(!e.target.hasAttribute('data-rate'))return;const row=e.target.closest('.emprow');const emp=state.employees.find(x=>x.id===row.getAttribute('data-id'));if(!emp)return;emp.rate=+e.target.value||0;sb.from('profiles').update({rate:emp.rate}).eq('id',emp.id).then(()=>{});});
   document.getElementById('empAdmin').addEventListener('change',e=>{if(!e.target.classList.contains('teamsel'))return;const id=e.target.closest('.emprow').getAttribute('data-id');const emp=state.employees.find(x=>x.id===id);emp.team=e.target.value;sb.from('profiles').update({team:emp.team}).eq('id',emp.id).then(()=>renderAll());});
   document.getElementById('teamBar').addEventListener('click',e=>{const b=e.target.closest('[data-team]');if(!b)return;teamFilter=b.getAttribute('data-team');document.querySelectorAll('#teamBar .tf').forEach(x=>x.classList.toggle('on',x===b));renderAll();});
+  document.getElementById('empAdmin').addEventListener('click',async e=>{if(!e.target.hasAttribute('data-del'))return;
+   const id=e.target.closest('.emprow').getAttribute('data-id');const emp=state.employees.find(x=>x.id===id);
+   if(id===myId){alert(lang==='fr'?'Vous ne pouvez pas supprimer votre propre compte.':"You can't delete your own account.");return;}
+   const th=empTotalAllWeeks(id);let msg=(lang==='fr'?'Supprimer le compte de ':'Delete account of ')+(emp?emp.name:'')+'?';
+   if(th>0)msg+='\n\n'+(lang==='fr'?('ATTENTION: '+th+' h enregistrees seront effacees definitivement.'):('WARNING: '+th+' logged hours will be permanently erased.'));
+   if(!confirm(msg))return;e.target.disabled=true;
+   const {data,error}=await sb.functions.invoke('quick-api',{body:{action:'delete',id}});
+   if(error||!data||!data.ok){e.target.disabled=false;alert((data&&data.error)||(error&&error.message)||'Erreur');return;}
+   await loadAll();renderAll();});
   document.getElementById('mgrTable').addEventListener('click',async e=>{if(!e.target.dataset.paid)return;const id=e.target.dataset.paid;const w=state.weeks[state.current];const nv=!w.paid[id];w.paid[id]=nv;renderMgr();
    const {error}=await sb.from('paid_weeks').upsert({employee_id:id,week_start:state.current,paid:nv},{onConflict:'employee_id,week_start'});
    if(error){w.paid[id]=!nv;renderMgr();alert(lang==='fr'?'Action refusee.':'Action refused.');}});
