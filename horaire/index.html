@@ -175,6 +175,11 @@ h2{font-size:20px;font-weight:800;}
 .emprow .enm{flex:1;font-weight:700;min-width:110px;}
 .emprow .erl{color:var(--gr);font-size:14px;}
 .emprow input.rate{width:90px;padding:9px 10px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:15px;text-align:right;}
+.emprow input.ename,.emprow input.euser,.emprow .rolesel{padding:9px 10px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:14px;}
+.emprow input.ename{width:130px;font-weight:700;}
+.emprow input.euser{width:120px;}
+.emprow input:focus,.emprow select:focus{outline:none;border-color:var(--accent);}
+.emprow .btn.sm[data-pwd]{padding:8px 12px;font-size:13px;}
 .delx{background:none;border:none;color:var(--gr);font-size:20px;padding:2px 8px;}
 .delx:hover{color:var(--red);}
 
@@ -337,8 +342,9 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
           <input class="name" id="empName" placeholder="Nom"/>
           <select id="empTeam"><option value="ext" data-i="teamExt">Exterieur</option><option value="int" data-i="teamInt">Interieur</option></select>
           <input class="rate" id="empRate" type="number" step="0.25" placeholder="$/h"/>
-          <input id="empUser" placeholder="Nom d'utilisateur" style="width:160px" autocomplete="off"/>
-          <input id="empPass" placeholder="Mot de passe" style="width:150px" autocomplete="off"/>
+          <input id="empUser" placeholder="Nom d'utilisateur" style="width:150px" autocomplete="off"/>
+          <input id="empPass" placeholder="Mot de passe" style="width:140px" autocomplete="off"/>
+          <select id="empRoleSel"><option value="employee" data-i="roleEmp">Employe</option><option value="manager" data-i="roleMgr">Gestionnaire</option></select>
           <button class="btn sm" id="addEmp" data-i="add">Ajouter</button>
         </div>
         <div id="empAdmin"></div>
@@ -398,7 +404,7 @@ const T={
    months:['janvier','fevrier','mars','avril','mai','juin','juillet','aout','septembre','octobre','novembre','decembre'],
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Debut',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
    paid:'Paye',unpaid:'A payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Deja paye',kUnpaid:'Reste a payer',del:'Retirer cet employe?',user:"Nom d'utilisateur",
-   chooseWeek:'Choisir une semaine',ws_past:'Passee',ws_cur:'En cours',ws_up:'A venir',teamAll:'Toutes',teamExt:'Exterieur',teamInt:'Interieur',
+   chooseWeek:'Choisir une semaine',ws_past:'Passee',ws_cur:'En cours',ws_up:'A venir',teamAll:'Toutes',teamExt:'Exterieur',teamInt:'Interieur',roleEmp:'Employe',roleMgr:'Gestionnaire',resetPwd:'MDP',
    locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.<br><strong>Un jour verrouille a corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit etre apres l'heure de debut.",hoursHi:'Heures de quart regulieres en surbrillance'},
  en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',tEmp:'Employees',logout:'Log out',
    employees:'Employees and rates',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
@@ -410,7 +416,7 @@ const T={
    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
    paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Total hours',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',del:'Remove this employee?',user:'Username',
-   chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',teamExt:'Exterior',teamInt:'Interior',
+   chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',teamExt:'Exterior',teamInt:'Interior',roleEmp:'Employee',roleMgr:'Manager',resetPwd:'PW',
    locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted'}
 };
 const ROLES=[
@@ -607,10 +613,15 @@ function renderMgr(){const t=T[lang];const w=state.weeks[state.current];let th=0
   rows+='<tr><td>'+esc(e.name)+'</td><td>'+money(e.rate)+'/h</td><td class="num">'+empHours(e.id).toFixed(2)+'h</td><td class="num">'+money(empPay(e.id))+'</td><td style="text-align:right"><button class="paidbtn '+(yes?'yes':'')+'" data-paid="'+e.id+'">'+(yes?t.paid:t.unpaid)+'</button></td></tr>';});
  document.getElementById('mgrTable').innerHTML=rows;
 }
-function renderEmpAdmin(){const t=T[lang];document.getElementById('empAdmin').innerHTML=sortedEmps().map(e=>{
- return '<div class="emprow" data-id="'+e.id+'"><span class="enm">'+esc(e.name)+'</span><span class="erl">'+(e.username?('@'+esc(e.username)):'')+'</span>'
+function renderEmpAdmin(){const t=T[lang];document.getElementById('empAdmin').innerHTML=sortedEmps().map(e=>{const mgr=e.prole==='manager';
+ return '<div class="emprow" data-id="'+e.id+'">'
+  +'<input class="ename" data-name value="'+esc(e.name)+'" placeholder="'+t.name+'"/>'
+  +'<input class="euser" data-uname value="'+esc(e.username||'')+'" placeholder="'+t.user+'" autocomplete="off"/>'
+  +'<select class="rolesel" data-role><option value="employee"'+(mgr?'':' selected')+'>'+t.roleEmp+'</option><option value="manager"'+(mgr?' selected':'')+'>'+t.roleMgr+'</option></select>'
   +'<select class="teamsel" data-team><option value="ext"'+(empTeam(e)==='ext'?' selected':'')+'>'+t.teamExt+'</option><option value="int"'+(empTeam(e)==='int'?' selected':'')+'>'+t.teamInt+'</option></select>'
-  +'<input class="rate" type="number" step="0.25" value="'+e.rate+'" data-rate/><span class="erl">/h</span><button class="delx" data-del>&times;</button></div>';}).join('');}
+  +'<input class="rate" type="number" step="0.25" value="'+e.rate+'" data-rate/><span class="erl">/h</span>'
+  +'<button class="btn ghost sm" data-pwd title="'+(lang==='fr'?'Reinitialiser le mot de passe':'Reset password')+'">'+t.resetPwd+'</button>'
+  +'<button class="delx" data-del>&times;</button></div>';}).join('');}
 function kpi(v,k,c){return '<div class="kpi"><div class="v '+c+'">'+v+'</div><div class="k">'+k+'</div></div>';}
 
 function applyLang(){document.querySelectorAll('[data-i]').forEach(el=>{const k=el.getAttribute('data-i');if(T[lang][k])el.textContent=T[lang][k];});
@@ -680,20 +691,36 @@ function bindApp(){
    openTimePicker({mode:'day',id:c.getAttribute('data-id'),f:f,cur:b.getAttribute('data-val'),title:f==='start'?T[lang].start:T[lang].end});});
   document.getElementById('addEmp').onclick=async()=>{
    const name=document.getElementById('empName').value.trim();const username=document.getElementById('empUser').value.trim().toLowerCase();
-   const password=document.getElementById('empPass').value;const team=document.getElementById('empTeam').value;const rate=document.getElementById('empRate').value;
+   const password=document.getElementById('empPass').value;const team=document.getElementById('empTeam').value;const rate=document.getElementById('empRate').value;const role=document.getElementById('empRoleSel').value;
    if(!name||!username||!password){alert(lang==='fr'?'Nom, utilisateur et mot de passe requis.':'Name, username and password required.');return;}
    if(password.length<6){alert(lang==='fr'?'Mot de passe: 6 caracteres minimum.':'Password: at least 6 characters.');return;}
    const btn=document.getElementById('addEmp');btn.disabled=true;
-   const {data,error}=await sb.functions.invoke('quick-api',{body:{name,username,password,team,rate}});
+   const {data,error}=await sb.functions.invoke('quick-api',{body:{name,username,password,team,rate,role}});
    btn.disabled=false;
    if(error||!data||!data.ok){alert((data&&data.error)||(error&&error.message)||'Erreur');return;}
    ['empName','empUser','empPass','empRate'].forEach(id=>document.getElementById(id).value='');
    await loadAll();renderAll();
   };
   document.getElementById('empAdmin').addEventListener('input',e=>{if(!e.target.hasAttribute('data-rate'))return;const row=e.target.closest('.emprow');const emp=state.employees.find(x=>x.id===row.getAttribute('data-id'));if(!emp)return;emp.rate=+e.target.value||0;sb.from('profiles').update({rate:emp.rate}).eq('id',emp.id).then(()=>{});});
-  document.getElementById('empAdmin').addEventListener('change',e=>{if(!e.target.classList.contains('teamsel'))return;const id=e.target.closest('.emprow').getAttribute('data-id');const emp=state.employees.find(x=>x.id===id);emp.team=e.target.value;sb.from('profiles').update({team:emp.team}).eq('id',emp.id).then(()=>renderAll());});
+  document.getElementById('empAdmin').addEventListener('change',async e=>{const row=e.target.closest('.emprow');if(!row)return;const id=row.getAttribute('data-id');const emp=state.employees.find(x=>x.id===id);if(!emp)return;
+   if(e.target.classList.contains('teamsel')){emp.team=e.target.value;await sb.from('profiles').update({team:emp.team}).eq('id',id);renderAll();}
+   else if(e.target.classList.contains('rolesel')){if(id===myId){alert(lang==='fr'?'Vous ne pouvez pas changer votre propre role.':"You can't change your own role.");renderEmpAdmin();return;}emp.prole=e.target.value;await sb.from('profiles').update({role:emp.prole}).eq('id',id);}
+   else if(e.target.hasAttribute('data-name')){emp.name=e.target.value.trim();await sb.from('profiles').update({name:emp.name}).eq('id',id);renderAll();}
+   else if(e.target.hasAttribute('data-uname')){const nu=e.target.value.trim().toLowerCase();if(!nu){renderEmpAdmin();return;}
+    const {data,error}=await sb.functions.invoke('quick-api',{body:{action:'update',id,username:nu}});
+    if(error||!data||!data.ok){alert((data&&data.error)||'Erreur');renderEmpAdmin();return;}
+    emp.username=nu;if(id===myId)myEmail=nu+EMAIL_DOMAIN;renderEmpAdmin();}});
   document.getElementById('teamBar').addEventListener('click',e=>{const b=e.target.closest('[data-team]');if(!b)return;teamFilter=b.getAttribute('data-team');document.querySelectorAll('#teamBar .tf').forEach(x=>x.classList.toggle('on',x===b));renderAll();});
-  document.getElementById('empAdmin').addEventListener('click',async e=>{if(!e.target.hasAttribute('data-del'))return;
+  document.getElementById('empAdmin').addEventListener('click',async e=>{
+   if(e.target.hasAttribute('data-pwd')){const rid=e.target.closest('.emprow').getAttribute('data-id');const em=state.employees.find(x=>x.id===rid);
+    const np=prompt(lang==='fr'?('Nouveau mot de passe pour '+(em?em.name:'')+' (6+ caracteres) :'):('New password for '+(em?em.name:'')+' (6+ chars):'));
+    if(!np)return;if(np.length<6){alert(lang==='fr'?'6 caracteres minimum.':'6 characters minimum.');return;}
+    const cpw=prompt(lang==='fr'?'Confirmez avec VOTRE mot de passe gestionnaire :':'Confirm with YOUR manager password:');if(!cpw)return;
+    const {error:ae}=await sb.auth.signInWithPassword({email:myEmail,password:cpw});if(ae){alert(lang==='fr'?'Mot de passe incorrect.':'Wrong password.');return;}
+    const r=await sb.functions.invoke('quick-api',{body:{action:'update',id:rid,password:np}});
+    if(r.error||!r.data||!r.data.ok){alert((r.data&&r.data.error)||'Erreur');return;}
+    alert(lang==='fr'?'Mot de passe change.':'Password changed.');return;}
+   if(!e.target.hasAttribute('data-del'))return;
    const id=e.target.closest('.emprow').getAttribute('data-id');const emp=state.employees.find(x=>x.id===id);
    if(id===myId){alert(lang==='fr'?'Vous ne pouvez pas supprimer votre propre compte.':"You can't delete your own account.");return;}
    const th=empTotalAllWeeks(id);let msg=(lang==='fr'?'Supprimer le compte de ':'Delete account of ')+(emp?emp.name:'')+'?';
