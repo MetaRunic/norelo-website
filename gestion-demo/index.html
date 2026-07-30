@@ -289,6 +289,19 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
  .ecard{grid-template-columns:1fr;gap:.9rem;padding:1.1rem;}
  .ecalc{text-align:left;}
  .en{font-size:19px;}
+ .teambar{display:flex;flex-wrap:wrap;width:100%;gap:.25rem;}
+ .teambar .tf{flex:1 1 30%;text-align:center;padding:10px 8px;white-space:nowrap;}
+ .frow{gap:.5rem;}
+ .frow>input,.frow>select{flex:1 1 130px;width:auto;min-width:0;}
+ .frow input.rate,#empName{flex:1 1 100%;}
+ #empUser,#empPass{width:auto!important;flex:1 1 130px;}
+ .emprow{gap:.5rem 0.6rem;padding:14px 0;}
+ .emprow input.ename{width:100%;}
+ .emprow input.euser{flex:1 1 120px;width:auto;}
+ .emprow .rolesel{flex:1 1 110px;}
+ .emprow .teamsel{flex:1 1 130px;}
+ .emprow input.rate{flex:0 0 70px;width:70px;}
+ .emprow .btn.sm[data-pwd]{flex:0 0 auto;}
 }
 @media(max-width:400px){
  .caday .cahh{display:none;}
@@ -696,7 +709,7 @@ function renderWeek(){
  h+='</tbody><tfoot><tr><td style="text-align:left">'+t.tot+'</td>';for(let i=0;i<7;i++)h+='<td></td>';h+='<td class="tot">'+th.toFixed(2)+'h</td></tr></tfoot>';
  document.getElementById('wtable').innerHTML=h;
 }
-function renderMgr(){const t=T[lang];const w=state.weeks[state.current];let th=0,tp=0,paid=0,unpaid=0;const to={ext:0,int:1};
+function renderMgr(){const t=T[lang];const w=state.weeks[state.current];let th=0,tp=0,paid=0,unpaid=0;const to={};DEPT_ORDER.forEach((c,i)=>to[c]=i);
  const emps=adminEmps();
  emps.forEach(e=>{const p=empPay(e.id);tp+=p;th+=empHours(e.id);if(w.paid[e.id])paid+=p;else unpaid+=p;});
  document.getElementById('mgrKpis').innerHTML=kpi(th.toFixed(1)+'h',t.kHours,'')+kpi(money(tp),t.kPay,'')+kpi(money(paid),t.kPaid,'g')+kpi(money(unpaid),t.kUnpaid,'r');
@@ -1026,10 +1039,18 @@ function _hi(e){_clearHi();_hiEl=e;if(e)e.classList.add('tourhi');}
 function _hiBig(e){_clearHi();_hiEl=e;if(e)e.classList.add('tourhi-nz');}
 function _clearHi(){if(_hiEl){_hiEl.classList.remove('tourhi');_hiEl.classList.remove('tourhi-nz');}_hiEl=null;}
 function _cap(t){const c=_el('tourCaption');c.textContent=t;c.classList.add('show');_posCap();}
-function _posCap(){const c=_el('tourCaption');if(!_hiEl){c.style.bottom='2.2rem';c.style.top='auto';c.style.left='50%';c.style.transform='translateX(-50%)';return;}
- const r=_hiEl.getBoundingClientRect();c.style.bottom='auto';c.style.left=(r.left+r.width/2)+'px';
- if(r.top<120){c.style.top=(r.bottom+16)+'px';c.style.transform='translate(-50%,0)';}
- else{c.style.top=(r.top-16)+'px';c.style.transform='translate(-50%,-100%)';}}
+function _posCap(){const c=_el('tourCaption');
+ if(!_hiEl){c.style.bottom='2.2rem';c.style.top='auto';c.style.left='50%';c.style.transform='translateX(-50%)';return;}
+ const r=_hiEl.getBoundingClientRect();const vw=window.innerWidth,vh=window.innerHeight;
+ c.style.transform='translateX(-50%)';c.style.bottom='auto';
+ const ch=c.offsetHeight||46,cw=c.offsetWidth||220,gap=14,topMin=68,botMax=vh-ch-16;
+ let left=r.left+r.width/2;left=Math.max(cw/2+8,Math.min(vw-cw/2-8,left));c.style.left=left+'px';
+ let top;
+ if(r.top-gap-ch>=topMin)top=r.top-gap-ch;              // fits fully above the element
+ else if(r.bottom+gap<=botMax)top=r.bottom+gap;          // fits below the element
+ else top=r.top+12;                                      // element is huge: sit just inside its top
+ top=Math.max(topMin,Math.min(botMax,top));              // never off-screen or under the header
+ c.style.top=top+'px';}
 function _hideCap(){_el('tourCaption').classList.remove('show');}
 async function _type(inp,text){inp.value='';for(let i=0;i<text.length;i++){inp.value=text.slice(0,i+1);await _sleep(95);}}
 function _closeWelcome(){_el('tourModal').style.display='none';}
@@ -1042,7 +1063,7 @@ function _showDim(){_el('tourDim').classList.add('show');}
 function _hideDim(){_el('tourDim').classList.remove('show');}
 let _cx=0,_cy=0;
 function _pt(el){const r=el.getBoundingClientRect();return[r.left+r.width/2,r.top+r.height/2];}
-function _moveCursor(el){[_cx,_cy]=_pt(el);const c=_el('tourCursor');c.classList.add('show');c.style.left=(_cx-3)+'px';c.style.top=(_cy-3)+'px';}
+function _moveCursor(el){let[x,y]=_pt(el);x=Math.max(18,Math.min(window.innerWidth-18,x));y=Math.max(64,Math.min(window.innerHeight-64,y));_cx=x;_cy=y;const c=_el('tourCursor');c.classList.add('show');c.style.left=(_cx-3)+'px';c.style.top=(_cy-3)+'px';}
 async function _clickFx(){const k=_el('tourClick');k.style.left=_cx+'px';k.style.top=_cy+'px';k.classList.remove('go');void k.offsetWidth;k.classList.add('go');const c=_el('tourCursor');c.classList.add('click');await _sleep(160);c.classList.remove('click');}
 function _cursorStart(){const c=_el('tourCursor');c.style.transition='none';c.style.left=(window.innerWidth/2-3)+'px';c.style.top=(window.innerHeight*0.82)+'px';void c.offsetWidth;c.style.transition='';c.classList.add('show');}
 async function runGuided(){
@@ -1077,7 +1098,7 @@ function navEl(){const t=document.querySelector('.tabs');return (t&&t.offsetPare
 function navBtn(w){const t=document.querySelector('.tabs');
  if(t&&t.offsetParent!==null)return document.getElementById('tab'+({day:'Day',week:'Week',mgr:'Mgr',emp:'Emp',log:'Log',bak:'Bak'}[w]));
  return document.querySelector('#bottomNav [data-tab="'+w+'"]');}
-async function _spot(el,text,zoom){if(!el)return;el.scrollIntoView({behavior:'smooth',block:'center'});await _sleep(800);(zoom?_hi:_hiBig)(el);_moveCursor(el);_cap(text);await _sleep(150);}
+async function _spot(el,text,zoom){if(!el)return;const tall=el.getBoundingClientRect().height>window.innerHeight*0.58;el.scrollIntoView({behavior:'smooth',block:tall?'start':'center'});await _sleep(820);(zoom?_hi:_hiBig)(el);_moveCursor(el);_cap(text);await _sleep(150);}
 async function _act(el,travel){if(!el)return;_moveCursor(el);await _sleep(travel||820);await _clickFx();el.click();}
 async function runAppTour(startL){
  const fr=startL==='fr';const P=ms=>_sleep(ms);
