@@ -847,7 +847,7 @@ let deployTag=null;
 async function checkVersion(){try{const r=await fetch(location.pathname,{method:'HEAD',cache:'no-store'});const t=r.headers.get('etag')||r.headers.get('last-modified');if(!t)return;
  if(deployTag===null){deployTag=t;return;}
  if(t!==deployTag){deployTag=t;document.body.innerHTML='<div style="color:#eef3fb;font-family:sans-serif;text-align:center;padding:3rem;font-size:18px">'+(lang==='fr'?'Nouvelle version. Rechargement...':'New version. Reloading...')+'</div>';setTimeout(()=>location.reload(),400);}}catch(e){}}
-async function createBackup(label){const {data:shifts}=await sb.from('shifts').select('*');const {data:paid}=await sb.from('paid_weeks').select('*');const me=state.employees.find(x=>x.id===myId);const {error}=await sb.from('backups').insert({created_by:me?me.name:'',label:label||'Manuelle',data:{shifts:shifts||[],paid:paid||[]}});return error;}
+async function createBackup(label){const {data:shifts}=await sb.from('shifts').select('*');const {data:paid}=await sb.from('paid_weeks').select('*');const {data:profiles}=await sb.from('profiles').select('*');const me=state.employees.find(x=>x.id===myId);const {error}=await sb.from('backups').insert({created_by:me?me.name:'',label:label||'Manuelle',data:{shifts:shifts||[],paid:paid||[],profiles:profiles||[]}});return error;}
 async function renderBackups(){const el=document.getElementById('backupList');if(!el)return;el.innerHTML='<div class="muted" style="padding:.5rem">...</div>';
  const {data,error}=await sb.from('backups').select('id,created_at,created_by,label').order('created_at',{ascending:false}).limit(60);
  if(error){el.innerHTML='<div class="muted" style="padding:.5rem">Erreur</div>';return;}
