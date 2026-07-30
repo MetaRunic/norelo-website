@@ -20,7 +20,7 @@ optgroup{color:var(--gr);font-weight:700;}
 .hide{display:none !important;}
 
 #login{position:fixed;inset:0;background:var(--dark);display:flex;align-items:center;justify-content:center;z-index:1000;padding:1.5rem;}
-.lbox{width:100%;max-width:420px;background:var(--panel);border:1px solid var(--bdr);border-radius:14px;padding:2.6rem 2.2rem;text-align:center;}
+.lbox{position:relative;width:100%;max-width:420px;background:var(--panel);border:1px solid var(--bdr);border-radius:14px;padding:2.6rem 2.2rem;text-align:center;}
 .logo{font-size:32px;font-weight:800;letter-spacing:-1px;}
 .logo .lo{color:var(--accent-l);}
 .logo .dot{display:inline-block;width:6px;height:6px;background:var(--accent);border-radius:50%;margin-left:4px;position:relative;top:-0.6em;animation:pu 2s infinite;}
@@ -36,7 +36,9 @@ optgroup{color:var(--gr);font-weight:700;}
 .tourbox .lt{margin-top:1.3rem;}
 .tourcap{position:fixed;left:50%;bottom:2.2rem;transform:translateX(-50%) translateY(14px);background:var(--accent);color:#fff;font-weight:700;font-size:14.5px;padding:13px 22px;border-radius:30px;box-shadow:0 12px 40px rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:1300;max-width:88%;text-align:center;}
 .tourcap.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.tourhi{outline:3px solid var(--accent)!important;outline-offset:3px;box-shadow:0 0 0 7px rgba(224,71,59,.22);border-radius:10px;transition:outline .15s,box-shadow .15s;}
+.tourdim{position:absolute;inset:0;border-radius:14px;background:rgba(10,15,25,.45);backdrop-filter:blur(3.5px);-webkit-backdrop-filter:blur(3.5px);z-index:5;opacity:0;pointer-events:none;transition:opacity .5s;}
+.tourdim.show{opacity:1;}
+.tourhi{position:relative;z-index:12;transform:scale(1.09);outline:3px solid var(--accent)!important;outline-offset:4px;box-shadow:0 0 0 8px rgba(224,71,59,.20),0 18px 55px rgba(0,0,0,.55);border-radius:10px;transition:transform .5s cubic-bezier(.34,1.4,.6,1),outline .25s,box-shadow .35s;}
 .credsticker{position:fixed;top:1.4rem;right:1.4rem;z-index:1300;background:var(--panel);border:2px solid var(--accent);border-radius:16px;padding:14px 20px;font-size:14px;line-height:1.7;box-shadow:0 16px 50px rgba(0,0,0,.5);opacity:0;transform:scale(.6) translateY(-14px);transform-origin:top right;pointer-events:none;transition:opacity .35s,transform .45s cubic-bezier(.34,1.7,.55,1);}
 .credsticker.show{opacity:1;transform:scale(1) translateY(0);}
 .credsticker b{display:block;color:var(--accent-l);font-size:11px;letter-spacing:.6px;text-transform:uppercase;margin-bottom:5px;}
@@ -285,6 +287,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
 
 <div id="login">
   <div class="lbox">
+    <div class="tourdim" id="tourDim"></div>
     <div class="logo">Nore<span class="lo">lo</span><span class="dot"></span></div>
     <div class="lsub" id="lsub">Horaire des employes</div>
     <div class="lerr" id="lerr"></div>
@@ -952,19 +955,22 @@ async function _type(inp,text){inp.value='';for(let i=0;i<text.length;i++){inp.v
 function _closeWelcome(){_el('tourModal').style.display='none';}
 function startWelcome(){
  _el('twGuided').onclick=runGuided;_el('twSelf').onclick=runSelf;
- _el('lbtn').addEventListener('click',()=>{_el('credSticker').classList.remove('show');_hideCap();_clearHi();});
+ _el('lbtn').addEventListener('click',()=>{_el('credSticker').classList.remove('show');_hideCap();_clearHi();_hideDim();});
  _el('tourModal').style.display='flex';
 }
+function _showDim(){_el('tourDim').classList.add('show');}
+function _hideDim(){_el('tourDim').classList.remove('show');}
 async function runGuided(){
  _closeWelcome();const fr=()=>lang==='fr';
- _el('luser').value='';_el('lpass').value='';await _sleep(500);
- _cap(fr()?"On saisit le nom d'utilisateur":'Entering the username');_hi(_el('luser'));await _sleep(550);await _type(_el('luser'),'norelo');await _sleep(650);
- _cap(fr()?'Puis le mot de passe':'Then the password');_hi(_el('lpass'));await _sleep(450);await _type(_el('lpass'),'demo');await _sleep(650);
- _cap(fr()?'On peut afficher le mot de passe':'You can reveal the password');_hi(_el('lpassEye'));await _sleep(450);_el('lpassEye').click();await _sleep(1300);_el('lpassEye').click();await _sleep(550);
- const en=document.querySelector('#login .lt button[data-l="en"]'),frb=document.querySelector('#login .lt button[data-l="fr"]');
- _cap(fr()?"L'application est bilingue : francais / anglais":'The app is bilingual: French / English');_hi(en);await _sleep(550);en.click();await _sleep(1500);_hi(frb);frb.click();await _sleep(950);
- _cap(fr()?'Et on se connecte !':'And we log in!');_hi(_el('lbtn'));await _sleep(850);_el('lbtn').click();
- setTimeout(()=>{_clearHi();_hideCap();},700);
+ const pwrap=document.querySelector('#login .pwrap'),ltb=document.querySelector('#login .lt');
+ _el('luser').value='';_el('lpass').value='';await _sleep(650);_showDim();await _sleep(550);
+ _cap(fr()?"On saisit le nom d'utilisateur":'Entering the username');_hi(_el('luser'));await _sleep(900);await _type(_el('luser'),'norelo');await _sleep(1050);
+ _cap(fr()?'Puis le mot de passe':'Then the password');_hi(pwrap);await _sleep(800);await _type(_el('lpass'),'demo');await _sleep(1050);
+ _cap(fr()?'On peut afficher le mot de passe':'You can reveal the password');await _sleep(500);_el('lpassEye').click();await _sleep(2000);_el('lpassEye').click();await _sleep(950);
+ _cap(fr()?"L'application est bilingue : francais / anglais":'The app is bilingual: French / English');_hi(ltb);await _sleep(950);
+ document.querySelector('#login .lt button[data-l="en"]').click();await _sleep(2100);document.querySelector('#login .lt button[data-l="fr"]').click();await _sleep(1400);
+ _cap(fr()?'Et on se connecte !':'And we log in!');_hi(_el('lbtn'));await _sleep(1250);_el('lbtn').click();
+ setTimeout(()=>{_clearHi();_hideCap();_hideDim();},800);
 }
 function runSelf(){
  _closeWelcome();_el('luser').value='';_el('lpass').value='';
