@@ -1074,23 +1074,63 @@ function runSelf(){
 function _showVeil(){_el('tourVeil').classList.add('show');}
 function _hideVeil(){_el('tourVeil').classList.remove('show');}
 function navEl(){const t=document.querySelector('.tabs');return (t&&t.offsetParent!==null)?t:document.getElementById('bottomNav');}
-async function _spot(el,text,zoom){if(!el)return;el.scrollIntoView({behavior:'smooth',block:'center'});await _sleep(700);(zoom?_hi:_hiBig)(el);_moveCursor(el);_cap(text);await _sleep(150);}
+function navBtn(w){const t=document.querySelector('.tabs');
+ if(t&&t.offsetParent!==null)return document.getElementById('tab'+({day:'Day',week:'Week',mgr:'Mgr',emp:'Emp',log:'Log',bak:'Bak'}[w]));
+ return document.querySelector('#bottomNav [data-tab="'+w+'"]');}
+async function _spot(el,text,zoom){if(!el)return;el.scrollIntoView({behavior:'smooth',block:'center'});await _sleep(800);(zoom?_hi:_hiBig)(el);_moveCursor(el);_cap(text);await _sleep(150);}
+async function _act(el,travel){if(!el)return;_moveCursor(el);await _sleep(travel||820);await _clickFx();el.click();}
 async function runAppTour(startL){
- const fr=startL==='fr';
- _showVeil();_cursorStart();await _sleep(850);
- await _spot(document.querySelector('.weeknav'),fr?"Choisissez la semaine ici : les fleches pour naviguer, ou le selecteur groupe par mois.":"Pick the week here: arrows to move, or the month-grouped picker.",false);await _sleep(2000);
- await _spot(document.getElementById('teamBar'),fr?"Filtrez les employes par departement.":"Filter employees by department.",false);await _sleep(1800);
- await _spot(document.getElementById('calAdmin'),fr?"Le calendrier du mois : les heures travaillees apparaissent chaque jour.":"The month calendar: hours worked appear on each day.",false);await _sleep(2000);
- await _spot(document.querySelector('#dayList .ecard'),fr?"Saisissez le debut et la fin d'un quart. Tout se sauvegarde tout seul.":"Enter a shift's start and end. Everything saves on its own.",true);await _sleep(2000);
- await _spot(navEl(),fr?"Naviguez entre Jour, Semaine, Gestion, Employes, Journal et Sauvegardes.":"Move between Day, Week, Manager, Employees, Activity and Backups.",false);await _sleep(2200);
- tab('week');await _sleep(700);await _spot(document.getElementById('wtable'),fr?"La vue Semaine : le total d'heures de chaque employe.":"The Week view: each employee's weekly total.",false);await _sleep(2000);
- tab('mgr');await _sleep(700);await _spot(document.getElementById('mgrKpis'),fr?"Gestion : paie brute, deja paye, reste a payer, et un calculateur de pourboires.":"Manager: gross pay, already paid, still owed, and a tip calculator.",false);await _sleep(2200);
- tab('emp');await _sleep(700);await _spot(document.querySelector('#empAdminView .frow'),fr?"Ajoutez des employes et changez leur departement, taux ou role.":"Add employees and change their department, rate or role.",false);await _sleep(2100);
- tab('day');await _sleep(700);
- await _spot(document.getElementById('viewAsBtn'),fr?"Et previsualisez l'app comme un employe avec ce bouton.":"And preview the app as an employee with this button.",true);await _sleep(2100);
+ const fr=startL==='fr';const P=ms=>_sleep(ms);
+ _showVeil();_cursorStart();await P(950);
+ try{
+  // --- Week bar: actually change weeks and open the picker ---
+  await _spot(document.querySelector('.weeknav'),fr?"Commencons par la barre de semaine, tout en haut.":"Let's start with the week bar at the top.",false);await P(2600);
+  await _act(document.getElementById('wnext'));await P(500);await _spot(document.querySelector('.weeknav'),fr?"La fleche de droite avance a la semaine suivante. Voyez la date changer.":"The right arrow moves to the next week. Watch the date change.",false);await P(2900);
+  await _act(document.getElementById('wprev'));await P(500);await _spot(document.querySelector('.weeknav'),fr?"Et celle de gauche revient en arriere.":"And the left one goes back.",false);await P(2600);
+  await _act(document.getElementById('weekBtn'));await P(800);
+  await _spot(document.getElementById('weekList'),fr?"Le bouton central ouvre le selecteur : toutes les semaines de l'annee, groupees par mois.":"The middle button opens the picker: every week of the year, grouped by month.",false);await P(3400);
+  await _act(document.getElementById('sheetClose'));await P(800);
+
+  // --- Department filter: click through each department ---
+  await _spot(document.getElementById('teamBar'),fr?"Ces boutons filtrent les employes par departement.":"These buttons filter employees by department.",false);await P(2600);
+  await _act(document.querySelector('#teamBar [data-team=\"ops\"]'));await P(650);await _spot(document.getElementById('dayList'),fr?"Operations : on ne voit que cette equipe. Le poste de chacun est indique sous son nom.":"Operations: only this team shows. Each person's job title sits under their name.",false);await P(3200);
+  await _act(document.querySelector('#teamBar [data-team=\"wh\"]'));await P(650);await _spot(document.getElementById('dayList'),fr?"Entrepot : une autre equipe, d'autres postes (cariste, manutentionnaire...).":"Warehouse: a different team, different roles (forklift operator, handler...).",false);await P(3200);
+  await _act(document.querySelector('#teamBar [data-team=\"sales\"]'));await P(650);await _spot(document.getElementById('dayList'),fr?"Ventes : representants et conseillers.":"Sales: reps and advisors.",false);await P(3000);
+  await _act(document.querySelector('#teamBar [data-team=\"all\"]'));await P(650);await _spot(document.getElementById('teamBar'),fr?"Et Toutes affiche tout le monde.":"And All shows everyone again.",false);await P(2400);
+
+  // --- Calendar ---
+  await _spot(document.getElementById('calAdmin'),fr?"Le calendrier du mois : les heures apparaissent chaque jour et la semaine active est surlignee.":"The month calendar: hours appear on each day and the active week is highlighted.",false);await P(3000);
+
+  // --- Enter a shift: open the time picker ---
+  const card=document.querySelector('#dayList .ecard');
+  await _spot(card,fr?"Pour entrer un quart, on touche l'heure de debut d'une personne...":"To enter a shift, tap someone's start time...",true);await P(2600);
+  const tbtn=card?card.querySelector('.tbtn'):null;
+  if(tbtn){await _act(tbtn);await P(800);await _spot(document.getElementById('timeGrid'),fr?"...et on choisit dans une grille simple. Les heures habituelles sont surlignees en vert.":"...and pick from a simple grid. Usual hours are highlighted in green.",false);await P(3400);await _act(document.getElementById('timeClose'));await P(800);}
+
+  // --- Navigation + each section ---
+  await _spot(navEl(),fr?"Passons en revue les sections, ici en haut.":"Let's go through the sections, up here.",false);await P(2800);
+  await _act(navBtn('week'));await P(850);await _spot(document.querySelector('#weekView .wscroll'),fr?"Semaine : un tableau clair avec le total d'heures de chaque employe.":"Week: a clear grid with each employee's weekly hour total.",false);await P(3200);
+  await _act(navBtn('mgr'));await P(850);await _spot(document.getElementById('mgrKpis'),fr?"Gestion : paie brute, deja paye et reste a payer, d'un coup d'oeil.":"Manager: gross pay, already paid and still owed, at a glance.",false);await P(2900);
+  await _spot(document.getElementById('mgrTable'),fr?"En dessous, le detail par personne, un bouton Paye, et un calculateur de pourboires.":"Below, the per-person detail, a Paid button, and a tip calculator.",false);await P(3200);
+  await _act(navBtn('emp'));await P(850);await _spot(document.getElementById('empAdmin'),fr?"Employes : chaque ligne montre le nom, le departement, le taux et le role.":"Employees: each row shows the name, department, rate and permission level.",false);await P(3200);
+  await _spot(document.querySelector('#empAdminView .frow'),fr?"On ajoute une nouvelle personne juste ici.":"You add a new person right here.",false);await P(2600);
+  await _act(navBtn('log'));await P(850);await _spot(document.getElementById('logList'),fr?"Journal : chaque action importante est enregistree, avec des filtres.":"Activity: every important action is recorded, with filters.",false);await P(3000);
+  await _act(navBtn('bak'));await P(850);await _spot(document.getElementById('backupList'),fr?"Sauvegardes : on peut sauvegarder et restaurer l'horaire au complet.":"Backups: you can save and restore the entire schedule.",false);await P(3000);
+  await _act(navBtn('day'));await P(850);
+
+  // --- View as employee: actually do it ---
+  await _spot(document.getElementById('viewAsBtn'),fr?"Dernier point : voir l'app comme un employe. On clique...":"Last thing: seeing the app as an employee. Let's click...",true);await P(2600);
+  await _act(document.getElementById('viewAsBtn'));await P(850);
+  const er=document.querySelector('#viewAsList [data-emp]');
+  await _spot(er,fr?"On choisit une personne dans la liste.":"Pick a person from the list.",false);await P(2600);
+  await _act(er);await P(1000);
+  await _spot(document.getElementById('empView'),fr?"Voici SA vue : il voit ses propres heures et ne peut modifier qu'aujourd'hui et hier. Les autres jours sont verrouilles.":"Here's THEIR view: they see their own hours and can only edit today and yesterday. Other days are locked.",false);await P(3800);
+  await _spot(document.getElementById('previewExit'),fr?"On revient a la gestion avec ce bouton.":"Return to the manager side with this button.",true);await P(2600);
+  await _act(document.getElementById('previewExit'));await P(1000);
+ }catch(e){}
  _clearHi();_hideVeil();_el('tourCursor').classList.remove('show');_hiEl=null;
- _cap(fr?"Fin de la visite. Explorez librement !":"Tour complete. Explore freely!");
- setTimeout(()=>_hideCap(),3200);
+ _cap(fr?"Voila, la visite est terminee. A vous d'explorer !":"That's the full tour. Now explore on your own!");
+ setTimeout(()=>_hideCap(),4000);
 }
 boot();
 </script>
