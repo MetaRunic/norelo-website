@@ -28,6 +28,19 @@ optgroup{color:var(--gr);font-weight:700;}
 .lsub{color:var(--gr);font-size:16px;margin:.5rem 0 1.8rem;}
 #login input{width:100%;padding:16px;background:var(--soft);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:18px;margin-bottom:1rem;text-align:center;}
 #login input:focus{outline:none;border-color:var(--accent);}
+.tourmodal{position:fixed;inset:0;z-index:1200;background:rgba(6,10,18,.74);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:1.5rem;}
+.tourbox{background:var(--panel);border:1px solid var(--bdr);border-radius:18px;padding:2.3rem 2rem 2rem;max-width:400px;width:100%;text-align:center;box-shadow:0 30px 90px rgba(0,0,0,.55);}
+.tourbox h2{font-size:21px;margin:.5rem 0 .5rem;}
+.tourbox .tmp{color:var(--gr);font-size:14px;margin-bottom:1.5rem;line-height:1.55;}
+.tourbox .btn{width:100%;justify-content:center;}
+.tourbox .lt{margin-top:1.3rem;}
+.tourcap{position:fixed;left:50%;bottom:2.2rem;transform:translateX(-50%) translateY(14px);background:var(--accent);color:#fff;font-weight:700;font-size:14.5px;padding:13px 22px;border-radius:30px;box-shadow:0 12px 40px rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:1300;max-width:88%;text-align:center;}
+.tourcap.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.tourhi{outline:3px solid var(--accent)!important;outline-offset:3px;box-shadow:0 0 0 7px rgba(224,71,59,.22);border-radius:10px;transition:outline .15s,box-shadow .15s;}
+.credsticker{position:fixed;top:1.4rem;right:1.4rem;z-index:1300;background:var(--panel);border:2px solid var(--accent);border-radius:16px;padding:14px 20px;font-size:14px;line-height:1.7;box-shadow:0 16px 50px rgba(0,0,0,.5);opacity:0;transform:scale(.6) translateY(-14px);transform-origin:top right;pointer-events:none;transition:opacity .35s,transform .45s cubic-bezier(.34,1.7,.55,1);}
+.credsticker.show{opacity:1;transform:scale(1) translateY(0);}
+.credsticker b{display:block;color:var(--accent-l);font-size:11px;letter-spacing:.6px;text-transform:uppercase;margin-bottom:5px;}
+.credsticker .cv{color:#fff;font-weight:700;}
 .pwrap{position:relative;margin-bottom:1rem;}
 .pwrap input{margin-bottom:0 !important;padding-right:50px !important;}
 .pweye{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--gr);padding:8px;display:flex;align-items:center;justify-content:center;}
@@ -275,13 +288,26 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     <div class="logo">Nore<span class="lo">lo</span><span class="dot"></span></div>
     <div class="lsub" id="lsub">Horaire des employes</div>
     <div class="lerr" id="lerr"></div>
-    <input type="text" id="luser" placeholder="Nom d'utilisateur" autocomplete="off" value="dan"/>
-    <div class="pwrap"><input type="password" id="lpass" placeholder="Mot de passe" autocomplete="off" value="demo"/><button type="button" class="pweye" id="lpassEye" aria-label="Afficher le mot de passe"></button></div>
+    <input type="text" id="luser" placeholder="Nom d'utilisateur" autocomplete="off"/>
+    <div class="pwrap"><input type="password" id="lpass" placeholder="Mot de passe" autocomplete="off"/><button type="button" class="pweye" id="lpassEye" aria-label="Afficher le mot de passe"></button></div>
     <button class="btn full" id="lbtn">Entrer</button>
     <div class="lt"><button data-l="fr" class="on">FR</button><button data-l="en">EN</button></div>
     <div class="lhint" id="lhint">Acces reserve. Vos donnees restent sur cet appareil.</div>
   </div>
 </div>
+
+<div id="tourModal" class="tourmodal">
+  <div class="tourbox">
+    <div class="logo" style="font-size:30px">Nore<span class="lo">lo</span><span class="dot"></span></div>
+    <h2 data-i="twT">Bienvenue dans la demo</h2>
+    <p class="tmp" data-i="twP">Comment souhaitez-vous decouvrir l'application?</p>
+    <button class="btn full" id="twGuided" data-i="twGuided">Visite guidee</button>
+    <button class="btn full ghost" id="twSelf" data-i="twSelf" style="margin-top:.65rem">Explorer moi-meme</button>
+    <div class="lt"><button data-l="fr" class="on">FR</button><button data-l="en">EN</button></div>
+  </div>
+</div>
+<div id="tourCaption" class="tourcap"></div>
+<div id="credSticker" class="credsticker"><b data-i="csT">Identifiants de la demo</b><span data-i="csUl">Utilisateur</span>: <span class="cv">norelo</span><br><span data-i="csPl">Mot de passe</span>: <span class="cv">demo</span></div>
 
 <div id="app">
   <header>
@@ -453,7 +479,7 @@ const T={
    mgrLockT:'Connexion gestionnaire',mgrLockS:'Cette section demande un mot de passe distinct.',unlock:'Deverrouiller',
    payTitle:'Paiements et totaux',tipsT:'Calculateur de pourboires',tipsPool:'Cagnotte totale ($)',tipSplit:'Repartir par heures',
    tipsHint:'Repartit la cagnotte selon les heures travaillees.',lsub:"Demo - Gestionnaire d'horaire",
-   lhint:'Demo interactive - les identifiants sont deja remplis, cliquez simplement sur Entrer.',enter:'Entrer',wrong:'Identifiant ou mot de passe invalide',
+   lhint:'Demo interactive Norelo.',enter:'Entrer',wrong:'Identifiant ou mot de passe invalide',twT:'Bienvenue dans la demo',twP:"Comment souhaitez-vous decouvrir l'application?",twGuided:'Visite guidee',twSelf:'Explorer moi-meme',csT:'Identifiants de la demo',csUl:'Utilisateur',csPl:'Mot de passe',
    days:['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'],sdays:['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'],
    months:['janvier','fevrier','mars','avril','mai','juin','juillet','aout','septembre','octobre','novembre','decembre'],
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Debut',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
@@ -465,7 +491,7 @@ const T={
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
    payTitle:'Payments and totals',tipsT:'Tip calculator',tipsPool:'Total pool ($)',tipSplit:'Split by hours',
    tipsHint:'Splits the pool by hours worked.',lsub:'Demo - Schedule manager',
-   lhint:'Interactive demo - credentials are pre-filled, just click Enter.',enter:'Enter',wrong:'Invalid username or password',
+   lhint:'Norelo interactive demo.',enter:'Enter',wrong:'Invalid username or password',twT:'Welcome to the demo',twP:'How would you like to explore the app?',twGuided:'Guided tour',twSelf:'Explore on my own',csT:'Demo credentials',csUl:'Username',csPl:'Password',
    days:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],sdays:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
@@ -667,7 +693,7 @@ async function boot(){initDemo();selDay=todayIdx();initEye('lpass','lpassEye');i
  document.getElementById('lbtn').onclick=doLogin;
  document.getElementById('lpass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
  document.getElementById('luser').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('lpass').focus();});
- const {data:{session}}=await sb.auth.getSession();if(session&&session.user)await enterApp(session.user);}
+ const {data:{session}}=await sb.auth.getSession();if(session&&session.user)await enterApp(session.user);else startWelcome();}
 async function doLogin(){
  const u=(document.getElementById('luser').value||'').trim().toLowerCase();const p=document.getElementById('lpass').value;
  if(!u||!p)return;const btn=document.getElementById('lbtn');btn.disabled=true;document.getElementById('lerr').textContent='';
@@ -911,6 +937,38 @@ function demoInvoke(body){
  if(body.action==='update'){const p=DB.profiles.find(x=>x.id===body.id);if(!p)return{ok:false,error:'introuvable'};if(body.username!==undefined)p.username=String(body.username).toLowerCase();if(body.name!==undefined)p.name=body.name;if(body.team!==undefined)p.team=body.team;if(body.rate!==undefined)p.rate=+body.rate||0;if(body.role!==undefined)p.role=body.role;return{ok:true};}
  if(body.action==='restore'){const bk=DB.backups.find(b=>b.id===body.id);if(!bk)return{ok:false,error:'introuvable'};const snap=bk.data||{};const ids=new Set(DB.profiles.map(p=>p.id));(snap.profiles||[]).forEach(pr=>{if(ids.has(pr.id)){const p=DB.profiles.find(x=>x.id===pr.id);Object.assign(p,{name:pr.name,rate:pr.rate,role:pr.role,team:pr.team});}});DB.shifts=(snap.shifts||[]).filter(s=>ids.has(s.employee_id)).map(s=>Object.assign({},s));DB.paid_weeks=(snap.paid||[]).filter(p=>ids.has(p.employee_id)).map(p=>Object.assign({},p));return{ok:true};}
  const u=String(body.username||'').toLowerCase();if(!u||!body.name||!body.password)return{ok:false,error:'Champs requis'};if(DB.profiles.some(p=>p.username===u))return{ok:false,error:"Nom d'utilisateur existe deja"};const id='e'+Math.random().toString(36).slice(2,8);DB.profiles.push({id:id,username:u,name:body.name,role:body.role==='manager'?'manager':'employee',team:body.team==='int'?'int':'ext',rate:+body.rate||0});return{ok:true,id:id};
+}
+/* ============================================================
+   DEMO TUTORIAL - welcome prompt + guided/self-guided onboarding
+   ============================================================ */
+const _el=id=>document.getElementById(id);
+const _sleep=ms=>new Promise(r=>setTimeout(r,ms));
+let _hiEl=null;
+function _hi(e){_clearHi();_hiEl=e;if(e)e.classList.add('tourhi');}
+function _clearHi(){if(_hiEl)_hiEl.classList.remove('tourhi');_hiEl=null;}
+function _cap(t){const c=_el('tourCaption');c.textContent=t;c.classList.add('show');}
+function _hideCap(){_el('tourCaption').classList.remove('show');}
+async function _type(inp,text){inp.value='';for(let i=0;i<text.length;i++){inp.value=text.slice(0,i+1);await _sleep(95);}}
+function _closeWelcome(){_el('tourModal').style.display='none';}
+function startWelcome(){
+ _el('twGuided').onclick=runGuided;_el('twSelf').onclick=runSelf;
+ _el('lbtn').addEventListener('click',()=>{_el('credSticker').classList.remove('show');_hideCap();_clearHi();});
+ _el('tourModal').style.display='flex';
+}
+async function runGuided(){
+ _closeWelcome();const fr=()=>lang==='fr';
+ _el('luser').value='';_el('lpass').value='';await _sleep(500);
+ _cap(fr()?"On saisit le nom d'utilisateur":'Entering the username');_hi(_el('luser'));await _sleep(550);await _type(_el('luser'),'norelo');await _sleep(650);
+ _cap(fr()?'Puis le mot de passe':'Then the password');_hi(_el('lpass'));await _sleep(450);await _type(_el('lpass'),'demo');await _sleep(650);
+ _cap(fr()?'On peut afficher le mot de passe':'You can reveal the password');_hi(_el('lpassEye'));await _sleep(450);_el('lpassEye').click();await _sleep(1300);_el('lpassEye').click();await _sleep(550);
+ const en=document.querySelector('#login .lt button[data-l="en"]'),frb=document.querySelector('#login .lt button[data-l="fr"]');
+ _cap(fr()?"L'application est bilingue : francais / anglais":'The app is bilingual: French / English');_hi(en);await _sleep(550);en.click();await _sleep(1500);_hi(frb);frb.click();await _sleep(950);
+ _cap(fr()?'Et on se connecte !':'And we log in!');_hi(_el('lbtn'));await _sleep(850);_el('lbtn').click();
+ setTimeout(()=>{_clearHi();_hideCap();},700);
+}
+function runSelf(){
+ _closeWelcome();_el('luser').value='';_el('lpass').value='';
+ _el('credSticker').classList.add('show');
 }
 boot();
 </script>
