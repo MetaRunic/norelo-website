@@ -34,8 +34,8 @@ optgroup{color:var(--gr);font-weight:700;}
 .tourbox .tmp{color:var(--gr);font-size:14px;margin-bottom:1.5rem;line-height:1.55;}
 .tourbox .btn{width:100%;justify-content:center;}
 .tourbox .lt{margin-top:1.3rem;}
-.tourcap{position:fixed;left:50%;bottom:2.2rem;transform:translateX(-50%) translateY(14px);background:var(--accent);color:#fff;font-weight:700;font-size:14.5px;padding:13px 22px;border-radius:30px;box-shadow:0 12px 40px rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:1300;max-width:88%;text-align:center;}
-.tourcap.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.tourcap{position:fixed;background:var(--accent);color:#fff;font-weight:700;font-size:14px;padding:11px 18px;border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .3s,top .38s cubic-bezier(.4,0,.2,1),left .38s cubic-bezier(.4,0,.2,1);z-index:1300;max-width:min(84vw,320px);text-align:center;line-height:1.35;}
+.tourcap.show{opacity:1;}
 .tourdim{position:absolute;inset:0;border-radius:14px;background:rgba(10,15,25,.45);backdrop-filter:blur(3.5px);-webkit-backdrop-filter:blur(3.5px);z-index:5;opacity:0;pointer-events:none;transition:opacity .5s;}
 .tourdim.show{opacity:1;}
 .tourhi{position:relative;z-index:12;transform:scale(1.09);outline:3px solid var(--accent)!important;outline-offset:4px;box-shadow:0 0 0 8px rgba(224,71,59,.20),0 18px 55px rgba(0,0,0,.55);border-radius:10px;transition:transform .5s cubic-bezier(.34,1.4,.6,1),outline .25s,box-shadow .35s;}
@@ -949,7 +949,11 @@ const _sleep=ms=>new Promise(r=>setTimeout(r,ms));
 let _hiEl=null;
 function _hi(e){_clearHi();_hiEl=e;if(e)e.classList.add('tourhi');}
 function _clearHi(){if(_hiEl)_hiEl.classList.remove('tourhi');_hiEl=null;}
-function _cap(t){const c=_el('tourCaption');c.textContent=t;c.classList.add('show');}
+function _cap(t){const c=_el('tourCaption');c.textContent=t;c.classList.add('show');_posCap();}
+function _posCap(){const c=_el('tourCaption');if(!_hiEl){c.style.bottom='2.2rem';c.style.top='auto';c.style.left='50%';c.style.transform='translateX(-50%)';return;}
+ const r=_hiEl.getBoundingClientRect();c.style.bottom='auto';c.style.left=(r.left+r.width/2)+'px';
+ if(r.top<120){c.style.top=(r.bottom+16)+'px';c.style.transform='translate(-50%,0)';}
+ else{c.style.top=(r.top-16)+'px';c.style.transform='translate(-50%,-100%)';}}
 function _hideCap(){_el('tourCaption').classList.remove('show');}
 async function _type(inp,text){inp.value='';for(let i=0;i<text.length;i++){inp.value=text.slice(0,i+1);await _sleep(95);}}
 function _closeWelcome(){_el('tourModal').style.display='none';}
@@ -964,12 +968,12 @@ async function runGuided(){
  _closeWelcome();const fr=()=>lang==='fr';
  const pwrap=document.querySelector('#login .pwrap'),ltb=document.querySelector('#login .lt');
  _el('luser').value='';_el('lpass').value='';await _sleep(650);_showDim();await _sleep(550);
- _cap(fr()?"On saisit le nom d'utilisateur":'Entering the username');_hi(_el('luser'));await _sleep(900);await _type(_el('luser'),'norelo');await _sleep(1050);
- _cap(fr()?'Puis le mot de passe':'Then the password');_hi(pwrap);await _sleep(800);await _type(_el('lpass'),'demo');await _sleep(1050);
+ _hi(_el('luser'));_cap(fr()?"On saisit le nom d'utilisateur":'Entering the username');await _sleep(900);await _type(_el('luser'),'norelo');await _sleep(1050);
+ _hi(pwrap);_cap(fr()?'Puis le mot de passe':'Then the password');await _sleep(800);await _type(_el('lpass'),'demo');await _sleep(1050);
  _cap(fr()?'On peut afficher le mot de passe':'You can reveal the password');await _sleep(500);_el('lpassEye').click();await _sleep(2000);_el('lpassEye').click();await _sleep(950);
- _cap(fr()?"L'application est bilingue : francais / anglais":'The app is bilingual: French / English');_hi(ltb);await _sleep(950);
- document.querySelector('#login .lt button[data-l="en"]').click();await _sleep(2100);document.querySelector('#login .lt button[data-l="fr"]').click();await _sleep(1400);
- _cap(fr()?'Et on se connecte !':'And we log in!');_hi(_el('lbtn'));await _sleep(1250);_el('lbtn').click();
+ _hideDim();_clearHi();await _sleep(450);_hi(ltb);_cap(fr()?'Bilingue : francais / anglais':'Bilingual: French / English');await _sleep(950);
+ document.querySelector('#login .lt button[data-l="en"]').click();_posCap();await _sleep(2100);document.querySelector('#login .lt button[data-l="fr"]').click();_posCap();await _sleep(1400);
+ _hi(_el('lbtn'));_cap(fr()?'Et on se connecte !':'And we log in!');await _sleep(1250);_el('lbtn').click();
  setTimeout(()=>{_clearHi();_hideCap();_hideDim();},800);
 }
 function runSelf(){
