@@ -42,6 +42,7 @@ optgroup{color:var(--gr);font-weight:700;}
 .tourclick{position:fixed;left:0;top:0;width:22px;height:22px;margin:-11px 0 0 -11px;border:2px solid var(--accent-l);border-radius:50%;z-index:1355;pointer-events:none;opacity:0;}
 .tourclick.go{animation:tourripple .55s ease-out;}
 @keyframes tourripple{0%{opacity:.9;transform:scale(.3);}100%{opacity:0;transform:scale(2.6);}}
+.jtitle{display:block;font-size:11px;color:var(--gr);font-weight:600;margin-top:2px;letter-spacing:.2px;}
 .tourdim{position:absolute;inset:0;border-radius:14px;background:rgba(10,15,25,.45);backdrop-filter:blur(3.5px);-webkit-backdrop-filter:blur(3.5px);z-index:5;opacity:0;pointer-events:none;transition:opacity .5s;}
 .tourdim.show{opacity:1;}
 .tourhi{position:relative;z-index:12;transform:scale(1.09);outline:3px solid var(--accent)!important;outline-offset:4px;box-shadow:0 0 0 8px rgba(224,71,59,.20),0 18px 55px rgba(0,0,0,.55);border-radius:10px;transition:transform .5s cubic-bezier(.34,1.4,.6,1),outline .25s,box-shadow .35s;}
@@ -474,7 +475,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
    ============================================================ */
 /* ---- DEMO MODE: no real backend, all data is in-memory and fake ---- */
 const EMAIL_DOMAIN='@demo.local';
-const OWNERS=['dan','gill'];
+const OWNERS=['a.bennett','s.rivard'];
 const APP_VERSION=1;
 const DEMO_USER={id:'dan'};
 let sb=null,DB=null;
@@ -523,7 +524,7 @@ function blankDay(){return {start:'',end:''};}
 function blankWeekFor(emps){const o={};emps.forEach(e=>{o[e.id]={};DAYS.forEach(d=>o[e.id][d]=blankDay());});return o;}
 async function loadAll(){
  const {data:profs}=await sb.from('profiles').select('id,username,name,role,team,rate');
- state.employees=(profs||[]).map(p=>({id:p.id,name:p.name,team:p.team||'ext',rate:+p.rate||0,username:p.username,prole:p.role}));
+ state.employees=(profs||[]).map(p=>({id:p.id,name:p.name,title:p.title||'',team:p.team||'ext',rate:+p.rate||0,username:p.username,prole:p.role}));
  state.weeks=seasonWeeks(state.employees);
  const keys=Object.keys(state.weeks).sort();if(!keys.length)return;
  const startKey=keys[0],endKey=addDaysISO(keys[keys.length-1],6);
@@ -636,7 +637,7 @@ function renderDayList(){
  const w=state.weeks[state.current];const t=T[lang];const dk=DAYS[selDay];let h='';
  const list=adminEmps().slice().sort((a,b)=>{if(a.id===myId)return -1;if(b.id===myId)return 1;return a.name.localeCompare(b.name);});
  list.forEach(e=>{const day=w.data[e.id][dk];const hh=hrs(day);
-  h+='<div class="ecard" data-id="'+e.id+'"><div class="en">'+esc(e.name)+(e.id===myId?' <span class="metag">'+(lang==='fr'?'Moi':'Me')+'</span>':'')+'</div>'
+  h+='<div class="ecard" data-id="'+e.id+'"><div class="en">'+esc(e.name)+(e.id===myId?' <span class="metag">'+(lang==='fr'?'Moi':'Me')+'</span>':'')+(e.title?'<span class="jtitle">'+esc(e.title)+'</span>':'')+'</div>'
    +'<div class="etime"><div class="tfield"><label>'+t.start+'</label>'+timeInput('start',day.start,false)+'</div>'
    +'<div class="tfield"><label>'+t.end+'</label>'+timeInput('end',day.end,false)+'</div></div>'
    +'<div class="ecalc"><div class="eh">'+hh.toFixed(2)+'h</div></div></div>';});
@@ -661,7 +662,7 @@ function renderWeek(){
  let h='<thead><tr><th style="text-align:left">'+t.name+'</th>';t.sdays.forEach(d=>h+='<th>'+d+'</th>');h+='<th>'+t.tot+'</th></tr></thead><tbody>';
  let lastTeam=null,th=0;
  adminEmps().forEach(e=>{const tm=empTeam(e);if(tm!==lastTeam){h+='<tr class="teamrow"><td colspan="9">'+teamLabel(tm)+'</td></tr>';lastTeam=tm;}
-  h+='<tr><td class="nm">'+esc(e.name)+'</td>';
+  h+='<tr><td class="nm">'+esc(e.name)+(e.title?'<span class="jtitle">'+esc(e.title)+'</span>':'')+'</td>';
   DAYS.forEach(d=>{const hh=hrs(w.data[e.id][d]);h+='<td class="'+(hh?'':'z')+'">'+(hh?hh.toFixed(2):'-')+'</td>';});
   const eh=empHours(e.id);th+=eh;h+='<td class="tot">'+eh.toFixed(2)+'h</td></tr>';});
  h+='</tbody><tfoot><tr><td style="text-align:left">'+t.tot+'</td>';for(let i=0;i<7;i++)h+='<td></td>';h+='<td class="tot">'+th.toFixed(2)+'h</td></tr></tfoot>';
@@ -674,7 +675,7 @@ function renderMgr(){const t=T[lang];const w=state.weeks[state.current];let th=0
  let rows='<tr><th>'+t.name+'</th><th>'+t.rate+'</th><th style="text-align:right">'+t.hours+'</th><th style="text-align:right">'+t.pay+'</th><th style="text-align:right">'+t.paid+'</th></tr>';
  let lastTeam=null;
  [...emps].sort((a,b)=>(to[empTeam(a)]-to[empTeam(b)])||empPay(b.id)-empPay(a.id)).forEach(e=>{const tm=empTeam(e);if(tm!==lastTeam){rows+='<tr class="teamrow"><td colspan="5">'+teamLabel(tm)+'</td></tr>';lastTeam=tm;}const yes=!!w.paid[e.id];
-  rows+='<tr><td>'+esc(e.name)+'</td><td>'+money(e.rate)+'/h</td><td class="num">'+empHours(e.id).toFixed(2)+'h</td><td class="num">'+money(empPay(e.id))+'</td><td style="text-align:right"><button class="paidbtn '+(yes?'yes':'')+'" data-paid="'+e.id+'">'+(yes?t.paid:t.unpaid)+'</button></td></tr>';});
+  rows+='<tr><td>'+esc(e.name)+(e.title?'<span class="jtitle">'+esc(e.title)+'</span>':'')+'</td><td>'+money(e.rate)+'/h</td><td class="num">'+empHours(e.id).toFixed(2)+'h</td><td class="num">'+money(empPay(e.id))+'</td><td style="text-align:right"><button class="paidbtn '+(yes?'yes':'')+'" data-paid="'+e.id+'">'+(yes?t.paid:t.unpaid)+'</button></td></tr>';});
  document.getElementById('mgrTable').innerHTML=rows;
 }
 function renderEmpAdmin(){const t=T[lang];document.getElementById('empAdmin').innerHTML=sortedEmps().map(e=>{const mgr=e.prole==='manager';
@@ -897,16 +898,16 @@ function initDemo(){
  checkVersion=async function(){};
  fetchTrustedTime=async function(){trustedBaseMs=Date.now();perfBase=performance.now();};
  const profiles=[
-  {id:'dan',username:'dan',name:'Dan Bolduc',role:'manager',team:'ext',rate:26},
-  {id:'gill',username:'gill',name:'Gill Tremblay',role:'manager',team:'int',rate:28},
-  {id:'p1',username:'evens',name:'Evens D.',role:'employee',team:'ext',rate:16},
-  {id:'p2',username:'judy',name:'Judy S.',role:'employee',team:'ext',rate:16},
-  {id:'p3',username:'bernard',name:'Bernard',role:'employee',team:'ext',rate:18},
-  {id:'p4',username:'jasmine',name:'Jasmine L.',role:'employee',team:'ext',rate:16.5},
-  {id:'p5',username:'kevin',name:'Kevin K.',role:'employee',team:'ext',rate:18},
-  {id:'p6',username:'lili',name:'Lili Bergeron',role:'employee',team:'int',rate:16},
-  {id:'p7',username:'maria',name:'Maria Henneuse',role:'employee',team:'int',rate:16},
-  {id:'p8',username:'danny',name:'Danny Parker',role:'employee',team:'ext',rate:16}
+  {id:'dan',username:'a.bennett',name:'Alex Bennett',title:'Directeur des operations',role:'manager',team:'int',rate:34},
+  {id:'gill',username:'s.rivard',name:'Sam Rivard',title:"Superviseur d'equipe",role:'manager',team:'ext',rate:31},
+  {id:'p1',username:'j.cote',name:'Jordan Cote',title:"Chef d'equipe",role:'employee',team:'ext',rate:24},
+  {id:'p2',username:'c.fortin',name:'Camille Fortin',title:'Technicien',role:'employee',team:'ext',rate:22},
+  {id:'p3',username:'l.bouchard',name:'Leo Bouchard',title:'Operateur',role:'employee',team:'ext',rate:23},
+  {id:'p4',username:'m.girard',name:'Maya Girard',title:'Manutentionnaire',role:'employee',team:'ext',rate:21},
+  {id:'p5',username:'n.lavoie',name:'Noah Lavoie',title:'Cariste',role:'employee',team:'ext',rate:22},
+  {id:'p6',username:'e.dubois',name:'Emma Dubois',title:'Commis de bureau',role:'employee',team:'int',rate:21},
+  {id:'p7',username:'l.moreau',name:'Liam Moreau',title:'Receptionniste',role:'employee',team:'int',rate:20},
+  {id:'p8',username:'o.gagnon',name:'Olivia Gagnon',title:'Adjointe administrative',role:'employee',team:'int',rate:22}
  ];
  const wk=todayMonday();const shifts=[];
  const plan={dan:[['08:00','17:00'],['08:00','17:00'],['08:00','17:00'],['08:00','17:00'],['08:00','15:00']],
@@ -919,13 +920,13 @@ function initDemo(){
  const paid=[{id:'pw1',employee_id:'p1',week_start:wk,paid:true},{id:'pw2',employee_id:'p3',week_start:wk,paid:true}];
  const H=t=>new Date(Date.now()-t*3600e3).toISOString();
  const audit=[
-  {id:'a1',actor_id:'dan',actor_name:'Dan Bolduc',action:'create_account',detail:'jasmine (employee)',created_at:H(40)},
-  {id:'a2',actor_id:'gill',actor_name:'Gill Tremblay',action:'change_rate',detail:'Kevin K. -> 18$/h',created_at:H(26)},
-  {id:'a3',actor_id:'dan',actor_name:'Dan Bolduc',action:'edit_hours',detail:'Evens D. '+addDaysISO(wk,2)+' 09:00-17:00',created_at:H(20)},
-  {id:'a4',actor_id:'gill',actor_name:'Gill Tremblay',action:'mark_paid',detail:'Lili Bergeron ('+wk+')',created_at:H(6)},
-  {id:'a5',actor_id:'dan',actor_name:'Dan Bolduc',action:'reset_password',detail:'Judy S.',created_at:H(2)}
+  {id:'a1',actor_id:'dan',actor_name:'Alex Bennett',action:'create_account',detail:'m.girard (employee)',created_at:H(40)},
+  {id:'a2',actor_id:'gill',actor_name:'Sam Rivard',action:'change_rate',detail:'Noah Lavoie -> 22$/h',created_at:H(26)},
+  {id:'a3',actor_id:'dan',actor_name:'Alex Bennett',action:'edit_hours',detail:'Jordan Cote '+addDaysISO(wk,2)+' 09:00-17:00',created_at:H(20)},
+  {id:'a4',actor_id:'gill',actor_name:'Sam Rivard',action:'mark_paid',detail:'Emma Dubois ('+wk+')',created_at:H(6)},
+  {id:'a5',actor_id:'dan',actor_name:'Alex Bennett',action:'reset_password',detail:'Camille Fortin',created_at:H(2)}
  ];
- const backups=[{id:'b1',created_at:H(12),created_by:'Dan Bolduc',label:'Automatique (exemple)',data:{shifts:JSON.parse(JSON.stringify(shifts)),paid:JSON.parse(JSON.stringify(paid)),profiles:JSON.parse(JSON.stringify(profiles))}}];
+ const backups=[{id:'b1',created_at:H(12),created_by:'Alex Bennett',label:'Automatique (exemple)',data:{shifts:JSON.parse(JSON.stringify(shifts)),paid:JSON.parse(JSON.stringify(paid)),profiles:JSON.parse(JSON.stringify(profiles))}}];
  DB={profiles,shifts,paid_weeks:paid,audit_log:audit,backups};
  sb=makeMock();
 }
