@@ -47,7 +47,10 @@ optgroup{color:var(--gr);font-weight:700;}
 .previewbar strong{color:var(--accent-l);}
 .tourdim{position:absolute;inset:0;border-radius:14px;background:rgba(10,15,25,.45);backdrop-filter:blur(3.5px);-webkit-backdrop-filter:blur(3.5px);z-index:5;opacity:0;pointer-events:none;transition:opacity .5s;}
 .tourdim.show{opacity:1;}
-.tourhi{position:relative;z-index:12;transform:scale(1.09);outline:3px solid var(--accent)!important;outline-offset:4px;box-shadow:0 0 0 8px rgba(47,158,95,.20),0 18px 55px rgba(0,0,0,.55);border-radius:10px;transition:transform .5s cubic-bezier(.34,1.4,.6,1),outline .25s,box-shadow .35s;}
+.tourveil{position:fixed;inset:0;z-index:40;background:rgba(8,12,20,.5);backdrop-filter:blur(3.5px);-webkit-backdrop-filter:blur(3.5px);opacity:0;pointer-events:none;transition:opacity .5s;}
+.tourveil.show{opacity:1;}
+.tourhi{position:relative;z-index:45;transform:scale(1.09);outline:3px solid var(--accent)!important;outline-offset:4px;box-shadow:0 0 0 8px rgba(47,158,95,.20),0 18px 55px rgba(0,0,0,.55);border-radius:10px;transition:transform .5s cubic-bezier(.34,1.4,.6,1),outline .25s,box-shadow .35s;}
+.tourhi-nz{position:relative;z-index:45;outline:3px solid var(--accent)!important;outline-offset:5px;box-shadow:0 0 0 8px rgba(47,158,95,.18),0 18px 55px rgba(0,0,0,.55);border-radius:12px;transition:outline .25s,box-shadow .35s;}
 .credsticker{position:fixed;top:1.4rem;right:1.4rem;z-index:1300;background:var(--panel);border:2px solid var(--accent);border-radius:16px;padding:14px 20px;font-size:14px;line-height:1.7;box-shadow:0 16px 50px rgba(0,0,0,.5);opacity:0;transform:scale(.6) translateY(-14px);transform-origin:top right;pointer-events:none;transition:opacity .35s,transform .45s cubic-bezier(.34,1.7,.55,1);}
 .credsticker.show{opacity:1;transform:scale(1) translateY(0);}
 .credsticker b{display:block;color:var(--accent-l);font-size:11px;letter-spacing:.6px;text-transform:uppercase;margin-bottom:5px;}
@@ -319,6 +322,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     <div class="lt"><button data-l="fr" class="on">FR</button><button data-l="en">EN</button></div>
   </div>
 </div>
+<div id="tourVeil" class="tourveil"></div>
 <div id="tourCaption" class="tourcap"></div>
 <svg id="tourCursor" class="tourcursor" viewBox="0 0 20 20" fill="#fff" stroke="#0b0f16" stroke-width="1"><path d="M2 2 L2 16 L6 12.5 L8.5 18 L11 17 L8.5 11.5 L14 11.5 Z"/></svg>
 <div id="tourClick" class="tourclick"></div>
@@ -1019,7 +1023,8 @@ const _el=id=>document.getElementById(id);
 const _sleep=ms=>new Promise(r=>setTimeout(r,ms));
 let _hiEl=null;
 function _hi(e){_clearHi();_hiEl=e;if(e)e.classList.add('tourhi');}
-function _clearHi(){if(_hiEl)_hiEl.classList.remove('tourhi');_hiEl=null;}
+function _hiBig(e){_clearHi();_hiEl=e;if(e)e.classList.add('tourhi-nz');}
+function _clearHi(){if(_hiEl){_hiEl.classList.remove('tourhi');_hiEl.classList.remove('tourhi-nz');}_hiEl=null;}
 function _cap(t){const c=_el('tourCaption');c.textContent=t;c.classList.add('show');_posCap();}
 function _posCap(){const c=_el('tourCaption');if(!_hiEl){c.style.bottom='2.2rem';c.style.top='auto';c.style.left='50%';c.style.transform='translateX(-50%)';return;}
  const r=_hiEl.getBoundingClientRect();c.style.bottom='auto';c.style.left=(r.left+r.width/2)+'px';
@@ -1041,7 +1046,7 @@ function _moveCursor(el){[_cx,_cy]=_pt(el);const c=_el('tourCursor');c.classList
 async function _clickFx(){const k=_el('tourClick');k.style.left=_cx+'px';k.style.top=_cy+'px';k.classList.remove('go');void k.offsetWidth;k.classList.add('go');const c=_el('tourCursor');c.classList.add('click');await _sleep(160);c.classList.remove('click');}
 function _cursorStart(){const c=_el('tourCursor');c.style.transition='none';c.style.left=(window.innerWidth/2-3)+'px';c.style.top=(window.innerHeight*0.82)+'px';void c.offsetWidth;c.style.transition='';c.classList.add('show');}
 async function runGuided(){
- _closeWelcome();const fr=()=>lang==='fr';
+ _closeWelcome();const fr=()=>lang==='fr';const startL=lang;
  const pwrap=document.querySelector('#login .pwrap');
  const ltb=document.querySelector('#login .lt'),enB=document.querySelector('#login .lt button[data-l="en"]'),frB=document.querySelector('#login .lt button[data-l="fr"]');
  _el('luser').value='';_el('lpass').value='';
@@ -1053,16 +1058,39 @@ async function runGuided(){
  _cap(fr()?'On peut afficher le mot de passe':'You can reveal the password');
  _moveCursor(_el('lpassEye'));await _sleep(750);await _clickFx();_el('lpassEye').click();await _sleep(2200);
  await _clickFx();_el('lpassEye').click();await _sleep(1050);
- _hideDim();_clearHi();await _sleep(550);_hi(ltb);_cap(fr()?'Bilingue : francais / anglais':'Bilingual: French / English');await _sleep(800);
- _moveCursor(enB);await _sleep(750);await _clickFx();enB.click();_posCap();await _sleep(2300);
- _moveCursor(frB);await _sleep(700);await _clickFx();frB.click();_posCap();await _sleep(1600);
- _hi(_el('lbtn'));_cap(fr()?'Et on se connecte !':'And we log in!');
- _moveCursor(_el('lbtn'));await _sleep(800);await _clickFx();await _sleep(300);_el('lbtn').click();
- setTimeout(()=>{_clearHi();_hideCap();_hideDim();_el('tourCursor').classList.remove('show');},900);
+ const otherBtn=startL==='fr'?enB:frB,backBtn=startL==='fr'?frB:enB;
+ _hideDim();_clearHi();await _sleep(550);_hi(ltb);_cap(startL==='fr'?'Bilingue : francais / anglais':'Bilingual: French / English');await _sleep(900);
+ _moveCursor(otherBtn);await _sleep(750);await _clickFx();otherBtn.click();_posCap();await _sleep(2300);
+ _moveCursor(backBtn);await _sleep(750);await _clickFx();backBtn.click();_posCap();await _sleep(1500);
+ _hi(_el('lbtn'));_cap(startL==='fr'?'Et on se connecte !':'And we log in!');
+ _moveCursor(_el('lbtn'));await _sleep(900);await _clickFx();await _sleep(300);
+ _clearHi();_hideCap();_hideDim();_el('lbtn').click();
+ await _sleep(1600);await runAppTour(startL);
 }
 function runSelf(){
  _closeWelcome();_el('luser').value='';_el('lpass').value='';
  _el('credSticker').classList.add('show');
+}
+function _showVeil(){_el('tourVeil').classList.add('show');}
+function _hideVeil(){_el('tourVeil').classList.remove('show');}
+function navEl(){const t=document.querySelector('.tabs');return (t&&t.offsetParent!==null)?t:document.getElementById('bottomNav');}
+async function _spot(el,text,zoom){if(!el)return;el.scrollIntoView({behavior:'smooth',block:'center'});await _sleep(700);(zoom?_hi:_hiBig)(el);_moveCursor(el);_cap(text);await _sleep(150);}
+async function runAppTour(startL){
+ const fr=startL==='fr';
+ _showVeil();_cursorStart();await _sleep(850);
+ await _spot(document.querySelector('.weeknav'),fr?"Choisissez la semaine ici : les fleches pour naviguer, ou le selecteur groupe par mois.":"Pick the week here: arrows to move, or the month-grouped picker.",false);await _sleep(2000);
+ await _spot(document.getElementById('teamBar'),fr?"Filtrez les employes par departement.":"Filter employees by department.",false);await _sleep(1800);
+ await _spot(document.getElementById('calAdmin'),fr?"Le calendrier du mois : les heures travaillees apparaissent chaque jour.":"The month calendar: hours worked appear on each day.",false);await _sleep(2000);
+ await _spot(document.querySelector('#dayList .ecard'),fr?"Saisissez le debut et la fin d'un quart. Tout se sauvegarde tout seul.":"Enter a shift's start and end. Everything saves on its own.",true);await _sleep(2000);
+ await _spot(navEl(),fr?"Naviguez entre Jour, Semaine, Gestion, Employes, Journal et Sauvegardes.":"Move between Day, Week, Manager, Employees, Activity and Backups.",false);await _sleep(2200);
+ tab('week');await _sleep(700);await _spot(document.getElementById('wtable'),fr?"La vue Semaine : le total d'heures de chaque employe.":"The Week view: each employee's weekly total.",false);await _sleep(2000);
+ tab('mgr');await _sleep(700);await _spot(document.getElementById('mgrKpis'),fr?"Gestion : paie brute, deja paye, reste a payer, et un calculateur de pourboires.":"Manager: gross pay, already paid, still owed, and a tip calculator.",false);await _sleep(2200);
+ tab('emp');await _sleep(700);await _spot(document.querySelector('#empAdminView .frow'),fr?"Ajoutez des employes et changez leur departement, taux ou role.":"Add employees and change their department, rate or role.",false);await _sleep(2100);
+ tab('day');await _sleep(700);
+ await _spot(document.getElementById('viewAsBtn'),fr?"Et previsualisez l'app comme un employe avec ce bouton.":"And preview the app as an employee with this button.",true);await _sleep(2100);
+ _clearHi();_hideVeil();_el('tourCursor').classList.remove('show');_hiEl=null;
+ _cap(fr?"Fin de la visite. Explorez librement !":"Tour complete. Explore freely!");
+ setTimeout(()=>_hideCap(),3200);
 }
 boot();
 </script>
