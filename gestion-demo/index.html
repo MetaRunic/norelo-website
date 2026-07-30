@@ -46,7 +46,6 @@ optgroup{color:var(--gr);font-weight:700;}
 .lt button.on{background:var(--accent);color:#fff;}
 
 #app{display:none;}
-#demoBanner{background:linear-gradient(90deg,var(--accent),var(--accent-d));color:#fff;text-align:center;font-size:13px;font-weight:700;padding:9px 14px;letter-spacing:.2px;}
 header{position:sticky;top:0;z-index:50;background:rgba(16,22,30,.95);backdrop-filter:blur(18px);border-bottom:1px solid var(--bdr);padding:1rem 1.4rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
 header .logo{font-size:24px;}
 .spacer{flex:1;}
@@ -276,8 +275,8 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     <div class="logo">Nore<span class="lo">lo</span><span class="dot"></span></div>
     <div class="lsub" id="lsub">Horaire des employes</div>
     <div class="lerr" id="lerr"></div>
-    <input type="text" id="luser" placeholder="Nom d'utilisateur" autocomplete="off"/>
-    <div class="pwrap"><input type="password" id="lpass" placeholder="Mot de passe" autocomplete="off"/><button type="button" class="pweye" id="lpassEye" aria-label="Afficher le mot de passe"></button></div>
+    <input type="text" id="luser" placeholder="Nom d'utilisateur" autocomplete="off" value="dan"/>
+    <div class="pwrap"><input type="password" id="lpass" placeholder="Mot de passe" autocomplete="off" value="demo"/><button type="button" class="pweye" id="lpassEye" aria-label="Afficher le mot de passe"></button></div>
     <button class="btn full" id="lbtn">Entrer</button>
     <div class="lt"><button data-l="fr" class="on">FR</button><button data-l="en">EN</button></div>
     <div class="lhint" id="lhint">Acces reserve. Vos donnees restent sur cet appareil.</div>
@@ -285,7 +284,6 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
 </div>
 
 <div id="app">
-  <div id="demoBanner">Demo interactif Norelo &middot; donnees fictives, rien n'est reel &middot; explorez tous les onglets</div>
   <header>
     <div class="logo">Nore<span class="lo">lo</span><span class="dot"></span></div>
     <div class="tabs">
@@ -454,8 +452,8 @@ const T={
    employees:'Employes et taux',add:'Ajouter',legend:'Postes et besoins',export:'Sauvegarder une copie',import:'Restaurer',
    mgrLockT:'Connexion gestionnaire',mgrLockS:'Cette section demande un mot de passe distinct.',unlock:'Deverrouiller',
    payTitle:'Paiements et totaux',tipsT:'Calculateur de pourboires',tipsPool:'Cagnotte totale ($)',tipSplit:'Repartir par heures',
-   tipsHint:'Repartit la cagnotte selon les heures travaillees.',lsub:'Horaire des employes',
-   lhint:'Acces reserve. Vos donnees restent sur cet appareil.',enter:'Entrer',wrong:'Identifiant ou mot de passe invalide',
+   tipsHint:'Repartit la cagnotte selon les heures travaillees.',lsub:"Demo - Gestionnaire d'horaire",
+   lhint:'Demo interactive - les identifiants sont deja remplis, cliquez simplement sur Entrer.',enter:'Entrer',wrong:'Identifiant ou mot de passe invalide',
    days:['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'],sdays:['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'],
    months:['janvier','fevrier','mars','avril','mai','juin','juillet','aout','septembre','octobre','novembre','decembre'],
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Debut',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
@@ -466,8 +464,8 @@ const T={
    employees:'Employees and rates',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
    payTitle:'Payments and totals',tipsT:'Tip calculator',tipsPool:'Total pool ($)',tipSplit:'Split by hours',
-   tipsHint:'Splits the pool by hours worked.',lsub:'Employee schedule',
-   lhint:'Restricted access. Your data stays on this device.',enter:'Enter',wrong:'Invalid username or password',
+   tipsHint:'Splits the pool by hours worked.',lsub:'Demo - Schedule manager',
+   lhint:'Interactive demo - credentials are pre-filled, just click Enter.',enter:'Enter',wrong:'Invalid username or password',
    days:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],sdays:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
@@ -906,7 +904,7 @@ function makeMock(){
   };
   const b={select(){return b;},eq(c,v){st.conds.push(r=>r[c]===v);return b;},neq(c,v){st.conds.push(r=>r[c]!==v);return b;},gte(c,v){st.conds.push(r=>r[c]>=v);return b;},lte(c,v){st.conds.push(r=>r[c]<=v);return b;},order(c,o){st.ord={c,asc:!(o&&o.ascending===false)};return b;},limit(x){st.lim=x;return b;},maybeSingle(){st.single=true;return b;},insert(p){st.mode='insert';st.payload=p;return b;},upsert(p,o){st.mode='upsert';st.payload=p;st.onConflict=o&&o.onConflict;return b;},update(p){st.mode='update';st.payload=p;return b;},delete(){st.mode='delete';return b;},then(res){res(run());}};
   return b;}
- return {from:from,auth:{async getSession(){return{data:{session:{user:DEMO_USER}}};},async signInWithPassword(){return{data:{user:DEMO_USER},error:null};},async signOut(){return{};}},functions:{async invoke(nm,o){return{data:demoInvoke((o&&o.body)||{}),error:null};}},channel(){return{on(){return this;},subscribe(){return this;}};}};
+ return {from:from,auth:{async getSession(){return{data:{session:null}};},async signInWithPassword(){return{data:{user:DEMO_USER},error:null};},async signOut(){return{};}},functions:{async invoke(nm,o){return{data:demoInvoke((o&&o.body)||{}),error:null};}},channel(){return{on(){return this;},subscribe(){return this;}};}};
 }
 function demoInvoke(body){
  if(body.action==='delete'){DB.profiles=DB.profiles.filter(p=>p.id!==body.id);DB.shifts=DB.shifts.filter(s=>s.employee_id!==body.id);DB.paid_weeks=DB.paid_weeks.filter(p=>p.employee_id!==body.id);return{ok:true};}
