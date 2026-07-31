@@ -317,23 +317,23 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
   <div class="lbox">
     <div class="tourdim" id="tourDim"></div>
     <div class="logo">Nore<span class="lo">lo</span><span class="dot"></span></div>
-    <div class="lsub" id="lsub">Horaire des employes</div>
+    <div class="lsub" id="lsub">Horaire des employés</div>
     <div class="lerr" id="lerr"></div>
     <input type="text" id="luser" placeholder="Nom d'utilisateur" autocomplete="off"/>
     <div class="pwrap"><input type="password" id="lpass" placeholder="Mot de passe" autocomplete="off"/><button type="button" class="pweye" id="lpassEye" aria-label="Afficher le mot de passe"></button></div>
     <button class="btn full" id="lbtn">Entrer</button>
     <div class="lt"><button data-l="fr" class="on">FR</button><button data-l="en">EN</button></div>
-    <div class="lhint" id="lhint">Acces reserve. Vos donnees restent sur cet appareil.</div>
+    <div class="lhint" id="lhint">Accès réservé. Vos données restent sur cet appareil.</div>
   </div>
 </div>
 
 <div id="tourModal" class="tourmodal">
   <div class="tourbox">
     <div class="logo" style="font-size:30px">Nore<span class="lo">lo</span><span class="dot"></span></div>
-    <h2 data-i="twT">Bienvenue dans la demo</h2>
-    <p class="tmp" data-i="twP">Comment souhaitez-vous decouvrir l'application?</p>
-    <button class="btn full" id="twGuided" data-i="twGuided">Visite guidee</button>
-    <button class="btn full ghost" id="twSelf" data-i="twSelf" style="margin-top:.65rem">Explorer moi-meme</button>
+    <h2 data-i="twT">Bienvenue dans la démo</h2>
+    <p class="tmp" data-i="twP">Comment souhaitez-vous découvrir l'application?</p>
+    <button class="btn full" id="twGuided" data-i="twGuided">Visite guidée</button>
+    <button class="btn full ghost" id="twSelf" data-i="twSelf" style="margin-top:.65rem">Explorer moi-même</button>
     <div class="lt"><button data-l="fr" class="on">FR</button><button data-l="en">EN</button></div>
   </div>
 </div>
@@ -342,7 +342,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
 <div id="tourCaption" class="tourcap"></div>
 <svg id="tourCursor" class="tourcursor" viewBox="0 0 20 20" fill="#fff" stroke="#0b0f16" stroke-width="1"><path d="M2 2 L2 16 L6 12.5 L8.5 18 L11 17 L8.5 11.5 L14 11.5 Z"/></svg>
 <div id="tourClick" class="tourclick"></div>
-<div id="credSticker" class="credsticker"><b data-i="csT">Identifiants de la demo</b><span data-i="csUl">Utilisateur</span>: <span class="cv">norelo</span><br><span data-i="csPl">Mot de passe</span>: <span class="cv">demo</span></div>
+<div id="credSticker" class="credsticker"><b data-i="csT">Identifiants de la démo</b><span data-i="csUl">Utilisateur</span>: <span class="cv">norelo</span><br><span data-i="csPl">Mot de passe</span>: <span class="cv">demo</span></div>
 
 <div id="app">
   <header>
@@ -351,19 +351,19 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
       <button id="tabDay" class="on" data-i="tDay">Jour</button>
       <button id="tabWeek" data-i="tWeek">Semaine</button>
       <button id="tabMgr" data-i="tMgr">Gestion</button>
-      <button id="tabEmp" data-i="tEmp">Employes</button>
+      <button id="tabEmp" data-i="tEmp">Employés</button>
       <button id="tabLog" data-i="tLog">Journal</button>
       <button id="tabBak" data-i="tBak">Sauvegardes</button>
     </div>
     <div class="spacer"></div>
     <div class="hlt"><button data-l="fr" class="on">FR</button><button data-l="en">EN</button></div>
-    <button class="btn ghost sm" id="viewAsBtn" data-i="viewAs">Voir comme employe</button>
+    <button class="btn ghost sm" id="viewAsBtn" data-i="viewAs">Voir comme employé</button>
     <button class="btn ghost sm" id="logout" data-i="logout">Quitter</button>
   </header>
 
   <main>
     <div id="previewBar" class="previewbar" style="display:none">
-      <span><span data-i="viewingAs">Apercu employe</span> : <strong id="previewName"></strong></span>
+      <span><span data-i="viewingAs">Aperçu employé</span> : <strong id="previewName"></strong></span>
       <button class="btn sm" id="previewExit" data-i="backToMgr">Revenir en gestion</button>
     </div>
     <div class="rowtop">
@@ -399,7 +399,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
         <p class="muted" style="margin:.6rem 0 1.3rem" data-i="mgrLockS">Cette section demande un mot de passe distinct.</p>
         <div class="lerr" id="merr"></div>
         <div class="pwrap"><input type="password" id="mpass" placeholder="Mot de passe gestionnaire" autocomplete="off"/><button type="button" class="pweye" id="mpassEye" aria-label="Afficher le mot de passe"></button></div>
-        <button class="btn full" id="mbtn" data-i="unlock">Deverrouiller</button>
+        <button class="btn full" id="mbtn" data-i="unlock">Déverrouiller</button>
       </div>
       <div id="mgrContent" style="display:none">
         <h2 data-i="payTitle" style="margin-bottom:1.2rem">Paiements et totaux</h2>
@@ -409,7 +409,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
           <div class="tips">
             <span class="muted" data-i="tipsPool">Cagnotte totale ($)</span>
             <input type="number" id="tipPool" step="1" placeholder="0"/>
-            <button class="btn sm" id="tipCalc" data-i="tipSplit">Repartir par heures</button>
+            <button class="btn sm" id="tipCalc" data-i="tipSplit">Répartir par heures</button>
           </div>
           <div class="muted" data-i="tipsHint">Repartit la cagnotte selon les heures travaillees.</div>
         </div>
@@ -426,7 +426,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
           <input class="rate" id="empRate" type="number" step="0.25" placeholder="$/h"/>
           <input id="empUser" placeholder="Nom d'utilisateur" style="width:150px" autocomplete="off"/>
           <input id="empPass" placeholder="Mot de passe" style="width:140px" autocomplete="off"/>
-          <select id="empRoleSel"><option value="employee" data-i="roleEmp">Employe</option><option value="manager" data-i="roleMgr">Gestionnaire</option></select>
+          <select id="empRoleSel"><option value="employee" data-i="roleEmp">Employé</option><option value="manager" data-i="roleMgr">Gestionnaire</option></select>
           <button class="btn sm" id="addEmp" data-i="add">Ajouter</button>
         </div>
         <div id="empAdmin"></div>
@@ -456,7 +456,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     <button data-tab="day"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/><rect x="6.5" y="12.5" width="4.5" height="4.5" rx="1" fill="currentColor" stroke="none"/></svg><span data-i="tDay">Jour</span></button>
     <button data-tab="week"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2.5v4M16 2.5v4M7 13h2M11 13h2M15 13h2M7 17h2M11 17h2"/></svg><span data-i="tWeek">Semaine</span></button>
     <button data-tab="mgr"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M14.5 9.3c-.4-.9-1.4-1.5-2.6-1.5-1.5 0-2.6.8-2.6 1.9 0 1 .8 1.6 2.6 2 1.9.4 2.7 1 2.7 2.1 0 1.1-1.2 1.9-2.7 1.9-1.3 0-2.4-.6-2.8-1.6"/></svg><span data-i="tMgr">Gestion</span></button>
-    <button data-tab="emp"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16.5 5.3a3 3 0 0 1 0 5.4M18 19a5.5 5.5 0 0 0-3-4.9"/></svg><span data-i="tEmp">Employes</span></button>
+    <button data-tab="emp"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16.5 5.3a3 3 0 0 1 0 5.4M18 19a5.5 5.5 0 0 0-3-4.9"/></svg><span data-i="tEmp">Employés</span></button>
     <button data-tab="log"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6M9 8h2"/></svg><span data-i="tLog">Journal</span></button>
     <button data-tab="bak"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v5h7"/><rect x="8" y="13" width="8" height="5"/></svg><span data-i="tBak">Sauvegardes</span></button>
   </nav>
@@ -475,7 +475,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
 <!-- view-as-employee sheet -->
 <div id="viewAsSheet" class="sheet" style="display:none">
   <div class="sheetbox">
-    <div class="sheethdr"><span data-i="viewAsTitle">Voir comme employe</span><button id="viewAsClose">&times;</button></div>
+    <div class="sheethdr"><span data-i="viewAsTitle">Voir comme employé</span><button id="viewAsClose">&times;</button></div>
     <div id="viewAsList" style="overflow-y:auto;padding:.7rem;-webkit-overflow-scrolling:touch"></div>
   </div>
 </div>
@@ -483,7 +483,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
 <!-- time picker sheet -->
 <div id="timeSheet" class="sheet" style="display:none">
   <div class="sheetbox">
-    <div class="sheethdr"><span id="timeSheetTitle">Debut</span><button id="timeClose">&times;</button></div>
+    <div class="sheethdr"><span id="timeSheetTitle">Début</span><button id="timeClose">&times;</button></div>
     <div id="timeGrid"></div>
   </div>
 </div>
@@ -668,7 +668,7 @@ async function applyTime(v){if(!timeCtx)return;const ctx=timeCtx;const w=state.w
  renderWeekBar();
  showToast(lang==='fr'?'Enregistrement...':'Saving...',true);
  const err=await saveShift(empId,state.current,dayIdx,day);
- if(err){day.start=prev.start;day.end=prev.end;showToast(lang==='fr'?'Non enregistre':'Not saved',false);alert(lang==='fr'?'Enregistrement refuse (jour verrouille ou permission).':'Save refused (locked day or permission).');
+ if(err){day.start=prev.start;day.end=prev.end;showToast(lang==='fr'?'Non enregistré':'Not saved',false);alert(lang==='fr'?'Enregistrement refusé (jour verrouillé ou permission).':'Save refused (locked day or permission).');
    if(ctx.mode==='day')renderDayList();else renderEmp();renderWeekBar();}
  else{showToast(lang==='fr'?'Enregistre':'Saved',true);
    if(!isEmployee&&empId!==myId){const em=state.employees.find(x=>x.id===empId);logAction('edit_hours',(em?em.name:'')+' '+addDaysISO(state.current,dayIdx)+' '+(day.start||'--')+'-'+(day.end||'--'));}}}
@@ -729,7 +729,7 @@ function renderEmpAdmin(){const t=T[lang];document.getElementById('empAdmin').in
   +'<select class="rolesel" data-role><option value="employee"'+(mgr?'':' selected')+'>'+t.roleEmp+'</option><option value="manager"'+(mgr?' selected':'')+'>'+t.roleMgr+'</option></select>'
   +'<select class="teamsel" data-team>'+deptOptions(empTeam(e))+'</select>'
   +'<input class="rate" type="number" step="0.25" value="'+e.rate+'" data-rate/><span class="erl">/h</span>'
-  +'<button class="btn ghost sm" data-pwd title="'+(lang==='fr'?'Reinitialiser le mot de passe':'Reset password')+'">'+t.resetPwd+'</button>'
+  +'<button class="btn ghost sm" data-pwd title="'+(lang==='fr'?'Réinitialiser le mot de passe':'Reset password')+'">'+t.resetPwd+'</button>'
   +'<button class="delx" data-del>&times;</button></div>';}).join('');}
 function kpi(v,k,c){return '<div class="kpi"><div class="v '+c+'">'+v+'</div><div class="k">'+k+'</div></div>';}
 
@@ -817,48 +817,48 @@ function bindApp(){
    const name=document.getElementById('empName').value.trim();const username=document.getElementById('empUser').value.trim().toLowerCase();
    const password=document.getElementById('empPass').value;const team=document.getElementById('empTeam').value;const rate=document.getElementById('empRate').value;const role=document.getElementById('empRoleSel').value;
    if(!name||!username||!password){alert(lang==='fr'?'Nom, utilisateur et mot de passe requis.':'Name, username and password required.');return;}
-   if(password.length<6){alert(lang==='fr'?'Mot de passe: 6 caracteres minimum.':'Password: at least 6 characters.');return;}
+   if(password.length<6){alert(lang==='fr'?'Mot de passe: 6 caractères minimum.':'Password: at least 6 characters.');return;}
    const btn=document.getElementById('addEmp');btn.disabled=true;
    const {data,error}=await sb.functions.invoke('quick-api',{body:{name,username,password,team,rate,role}});
    btn.disabled=false;
    if(error||!data||!data.ok){alert((data&&data.error)||(error&&error.message)||'Erreur');return;}
    ['empName','empUser','empPass','empRate'].forEach(id=>document.getElementById(id).value='');
-   logAction('create_account',username+' ('+role+')');await loadAll();renderAll();showToast(lang==='fr'?'Compte cree':'Account created',true);
+   logAction('create_account',username+' ('+role+')');await loadAll();renderAll();showToast(lang==='fr'?'Compte créé':'Account created',true);
   };
   document.getElementById('empAdmin').addEventListener('input',e=>{if(!e.target.hasAttribute('data-rate'))return;const row=e.target.closest('.emprow');const emp=state.employees.find(x=>x.id===row.getAttribute('data-id'));if(!emp)return;emp.rate=+e.target.value||0;sb.from('profiles').update({rate:emp.rate}).eq('id',emp.id).then(()=>{});});
   document.getElementById('empAdmin').addEventListener('change',async e=>{const row=e.target.closest('.emprow');if(!row)return;const id=row.getAttribute('data-id');const emp=state.employees.find(x=>x.id===id);if(!emp)return;
-   if(e.target.classList.contains('teamsel')){emp.team=e.target.value;await sb.from('profiles').update({team:emp.team}).eq('id',id);logAction('change_team',emp.name+' -> '+teamLabel(emp.team));showToast(lang==='fr'?'Equipe modifiee':'Team changed',true);renderAll();}
+   if(e.target.classList.contains('teamsel')){emp.team=e.target.value;await sb.from('profiles').update({team:emp.team}).eq('id',id);logAction('change_team',emp.name+' -> '+teamLabel(emp.team));showToast(lang==='fr'?'Équipe modifiée':'Team changed',true);renderAll();}
    else if(e.target.classList.contains('rolesel')){const newRole=e.target.value;
-    if(id===myId){alert(lang==='fr'?'Vous ne pouvez pas changer votre propre role.':"You can't change your own role.");renderEmpAdmin();return;}
-    if(newRole==='employee'&&OWNERS.includes((emp.username||'').toLowerCase())){alert(lang==='fr'?'Ce compte proprietaire est protege et ne peut pas etre retrograde.':'This owner account is protected and cannot be demoted.');renderEmpAdmin();return;}
-    const cpw=await promptPwd(lang==='fr'?('Confirmez avec VOTRE mot de passe pour changer le role de '+emp.name+' :'):('Confirm with YOUR password to change '+emp.name+"'s role:"));
+    if(id===myId){alert(lang==='fr'?'Vous ne pouvez pas changer votre propre rôle.':"You can't change your own role.");renderEmpAdmin();return;}
+    if(newRole==='employee'&&OWNERS.includes((emp.username||'').toLowerCase())){alert(lang==='fr'?'Ce compte propriétaire est protégé et ne peut pas être rétrogradé.':'This owner account is protected and cannot be demoted.');renderEmpAdmin();return;}
+    const cpw=await promptPwd(lang==='fr'?('Confirmez avec VOTRE mot de passe pour changer le rôle de '+emp.name+' :'):('Confirm with YOUR password to change '+emp.name+"'s role:"));
     if(!cpw){renderEmpAdmin();return;}
     const {error:ae}=await sb.auth.signInWithPassword({email:myEmail,password:cpw});
     if(ae){alert(lang==='fr'?'Mot de passe incorrect.':'Wrong password.');renderEmpAdmin();return;}
     const {data,error}=await sb.functions.invoke('quick-api',{body:{action:'update',id,role:newRole}});
     if(error||!data||!data.ok){alert((data&&data.error)||'Erreur');renderEmpAdmin();return;}
-    emp.prole=newRole;logAction('change_role',emp.name+' -> '+(newRole==='manager'?T[lang].roleMgr:T[lang].roleEmp));renderEmpAdmin();showToast(lang==='fr'?'Role modifie':'Role changed',true);}
-   else if(e.target.hasAttribute('data-rate')){logAction('change_rate',emp.name+' -> '+emp.rate+'$/h');showToast(lang==='fr'?'Taux modifie':'Rate changed',true);}
-   else if(e.target.hasAttribute('data-name')){emp.name=e.target.value.trim();await sb.from('profiles').update({name:emp.name}).eq('id',id);logAction('change_name',emp.name);showToast(lang==='fr'?'Nom modifie':'Name changed',true);renderAll();}
+    emp.prole=newRole;logAction('change_role',emp.name+' -> '+(newRole==='manager'?T[lang].roleMgr:T[lang].roleEmp));renderEmpAdmin();showToast(lang==='fr'?'Rôle modifié':'Role changed',true);}
+   else if(e.target.hasAttribute('data-rate')){logAction('change_rate',emp.name+' -> '+emp.rate+'$/h');showToast(lang==='fr'?'Taux modifié':'Rate changed',true);}
+   else if(e.target.hasAttribute('data-name')){emp.name=e.target.value.trim();await sb.from('profiles').update({name:emp.name}).eq('id',id);logAction('change_name',emp.name);showToast(lang==='fr'?'Nom modifié':'Name changed',true);renderAll();}
    else if(e.target.hasAttribute('data-uname')){const old=emp.username;const nu=e.target.value.trim().toLowerCase();if(!nu){renderEmpAdmin();return;}
     const {data,error}=await sb.functions.invoke('quick-api',{body:{action:'update',id,username:nu}});
     if(error||!data||!data.ok){alert((data&&data.error)||'Erreur');renderEmpAdmin();return;}
-    emp.username=nu;if(id===myId)myEmail=nu+EMAIL_DOMAIN;logAction('rename_user',(old||'')+' -> '+nu);renderEmpAdmin();showToast(lang==='fr'?'Utilisateur modifie':'Username changed',true);}});
+    emp.username=nu;if(id===myId)myEmail=nu+EMAIL_DOMAIN;logAction('rename_user',(old||'')+' -> '+nu);renderEmpAdmin();showToast(lang==='fr'?'Utilisateur modifié':'Username changed',true);}});
   document.getElementById('teamBar').addEventListener('click',e=>{const b=e.target.closest('[data-team]');if(!b)return;teamFilter=b.getAttribute('data-team');document.querySelectorAll('#teamBar .tf').forEach(x=>x.classList.toggle('on',x===b));renderAll();});
   document.getElementById('empAdmin').addEventListener('click',async e=>{
    if(e.target.hasAttribute('data-pwd')){const rid=e.target.closest('.emprow').getAttribute('data-id');const em=state.employees.find(x=>x.id===rid);
-    const np=await promptPwd(lang==='fr'?('Nouveau mot de passe pour '+(em?em.name:'')+' (6+ caracteres) :'):('New password for '+(em?em.name:'')+' (6+ chars):'));
-    if(!np)return;if(np.length<6){alert(lang==='fr'?'6 caracteres minimum.':'6 characters minimum.');return;}
+    const np=await promptPwd(lang==='fr'?('Nouveau mot de passe pour '+(em?em.name:'')+' (6+ caractères) :'):('New password for '+(em?em.name:'')+' (6+ chars):'));
+    if(!np)return;if(np.length<6){alert(lang==='fr'?'6 caractères minimum.':'6 characters minimum.');return;}
     const cpw=await promptPwd(lang==='fr'?'Confirmez avec VOTRE mot de passe gestionnaire :':'Confirm with YOUR manager password:');if(!cpw)return;
     const {error:ae}=await sb.auth.signInWithPassword({email:myEmail,password:cpw});if(ae){alert(lang==='fr'?'Mot de passe incorrect.':'Wrong password.');return;}
     const r=await sb.functions.invoke('quick-api',{body:{action:'update',id:rid,password:np}});
     if(r.error||!r.data||!r.data.ok){alert((r.data&&r.data.error)||'Erreur');return;}
-    logAction('reset_password',em?em.name:'');showToast(lang==='fr'?'Mot de passe change':'Password changed',true);return;}
+    logAction('reset_password',em?em.name:'');showToast(lang==='fr'?'Mot de passe changé':'Password changed',true);return;}
    if(!e.target.hasAttribute('data-del'))return;
    const id=e.target.closest('.emprow').getAttribute('data-id');const emp=state.employees.find(x=>x.id===id);
    if(id===myId){alert(lang==='fr'?'Vous ne pouvez pas supprimer votre propre compte.':"You can't delete your own account.");return;}
    const th=empTotalAllWeeks(id);let msg=(lang==='fr'?'Supprimer le compte de ':'Delete account of ')+(emp?emp.name:'')+'?';
-   if(th>0)msg+='\n\n'+(lang==='fr'?('ATTENTION: '+th+' h enregistrees seront effacees definitivement.'):('WARNING: '+th+' logged hours will be permanently erased.'));
+   if(th>0)msg+='\n\n'+(lang==='fr'?('ATTENTION: '+th+' h enregistrées seront effacées définitivement.'):('WARNING: '+th+' logged hours will be permanently erased.'));
    if(!confirm(msg))return;
    const pw=await promptPwd(lang==='fr'?'Entrez VOTRE mot de passe gestionnaire pour confirmer la suppression :':'Enter YOUR manager password to confirm deletion:');
    if(!pw)return;
@@ -867,21 +867,21 @@ function bindApp(){
    e.target.disabled=true;
    const {data,error}=await sb.functions.invoke('quick-api',{body:{action:'delete',id}});
    if(error||!data||!data.ok){e.target.disabled=false;alert((data&&data.error)||(error&&error.message)||'Erreur');return;}
-   logAction('delete_account',emp?emp.name:'');await loadAll();renderAll();showToast(lang==='fr'?'Compte supprime':'Account deleted',true);});
+   logAction('delete_account',emp?emp.name:'');await loadAll();renderAll();showToast(lang==='fr'?'Compte supprimé':'Account deleted',true);});
   document.getElementById('mgrTable').addEventListener('click',async e=>{if(!e.target.dataset.paid)return;const id=e.target.dataset.paid;const w=state.weeks[state.current];const nv=!w.paid[id];w.paid[id]=nv;renderMgr();
    const {error}=await sb.from('paid_weeks').upsert({employee_id:id,week_start:state.current,paid:nv},{onConflict:'employee_id,week_start'});
-   if(error){w.paid[id]=!nv;renderMgr();alert(lang==='fr'?'Action refusee.':'Action refused.');}else{const em=state.employees.find(x=>x.id===id);logAction(nv?'mark_paid':'mark_unpaid',(em?em.name:'')+' ('+state.current+')');showToast(nv?(lang==='fr'?'Marque paye':'Marked paid'):(lang==='fr'?'Marque non paye':'Marked unpaid'),true);}});
+   if(error){w.paid[id]=!nv;renderMgr();alert(lang==='fr'?'Action refusée.':'Action refused.');}else{const em=state.employees.find(x=>x.id===id);logAction(nv?'mark_paid':'mark_unpaid',(em?em.name:'')+' ('+state.current+')');showToast(nv?(lang==='fr'?'Marqué payé':'Marked paid'):(lang==='fr'?'Marqué non payé':'Marked unpaid'),true);}});
   document.getElementById('tipCalc').onclick=calcTips;
   ['fltPerson','fltAction','fltDate'].forEach(fid=>document.getElementById(fid).addEventListener('change',applyLogFilter));
   document.getElementById('fltClear').onclick=()=>{document.getElementById('fltPerson').value='';document.getElementById('fltAction').value='';document.getElementById('fltDate').value='';applyLogFilter();};
-  document.getElementById('backupNow').onclick=async()=>{const btn=document.getElementById('backupNow');btn.disabled=true;const err=await createBackup('Manuelle');btn.disabled=false;if(err){alert(err.message||'Erreur');return;}logAction('backup','Manuelle');renderBackups();showToast(lang==='fr'?'Sauvegarde creee':'Backup created',true);};
+  document.getElementById('backupNow').onclick=async()=>{const btn=document.getElementById('backupNow');btn.disabled=true;const err=await createBackup('Manuelle');btn.disabled=false;if(err){alert(err.message||'Erreur');return;}logAction('backup','Manuelle');renderBackups();showToast(lang==='fr'?'Sauvegarde créée':'Backup created',true);};
   document.getElementById('backupList').addEventListener('click',async e=>{const b=e.target.closest('[data-restore]');if(!b)return;const id=b.getAttribute('data-restore');
-   if(!confirm(lang==='fr'?'Restaurer cette sauvegarde? Les heures actuelles seront remplacees (une sauvegarde de securite est creee).':'Restore this backup? Current hours will be replaced (a safety backup is created).'))return;
+   if(!confirm(lang==='fr'?'Restaurer cette sauvegarde? Les heures actuelles seront remplacées (une sauvegarde de sécurité est créée).':'Restore this backup? Current hours will be replaced (a safety backup is created).'))return;
    const pw=await promptPwd(lang==='fr'?'Entrez VOTRE mot de passe pour confirmer la restauration :':'Enter YOUR password to confirm the restore:');if(!pw)return;
    const {error:ae}=await sb.auth.signInWithPassword({email:myEmail,password:pw});if(ae){alert(lang==='fr'?'Mot de passe incorrect.':'Wrong password.');return;}
    b.disabled=true;const {data,error}=await sb.functions.invoke('quick-api',{body:{action:'restore',id}});
    if(error||!data||!data.ok){b.disabled=false;alert((data&&data.error)||'Erreur');return;}
-   logAction('restore_backup','');await loadAll();renderAll();renderBackups();showToast(lang==='fr'?'Restauration terminee':'Restore complete',true);});
+   logAction('restore_backup','');await loadAll();renderAll();renderBackups();showToast(lang==='fr'?'Restauration terminée':'Restore complete',true);});
  }
 }
 let previewAs=null;
@@ -924,7 +924,7 @@ function calcTips(){const pool=+document.getElementById('tipPool').value||0;cons
  document.getElementById('mgrTable').innerHTML=rows;}
 
 function logAction(action,detail){const me=state.employees.find(x=>x.id===myId);sb.from('audit_log').insert({actor_id:myId,actor_name:me?me.name:'',action:action,detail:detail||null}).then(()=>{});}
-function actLabel(a){const M={fr:{create_account:'Compte cree',delete_account:'Compte supprime',reset_password:'Mot de passe reinitialise',rename_user:'Utilisateur renomme',change_name:'Nom modifie',change_role:'Role modifie',change_team:'Equipe modifiee',change_rate:'Taux modifie',mark_paid:'Marque paye',mark_unpaid:'Marque non paye',edit_hours:'Heures modifiees',backup:'Sauvegarde creee',restore_backup:'Restauration',force_update:'Mise a jour forcee'},en:{create_account:'Account created',delete_account:'Account deleted',reset_password:'Password reset',rename_user:'Username changed',change_name:'Name changed',change_role:'Role changed',change_team:'Team changed',change_rate:'Rate changed',mark_paid:'Marked paid',mark_unpaid:'Marked unpaid',edit_hours:'Hours changed',backup:'Backup created',restore_backup:'Restore',force_update:'Forced update'}};return (M[lang]&&M[lang][a])||a;}
+function actLabel(a){const M={fr:{create_account:'Compte créé',delete_account:'Compte supprimé',reset_password:'Mot de passe réinitialisé',rename_user:'Utilisateur renommé',change_name:'Nom modifié',change_role:'Rôle modifié',change_team:'Équipe modifiée',change_rate:'Taux modifié',mark_paid:'Marqué payé',mark_unpaid:'Marqué non payé',edit_hours:'Heures modifiées',backup:'Sauvegarde créée',restore_backup:'Restauration',force_update:'Mise à jour forcée'},en:{create_account:'Account created',delete_account:'Account deleted',reset_password:'Password reset',rename_user:'Username changed',change_name:'Name changed',change_role:'Role changed',change_team:'Team changed',change_rate:'Rate changed',mark_paid:'Marked paid',mark_unpaid:'Marked unpaid',edit_hours:'Hours changed',backup:'Backup created',restore_backup:'Restore',force_update:'Forced update'}};return (M[lang]&&M[lang][a])||a;}
 let logCache=[];
 async function renderLog(){const el=document.getElementById('logList');if(!el)return;el.innerHTML='<div class="muted" style="padding:1rem">...</div>';
  const {data,error}=await sb.from('audit_log').select('*').order('created_at',{ascending:false}).limit(500);
@@ -938,7 +938,7 @@ async function renderLog(){const el=document.getElementById('logList');if(!el)re
 function applyLogFilter(){const el=document.getElementById('logList');if(!el)return;
  const p=document.getElementById('fltPerson').value,a=document.getElementById('fltAction').value,df=document.getElementById('fltDate').value;
  const rows=logCache.filter(r=>(!p||r.actor_name===p)&&(!a||r.action===a)&&(!df||(r.created_at||'').slice(0,10)>=df));
- if(!rows.length){el.innerHTML='<div class="muted" style="padding:1rem">'+(lang==='fr'?'Aucune activite.':'No activity.')+'</div>';return;}
+ if(!rows.length){el.innerHTML='<div class="muted" style="padding:1rem">'+(lang==='fr'?'Aucune activité.':'No activity.')+'</div>';return;}
  el.innerHTML=rows.map(r=>{const d=new Date(r.created_at);const when=d.toLocaleString(lang==='fr'?'fr-CA':'en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
   return '<div class="logrow"><div class="logtop"><span class="logactor">'+esc(r.actor_name||'?')+'</span><span class="logwhen">'+esc(when)+'</span></div><div class="logmid"><span class="logact">'+esc(actLabel(r.action))+'</span>'+(r.detail?(' <span class="logtarget">'+esc(r.detail)+'</span>'):'')+'</div></div>';}).join('');}
 let pwdResolve=null;
@@ -1031,7 +1031,7 @@ function demoInvoke(body){
  if(body.action==='delete'){DB.profiles=DB.profiles.filter(p=>p.id!==body.id);DB.shifts=DB.shifts.filter(s=>s.employee_id!==body.id);DB.paid_weeks=DB.paid_weeks.filter(p=>p.employee_id!==body.id);return{ok:true};}
  if(body.action==='update'){const p=DB.profiles.find(x=>x.id===body.id);if(!p)return{ok:false,error:'introuvable'};if(body.username!==undefined)p.username=String(body.username).toLowerCase();if(body.name!==undefined)p.name=body.name;if(body.team!==undefined)p.team=body.team;if(body.rate!==undefined)p.rate=+body.rate||0;if(body.role!==undefined)p.role=body.role;return{ok:true};}
  if(body.action==='restore'){const bk=DB.backups.find(b=>b.id===body.id);if(!bk)return{ok:false,error:'introuvable'};const snap=bk.data||{};const ids=new Set(DB.profiles.map(p=>p.id));(snap.profiles||[]).forEach(pr=>{if(ids.has(pr.id)){const p=DB.profiles.find(x=>x.id===pr.id);Object.assign(p,{name:pr.name,rate:pr.rate,role:pr.role,team:pr.team});}});DB.shifts=(snap.shifts||[]).filter(s=>ids.has(s.employee_id)).map(s=>Object.assign({},s));DB.paid_weeks=(snap.paid||[]).filter(p=>ids.has(p.employee_id)).map(p=>Object.assign({},p));return{ok:true};}
- const u=String(body.username||'').toLowerCase();if(!u||!body.name||!body.password)return{ok:false,error:'Champs requis'};if(DB.profiles.some(p=>p.username===u))return{ok:false,error:"Nom d'utilisateur existe deja"};const id='e'+Math.random().toString(36).slice(2,8);DB.profiles.push({id:id,username:u,name:body.name,title:body.title||'',role:body.role==='manager'?'manager':'employee',team:DEPT_ORDER.includes(body.team)?body.team:'ops',rate:+body.rate||0});return{ok:true,id:id};
+ const u=String(body.username||'').toLowerCase();if(!u||!body.name||!body.password)return{ok:false,error:'Champs requis'};if(DB.profiles.some(p=>p.username===u))return{ok:false,error:"Nom d'utilisateur existe déjà"};const id='e'+Math.random().toString(36).slice(2,8);DB.profiles.push({id:id,username:u,name:body.name,title:body.title||'',role:body.role==='manager'?'manager':'employee',team:DEPT_ORDER.includes(body.team)?body.team:'ops',rate:+body.rate||0});return{ok:true,id:id};
 }
 /* ============================================================
    DEMO TUTORIAL - welcome prompt + guided/self-guided onboarding
