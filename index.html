@@ -126,10 +126,19 @@ nav.sc{padding:.7rem 3rem;}
 .poc{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);border-radius:22px;overflow:hidden;display:grid;grid-template-columns:1fr 1.25fr;transition:all .35s;}
 .poc:hover{transform:translateY(-5px);box-shadow:0 24px 60px rgba(0,0,0,.3);}
 .poi{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);min-height:320px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.poi::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=60') center/cover no-repeat;opacity:.12;transition:opacity .4s;}
-.poc:hover .poi::before{opacity:.2;}
+.poi::before{content:'';position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.35;transition:opacity .4s;}
+.poc:hover .poi::before{opacity:.5;}
+.poi.orchard{background:linear-gradient(135deg,#14532d,#166534);}
+.poi.orchard::before{background-image:url('/img/orchard.svg');}
+.poi.app{background:linear-gradient(135deg,#122a63,#1d4ed8);}
+.poi.app::before{background-image:url('/img/schedule.svg');}
 .poe{font-size:72px;position:relative;z-index:1;transition:transform .4s cubic-bezier(.34,1.56,.64,1);}
 .poc:hover .poe{transform:scale(1.15);}
+.plogo{background:rgba(255,255,255,.93);border-radius:20px;padding:20px 24px;position:relative;z-index:1;box-shadow:0 12px 34px rgba(0,0,0,.3);transition:transform .4s cubic-bezier(.34,1.56,.64,1);}
+.poc:hover .plogo{transform:scale(1.06);}
+.plogo img{display:block;width:180px;max-width:60vw;}
+.poico{width:94px;height:94px;color:#fff;position:relative;z-index:1;transition:transform .4s cubic-bezier(.34,1.56,.64,1);}
+.poc:hover .poico{transform:scale(1.12);}
 .pol{position:absolute;bottom:1.25rem;font-size:11px;color:rgba(255,255,255,.4);letter-spacing:1.5px;z-index:1;}
 .pob{padding:2.5rem;display:flex;flex-direction:column;justify-content:center;}
 .pob h3{font-size:24px;font-weight:800;color:#fff;margin-bottom:.75rem;letter-spacing:-.5px;}
@@ -393,6 +402,8 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
       <div class="svc rv d4"><div class="svic">🔧</div><h3 id="sv4t">Hébergement & maintenance</h3><p id="sv4d">Hébergement fiable avec maintenance mensuelle pour que votre site reste toujours rapide, sécurisé et à jour.</p><p class="svp" id="sv4p"><span class="svptag">Dès 18$/mois</span><span class="svptag gr">Forfaits disponibles</span></p></div>
       <div class="svc rv d1"><div class="svic">🖥️</div><h3 id="sv5t">Assemblage d'ordinateurs</h3><p id="sv5d">Vous rêvez d'un PC sur mesure pour le travail, le gaming ou la création? Daniel assemble votre ordinateur de A à Z selon votre budget. Vous payez les pièces au coût réel, sans markup, et la main-d'oeuvre au taux horaire.</p><p class="svp" id="sv5p"><span class="svptag">Pièces au coût réel</span><span class="svptag">50$ – 100$/heure</span></p></div>
       <div class="svc rv d2"><div class="svic">📷</div><h3 id="sv6t">Photographie professionnelle</h3><p id="sv6d">Votre site a besoin d'images de qualité? Daniel se déplace avec son Sony A7II et son objectif Tamron pour capturer votre entreprise sous son meilleur jour. Idéal pour les commerces, restaurants, produits et espaces.</p><p class="svp" id="sv6p"><span class="svptag">500$</span><span class="svptag gr">~10 photos · Dépl. inclus</span></p></div>
+      <div class="svc rv d3"><div class="svic">🗓️</div><h3 id="sv7t">Gestion d'horaire et feuilles de temps</h3><p id="sv7d">Application web sur mesure pour gérer les horaires, les heures travaillées et la paie de vos employés : connexion par employé, saisie en temps réel, calcul de la paie et des pourboires, journal des actions et sauvegardes. Le prix dépend de la taille de l'entreprise et de vos besoins.</p><p class="svp" id="sv7p"><span class="svptag">Sur mesure</span><span class="svptag gr">Selon la taille de l'entreprise</span></p></div>
+      <div class="svc rv d4"><div class="svic">🤖</div><h3 id="sv8t">Applications web et automatisation</h3><p id="sv8d">Besoin d'un outil sur mesure? Daniel conçoit des applications web, des services en ligne ou automatise des tâches et des processus pour optimiser les opérations de votre entreprise. De l'idée jusqu'à la mise en ligne.</p><p class="svp" id="sv8p"><span class="svptag">Sur mesure</span><span class="svptag gr">Sur devis</span></p></div>
     </div>
     <div class="rv" style="margin-top:2rem;background:linear-gradient(135deg,#eff6ff,#e0effe);border:1px solid #bfdbfe;border-radius:16px;padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
       <div>
@@ -441,7 +452,7 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
     <h2 class="sti rv" id="pot">Un travail concret,<br>des résultats réels.</h2>
     <p class="ssu rv" id="pos">Des sites web livrés pour de vraies entreprises locales.</p>
     <div class="poc rvs" style="cursor:pointer" onclick="window.open('https://alacroiseedespommes.com','_blank')">
-      <div class="poi"><span class="poe">🍎</span><span class="pol">alacroiseedespommes.com</span></div>
+      <div class="poi orchard"><span class="plogo"><img src="/img/croisee-logo.webp" alt="À la Croisée des Pommes" loading="lazy"/></span><span class="pol">alacroiseedespommes.com</span></div>
       <div class="pob">
         <h3>À la Croisée des Pommes</h3>
         <p id="pod">Site web complet pour un verger biologique certifié à Saint-Joseph-du-Lac. Réservations en ligne, boutique, nouvelles du verger et informations sur toutes les activités.</p>
@@ -456,7 +467,7 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
       <p class="tea" id="tea">À la Croisée des Pommes, Saint-Joseph-du-Lac</p>
     </div>
     <div class="poc rvs" style="margin-top:1.75rem;cursor:pointer" onclick="window.open('/gestion-demo/','_blank')">
-      <div class="poi"><span class="poe">🕐</span><span class="pol" id="po2tag">Application interne</span></div>
+      <div class="poi app"><span class="poico"><svg viewBox="0 0 24 24" width="94" height="94" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/><circle cx="12" cy="14.6" r="3.4"/><path d="M12 13.1v1.7l1.2.8"/></svg></span><span class="pol" id="po2tag">Application interne</span></div>
       <div class="pob">
         <h3 id="po2t">Gestionnaire d'horaire</h3>
         <p id="po2d">Application web de gestion d'horaire et de paie pour un verger. Connexion par employé, saisie des heures synchronisée en temps réel dans le nuage, séparation des équipes, calcul de paie et pourboires, journal des actions et sauvegardes automatiques.</p>
@@ -776,6 +787,8 @@ const T={
     'sv4t':'Hébergement & maintenance','sv4d':'Hébergement fiable avec maintenance mensuelle pour que votre site reste toujours rapide, sécurisé et à jour.','sv4p':'<span class="svptag">Dès 18$/mois</span><span class="svptag gr">Forfaits disponibles</span>',
     'sv5t':"Assemblage d'ordinateurs",'sv5d':"Vous rêvez d'un PC sur mesure pour le travail, le gaming ou la création? Daniel assemble votre ordinateur de A à Z selon votre budget. Vous payez les pièces au coût réel, sans markup, et la main-d'oeuvre au taux horaire.",'sv5p':'<span class="svptag">Pièces au coût réel</span><span class="svptag">50$ – 100$/heure</span>',
     'sv6t':'Photographie professionnelle','sv6d':"Votre site a besoin d'images de qualité? Daniel se déplace avec son Sony A7II et son objectif Tamron pour capturer votre entreprise sous son meilleur jour. Idéal pour les commerces, restaurants, produits et espaces.",'sv6p':'<span class="svptag">500$</span><span class="svptag gr">~10 photos · Dépl. inclus</span>',
+    'sv7t':"Gestion d'horaire et feuilles de temps",'sv7d':"Application web sur mesure pour gérer les horaires, les heures travaillées et la paie de vos employés : connexion par employé, saisie en temps réel, calcul de la paie et des pourboires, journal des actions et sauvegardes. Le prix dépend de la taille de l'entreprise et de vos besoins.",'sv7p':'<span class="svptag">Sur mesure</span><span class="svptag gr">Selon la taille de l\'entreprise</span>',
+    'sv8t':'Applications web et automatisation','sv8d':"Besoin d'un outil sur mesure? Daniel conçoit des applications web, des services en ligne ou automatise des tâches et des processus pour optimiser les opérations de votre entreprise. De l'idée jusqu'à la mise en ligne.",'sv8p':'<span class="svptag">Sur mesure</span><span class="svptag gr">Sur devis</span>',
     'lpr':'Processus','prt':'Simple, rapide, efficace.','prs':"De la première conversation jusqu'à la mise en ligne, voici comment ça se passe.",
     'p1t':'Consultation','p1d':'On discute de vos besoins, votre budget et vos objectifs. Gratuit et sans engagement.',
     'p2t':'Conception','p2d':'Je conçois votre site ou solution sur mesure selon vos préférences et votre image de marque.',
@@ -849,6 +862,8 @@ const T={
     'sv4t':'Hosting & maintenance','sv4d':'Reliable hosting with monthly maintenance to keep your site fast, secure and always up to date.','sv4p':'<span class="svptag">From $18/mo</span><span class="svptag gr">Plans available</span>',
     'sv5t':'PC building & assembly','sv5d':"Want a custom-built PC for work, gaming or content creation? Daniel builds your computer from scratch based on your budget and needs. You pay real cost on parts with no markup, plus hourly labour.",'sv5p':'<span class="svptag">Parts at cost</span><span class="svptag">$50 – $100/hour</span>',
     'sv6t':'Professional photography','sv6d':"Need quality images for your website? Daniel brings his Sony A7II camera and Tamron lens to capture your business at its best. Perfect for shops, restaurants, products and spaces.",'sv6p':'<span class="svptag">$500</span><span class="svptag gr">~10 photos · Travel incl.</span>',
+    'sv7t':'Scheduling & timesheets','sv7d':"Custom web app to manage staff schedules, hours worked and payroll: per-employee login, real-time entry, pay and tip calculation, an action log and backups. Pricing depends on your company size and needs.",'sv7p':'<span class="svptag">Custom</span><span class="svptag gr">Based on company size</span>',
+    'sv8t':'Web apps & automation','sv8d':"Need a custom tool? Daniel builds web apps and online services, or automates tasks and processes to streamline your company's operations. From the idea all the way to launch.",'sv8p':'<span class="svptag">Custom</span><span class="svptag gr">On quote</span>',
     'lpr':'Process','prt':'Simple, fast, effective.','prs':'From the first conversation all the way to launch, here is how it works.',
     'p1t':'Consultation','p1d':'We discuss your needs, budget and goals. Free and no commitment.',
     'p2t':'Design','p2d':'I design your website or solution tailored to your preferences and brand.',
