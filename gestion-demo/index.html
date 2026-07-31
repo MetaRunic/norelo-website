@@ -47,7 +47,7 @@ optgroup{color:var(--gr);font-weight:700;}
 .previewbar strong{color:var(--accent-l);}
 .tourdim{position:absolute;inset:0;border-radius:14px;background:rgba(10,15,25,.45);backdrop-filter:blur(3.5px);-webkit-backdrop-filter:blur(3.5px);z-index:5;opacity:0;pointer-events:none;transition:opacity .5s;}
 .tourdim.show{opacity:1;}
-.tourveil{position:fixed;inset:0;z-index:40;background:rgba(8,12,20,.5);backdrop-filter:blur(3.5px);-webkit-backdrop-filter:blur(3.5px);opacity:0;pointer-events:none;transition:opacity .5s;}
+.tourveil{position:fixed;inset:0;z-index:40;background:rgba(6,10,18,.55);opacity:0;pointer-events:none;transition:opacity .5s;}
 .tourveil.show{opacity:1;}
 #tourBlock{position:fixed;inset:0;z-index:1340;background:transparent;display:none;touch-action:none;cursor:progress;}
 .tourhi{position:relative;z-index:45;transform:scale(1.09);outline:3px solid var(--accent)!important;outline-offset:4px;box-shadow:0 0 0 8px rgba(47,158,95,.20),0 18px 55px rgba(0,0,0,.55);border-radius:10px;transition:transform .5s cubic-bezier(.34,1.4,.6,1),outline .25s,box-shadow .35s;}
@@ -517,18 +517,18 @@ const EYEOFF_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 function initEye(inpId,btnId){const i=document.getElementById(inpId),b=document.getElementById(btnId);if(!i||!b)return;b.innerHTML=EYE_SVG;b.onclick=()=>{const hidden=i.type==='password';i.type=hidden?'text':'password';b.innerHTML=hidden?EYEOFF_SVG:EYE_SVG;i.focus();};}
 const DAYS=['mon','tue','wed','thu','fri','sat','sun'];
 const T={
- fr:{tDay:'Jour',tWeek:'Semaine',tMgr:'Gestion',tEmp:'Employes',tLog:'Journal',tBak:'Sauvegardes',logout:'Quitter',
-   employees:'Employes et taux',add:'Ajouter',legend:'Postes et besoins',export:'Sauvegarder une copie',import:'Restaurer',
-   mgrLockT:'Connexion gestionnaire',mgrLockS:'Cette section demande un mot de passe distinct.',unlock:'Deverrouiller',
-   payTitle:'Paiements et totaux',tipsT:'Calculateur de pourboires',tipsPool:'Cagnotte totale ($)',tipSplit:'Repartir par heures',
-   tipsHint:'Repartit la cagnotte selon les heures travaillees.',lsub:"Demo - Gestionnaire d'horaire",
-   lhint:'Demo interactive Norelo.',enter:'Entrer',wrong:'Identifiant ou mot de passe invalide',twT:'Bienvenue dans la demo',twP:"Comment souhaitez-vous decouvrir l'application?",twGuided:'Visite guidee',twSelf:'Explorer moi-meme',csT:'Identifiants de la demo',csUl:'Utilisateur',csPl:'Mot de passe',
+ fr:{tDay:'Jour',tWeek:'Semaine',tMgr:'Gestion',tEmp:'Employés',tLog:'Journal',tBak:'Sauvegardes',logout:'Quitter',
+   employees:'Employés et taux',add:'Ajouter',legend:'Postes et besoins',export:'Sauvegarder une copie',import:'Restaurer',
+   mgrLockT:'Connexion gestionnaire',mgrLockS:'Cette section demande un mot de passe distinct.',unlock:'Déverrouiller',
+   payTitle:'Paiements et totaux',tipsT:'Calculateur de pourboires',tipsPool:'Cagnotte totale ($)',tipSplit:'Répartir par heures',
+   tipsHint:'Répartit la cagnotte selon les heures travaillées.',lsub:"Démo - Gestionnaire d'horaire",
+   lhint:'Démo interactive Norelo.',enter:'Entrer',wrong:'Identifiant ou mot de passe invalide',twT:'Bienvenue dans la démo',twP:"Comment souhaitez-vous découvrir l'application?",twGuided:'Visite guidée',twSelf:'Explorer moi-même',csT:'Identifiants de la démo',csUl:'Utilisateur',csPl:'Mot de passe',
    days:['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'],sdays:['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'],
-   months:['janvier','fevrier','mars','avril','mai','juin','juillet','aout','septembre','octobre','novembre','decembre'],
-   weekOf:'Semaine du',hi:'Bonjour, ',start:'Debut',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
-   paid:'Paye',unpaid:'A payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Deja paye',kUnpaid:'Reste a payer',del:'Retirer cet employe?',user:"Nom d'utilisateur",
-   chooseWeek:'Choisir une semaine',ws_past:'Passee',ws_cur:'En cours',ws_up:'A venir',teamAll:'Toutes',roleEmp:'Employe',roleMgr:'Gestionnaire',resetPwd:'MDP',clearF:'Effacer',backupsT:'Sauvegardes',backupNow:'Sauvegarder maintenant',versionT:'Version et mise a jour',forceUpd:'Forcer la mise a jour pour tous',viewAs:'Voir comme employe',viewingAs:'Apercu employe',backToMgr:'Revenir en gestion',viewAsTitle:'Voir comme employe',
-   locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.<br><strong>Un jour verrouille a corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit etre apres l'heure de debut.",hoursHi:'Heures de quart regulieres en surbrillance'},
+   months:['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'],
+   weekOf:'Semaine du',hi:'Bonjour, ',start:'Début',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
+   paid:'Payé',unpaid:'À payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Déjà payé',kUnpaid:'Reste à payer',del:'Retirer cet employé?',user:"Nom d'utilisateur",
+   chooseWeek:'Choisir une semaine',ws_past:'Passée',ws_cur:'En cours',ws_up:'À venir',teamAll:'Toutes',roleEmp:'Employé',roleMgr:'Gestionnaire',resetPwd:'MDP',clearF:'Effacer',backupsT:'Sauvegardes',backupNow:'Sauvegarder maintenant',versionT:'Version et mise à jour',forceUpd:'Forcer la mise à jour pour tous',viewAs:'Voir comme employé',viewingAs:'Aperçu employé',backToMgr:'Revenir en gestion',viewAsTitle:'Voir comme employé',
+   locked:'Verrouillé',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouillés.<br><strong>Un jour verrouillé à corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Vérification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit être après l'heure de début.",hoursHi:'Heures de quart régulières en surbrillance'},
  en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',tEmp:'Employees',tLog:'Activity',tBak:'Backups',logout:'Log out',
    employees:'Employees and rates',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
@@ -574,7 +574,7 @@ function subscribeRealtime(){
   .subscribe();
 }
 const DEPT_ORDER=['ops','wh','sales','admin'];
-const DEPT_L={fr:{ops:'Operations',wh:'Entrepot',sales:'Ventes',admin:'Administration'},en:{ops:'Operations',wh:'Warehouse',sales:'Sales',admin:'Administration'}};
+const DEPT_L={fr:{ops:'Opérations',wh:'Entrepôt',sales:'Ventes',admin:'Administration'},en:{ops:'Operations',wh:'Warehouse',sales:'Sales',admin:'Administration'}};
 function deptLabel(c){return (DEPT_L[lang]&&DEPT_L[lang][c])||c;}
 function deptOptions(sel){return DEPT_ORDER.map(c=>'<option value="'+c+'"'+(c===sel?' selected':'')+'>'+deptLabel(c)+'</option>').join('');}
 function empTeam(e){return e.team||'ops';}
@@ -748,6 +748,7 @@ async function boot(){initDemo();selDay=todayIdx();initEye('lpass','lpassEye');i
  document.getElementById('lbtn').onclick=doLogin;
  document.getElementById('lpass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
  document.getElementById('luser').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('lpass').focus();});
+ applyLang();
  const {data:{session}}=await sb.auth.getSession();if(session&&session.user)await enterApp(session.user);else startWelcome();}
 async function doLogin(){
  const u=(document.getElementById('luser').value||'').trim().toLowerCase();const p=document.getElementById('lpass').value;
@@ -964,26 +965,26 @@ function initDemo(){
  checkVersion=async function(){};
  fetchTrustedTime=async function(){trustedBaseMs=Date.now();perfBase=performance.now();};
  const profiles=[
-  {id:'dan',username:'a.bennett',name:'Alex Bennett',title:'Directeur des operations',role:'manager',team:'admin',rate:34},
-  {id:'gill',username:'s.rivard',name:'Sam Rivard',title:"Superviseur d'equipe",role:'manager',team:'ops',rate:31},
-  {id:'p1',username:'j.cote',name:'Jordan Cote',title:"Chef d'equipe",role:'employee',team:'ops',rate:26},
-  {id:'p2',username:'c.fortin',name:'Camille Fortin',title:'Operateur',role:'employee',team:'ops',rate:23},
-  {id:'p3',username:'l.bouchard',name:'Leo Bouchard',title:'Operateur',role:'employee',team:'ops',rate:23},
-  {id:'p4',username:'m.girard',name:'Maya Girard',title:'Manoeuvre',role:'employee',team:'ops',rate:21},
-  {id:'p5',username:'n.lavoie',name:'Noah Lavoie',title:'Operateur',role:'employee',team:'ops',rate:22},
-  {id:'p6',username:'e.dubois',name:'Emma Dubois',title:"Chef d'entrepot",role:'employee',team:'wh',rate:25},
+  {id:'dan',username:'a.bennett',name:'Alex Bennett',title:'Directeur des opérations',role:'manager',team:'admin',rate:34},
+  {id:'gill',username:'s.rivard',name:'Sam Rivard',title:"Superviseur d'équipe",role:'manager',team:'ops',rate:31},
+  {id:'p1',username:'j.cote',name:'Jordan Cote',title:"Chef d'équipe",role:'employee',team:'ops',rate:26},
+  {id:'p2',username:'c.fortin',name:'Camille Fortin',title:'Opérateur',role:'employee',team:'ops',rate:23},
+  {id:'p3',username:'l.bouchard',name:'Leo Bouchard',title:'Opérateur',role:'employee',team:'ops',rate:23},
+  {id:'p4',username:'m.girard',name:'Maya Girard',title:'Manœuvre',role:'employee',team:'ops',rate:21},
+  {id:'p5',username:'n.lavoie',name:'Noah Lavoie',title:'Opérateur',role:'employee',team:'ops',rate:22},
+  {id:'p6',username:'e.dubois',name:'Emma Dubois',title:"Chef d'entrepôt",role:'employee',team:'wh',rate:25},
   {id:'p7',username:'l.moreau',name:'Liam Moreau',title:'Cariste',role:'employee',team:'wh',rate:22},
   {id:'p8',username:'o.gagnon',name:'Olivia Gagnon',title:'Manutentionnaire',role:'employee',team:'wh',rate:21},
   {id:'p9',username:'w.roy',name:'William Roy',title:'Cariste',role:'employee',team:'wh',rate:22},
-  {id:'p10',username:'c.belanger',name:'Chloe Belanger',title:'Preposee expedition',role:'employee',team:'wh',rate:21},
-  {id:'p11',username:'n.cloutier',name:'Nathan Cloutier',title:'Representant ventes',role:'employee',team:'sales',rate:24},
-  {id:'p12',username:'s.mercier',name:'Sophie Mercier',title:'Representante ventes',role:'employee',team:'sales',rate:24},
+  {id:'p10',username:'c.belanger',name:'Chloe Belanger',title:'Préposée expédition',role:'employee',team:'wh',rate:21},
+  {id:'p11',username:'n.cloutier',name:'Nathan Cloutier',title:'Représentant ventes',role:'employee',team:'sales',rate:24},
+  {id:'p12',username:'s.mercier',name:'Sophie Mercier',title:'Représentante ventes',role:'employee',team:'sales',rate:24},
   {id:'p13',username:'t.gauthier',name:'Thomas Gauthier',title:'Conseiller ventes',role:'employee',team:'sales',rate:23},
   {id:'p14',username:'j.caron',name:'Juliette Caron',title:'Coordonnatrice ventes',role:'employee',team:'sales',rate:25},
   {id:'p15',username:'g.simard',name:'Gabriel Simard',title:'Comptable',role:'employee',team:'admin',rate:27},
   {id:'p16',username:'c.pelletier',name:'Charlotte Pelletier',title:'Adjointe administrative',role:'employee',team:'admin',rate:22},
   {id:'p17',username:'f.thibault',name:'Felix Thibault',title:'Analyste RH',role:'employee',team:'admin',rate:26},
-  {id:'p18',username:'z.lefebvre',name:'Zoe Lefebvre',title:'Receptionniste',role:'employee',team:'admin',rate:20}
+  {id:'p18',username:'z.lefebvre',name:'Zoe Lefebvre',title:'Réceptionniste',role:'employee',team:'admin',rate:20}
  ];
  const wk=todayMonday();const shifts=[];
  const plan={
