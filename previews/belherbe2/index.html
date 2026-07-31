@@ -196,6 +196,8 @@ linear-gradient(180deg,#8a6a42,#6d4f2e 35%,#7d5c38 60%,#66492a 85%,#7c5c38)}
 .gcard:hover{border-color:rgba(125,243,255,.4);box-shadow:0 16px 40px rgba(2,10,14,.65)}
 .gimg{position:relative;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(circle at 50% 40%,#10303f 0%,#091b24 75%)}
 .gimg svg{width:64px;height:64px;stroke:rgba(142,220,244,.55);fill:none;stroke-width:1.3;transition:.35s}
+.gimg img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.gcard:hover .gimg img{transform:scale(1.05)}
 .gcard:hover .gimg svg{stroke:var(--laser);transform:scale(1.08)}
 .gimg::after{content:"";position:absolute;left:-30%;top:0;bottom:0;width:20%;background:linear-gradient(100deg,transparent,rgba(125,243,255,.1),transparent);transform:skewX(-12deg);transition:left .7s}
 .gcard:hover .gimg::after{left:130%}
@@ -492,16 +494,15 @@ section{padding:3.6rem 1.2rem}
   <div class="wrap">
     <span class="sk rv etch" id="rk">Réalisations</span>
     <h2 class="rv etch" id="rt">Un aperçu de ce que le laser peut faire</h2>
-    <p class="slead rv" id="rs">Chaque projet est unique. Voici quelques exemples de demandes typiques de nos clients.</p>
+    <p class="slead rv" id="rs">Chaque projet est unique. Voici quelques-unes de nos réalisations récentes.</p>
     <div class="ggrid">
-      <div class="gcard rv"><div class="gimg"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 01-10 0V4zM7 5H4a3 3 0 003 4M17 5h3a3 3 0 01-3 4"/></svg></div><div class="gtxt"><h3 id="g1t">Trophées et récompenses</h3><p id="g1p">Reconnaissance d'employés, tournois sportifs et galas, gravés sur acrylique ou métal.</p></div></div>
-      <div class="gcard rv"><div class="gimg"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M7 9h10M7 12.5h7M7 16h4"/></svg></div><div class="gtxt"><h3 id="g2t">Plaques commémoratives</h3><p id="g2p">Hommages, inaugurations et dédicaces sur métal, pierre ou bois.</p></div></div>
-      <div class="gcard rv"><div class="gimg"><svg viewBox="0 0 24 24"><path d="M9 3h6l-.8 8.5a2.2 2.2 0 01-4.4 0L9 3zM12 13.5V19M9 19h6"/></svg></div><div class="gtxt"><h3 id="g3t">Verres personnalisés</h3><p id="g3p">Mariages, anniversaires et événements corporatifs sur verre ou bouteille.</p></div></div>
-      <div class="gcard rv"><div class="gimg"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 11h18M15 15h3"/></svg></div><div class="gtxt"><h3 id="g4t">Cuir et accessoires</h3><p id="g4p">Portefeuilles, étuis et bracelets marqués d'initiales ou de logos.</p></div></div>
-      <div class="gcard rv"><div class="gimg"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a13 13 0 000 18M12 3a13 13 0 010 18M3.5 9h17M3.5 15h17"/></svg></div><div class="gtxt"><h3 id="g5t">Bois gravé</h3><p id="g5p">Planches à découper, enseignes et cadeaux d'hôte au fini chaleureux.</p></div></div>
-      <div class="gcard rv"><div class="gimg"><svg viewBox="0 0 24 24"><path d="M12 3l7 4v10l-7 4-7-4V7z"/><path d="M12 3v18M5 7l14 10M19 7L5 17"/></svg></div><div class="gtxt"><h3 id="g6t">Objets promotionnels</h3><p id="g6p">Tasses, gourdes, crayons et articles à l'image de votre entreprise ou association.</p></div></div>
+      <div class="gcard rv"><div class="gimg"><img src="/real-tumblers.webp" alt="Verres personnalisés au nom et numéro de chaque joueur avec logo d'équipe gravé" loading="lazy"></div><div class="gtxt"><h3 id="g1t">Verres nominatifs</h3><p id="g1p">Nom, numéro et logo d'équipe gravés sur chaque verre.</p></div></div>
+      <div class="gcard rv"><div class="gimg"><img src="/real-set.webp" alt="Ensemble de verres et sous-verre en ardoise assortis au même logo" loading="lazy"></div><div class="gtxt"><h3 id="g2t">Ensembles assortis</h3><p id="g2p">Verres et sous-verres coordonnés au même logo.</p></div></div>
+      <div class="gcard rv"><div class="gimg"><img src="/real-art.webp" alt="Illustration détaillée gravée sur une bouteille isotherme" loading="lazy"></div><div class="gtxt"><h3 id="g3t">Illustrations sur mesure</h3><p id="g3p">Dessins détaillés gravés sur bouteilles et gourdes.</p></div></div>
+      <div class="gcard rv"><div class="gimg"><img src="/real-slate.webp" alt="Logo gravé sur un sous-verre en ardoise naturelle" loading="lazy"></div><div class="gtxt"><h3 id="g4t">Sous-verres en ardoise</h3><p id="g4p">Logo gravé sur ardoise naturelle, une pièce à la fois.</p></div></div>
+      <div class="gcard rv"><div class="gimg"><img src="/real-branding.webp" alt="Verre isotherme gravé au logo d'une entreprise" loading="lazy"></div><div class="gtxt"><h3 id="g5t">Image de marque</h3><p id="g5p">Logo d'entreprise pour cadeaux corporatifs et employés.</p></div></div>
     </div>
-    <span class="gsoon rv" id="gs">Photos haute résolution de nos réalisations à venir sous peu. En attendant, visitez notre page Facebook.</span>
+    <span class="gsoon rv" id="gs">Chaque pièce est unique et gravée sur mesure. Découvrez d'autres réalisations sur notre page Facebook.</span>
   </div>
 </section>
 
@@ -633,14 +634,13 @@ cb2t:"Prix et cadeaux corporatifs",cb2p:"Prix de reconnaissance, cristal, verre 
 cb3t:"Catalogue de composantes",cb3p:"Composantes, colonnes, figurines et pièces pour trophées personnalisés.",cb3b:"Ouvrir le catalogue",
 cn:"Vous avez repéré un item? Notez son numéro ou prenez une capture d'écran et envoyez-nous le tout avec votre idée de gravure.",
 rk:"Réalisations",rt:"Un aperçu de ce que le laser peut faire",
-rs:"Chaque projet est unique. Voici quelques exemples de demandes typiques de nos clients.",
-g1t:"Trophées et récompenses",g1p:"Reconnaissance d'employés, tournois sportifs et galas, gravés sur acrylique ou métal.",
-g2t:"Plaques commémoratives",g2p:"Hommages, inaugurations et dédicaces sur métal, pierre ou bois.",
-g3t:"Verres personnalisés",g3p:"Mariages, anniversaires et événements corporatifs sur verre ou bouteille.",
-g4t:"Cuir et accessoires",g4p:"Portefeuilles, étuis et bracelets marqués d'initiales ou de logos.",
-g5t:"Bois gravé",g5p:"Planches à découper, enseignes et cadeaux d'hôte au fini chaleureux.",
-g6t:"Objets promotionnels",g6p:"Tasses, gourdes, crayons et articles à l'image de votre entreprise ou association.",
-gs:"Photos haute résolution de nos réalisations à venir sous peu. En attendant, visitez notre page Facebook.",
+rs:"Chaque projet est unique. Voici quelques-unes de nos réalisations récentes.",
+g1t:"Verres nominatifs",g1p:"Nom, numéro et logo d'équipe gravés sur chaque verre.",
+g2t:"Ensembles assortis",g2p:"Verres et sous-verres coordonnés au même logo.",
+g3t:"Illustrations sur mesure",g3p:"Dessins détaillés gravés sur bouteilles et gourdes.",
+g4t:"Sous-verres en ardoise",g4p:"Logo gravé sur ardoise naturelle, une pièce à la fois.",
+g5t:"Image de marque",g5p:"Logo d'entreprise pour cadeaux corporatifs et employés.",
+gs:"Chaque pièce est unique et gravée sur mesure. Découvrez d'autres réalisations sur notre page Facebook.",
 pk:"Processus",pt:"Simple, du début à la fin",
 ps:"Quatre étapes entre votre idée et l'objet fini entre vos mains.",
 p1t:"Choisissez l'objet",p1p:"Un item du catalogue ou un objet qui vous appartient déjà.",
@@ -686,14 +686,13 @@ cb2t:"Awards and corporate gifts",cb2p:"Recognition awards, crystal, glass and p
 cb3t:"Components catalogue",cb3p:"Components, columns, figures and parts for custom trophies.",cb3b:"Open the catalogue",
 cn:"Spotted an item? Note its number or take a screenshot and send it to us along with your engraving idea.",
 rk:"Our work",rt:"A glimpse of what the laser can do",
-rs:"Every project is unique. Here are a few examples of typical client requests.",
-g1t:"Trophies and awards",g1p:"Employee recognition, sports tournaments and galas, engraved on acrylic or metal.",
-g2t:"Commemorative plaques",g2p:"Tributes, inaugurations and dedications on metal, stone or wood.",
-g3t:"Personalized glassware",g3p:"Weddings, birthdays and corporate events on glass or bottles.",
-g4t:"Leather and accessories",g4p:"Wallets, cases and bracelets marked with initials or logos.",
-g5t:"Engraved wood",g5p:"Cutting boards, signs and host gifts with a warm finish.",
-g6t:"Promotional items",g6p:"Mugs, water bottles, pens and items branded with your company or association.",
-gs:"High resolution photos of our work coming soon. In the meantime, visit our Facebook page.",
+rs:"Every project is unique. Here are a few of our recent pieces.",
+g1t:"Personalized tumblers",g1p:"Name, number and team logo engraved on each tumbler.",
+g2t:"Matching sets",g2p:"Tumblers and coasters coordinated with the same logo.",
+g3t:"Custom illustrations",g3p:"Detailed artwork engraved on bottles and flasks.",
+g4t:"Slate coasters",g4p:"Logo engraved on natural slate, one piece at a time.",
+g5t:"Business branding",g5p:"Company logo for corporate gifts and staff.",
+gs:"Every piece is unique and custom engraved. See more of our work on our Facebook page.",
 pk:"Process",pt:"Simple, start to finish",
 ps:"Four steps between your idea and the finished piece in your hands.",
 p1t:"Choose the item",p1p:"A catalogue item or something you already own.",
