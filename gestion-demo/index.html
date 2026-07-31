@@ -47,7 +47,8 @@ optgroup{color:var(--gr);font-weight:700;}
 .previewbar strong{color:var(--accent-l);}
 .tourdim{position:absolute;inset:0;border-radius:14px;background:rgba(10,15,25,.45);backdrop-filter:blur(3.5px);-webkit-backdrop-filter:blur(3.5px);z-index:5;opacity:0;pointer-events:none;transition:opacity .5s;}
 .tourdim.show{opacity:1;}
-.tourveil{position:fixed;inset:0;z-index:40;background:rgba(6,10,18,.55);opacity:0;pointer-events:none;transition:opacity .5s;}
+.tourveil{position:fixed;inset:0;z-index:40;background:rgba(6,10,18,.5);backdrop-filter:blur(3.5px);-webkit-backdrop-filter:blur(3.5px);opacity:0;pointer-events:none;transition:opacity .5s;}
+.tourraise{position:relative;z-index:45;}
 .tourveil.show{opacity:1;}
 #tourBlock{position:fixed;inset:0;z-index:1340;background:transparent;display:none;touch-action:none;cursor:progress;}
 .tourhi{position:relative;z-index:45;transform:scale(1.09);outline:3px solid var(--accent)!important;outline-offset:4px;box-shadow:0 0 0 8px rgba(47,158,95,.20),0 18px 55px rgba(0,0,0,.55);border-radius:10px;transition:transform .5s cubic-bezier(.34,1.4,.6,1),outline .25s,box-shadow .35s;}
@@ -1117,12 +1118,14 @@ async function runAppTour(startL){
   await _spot(document.getElementById('weekList'),fr?"Le bouton central ouvre le sélecteur : toutes les semaines de l'année, groupées par mois.":"The middle button opens the picker: every week of the year, grouped by month.",false);await P(3400);
   await _act(document.getElementById('sheetClose'));await P(800);
 
-  // --- Department filter: click through each department ---
+  // --- Department filter: click through each department (keep the bar crisp above the veil) ---
+  document.getElementById('teamBar').classList.add('tourraise');
   await _spot(document.getElementById('teamBar'),fr?"Ces boutons filtrent les employés par département.":"These buttons filter employees by department.",false);await P(2600);
   await _act(document.querySelector('#teamBar [data-team=\"ops\"]'));await P(650);await _spot(document.getElementById('dayList'),fr?"Opérations : on ne voit que cette équipe. Le poste de chacun est indiqué sous son nom.":"Operations: only this team shows. Each person's job title sits under their name.",false);await P(3200);
   await _act(document.querySelector('#teamBar [data-team=\"wh\"]'));await P(650);await _spot(document.getElementById('dayList'),fr?"Entrepôt : une autre équipe, d'autres postes (cariste, manutentionnaire...).":"Warehouse: a different team, different roles (forklift operator, handler...).",false);await P(3200);
   await _act(document.querySelector('#teamBar [data-team=\"sales\"]'));await P(650);await _spot(document.getElementById('dayList'),fr?"Ventes : représentants et conseillers.":"Sales: reps and advisors.",false);await P(3000);
   await _act(document.querySelector('#teamBar [data-team=\"all\"]'));await P(650);await _spot(document.getElementById('teamBar'),fr?"Et Toutes affiche tout le monde.":"And All shows everyone again.",false);await P(2400);
+  document.getElementById('teamBar').classList.remove('tourraise');
 
   // --- Calendar ---
   await _spot(document.getElementById('calAdmin'),fr?"Le calendrier du mois : les heures apparaissent chaque jour et la semaine active est surlignée.":"The month calendar: hours appear on each day and the active week is highlighted.",false);await P(3000);
