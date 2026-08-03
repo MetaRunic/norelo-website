@@ -84,7 +84,8 @@ h2{font-size:20px;font-weight:800;}
 .sheetbox{background:var(--panel);border:1px solid var(--bdr);border-radius:16px 16px 0 0;width:100%;max-width:540px;max-height:82vh;display:flex;flex-direction:column;}
 .sheethdr{display:flex;justify-content:space-between;align-items:center;padding:1.1rem 1.3rem;border-bottom:1px solid var(--bdr);font-size:16px;font-weight:800;}
 .sheethdr button{background:none;border:none;color:var(--gr);font-size:24px;line-height:1;padding:0 4px;}
-#weekList{overflow-y:auto;padding:.7rem;-webkit-overflow-scrolling:touch;}
+#weekList{overflow-y:auto;padding:0 .7rem .7rem;-webkit-overflow-scrolling:touch;}
+.wkmonth{position:sticky;top:0;background:var(--panel);color:var(--accent-l);font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;padding:.6rem .5rem .4rem;z-index:1;}
 .wkrow{width:100%;display:flex;justify-content:space-between;align-items:center;gap:1rem;background:var(--soft);border:1.5px solid transparent;border-radius:10px;padding:15px 16px;margin-bottom:.55rem;color:var(--txt);text-align:left;}
 .wkrow.on{border-color:var(--accent);background:rgba(224,71,59,.13);}
 .wkrng{font-size:16px;font-weight:800;}
@@ -110,6 +111,19 @@ h2{font-size:20px;font-weight:800;}
 .caday.today{background:var(--accent);border-color:var(--accent);box-shadow:inset 0 0 0 2px rgba(255,255,255,.6);}
 .caday.today .cadn{color:#fff;}
 .caday.today .cahh{color:#fff;}
+.caday{position:relative;}
+.calscroll{max-height:330px;overflow-y:auto;position:relative;-webkit-overflow-scrolling:touch;}
+.calmonth{margin-bottom:1rem;}
+.calmonth:last-child{margin-bottom:0;}
+.calscroll .calhdr{position:sticky;top:0;background:var(--panel);z-index:2;padding:.45rem 0 .6rem;margin:0;}
+.caday.pre .cadn{color:var(--accent-l);}
+.caday.pre::after{content:'';position:absolute;top:5px;right:6px;width:5px;height:5px;border-radius:50%;background:var(--accent-l);}
+.caday.today.pre::after{background:#fff;}
+.pretag{display:inline-block;font-size:10px;font-weight:800;color:var(--accent-l);border:1px solid var(--accent-l);padding:1px 7px;border-radius:20px;margin-left:6px;vertical-align:middle;text-transform:uppercase;letter-spacing:.3px;}
+.preseasonbar{background:rgba(224,71,59,.08);border:1px solid rgba(224,71,59,.28);color:var(--accent-l);border-radius:9px;padding:9px 13px;font-size:13px;font-weight:700;margin-bottom:1rem;}
+.daybtn{position:relative;}
+.daybtn.pre::after{content:'';position:absolute;top:5px;right:6px;width:5px;height:5px;border-radius:50%;background:var(--accent-l);}
+.daybtn.on.pre::after{background:#fff;}
 .caday:not(.empty):hover{border-color:var(--gr);cursor:pointer;}
 
 .daypick{display:grid;grid-template-columns:repeat(7,1fr);gap:.5rem;margin-bottom:1.6rem;}
@@ -142,6 +156,16 @@ h2{font-size:20px;font-weight:800;}
 @media(max-width:520px){#timeGrid{grid-template-columns:repeat(3,1fr);}}
 .ecalc{text-align:right;min-width:88px;}
 .ecalc .eh{font-size:24px;font-weight:800;color:var(--accent-l);}
+.exrow{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap;margin-top:.2rem;padding-top:.8rem;border-top:1px solid var(--bdr);}
+.lunchbox{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--gr);cursor:pointer;}
+.lunchbox input{width:17px;height:17px;accent-color:var(--accent);cursor:pointer;}
+.exr{display:inline-flex;align-items:center;gap:.5rem;margin-left:auto;}
+.otinfo{font-size:12px;font-weight:800;padding:3px 10px;border-radius:20px;}
+.otinfo.pend{background:rgba(224,71,59,.15);color:var(--accent-l);}
+.otinfo.ok{background:rgba(34,197,94,.15);color:#22c55e;}
+.otbtn{font-size:12px;font-weight:800;padding:6px 12px;border-radius:8px;background:var(--accent);color:#fff;border:none;cursor:pointer;}
+.otbtn.undo{background:var(--soft);color:var(--gr);border:1px solid var(--bdr);}
+.otpend{font-size:12px;font-weight:800;color:var(--accent-l);}
 .hintbar{background:rgba(224,71,59,.1);border:1px solid rgba(224,71,59,.32);color:var(--accent-l);border-radius:9px;padding:11px 14px;font-size:14px;font-weight:600;margin-bottom:1rem;line-height:1.45;}
 .ecard.locked{opacity:.6;}
 .ecard.locked select{cursor:not-allowed;}
@@ -461,7 +485,7 @@ const T={
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Debut',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
    paid:'Paye',unpaid:'A payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Deja paye',kUnpaid:'Reste a payer',del:'Retirer cet employe?',user:"Nom d'utilisateur",
    chooseWeek:'Choisir une semaine',ws_past:'Passee',ws_cur:'En cours',ws_up:'A venir',teamAll:'Toutes',teamExt:'Exterieur',teamInt:'Interieur',roleEmp:'Employe',roleMgr:'Gestionnaire',resetPwd:'MDP',clearF:'Effacer',backupsT:'Sauvegardes',backupNow:'Sauvegarder maintenant',versionT:'Version et mise a jour',forceUpd:'Forcer la mise a jour pour tous',
-   locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.<br><strong>Un jour verrouille a corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit etre apres l'heure de debut.",hoursHi:'Heures de quart regulieres en surbrillance'},
+   locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.<br><strong>Un jour verrouille a corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit etre apres l'heure de debut.",hoursHi:'Heures de quart regulieres en surbrillance',preseasonLbl:'Pre-saison',preseasonNote:"Pre-saison : heures de reference (avant l'ouverture du 17 aout).",lunch:'Pause 30 min',otPending:'en attente',otOk:'approuvee',approve:'Approuver',revoke:'Retirer'},
  en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',tEmp:'Employees',tLog:'Activity',tBak:'Backups',logout:'Log out',
    employees:'Employees and rates',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
@@ -473,18 +497,20 @@ const T={
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
    paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Total hours',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',del:'Remove this employee?',user:'Username',
    chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',teamExt:'Exterior',teamInt:'Interior',roleEmp:'Employee',roleMgr:'Manager',resetPwd:'PW',clearF:'Clear',backupsT:'Backups',backupNow:'Backup now',versionT:'Version and update',forceUpd:'Force update for everyone',
-   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted'}
+   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted',preseasonLbl:'Pre-season',preseasonNote:'Pre-season: reference hours (before the Aug 17 opening).',lunch:'30-min lunch',otPending:'pending',otOk:'approved',approve:'Approve',revoke:'Undo'}
 };
 let state={employees:[],weeks:{},current:null},lang='fr',selDay=0,mgrUnlocked=false,isEmployee=false,currentEmp=null,teamFilter='all',myId=null,myEmail='';
 
 function isoLocal(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function todayMonday(){const d=new Date();const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return isoLocal(d);}
 function todayIdx(){return (new Date().getDay()+6)%7;}
-function seasonWeeks(emps){const year=new Date().getFullYear();let d=new Date(year,7,1);const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);const end=new Date(year,9,31);const weeks={};while(d<=end){const k=isoLocal(d);weeks[k]={start:k,data:blankWeekFor(emps),paid:{}};d.setDate(d.getDate()+7);}return weeks;}
+function seasonWeeks(emps){const year=new Date().getFullYear();let d=new Date(year,5,1);const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);const end=new Date(year,9,31);const weeks={};while(d<=end){const k=isoLocal(d);weeks[k]={start:k,data:blankWeekFor(emps),paid:{}};d.setDate(d.getDate()+7);}return weeks;}
+function seasonOpenISO(){return isoLocal(new Date(new Date().getFullYear(),7,17));}
+function isPreseason(iso){return iso<seasonOpenISO();}
 function fmtDate(iso,off){const d=new Date(iso+'T00:00:00');d.setDate(d.getDate()+off);return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');}
 function fmtLong(iso){const d=new Date(iso+'T00:00:00');const day=d.getDate(),mo=T[lang].months[d.getMonth()];return lang==='fr'?day+' '+mo:mo+' '+day;}
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
-function blankDay(){return {start:'',end:''};}
+function blankDay(){return {start:'',end:'',lunch:true,ot:false};}
 function blankWeekFor(emps){const o={};emps.forEach(e=>{o[e.id]={};DAYS.forEach(d=>o[e.id][d]=blankDay());});return o;}
 async function loadAll(){
  const {data:profs}=await sb.from('profiles').select('id,username,name,role,team,rate');
@@ -492,16 +518,16 @@ async function loadAll(){
  state.weeks=seasonWeeks(state.employees);
  const keys=Object.keys(state.weeks).sort();if(!keys.length)return;
  const startKey=keys[0],endKey=addDaysISO(keys[keys.length-1],6);
- const {data:shifts}=await sb.from('shifts').select('employee_id,work_date,start_time,end_time').gte('work_date',startKey).lte('work_date',endKey);
- (shifts||[]).forEach(r=>{const dd=new Date(r.work_date+'T00:00:00');const wk=weekKeyForDate(dd);const di=(dd.getDay()+6)%7;const w=state.weeks[wk];if(w&&w.data[r.employee_id])w.data[r.employee_id][DAYS[di]]={start:validTime(r.start_time),end:validTime(r.end_time)};});
+ const {data:shifts}=await sb.from('shifts').select('employee_id,work_date,start_time,end_time,lunch,ot_approved').gte('work_date',startKey).lte('work_date',endKey);
+ (shifts||[]).forEach(r=>{const dd=new Date(r.work_date+'T00:00:00');const wk=weekKeyForDate(dd);const di=(dd.getDay()+6)%7;const w=state.weeks[wk];if(w&&w.data[r.employee_id])w.data[r.employee_id][DAYS[di]]={start:validTime(r.start_time),end:validTime(r.end_time),lunch:r.lunch!==false,ot:!!r.ot_approved};});
  const {data:paid}=await sb.from('paid_weeks').select('employee_id,week_start,paid').gte('week_start',startKey).lte('week_start',keys[keys.length-1]);
  (paid||[]).forEach(r=>{const w=state.weeks[r.week_start];if(w&&r.paid)w.paid[r.employee_id]=true;});
 }
-async function saveShift(empId,weekKey,dayIdx,day){const work_date=addDaysISO(weekKey,dayIdx);const {error}=await sb.from('shifts').upsert({employee_id:empId,work_date,start_time:day.start||null,end_time:day.end||null},{onConflict:'employee_id,work_date'});return error;}
+async function saveShift(empId,weekKey,dayIdx,day){const work_date=addDaysISO(weekKey,dayIdx);const {error}=await sb.from('shifts').upsert({employee_id:empId,work_date,start_time:day.start||null,end_time:day.end||null,lunch:day.lunch!==false,ot_approved:!!day.ot},{onConflict:'employee_id,work_date'});return error;}
 function subscribeRealtime(){
  sb.channel('rt-horaire')
   .on('postgres_changes',{event:'*',schema:'public',table:'shifts'},p=>{const r=p.new||p.old;if(!r)return;const dd=new Date(r.work_date+'T00:00:00');const wk=weekKeyForDate(dd);const w=state.weeks[wk];if(!w||!w.data[r.employee_id])return;const di=(dd.getDay()+6)%7;
-    if(p.eventType==='DELETE')w.data[r.employee_id][DAYS[di]]=blankDay();else w.data[r.employee_id][DAYS[di]]={start:validTime(p.new.start_time),end:validTime(p.new.end_time)};
+    if(p.eventType==='DELETE')w.data[r.employee_id][DAYS[di]]=blankDay();else w.data[r.employee_id][DAYS[di]]={start:validTime(p.new.start_time),end:validTime(p.new.end_time),lunch:p.new.lunch!==false,ot:!!p.new.ot_approved};
     if(wk===state.current){if(isEmployee){renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);}else{renderDayList();renderWeek();renderCalendar(document.getElementById('calAdmin'),null);if(mgrUnlocked)renderMgr();}renderWeekBar();}})
   .on('postgres_changes',{event:'*',schema:'public',table:'paid_weeks'},p=>{const r=p.new||p.old;if(!r)return;const w=state.weeks[r.week_start];if(!w)return;if(p.eventType==='DELETE')delete w.paid[r.employee_id];else w.paid[r.employee_id]=!!p.new.paid;if(!isEmployee&&r.week_start===state.current)renderMgr();})
   .subscribe();
@@ -514,10 +540,21 @@ function money(n){return '$'+(Math.round(n*100)/100).toFixed(2);}
 function hround(n){return n%1?n.toFixed(1):String(n);}
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function validTime(v){return /^([01][0-9]|2[0-3]):[0-5][0-9]$/.test(v)?v:'';}
-function hrs(day){if(!day||!day.start||!day.end)return 0;const a=day.start.split(':'),b=day.end.split(':');let m=(+b[0]*60+ +b[1])-(+a[0]*60+ +a[1]);return m<=0?0:Math.round(m/60*100)/100;}
-function empHours(id){const w=state.weeks[state.current];let t=0;DAYS.forEach(d=>t+=hrs(w.data[id][d]));return Math.round(t*100)/100;}
-function empPay(id){const e=state.employees.find(x=>x.id===id);return Math.round(empHours(id)*(e?e.rate:0)*100)/100;}
-function empTotalAllWeeks(id){let t=0;Object.values(state.weeks).forEach(w=>{if(w.data[id])DAYS.forEach(d=>t+=hrs(w.data[id][d]));});return Math.round(t*100)/100;}
+const OT_RATE=16, OT_THRESH=8;
+function empById(id){return state.employees.find(x=>x.id===id);}
+function isMgrEmp(emp){return !!(emp&&emp.prole==='manager');}
+function rawMin(day){if(!day||!day.start||!day.end)return 0;const a=day.start.split(':'),b=day.end.split(':');let m=(+b[0]*60+ +b[1])-(+a[0]*60+ +a[1]);return m>0?m:0;}
+function lunchOn(day,emp){return !!(day&&day.lunch!==false&&!isMgrEmp(emp));}
+function hrs(day,emp){let m=rawMin(day);if(lunchOn(day,emp))m-=30;return m<=0?0:Math.round(m/60*100)/100;}
+function regHours(day,emp){return Math.min(hrs(day,emp),OT_THRESH);}
+function otHours(day,emp){return Math.max(0,Math.round((hrs(day,emp)-OT_THRESH)*100)/100);}
+function otApproved(day){return !!(day&&day.ot);}
+function paidHours(day,emp){return Math.round((regHours(day,emp)+(otApproved(day)?otHours(day,emp):0))*100)/100;}
+function dayPay(day,emp){const r=emp?emp.rate:0;return Math.round((regHours(day,emp)*r+(otApproved(day)?otHours(day,emp)*OT_RATE:0))*100)/100;}
+function empHours(id){const w=state.weeks[state.current];const e=empById(id);let t=0;DAYS.forEach(d=>t+=paidHours(w.data[id][d],e));return Math.round(t*100)/100;}
+function empPending(id){const w=state.weeks[state.current];const e=empById(id);let t=0;DAYS.forEach(d=>{const day=w.data[id][d];if(!otApproved(day))t+=otHours(day,e);});return Math.round(t*100)/100;}
+function empPay(id){const w=state.weeks[state.current];const e=empById(id);let p=0;DAYS.forEach(d=>p+=dayPay(w.data[id][d],e));return Math.round(p*100)/100;}
+function empTotalAllWeeks(id){const e=empById(id);let t=0;Object.values(state.weeks).forEach(w=>{if(w.data[id])DAYS.forEach(d=>t+=hrs(w.data[id][d],e));});return Math.round(t*100)/100;}
 function sortedEmps(){const to={ext:0,int:1};return [...state.employees].sort((a,b)=>(to[empTeam(a)]-to[empTeam(b)])||a.name.localeCompare(b.name));}
 function wkKeys(){return Object.keys(state.weeks).sort();}
 function timeInput(f,val,disabled){return '<button type="button" class="tbtn" data-f="'+f+'" data-val="'+(val||'')+'"'+(disabled?' disabled':'')+'>'+(val||'--:--')+'</button>';}
@@ -525,8 +562,8 @@ function clampTime(v){if(!v)return '';const p=v.split(':');let hh=+p[0],mm=+p[1]
 function tmin(t){const p=(t||'').split(':');return (+p[0]||0)*60+(+p[1]||0);}
 function pickDefaultWeek(){const keys=wkKeys();if(!keys.length)return null;const wk=weekKeyForDate(now());if(state.weeks[wk])return wk;return wk<keys[0]?keys[0]:keys[keys.length-1];}
 function weekKeyForDate(d){const x=new Date(d);const day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);return isoLocal(x);}
-function hoursForDate(d,empId){const key=weekKeyForDate(d);const w=state.weeks[key];if(!w)return 0;const dk=DAYS[(d.getDay()+6)%7];if(empId){return w.data[empId]?hrs(w.data[empId][dk]):0;}let t=0;state.employees.filter(inTeam).forEach(e=>t+=hrs(w.data[e.id][dk]));return Math.round(t*100)/100;}
-function weekTotal(key,empId){const w=state.weeks[key];if(!w)return 0;let t=0;const ids=empId?[empId]:state.employees.filter(inTeam).map(e=>e.id);ids.forEach(id=>{if(w.data[id])DAYS.forEach(d=>t+=hrs(w.data[id][d]));});return Math.round(t*100)/100;}
+function hoursForDate(d,empId){const key=weekKeyForDate(d);const w=state.weeks[key];if(!w)return 0;const dk=DAYS[(d.getDay()+6)%7];if(empId){const e=empById(empId);return w.data[empId]?paidHours(w.data[empId][dk],e):0;}let t=0;state.employees.filter(inTeam).forEach(e=>t+=paidHours(w.data[e.id][dk],e));return Math.round(t*100)/100;}
+function weekTotal(key,empId){const w=state.weeks[key];if(!w)return 0;let t=0;const ids=empId?[empId]:state.employees.filter(inTeam).map(e=>e.id);ids.forEach(id=>{const e=empById(id);if(w.data[id])DAYS.forEach(d=>t+=paidHours(w.data[id][d],e));});return Math.round(t*100)/100;}
 function weekStatus(key){const mon=new Date(key+'T00:00:00');const sun=new Date(mon);sun.setDate(sun.getDate()+6);const t=new Date();t.setHours(0,0,0,0);if(sun<t)return 'past';if(mon>t)return 'up';return 'cur';}
 
 /* trusted time: server Date header (same origin, not user-clock) + monotonic elapsed */
@@ -542,14 +579,22 @@ function realTodayISO(){return isoLocal(trustedBaseMs!=null?now():new Date());}
 function dayEditable(dayISO){if(!isEmployee)return true;if(trustedBaseMs==null)return false;const a=new Date(isoLocal(now())+'T00:00:00');const b=new Date(dayISO+'T00:00:00');const diff=Math.round((a-b)/86400000);return diff===0||diff===1;}
 
 function renderCalendar(el,empId){
- if(!el)return;const d0=new Date(state.current+'T00:00:00');const y=d0.getFullYear(),m=d0.getMonth();const t=T[lang];
- const first=new Date(y,m,1);const pad=(first.getDay()+6)%7;const dim=new Date(y,m+1,0).getDate();const todayI=isoLocal(new Date());
- let h='<div class="calhdr">'+cap(t.months[m])+' '+y+'</div><div class="calgrid">';
- t.sdays.forEach(d=>h+='<div class="cawd">'+d+'</div>');
- for(let i=0;i<pad;i++)h+='<div class="caday empty"></div>';
- for(let dn=1;dn<=dim;dn++){const c=new Date(y,m,dn);const iso=isoLocal(c);const hh=hoursForDate(c,empId);const inw=weekKeyForDate(c)===state.current;
-  h+='<div class="caday'+(inw?' inweek':'')+(iso===todayI?' today':'')+'" data-date="'+iso+'"><div class="cadn">'+dn+'</div>'+(hh>0?'<div class="cahh">'+hround(hh)+'h</div>':'')+'</div>';}
+ if(!el)return;const t=T[lang];const keys=wkKeys();if(!keys.length){el.innerHTML='';return;}
+ const firstD=new Date(keys[0]+'T00:00:00');const lastD=new Date(keys[keys.length-1]+'T00:00:00');lastD.setDate(lastD.getDate()+6);
+ const todayI=isoLocal(new Date());
+ let h='<div class="calscroll">';
+ let cur=new Date(firstD.getFullYear(),firstD.getMonth(),1);const stop=new Date(lastD.getFullYear(),lastD.getMonth(),1);
+ while(cur<=stop){const y=cur.getFullYear(),m=cur.getMonth();
+  const fday=new Date(y,m,1);const pad=(fday.getDay()+6)%7;const dim=new Date(y,m+1,0).getDate();
+  h+='<div class="calmonth"><div class="calhdr">'+cap(t.months[m])+' '+y+'</div><div class="calgrid">';
+  t.sdays.forEach(d=>h+='<div class="cawd">'+d+'</div>');
+  for(let i=0;i<pad;i++)h+='<div class="caday empty"></div>';
+  for(let dn=1;dn<=dim;dn++){const c=new Date(y,m,dn);const iso=isoLocal(c);const hh=hoursForDate(c,empId);const inw=weekKeyForDate(c)===state.current;
+   h+='<div class="caday'+(inw?' inweek':'')+(iso===todayI?' today':'')+(isPreseason(iso)?' pre':'')+'" data-date="'+iso+'"><div class="cadn">'+dn+'</div>'+(hh>0?'<div class="cahh">'+hround(hh)+'h</div>':'')+'</div>';}
+  h+='</div></div>';cur.setMonth(cur.getMonth()+1);}
  h+='</div>';el.innerHTML=h;
+ const sc=el.querySelector('.calscroll'),sel=el.querySelector('.caday.inweek');
+ if(sc&&sel)setTimeout(()=>{const sr=sc.getBoundingClientRect(),er=sel.getBoundingClientRect();sc.scrollTop+=(er.top-sr.top)-sc.clientHeight/2+er.height/2;},0);
 }
 function renderWeekBar(){
  const keys=wkKeys();const idx=keys.indexOf(state.current);
@@ -559,13 +604,16 @@ function renderWeekBar(){
  document.getElementById('weekSub').innerHTML='<span class="wpstat '+st+'">'+T[lang]['ws_'+st]+'</span> &middot; <span class="wphrs">'+hround(tot)+'h</span>';
 }
 function renderWeekList(){
- const keys=wkKeys();let h='';
- keys.forEach(k=>{const st=weekStatus(k);const tot=weekTotal(k,isEmployee?currentEmp:null);
+ const keys=wkKeys();let h='',lastMo=-1,lastYr=-1;
+ keys.forEach(k=>{const dmo=new Date(k+'T00:00:00');const mo=dmo.getMonth(),yr=dmo.getFullYear();
+  if(mo!==lastMo||yr!==lastYr){lastMo=mo;lastYr=yr;h+='<div class="wkmonth">'+cap(T[lang].months[mo])+' '+yr+'</div>';}
+  const st=weekStatus(k);const tot=weekTotal(k,isEmployee?currentEmp:null);
   h+='<button class="wkrow'+(k===state.current?' on':'')+'" data-key="'+k+'"><div><div class="wkrng">'+fmtDate(k,0)+' - '+fmtDate(k,6)+'</div><div class="wksub">'+T[lang].weekOf+' '+fmtLong(k)+'</div></div>'
    +'<div class="wkright"><span class="wkstat '+st+'">'+T[lang]['ws_'+st]+'</span><span class="wkhrs'+(tot?'':' zero')+'">'+hround(tot)+'h</span></div></button>';});
  document.getElementById('weekList').innerHTML=h;
 }
-function openWeekSheet(){renderWeekList();document.getElementById('weekSheet').style.display='flex';}
+function openWeekSheet(){renderWeekList();document.getElementById('weekSheet').style.display='flex';
+ const on=document.querySelector('#weekList .wkrow.on');if(on)setTimeout(()=>on.scrollIntoView({block:'center'}),0);}
 function closeWeekSheet(){document.getElementById('weekSheet').style.display='none';}
 let timeCtx=null;
 function openTimePicker(ctx){timeCtx=ctx;document.getElementById('timeSheetTitle').textContent=ctx.title;
@@ -583,12 +631,12 @@ async function applyTime(v){if(!timeCtx)return;const ctx=timeCtx;const w=state.w
  else{empId=currentEmp;dayIdx=ctx.dayIdx;const dISO=addDaysISO(w.start,ctx.dayIdx);if(!dayEditable(dISO)){closeTimePicker();return;}day=w.data[empId][DAYS[ctx.dayIdx]];}
  const start=ctx.f==='start'?v:day.start;const end=ctx.f==='end'?v:day.end;
  if(start&&end&&tmin(end)<=tmin(start)){alert(T[lang].badTime);return;}
- const prev={start:day.start,end:day.end};day[ctx.f]=v;closeTimePicker();
+ const prev={start:day.start,end:day.end,ot:day.ot};day[ctx.f]=v;day.ot=false;closeTimePicker();
  if(ctx.mode==='day'){renderDayList();renderCalendar(document.getElementById('calAdmin'),null);}else{renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);}
  renderWeekBar();
  showToast(lang==='fr'?'Enregistrement...':'Saving...',true);
  const err=await saveShift(empId,state.current,dayIdx,day);
- if(err){day.start=prev.start;day.end=prev.end;showToast(lang==='fr'?'Non enregistre':'Not saved',false);alert(lang==='fr'?'Enregistrement refuse (jour verrouille ou permission).':'Save refused (locked day or permission).');
+ if(err){day.start=prev.start;day.end=prev.end;day.ot=prev.ot;showToast(lang==='fr'?'Non enregistre':'Not saved',false);alert(lang==='fr'?'Enregistrement refuse (jour verrouille ou permission).':'Save refused (locked day or permission).');
    if(ctx.mode==='day')renderDayList();else renderEmp();renderWeekBar();}
  else{showToast(lang==='fr'?'Enregistre':'Saved',true);
    if(!isEmployee&&empId!==myId){const em=state.employees.find(x=>x.id===empId);logAction('edit_hours',(em?em.name:'')+' '+addDaysISO(state.current,dayIdx)+' '+(day.start||'--')+'-'+(day.end||'--'));}}}
@@ -596,15 +644,36 @@ let toastT;
 function showToast(msg,ok){const el=document.getElementById('toast');if(!el)return;el.innerHTML=(ok?'&#10003; ':'')+esc(msg);el.classList.toggle('err',!ok);el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),1600);}
 function gotoWeek(delta){const keys=wkKeys();let i=keys.indexOf(state.current);i=Math.max(0,Math.min(keys.length-1,i+delta));state.current=keys[i];renderAll();}
 function renderDayPick(){const w=state.weeks[state.current];const t=T[lang];const tISO=realTodayISO();
- document.getElementById('daypick').innerHTML=t.sdays.map((d,i)=>{const isT=addDaysISO(w.start,i)===tISO;return '<button class="daybtn'+(i===selDay?' on':'')+(isT?' today':'')+'" data-day="'+i+'"><div class="dn">'+d+'</div><div class="dd">'+fmtDate(w.start,i)+'</div></button>';}).join('');}
+ document.getElementById('daypick').innerHTML=t.sdays.map((d,i)=>{const isT=addDaysISO(w.start,i)===tISO;return '<button class="daybtn'+(i===selDay?' on':'')+(isT?' today':'')+(isPreseason(addDaysISO(w.start,i))?' pre':'')+'" data-day="'+i+'"><div class="dn">'+d+'</div><div class="dd">'+fmtDate(w.start,i)+'</div></button>';}).join('');}
+function otBadgeHTML(day,emp){const t=T[lang];const ot=otHours(day,emp);if(ot<=0)return '';
+ return otApproved(day)?'<span class="otinfo ok">+'+ot.toFixed(2)+'h '+t.otOk+'</span>':'<span class="otinfo pend">+'+ot.toFixed(2)+'h '+t.otPending+'</span>';}
+function exRow(day,emp,dayIdx,editable,canApprove){const t=T[lang];const ot=otHours(day,emp);
+ let left=isMgrEmp(emp)?'':'<label class="lunchbox"><input type="checkbox" class="lchk" data-day="'+dayIdx+'"'+(day.lunch!==false?' checked':'')+(editable?'':' disabled')+'/> '+t.lunch+'</label>';
+ let right=otBadgeHTML(day,emp);
+ if(ot>0&&canApprove)right+=otApproved(day)?'<button class="otbtn undo" data-otd="'+dayIdx+'" data-otv="0">'+t.revoke+'</button>':'<button class="otbtn" data-otd="'+dayIdx+'" data-otv="1">'+t.approve+'</button>';
+ if(!left&&!right)return '';
+ return '<div class="exrow"><div class="exl">'+left+'</div><div class="exr">'+right+'</div></div>';}
+function rerenderDayViews(){if(isEmployee){renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);}else{renderDayList();renderCalendar(document.getElementById('calAdmin'),null);if(mgrUnlocked)renderMgr();}renderWeekBar();}
+async function toggleLunch(empId,dayIdx,checked){const w=state.weeks[state.current];const day=w.data[empId][DAYS[dayIdx]];
+ if(isEmployee&&!dayEditable(addDaysISO(w.start,dayIdx)))return;
+ const prevL=(day.lunch!==false),prevO=day.ot;day.lunch=checked;day.ot=false;rerenderDayViews();
+ const err=await saveShift(empId,state.current,dayIdx,day);
+ if(err){day.lunch=prevL;day.ot=prevO;rerenderDayViews();showToast(lang==='fr'?'Non enregistre':'Not saved',false);}
+ else showToast(lang==='fr'?'Enregistre':'Saved',true);}
+async function setOT(empId,dayIdx,val){const w=state.weeks[state.current];const day=w.data[empId][DAYS[dayIdx]];const prev=day.ot;day.ot=val;rerenderDayViews();
+ const err=await saveShift(empId,state.current,dayIdx,day);
+ if(err){day.ot=prev;rerenderDayViews();showToast(lang==='fr'?'Refuse':'Refused',false);}
+ else{showToast(val?(lang==='fr'?'Heures sup. approuvees':'Overtime approved'):(lang==='fr'?'Retire':'Undone'),true);const em=empById(empId);logAction(val?'approve_ot':'revoke_ot',(em?em.name:'')+' '+addDaysISO(state.current,dayIdx));}}
 function renderDayList(){
- const w=state.weeks[state.current];const t=T[lang];const dk=DAYS[selDay];let h='';
+ const w=state.weeks[state.current];const t=T[lang];const dk=DAYS[selDay];let h='';const _dISO=addDaysISO(w.start,selDay);if(isPreseason(_dISO))h='<div class="preseasonbar">'+t.preseasonNote+'</div>';
  const list=adminEmps().slice().sort((a,b)=>{if(a.id===myId)return -1;if(b.id===myId)return 1;return a.name.localeCompare(b.name);});
- list.forEach(e=>{const day=w.data[e.id][dk];const hh=hrs(day);
+ list.forEach(e=>{const day=w.data[e.id][dk];const ph=paidHours(day,e);
   h+='<div class="ecard" data-id="'+e.id+'"><div class="en">'+esc(e.name)+(e.id===myId?' <span class="metag">'+(lang==='fr'?'Moi':'Me')+'</span>':'')+'</div>'
    +'<div class="etime"><div class="tfield"><label>'+t.start+'</label>'+timeInput('start',day.start,false)+'</div>'
    +'<div class="tfield"><label>'+t.end+'</label>'+timeInput('end',day.end,false)+'</div></div>'
-   +'<div class="ecalc"><div class="eh">'+hh.toFixed(2)+'h</div></div></div>';});
+   +'<div class="ecalc"><div class="eh">'+ph.toFixed(2)+'h</div></div>'
+   +exRow(day,e,selDay,true,!isEmployee)
+   +'</div>';});
  document.getElementById('dayList').innerHTML=h;
 }
 function renderEmp(){
@@ -612,12 +681,14 @@ function renderEmp(){
  document.getElementById('viewTitle').textContent=t.hi+(emp?emp.name:'');
  if(!emp){document.getElementById('empSheet').innerHTML='';return;}
  let h='<div class="hintbar">'+(trustedBaseMs==null?t.timeChecking:t.editHint)+'</div>',tot=0;
- DAYS.forEach((dk,i)=>{const day=w.data[emp.id][dk];const hh=hrs(day);tot+=hh;
+ DAYS.forEach((dk,i)=>{const day=w.data[emp.id][dk];const ph=paidHours(day,emp);tot+=ph;
   const dISO=addDaysISO(w.start,i);const ed=dayEditable(dISO);const dis=ed?'':' disabled';const isT=dISO===realTodayISO();
-  h+='<div class="ecard'+(ed?'':' locked')+(isT?' today':'')+'" data-day="'+i+'"><div class="en">'+t.days[i]+' <span class="muted" style="font-weight:600">'+fmtDate(w.start,i)+'</span>'+(isT?' <span class="todaytag">'+t.todayLbl+'</span>':'')+(ed?'':' <span class="lockbadge">'+LOCK_SVG+' '+t.locked+'</span>')+'</div>'
+  h+='<div class="ecard'+(ed?'':' locked')+(isT?' today':'')+'" data-day="'+i+'"><div class="en">'+t.days[i]+' <span class="muted" style="font-weight:600">'+fmtDate(w.start,i)+'</span>'+(isT?' <span class="todaytag">'+t.todayLbl+'</span>':'')+(isPreseason(dISO)?' <span class="pretag">'+t.preseasonLbl+'</span>':'')+(ed?'':' <span class="lockbadge">'+LOCK_SVG+' '+t.locked+'</span>')+'</div>'
    +'<div class="etime"><div class="tfield"><label>'+t.start+'</label>'+timeInput('start',day.start,!ed)+'</div>'
    +'<div class="tfield"><label>'+t.end+'</label>'+timeInput('end',day.end,!ed)+'</div></div>'
-   +'<div class="ecalc"><div class="eh">'+hh.toFixed(2)+'h</div></div></div>';});
+   +'<div class="ecalc"><div class="eh">'+ph.toFixed(2)+'h</div></div>'
+   +exRow(day,emp,i,ed,false)
+   +'</div>';});
  h+='<div class="card" style="display:flex;justify-content:space-between;align-items:center"><span style="font-weight:800;font-size:18px">'+t.tot+'</span><span style="font-weight:800;font-size:24px;color:var(--accent-l)">'+tot.toFixed(2)+'h</span></div>';
  document.getElementById('empSheet').innerHTML=h;
 }
@@ -627,7 +698,7 @@ function renderWeek(){
  let lastTeam=null,th=0;
  adminEmps().forEach(e=>{const tm=empTeam(e);if(tm!==lastTeam){h+='<tr class="teamrow"><td colspan="9">'+teamLabel(tm)+'</td></tr>';lastTeam=tm;}
   h+='<tr><td class="nm">'+esc(e.name)+'</td>';
-  DAYS.forEach(d=>{const hh=hrs(w.data[e.id][d]);h+='<td class="'+(hh?'':'z')+'">'+(hh?hh.toFixed(2):'-')+'</td>';});
+  DAYS.forEach(d=>{const hh=paidHours(w.data[e.id][d],e);h+='<td class="'+(hh?'':'z')+'">'+(hh?hh.toFixed(2):'-')+'</td>';});
   const eh=empHours(e.id);th+=eh;h+='<td class="tot">'+eh.toFixed(2)+'h</td></tr>';});
  h+='</tbody><tfoot><tr><td style="text-align:left">'+t.tot+'</td>';for(let i=0;i<7;i++)h+='<td></td>';h+='<td class="tot">'+th.toFixed(2)+'h</td></tr></tfoot>';
  document.getElementById('wtable').innerHTML=h;
@@ -639,7 +710,7 @@ function renderMgr(){const t=T[lang];const w=state.weeks[state.current];let th=0
  let rows='<tr><th>'+t.name+'</th><th>'+t.rate+'</th><th style="text-align:right">'+t.hours+'</th><th style="text-align:right">'+t.pay+'</th><th style="text-align:right">'+t.paid+'</th></tr>';
  let lastTeam=null;
  [...emps].sort((a,b)=>(to[empTeam(a)]-to[empTeam(b)])||empPay(b.id)-empPay(a.id)).forEach(e=>{const tm=empTeam(e);if(tm!==lastTeam){rows+='<tr class="teamrow"><td colspan="5">'+teamLabel(tm)+'</td></tr>';lastTeam=tm;}const yes=!!w.paid[e.id];
-  rows+='<tr><td>'+esc(e.name)+'</td><td>'+money(e.rate)+'/h</td><td class="num">'+empHours(e.id).toFixed(2)+'h</td><td class="num">'+money(empPay(e.id))+'</td><td style="text-align:right"><button class="paidbtn '+(yes?'yes':'')+'" data-paid="'+e.id+'">'+(yes?t.paid:t.unpaid)+'</button></td></tr>';});
+  const pend=empPending(e.id);rows+='<tr><td>'+esc(e.name)+'</td><td>'+money(e.rate)+'/h</td><td class="num">'+empHours(e.id).toFixed(2)+'h'+(pend>0?' <span class="otpend">+'+pend.toFixed(2)+'</span>':'')+'</td><td class="num">'+money(empPay(e.id))+'</td><td style="text-align:right"><button class="paidbtn '+(yes?'yes':'')+'" data-paid="'+e.id+'">'+(yes?t.paid:t.unpaid)+'</button></td></tr>';});
  document.getElementById('mgrTable').innerHTML=rows;
 }
 function renderEmpAdmin(){const t=T[lang];document.getElementById('empAdmin').innerHTML=sortedEmps().map(e=>{const mgr=e.prole==='manager';
@@ -721,6 +792,8 @@ function bindApp(){
   document.getElementById('tabLog').onclick=()=>tab('log');
   document.getElementById('tabBak').onclick=()=>tab('bak');
   document.getElementById('daypick').addEventListener('click',e=>{const b=e.target.closest('[data-day]');if(!b)return;selDay=+b.getAttribute('data-day');renderDayPick();renderDayList();setTitle();});
+  document.getElementById('dayList').addEventListener('change',e=>{if(!e.target.classList.contains('lchk'))return;const c=e.target.closest('.ecard');toggleLunch(c.getAttribute('data-id'),+e.target.getAttribute('data-day'),e.target.checked);});
+  document.getElementById('dayList').addEventListener('click',e=>{const b=e.target.closest('.otbtn');if(!b)return;const c=b.closest('.ecard');setOT(c.getAttribute('data-id'),+b.getAttribute('data-otd'),b.getAttribute('data-otv')==='1');});
   document.getElementById('dayList').addEventListener('click',e=>{const b=e.target.closest('.tbtn');if(!b||b.disabled)return;const c=b.closest('.ecard');const f=b.getAttribute('data-f');
    openTimePicker({mode:'day',id:c.getAttribute('data-id'),f:f,cur:b.getAttribute('data-val'),title:f==='start'?T[lang].start:T[lang].end});});
   document.getElementById('addEmp').onclick=async()=>{
@@ -796,6 +869,7 @@ function bindApp(){
   document.getElementById('empSheet').addEventListener('click',e=>{const b=e.target.closest('.tbtn');if(!b||b.disabled)return;const c=b.closest('.ecard');const di=+c.getAttribute('data-day');
    const dISO=addDaysISO(state.weeks[state.current].start,di);if(!dayEditable(dISO))return;
    const f=b.getAttribute('data-f');openTimePicker({mode:'emp',dayIdx:di,f:f,cur:b.getAttribute('data-val'),title:f==='start'?T[lang].start:T[lang].end});});
+  document.getElementById('empSheet').addEventListener('change',e=>{if(!e.target.classList.contains('lchk'))return;toggleLunch(currentEmp,+e.target.getAttribute('data-day'),e.target.checked);});
  }
 }
 function tab(which){
@@ -820,7 +894,7 @@ function calcTips(){const pool=+document.getElementById('tipPool').value||0;cons
  document.getElementById('mgrTable').innerHTML=rows;}
 
 function logAction(action,detail){const me=state.employees.find(x=>x.id===myId);sb.from('audit_log').insert({actor_id:myId,actor_name:me?me.name:'',action:action,detail:detail||null}).then(()=>{});}
-function actLabel(a){const M={fr:{create_account:'Compte cree',delete_account:'Compte supprime',reset_password:'Mot de passe reinitialise',rename_user:'Utilisateur renomme',change_name:'Nom modifie',change_role:'Role modifie',change_team:'Equipe modifiee',change_rate:'Taux modifie',mark_paid:'Marque paye',mark_unpaid:'Marque non paye',edit_hours:'Heures modifiees',backup:'Sauvegarde creee',restore_backup:'Restauration',force_update:'Mise a jour forcee'},en:{create_account:'Account created',delete_account:'Account deleted',reset_password:'Password reset',rename_user:'Username changed',change_name:'Name changed',change_role:'Role changed',change_team:'Team changed',change_rate:'Rate changed',mark_paid:'Marked paid',mark_unpaid:'Marked unpaid',edit_hours:'Hours changed',backup:'Backup created',restore_backup:'Restore',force_update:'Forced update'}};return (M[lang]&&M[lang][a])||a;}
+function actLabel(a){const M={fr:{create_account:'Compte cree',delete_account:'Compte supprime',reset_password:'Mot de passe reinitialise',rename_user:'Utilisateur renomme',change_name:'Nom modifie',change_role:'Role modifie',change_team:'Equipe modifiee',change_rate:'Taux modifie',mark_paid:'Marque paye',mark_unpaid:'Marque non paye',edit_hours:'Heures modifiees',approve_ot:'Heures sup. approuvees',revoke_ot:'Heures sup. retirees',backup:'Sauvegarde creee',restore_backup:'Restauration',force_update:'Mise a jour forcee'},en:{create_account:'Account created',delete_account:'Account deleted',reset_password:'Password reset',rename_user:'Username changed',change_name:'Name changed',change_role:'Role changed',change_team:'Team changed',change_rate:'Rate changed',mark_paid:'Marked paid',mark_unpaid:'Marked unpaid',edit_hours:'Hours changed',approve_ot:'Overtime approved',revoke_ot:'Overtime revoked',backup:'Backup created',restore_backup:'Restore',force_update:'Forced update'}};return (M[lang]&&M[lang][a])||a;}
 let logCache=[];
 async function renderLog(){const el=document.getElementById('logList');if(!el)return;el.innerHTML='<div class="muted" style="padding:1rem">...</div>';
  const {data,error}=await sb.from('audit_log').select('*').order('created_at',{ascending:false}).limit(500);
