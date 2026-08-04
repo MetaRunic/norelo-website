@@ -185,6 +185,16 @@ h2{font-size:20px;font-weight:800;}
 .otcal .caday.ota .cahh{color:#22c55e;}
 .otcal .caday.sel{outline:2px solid var(--accent);outline-offset:1px;}
 .otfilter{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.9rem;font-weight:800;font-size:16px;}
+.otsubtabs{display:inline-flex;background:var(--soft);border:1px solid var(--bdr);border-radius:9px;padding:4px;margin-bottom:1.2rem;gap:.3rem;}
+.otsubtabs .stf{background:transparent;border:none;color:var(--gr);padding:9px 18px;font-size:14px;font-weight:800;border-radius:6px;cursor:pointer;}
+.otsubtabs .stf.on{background:var(--accent);color:#fff;}
+.ecard.off .offbig{grid-column:1/-1;text-align:center;font-weight:900;font-size:19px;letter-spacing:3px;color:var(--gr);padding:.3rem 0;}
+.offrow{grid-column:1/-1;margin-top:.2rem;padding-top:.7rem;border-top:1px solid var(--bdr);}
+.offbtn{font-size:12.5px;font-weight:800;padding:7px 13px;border-radius:8px;background:var(--soft);color:var(--accent-l);border:1px solid var(--accent);cursor:pointer;}
+.offbtn.cancel{color:var(--gr);border-color:var(--bdr);}
+.offdenied{font-size:12.5px;font-weight:800;color:var(--gr);margin-right:6px;}
+.otinfo.den{background:rgba(148,163,184,.18);color:var(--gr);}
+.wtable td.off{color:var(--accent-l);font-weight:800;font-size:12px;letter-spacing:1px;}
 .hintbar{background:rgba(224,71,59,.1);border:1px solid rgba(224,71,59,.32);color:var(--accent-l);border-radius:9px;padding:11px 14px;font-size:14px;font-weight:600;margin-bottom:1rem;line-height:1.45;}
 .ecard.locked{opacity:.6;}
 .ecard.locked select{cursor:not-allowed;}
@@ -426,8 +436,12 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     </div>
 
     <div id="otView" style="display:none">
-      <div id="otCal"></div>
-      <div id="otList"></div>
+      <div class="otsubtabs">
+        <button class="stf on" data-otsub="ot" data-i="tOt">Heures sup.</button>
+        <button class="stf" data-otsub="off" data-i="tOff">Conges</button>
+      </div>
+      <div id="otPane"><div id="otCal"></div><div id="otList"></div></div>
+      <div id="offPane" style="display:none"><div id="offList"></div></div>
     </div>
 
     <div id="logView" style="display:none">
@@ -511,7 +525,7 @@ const T={
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Debut',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
    paid:'Paye',unpaid:'A payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Deja paye',kUnpaid:'Reste a payer',del:'Retirer cet employe?',user:"Nom d'utilisateur",
    chooseWeek:'Choisir une semaine',ws_past:'Passee',ws_cur:'En cours',ws_up:'A venir',teamAll:'Toutes',teamExt:'Exterieur',teamInt:'Interieur',roleEmp:'Employe',roleMgr:'Gestionnaire',resetPwd:'MDP',clearF:'Effacer',backupsT:'Sauvegardes',backupNow:'Sauvegarder maintenant',versionT:'Version et mise a jour',forceUpd:'Forcer la mise a jour pour tous',
-   locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.<br><strong>Un jour verrouille a corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit etre apres l'heure de debut.",hoursHi:'Heures de quart regulieres en surbrillance',preseasonLbl:'Pre-saison',preseasonNote:"Pre-saison : heures de reference (avant l'ouverture du 17 aout).",lunch:'Pause 30 min',otPending:'en attente',otOk:'approuvee',approve:'Approuver',revoke:'Retirer',tOt:'Heures sup.',tOtShort:'Sup.',otTitle:'Approbation des heures supplementaires',otSub:'Les heures au-dela de 8h par jour sont payees a 16$/h une fois approuvees.',otNone:'Aucune heure supplementaire.',otAll:'Toutes les dates'},
+   locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.<br><strong>Un jour verrouille a corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit etre apres l'heure de debut.",hoursHi:'Heures de quart regulieres en surbrillance',preseasonLbl:'Pre-saison',preseasonNote:"Pre-saison : heures de reference (avant l'ouverture du 17 aout).",lunch:'Pause 30 min',otPending:'en attente',otOk:'approuvee',approve:'Approuver',revoke:'Retirer',tOt:'Heures sup.',tOtShort:'Sup.',otTitle:'Approbation des heures supplementaires',otSub:'Les heures au-dela de 8h par jour sont payees a 16$/h une fois approuvees.',otNone:'Aucune heure supplementaire.',otAll:'Toutes les dates',tOff:'Conges',offLbl:'CONGE',offReq:'Demander un conge',offPending:'Conge demande',offDenied:'Conge refuse',offPend:'en attente',offOk:'approuve',offDen:'refuse',deny:'Refuser',offNone:'Aucune demande de conge.'},
  en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',tEmp:'Employees',tLog:'Activity',tBak:'Backups',logout:'Log out',
    employees:'Employees and rates',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
@@ -523,9 +537,9 @@ const T={
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
    paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Total hours',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',del:'Remove this employee?',user:'Username',
    chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',teamExt:'Exterior',teamInt:'Interior',roleEmp:'Employee',roleMgr:'Manager',resetPwd:'PW',clearF:'Clear',backupsT:'Backups',backupNow:'Backup now',versionT:'Version and update',forceUpd:'Force update for everyone',
-   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted',preseasonLbl:'Pre-season',preseasonNote:'Pre-season: reference hours (before the Aug 17 opening).',lunch:'30-min lunch',otPending:'pending',otOk:'approved',approve:'Approve',revoke:'Undo',tOt:'Overtime',tOtShort:'OT',otTitle:'Overtime approvals',otSub:'Hours beyond 8h per day are paid at $16/h once approved.',otNone:'No overtime.',otAll:'All dates'}
+   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted',preseasonLbl:'Pre-season',preseasonNote:'Pre-season: reference hours (before the Aug 17 opening).',lunch:'30-min lunch',otPending:'pending',otOk:'approved',approve:'Approve',revoke:'Undo',tOt:'Overtime',tOtShort:'OT',otTitle:'Overtime approvals',otSub:'Hours beyond 8h per day are paid at $16/h once approved.',otNone:'No overtime.',otAll:'All dates',tOff:'Time off',offLbl:'OFF',offReq:'Request day off',offPending:'Day off requested',offDenied:'Day off denied',offPend:'pending',offOk:'approved',offDen:'denied',deny:'Deny',offNone:'No day-off requests.'}
 };
-let state={employees:[],weeks:{},current:null},lang='fr',selDay=0,mgrUnlocked=false,isEmployee=false,currentEmp=null,teamFilter='all',myId=null,myEmail='';
+let state={employees:[],weeks:{},current:null,off:{},offList:[]},lang='fr',selDay=0,mgrUnlocked=false,isEmployee=false,currentEmp=null,teamFilter='all',myId=null,myEmail='';
 
 function isoLocal(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function todayMonday(){const d=new Date();const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return isoLocal(d);}
@@ -548,7 +562,12 @@ async function loadAll(){
  (shifts||[]).forEach(r=>{const dd=new Date(r.work_date+'T00:00:00');const wk=weekKeyForDate(dd);const di=(dd.getDay()+6)%7;const w=state.weeks[wk];if(w&&w.data[r.employee_id])w.data[r.employee_id][DAYS[di]]={start:validTime(r.start_time),end:validTime(r.end_time),lunch:r.lunch!==false,ot:!!r.ot_approved};});
  const {data:paid}=await sb.from('paid_weeks').select('employee_id,week_start,paid').gte('week_start',startKey).lte('week_start',keys[keys.length-1]);
  (paid||[]).forEach(r=>{const w=state.weeks[r.week_start];if(w&&r.paid)w.paid[r.employee_id]=true;});
+ await reloadOff();
 }
+async function reloadOff(){const {data:off}=await sb.from('time_off').select('id,employee_id,off_date,status');state.off={};state.offList=off||[];
+ (off||[]).forEach(r=>{(state.off[r.employee_id]||(state.off[r.employee_id]={}))[r.off_date]=r.status;});}
+function offStatus(empId,dISO){return (state.off[empId]&&state.off[empId][dISO])||null;}
+function isOff(empId,dISO){return offStatus(empId,dISO)==='approved';}
 async function saveShift(empId,weekKey,dayIdx,day){const work_date=addDaysISO(weekKey,dayIdx);const {error}=await sb.from('shifts').upsert({employee_id:empId,work_date,start_time:day.start||null,end_time:day.end||null,lunch:day.lunch!==false,ot_approved:!!day.ot},{onConflict:'employee_id,work_date'});return error;}
 function subscribeRealtime(){
  sb.channel('rt-horaire')
@@ -556,6 +575,7 @@ function subscribeRealtime(){
     if(p.eventType==='DELETE')w.data[r.employee_id][DAYS[di]]=blankDay();else w.data[r.employee_id][DAYS[di]]={start:validTime(p.new.start_time),end:validTime(p.new.end_time),lunch:p.new.lunch!==false,ot:!!p.new.ot_approved};
     if(wk===state.current){if(isEmployee){renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);}else{renderDayList();renderWeek();renderCalendar(document.getElementById('calAdmin'),null);if(mgrUnlocked)renderMgr();}renderWeekBar();}})
   .on('postgres_changes',{event:'*',schema:'public',table:'paid_weeks'},p=>{const r=p.new||p.old;if(!r)return;const w=state.weeks[r.week_start];if(!w)return;if(p.eventType==='DELETE')delete w.paid[r.employee_id];else w.paid[r.employee_id]=!!p.new.paid;if(!isEmployee&&r.week_start===state.current)renderMgr();})
+  .on('postgres_changes',{event:'*',schema:'public',table:'time_off'},async p=>{await reloadOff();if(isEmployee){renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);}else{renderDayList();renderWeek();renderCalendar(document.getElementById('calAdmin'),null);if(mgrUnlocked)renderMgr();const ov=document.getElementById('otView');if(ov&&ov.style.display!=='none')showOTSub(otSubTab);}renderWeekBar();updateOTBadge();})
   .subscribe();
 }
 function empTeam(e){return e.team||'ext';}
@@ -577,9 +597,9 @@ function otHours(day,emp){return Math.max(0,Math.round((hrs(day,emp)-OT_THRESH)*
 function otApproved(day){return !!(day&&day.ot);}
 function paidHours(day,emp){return Math.round((regHours(day,emp)+(otApproved(day)?otHours(day,emp):0))*100)/100;}
 function dayPay(day,emp){const r=emp?emp.rate:0;return Math.round((regHours(day,emp)*r+(otApproved(day)?otHours(day,emp)*OT_RATE:0))*100)/100;}
-function empHours(id){const w=state.weeks[state.current];const e=empById(id);let t=0;DAYS.forEach(d=>t+=paidHours(w.data[id][d],e));return Math.round(t*100)/100;}
-function empPending(id){const w=state.weeks[state.current];const e=empById(id);let t=0;DAYS.forEach(d=>{const day=w.data[id][d];if(!otApproved(day))t+=otHours(day,e);});return Math.round(t*100)/100;}
-function empPay(id){const w=state.weeks[state.current];const e=empById(id);let p=0;DAYS.forEach(d=>p+=dayPay(w.data[id][d],e));return Math.round(p*100)/100;}
+function empHours(id){const w=state.weeks[state.current];const e=empById(id);let t=0;DAYS.forEach((d,i)=>{if(isOff(id,addDaysISO(state.current,i)))return;t+=paidHours(w.data[id][d],e);});return Math.round(t*100)/100;}
+function empPending(id){const w=state.weeks[state.current];const e=empById(id);let t=0;DAYS.forEach((d,i)=>{if(isOff(id,addDaysISO(state.current,i)))return;const day=w.data[id][d];if(!otApproved(day))t+=otHours(day,e);});return Math.round(t*100)/100;}
+function empPay(id){const w=state.weeks[state.current];const e=empById(id);let p=0;DAYS.forEach((d,i)=>{if(isOff(id,addDaysISO(state.current,i)))return;p+=dayPay(w.data[id][d],e);});return Math.round(p*100)/100;}
 function empTotalAllWeeks(id){const e=empById(id);let t=0;Object.values(state.weeks).forEach(w=>{if(w.data[id])DAYS.forEach(d=>t+=hrs(w.data[id][d],e));});return Math.round(t*100)/100;}
 function sortedEmps(){const to={ext:0,int:1};return [...state.employees].sort((a,b)=>(to[empTeam(a)]-to[empTeam(b)])||a.name.localeCompare(b.name));}
 function wkKeys(){return Object.keys(state.weeks).sort();}
@@ -588,8 +608,8 @@ function clampTime(v){if(!v)return '';const p=v.split(':');let hh=+p[0],mm=+p[1]
 function tmin(t){const p=(t||'').split(':');return (+p[0]||0)*60+(+p[1]||0);}
 function pickDefaultWeek(){const keys=wkKeys();if(!keys.length)return null;const wk=weekKeyForDate(now());if(state.weeks[wk])return wk;return wk<keys[0]?keys[0]:keys[keys.length-1];}
 function weekKeyForDate(d){const x=new Date(d);const day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);return isoLocal(x);}
-function hoursForDate(d,empId){const key=weekKeyForDate(d);const w=state.weeks[key];if(!w)return 0;const dk=DAYS[(d.getDay()+6)%7];if(empId){const e=empById(empId);return w.data[empId]?paidHours(w.data[empId][dk],e):0;}let t=0;state.employees.filter(inTeam).forEach(e=>t+=paidHours(w.data[e.id][dk],e));return Math.round(t*100)/100;}
-function weekTotal(key,empId){const w=state.weeks[key];if(!w)return 0;let t=0;const ids=empId?[empId]:state.employees.filter(inTeam).map(e=>e.id);ids.forEach(id=>{const e=empById(id);if(w.data[id])DAYS.forEach(d=>t+=paidHours(w.data[id][d],e));});return Math.round(t*100)/100;}
+function hoursForDate(d,empId){const key=weekKeyForDate(d);const w=state.weeks[key];if(!w)return 0;const dk=DAYS[(d.getDay()+6)%7];const iso=isoLocal(d);if(empId){const e=empById(empId);return (w.data[empId]&&!isOff(empId,iso))?paidHours(w.data[empId][dk],e):0;}let t=0;state.employees.filter(inTeam).forEach(e=>{if(isOff(e.id,iso))return;t+=paidHours(w.data[e.id][dk],e);});return Math.round(t*100)/100;}
+function weekTotal(key,empId){const w=state.weeks[key];if(!w)return 0;let t=0;const ids=empId?[empId]:state.employees.filter(inTeam).map(e=>e.id);ids.forEach(id=>{const e=empById(id);if(w.data[id])DAYS.forEach((d,i)=>{if(isOff(id,addDaysISO(key,i)))return;t+=paidHours(w.data[id][d],e);});});return Math.round(t*100)/100;}
 function weekStatus(key){const mon=new Date(key+'T00:00:00');const sun=new Date(mon);sun.setDate(sun.getDate()+6);const t=new Date();t.setHours(0,0,0,0);if(sun<t)return 'past';if(mon>t)return 'up';return 'cur';}
 
 /* trusted time: server Date header (same origin, not user-clock) + monotonic elapsed */
@@ -692,9 +712,26 @@ async function setOT(empId,weekKey,dayIdx,val){const w=state.weeks[weekKey];if(!
  if(err){day.ot=prev;renderOT();if(weekKey===state.current)rerenderDayViews();showToast(lang==='fr'?'Refuse':'Refused',false);alert((lang==='fr'?'Refuse : ':'Refused: ')+(err.message||''));}
  else{showToast(val?(lang==='fr'?'Heures sup. approuvees':'Overtime approved'):(lang==='fr'?'Retire':'Undone'),true);const em=empById(empId);logAction(val?'approve_ot':'revoke_ot',(em?em.name:'')+' '+addDaysISO(weekKey,dayIdx));}}
 function otPendingCount(){let n=0;wkKeys().forEach(wk=>{const w=state.weeks[wk];adminEmps().forEach(e=>DAYS.forEach((dk,i)=>{const day=w.data[e.id][dk];if(otHours(day,e)>0&&!otApproved(day))n++;}));});return n;}
-function updateOTBadge(n){if(n==null)n=otPendingCount();['otBadge','otBadgeNav'].forEach(id=>{const b=document.getElementById(id);if(!b)return;if(n>0){b.textContent=n;b.style.display='inline-block';}else{b.textContent='';b.style.display='none';}});}
-let otSelDate=null;
-function otDays(){const rows=[];wkKeys().forEach(wk=>{const w=state.weeks[wk];adminEmps().forEach(e=>{DAYS.forEach((dk,i)=>{const day=w.data[e.id][dk];const ot=otHours(day,e);if(ot>0)rows.push({e,wk,i,day,ot,dISO:addDaysISO(wk,i),appr:otApproved(day)});});});});return rows;}
+function offPendingCount(){return state.offList.filter(r=>r.status==='pending'&&adminEmps().some(e=>e.id===r.employee_id)).length;}
+function updateOTBadge(){const n=otPendingCount()+offPendingCount();['otBadge','otBadgeNav'].forEach(id=>{const b=document.getElementById(id);if(!b)return;if(n>0){b.textContent=n;b.style.display='inline-block';}else{b.textContent='';b.style.display='none';}});}
+async function requestOff(empId,dISO){const {error}=await sb.from('time_off').insert({employee_id:empId,off_date:dISO});if(error){showToast(lang==='fr'?'Non enregistre':'Not saved',false);alert(error.message||'');return;}await reloadOff();rerenderDayViews();showToast(lang==='fr'?'Conge demande':'Day off requested',true);}
+async function cancelOff(empId,dISO){const r=state.offList.find(x=>x.employee_id===empId&&x.off_date===dISO&&x.status==='pending');if(!r)return;const {error}=await sb.from('time_off').delete().eq('id',r.id);if(error){showToast(lang==='fr'?'Refuse':'Refused',false);return;}await reloadOff();rerenderDayViews();showToast(lang==='fr'?'Annule':'Cancelled',true);}
+async function setOffStatus(id,status){const {error}=await sb.from('time_off').update({status}).eq('id',id);if(error){showToast(lang==='fr'?'Refuse':'Refused',false);alert(error.message||'');return;}await reloadOff();renderTimeOff();rerenderDayViews();const r=state.offList.find(x=>x.id===id);const em=r?empById(r.employee_id):null;showToast(status==='approved'?(lang==='fr'?'Conge approuve':'Day off approved'):status==='denied'?(lang==='fr'?'Conge refuse':'Day off denied'):(lang==='fr'?'Remis en attente':'Set pending'),true);logAction(status==='approved'?'approve_off':status==='denied'?'deny_off':'reset_off',(em?em.name:'')+' '+(r?r.off_date:''));}
+function offControl(empId,dISO){const t=T[lang];const st=offStatus(empId,dISO);
+ if(st==='pending')return '<button class="offbtn cancel" data-offc="cancel" data-date="'+dISO+'">'+t.offPending+' &times;</button>';
+ if(st==='denied')return '<span class="offdenied">'+t.offDenied+'</span> <button class="offbtn" data-offc="req" data-date="'+dISO+'">'+t.offReq+'</button>';
+ return '<button class="offbtn" data-offc="req" data-date="'+dISO+'">'+t.offReq+'</button>';}
+function renderTimeOff(){const el=document.getElementById('offList');if(!el)return;const t=T[lang];updateOTBadge();
+ const rows=state.offList.filter(r=>adminEmps().some(e=>e.id===r.employee_id));
+ const order={pending:0,approved:1,denied:2};rows.sort((a,b)=>((order[a.status]||0)-(order[b.status]||0))||(a.off_date<b.off_date?1:-1));
+ if(!rows.length){el.innerHTML='<div class="muted" style="padding:1rem">'+t.offNone+'</div>';return;}
+ el.innerHTML=rows.map(r=>{const em=empById(r.employee_id);const dObj=new Date(r.off_date+'T00:00:00');const dlabel=t.days[(dObj.getDay()+6)%7]+' '+fmtDate(r.off_date,0);
+  const badge=r.status==='pending'?'<span class="otinfo pend">'+t.offPend+'</span>':r.status==='approved'?'<span class="otinfo ok">'+t.offOk+'</span>':'<span class="otinfo den">'+t.offDen+'</span>';
+  const btns=r.status==='pending'?('<button class="otbtn" data-off="'+r.id+'" data-st="approved">'+t.approve+'</button><button class="otbtn undo" data-off="'+r.id+'" data-st="denied">'+t.deny+'</button>'):('<button class="otbtn undo" data-off="'+r.id+'" data-st="pending">'+t.revoke+'</button>');
+  return '<div class="otrow'+(r.status!=='pending'?' done':'')+'"><div class="oti"><div class="otn">'+esc(em?em.name:'?')+'</div><div class="otd">'+dlabel+'</div></div><div class="otx">'+badge+btns+'</div></div>';}).join('');}
+function showOTSub(s){otSubTab=s;document.querySelectorAll('#otView .stf').forEach(b=>b.classList.toggle('on',b.getAttribute('data-otsub')===s));document.getElementById('otPane').style.display=s==='ot'?'block':'none';document.getElementById('offPane').style.display=s==='off'?'block':'none';if(s==='ot')renderOT();else renderTimeOff();}
+let otSelDate=null,otSubTab='ot';
+function otDays(){const rows=[];wkKeys().forEach(wk=>{const w=state.weeks[wk];adminEmps().forEach(e=>{DAYS.forEach((dk,i)=>{const dISO=addDaysISO(wk,i);if(isOff(e.id,dISO))return;const day=w.data[e.id][dk];const ot=otHours(day,e);if(ot>0)rows.push({e,wk,i,day,ot,dISO,appr:otApproved(day)});});});});return rows;}
 function renderOTCal(rows){const el=document.getElementById('otCal');if(!el)return;const t=T[lang];
  const byDate={};rows.forEach(r=>{const d=byDate[r.dISO]||(byDate[r.dISO]={pend:0,appr:0});if(r.appr)d.appr++;else d.pend++;});
  const dates=Object.keys(byDate);if(!dates.length){el.innerHTML='';return;}
@@ -712,7 +749,7 @@ function renderOTCal(rows){const el=document.getElementById('otCal');if(!el)retu
  h+='</div>';el.innerHTML=h;}
 function renderOT(){const t=T[lang];const el=document.getElementById('otList');if(!el)return;
  const rows=otDays();rows.sort((a,b)=>((a.appr?1:0)-(b.appr?1:0))||(a.dISO<b.dISO?1:-1));
- updateOTBadge(rows.filter(r=>!r.appr).length);renderOTCal(rows);
+ updateOTBadge();renderOTCal(rows);
  if(otSelDate&&!rows.some(r=>r.dISO===otSelDate))otSelDate=null;
  const list=otSelDate?rows.filter(r=>r.dISO===otSelDate):rows;
  let head='';if(otSelDate){const dd=new Date(otSelDate+'T00:00:00');head='<div class="otfilter"><span>'+t.days[(dd.getDay()+6)%7]+' '+fmtDate(otSelDate,0)+'</span><button class="btn sm" id="otClear">&larr; '+t.otAll+'</button></div>';}
@@ -724,8 +761,11 @@ function renderOT(){const t=T[lang];const el=document.getElementById('otList');i
 function renderDayList(){
  const w=state.weeks[state.current];const t=T[lang];const dk=DAYS[selDay];let h='';const _dISO=addDaysISO(w.start,selDay);if(isPreseason(_dISO))h='<div class="preseasonbar">'+t.preseasonNote+'</div>';
  const list=adminEmps().slice().sort((a,b)=>{if(a.id===myId)return -1;if(b.id===myId)return 1;return a.name.localeCompare(b.name);});
- list.forEach(e=>{const day=w.data[e.id][dk];const ph=paidHours(day,e);
-  h+='<div class="ecard" data-id="'+e.id+'"><div class="en">'+esc(e.name)+(e.id===myId?' <span class="metag">'+(lang==='fr'?'Moi':'Me')+'</span>':'')+'</div>'
+ const dISO=addDaysISO(w.start,selDay);
+ list.forEach(e=>{const nm='<div class="en">'+esc(e.name)+(e.id===myId?' <span class="metag">'+(lang==='fr'?'Moi':'Me')+'</span>':'')+'</div>';
+  if(isOff(e.id,dISO)){h+='<div class="ecard off" data-id="'+e.id+'">'+nm+'<div class="offbig">'+t.offLbl+'</div></div>';return;}
+  const day=w.data[e.id][dk];const ph=paidHours(day,e);
+  h+='<div class="ecard" data-id="'+e.id+'">'+nm
    +'<div class="etime"><div class="tfield"><label>'+t.start+'</label>'+timeInput('start',day.start,false)+'</div>'
    +'<div class="tfield"><label>'+t.end+'</label>'+timeInput('end',day.end,false)+'</div></div>'
    +'<div class="ecalc"><div class="eh">'+ph.toFixed(2)+'h</div></div>'
@@ -738,13 +778,15 @@ function renderEmp(){
  document.getElementById('viewTitle').textContent=t.hi+(emp?emp.name:'');
  if(!emp){document.getElementById('empSheet').innerHTML='';return;}
  let h='<div class="hintbar">'+(trustedBaseMs==null?t.timeChecking:t.editHint)+'</div>',tot=0;
- DAYS.forEach((dk,i)=>{const day=w.data[emp.id][dk];const ph=paidHours(day,emp);tot+=ph;
-  const dISO=addDaysISO(w.start,i);const ed=dayEditable(dISO);const dis=ed?'':' disabled';const isT=dISO===realTodayISO();
+ DAYS.forEach((dk,i)=>{const dISO=addDaysISO(w.start,i);const isT=dISO===realTodayISO();
+  if(isOff(emp.id,dISO)){h+='<div class="ecard off'+(isT?' today':'')+'" data-day="'+i+'"><div class="en">'+t.days[i]+' <span class="muted" style="font-weight:600">'+fmtDate(w.start,i)+'</span>'+(isT?' <span class="todaytag">'+t.todayLbl+'</span>':'')+'</div><div class="offbig">'+t.offLbl+'</div></div>';return;}
+  const day=w.data[emp.id][dk];const ph=paidHours(day,emp);tot+=ph;const ed=dayEditable(dISO);
   h+='<div class="ecard'+(ed?'':' locked')+(isT?' today':'')+'" data-day="'+i+'"><div class="en">'+t.days[i]+' <span class="muted" style="font-weight:600">'+fmtDate(w.start,i)+'</span>'+(isT?' <span class="todaytag">'+t.todayLbl+'</span>':'')+(isPreseason(dISO)?' <span class="pretag">'+t.preseasonLbl+'</span>':'')+(ed?'':' <span class="lockbadge">'+LOCK_SVG+' '+t.locked+'</span>')+'</div>'
    +'<div class="etime"><div class="tfield"><label>'+t.start+'</label>'+timeInput('start',day.start,!ed)+'</div>'
    +'<div class="tfield"><label>'+t.end+'</label>'+timeInput('end',day.end,!ed)+'</div></div>'
    +'<div class="ecalc"><div class="eh">'+ph.toFixed(2)+'h</div></div>'
    +exRow(day,emp,i,ed,false)
+   +'<div class="offrow">'+offControl(emp.id,dISO)+'</div>'
    +'</div>';});
  h+='<div class="card" style="display:flex;justify-content:space-between;align-items:center"><span style="font-weight:800;font-size:18px">'+t.tot+'</span><span style="font-weight:800;font-size:24px;color:var(--accent-l)">'+tot.toFixed(2)+'h</span></div>';
  document.getElementById('empSheet').innerHTML=h;
@@ -755,7 +797,7 @@ function renderWeek(){
  let lastTeam=null,th=0;
  adminEmps().forEach(e=>{const tm=empTeam(e);if(tm!==lastTeam){h+='<tr class="teamrow"><td colspan="9">'+teamLabel(tm)+'</td></tr>';lastTeam=tm;}
   h+='<tr><td class="nm">'+esc(e.name)+'</td>';
-  DAYS.forEach(d=>{const hh=paidHours(w.data[e.id][d],e);h+='<td class="'+(hh?'':'z')+'">'+(hh?hh.toFixed(2):'-')+'</td>';});
+  DAYS.forEach((d,di)=>{if(isOff(e.id,addDaysISO(w.start,di))){h+='<td class="off">'+T[lang].offLbl+'</td>';return;}const hh=paidHours(w.data[e.id][d],e);h+='<td class="'+(hh?'':'z')+'">'+(hh?hh.toFixed(2):'-')+'</td>';});
   const eh=empHours(e.id);th+=eh;h+='<td class="tot">'+eh.toFixed(2)+'h</td></tr>';});
  h+='</tbody><tfoot><tr><td style="text-align:left">'+t.tot+'</td>';for(let i=0;i<7;i++)h+='<td></td>';h+='<td class="tot">'+th.toFixed(2)+'h</td></tr></tfoot>';
  document.getElementById('wtable').innerHTML=h;
@@ -787,7 +829,7 @@ function applyLang(){document.querySelectorAll('[data-i]').forEach(el=>{const k=
  document.getElementById('luser').placeholder=T[lang].user;document.getElementById('lpass').placeholder=lang==='fr'?'Mot de passe':'Password';
  document.getElementById('empUser').placeholder=T[lang].user;document.getElementById('empPass').placeholder=lang==='fr'?'Mot de passe':'Password';
  document.documentElement.lang=lang;if(document.getElementById('app').style.display==='block'){renderAll();
-  const otv=document.getElementById('otView');if(otv&&otv.style.display!=='none')renderOT();
+  const otv=document.getElementById('otView');if(otv&&otv.style.display!=='none')showOTSub(otSubTab);
   const lv=document.getElementById('logView');if(lv&&lv.style.display!=='none')renderLog();
   const bv=document.getElementById('backupView');if(bv&&bv.style.display!=='none')renderBackups();}}
 function renderAll(){renderWeekBar();if(isEmployee){renderCalendar(document.getElementById('calEmp'),currentEmp);renderEmp();}else{renderCalendar(document.getElementById('calAdmin'),null);renderDayPick();renderDayList();renderWeek();setTitle();updateOTBadge();if(mgrUnlocked){renderMgr();renderEmpAdmin();}}}
@@ -856,6 +898,8 @@ function bindApp(){
   document.getElementById('tabOt').onclick=()=>tab('ot');
   document.getElementById('otCal').addEventListener('click',e=>{const c=e.target.closest('[data-otdate]');if(!c)return;const d=c.getAttribute('data-otdate');otSelDate=(otSelDate===d)?null:d;renderOT();});
   document.getElementById('otList').addEventListener('click',e=>{if(e.target.id==='otClear'){otSelDate=null;renderOT();return;}const b=e.target.closest('.otbtn');if(!b)return;setOT(b.getAttribute('data-emp'),b.getAttribute('data-wk'),+b.getAttribute('data-di'),b.getAttribute('data-otv')==='1');});
+  document.querySelectorAll('#otView .stf').forEach(b=>b.onclick=()=>showOTSub(b.getAttribute('data-otsub')));
+  document.getElementById('offList').addEventListener('click',e=>{const b=e.target.closest('.otbtn');if(!b)return;setOffStatus(b.getAttribute('data-off'),b.getAttribute('data-st'));});
   document.getElementById('dayList').addEventListener('click',e=>{const b=e.target.closest('.tbtn');if(!b||b.disabled)return;const c=b.closest('.ecard');const f=b.getAttribute('data-f');
    openTimePicker({mode:'day',id:c.getAttribute('data-id'),f:f,cur:b.getAttribute('data-val'),title:f==='start'?T[lang].start:T[lang].end});});
   document.getElementById('addEmp').onclick=async()=>{
@@ -932,6 +976,7 @@ function bindApp(){
    const dISO=addDaysISO(state.weeks[state.current].start,di);if(!dayEditable(dISO))return;
    const f=b.getAttribute('data-f');openTimePicker({mode:'emp',dayIdx:di,f:f,cur:b.getAttribute('data-val'),title:f==='start'?T[lang].start:T[lang].end});});
   document.getElementById('empSheet').addEventListener('change',e=>{if(!e.target.classList.contains('lchk'))return;toggleLunch(currentEmp,+e.target.getAttribute('data-day'),e.target.checked);});
+  document.getElementById('empSheet').addEventListener('click',e=>{const b=e.target.closest('.offbtn');if(!b)return;const d=b.getAttribute('data-date');if(b.getAttribute('data-offc')==='cancel')cancelOff(currentEmp,d);else requestOff(currentEmp,d);});
  }
 }
 function tab(which){
@@ -949,7 +994,7 @@ function tab(which){
  document.getElementById('backupView').style.display=which==='bak'?'block':'none';
  if(which==='mgr'){const ml=document.getElementById('mgrLock');if(ml)ml.style.display='none';document.getElementById('mgrContent').style.display='block';renderMgr();}
  if(which==='emp')renderEmpAdmin();
- if(which==='ot')renderOT();
+ if(which==='ot')showOTSub(otSubTab);
  if(which==='log')renderLog();
  if(which==='bak')renderBackups();
  setTitle();window.scrollTo(0,0);
@@ -960,7 +1005,7 @@ function calcTips(){const pool=+document.getElementById('tipPool').value||0;cons
  document.getElementById('mgrTable').innerHTML=rows;}
 
 function logAction(action,detail){const me=state.employees.find(x=>x.id===myId);sb.from('audit_log').insert({actor_id:myId,actor_name:me?me.name:'',action:action,detail:detail||null}).then(()=>{});}
-function actLabel(a){const M={fr:{create_account:'Compte cree',delete_account:'Compte supprime',reset_password:'Mot de passe reinitialise',rename_user:'Utilisateur renomme',change_name:'Nom modifie',change_role:'Role modifie',change_team:'Equipe modifiee',change_rate:'Taux modifie',mark_paid:'Marque paye',mark_unpaid:'Marque non paye',edit_hours:'Heures modifiees',approve_ot:'Heures sup. approuvees',revoke_ot:'Heures sup. retirees',backup:'Sauvegarde creee',restore_backup:'Restauration',force_update:'Mise a jour forcee'},en:{create_account:'Account created',delete_account:'Account deleted',reset_password:'Password reset',rename_user:'Username changed',change_name:'Name changed',change_role:'Role changed',change_team:'Team changed',change_rate:'Rate changed',mark_paid:'Marked paid',mark_unpaid:'Marked unpaid',edit_hours:'Hours changed',approve_ot:'Overtime approved',revoke_ot:'Overtime revoked',backup:'Backup created',restore_backup:'Restore',force_update:'Forced update'}};return (M[lang]&&M[lang][a])||a;}
+function actLabel(a){const M={fr:{create_account:'Compte cree',delete_account:'Compte supprime',reset_password:'Mot de passe reinitialise',rename_user:'Utilisateur renomme',change_name:'Nom modifie',change_role:'Role modifie',change_team:'Equipe modifiee',change_rate:'Taux modifie',mark_paid:'Marque paye',mark_unpaid:'Marque non paye',edit_hours:'Heures modifiees',approve_ot:'Heures sup. approuvees',revoke_ot:'Heures sup. retirees',approve_off:'Conge approuve',deny_off:'Conge refuse',reset_off:'Conge remis en attente',backup:'Sauvegarde creee',restore_backup:'Restauration',force_update:'Mise a jour forcee'},en:{create_account:'Account created',delete_account:'Account deleted',reset_password:'Password reset',rename_user:'Username changed',change_name:'Name changed',change_role:'Role changed',change_team:'Team changed',change_rate:'Rate changed',mark_paid:'Marked paid',mark_unpaid:'Marked unpaid',edit_hours:'Hours changed',approve_ot:'Overtime approved',revoke_ot:'Overtime revoked',approve_off:'Day off approved',deny_off:'Day off denied',reset_off:'Day off set pending',backup:'Backup created',restore_backup:'Restore',force_update:'Forced update'}};return (M[lang]&&M[lang][a])||a;}
 let logCache=[];
 async function renderLog(){const el=document.getElementById('logList');if(!el)return;el.innerHTML='<div class="muted" style="padding:1rem">...</div>';
  const {data,error}=await sb.from('audit_log').select('*').order('created_at',{ascending:false}).limit(500);
