@@ -636,7 +636,7 @@ async function applyTime(v){if(!timeCtx)return;const ctx=timeCtx;const w=state.w
  renderWeekBar();
  showToast(lang==='fr'?'Enregistrement...':'Saving...',true);
  const err=await saveShift(empId,state.current,dayIdx,day);
- if(err){day.start=prev.start;day.end=prev.end;day.ot=prev.ot;showToast(lang==='fr'?'Non enregistre':'Not saved',false);alert(lang==='fr'?'Enregistrement refuse (jour verrouille ou permission).':'Save refused (locked day or permission).');
+ if(err){day.start=prev.start;day.end=prev.end;day.ot=prev.ot;showToast(lang==='fr'?'Non enregistre':'Not saved',false);alert((lang==='fr'?'Enregistrement refuse : ':'Save refused: ')+(err.message||err.hint||(lang==='fr'?'jour verrouille ou permission.':'locked day or permission.')));
    if(ctx.mode==='day')renderDayList();else renderEmp();renderWeekBar();}
  else{showToast(lang==='fr'?'Enregistre':'Saved',true);
    if(!isEmployee&&empId!==myId){const em=state.employees.find(x=>x.id===empId);logAction('edit_hours',(em?em.name:'')+' '+addDaysISO(state.current,dayIdx)+' '+(day.start||'--')+'-'+(day.end||'--'));}}}
