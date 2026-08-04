@@ -786,7 +786,10 @@ function applyLang(){document.querySelectorAll('[data-i]').forEach(el=>{const k=
  document.getElementById('lbtn').textContent=T[lang].enter;
  document.getElementById('luser').placeholder=T[lang].user;document.getElementById('lpass').placeholder=lang==='fr'?'Mot de passe':'Password';
  document.getElementById('empUser').placeholder=T[lang].user;document.getElementById('empPass').placeholder=lang==='fr'?'Mot de passe':'Password';
- document.documentElement.lang=lang;if(document.getElementById('app').style.display==='block')renderAll();}
+ document.documentElement.lang=lang;if(document.getElementById('app').style.display==='block'){renderAll();
+  const otv=document.getElementById('otView');if(otv&&otv.style.display!=='none')renderOT();
+  const lv=document.getElementById('logView');if(lv&&lv.style.display!=='none')renderLog();
+  const bv=document.getElementById('backupView');if(bv&&bv.style.display!=='none')renderBackups();}}
 function renderAll(){renderWeekBar();if(isEmployee){renderCalendar(document.getElementById('calEmp'),currentEmp);renderEmp();}else{renderCalendar(document.getElementById('calAdmin'),null);renderDayPick();renderDayList();renderWeek();setTitle();updateOTBadge();if(mgrUnlocked){renderMgr();renderEmpAdmin();}}}
 function setTitle(){if(isEmployee)return;const t=T[lang];const cur=document.querySelector('.tabs button.on').id;
  document.getElementById('viewTitle').textContent=cur==='tabDay'?t.days[selDay]:cur==='tabWeek'?t.week:cur==='tabEmp'?t.employees:cur==='tabOt'?t.tOt:cur==='tabLog'?t.tLog:cur==='tabBak'?t.backupsT:t.payTitle;}
