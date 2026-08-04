@@ -195,6 +195,8 @@ h2{font-size:20px;font-weight:800;}
 .offdenied{font-size:12.5px;font-weight:800;color:var(--gr);margin-right:6px;}
 .otinfo.den{background:rgba(148,163,184,.18);color:var(--gr);}
 .wtable td.off{color:var(--accent-l);font-weight:800;font-size:12px;letter-spacing:1px;}
+.wtable td.off.pend{color:var(--gr);}
+.ecard.off .offbig.pend{color:var(--accent-l);font-size:14px;letter-spacing:1px;}
 .hintbar{background:rgba(224,71,59,.1);border:1px solid rgba(224,71,59,.32);color:var(--accent-l);border-radius:9px;padding:11px 14px;font-size:14px;font-weight:600;margin-bottom:1rem;line-height:1.45;}
 .ecard.locked{opacity:.6;}
 .ecard.locked select{cursor:not-allowed;}
@@ -525,7 +527,7 @@ const T={
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Debut',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
    paid:'Paye',unpaid:'A payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Deja paye',kUnpaid:'Reste a payer',del:'Retirer cet employe?',user:"Nom d'utilisateur",
    chooseWeek:'Choisir une semaine',ws_past:'Passee',ws_cur:'En cours',ws_up:'A venir',teamAll:'Toutes',teamExt:'Exterieur',teamInt:'Interieur',roleEmp:'Employe',roleMgr:'Gestionnaire',resetPwd:'MDP',clearF:'Effacer',backupsT:'Sauvegardes',backupNow:'Sauvegarder maintenant',versionT:'Version et mise a jour',forceUpd:'Forcer la mise a jour pour tous',
-   locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.<br><strong>Un jour verrouille a corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit etre apres l'heure de debut.",hoursHi:'Heures de quart regulieres en surbrillance',preseasonLbl:'Pre-saison',preseasonNote:"Pre-saison : heures de reference (avant l'ouverture du 17 aout).",lunch:'Pause 30 min',otPending:'en attente',otOk:'approuvee',approve:'Approuver',revoke:'Retirer',tOt:'Heures sup.',tOtShort:'Sup.',otTitle:'Approbation des heures supplementaires',otSub:'Les heures au-dela de 8h par jour sont payees a 16$/h une fois approuvees.',otNone:'Aucune heure supplementaire.',otAll:'Toutes les dates',tOff:'Conges',offLbl:'CONGE',offReq:'Demander un conge',offPending:'Conge demande',offDenied:'Conge refuse',offPend:'en attente',offOk:'approuve',offDen:'refuse',deny:'Refuser',offNone:'Aucune demande de conge.'},
+   locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.<br><strong>Un jour verrouille a corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit etre apres l'heure de debut.",hoursHi:'Heures de quart regulieres en surbrillance',preseasonLbl:'Pre-saison',preseasonNote:"Pre-saison : heures de reference (avant l'ouverture du 17 aout).",lunch:'Pause 30 min',otPending:'en attente',otOk:'approuvee',approve:'Approuver',revoke:'Retirer',tOt:'Heures sup.',tOtShort:'Sup.',otTitle:'Approbation des heures supplementaires',otSub:'Les heures au-dela de 8h par jour sont payees a 16$/h une fois approuvees.',otNone:'Aucune heure supplementaire.',otAll:'Toutes les dates',tOff:'Conges',offLbl:'CONGE',offReq:'Demander un conge',offPending:'Conge demande',offDenied:'Conge refuse',offPend:'en attente',offOk:'approuve',offDen:'refuse',deny:'Refuser',offNone:'Aucune demande de conge.',cancel:'Annuler'},
  en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',tEmp:'Employees',tLog:'Activity',tBak:'Backups',logout:'Log out',
    employees:'Employees and rates',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
@@ -537,7 +539,7 @@ const T={
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
    paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Total hours',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',del:'Remove this employee?',user:'Username',
    chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',teamExt:'Exterior',teamInt:'Interior',roleEmp:'Employee',roleMgr:'Manager',resetPwd:'PW',clearF:'Clear',backupsT:'Backups',backupNow:'Backup now',versionT:'Version and update',forceUpd:'Force update for everyone',
-   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted',preseasonLbl:'Pre-season',preseasonNote:'Pre-season: reference hours (before the Aug 17 opening).',lunch:'30-min lunch',otPending:'pending',otOk:'approved',approve:'Approve',revoke:'Undo',tOt:'Overtime',tOtShort:'OT',otTitle:'Overtime approvals',otSub:'Hours beyond 8h per day are paid at $16/h once approved.',otNone:'No overtime.',otAll:'All dates',tOff:'Time off',offLbl:'OFF',offReq:'Request day off',offPending:'Day off requested',offDenied:'Day off denied',offPend:'pending',offOk:'approved',offDen:'denied',deny:'Deny',offNone:'No day-off requests.'}
+   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted',preseasonLbl:'Pre-season',preseasonNote:'Pre-season: reference hours (before the Aug 17 opening).',lunch:'30-min lunch',otPending:'pending',otOk:'approved',approve:'Approve',revoke:'Undo',tOt:'Overtime',tOtShort:'OT',otTitle:'Overtime approvals',otSub:'Hours beyond 8h per day are paid at $16/h once approved.',otNone:'No overtime.',otAll:'All dates',tOff:'Time off',offLbl:'OFF',offReq:'Request day off',offPending:'Day off requested',offDenied:'Day off denied',offPend:'pending',offOk:'approved',offDen:'denied',deny:'Deny',offNone:'No day-off requests.',cancel:'Cancel'}
 };
 let state={employees:[],weeks:{},current:null,off:{},offList:[]},lang='fr',selDay=0,mgrUnlocked=false,isEmployee=false,currentEmp=null,teamFilter='all',myId=null,myEmail='';
 
@@ -567,7 +569,7 @@ async function loadAll(){
 async function reloadOff(){const {data:off}=await sb.from('time_off').select('id,employee_id,off_date,status');state.off={};state.offList=off||[];
  (off||[]).forEach(r=>{(state.off[r.employee_id]||(state.off[r.employee_id]={}))[r.off_date]=r.status;});}
 function offStatus(empId,dISO){return (state.off[empId]&&state.off[empId][dISO])||null;}
-function isOff(empId,dISO){return offStatus(empId,dISO)==='approved';}
+function isOff(empId,dISO){const s=offStatus(empId,dISO);return s==='pending'||s==='approved';}
 async function saveShift(empId,weekKey,dayIdx,day){const work_date=addDaysISO(weekKey,dayIdx);const {error}=await sb.from('shifts').upsert({employee_id:empId,work_date,start_time:day.start||null,end_time:day.end||null,lunch:day.lunch!==false,ot_approved:!!day.ot},{onConflict:'employee_id,work_date'});return error;}
 function subscribeRealtime(){
  sb.channel('rt-horaire')
@@ -714,7 +716,10 @@ async function setOT(empId,weekKey,dayIdx,val){const w=state.weeks[weekKey];if(!
 function otPendingCount(){let n=0;wkKeys().forEach(wk=>{const w=state.weeks[wk];adminEmps().forEach(e=>DAYS.forEach((dk,i)=>{const day=w.data[e.id][dk];if(otHours(day,e)>0&&!otApproved(day))n++;}));});return n;}
 function offPendingCount(){return state.offList.filter(r=>r.status==='pending'&&adminEmps().some(e=>e.id===r.employee_id)).length;}
 function updateOTBadge(){const n=otPendingCount()+offPendingCount();['otBadge','otBadgeNav'].forEach(id=>{const b=document.getElementById(id);if(!b)return;if(n>0){b.textContent=n;b.style.display='inline-block';}else{b.textContent='';b.style.display='none';}});}
-async function requestOff(empId,dISO){const {error}=await sb.from('time_off').insert({employee_id:empId,off_date:dISO});if(error){showToast(lang==='fr'?'Non enregistre':'Not saved',false);alert(error.message||'');return;}await reloadOff();rerenderDayViews();showToast(lang==='fr'?'Conge demande':'Day off requested',true);}
+async function requestOff(empId,dISO){const {error}=await sb.from('time_off').insert({employee_id:empId,off_date:dISO});if(error){showToast(lang==='fr'?'Non enregistre':'Not saved',false);alert(error.message||'');return;}
+ const dd=new Date(dISO+'T00:00:00');const wk=weekKeyForDate(dd),di=(dd.getDay()+6)%7;const w=state.weeks[wk];
+ if(w&&w.data[empId]){const day=w.data[empId][DAYS[di]];if(day&&(day.start||day.end)){day.start='';day.end='';day.ot=false;await saveShift(empId,wk,di,day);}}
+ await reloadOff();rerenderDayViews();showToast(lang==='fr'?'Conge demande':'Day off requested',true);}
 async function cancelOff(empId,dISO){const r=state.offList.find(x=>x.employee_id===empId&&x.off_date===dISO&&x.status==='pending');if(!r)return;const {error}=await sb.from('time_off').delete().eq('id',r.id);if(error){showToast(lang==='fr'?'Refuse':'Refused',false);return;}await reloadOff();rerenderDayViews();showToast(lang==='fr'?'Annule':'Cancelled',true);}
 async function setOffStatus(id,status){const {error}=await sb.from('time_off').update({status}).eq('id',id);if(error){showToast(lang==='fr'?'Refuse':'Refused',false);alert(error.message||'');return;}await reloadOff();renderTimeOff();rerenderDayViews();const r=state.offList.find(x=>x.id===id);const em=r?empById(r.employee_id):null;showToast(status==='approved'?(lang==='fr'?'Conge approuve':'Day off approved'):status==='denied'?(lang==='fr'?'Conge refuse':'Day off denied'):(lang==='fr'?'Remis en attente':'Set pending'),true);logAction(status==='approved'?'approve_off':status==='denied'?'deny_off':'reset_off',(em?em.name:'')+' '+(r?r.off_date:''));}
 function offControl(empId,dISO){const t=T[lang];const st=offStatus(empId,dISO);
@@ -763,7 +768,7 @@ function renderDayList(){
  const list=adminEmps().slice().sort((a,b)=>{if(a.id===myId)return -1;if(b.id===myId)return 1;return a.name.localeCompare(b.name);});
  const dISO=addDaysISO(w.start,selDay);
  list.forEach(e=>{const nm='<div class="en">'+esc(e.name)+(e.id===myId?' <span class="metag">'+(lang==='fr'?'Moi':'Me')+'</span>':'')+'</div>';
-  if(isOff(e.id,dISO)){h+='<div class="ecard off" data-id="'+e.id+'">'+nm+'<div class="offbig">'+t.offLbl+'</div></div>';return;}
+  if(isOff(e.id,dISO)){h+='<div class="ecard off" data-id="'+e.id+'">'+nm+'<div class="offbig'+(offStatus(e.id,dISO)==='pending'?' pend':'')+'">'+(offStatus(e.id,dISO)==='approved'?t.offLbl:t.offPending)+'</div></div>';return;}
   const day=w.data[e.id][dk];const ph=paidHours(day,e);
   h+='<div class="ecard" data-id="'+e.id+'">'+nm
    +'<div class="etime"><div class="tfield"><label>'+t.start+'</label>'+timeInput('start',day.start,false)+'</div>'
@@ -779,7 +784,7 @@ function renderEmp(){
  if(!emp){document.getElementById('empSheet').innerHTML='';return;}
  let h='<div class="hintbar">'+(trustedBaseMs==null?t.timeChecking:t.editHint)+'</div>',tot=0;
  DAYS.forEach((dk,i)=>{const dISO=addDaysISO(w.start,i);const isT=dISO===realTodayISO();
-  if(isOff(emp.id,dISO)){h+='<div class="ecard off'+(isT?' today':'')+'" data-day="'+i+'"><div class="en">'+t.days[i]+' <span class="muted" style="font-weight:600">'+fmtDate(w.start,i)+'</span>'+(isT?' <span class="todaytag">'+t.todayLbl+'</span>':'')+'</div><div class="offbig">'+t.offLbl+'</div></div>';return;}
+  if(isOff(emp.id,dISO)){const st=offStatus(emp.id,dISO);h+='<div class="ecard off'+(isT?' today':'')+'" data-day="'+i+'"><div class="en">'+t.days[i]+' <span class="muted" style="font-weight:600">'+fmtDate(w.start,i)+'</span>'+(isT?' <span class="todaytag">'+t.todayLbl+'</span>':'')+'</div><div class="offbig'+(st==='pending'?' pend':'')+'">'+(st==='approved'?t.offLbl:t.offPending)+'</div>'+(st==='pending'?'<div class="offrow"><button class="offbtn cancel" data-offc="cancel" data-date="'+dISO+'">'+t.cancel+'</button></div>':'')+'</div>';return;}
   const day=w.data[emp.id][dk];const ph=paidHours(day,emp);tot+=ph;const ed=dayEditable(dISO);
   h+='<div class="ecard'+(ed?'':' locked')+(isT?' today':'')+'" data-day="'+i+'"><div class="en">'+t.days[i]+' <span class="muted" style="font-weight:600">'+fmtDate(w.start,i)+'</span>'+(isT?' <span class="todaytag">'+t.todayLbl+'</span>':'')+(isPreseason(dISO)?' <span class="pretag">'+t.preseasonLbl+'</span>':'')+(ed?'':' <span class="lockbadge">'+LOCK_SVG+' '+t.locked+'</span>')+'</div>'
    +'<div class="etime"><div class="tfield"><label>'+t.start+'</label>'+timeInput('start',day.start,!ed)+'</div>'
@@ -797,7 +802,7 @@ function renderWeek(){
  let lastTeam=null,th=0;
  adminEmps().forEach(e=>{const tm=empTeam(e);if(tm!==lastTeam){h+='<tr class="teamrow"><td colspan="9">'+teamLabel(tm)+'</td></tr>';lastTeam=tm;}
   h+='<tr><td class="nm">'+esc(e.name)+'</td>';
-  DAYS.forEach((d,di)=>{if(isOff(e.id,addDaysISO(w.start,di))){h+='<td class="off">'+T[lang].offLbl+'</td>';return;}const hh=paidHours(w.data[e.id][d],e);h+='<td class="'+(hh?'':'z')+'">'+(hh?hh.toFixed(2):'-')+'</td>';});
+  DAYS.forEach((d,di)=>{const _od=addDaysISO(w.start,di);if(isOff(e.id,_od)){h+='<td class="off'+(offStatus(e.id,_od)==='pending'?' pend':'')+'">'+T[lang].offLbl+'</td>';return;}const hh=paidHours(w.data[e.id][d],e);h+='<td class="'+(hh?'':'z')+'">'+(hh?hh.toFixed(2):'-')+'</td>';});
   const eh=empHours(e.id);th+=eh;h+='<td class="tot">'+eh.toFixed(2)+'h</td></tr>';});
  h+='</tbody><tfoot><tr><td style="text-align:left">'+t.tot+'</td>';for(let i=0;i<7;i++)h+='<td></td>';h+='<td class="tot">'+th.toFixed(2)+'h</td></tr></tfoot>';
  document.getElementById('wtable').innerHTML=h;
