@@ -470,6 +470,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
 .lmega a{display:block;padding:6px 9px;border-radius:8px;color:#cbd5e1;font-size:14px;font-weight:600;white-space:nowrap;}
 .lmega a:hover{background:rgba(87,193,132,.12);color:#fff;}
 .lnav-r{margin-left:auto;display:flex;align-items:center;gap:.6rem;}
+.lnav-r>*{height:40px;display:inline-flex;align-items:center;box-sizing:border-box;margin:0;flex:0 0 auto;}
 .lnav .lt{display:inline-flex;height:40px;border:1.5px solid rgba(148,163,184,.24);border-radius:8px;overflow:hidden;}
 .lnav .lt button{background:transparent;color:#cbd5e1;border:none;padding:0 14px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;}
 .lnav .lt button.on{background:#2f9e5f;color:#fff;}
@@ -523,15 +524,33 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
 .phone .pcard.b{border-left-color:#3b82f6;}
 /* sections */
 .lsec{max-width:1220px;margin:0 auto;padding:3.4rem 1.4rem;}
-.lsecw{background:#0d1626;}
+.lsecw{background:transparent;}
+#lfeatures,#lindustries,#lpricing,#lsupport{border-top:1px solid transparent;border-image:linear-gradient(90deg,transparent,rgba(148,163,184,.22),transparent) 1;}
 .lsec h2{font-size:clamp(1.65rem,3vw,2.35rem);font-weight:800;letter-spacing:-1px;text-align:center;margin-bottom:.55rem;}
 .lsec .sub{text-align:center;color:#a9b6c7;font-size:1.08rem;max-width:54ch;margin:0 auto 2.3rem;line-height:1.5;}
-.lgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:1rem;}
-.lcard{background:#0f1a2c;border:1px solid rgba(148,163,184,.14);border-radius:15px;padding:1.5rem;transition:border-color .15s,transform .15s;}
-.lcard:hover{border-color:rgba(87,193,132,.5);transform:translateY(-3px);}
-.lcard .ic{width:42px;height:42px;border-radius:12px;background:rgba(87,193,132,.14);color:#57c184;display:inline-flex;align-items:center;justify-content:center;margin-bottom:.85rem;}
-.lcard h3{font-size:1.13rem;font-weight:800;margin-bottom:.4rem;}
-.lcard p{color:#a9b6c7;font-size:.98rem;line-height:1.5;}
+/* bento feature grid */
+.lbento{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:minmax(158px,auto);gap:14px;}
+.lb{grid-column:span 2;background:#0f1a2c;border:1px solid rgba(148,163,184,.14);border-radius:16px;padding:1.35rem;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:border-color .18s,transform .18s,background .18s;}
+.lb:hover{border-color:rgba(87,193,132,.55);transform:translateY(-4px);}
+.lb::after{content:'';position:absolute;inset:0;background:radial-gradient(420px 140px at var(--mx,80%) -10%,rgba(87,193,132,.14),transparent 70%);opacity:0;transition:opacity .25s;pointer-events:none;}
+.lb:hover::after{opacity:1;}
+.lb .ic{width:44px;height:44px;border-radius:12px;background:rgba(87,193,132,.15);color:#57c184;display:inline-flex;align-items:center;justify-content:center;margin-bottom:.8rem;}
+.lb h3{font-size:1.12rem;font-weight:800;margin-bottom:.35rem;}
+.lb p{color:#a9b6c7;font-size:.96rem;line-height:1.5;}
+.b-plan{grid-column:span 3;grid-row:span 2;background:linear-gradient(155deg,rgba(47,158,95,.22),rgba(15,26,44,.55) 60%);border-color:rgba(87,193,132,.32);}
+.b-plan .ic{width:52px;height:52px;background:rgba(87,193,132,.22);}
+.b-plan h3{font-size:1.5rem;}
+.b-plan p{font-size:1.05rem;max-width:42ch;}
+.b-wide{grid-column:span 3;}
+.lbviz{margin-top:auto;display:flex;gap:7px;flex-wrap:wrap;padding-top:1.1rem;}
+.lbchip{background:#f8fafc;color:#0f172a;border-left:3px solid #2f9e5f;border-radius:6px;padding:6px 9px;font-size:11px;font-weight:800;line-height:1.15;box-shadow:0 3px 10px rgba(0,0,0,.3);}
+.lbchip.b{border-left-color:#3b82f6;}.lbchip.p{border-left-color:#a855f7;}.lbchip.o{border-left-color:#f59e0b;}
+.lbchip span{display:block;color:#64748b;font-weight:600;font-size:9.5px;}
+.lbbars{margin-top:auto;display:flex;align-items:flex-end;gap:6px;height:52px;padding-top:1rem;}
+.lbbars i{flex:1;background:linear-gradient(#57c184,#2f9e5f);border-radius:4px 4px 0 0;min-height:10px;}
+.lbtag{position:absolute;top:1.1rem;right:1.1rem;background:rgba(87,193,132,.16);color:#8fe0b0;font-size:11px;font-weight:800;padding:4px 10px;border-radius:20px;}
+@media(max-width:1024px){.lbento{grid-template-columns:repeat(2,1fr);}.b-plan,.b-wide,.lb{grid-column:auto;grid-row:auto;}}
+@media(max-width:560px){.lbento{grid-template-columns:1fr;}}
 .lindg{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;}
 .lchipind{background:#0f1a2c;border:1px solid rgba(148,163,184,.16);border-radius:30px;padding:9px 17px;font-size:.95rem;font-weight:700;color:#dbe4ee;transition:.15s;}
 .lchipind:hover{border-color:#2f9e5f;color:#fff;background:rgba(87,193,132,.08);}
@@ -576,9 +595,13 @@ html[data-theme="light"] .lhsub,html[data-theme="light"] .lsec .sub,html[data-th
 html[data-theme="light"] .lhbul li{color:#334155;}
 html[data-theme="light"] .lcta .s{color:#0f172a;border-color:rgba(15,23,42,.2);}
 html[data-theme="light"] .lcta .s:hover{background:rgba(15,23,42,.05);}
-html[data-theme="light"] .lcard,html[data-theme="light"] .lchipind,html[data-theme="light"] .lplan,html[data-theme="light"] .lsupc{background:#fff;border-color:rgba(15,23,42,.1);}
+html[data-theme="light"] .lcard,html[data-theme="light"] .lb,html[data-theme="light"] .lchipind,html[data-theme="light"] .lplan,html[data-theme="light"] .lsupc{background:#fff;border-color:rgba(15,23,42,.1);}
+html[data-theme="light"] .lb p,html[data-theme="light"] .lb h3{color:inherit;}
+html[data-theme="light"] .lb p{color:#5b6675;}
+html[data-theme="light"] .b-plan{background:linear-gradient(155deg,rgba(47,158,95,.16),#ffffff 60%);border-color:rgba(47,158,95,.3);}
 html[data-theme="light"] .lchipind{color:#334155;}
-html[data-theme="light"] .lsecw{background:#e6eaf1;}
+html[data-theme="light"] .lsecw{background:transparent;}
+html[data-theme="light"] #lfeatures,html[data-theme="light"] #lindustries,html[data-theme="light"] #lpricing,html[data-theme="light"] #lsupport{border-image:linear-gradient(90deg,transparent,rgba(15,23,42,.16),transparent) 1;}
 html[data-theme="light"] .lcloser{background:linear-gradient(135deg,#d5efe2,#eef1f6 70%);}
 html[data-theme="light"] .lfoot{color:#64748b;border-top-color:rgba(15,23,42,.1);}
 html[data-theme="light"] .lsupc .v{color:#0f172a;}
@@ -1673,7 +1696,7 @@ const LAND={
   h:'La gestion d\'horaires <span class="g">simple et complète</span> pour votre équipe.',
   sub:'Planifiez, pointez, approuvez les congés et payez, le tout au même endroit. Une alternative locale, claire et abordable.',
   bul:['Horaires créés en quelques minutes','Pointeuse, heures supp. et paie intégrées','Congés, disponibilités et remplacements','Bilingue et hébergé au Québec'],
-  try:'Essayer la démo',guided:'Visite guidée',browse:'ou parcourir norelo.ca',
+  try:'Essayer la démo',guided:'Visite guidée',browse:'ou parcourir norelo.ca',vizRoles:['Opérateur','Chef','Vente','Entrepôt'],
   featMega:[{h:'Planification',items:['Création d\'horaires','Quarts ouverts','Horaires récurrents','Planification par poste','Coûts de main-d\'oeuvre']},{h:'Temps et paie',items:['Pointeuse web','Feuilles de temps','Heures supplémentaires','Pauses et lunchs','Export de paie','Pourboires']},{h:'Équipe et RH',items:['Disponibilités','Congés et banques','Remplacements','Annonces','Documents','Rapports']}],
   indMega:[{h:'Services',items:['Restauration','Cafés et bars','Commerce de détail','Épiceries','Salons et spas']},{h:'Santé',items:['Cliniques','Dentistes','Chiropratique','Pharmacies','Résidences pour aînés']},{h:'Autres',items:['Toilettage','Hôtellerie','Garderies','Sécurité','Entretien et métiers']}],
   featT:'Tout ce qu\'il faut pour gérer une équipe',
@@ -1701,7 +1724,7 @@ const LAND={
   ],
   supT:'Un vrai contact, ici au Québec',
   supS:'Une question ou un besoin particulier? Vous parlez directement à la personne derrière Norelo.',
-  sup:[{k:'Réponse',v:'sous 24 h'},{k:'Langues',v:'Français et anglais'},{k:'Courriel',v:'norelo.danielb@gmail.com'},{k:'Téléphone',v:'581-849-7700'}],
+  sup:[{k:'Réponse',v:'sous 24 h'},{k:'Langues',v:'Français et anglais'},{k:'Courriel',v:'norelo.danielb@gmail.com'},{k:'Zones desservies',v:'Laurentides, Laval, Grand Montréal'}],
   closerH:'Prêt à voir Norelo en action?',closerP:'Lancez la démo interactive, aucun compte requis.',
   foot:'Gestion d\'horaire simple et locale.'
  },
@@ -1710,7 +1733,7 @@ const LAND={
   h:'<span class="g">Simple, complete</span> employee scheduling for your team.',
   sub:'Schedule, clock in, approve time off and run payroll, all in one place. A local, clear and affordable alternative.',
   bul:['Build schedules in minutes','Punch clock, overtime and payroll built in','Time off, availability and shift swaps','Bilingual and hosted in Quebec'],
-  try:'Try the demo',guided:'Guided tour',browse:'or browse norelo.ca',
+  try:'Try the demo',guided:'Guided tour',browse:'or browse norelo.ca',vizRoles:['Operator','Lead','Sales','Warehouse'],
   featMega:[{h:'Scheduling',items:['Schedule builder','Open shifts','Recurring schedules','Scheduling by position','Labor costs']},{h:'Time and payroll',items:['Web punch clock','Timesheets','Overtime','Breaks and lunches','Payroll export','Tips']},{h:'Team and HR',items:['Availability','Time off and banks','Shift swaps','Announcements','Documents','Reports']}],
   indMega:[{h:'Services',items:['Restaurants','Cafes and bars','Retail','Grocery','Salons and spas']},{h:'Health',items:['Clinics','Dentists','Chiropractic','Pharmacies','Senior residences']},{h:'Other',items:['Pet grooming','Hospitality','Daycares','Security','Cleaning and trades']}],
   featT:'Everything you need to run a team',
@@ -1738,7 +1761,7 @@ const LAND={
   ],
   supT:'A real contact, here in Quebec',
   supS:'A question or a specific need? You talk directly with the person behind Norelo.',
-  sup:[{k:'Response',v:'within 24 h'},{k:'Languages',v:'French and English'},{k:'Email',v:'norelo.danielb@gmail.com'},{k:'Phone',v:'581-849-7700'}],
+  sup:[{k:'Response',v:'within 24 h'},{k:'Languages',v:'French and English'},{k:'Email',v:'norelo.danielb@gmail.com'},{k:'Areas served',v:'Laurentides, Laval, Greater Montreal'}],
   closerH:'Ready to see Norelo in action?',closerP:'Launch the interactive demo, no account required.',
   foot:'Simple, local schedule management.'
  }
@@ -1778,8 +1801,12 @@ function renderLanding(){
   +'<div class="lcta"><button class="p" id="lCtaGuided">'+L.guided+'</button><button class="s" id="lCtaDemo">'+L.try+'</button></div>'
   +'<a class="lbrowse" href="https://norelo.ca">'+L.browse+' &rarr;</a></div>'
   +'<div class="lhero-dev">'+_deviceHTML()+'</div></div>';
- const feats='<section class="lsec" id="lfeatures"><h2>'+L.featT+'</h2><p class="sub">'+L.featS+'</p><div class="lgrid">'
-  +L.feats.map((f,i)=>'<div class="lcard"><div class="ic">'+LICON[i%LICON.length]+'</div><h3>'+f.t+'</h3><p>'+f.d+'</p></div>').join('')+'</div></section>';
+ const vr=L.vizRoles;
+ const bviz='<div class="lbviz"><div class="lbchip">8:00 - 16:00<span>'+vr[0]+'</span></div><div class="lbchip b">9:00 - 17:00<span>'+vr[1]+'</span></div><div class="lbchip p">7:00 - 15:00<span>'+vr[2]+'</span></div><div class="lbchip o">10:00 - 18:00<span>'+vr[3]+'</span></div></div>';
+ const bbars='<div class="lbbars"><i style="height:38%"></i><i style="height:68%"></i><i style="height:52%"></i><i style="height:90%"></i><i style="height:62%"></i><i style="height:78%"></i></div>';
+ const feats='<section class="lsec" id="lfeatures"><h2>'+L.featT+'</h2><p class="sub">'+L.featS+'</p><div class="lbento">'
+  +L.feats.map((f,i)=>{const cls=i===0?'lb b-plan':(i===1||i===2)?'lb b-wide':'lb';const viz=i===0?bviz:(i===7?bbars:'');return '<div class="'+cls+'"><div class="ic">'+LICON[i%LICON.length]+'</div><h3>'+f.t+'</h3><p>'+f.d+'</p>'+viz+'</div>';}).join('')
+  +'</div></section>';
  const inds='<section class="lsecw"><div class="lsec" id="lindustries"><h2>'+L.indT+'</h2><p class="sub">'+L.indS+'</p><div class="lindg">'
   +L.industries.map(i=>'<span class="lchipind">'+i+'</span>').join('')+'</div></div></section>';
  const price='<section class="lsec" id="lpricing"><h2>'+L.priceT+'</h2><p class="sub">'+L.priceS+'</p><div class="lprice">'
