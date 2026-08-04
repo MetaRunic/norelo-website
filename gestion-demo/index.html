@@ -393,6 +393,34 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
 .bar{height:100%;background:var(--accent);border-radius:6px;transition:width .5s;}
 .bar.p{background:#22c55e;}
 .barval{flex:0 0 auto;font-size:13px;font-weight:800;min-width:56px;text-align:right;}
+.schedbar{display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;}
+.btn.pub{background:#f97316;border:none;}
+.pubbadge{font-size:12px;font-weight:800;color:#22c55e;background:rgba(34,197,94,.14);padding:5px 11px;border-radius:20px;margin-right:.5rem;}
+.schedscroll{overflow-x:auto;border:1px solid var(--bdr);border-radius:12px;-webkit-overflow-scrolling:touch;}
+.schedtable{border-collapse:collapse;width:100%;min-width:820px;}
+.schedtable th,.schedtable td{border-right:1px solid var(--bdr);border-bottom:1px solid var(--bdr);padding:0;vertical-align:top;}
+.schedtable thead th{background:var(--soft);padding:10px 8px;font-size:12px;font-weight:800;color:var(--head);text-transform:uppercase;letter-spacing:.4px;text-align:center;position:sticky;top:0;z-index:2;}
+.schedtable th.scname{text-align:left;}
+.schedtable .schdate{display:block;font-size:11px;color:var(--gr);font-weight:600;margin-top:2px;}
+.schedtable td.scname{background:var(--panel);position:sticky;left:0;z-index:1;padding:10px;min-width:170px;display:flex;align-items:center;gap:9px;}
+.scav{flex:0 0 auto;width:34px;height:34px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px;}
+.scnm{font-weight:700;font-size:14px;line-height:1.2;}
+.scnm .schrs{display:block;font-size:12px;color:var(--gr);font-weight:600;}
+.sccell{min-width:106px;padding:5px!important;cursor:pointer;transition:background .12s;}
+.sccell:hover{background:rgba(255,255,255,.03);}
+.schedtable td.tot{text-align:center;font-weight:800;color:var(--accent-l);min-width:60px;padding:0 8px!important;}
+.schedtable td.sctot,.schedtable th.sctot{text-align:center;}
+.openrow td.scname{background:var(--soft);}
+.opentag{font-weight:800;font-size:13px;color:var(--gr);}
+.shblk{border-left:4px solid var(--accent);background:var(--soft);border-radius:7px;padding:7px 9px;margin-bottom:4px;display:flex;flex-direction:column;gap:1px;}
+.shblk .shtime{font-weight:800;font-size:13px;}
+.shblk .shrole{font-size:11.5px;color:var(--gr);}
+.shblk .shdur{font-size:11px;color:var(--gr);font-weight:700;}
+.shblk.open{border-style:dashed;background:transparent;border:1px dashed var(--bdr);border-left:4px solid var(--accent);}
+.shblk.offb{border-left-color:var(--accent);align-items:center;justify-content:center;color:var(--gr);font-weight:900;letter-spacing:1.5px;padding:14px 4px;}
+.shblk.offb.pend{color:#f59e0b;letter-spacing:.5px;font-size:12px;}
+.fld{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:700;color:var(--gr);}
+.fld select{padding:11px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:15px;}
 </style>
 </head>
 <body>
@@ -434,6 +462,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     <div class="tabs">
       <button id="tabDay" class="on" data-i="tDay">Jour</button>
       <button id="tabWeek" data-i="tWeek">Semaine</button>
+      <button id="tabSched" data-i="tPlan">Planification</button>
       <button id="tabMgr" data-i="tMgr">Gestion</button>
       <button id="tabEmp" data-i="tEmp">Employés</button>
       <button id="tabOt"><span data-i="tApprov">Approbations</span><span class="tabbadge" id="otBadge"></span></button>
@@ -558,6 +587,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
       <div id="logList"></div>
     </div>
 
+    <div id="schedView" style="display:none"></div>
     <div id="availView" style="display:none"></div>
     <div id="msgView" style="display:none"></div>
     <div id="docsView" style="display:none"></div>
@@ -568,6 +598,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
   <nav id="bottomNav">
     <button data-tab="day"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/><rect x="6.5" y="12.5" width="4.5" height="4.5" rx="1" fill="currentColor" stroke="none"/></svg><span data-i="tDay">Jour</span></button>
     <button data-tab="week"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2.5v4M16 2.5v4M7 13h2M11 13h2M15 13h2M7 17h2M11 17h2"/></svg><span data-i="tWeek">Semaine</span></button>
+    <button data-tab="sched"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2.5v4M16 2.5v4M7 13h4M7 17h7"/></svg><span data-i="tPlanShort">Plan.</span></button>
     <button data-tab="mgr"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M14.5 9.3c-.4-.9-1.4-1.5-2.6-1.5-1.5 0-2.6.8-2.6 1.9 0 1 .8 1.6 2.6 2 1.9.4 2.7 1 2.7 2.1 0 1.1-1.2 1.9-2.7 1.9-1.3 0-2.4-.6-2.8-1.6"/></svg><span data-i="tMgr">Gestion</span></button>
     <button data-tab="emp"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16.5 5.3a3 3 0 0 1 0 5.4M18 19a5.5 5.5 0 0 0-3-4.9"/></svg><span data-i="tEmp">Employés</span></button>
     <button data-tab="ot"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 1.6"/></svg><span data-i="tApprovShort">Approb.</span><span class="navbadge" id="otBadgeNav"></span></button>
@@ -587,6 +618,19 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
   <div class="sheetbox">
     <div class="sheethdr"><span data-i="chooseWeek">Choisir une semaine</span><button id="sheetClose">&times;</button></div>
     <div id="weekList"></div>
+  </div>
+</div>
+
+<!-- create shift sheet -->
+<div id="schedSheet" class="sheet" style="display:none">
+  <div class="sheetbox" style="max-width:440px">
+    <div class="sheethdr"><span id="schedSheetTitle">Nouveau quart</span><button id="schedClose">&times;</button></div>
+    <div style="padding:1.2rem;display:flex;flex-direction:column;gap:.8rem">
+      <label class="fld"><span id="schLabEmp">Employé</span><select id="schEmp"></select></label>
+      <label class="fld"><span id="schLabDay">Jour</span><select id="schDay"></select></label>
+      <div style="display:flex;gap:.8rem"><label class="fld" style="flex:1"><span id="schLabStart">Début</span><select id="schStart"></select></label><label class="fld" style="flex:1"><span id="schLabEnd">Fin</span><select id="schEnd"></select></label></div>
+      <div style="display:flex;gap:.6rem;margin-top:.4rem"><button class="btn full" id="schSave">Enregistrer</button><button class="btn ghost" id="schDelete" style="display:none">Supprimer</button></div>
+    </div>
   </div>
 </div>
 
@@ -647,7 +691,7 @@ const T={
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Début',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
    paid:'Payé',unpaid:'À payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Déjà payé',kUnpaid:'Reste à payer',del:'Retirer cet employé?',user:"Nom d'utilisateur",
    chooseWeek:'Choisir une semaine',ws_past:'Passée',ws_cur:'En cours',ws_up:'À venir',teamAll:'Toutes',roleEmp:'Employé',roleMgr:'Gestionnaire',resetPwd:'MDP',clearF:'Effacer',backupsT:'Sauvegardes',backupNow:'Sauvegarder maintenant',versionT:'Version et mise à jour',forceUpd:'Forcer la mise à jour pour tous',viewAs:'Voir comme employé',viewingAs:'Aperçu employé',backToMgr:'Revenir en gestion',viewAsTitle:'Voir comme employé',
-   locked:'Verrouillé',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouillés.<br><strong>Un jour verrouillé à corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Vérification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit être après l'heure de début.",hoursHi:'Heures de quart régulières en surbrillance',lunch:'Pause 30 min',otPending:'en attente',otOk:'approuvée',approve:'Approuver',revoke:'Retirer',deny:'Refuser',cancel:'Annuler',tApprov:'Approbations',tApprovShort:'Approb.',tOt:'Heures supp.',otNone:'Aucune heure supplémentaire.',otAll:'Toutes les dates',tOff:'Congés',offLbl:'CONGÉ',offReq:'Demander un congé',offPending:'Congé demandé',offDenied:'Congé refusé',offPend:'en attente',offOk:'approuvé',offDen:'refusé',offNone:'Aucune demande de congé.',offBlocked:'Effacez les heures pour demander un congé',tAvail:'Disponibilités',tAvailShort:'Dispo.',tMsg:'Annonces',tDocs:'Documents',tRep:'Rapports',tSwap:'Remplacements',clockIn:'Pointer mon arrivée',clockOut:'Pointer mon départ',clockedSince:'En poste depuis',swapOffer:'Offrir ce quart',swapOffered:'Quart offert',swapCovered:'comblé',swapNone:'Aucun remplacement demandé.',availMine:'Mes disponibilités',availHint:'Touchez un jour pour changer votre disponibilité.',availYes:'Disponible',availNo:'Indisponible',availTitle:"Disponibilités de l'équipe",msgNew:'Nouvelle annonce',msgTitleP:'Titre',msgBodyP:'Message...',msgPost:'Publier',msgNone:'Aucune annonce.',docsTitle:'Documents',docsAck:'Marquer comme lu',docsReadOk:'Lu ✓',docsReadN:'ont lu',repOt:'Heures supp. en attente',repOff:'Congés approuvés',repByDept:'Heures par département',repPayDept:'Paie par département',notifTitle:'Notifications',notifNone:'Rien à signaler.',notifOt:'heures supp. à approuver',notifOff:'congés à approuver',notifSwap:'remplacements à traiter',notifMsg:'nouvelle(s) annonce(s)',empSched:'Mon horaire'},
+   locked:'Verrouillé',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouillés.<br><strong>Un jour verrouillé à corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Vérification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit être après l'heure de début.",hoursHi:'Heures de quart régulières en surbrillance',lunch:'Pause 30 min',otPending:'en attente',otOk:'approuvée',approve:'Approuver',revoke:'Retirer',deny:'Refuser',cancel:'Annuler',tApprov:'Approbations',tApprovShort:'Approb.',tOt:'Heures supp.',otNone:'Aucune heure supplémentaire.',otAll:'Toutes les dates',tOff:'Congés',offLbl:'CONGÉ',offReq:'Demander un congé',offPending:'Congé demandé',offDenied:'Congé refusé',offPend:'en attente',offOk:'approuvé',offDen:'refusé',offNone:'Aucune demande de congé.',offBlocked:'Effacez les heures pour demander un congé',tAvail:'Disponibilités',tAvailShort:'Dispo.',tMsg:'Annonces',tDocs:'Documents',tRep:'Rapports',tSwap:'Remplacements',clockIn:'Pointer mon arrivée',clockOut:'Pointer mon départ',clockedSince:'En poste depuis',swapOffer:'Offrir ce quart',swapOffered:'Quart offert',swapCovered:'comblé',swapNone:'Aucun remplacement demandé.',availMine:'Mes disponibilités',availHint:'Touchez un jour pour changer votre disponibilité.',availYes:'Disponible',availNo:'Indisponible',availTitle:"Disponibilités de l'équipe",msgNew:'Nouvelle annonce',msgTitleP:'Titre',msgBodyP:'Message...',msgPost:'Publier',msgNone:'Aucune annonce.',docsTitle:'Documents',docsAck:'Marquer comme lu',docsReadOk:'Lu ✓',docsReadN:'ont lu',repOt:'Heures supp. en attente',repOff:'Congés approuvés',repByDept:'Heures par département',repPayDept:'Paie par département',notifTitle:'Notifications',notifNone:'Rien à signaler.',notifOt:'heures supp. à approuver',notifOff:'congés à approuver',notifSwap:'remplacements à traiter',notifMsg:'nouvelle(s) annonce(s)',empSched:'Mon horaire',tPlan:'Planification',tPlanShort:'Plan.',schedCreate:'Créer un quart',schedEdit:'Modifier le quart',schedPublish:'Publier',schedPublished:'Publié',schedOpen:'Quarts ouverts',schedAssign:'Assigner'},
  en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',tEmp:'Employees',tLog:'Activity',tBak:'Backups',logout:'Log out',
    employees:'Employees and rates',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
@@ -659,7 +703,7 @@ const T={
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
    paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Total hours',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',del:'Remove this employee?',user:'Username',
    chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',roleEmp:'Employee',roleMgr:'Manager',resetPwd:'PW',clearF:'Clear',backupsT:'Backups',backupNow:'Backup now',versionT:'Version and update',forceUpd:'Force update for everyone',viewAs:'View as employee',viewingAs:'Employee preview',backToMgr:'Back to manager',viewAsTitle:'View as employee',
-   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted',lunch:'30-min lunch',otPending:'pending',otOk:'approved',approve:'Approve',revoke:'Undo',deny:'Deny',cancel:'Cancel',tApprov:'Approvals',tApprovShort:'Approb.',tOt:'Overtime',otNone:'No overtime.',otAll:'All dates',tOff:'Time off',offLbl:'OFF',offReq:'Request day off',offPending:'Day off requested',offDenied:'Day off denied',offPend:'pending',offOk:'approved',offDen:'denied',offNone:'No day-off requests.',offBlocked:'Clear the hours to request a day off',tAvail:'Availability',tAvailShort:'Avail.',tMsg:'Announcements',tDocs:'Documents',tRep:'Reports',tSwap:'Swaps',clockIn:'Clock in',clockOut:'Clock out',clockedSince:'Clocked in since',swapOffer:'Offer this shift',swapOffered:'Shift offered',swapCovered:'covered',swapNone:'No swap requests.',availMine:'My availability',availHint:'Tap a day to change your availability.',availYes:'Available',availNo:'Unavailable',availTitle:'Team availability',msgNew:'New announcement',msgTitleP:'Title',msgBodyP:'Message...',msgPost:'Post',msgNone:'No announcements.',docsTitle:'Documents',docsAck:'Mark as read',docsReadOk:'Read ✓',docsReadN:'have read',repOt:'Overtime pending',repOff:'Approved days off',repByDept:'Hours by department',repPayDept:'Pay by department',notifTitle:'Notifications',notifNone:'Nothing to report.',notifOt:'overtime to approve',notifOff:'days off to approve',notifSwap:'swaps to handle',notifMsg:'new announcement(s)',empSched:'My schedule'}
+   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted',lunch:'30-min lunch',otPending:'pending',otOk:'approved',approve:'Approve',revoke:'Undo',deny:'Deny',cancel:'Cancel',tApprov:'Approvals',tApprovShort:'Approb.',tOt:'Overtime',otNone:'No overtime.',otAll:'All dates',tOff:'Time off',offLbl:'OFF',offReq:'Request day off',offPending:'Day off requested',offDenied:'Day off denied',offPend:'pending',offOk:'approved',offDen:'denied',offNone:'No day-off requests.',offBlocked:'Clear the hours to request a day off',tAvail:'Availability',tAvailShort:'Avail.',tMsg:'Announcements',tDocs:'Documents',tRep:'Reports',tSwap:'Swaps',clockIn:'Clock in',clockOut:'Clock out',clockedSince:'Clocked in since',swapOffer:'Offer this shift',swapOffered:'Shift offered',swapCovered:'covered',swapNone:'No swap requests.',availMine:'My availability',availHint:'Tap a day to change your availability.',availYes:'Available',availNo:'Unavailable',availTitle:'Team availability',msgNew:'New announcement',msgTitleP:'Title',msgBodyP:'Message...',msgPost:'Post',msgNone:'No announcements.',docsTitle:'Documents',docsAck:'Mark as read',docsReadOk:'Read ✓',docsReadN:'have read',repOt:'Overtime pending',repOff:'Approved days off',repByDept:'Hours by department',repPayDept:'Pay by department',notifTitle:'Notifications',notifNone:'Nothing to report.',notifOt:'overtime to approve',notifOff:'days off to approve',notifSwap:'swaps to handle',notifMsg:'new announcement(s)',empSched:'My schedule',tPlan:'Schedule',tPlanShort:'Sched.',schedCreate:'Create shift',schedEdit:'Edit shift',schedPublish:'Publish',schedPublished:'Published',schedOpen:'Open shifts',schedAssign:'Assign'}
 };
 let state={employees:[],weeks:{},current:null,off:{},offList:[]},lang='fr',selDay=0,mgrUnlocked=false,isEmployee=false,currentEmp=null,teamFilter='all',myId=null,myEmail='';
 
@@ -942,6 +986,45 @@ function renderNotif(){const el=document.getElementById('notifPanel');const t=T[
  else{const ot=otPendingCount(),off=offPendingCount(),sw=swapPending();if(ot)items.push({txt:ot+' '+t.notifOt,tab:'ot',sub:'ot'});if(off)items.push({txt:off+' '+t.notifOff,tab:'ot',sub:'off'});if(sw)items.push({txt:sw+' '+t.notifSwap,tab:'ot',sub:'swap'});}
  el.innerHTML='<div class="notifhd">'+t.notifTitle+'</div>'+(items.length?items.map(i=>'<button class="notifrow" data-ntab="'+i.tab+'"'+(i.sub?' data-nsub="'+i.sub+'"':'')+'>'+i.txt+' &rarr;</button>').join(''):'<div class="muted" style="padding:1rem">'+t.notifNone+'</div>');}
 function toggleNotif(){const p=document.getElementById('notifPanel');if(p.style.display==='none'){renderNotif();p.style.display='block';}else p.style.display='none';}
+/* ===== Scheduling grid (Planification) ===== */
+function deptColor(c){return {ops:'#2f9e5f',wh:'#3b82f6',sales:'#a855f7',admin:'#f59e0b'}[c]||'#64748b';}
+function initials(n){return (n||'').split(' ').map(x=>x[0]||'').slice(0,2).join('').toUpperCase();}
+function hrsRange(s,e){if(!s||!e)return 0;const m=tmin(e)-tmin(s);return m>0?Math.round(m/60*100)/100:0;}
+function schBlock(e,day,dISO){if(isOff(e.id,dISO)){const st=offStatus(e.id,dISO);return '<div class="shblk offb'+(st==='pending'?' pend':'')+'">'+(st==='approved'?T[lang].offLbl:T[lang].offPending)+'</div>';}
+ if(!day.start||!day.end)return '';const hh=paidHours(day,e);
+ return '<div class="shblk" style="border-left-color:'+deptColor(empTeam(e))+'"><span class="shtime">'+day.start+'-'+day.end+'</span><span class="shrole">'+esc(e.title||deptLabel(empTeam(e)))+'</span><span class="shdur">'+hh.toFixed(2)+'h</span></div>';}
+function renderSched(){const el=document.getElementById('schedView');if(!el)return;const t=T[lang];const w=state.weeks[state.current];
+ let h='<div class="schedbar"><button class="btn sm" id="schedCreate">+ '+t.schedCreate+'</button><div class="spacer"></div>'+(state.published?'<span class="pubbadge">✓ '+t.schedPublished+'</span>':'')+'<button class="btn sm pub" id="schedPublish">'+t.schedPublish+'</button></div>';
+ h+='<div class="schedscroll"><table class="schedtable"><thead><tr><th class="scname">'+t.name+'</th>';
+ t.sdays.forEach((d,i)=>h+='<th>'+d+'<span class="schdate">'+fmtDate(w.start,i)+'</span></th>');h+='<th class="sctot">'+t.tot+'</th></tr></thead><tbody>';
+ h+='<tr class="openrow"><td class="scname"><span class="opentag">'+t.schedOpen+'</span></td>';
+ DAYS.forEach((dk,i)=>{const dISO=addDaysISO(w.start,i);const os=state.openShifts.filter(s=>s.date===dISO);h+='<td class="sccell" data-openday="'+i+'">'+os.map(s=>'<div class="shblk open" data-open="'+s.id+'" style="border-left-color:'+deptColor(s.team)+'"><span class="shtime">'+s.start+'-'+s.end+'</span><span class="shrole">'+esc(deptLabel(s.team))+'</span><span class="shdur">'+t.schedAssign+' &rarr;</span></div>').join('')+'</td>';});
+ h+='<td class="tot">'+state.openShifts.reduce((a,s)=>a+hrsRange(s.start,s.end),0).toFixed(1)+'h</td></tr>';
+ adminEmps().forEach(e=>{h+='<tr><td class="scname"><span class="scav" style="background:'+deptColor(empTeam(e))+'">'+initials(e.name)+'</span><span class="scnm">'+esc(e.name)+'<span class="schrs">'+empHours(e.id).toFixed(1)+'h</span></span></td>';
+  DAYS.forEach((dk,i)=>{const dISO=addDaysISO(w.start,i);h+='<td class="sccell" data-sh="'+e.id+'" data-di="'+i+'">'+schBlock(e,w.data[e.id][dk],dISO)+'</td>';});
+  h+='<td class="tot">'+empHours(e.id).toFixed(1)+'h</td></tr>';});
+ h+='</tbody></table></div>';el.innerHTML=h;}
+function schTimeOpts(sel){let o='';for(let m=OPEN_MIN;m<=CLOSE_MIN;m+=STEP){const v=String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');o+='<option'+(v===sel?' selected':'')+'>'+v+'</option>';}return o;}
+let schedCtx=null;
+function openCreateShift(pf){pf=pf||{};schedCtx={openId:pf.openId||null};const t=T[lang];
+ document.getElementById('schedSheetTitle').textContent=pf.edit?t.schedEdit:t.schedCreate;
+ document.getElementById('schLabEmp').textContent=lang==='fr'?'Employé':'Employee';document.getElementById('schLabDay').textContent=lang==='fr'?'Jour':'Day';document.getElementById('schLabStart').textContent=t.start;document.getElementById('schLabEnd').textContent=t.end;
+ document.getElementById('schSave').textContent=lang==='fr'?'Enregistrer':'Save';document.getElementById('schDelete').textContent=lang==='fr'?'Supprimer':'Delete';
+ document.getElementById('schEmp').innerHTML=adminEmps().map(e=>'<option value="'+e.id+'"'+(e.id===pf.empId?' selected':'')+'>'+esc(e.name)+'</option>').join('');
+ document.getElementById('schDay').innerHTML=T[lang].days.map((d,i)=>'<option value="'+i+'"'+(i===(pf.dayIdx||0)?' selected':'')+'>'+d+'</option>').join('');
+ document.getElementById('schStart').innerHTML=schTimeOpts(pf.start||'08:00');
+ document.getElementById('schEnd').innerHTML=schTimeOpts(pf.end||'16:00');
+ document.getElementById('schDelete').style.display=pf.edit?'':'none';
+ document.getElementById('schedSheet').style.display='flex';}
+async function saveNewShift(){const empId=document.getElementById('schEmp').value;const di=+document.getElementById('schDay').value;const s=document.getElementById('schStart').value,e2=document.getElementById('schEnd').value;
+ if(tmin(e2)<=tmin(s)){alert(T[lang].badTime);return;}
+ const dISO=addDaysISO(state.weeks[state.current].start,di);if(isOff(empId,dISO)){alert(T[lang].offLbl+' · '+T[lang].offBlocked);return;}
+ const day=state.weeks[state.current].data[empId][DAYS[di]];day.start=s;day.end=e2;day.ot=false;if(day.lunch===undefined)day.lunch=true;
+ await saveShift(empId,state.current,di,day);
+ if(schedCtx&&schedCtx.openId)state.openShifts=state.openShifts.filter(x=>x.id!==schedCtx.openId);
+ document.getElementById('schedSheet').style.display='none';renderSched();renderWeekBar();showToast(lang==='fr'?'Quart enregistré':'Shift saved',true);const em=empById(empId);logAction('edit_hours',(em?em.name:'')+' '+dISO+' '+s+'-'+e2);}
+async function deleteSchedShift(){const empId=document.getElementById('schEmp').value;const di=+document.getElementById('schDay').value;const day=state.weeks[state.current].data[empId][DAYS[di]];day.start='';day.end='';day.ot=false;await saveShift(empId,state.current,di,day);document.getElementById('schedSheet').style.display='none';renderSched();renderWeekBar();showToast(lang==='fr'?'Quart retiré':'Shift removed',true);}
+function publishSched(){state.published=true;renderSched();const n=adminEmps().reduce((a,e)=>a+DAYS.filter(d=>{const x=state.weeks[state.current].data[e.id][d];return x.start&&x.end;}).length,0);showToast((lang==='fr'?'Horaire publié · ':'Schedule published · ')+n+(lang==='fr'?' quarts':' shifts'),true);logAction('publish','');}
 function renderDayList(){
  const w=state.weeks[state.current];const t=T[lang];const dk=DAYS[selDay];let h='';const dISO=addDaysISO(w.start,selDay);
  const list=adminEmps().slice().sort((a,b)=>{if(a.id===myId)return -1;if(b.id===myId)return 1;return a.name.localeCompare(b.name);});
@@ -1018,13 +1101,14 @@ function applyLang(){document.querySelectorAll('[data-i]').forEach(el=>{const k=
   const ov=document.getElementById('otView');if(ov&&ov.style.display!=='none')showOTSub(otSubTab);
   const lv=document.getElementById('logView');if(lv&&lv.style.display!=='none')renderLog();
   const bv=document.getElementById('backupView');if(bv&&bv.style.display!=='none')renderBackups();
+  const sc=document.getElementById('schedView');if(sc&&sc.style.display!=='none')renderSched();
   const av=document.getElementById('availView');if(av&&av.style.display!=='none')renderAvail();
   const mv=document.getElementById('msgView');if(mv&&mv.style.display!=='none')renderMsg();
   const dv=document.getElementById('docsView');if(dv&&dv.style.display!=='none')renderDocs();
   const rv=document.getElementById('repView');if(rv&&rv.style.display!=='none')renderRep();}}
 function renderAll(){renderTeamBar();renderWeekBar();if(isEmployee){renderCalendar(document.getElementById('calEmp'),currentEmp);renderEmp();}else{renderCalendar(document.getElementById('calAdmin'),null);renderDayPick();renderDayList();renderWeek();setTitle();updateOTBadge();if(mgrUnlocked){renderMgr();renderEmpAdmin();}}}
 function setTitle(){if(isEmployee)return;const t=T[lang];const cur=document.querySelector('.tabs button.on').id;
- document.getElementById('viewTitle').textContent=cur==='tabDay'?t.days[selDay]:cur==='tabWeek'?t.week:cur==='tabEmp'?t.employees:cur==='tabOt'?t.tApprov:cur==='tabAvail'?t.tAvail:cur==='tabMsg'?t.tMsg:cur==='tabDocs'?t.tDocs:cur==='tabRep'?t.tRep:cur==='tabLog'?t.tLog:cur==='tabBak'?t.backupsT:t.payTitle;}
+ document.getElementById('viewTitle').textContent=cur==='tabDay'?t.days[selDay]:cur==='tabWeek'?t.week:cur==='tabEmp'?t.employees:cur==='tabSched'?t.tPlan:cur==='tabOt'?t.tApprov:cur==='tabAvail'?t.tAvail:cur==='tabMsg'?t.tMsg:cur==='tabDocs'?t.tDocs:cur==='tabRep'?t.tRep:cur==='tabLog'?t.tLog:cur==='tabBak'?t.backupsT:t.payTitle;}
 
 async function boot(){initDemo();selDay=todayIdx();initEye('lpass','lpassEye');initEye('pwdInput','pwdEye');bindPwdModal();
  document.querySelectorAll('.lt,.hlt').forEach(box=>box.addEventListener('click',e=>{if(e.target.tagName!=='BUTTON')return;lang=e.target.getAttribute('data-l');
@@ -1108,6 +1192,16 @@ function bindApp(){
   document.getElementById('tabMsg').onclick=()=>tab('msg');
   document.getElementById('tabDocs').onclick=()=>tab('docs');
   document.getElementById('tabRep').onclick=()=>tab('rep');
+  document.getElementById('tabSched').onclick=()=>tab('sched');
+  document.getElementById('schedView').addEventListener('click',e=>{
+   if(e.target.id==='schedCreate'){openCreateShift({});return;}
+   if(e.target.id==='schedPublish'){publishSched();return;}
+   const ob=e.target.closest('[data-open]');if(ob){const s=state.openShifts.find(x=>x.id===ob.getAttribute('data-open'));if(s){const di=Math.round((new Date(s.date+'T00:00:00')-new Date(state.current+'T00:00:00'))/86400000);openCreateShift({dayIdx:di,start:s.start,end:s.end,openId:s.id});}return;}
+   const c=e.target.closest('[data-sh]');if(c){const empId=c.getAttribute('data-sh'),di=+c.getAttribute('data-di');const day=state.weeks[state.current].data[empId][DAYS[di]];const dISO=addDaysISO(state.current,di);if(isOff(empId,dISO))return;if(day.start&&day.end)openCreateShift({empId:empId,dayIdx:di,start:day.start,end:day.end,edit:true});else openCreateShift({empId:empId,dayIdx:di});}});
+  document.getElementById('schSave').onclick=saveNewShift;
+  document.getElementById('schDelete').onclick=deleteSchedShift;
+  document.getElementById('schedClose').onclick=()=>document.getElementById('schedSheet').style.display='none';
+  document.getElementById('schedSheet').addEventListener('click',e=>{if(e.target.id==='schedSheet')document.getElementById('schedSheet').style.display='none';});
   document.getElementById('dayList').addEventListener('change',e=>{if(!e.target.classList.contains('lchk'))return;const c=e.target.closest('.ecard');toggleLunch(c.getAttribute('data-id'),+e.target.getAttribute('data-day'),e.target.checked);});
   document.getElementById('viewAsBtn').onclick=openViewAs;
   document.getElementById('viewAsClose').onclick=()=>document.getElementById('viewAsSheet').style.display='none';
@@ -1207,7 +1301,7 @@ function setEmpChrome(asEmp){
  document.getElementById('teamBar').style.display=asEmp?'none':'';
  document.getElementById('viewAsBtn').style.display=asEmp?'none':'';
  document.getElementById('empNav').style.display=asEmp?'':'none';
- if(asEmp){['dayView','weekView','mgr','empAdminView','otView','availView','msgView','docsView','repView','backupView','logView'].forEach(i=>{const v=document.getElementById(i);if(v)v.style.display='none';});const np=document.getElementById('notifPanel');if(np)np.style.display='none';empTab('sched');}
+ if(asEmp){['dayView','weekView','mgr','empAdminView','schedView','otView','availView','msgView','docsView','repView','backupView','logView'].forEach(i=>{const v=document.getElementById(i);if(v)v.style.display='none';});const np=document.getElementById('notifPanel');if(np)np.style.display='none';empTab('sched');}
  else{document.getElementById('empView').style.display='none';tab('day');}}
 function enterEmployeeView(id){isEmployee=true;currentEmp=id;previewAs=id;
  document.getElementById('viewAsSheet').style.display='none';
@@ -1223,11 +1317,12 @@ function tab(which){
  const tl=document.getElementById('tabLog');if(tl)tl.classList.toggle('on',which==='log');
  const tbk=document.getElementById('tabBak');if(tbk)tbk.classList.toggle('on',which==='bak');
  const tot=document.getElementById('tabOt');if(tot)tot.classList.toggle('on',which==='ot');
- [['avail','tabAvail'],['msg','tabMsg'],['docs','tabDocs'],['rep','tabRep']].forEach(([k,id])=>{const b=document.getElementById(id);if(b)b.classList.toggle('on',which===k);});
+ [['sched','tabSched'],['avail','tabAvail'],['msg','tabMsg'],['docs','tabDocs'],['rep','tabRep']].forEach(([k,id])=>{const b=document.getElementById(id);if(b)b.classList.toggle('on',which===k);});
  document.querySelectorAll('#bottomNav button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-tab')===which));
  document.getElementById('dayView').style.display=which==='day'?'block':'none';document.getElementById('weekView').style.display=which==='week'?'block':'none';document.getElementById('mgr').style.display=which==='mgr'?'block':'none';
  document.getElementById('empAdminView').style.display=which==='emp'?'block':'none';
  document.getElementById('otView').style.display=which==='ot'?'block':'none';
+ document.getElementById('schedView').style.display=which==='sched'?'block':'none';
  document.getElementById('availView').style.display=which==='avail'?'block':'none';
  document.getElementById('msgView').style.display=which==='msg'?'block':'none';
  document.getElementById('docsView').style.display=which==='docs'?'block':'none';
@@ -1239,6 +1334,7 @@ function tab(which){
  if(which==='mgr'){const ml=document.getElementById('mgrLock');if(ml)ml.style.display='none';document.getElementById('mgrContent').style.display='block';renderMgr();}
  if(which==='emp')renderEmpAdmin();
  if(which==='ot')showOTSub(otSubTab);
+ if(which==='sched')renderSched();
  if(which==='avail')renderAvail();
  if(which==='msg')renderMsg();
  if(which==='docs')renderDocs();
@@ -1346,6 +1442,8 @@ function initDemo(){
  state.msgs=[{id:'m1',author:'Alex Bennett',title:"Réunion d'équipe vendredi",body:'Courte rencontre à 15h en salle de pause. Présence souhaitée.',ts:Date.now()-3600e3*20},{id:'m2',author:'Sam Rivard',title:'Horaire de la semaine prochaine publié',body:'Vérifiez vos quarts et signalez tout conflit avant jeudi.',ts:Date.now()-3600e3*52}];
  state.msgSeen=state.msgs.length;
  state.docs=[{id:'d1',title:"Manuel de l'employé",ack:['p1','p3','p6']},{id:'d2',title:'Politique santé et sécurité',ack:['p1']},{id:'d3',title:'Contrat de travail',ack:[]}];
+ state.openShifts=[{id:'op1',date:addDaysISO(wk,1),start:'10:00',end:'16:00',team:'sales'},{id:'op2',date:addDaysISO(wk,4),start:'08:00',end:'14:00',team:'wh'}];
+ state.published=false;
  sb=makeMock();
 }
 function makeMock(){
