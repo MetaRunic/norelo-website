@@ -613,6 +613,15 @@ html[data-theme="light"] .lnav .lt{background:rgba(15,23,42,.07);}
 html[data-theme="light"] .lbchip,html[data-theme="light"] .phone .pcard{color:#0f172a;}
 html[data-theme="light"] .tourdim{background:rgba(226,232,240,.5);}
 html[data-theme="light"] .tourveil{background:rgba(226,232,240,.5);}
+html[data-theme="light"] .device{background:#ffffff;border-color:rgba(15,23,42,.12);box-shadow:0 40px 90px rgba(15,23,42,.2);}
+html[data-theme="light"] .dvbar{background:#eef2f7;border-bottom-color:rgba(15,23,42,.08);}
+html[data-theme="light"] .dvdot{background:#cbd5e1;}
+html[data-theme="light"] .dvweek{color:#334155;}
+html[data-theme="light"] .dvhead span{color:#64748b;}
+html[data-theme="light"] .dvname{color:#334155;}
+html[data-theme="light"] .dvcell{background:rgba(15,23,42,.04);}
+html[data-theme="light"] .phone{background:#ffffff;border-color:#d1d9e6;}
+html[data-theme="light"] .phone .pbar{background:#eef2f7;}
 @media(max-width:900px){
  .lmenu{display:none;}
  .lhero{grid-template-columns:1fr;gap:2rem;padding-top:2.4rem;}
@@ -1776,21 +1785,23 @@ const LAND={
 };
 function _megaCols(arr){return arr.map(c=>'<div class="lmcol"><h4>'+c.h+'</h4>'+c.items.map(i=>'<a href="#lfeatures">'+i+'</a>').join('')+'</div>').join('');}
 function _deviceHTML(){
- const rows=[['CF','#2f9e5f',['8:00-16:00','Opérateur'],['8:00-16:00','Chef'],['','off'],['9:00-17:00','Vente'],['8:00-14:00','Entrepôt']],
-  ['JC','#3b82f6',['','off'],['9:00-17:00','Chef'],['9:00-17:00','Chef'],['9:00-17:00','Chef'],['','off']],
-  ['LB','#a855f7',['7:00-15:00','Op.'],['7:00-15:00','Op.'],['7:00-15:00','Op.'],['','off'],['7:00-13:00','Op.']],
-  ['MG','#f59e0b',['','TO'],['10:00-18:00','Vente'],['10:00-18:00','Vente'],['','off'],['10:00-16:00','Vente']]];
- let g='<div class="dvhead"><span></span><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span></div>';
+ const fr=lang==='fr';const vr=LAND[lang].vizRoles;const OP=vr[0],CH=vr[1],VE=vr[2],EN=vr[3];const TO=fr?'CO':'TO';
+ const D={cr:fr?'+ Créer':'+ Create',wk:fr?'Semaine du 3 août':'Week of Aug 3',pub:fr?'Publier 12':'Publish 12',today:fr?"Aujourd'hui":'Today',tom:fr?'Demain':'Tomorrow',days:fr?['L','M','M','J','V']:['M','T','W','T','F']};
+ const rows=[['CF','#2f9e5f',['8:00-16:00',OP],['8:00-16:00',CH],['','off'],['9:00-17:00',VE],['8:00-14:00',EN]],
+  ['JC','#3b82f6',['','off'],['9:00-17:00',CH],['9:00-17:00',CH],['9:00-17:00',CH],['','off']],
+  ['LB','#a855f7',['7:00-15:00',OP],['7:00-15:00',OP],['7:00-15:00',OP],['','off'],['7:00-13:00',OP]],
+  ['MG','#f59e0b',['','TO'],['10:00-18:00',VE],['10:00-18:00',VE],['','off'],['10:00-16:00',VE]]];
+ let g='<div class="dvhead"><span></span>'+D.days.map(d=>'<span>'+d+'</span>').join('')+'</div>';
  rows.forEach((r,ri)=>{g+='<div class="dvrow"><div class="dvname"><span class="dvav" style="background:'+r[1]+'">'+r[0]+'</span></div>';
   for(let c=0;c<5;c++){const cell=r[2+c];const d=(ri*5+c)*0.16;
-   if(!cell||!cell[0]){if(cell&&cell[1]==='TO'){g+='<div class="dvchip off" style="animation-delay:'+d+'s">TO</div>';}else{g+='<div class="dvcell"></div>';}}
+   if(!cell||!cell[0]){if(cell&&cell[1]==='TO'){g+='<div class="dvchip off" style="animation-delay:'+d+'s">'+TO+'</div>';}else{g+='<div class="dvcell"></div>';}}
    else{g+='<div class="dvchip" style="border-left-color:'+r[1]+';animation-delay:'+d+'s">'+cell[0]+'<span class="r">'+cell[1]+'</span></div>';}}
   g+='</div>';});
  return '<div class="device"><div class="dvbar"><span class="dvdot"></span><span class="dvdot"></span><span class="dvdot"></span></div>'
-  +'<div class="dvtop"><span class="dvpill cr">+ Créer</span><span class="dvweek">Semaine du 3 août</span><span class="dvpill pub">Publier 12</span></div>'
+  +'<div class="dvtop"><span class="dvpill cr">'+D.cr+'</span><span class="dvweek">'+D.wk+'</span><span class="dvpill pub">'+D.pub+'</span></div>'
   +'<div class="dvgrid">'+g+'</div></div>'
   +'<svg class="dvcur" viewBox="0 0 20 20" fill="#fff" stroke="#0b0f16" stroke-width="1"><path d="M2 2 L2 16 L6 12.5 L8.5 18 L11 17 L8.5 11.5 L14 11.5 Z"/></svg>'
-  +'<div class="phone"><div class="pbar"></div><div class="pcard">8:00 - 16:00<span class="r">Aujourd\'hui</span></div><div class="pcard b">9:00 - 17:00<span class="r">Demain</span></div></div>';
+  +'<div class="phone"><div class="pbar"></div><div class="pcard">8:00 - 16:00<span class="r">'+D.today+'</span></div><div class="pcard b">9:00 - 17:00<span class="r">'+D.tom+'</span></div></div>';
 }
 function renderLanding(){
  const L=LAND[lang];const l=_el('landing');if(!l)return;
