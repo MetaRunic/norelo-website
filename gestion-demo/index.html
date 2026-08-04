@@ -406,19 +406,12 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
 .scav{flex:0 0 auto;width:34px;height:34px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px;}
 .scnm{font-weight:700;font-size:14px;line-height:1.2;}
 .scnm .schrs{display:block;font-size:12px;color:var(--gr);font-weight:600;}
-.sccell{min-width:106px;padding:5px!important;cursor:pointer;transition:background .12s;}
+.sccell{min-width:120px;padding:5px!important;cursor:pointer;transition:background .12s;vertical-align:top;height:76px;}
 .sccell:hover{background:rgba(255,255,255,.03);}
 .schedtable td.tot{text-align:center;font-weight:800;color:var(--accent-l);min-width:60px;padding:0 8px!important;}
 .schedtable td.sctot,.schedtable th.sctot{text-align:center;}
 .openrow td.scname{background:var(--soft);}
 .opentag{font-weight:800;font-size:13px;color:var(--gr);}
-.shblk{border-left:4px solid var(--accent);background:var(--soft);border-radius:7px;padding:7px 9px;margin-bottom:4px;display:flex;flex-direction:column;gap:1px;}
-.shblk .shtime{font-weight:800;font-size:13px;}
-.shblk .shrole{font-size:11.5px;color:var(--gr);}
-.shblk .shdur{font-size:11px;color:var(--gr);font-weight:700;}
-.shblk.open{border-style:dashed;background:transparent;border:1px dashed var(--bdr);border-left:4px solid var(--accent);}
-.shblk.offb{border-left-color:var(--accent);align-items:center;justify-content:center;color:var(--gr);font-weight:900;letter-spacing:1.5px;padding:14px 4px;}
-.shblk.offb.pend{color:#f59e0b;letter-spacing:.5px;font-size:12px;}
 .fld{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:700;color:var(--gr);}
 .fld select{padding:11px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:15px;}
 .schedwrap{display:flex;gap:1.2rem;align-items:flex-start;}
@@ -432,20 +425,20 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
 .schedmain{flex:1;min-width:0;}
 .btn.create{background:var(--accent);border:none;color:#fff;}
 .pubn{background:rgba(255,255,255,.28);border-radius:20px;padding:1px 8px;margin-left:5px;font-weight:800;}
-.shblk{border-left-width:4px;border-left-style:solid;border-left-color:var(--accent);background:#fff;color:#0f172a;border-radius:7px;padding:8px 10px;margin-bottom:4px;display:flex;flex-direction:column;gap:2px;box-shadow:0 1px 3px rgba(0,0,0,.18);}
-.shblk .shtime{font-weight:800;font-size:13px;color:#0f172a;}
-.shblk .shrole{font-size:11.5px;color:#64748b;}
-.shblk .shbrk{font-size:11px;color:#94a3b8;font-weight:600;}
-.shblk.open{background:transparent;border:1px dashed var(--bdr);border-left:4px solid var(--accent);box-shadow:none;}
-.shblk.open .shtime,.shblk.open .shrole{color:var(--txt);}
+.shblk{border-left:4px solid var(--accent);background:#f8fafc;color:#0f172a;border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:2px;box-shadow:0 1px 2px rgba(0,0,0,.25);}
+.shblk .shtime{font-weight:800;font-size:12.5px;color:#0f172a;line-height:1.2;}
+.shblk .shrole{font-size:11px;color:#64748b;line-height:1.2;}
+.shblk .shbrk{font-size:10.5px;color:#94a3b8;font-weight:600;}
+.shblk.open{background:transparent;border:1px dashed var(--bdr);border-left:3px dashed var(--accent);box-shadow:none;}
+.shblk.open .shtime{color:var(--txt);}
+.shblk.open .shrole{color:var(--gr);}
 .shblk.open .shbrk{color:var(--accent-l);font-weight:800;}
-.shblk.offb{background:rgba(45,212,191,.15);border-left-color:#14b8a6;box-shadow:none;padding:13px 10px;}
-.shblk.offb .shtime{color:#5eead4;font-weight:800;font-size:12.5px;}
+.shblk.offb{background:rgba(45,212,191,.14);border-left-color:#14b8a6;box-shadow:none;padding:12px 10px;justify-content:center;text-align:left;}
+.shblk.offb .shtime{color:#2dd4bf;font-weight:800;font-size:12px;letter-spacing:.2px;}
 .shblk.offb.pend .shtime{color:#f59e0b;}
-.avline{position:absolute;left:5px;right:5px;bottom:2px;height:3px;border-radius:2px;}
-.avline.y{background:rgba(34,197,94,.45);}
-.avline.n{background:rgba(224,71,59,.6);}
-@media(max-width:760px){.schedwrap{flex-direction:column;}.schedfilters{position:static;flex:none;width:100%;}}
+#schedSheet{align-items:center;}
+#schedSheet .sheetbox{border-radius:16px;max-width:460px;max-height:88vh;}
+@media(max-width:760px){.schedwrap{flex-direction:column;}.schedfilters{position:static;flex:none;width:100%;}#schedSheet{align-items:flex-end;}#schedSheet .sheetbox{border-radius:16px 16px 0 0;}}
 </style>
 </head>
 <body>
@@ -1031,7 +1024,7 @@ function renderSched(){const el=document.getElementById('schedView');if(!el)retu
   DAYS.forEach((dk,i)=>{const dISO=addDaysISO(w.start,i);const os=state.openShifts.filter(s=>s.date===dISO);g+='<td class="sccell" data-openday="'+i+'">'+os.map(s=>'<div class="shblk open" data-open="'+s.id+'" style="border-left-color:'+deptColor(s.team)+'"><span class="shtime">'+s.start+' - '+s.end+'</span><span class="shrole">'+esc(deptLabel(s.team))+'</span><span class="shbrk">'+t.schedAssign+' &rarr;</span></div>').join('')+'</td>';});
   g+='<td class="tot">'+state.openShifts.reduce((a,s)=>a+hrsRange(s.start,s.end),0).toFixed(1)+'h</td></tr>';}
  emps.forEach(e=>{g+='<tr><td class="scname"><span class="scav" style="background:'+deptColor(empTeam(e))+'">'+initials(e.name)+'</span><span class="scnm">'+esc(e.name)+'<span class="schrs">'+empHours(e.id).toFixed(1)+'h</span></span></td>';
-  DAYS.forEach((dk,i)=>{const dISO=addDaysISO(w.start,i);const off=isOff(e.id,dISO);const blk=(off&&!F.off)?'':schBlock(e,w.data[e.id][dk],dISO);g+='<td class="sccell" data-sh="'+e.id+'" data-di="'+i+'">'+blk+'<span class="avline '+(avGet(e.id,i)?'y':'n')+'"></span></td>';});
+  DAYS.forEach((dk,i)=>{const dISO=addDaysISO(w.start,i);const off=isOff(e.id,dISO);const blk=(off&&!F.off)?'':schBlock(e,w.data[e.id][dk],dISO);g+='<td class="sccell'+(avGet(e.id,i)?'':' unavail')+'" data-sh="'+e.id+'" data-di="'+i+'">'+blk+'</td>';});
   g+='<td class="tot">'+empHours(e.id).toFixed(1)+'h</td></tr>';});
  g+='</tbody></table></div>';
  el.innerHTML='<div class="schedwrap">'+side+'<div class="schedmain">'+tb+g+'</div></div>';}
