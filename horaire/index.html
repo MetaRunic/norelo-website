@@ -174,6 +174,17 @@ h2{font-size:20px;font-weight:800;}
 .tabbadge{display:none;background:var(--accent);color:#fff;font-size:11px;font-weight:800;border-radius:20px;padding:1px 7px;margin-left:6px;vertical-align:middle;}
 #bottomNav button{position:relative;}
 .navbadge{display:none;position:absolute;top:1px;right:18%;min-width:16px;background:var(--accent);color:#fff;font-size:10px;font-weight:800;border-radius:20px;padding:0 4px;text-align:center;}
+.otcalwrap{display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1.3rem;}
+.otcal{flex:1;min-width:250px;background:var(--panel);border:1px solid var(--bdr);border-radius:11px;padding:.9rem 1rem;}
+.otcalhdr{font-size:14px;font-weight:800;text-align:center;margin-bottom:.6rem;}
+.otcal .caday{min-height:38px;cursor:default;}
+.otcal .caday[data-otdate]{cursor:pointer;}
+.otcal .caday.otp{border-color:var(--accent);background:rgba(224,71,59,.15);}
+.otcal .caday.ota{border-color:#22c55e;background:rgba(34,197,94,.13);}
+.otcal .caday.otp .cahh{color:var(--accent-l);}
+.otcal .caday.ota .cahh{color:#22c55e;}
+.otcal .caday.sel{outline:2px solid var(--accent);outline-offset:1px;}
+.otfilter{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.9rem;font-weight:800;font-size:16px;}
 .hintbar{background:rgba(224,71,59,.1);border:1px solid rgba(224,71,59,.32);color:var(--accent-l);border-radius:9px;padding:11px 14px;font-size:14px;font-weight:600;margin-bottom:1rem;line-height:1.45;}
 .ecard.locked{opacity:.6;}
 .ecard.locked select{cursor:not-allowed;}
@@ -415,11 +426,8 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     </div>
 
     <div id="otView" style="display:none">
-      <div class="card">
-        <h3 data-i="otTitle">Approbation des heures supplementaires</h3>
-        <p class="muted" data-i="otSub" style="margin:.4rem 0 1rem">Les heures au-dela de 8h par jour sont payees a 16$/h une fois approuvees.</p>
-        <div id="otList"></div>
-      </div>
+      <div id="otCal"></div>
+      <div id="otList"></div>
     </div>
 
     <div id="logView" style="display:none">
@@ -685,13 +693,32 @@ async function setOT(empId,weekKey,dayIdx,val){const w=state.weeks[weekKey];if(!
  else{showToast(val?(lang==='fr'?'Heures sup. approuvees':'Overtime approved'):(lang==='fr'?'Retire':'Undone'),true);const em=empById(empId);logAction(val?'approve_ot':'revoke_ot',(em?em.name:'')+' '+addDaysISO(weekKey,dayIdx));}}
 function otPendingCount(){let n=0;wkKeys().forEach(wk=>{const w=state.weeks[wk];adminEmps().forEach(e=>DAYS.forEach((dk,i)=>{const day=w.data[e.id][dk];if(otHours(day,e)>0&&!otApproved(day))n++;}));});return n;}
 function updateOTBadge(n){if(n==null)n=otPendingCount();['otBadge','otBadgeNav'].forEach(id=>{const b=document.getElementById(id);if(!b)return;if(n>0){b.textContent=n;b.style.display='inline-block';}else{b.textContent='';b.style.display='none';}});}
+let otSelDate=null;
+function otDays(){const rows=[];wkKeys().forEach(wk=>{const w=state.weeks[wk];adminEmps().forEach(e=>{DAYS.forEach((dk,i)=>{const day=w.data[e.id][dk];const ot=otHours(day,e);if(ot>0)rows.push({e,wk,i,day,ot,dISO:addDaysISO(wk,i),appr:otApproved(day)});});});});return rows;}
+function renderOTCal(rows){const el=document.getElementById('otCal');if(!el)return;const t=T[lang];
+ const byDate={};rows.forEach(r=>{const d=byDate[r.dISO]||(byDate[r.dISO]={pend:0,appr:0});if(r.appr)d.appr++;else d.pend++;});
+ const dates=Object.keys(byDate);if(!dates.length){el.innerHTML='';return;}
+ const ms={};dates.forEach(ds=>{const dd=new Date(ds+'T00:00:00');ms[dd.getFullYear()+'-'+dd.getMonth()]=1;});
+ const months=Object.keys(ms).map(k=>k.split('-').map(Number)).sort((a,b)=>a[0]-b[0]||a[1]-b[1]);
+ let h='<div class="otcalwrap">';
+ months.forEach(([y,m])=>{const first=new Date(y,m,1);const pad=(first.getDay()+6)%7;const dim=new Date(y,m+1,0).getDate();
+  h+='<div class="otcal"><div class="otcalhdr">'+cap(t.months[m])+' '+y+'</div><div class="calgrid">';
+  t.sdays.forEach(d=>h+='<div class="cawd">'+d+'</div>');
+  for(let i=0;i<pad;i++)h+='<div class="caday empty"></div>';
+  for(let dn=1;dn<=dim;dn++){const iso=isoLocal(new Date(y,m,dn));const st=byDate[iso];const sel=otSelDate===iso;
+   let cls='caday';if(st)cls+=st.pend?' otp':' ota';if(sel)cls+=' sel';
+   h+='<div class="'+cls+'"'+(st?' data-otdate="'+iso+'"':'')+'><div class="cadn">'+dn+'</div>'+(st?'<div class="cahh">'+(st.pend+st.appr)+'</div>':'')+'</div>';}
+  h+='</div></div>';});
+ h+='</div>';el.innerHTML=h;}
 function renderOT(){const t=T[lang];const el=document.getElementById('otList');if(!el)return;
- const rows=[];wkKeys().forEach(wk=>{const w=state.weeks[wk];adminEmps().forEach(e=>{DAYS.forEach((dk,i)=>{const day=w.data[e.id][dk];const ot=otHours(day,e);if(ot>0)rows.push({e,wk,i,day,ot,dISO:addDaysISO(wk,i),appr:otApproved(day)});});});});
- rows.sort((a,b)=>((a.appr?1:0)-(b.appr?1:0))||(a.dISO<b.dISO?1:-1));
- updateOTBadge(rows.filter(r=>!r.appr).length);
+ const rows=otDays();rows.sort((a,b)=>((a.appr?1:0)-(b.appr?1:0))||(a.dISO<b.dISO?1:-1));
+ updateOTBadge(rows.filter(r=>!r.appr).length);renderOTCal(rows);
+ if(otSelDate&&!rows.some(r=>r.dISO===otSelDate))otSelDate=null;
+ const list=otSelDate?rows.filter(r=>r.dISO===otSelDate):rows;
+ let head='';if(otSelDate){const dd=new Date(otSelDate+'T00:00:00');head='<div class="otfilter"><span>'+t.days[(dd.getDay()+6)%7]+' '+fmtDate(otSelDate,0)+'</span><button class="btn ghost sm" id="otClear">'+t.clearF+'</button></div>';}
  if(!rows.length){el.innerHTML='<div class="muted" style="padding:1rem">'+t.otNone+'</div>';return;}
- el.innerHTML=rows.map(r=>{const dObj=new Date(r.dISO+'T00:00:00');const dlabel=t.days[(dObj.getDay()+6)%7]+' '+fmtDate(r.dISO,0);
-  return '<div class="otrow'+(r.appr?' done':'')+'"><div class="oti"><div class="otn">'+esc(r.e.name)+'</div><div class="otd">'+dlabel+' &middot; '+(r.day.start||'--')+'-'+(r.day.end||'--')+' &middot; '+t.weekOf+' '+fmtLong(r.wk)+'</div></div>'
+ el.innerHTML=head+list.map(r=>{const dObj=new Date(r.dISO+'T00:00:00');const dlabel=t.days[(dObj.getDay()+6)%7]+' '+fmtDate(r.dISO,0);
+  return '<div class="otrow'+(r.appr?' done':'')+'"><div class="oti"><div class="otn">'+esc(r.e.name)+'</div><div class="otd">'+dlabel+' &middot; '+(r.day.start||'--')+'-'+(r.day.end||'--')+'</div></div>'
    +'<div class="otx"><span class="otinfo '+(r.appr?'ok':'pend')+'">+'+r.ot.toFixed(2)+'h '+(r.appr?t.otOk:t.otPending)+'</span>'
    +'<button class="otbtn'+(r.appr?' undo':'')+'" data-emp="'+r.e.id+'" data-wk="'+r.wk+'" data-di="'+r.i+'" data-otv="'+(r.appr?'0':'1')+'">'+(r.appr?t.revoke:t.approve)+'</button></div></div>';}).join('');}
 function renderDayList(){
@@ -762,7 +789,7 @@ function applyLang(){document.querySelectorAll('[data-i]').forEach(el=>{const k=
  document.documentElement.lang=lang;if(document.getElementById('app').style.display==='block')renderAll();}
 function renderAll(){renderWeekBar();if(isEmployee){renderCalendar(document.getElementById('calEmp'),currentEmp);renderEmp();}else{renderCalendar(document.getElementById('calAdmin'),null);renderDayPick();renderDayList();renderWeek();setTitle();updateOTBadge();if(mgrUnlocked){renderMgr();renderEmpAdmin();}}}
 function setTitle(){if(isEmployee)return;const t=T[lang];const cur=document.querySelector('.tabs button.on').id;
- document.getElementById('viewTitle').textContent=cur==='tabDay'?t.days[selDay]:cur==='tabWeek'?t.week:cur==='tabEmp'?t.employees:cur==='tabLog'?t.tLog:cur==='tabBak'?t.backupsT:t.payTitle;}
+ document.getElementById('viewTitle').textContent=cur==='tabDay'?t.days[selDay]:cur==='tabWeek'?t.week:cur==='tabEmp'?t.employees:cur==='tabOt'?t.tOt:cur==='tabLog'?t.tLog:cur==='tabBak'?t.backupsT:t.payTitle;}
 
 async function boot(){selDay=todayIdx();initEye('lpass','lpassEye');initEye('pwdInput','pwdEye');bindPwdModal();
  document.querySelectorAll('.lt,.hlt').forEach(box=>box.addEventListener('click',e=>{if(e.target.tagName!=='BUTTON')return;lang=e.target.getAttribute('data-l');
@@ -824,7 +851,8 @@ function bindApp(){
   document.getElementById('daypick').addEventListener('click',e=>{const b=e.target.closest('[data-day]');if(!b)return;selDay=+b.getAttribute('data-day');renderDayPick();renderDayList();setTitle();});
   document.getElementById('dayList').addEventListener('change',e=>{if(!e.target.classList.contains('lchk'))return;const c=e.target.closest('.ecard');toggleLunch(c.getAttribute('data-id'),+e.target.getAttribute('data-day'),e.target.checked);});
   document.getElementById('tabOt').onclick=()=>tab('ot');
-  document.getElementById('otList').addEventListener('click',e=>{const b=e.target.closest('.otbtn');if(!b)return;setOT(b.getAttribute('data-emp'),b.getAttribute('data-wk'),+b.getAttribute('data-di'),b.getAttribute('data-otv')==='1');});
+  document.getElementById('otCal').addEventListener('click',e=>{const c=e.target.closest('[data-otdate]');if(!c)return;const d=c.getAttribute('data-otdate');otSelDate=(otSelDate===d)?null:d;renderOT();});
+  document.getElementById('otList').addEventListener('click',e=>{if(e.target.id==='otClear'){otSelDate=null;renderOT();return;}const b=e.target.closest('.otbtn');if(!b)return;setOT(b.getAttribute('data-emp'),b.getAttribute('data-wk'),+b.getAttribute('data-di'),b.getAttribute('data-otv')==='1');});
   document.getElementById('dayList').addEventListener('click',e=>{const b=e.target.closest('.tbtn');if(!b||b.disabled)return;const c=b.closest('.ecard');const f=b.getAttribute('data-f');
    openTimePicker({mode:'day',id:c.getAttribute('data-id'),f:f,cur:b.getAttribute('data-val'),title:f==='start'?T[lang].start:T[lang].end});});
   document.getElementById('addEmp').onclick=async()=>{
@@ -913,6 +941,7 @@ function tab(which){
  document.getElementById('dayView').style.display=which==='day'?'block':'none';document.getElementById('weekView').style.display=which==='week'?'block':'none';document.getElementById('mgr').style.display=which==='mgr'?'block':'none';
  document.getElementById('empAdminView').style.display=which==='emp'?'block':'none';
  document.getElementById('otView').style.display=which==='ot'?'block':'none';
+ document.querySelector('.weeknav').style.display=which==='ot'?'none':'';
  document.getElementById('logView').style.display=which==='log'?'block':'none';
  document.getElementById('backupView').style.display=which==='bak'?'block':'none';
  if(which==='mgr'){const ml=document.getElementById('mgrLock');if(ml)ml.style.display='none';document.getElementById('mgrContent').style.display='block';renderMgr();}
