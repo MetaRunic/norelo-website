@@ -467,6 +467,12 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     </div>
 
     <div id="teamBar" class="teambar"></div>
+    <div id="empNav" class="teambar" style="display:none">
+      <button class="tf on" data-etab="sched" data-i="empSched">Mon horaire</button>
+      <button class="tf" data-etab="avail" data-i="tAvail">Disponibilités</button>
+      <button class="tf" data-etab="msg" data-i="tMsg">Annonces</button>
+      <button class="tf" data-etab="docs" data-i="tDocs">Documents</button>
+    </div>
 
     <div id="dayView">
       <div class="calcard" id="calAdmin"></div>
@@ -641,7 +647,7 @@ const T={
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Début',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
    paid:'Payé',unpaid:'À payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Déjà payé',kUnpaid:'Reste à payer',del:'Retirer cet employé?',user:"Nom d'utilisateur",
    chooseWeek:'Choisir une semaine',ws_past:'Passée',ws_cur:'En cours',ws_up:'À venir',teamAll:'Toutes',roleEmp:'Employé',roleMgr:'Gestionnaire',resetPwd:'MDP',clearF:'Effacer',backupsT:'Sauvegardes',backupNow:'Sauvegarder maintenant',versionT:'Version et mise à jour',forceUpd:'Forcer la mise à jour pour tous',viewAs:'Voir comme employé',viewingAs:'Aperçu employé',backToMgr:'Revenir en gestion',viewAsTitle:'Voir comme employé',
-   locked:'Verrouillé',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouillés.<br><strong>Un jour verrouillé à corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Vérification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit être après l'heure de début.",hoursHi:'Heures de quart régulières en surbrillance',lunch:'Pause 30 min',otPending:'en attente',otOk:'approuvée',approve:'Approuver',revoke:'Retirer',deny:'Refuser',cancel:'Annuler',tApprov:'Approbations',tApprovShort:'Approb.',tOt:'Heures supp.',otNone:'Aucune heure supplémentaire.',otAll:'Toutes les dates',tOff:'Congés',offLbl:'CONGÉ',offReq:'Demander un congé',offPending:'Congé demandé',offDenied:'Congé refusé',offPend:'en attente',offOk:'approuvé',offDen:'refusé',offNone:'Aucune demande de congé.',offBlocked:'Effacez les heures pour demander un congé',tAvail:'Disponibilités',tAvailShort:'Dispo.',tMsg:'Annonces',tDocs:'Documents',tRep:'Rapports',tSwap:'Remplacements',clockIn:'Pointer mon arrivée',clockOut:'Pointer mon départ',clockedSince:'En poste depuis',swapOffer:'Offrir ce quart',swapOffered:'Quart offert',swapCovered:'comblé',swapNone:'Aucun remplacement demandé.',availMine:'Mes disponibilités',availHint:'Touchez un jour pour changer votre disponibilité.',availYes:'Disponible',availNo:'Indisponible',availTitle:"Disponibilités de l'équipe",msgNew:'Nouvelle annonce',msgTitleP:'Titre',msgBodyP:'Message...',msgPost:'Publier',msgNone:'Aucune annonce.',docsTitle:'Documents',docsAck:'Marquer comme lu',docsReadOk:'Lu ✓',docsReadN:'ont lu',repOt:'Heures supp. en attente',repOff:'Congés approuvés',repByDept:'Heures par département',repPayDept:'Paie par département',notifTitle:'Notifications',notifNone:'Rien à signaler.',notifOt:'heures supp. à approuver',notifOff:'congés à approuver',notifSwap:'remplacements à traiter',notifMsg:'nouvelle(s) annonce(s)'},
+   locked:'Verrouillé',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouillés.<br><strong>Un jour verrouillé à corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Vérification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit être après l'heure de début.",hoursHi:'Heures de quart régulières en surbrillance',lunch:'Pause 30 min',otPending:'en attente',otOk:'approuvée',approve:'Approuver',revoke:'Retirer',deny:'Refuser',cancel:'Annuler',tApprov:'Approbations',tApprovShort:'Approb.',tOt:'Heures supp.',otNone:'Aucune heure supplémentaire.',otAll:'Toutes les dates',tOff:'Congés',offLbl:'CONGÉ',offReq:'Demander un congé',offPending:'Congé demandé',offDenied:'Congé refusé',offPend:'en attente',offOk:'approuvé',offDen:'refusé',offNone:'Aucune demande de congé.',offBlocked:'Effacez les heures pour demander un congé',tAvail:'Disponibilités',tAvailShort:'Dispo.',tMsg:'Annonces',tDocs:'Documents',tRep:'Rapports',tSwap:'Remplacements',clockIn:'Pointer mon arrivée',clockOut:'Pointer mon départ',clockedSince:'En poste depuis',swapOffer:'Offrir ce quart',swapOffered:'Quart offert',swapCovered:'comblé',swapNone:'Aucun remplacement demandé.',availMine:'Mes disponibilités',availHint:'Touchez un jour pour changer votre disponibilité.',availYes:'Disponible',availNo:'Indisponible',availTitle:"Disponibilités de l'équipe",msgNew:'Nouvelle annonce',msgTitleP:'Titre',msgBodyP:'Message...',msgPost:'Publier',msgNone:'Aucune annonce.',docsTitle:'Documents',docsAck:'Marquer comme lu',docsReadOk:'Lu ✓',docsReadN:'ont lu',repOt:'Heures supp. en attente',repOff:'Congés approuvés',repByDept:'Heures par département',repPayDept:'Paie par département',notifTitle:'Notifications',notifNone:'Rien à signaler.',notifOt:'heures supp. à approuver',notifOff:'congés à approuver',notifSwap:'remplacements à traiter',notifMsg:'nouvelle(s) annonce(s)',empSched:'Mon horaire'},
  en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',tEmp:'Employees',tLog:'Activity',tBak:'Backups',logout:'Log out',
    employees:'Employees and rates',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
@@ -653,7 +659,7 @@ const T={
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
    paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Total hours',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',del:'Remove this employee?',user:'Username',
    chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',roleEmp:'Employee',roleMgr:'Manager',resetPwd:'PW',clearF:'Clear',backupsT:'Backups',backupNow:'Backup now',versionT:'Version and update',forceUpd:'Force update for everyone',viewAs:'View as employee',viewingAs:'Employee preview',backToMgr:'Back to manager',viewAsTitle:'View as employee',
-   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted',lunch:'30-min lunch',otPending:'pending',otOk:'approved',approve:'Approve',revoke:'Undo',deny:'Deny',cancel:'Cancel',tApprov:'Approvals',tApprovShort:'Approb.',tOt:'Overtime',otNone:'No overtime.',otAll:'All dates',tOff:'Time off',offLbl:'OFF',offReq:'Request day off',offPending:'Day off requested',offDenied:'Day off denied',offPend:'pending',offOk:'approved',offDen:'denied',offNone:'No day-off requests.',offBlocked:'Clear the hours to request a day off',tAvail:'Availability',tAvailShort:'Avail.',tMsg:'Announcements',tDocs:'Documents',tRep:'Reports',tSwap:'Swaps',clockIn:'Clock in',clockOut:'Clock out',clockedSince:'Clocked in since',swapOffer:'Offer this shift',swapOffered:'Shift offered',swapCovered:'covered',swapNone:'No swap requests.',availMine:'My availability',availHint:'Tap a day to change your availability.',availYes:'Available',availNo:'Unavailable',availTitle:'Team availability',msgNew:'New announcement',msgTitleP:'Title',msgBodyP:'Message...',msgPost:'Post',msgNone:'No announcements.',docsTitle:'Documents',docsAck:'Mark as read',docsReadOk:'Read ✓',docsReadN:'have read',repOt:'Overtime pending',repOff:'Approved days off',repByDept:'Hours by department',repPayDept:'Pay by department',notifTitle:'Notifications',notifNone:'Nothing to report.',notifOt:'overtime to approve',notifOff:'days off to approve',notifSwap:'swaps to handle',notifMsg:'new announcement(s)'}
+   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted',lunch:'30-min lunch',otPending:'pending',otOk:'approved',approve:'Approve',revoke:'Undo',deny:'Deny',cancel:'Cancel',tApprov:'Approvals',tApprovShort:'Approb.',tOt:'Overtime',otNone:'No overtime.',otAll:'All dates',tOff:'Time off',offLbl:'OFF',offReq:'Request day off',offPending:'Day off requested',offDenied:'Day off denied',offPend:'pending',offOk:'approved',offDen:'denied',offNone:'No day-off requests.',offBlocked:'Clear the hours to request a day off',tAvail:'Availability',tAvailShort:'Avail.',tMsg:'Announcements',tDocs:'Documents',tRep:'Reports',tSwap:'Swaps',clockIn:'Clock in',clockOut:'Clock out',clockedSince:'Clocked in since',swapOffer:'Offer this shift',swapOffered:'Shift offered',swapCovered:'covered',swapNone:'No swap requests.',availMine:'My availability',availHint:'Tap a day to change your availability.',availYes:'Available',availNo:'Unavailable',availTitle:'Team availability',msgNew:'New announcement',msgTitleP:'Title',msgBodyP:'Message...',msgPost:'Post',msgNone:'No announcements.',docsTitle:'Documents',docsAck:'Mark as read',docsReadOk:'Read ✓',docsReadN:'have read',repOt:'Overtime pending',repOff:'Approved days off',repByDept:'Hours by department',repPayDept:'Pay by department',notifTitle:'Notifications',notifNone:'Nothing to report.',notifOt:'overtime to approve',notifOff:'days off to approve',notifSwap:'swaps to handle',notifMsg:'new announcement(s)',empSched:'My schedule'}
 };
 let state={employees:[],weeks:{},current:null,off:{},offList:[]},lang='fr',selDay=0,mgrUnlocked=false,isEmployee=false,currentEmp=null,teamFilter='all',myId=null,myEmail='';
 
@@ -1043,6 +1049,7 @@ async function enterApp(user){
  await loadAll();
  isEmployee=asEmp;currentEmp=asEmp?me.id:null;mgrUnlocked=!asEmp;
  document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';
+ const _cs=document.getElementById('credSticker');if(_cs)_cs.classList.remove('show');const _tc=document.getElementById('tourCaption');if(_tc)_tc.classList.remove('show');
  document.querySelector('.tabs').classList.toggle('hide',asEmp);
  document.getElementById('bottomNav').style.display=asEmp?'none':'';
  document.getElementById('teamBar').style.display=asEmp?'none':'';
@@ -1082,7 +1089,8 @@ function bindApp(){
  document.getElementById('docsView').addEventListener('click',e=>{const b=e.target.closest('[data-doc]');if(b&&isEmployee&&!b.disabled)ackDoc(b.getAttribute('data-doc'));});
  document.getElementById('msgView').addEventListener('click',e=>{if(e.target.id==='msgPost')postMsg();});
  document.getElementById('notifBtn').onclick=toggleNotif;
- document.getElementById('notifPanel').addEventListener('click',e=>{const b=e.target.closest('[data-ntab]');if(!b)return;document.getElementById('notifPanel').style.display='none';if(b.getAttribute('data-nsub'))otSubTab=b.getAttribute('data-nsub');if(!isEmployee)tab(b.getAttribute('data-ntab'));});
+ document.getElementById('notifPanel').addEventListener('click',e=>{const b=e.target.closest('[data-ntab]');if(!b)return;document.getElementById('notifPanel').style.display='none';if(b.getAttribute('data-nsub'))otSubTab=b.getAttribute('data-nsub');if(!isEmployee)tab(b.getAttribute('data-ntab'));else if(b.getAttribute('data-ntab')==='msg')empTab('msg');});
+ document.getElementById('empNav').addEventListener('click',e=>{const b=e.target.closest('[data-etab]');if(!b)return;empTab(b.getAttribute('data-etab'));});
  if(!isEmployee){
   document.getElementById('tabDay').onclick=()=>tab('day');
   document.getElementById('tabWeek').onclick=()=>tab('week');
@@ -1183,12 +1191,23 @@ function bindApp(){
 let previewAs=null;
 function openViewAs(){let h='';sortedEmps().forEach(e=>{h+='<button class="wkrow" data-emp="'+e.id+'"><div><div class="wkrng">'+esc(e.name)+'</div><div class="wksub">'+esc(e.title||'')+' &middot; '+deptLabel(empTeam(e))+'</div></div><div class="wkright"><span class="wkstat '+(e.prole==='manager'?'cur':'up')+'">'+(e.prole==='manager'?T[lang].roleMgr:T[lang].roleEmp)+'</span></div></button>';});
  document.getElementById('viewAsList').innerHTML=h;document.getElementById('viewAsSheet').style.display='flex';}
+function empTab(which){const t=T[lang];
+ document.querySelectorAll('#empNav button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-etab')===which));
+ document.getElementById('empView').style.display=which==='sched'?'block':'none';
+ document.getElementById('availView').style.display=which==='avail'?'block':'none';
+ document.getElementById('msgView').style.display=which==='msg'?'block':'none';
+ document.getElementById('docsView').style.display=which==='docs'?'block':'none';
+ document.querySelector('.weeknav').style.display=which==='sched'?'':'none';
+ document.getElementById('viewTitle').textContent=which==='sched'?(t.hi+((empById(currentEmp)||{}).name||'')):which==='avail'?t.tAvail:which==='msg'?t.tMsg:t.tDocs;
+ if(which==='sched')renderEmp();else if(which==='avail')renderAvail();else if(which==='msg')renderMsg();else renderDocs();
+ window.scrollTo(0,0);}
 function setEmpChrome(asEmp){
  document.querySelector('.tabs').classList.toggle('hide',asEmp);
  document.getElementById('bottomNav').style.display=asEmp?'none':'';
  document.getElementById('teamBar').style.display=asEmp?'none':'';
  document.getElementById('viewAsBtn').style.display=asEmp?'none':'';
- if(asEmp){['dayView','weekView','mgr','empAdminView','backupView','logView'].forEach(i=>document.getElementById(i).style.display='none');document.getElementById('empView').style.display='block';}
+ document.getElementById('empNav').style.display=asEmp?'':'none';
+ if(asEmp){['dayView','weekView','mgr','empAdminView','otView','availView','msgView','docsView','repView','backupView','logView'].forEach(i=>{const v=document.getElementById(i);if(v)v.style.display='none';});const np=document.getElementById('notifPanel');if(np)np.style.display='none';empTab('sched');}
  else{document.getElementById('empView').style.display='none';tab('day');}}
 function enterEmployeeView(id){isEmployee=true;currentEmp=id;previewAs=id;
  document.getElementById('viewAsSheet').style.display='none';
