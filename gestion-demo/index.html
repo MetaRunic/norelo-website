@@ -353,6 +353,46 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
 .offhint{font-size:12.5px;font-weight:600;color:var(--gr);font-style:italic;}
 .wtable td.off{color:var(--accent-l);font-weight:800;font-size:12px;letter-spacing:1px;}
 .wtable td.off.pend{color:#f59e0b;}
+#bottomNav{overflow-x:auto;flex-wrap:nowrap;}
+#bottomNav button{flex:0 0 auto;min-width:64px;}
+.bell{position:relative;background:none;border:none;color:var(--txt);cursor:pointer;padding:6px;display:inline-flex;align-items:center;}
+.bellbadge{display:none;position:absolute;top:0;right:0;min-width:15px;background:var(--accent);color:#fff;font-size:10px;font-weight:800;border-radius:20px;padding:0 4px;text-align:center;}
+.notifpanel{position:fixed;top:64px;right:1.2rem;width:min(320px,90vw);background:var(--panel);border:1px solid var(--bdr);border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.5);z-index:400;overflow:hidden;}
+.notifhd{padding:.8rem 1rem;font-weight:800;border-bottom:1px solid var(--bdr);}
+.notifrow{width:100%;text-align:left;background:none;border:none;border-bottom:1px solid var(--bdr);color:var(--txt);padding:.8rem 1rem;font-size:14px;font-weight:600;cursor:pointer;}
+.notifrow:hover{background:var(--soft);}
+.punchbtn{font-size:14px;font-weight:800;padding:11px 20px;border-radius:9px;border:none;color:#fff;cursor:pointer;background:var(--accent);}
+.punchbtn.out{background:#f59e0b;}
+.punchstatus{font-size:13px;font-weight:700;color:var(--accent-l);}
+.avgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:.6rem;}
+.avcell{display:flex;flex-direction:column;gap:4px;align-items:center;padding:14px 6px;border-radius:10px;border:2px solid var(--bdr);background:var(--soft);color:var(--txt);cursor:pointer;font-weight:700;}
+.avcell.on{border-color:#22c55e;background:rgba(34,197,94,.12);}
+.avcell.off{border-color:var(--accent);background:rgba(224,71,59,.10);}
+.avcell .avd{font-size:14px;}
+.avcell .avs{font-size:11px;color:var(--gr);}
+.avcell.on .avs{color:#22c55e;}.avcell.off .avs{color:var(--accent-l);}
+.avscroll{overflow-x:auto;}
+.avtable{width:100%;border-collapse:collapse;}
+.avtable th,.avtable td{padding:10px 8px;text-align:center;border-bottom:1px solid rgba(255,255,255,.06);font-size:14px;}
+.avtable td.nm{text-align:left;font-weight:700;white-space:nowrap;}
+.avtable td.avc{cursor:pointer;font-weight:800;}
+.avtable td.avc.yes{color:#22c55e;}
+.avtable td.avc.no{color:var(--accent-l);background:rgba(224,71,59,.08);}
+.msgin{width:100%;padding:11px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:15px;margin-bottom:.6rem;font-family:inherit;}
+.msgcard{background:var(--panel);border:1px solid var(--bdr);border-radius:11px;padding:1rem 1.2rem;margin-bottom:.7rem;}
+.msghd{display:flex;justify-content:space-between;font-size:12px;color:var(--gr);margin-bottom:.3rem;}
+.msgauth{font-weight:800;color:var(--accent-l);}
+.msgt{font-weight:800;font-size:16px;margin-bottom:.2rem;}
+.msgb{font-size:14px;color:var(--gr);line-height:1.5;}
+.docrow{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.06);}
+.docn{display:flex;align-items:center;gap:10px;font-weight:700;}
+.barchart{display:flex;flex-direction:column;gap:.7rem;margin-top:.4rem;}
+.barrow{display:flex;align-items:center;gap:.8rem;}
+.barlbl{flex:0 0 110px;font-size:13px;font-weight:700;color:var(--gr);}
+.bartrack{flex:1;height:22px;background:var(--soft);border-radius:6px;overflow:hidden;}
+.bar{height:100%;background:var(--accent);border-radius:6px;transition:width .5s;}
+.bar.p{background:#22c55e;}
+.barval{flex:0 0 auto;font-size:13px;font-weight:800;min-width:56px;text-align:right;}
 </style>
 </head>
 <body>
@@ -397,10 +437,15 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
       <button id="tabMgr" data-i="tMgr">Gestion</button>
       <button id="tabEmp" data-i="tEmp">Employés</button>
       <button id="tabOt"><span data-i="tApprov">Approbations</span><span class="tabbadge" id="otBadge"></span></button>
+      <button id="tabAvail" data-i="tAvail">Disponibilités</button>
+      <button id="tabMsg" data-i="tMsg">Annonces</button>
+      <button id="tabDocs" data-i="tDocs">Documents</button>
+      <button id="tabRep" data-i="tRep">Rapports</button>
       <button id="tabLog" data-i="tLog">Journal</button>
       <button id="tabBak" data-i="tBak">Sauvegardes</button>
     </div>
     <div class="spacer"></div>
+    <button class="bell" id="notifBtn" aria-label="Notifications"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="bellbadge" id="notifBadge"></span></button>
     <div class="hlt"><button data-l="fr" class="on">FR</button><button data-l="en">EN</button></div>
     <button class="btn ghost sm" id="viewAsBtn" data-i="viewAs">Voir comme employé</button>
     <button class="btn ghost sm" id="logout" data-i="logout">Quitter</button>
@@ -490,9 +535,11 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
       <div class="otsubtabs">
         <button class="stf on" data-otsub="ot"><span data-i="tOt">Heures supp.</span><span class="stbadge" id="otSubBadge"></span></button>
         <button class="stf" data-otsub="off"><span data-i="tOff">Congés</span><span class="stbadge" id="offSubBadge"></span></button>
+        <button class="stf" data-otsub="swap"><span data-i="tSwap">Remplacements</span><span class="stbadge" id="swapSubBadge"></span></button>
       </div>
       <div id="otPane"><div id="otCal"></div><div id="otList"></div></div>
       <div id="offPane" style="display:none"><div id="offList"></div></div>
+      <div id="swapPane" style="display:none"><div id="swapList"></div></div>
     </div>
 
     <div id="logView" style="display:none">
@@ -504,6 +551,12 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
       </div>
       <div id="logList"></div>
     </div>
+
+    <div id="availView" style="display:none"></div>
+    <div id="msgView" style="display:none"></div>
+    <div id="docsView" style="display:none"></div>
+    <div id="repView" style="display:none"></div>
+    <div id="notifPanel" class="notifpanel" style="display:none"></div>
   </main>
 
   <nav id="bottomNav">
@@ -512,6 +565,10 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     <button data-tab="mgr"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M14.5 9.3c-.4-.9-1.4-1.5-2.6-1.5-1.5 0-2.6.8-2.6 1.9 0 1 .8 1.6 2.6 2 1.9.4 2.7 1 2.7 2.1 0 1.1-1.2 1.9-2.7 1.9-1.3 0-2.4-.6-2.8-1.6"/></svg><span data-i="tMgr">Gestion</span></button>
     <button data-tab="emp"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16.5 5.3a3 3 0 0 1 0 5.4M18 19a5.5 5.5 0 0 0-3-4.9"/></svg><span data-i="tEmp">Employés</span></button>
     <button data-tab="ot"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 1.6"/></svg><span data-i="tApprovShort">Approb.</span><span class="navbadge" id="otBadgeNav"></span></button>
+    <button data-tab="avail"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/><path d="M9 15l2 2 4-4"/></svg><span data-i="tAvailShort">Dispo.</span></button>
+    <button data-tab="msg"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span data-i="tMsg">Annonces</span></button>
+    <button data-tab="docs"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span data-i="tDocs">Documents</span></button>
+    <button data-tab="rep"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="7"/><rect x="12" y="7" width="3" height="11"/><rect x="17" y="13" width="3" height="5"/></svg><span data-i="tRep">Rapports</span></button>
     <button data-tab="log"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6M9 8h2"/></svg><span data-i="tLog">Journal</span></button>
     <button data-tab="bak"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v5h7"/><rect x="8" y="13" width="8" height="5"/></svg><span data-i="tBak">Sauvegardes</span></button>
   </nav>
@@ -584,7 +641,7 @@ const T={
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Début',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
    paid:'Payé',unpaid:'À payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Déjà payé',kUnpaid:'Reste à payer',del:'Retirer cet employé?',user:"Nom d'utilisateur",
    chooseWeek:'Choisir une semaine',ws_past:'Passée',ws_cur:'En cours',ws_up:'À venir',teamAll:'Toutes',roleEmp:'Employé',roleMgr:'Gestionnaire',resetPwd:'MDP',clearF:'Effacer',backupsT:'Sauvegardes',backupNow:'Sauvegarder maintenant',versionT:'Version et mise à jour',forceUpd:'Forcer la mise à jour pour tous',viewAs:'Voir comme employé',viewingAs:'Aperçu employé',backToMgr:'Revenir en gestion',viewAsTitle:'Voir comme employé',
-   locked:'Verrouillé',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouillés.<br><strong>Un jour verrouillé à corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Vérification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit être après l'heure de début.",hoursHi:'Heures de quart régulières en surbrillance',lunch:'Pause 30 min',otPending:'en attente',otOk:'approuvée',approve:'Approuver',revoke:'Retirer',deny:'Refuser',cancel:'Annuler',tApprov:'Approbations',tApprovShort:'Approb.',tOt:'Heures supp.',otNone:'Aucune heure supplémentaire.',otAll:'Toutes les dates',tOff:'Congés',offLbl:'CONGÉ',offReq:'Demander un congé',offPending:'Congé demandé',offDenied:'Congé refusé',offPend:'en attente',offOk:'approuvé',offDen:'refusé',offNone:'Aucune demande de congé.',offBlocked:'Effacez les heures pour demander un congé'},
+   locked:'Verrouillé',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouillés.<br><strong>Un jour verrouillé à corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Vérification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit être après l'heure de début.",hoursHi:'Heures de quart régulières en surbrillance',lunch:'Pause 30 min',otPending:'en attente',otOk:'approuvée',approve:'Approuver',revoke:'Retirer',deny:'Refuser',cancel:'Annuler',tApprov:'Approbations',tApprovShort:'Approb.',tOt:'Heures supp.',otNone:'Aucune heure supplémentaire.',otAll:'Toutes les dates',tOff:'Congés',offLbl:'CONGÉ',offReq:'Demander un congé',offPending:'Congé demandé',offDenied:'Congé refusé',offPend:'en attente',offOk:'approuvé',offDen:'refusé',offNone:'Aucune demande de congé.',offBlocked:'Effacez les heures pour demander un congé',tAvail:'Disponibilités',tAvailShort:'Dispo.',tMsg:'Annonces',tDocs:'Documents',tRep:'Rapports',tSwap:'Remplacements',clockIn:'Pointer mon arrivée',clockOut:'Pointer mon départ',clockedSince:'En poste depuis',swapOffer:'Offrir ce quart',swapOffered:'Quart offert',swapCovered:'comblé',swapNone:'Aucun remplacement demandé.',availMine:'Mes disponibilités',availHint:'Touchez un jour pour changer votre disponibilité.',availYes:'Disponible',availNo:'Indisponible',availTitle:"Disponibilités de l'équipe",msgNew:'Nouvelle annonce',msgTitleP:'Titre',msgBodyP:'Message...',msgPost:'Publier',msgNone:'Aucune annonce.',docsTitle:'Documents',docsAck:'Marquer comme lu',docsReadOk:'Lu ✓',docsReadN:'ont lu',repOt:'Heures supp. en attente',repOff:'Congés approuvés',repByDept:'Heures par département',repPayDept:'Paie par département',notifTitle:'Notifications',notifNone:'Rien à signaler.',notifOt:'heures supp. à approuver',notifOff:'congés à approuver',notifSwap:'remplacements à traiter',notifMsg:'nouvelle(s) annonce(s)'},
  en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',tEmp:'Employees',tLog:'Activity',tBak:'Backups',logout:'Log out',
    employees:'Employees and rates',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
@@ -596,7 +653,7 @@ const T={
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
    paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Total hours',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',del:'Remove this employee?',user:'Username',
    chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',roleEmp:'Employee',roleMgr:'Manager',resetPwd:'PW',clearF:'Clear',backupsT:'Backups',backupNow:'Backup now',versionT:'Version and update',forceUpd:'Force update for everyone',viewAs:'View as employee',viewingAs:'Employee preview',backToMgr:'Back to manager',viewAsTitle:'View as employee',
-   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted',lunch:'30-min lunch',otPending:'pending',otOk:'approved',approve:'Approve',revoke:'Undo',deny:'Deny',cancel:'Cancel',tApprov:'Approvals',tApprovShort:'Approb.',tOt:'Overtime',otNone:'No overtime.',otAll:'All dates',tOff:'Time off',offLbl:'OFF',offReq:'Request day off',offPending:'Day off requested',offDenied:'Day off denied',offPend:'pending',offOk:'approved',offDen:'denied',offNone:'No day-off requests.',offBlocked:'Clear the hours to request a day off'}
+   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted',lunch:'30-min lunch',otPending:'pending',otOk:'approved',approve:'Approve',revoke:'Undo',deny:'Deny',cancel:'Cancel',tApprov:'Approvals',tApprovShort:'Approb.',tOt:'Overtime',otNone:'No overtime.',otAll:'All dates',tOff:'Time off',offLbl:'OFF',offReq:'Request day off',offPending:'Day off requested',offDenied:'Day off denied',offPend:'pending',offOk:'approved',offDen:'denied',offNone:'No day-off requests.',offBlocked:'Clear the hours to request a day off',tAvail:'Availability',tAvailShort:'Avail.',tMsg:'Announcements',tDocs:'Documents',tRep:'Reports',tSwap:'Swaps',clockIn:'Clock in',clockOut:'Clock out',clockedSince:'Clocked in since',swapOffer:'Offer this shift',swapOffered:'Shift offered',swapCovered:'covered',swapNone:'No swap requests.',availMine:'My availability',availHint:'Tap a day to change your availability.',availYes:'Available',availNo:'Unavailable',availTitle:'Team availability',msgNew:'New announcement',msgTitleP:'Title',msgBodyP:'Message...',msgPost:'Post',msgNone:'No announcements.',docsTitle:'Documents',docsAck:'Mark as read',docsReadOk:'Read ✓',docsReadN:'have read',repOt:'Overtime pending',repOff:'Approved days off',repByDept:'Hours by department',repPayDept:'Pay by department',notifTitle:'Notifications',notifNone:'Nothing to report.',notifOt:'overtime to approve',notifOff:'days off to approve',notifSwap:'swaps to handle',notifMsg:'new announcement(s)'}
 };
 let state={employees:[],weeks:{},current:null,off:{},offList:[]},lang='fr',selDay=0,mgrUnlocked=false,isEmployee=false,currentEmp=null,teamFilter='all',myId=null,myEmail='';
 
@@ -771,7 +828,7 @@ async function setOT(empId,weekKey,dayIdx,val){const w=state.weeks[weekKey];if(!
 function otPendingCount(){let n=0;wkKeys().forEach(wk=>{const w=state.weeks[wk];adminEmps().forEach(e=>DAYS.forEach((dk,i)=>{const day=w.data[e.id][dk];if(otHours(day,e)>0&&!otApproved(day)&&!isOff(e.id,addDaysISO(wk,i)))n++;}));});return n;}
 function offPendingCount(){return state.offList.filter(r=>r.status==='pending'&&adminEmps().some(e=>e.id===r.employee_id)).length;}
 function setBadge(id,n){const b=document.getElementById(id);if(!b)return;if(n>0){b.textContent=n;b.style.display='inline-block';}else{b.textContent='';b.style.display='none';}}
-function updateOTBadge(){const ot=otPendingCount(),off=offPendingCount();setBadge('otBadge',ot+off);setBadge('otBadgeNav',ot+off);setBadge('otSubBadge',ot);setBadge('offSubBadge',off);}
+function updateOTBadge(){const ot=otPendingCount(),off=offPendingCount(),sw=(typeof swapPending==='function'?swapPending():0);setBadge('otBadge',ot+off+sw);setBadge('otBadgeNav',ot+off+sw);setBadge('otSubBadge',ot);setBadge('offSubBadge',off);setBadge('swapSubBadge',sw);if(typeof updateNotif==='function')updateNotif();}
 let otSelDate=null,otSubTab='ot';
 function renderOTCal(rows){const el=document.getElementById('otCal');if(!el)return;const t=T[lang];
  const byDate={};rows.forEach(r=>{const d=byDate[r.dISO]||(byDate[r.dISO]={pend:0,appr:0});if(r.appr)d.appr++;else d.pend++;});
@@ -817,7 +874,68 @@ function renderTimeOff(){const el=document.getElementById('offList');if(!el)retu
   const badge=r.status==='pending'?'<span class="otinfo pend">'+t.offPend+'</span>':r.status==='approved'?'<span class="otinfo ok">'+t.offOk+'</span>':'<span class="otinfo den">'+t.offDen+'</span>';
   const btns=r.status==='pending'?('<button class="otbtn" data-off="'+r.id+'" data-st="approved">'+t.approve+'</button><button class="otbtn undo" data-off="'+r.id+'" data-st="denied">'+t.deny+'</button>'):('<button class="otbtn undo" data-off="'+r.id+'" data-st="pending">'+t.revoke+'</button>');
   return '<div class="otrow'+(r.status!=='pending'?' done':'')+'"><div class="oti"><div class="otn">'+esc(em?em.name:'?')+'</div><div class="otd">'+dlabel+'</div></div><div class="otx">'+badge+btns+'</div></div>';}).join('');}
-function showOTSub(s){otSubTab=s;document.querySelectorAll('#otView .stf').forEach(b=>b.classList.toggle('on',b.getAttribute('data-otsub')===s));document.getElementById('otPane').style.display=s==='ot'?'block':'none';document.getElementById('offPane').style.display=s==='off'?'block':'none';if(s==='ot')renderOT();else renderTimeOff();}
+function showOTSub(s){otSubTab=s;document.querySelectorAll('#otView .stf').forEach(b=>b.classList.toggle('on',b.getAttribute('data-otsub')===s));document.getElementById('otPane').style.display=s==='ot'?'block':'none';document.getElementById('offPane').style.display=s==='off'?'block':'none';document.getElementById('swapPane').style.display=s==='swap'?'block':'none';if(s==='ot')renderOT();else if(s==='off')renderTimeOff();else renderSwaps();}
+/* ===== Agendrix-style features (demo, in-memory) ===== */
+function nowHM(){const d=now();let m=Math.round((d.getHours()*60+d.getMinutes())/STEP)*STEP;if(m<OPEN_MIN)m=OPEN_MIN;if(m>CLOSE_MIN)m=CLOSE_MIN;return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');}
+async function punch(empId,dayIdx,which){const w=state.weeks[state.current];const day=w.data[empId][DAYS[dayIdx]];const v=nowHM();const prev={s:day.start,e:day.end,o:day.ot};
+ if(which==='in'){day.start=v;day.end='';}else{day.end=(day.start&&tmin(v)<=tmin(day.start))?day.start:v;}day.ot=false;
+ rerenderDayViews();const err=await saveShift(empId,state.current,dayIdx,day);
+ if(err){day.start=prev.s;day.end=prev.e;day.ot=prev.o;rerenderDayViews();}else showToast(which==='in'?(lang==='fr'?'Arrivée pointée':'Clocked in'):(lang==='fr'?'Départ pointé':'Clocked out'),true);}
+function punchRow(emp,i,day,ed){const t=T[lang];if(!ed||isMgrEmp(emp))return '';
+ if(!day.start)return '<div class="offrow"><button class="punchbtn in" data-punch="in" data-day="'+i+'">'+t.clockIn+'</button></div>';
+ if(day.start&&!day.end)return '<div class="offrow"><span class="punchstatus">'+t.clockedSince+' '+day.start+'</span> <button class="punchbtn out" data-punch="out" data-day="'+i+'">'+t.clockOut+'</button></div>';
+ return '';}
+function swapFor(empId,dISO){return state.swaps.find(s=>s.employee_id===empId&&s.date===dISO&&s.status==='pending');}
+function swapPending(){return state.swaps.filter(s=>s.status==='pending'&&adminEmps().some(e=>e.id===s.employee_id)).length;}
+function swapControl(empId,dISO,day){const t=T[lang];if(!(day.start&&day.end))return '';if(swapFor(empId,dISO))return '<span class="offdenied">'+t.swapOffered+'</span> <button class="offbtn cancel" data-swp="cancel" data-date="'+dISO+'">'+t.cancel+'</button>';return '<button class="offbtn" data-swp="offer" data-date="'+dISO+'">'+t.swapOffer+'</button>';}
+function offerSwap(empId,dISO){if(swapFor(empId,dISO))return;state.swaps.push({id:'sw'+Math.random().toString(36).slice(2,7),employee_id:empId,date:dISO,status:'pending'});rerenderDayViews();updateNotif();showToast(lang==='fr'?'Quart offert':'Shift offered',true);const em=empById(empId);logAction('offer_swap',(em?em.name:'')+' '+dISO);}
+function cancelSwap(empId,dISO){const s=swapFor(empId,dISO);if(s)state.swaps=state.swaps.filter(x=>x!==s);rerenderDayViews();updateNotif();showToast(lang==='fr'?'Annulé':'Cancelled',true);}
+function setSwap(id,status){const s=state.swaps.find(x=>x.id===id);if(!s)return;s.status=status;renderSwaps();rerenderDayViews();updateNotif();const em=empById(s.employee_id);showToast(status==='covered'?(lang==='fr'?'Remplacement approuvé':'Swap approved'):(lang==='fr'?'Refusé':'Denied'),true);logAction(status==='covered'?'approve_swap':'deny_swap',(em?em.name:'')+' '+s.date);}
+function renderSwaps(){const el=document.getElementById('swapList');if(!el)return;const t=T[lang];
+ const rows=state.swaps.filter(r=>adminEmps().some(e=>e.id===r.employee_id));
+ rows.sort((a,b)=>((a.status==='pending'?0:1)-(b.status==='pending'?0:1))||(a.date<b.date?1:-1));
+ if(!rows.length){el.innerHTML='<div class="muted" style="padding:1rem">'+t.swapNone+'</div>';return;}
+ el.innerHTML=rows.map(r=>{const em=empById(r.employee_id);const dObj=new Date(r.date+'T00:00:00');const dl=t.days[(dObj.getDay()+6)%7]+' '+fmtDate(r.date,0);
+  const badge=r.status==='pending'?'<span class="otinfo pend">'+t.offPend+'</span>':r.status==='covered'?'<span class="otinfo ok">'+t.swapCovered+'</span>':'<span class="otinfo den">'+t.offDen+'</span>';
+  const btns=r.status==='pending'?('<button class="otbtn" data-sw="'+r.id+'" data-st="covered">'+t.approve+'</button><button class="otbtn undo" data-sw="'+r.id+'" data-st="denied">'+t.deny+'</button>'):('<button class="otbtn undo" data-sw="'+r.id+'" data-st="pending">'+t.revoke+'</button>');
+  return '<div class="otrow'+(r.status!=='pending'?' done':'')+'"><div class="oti"><div class="otn">'+esc(em?em.name:'?')+'</div><div class="otd">'+dl+'</div></div><div class="otx">'+badge+btns+'</div></div>';}).join('');}
+function avGet(empId,dw){const a=state.avail[empId];return a?a[dw]!==false:true;}
+function avSet(empId,dw,val){if(!state.avail[empId])state.avail[empId]=[true,true,true,true,true,true,true];state.avail[empId][dw]=val;}
+function renderAvail(){const el=document.getElementById('availView');if(!el)return;const t=T[lang];
+ if(isEmployee){let h='<div class="card"><h3>'+t.availMine+'</h3><p class="muted" style="margin:.3rem 0 1rem">'+t.availHint+'</p><div class="avgrid">';
+  t.days.forEach((dn,dw)=>{const av=avGet(currentEmp,dw);h+='<button class="avcell'+(av?' on':' off')+'" data-av="'+dw+'"><span class="avd">'+dn+'</span><span class="avs">'+(av?t.availYes:t.availNo)+'</span></button>';});
+  h+='</div></div>';el.innerHTML=h;return;}
+ let h='<div class="card"><h3>'+t.availTitle+'</h3><div class="avscroll"><table class="avtable"><thead><tr><th>'+t.name+'</th>';t.sdays.forEach(d=>h+='<th>'+d+'</th>');h+='</tr></thead><tbody>';
+ adminEmps().forEach(e=>{h+='<tr><td class="nm">'+esc(e.name)+'</td>';for(let dw=0;dw<7;dw++){const av=avGet(e.id,dw);h+='<td class="avc '+(av?'yes':'no')+'" data-avm="'+e.id+'" data-avd="'+dw+'">'+(av?'✓':'✗')+'</td>';}h+='</tr>';});
+ h+='</tbody></table></div></div>';el.innerHTML=h;}
+function fmtAgo(ts){const s=Math.floor((Date.now()-ts)/1000);if(s<3600)return Math.max(1,Math.floor(s/60))+(lang==='fr'?' min':'m');if(s<86400)return Math.floor(s/3600)+'h';return Math.floor(s/86400)+(lang==='fr'?' j':'d');}
+function renderMsg(){const el=document.getElementById('msgView');if(!el)return;const t=T[lang];let h='';
+ if(!isEmployee)h+='<div class="card"><h3>'+t.msgNew+'</h3><input id="msgTitle" class="msgin" placeholder="'+t.msgTitleP+'"/><textarea id="msgBody" class="msgin" rows="2" placeholder="'+t.msgBodyP+'"></textarea><button class="btn sm" id="msgPost">'+t.msgPost+'</button></div>';
+ h+=state.msgs.slice().sort((a,b)=>b.ts-a.ts).map(m=>'<div class="msgcard"><div class="msghd"><span class="msgauth">'+esc(m.author)+'</span><span class="msgts">'+fmtAgo(m.ts)+'</span></div><div class="msgt">'+esc(m.title)+'</div>'+(m.body?'<div class="msgb">'+esc(m.body)+'</div>':'')+'</div>').join('');
+ if(!state.msgs.length)h+='<div class="muted" style="padding:1rem">'+t.msgNone+'</div>';
+ el.innerHTML=h;state.msgSeen=state.msgs.length;updateNotif();}
+function postMsg(){const ti=document.getElementById('msgTitle').value.trim(),bo=document.getElementById('msgBody').value.trim();if(!ti)return;const me=empById(myId);state.msgs.push({id:'m'+Math.random().toString(36).slice(2,7),author:me?me.name:'Gestion',title:ti,body:bo,ts:Date.now()});renderMsg();showToast(lang==='fr'?'Annonce publiée':'Announcement posted',true);logAction('announce',ti);}
+function renderDocs(){const el=document.getElementById('docsView');if(!el)return;const t=T[lang];const total=adminEmps().length;
+ el.innerHTML='<div class="card"><h3>'+t.docsTitle+'</h3>'+state.docs.map(d=>{const uid=isEmployee?currentEmp:myId;const read=(d.ack||[]).includes(uid);const cnt=(d.ack||[]).length;
+  return '<div class="docrow"><div class="docn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/></svg> '+esc(d.title)+'</div>'+(isEmployee?('<button class="btn sm'+(read?' ghost':'')+'" data-doc="'+d.id+'"'+(read?' disabled':'')+'>'+(read?t.docsReadOk:t.docsAck)+'</button>'):('<span class="muted">'+cnt+'/'+total+' '+t.docsReadN+'</span>'))+'</div>';}).join('')+'</div>';}
+function ackDoc(id){const d=state.docs.find(x=>x.id===id);if(!d)return;d.ack=d.ack||[];if(!d.ack.includes(currentEmp))d.ack.push(currentEmp);renderDocs();showToast(lang==='fr'?'Marqué comme lu':'Marked as read',true);}
+function renderRep(){const el=document.getElementById('repView');if(!el)return;const t=T[lang];const emps=adminEmps();
+ let totH=0,totP=0,otP=0;const byDept={};DEPT_ORDER.forEach(c=>byDept[c]={h:0,p:0});
+ emps.forEach(e=>{const h=empHours(e.id),p=empPay(e.id);totH+=h;totP+=p;otP+=empPending(e.id);const c=empTeam(e);if(byDept[c]){byDept[c].h+=h;byDept[c].p+=p;}});
+ const offW=state.offList.filter(r=>r.status==='approved').length;
+ let h='<div class="kpis" style="margin-bottom:1.2rem">'+kpi(totH.toFixed(1)+'h',t.kHours,'')+kpi(money(totP),t.kPay,'')+kpi(otP.toFixed(1)+'h',t.repOt,'r')+kpi(String(offW),t.repOff,'')+'</div>';
+ const maxH=Math.max(1,...DEPT_ORDER.map(c=>byDept[c].h));
+ h+='<div class="card"><h3>'+t.repByDept+'</h3><div class="barchart">'+DEPT_ORDER.map(c=>'<div class="barrow"><span class="barlbl">'+deptLabel(c)+'</span><div class="bartrack"><div class="bar" style="width:'+(byDept[c].h/maxH*100)+'%"></div></div><span class="barval">'+byDept[c].h.toFixed(1)+'h</span></div>').join('')+'</div></div>';
+ const maxP=Math.max(1,...DEPT_ORDER.map(c=>byDept[c].p));
+ h+='<div class="card"><h3>'+t.repPayDept+'</h3><div class="barchart">'+DEPT_ORDER.map(c=>'<div class="barrow"><span class="barlbl">'+deptLabel(c)+'</span><div class="bartrack"><div class="bar p" style="width:'+(byDept[c].p/maxP*100)+'%"></div></div><span class="barval">'+money(byDept[c].p)+'</span></div>').join('')+'</div></div>';
+ el.innerHTML=h;}
+function notifCount(){if(isEmployee)return Math.max(0,state.msgs.length-(state.msgSeen||0));return otPendingCount()+offPendingCount()+swapPending();}
+function updateNotif(){setBadge('notifBadge',notifCount());}
+function renderNotif(){const el=document.getElementById('notifPanel');const t=T[lang];let items=[];
+ if(isEmployee){const unread=Math.max(0,state.msgs.length-(state.msgSeen||0));if(unread)items.push({txt:unread+' '+t.notifMsg,tab:'msg'});}
+ else{const ot=otPendingCount(),off=offPendingCount(),sw=swapPending();if(ot)items.push({txt:ot+' '+t.notifOt,tab:'ot',sub:'ot'});if(off)items.push({txt:off+' '+t.notifOff,tab:'ot',sub:'off'});if(sw)items.push({txt:sw+' '+t.notifSwap,tab:'ot',sub:'swap'});}
+ el.innerHTML='<div class="notifhd">'+t.notifTitle+'</div>'+(items.length?items.map(i=>'<button class="notifrow" data-ntab="'+i.tab+'"'+(i.sub?' data-nsub="'+i.sub+'"':'')+'>'+i.txt+' &rarr;</button>').join(''):'<div class="muted" style="padding:1rem">'+t.notifNone+'</div>');}
+function toggleNotif(){const p=document.getElementById('notifPanel');if(p.style.display==='none'){renderNotif();p.style.display='block';}else p.style.display='none';}
 function renderDayList(){
  const w=state.weeks[state.current];const t=T[lang];const dk=DAYS[selDay];let h='';const dISO=addDaysISO(w.start,selDay);
  const list=adminEmps().slice().sort((a,b)=>{if(a.id===myId)return -1;if(b.id===myId)return 1;return a.name.localeCompare(b.name);});
@@ -845,7 +963,9 @@ function renderEmp(){
    +'<div class="tfield"><label>'+t.end+'</label>'+timeInput('end',day.end,!ed)+'</div></div>'
    +'<div class="ecalc"><div class="eh">'+ph.toFixed(2)+'h</div></div>'
    +exRow(day,emp,i,ed,false)
+   +(isT?punchRow(emp,i,day,ed):'')
    +'<div class="offrow">'+offControl(emp.id,dISO,day)+'</div>'
+   +((day.start&&day.end)?'<div class="offrow">'+swapControl(emp.id,dISO,day)+'</div>':'')
    +'</div>';});
  h+='<div class="card" style="display:flex;justify-content:space-between;align-items:center"><span style="font-weight:800;font-size:18px">'+t.tot+'</span><span style="font-weight:800;font-size:24px;color:var(--accent-l)">'+tot.toFixed(2)+'h</span></div>';
  document.getElementById('empSheet').innerHTML=h;
@@ -891,10 +1011,14 @@ function applyLang(){document.querySelectorAll('[data-i]').forEach(el=>{const k=
  document.documentElement.lang=lang;if(document.getElementById('app').style.display==='block'){renderAll();
   const ov=document.getElementById('otView');if(ov&&ov.style.display!=='none')showOTSub(otSubTab);
   const lv=document.getElementById('logView');if(lv&&lv.style.display!=='none')renderLog();
-  const bv=document.getElementById('backupView');if(bv&&bv.style.display!=='none')renderBackups();}}
+  const bv=document.getElementById('backupView');if(bv&&bv.style.display!=='none')renderBackups();
+  const av=document.getElementById('availView');if(av&&av.style.display!=='none')renderAvail();
+  const mv=document.getElementById('msgView');if(mv&&mv.style.display!=='none')renderMsg();
+  const dv=document.getElementById('docsView');if(dv&&dv.style.display!=='none')renderDocs();
+  const rv=document.getElementById('repView');if(rv&&rv.style.display!=='none')renderRep();}}
 function renderAll(){renderTeamBar();renderWeekBar();if(isEmployee){renderCalendar(document.getElementById('calEmp'),currentEmp);renderEmp();}else{renderCalendar(document.getElementById('calAdmin'),null);renderDayPick();renderDayList();renderWeek();setTitle();updateOTBadge();if(mgrUnlocked){renderMgr();renderEmpAdmin();}}}
 function setTitle(){if(isEmployee)return;const t=T[lang];const cur=document.querySelector('.tabs button.on').id;
- document.getElementById('viewTitle').textContent=cur==='tabDay'?t.days[selDay]:cur==='tabWeek'?t.week:cur==='tabEmp'?t.employees:cur==='tabOt'?t.tApprov:cur==='tabLog'?t.tLog:cur==='tabBak'?t.backupsT:t.payTitle;}
+ document.getElementById('viewTitle').textContent=cur==='tabDay'?t.days[selDay]:cur==='tabWeek'?t.week:cur==='tabEmp'?t.employees:cur==='tabOt'?t.tApprov:cur==='tabAvail'?t.tAvail:cur==='tabMsg'?t.tMsg:cur==='tabDocs'?t.tDocs:cur==='tabRep'?t.tRep:cur==='tabLog'?t.tLog:cur==='tabBak'?t.backupsT:t.payTitle;}
 
 async function boot(){initDemo();selDay=todayIdx();initEye('lpass','lpassEye');initEye('pwdInput','pwdEye');bindPwdModal();
  document.querySelectorAll('.lt,.hlt').forEach(box=>box.addEventListener('click',e=>{if(e.target.tagName!=='BUTTON')return;lang=e.target.getAttribute('data-l');
@@ -953,6 +1077,12 @@ function bindApp(){
   const f=b.getAttribute('data-f');openTimePicker({mode:'emp',dayIdx:di,f:f,cur:b.getAttribute('data-val'),title:f==='start'?T[lang].start:T[lang].end});});
  document.getElementById('empSheet').addEventListener('change',e=>{if(!e.target.classList.contains('lchk'))return;toggleLunch(currentEmp,+e.target.getAttribute('data-day'),e.target.checked);});
  document.getElementById('empSheet').addEventListener('click',e=>{const b=e.target.closest('.offbtn');if(!b)return;const d=b.getAttribute('data-date');if(b.getAttribute('data-offc')==='cancel')cancelOff(currentEmp,d);else requestOff(currentEmp,d);});
+ document.getElementById('empSheet').addEventListener('click',e=>{const p=e.target.closest('[data-punch]');if(p){punch(currentEmp,+p.getAttribute('data-day'),p.getAttribute('data-punch'));return;}const s=e.target.closest('[data-swp]');if(s){const d=s.getAttribute('data-date');if(s.getAttribute('data-swp')==='cancel')cancelSwap(currentEmp,d);else offerSwap(currentEmp,d);}});
+ document.getElementById('availView').addEventListener('click',e=>{const ec=e.target.closest('[data-av]');if(ec&&isEmployee){const dw=+ec.getAttribute('data-av');avSet(currentEmp,dw,!avGet(currentEmp,dw));renderAvail();return;}const mc=e.target.closest('[data-avm]');if(mc&&!isEmployee){const id=mc.getAttribute('data-avm'),dw=+mc.getAttribute('data-avd');avSet(id,dw,!avGet(id,dw));renderAvail();}});
+ document.getElementById('docsView').addEventListener('click',e=>{const b=e.target.closest('[data-doc]');if(b&&isEmployee&&!b.disabled)ackDoc(b.getAttribute('data-doc'));});
+ document.getElementById('msgView').addEventListener('click',e=>{if(e.target.id==='msgPost')postMsg();});
+ document.getElementById('notifBtn').onclick=toggleNotif;
+ document.getElementById('notifPanel').addEventListener('click',e=>{const b=e.target.closest('[data-ntab]');if(!b)return;document.getElementById('notifPanel').style.display='none';if(b.getAttribute('data-nsub'))otSubTab=b.getAttribute('data-nsub');if(!isEmployee)tab(b.getAttribute('data-ntab'));});
  if(!isEmployee){
   document.getElementById('tabDay').onclick=()=>tab('day');
   document.getElementById('tabWeek').onclick=()=>tab('week');
@@ -965,6 +1095,11 @@ function bindApp(){
   document.getElementById('otList').addEventListener('click',e=>{if(e.target.id==='otClear'){otSelDate=null;renderOT();return;}const b=e.target.closest('.otbtn');if(!b)return;setOT(b.getAttribute('data-emp'),b.getAttribute('data-wk'),+b.getAttribute('data-di'),b.getAttribute('data-otv')==='1');});
   document.querySelectorAll('#otView .stf').forEach(b=>b.onclick=()=>showOTSub(b.getAttribute('data-otsub')));
   document.getElementById('offList').addEventListener('click',e=>{const b=e.target.closest('.otbtn');if(!b)return;setOffStatus(b.getAttribute('data-off'),b.getAttribute('data-st'));});
+  document.getElementById('swapList').addEventListener('click',e=>{const b=e.target.closest('.otbtn');if(!b)return;setSwap(b.getAttribute('data-sw'),b.getAttribute('data-st'));});
+  document.getElementById('tabAvail').onclick=()=>tab('avail');
+  document.getElementById('tabMsg').onclick=()=>tab('msg');
+  document.getElementById('tabDocs').onclick=()=>tab('docs');
+  document.getElementById('tabRep').onclick=()=>tab('rep');
   document.getElementById('dayList').addEventListener('change',e=>{if(!e.target.classList.contains('lchk'))return;const c=e.target.closest('.ecard');toggleLunch(c.getAttribute('data-id'),+e.target.getAttribute('data-day'),e.target.checked);});
   document.getElementById('viewAsBtn').onclick=openViewAs;
   document.getElementById('viewAsClose').onclick=()=>document.getElementById('viewAsSheet').style.display='none';
@@ -1069,16 +1204,26 @@ function tab(which){
  const tl=document.getElementById('tabLog');if(tl)tl.classList.toggle('on',which==='log');
  const tbk=document.getElementById('tabBak');if(tbk)tbk.classList.toggle('on',which==='bak');
  const tot=document.getElementById('tabOt');if(tot)tot.classList.toggle('on',which==='ot');
+ [['avail','tabAvail'],['msg','tabMsg'],['docs','tabDocs'],['rep','tabRep']].forEach(([k,id])=>{const b=document.getElementById(id);if(b)b.classList.toggle('on',which===k);});
  document.querySelectorAll('#bottomNav button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-tab')===which));
  document.getElementById('dayView').style.display=which==='day'?'block':'none';document.getElementById('weekView').style.display=which==='week'?'block':'none';document.getElementById('mgr').style.display=which==='mgr'?'block':'none';
  document.getElementById('empAdminView').style.display=which==='emp'?'block':'none';
  document.getElementById('otView').style.display=which==='ot'?'block':'none';
+ document.getElementById('availView').style.display=which==='avail'?'block':'none';
+ document.getElementById('msgView').style.display=which==='msg'?'block':'none';
+ document.getElementById('docsView').style.display=which==='docs'?'block':'none';
+ document.getElementById('repView').style.display=which==='rep'?'block':'none';
  document.getElementById('logView').style.display=which==='log'?'block':'none';
  document.getElementById('backupView').style.display=which==='bak'?'block':'none';
- document.querySelector('.weeknav').style.display=which==='ot'?'none':'';
+ document.querySelector('.weeknav').style.display=(which==='ot'||which==='avail'||which==='msg'||which==='docs')?'none':'';
+ document.getElementById('teamBar').style.display=(which==='msg'||which==='docs'||which==='rep')?'none':'';
  if(which==='mgr'){const ml=document.getElementById('mgrLock');if(ml)ml.style.display='none';document.getElementById('mgrContent').style.display='block';renderMgr();}
  if(which==='emp')renderEmpAdmin();
  if(which==='ot')showOTSub(otSubTab);
+ if(which==='avail')renderAvail();
+ if(which==='msg')renderMsg();
+ if(which==='docs')renderDocs();
+ if(which==='rep')renderRep();
  if(which==='log')renderLog();
  if(which==='bak')renderBackups();
  setTitle();window.scrollTo(0,0);
@@ -1177,6 +1322,11 @@ function initDemo(){
  const backups=[{id:'b1',created_at:H(12),created_by:'Alex Bennett',label:'Automatique (exemple)',data:{shifts:JSON.parse(JSON.stringify(shifts)),paid:JSON.parse(JSON.stringify(paid)),profiles:JSON.parse(JSON.stringify(profiles))}}];
  const off=[{id:'to1',employee_id:'p4',off_date:addDaysISO(wk,2),status:'approved'},{id:'to2',employee_id:'p8',off_date:addDaysISO(wk,3),status:'pending'},{id:'to3',employee_id:'p12',off_date:addDaysISO(wk,1),status:'pending'}];
  DB={profiles,shifts,paid_weeks:paid,audit_log:audit,backups,time_off:off};
+ state.avail={p2:[true,false,true,true,true,true,true],p7:[false,true,true,true,true,false,false],p11:[true,true,true,false,true,true,true],p16:[true,true,true,true,true,false,false]};
+ state.swaps=[{id:'sw1',employee_id:'p3',date:addDaysISO(wk,3),status:'pending'},{id:'sw2',employee_id:'p11',date:addDaysISO(wk,4),status:'pending'}];
+ state.msgs=[{id:'m1',author:'Alex Bennett',title:"Réunion d'équipe vendredi",body:'Courte rencontre à 15h en salle de pause. Présence souhaitée.',ts:Date.now()-3600e3*20},{id:'m2',author:'Sam Rivard',title:'Horaire de la semaine prochaine publié',body:'Vérifiez vos quarts et signalez tout conflit avant jeudi.',ts:Date.now()-3600e3*52}];
+ state.msgSeen=state.msgs.length;
+ state.docs=[{id:'d1',title:"Manuel de l'employé",ack:['p1','p3','p6']},{id:'d2',title:'Politique santé et sécurité',ack:['p1']},{id:'d3',title:'Contrat de travail',ack:[]}];
  sb=makeMock();
 }
 function makeMock(){
