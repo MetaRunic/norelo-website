@@ -471,9 +471,9 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
 .lmega a:hover{background:rgba(87,193,132,.12);color:#fff;}
 .lnav-r{margin-left:auto;display:flex;align-items:center;gap:.6rem;}
 .lnav-r>*{height:40px;display:inline-flex;align-items:center;box-sizing:border-box;margin:0;flex:0 0 auto;}
-.lnav .lt{display:inline-flex;height:40px;border:1.5px solid rgba(148,163,184,.24);border-radius:8px;overflow:hidden;}
-.lnav .lt button{background:transparent;color:#cbd5e1;border:none;padding:0 14px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;}
-.lnav .lt button.on{background:#2f9e5f;color:#fff;}
+.lnav .lt{display:inline-flex;height:40px;background:rgba(148,163,184,.16);border:none;border-radius:10px;padding:3px;gap:3px;}
+.lnav .lt button{background:transparent;color:#cbd5e1;border:none;border-radius:7px;padding:0 14px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;transition:background .15s,color .15s;}
+.lnav .lt button.on{background:#2f9e5f;color:#fff;box-shadow:0 2px 8px rgba(47,158,95,.4);}
 .lnavcta{background:#2f9e5f;color:#fff;border:none;border-radius:9px;height:40px;padding:0 18px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;transition:background .15s;}
 .lnavcta:hover{background:#25814d;}
 .lhero{max-width:1240px;margin:0 auto;display:flex;flex-wrap:wrap;gap:2.6rem;align-items:center;padding:3.4rem 1.4rem 3.4rem;}
@@ -605,6 +605,14 @@ html[data-theme="light"] #lfeatures,html[data-theme="light"] #lindustries,html[d
 html[data-theme="light"] .lcloser{background:linear-gradient(135deg,#d5efe2,#eef1f6 70%);}
 html[data-theme="light"] .lfoot{color:#64748b;border-top-color:rgba(15,23,42,.1);}
 html[data-theme="light"] .lsupc .v{color:#0f172a;}
+html[data-theme="light"] .lbadge{color:#1c7a4a;background:rgba(47,158,95,.12);border-color:rgba(47,158,95,.34);}
+html[data-theme="light"] .lplan li{color:#334155;}
+html[data-theme="light"] .lplan.ghostp .pb{color:#0f172a;border-color:rgba(15,23,42,.22);}
+html[data-theme="light"] .lplan.ghostp .pb:hover{background:rgba(15,23,42,.05);}
+html[data-theme="light"] .lnav .lt{background:rgba(15,23,42,.07);}
+html[data-theme="light"] .lbchip,html[data-theme="light"] .phone .pcard{color:#0f172a;}
+html[data-theme="light"] .tourdim{background:rgba(226,232,240,.5);}
+html[data-theme="light"] .tourveil{background:rgba(226,232,240,.5);}
 @media(max-width:900px){
  .lmenu{display:none;}
  .lhero{grid-template-columns:1fr;gap:2rem;padding-top:2.4rem;}
@@ -1829,7 +1837,7 @@ function startWelcome(){
  _el('landing').style.display='block';
  _el('lbtn').addEventListener('click',()=>{_el('credSticker').classList.remove('show');_hideCap();_clearHi();_hideDim();});
 }
-function runDemo(){_closeWelcome();_el('luser').value='norelo';_el('lpass').value='demo';doLogin();}
+function runDemo(){_closeWelcome();_el('luser').value='';_el('lpass').value='';_el('credSticker').classList.add('show');}
 function _showDim(){_el('tourDim').classList.add('show');}
 function _hideDim(){_el('tourDim').classList.remove('show');}
 let _cx=0,_cy=0;
