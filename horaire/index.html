@@ -166,6 +166,14 @@ h2{font-size:20px;font-weight:800;}
 .otbtn{font-size:12px;font-weight:800;padding:6px 12px;border-radius:8px;background:var(--accent);color:#fff;border:none;cursor:pointer;}
 .otbtn.undo{background:var(--soft);color:var(--gr);border:1px solid var(--bdr);}
 .otpend{font-size:12px;font-weight:800;color:var(--accent-l);}
+.otrow{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;background:var(--panel);border:1px solid var(--bdr);border-radius:11px;padding:1rem 1.2rem;margin-bottom:.7rem;}
+.otrow.done{opacity:.65;}
+.oti .otn{font-weight:800;font-size:17px;}
+.oti .otd{font-size:13px;color:var(--gr);margin-top:2px;}
+.otx{display:inline-flex;align-items:center;gap:.7rem;margin-left:auto;flex-wrap:wrap;}
+.tabbadge{display:none;background:var(--accent);color:#fff;font-size:11px;font-weight:800;border-radius:20px;padding:1px 7px;margin-left:6px;vertical-align:middle;}
+#bottomNav button{position:relative;}
+.navbadge{display:none;position:absolute;top:1px;right:18%;min-width:16px;background:var(--accent);color:#fff;font-size:10px;font-weight:800;border-radius:20px;padding:0 4px;text-align:center;}
 .hintbar{background:rgba(224,71,59,.1);border:1px solid rgba(224,71,59,.32);color:var(--accent-l);border-radius:9px;padding:11px 14px;font-size:14px;font-weight:600;margin-bottom:1rem;line-height:1.45;}
 .ecard.locked{opacity:.6;}
 .ecard.locked select{cursor:not-allowed;}
@@ -317,6 +325,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
       <button id="tabWeek" data-i="tWeek">Semaine</button>
       <button id="tabMgr" data-i="tMgr">Gestion</button>
       <button id="tabEmp" data-i="tEmp">Employes</button>
+      <button id="tabOt" data-i="tOt">Heures sup.<span class="tabbadge" id="otBadge"></span></button>
       <button id="tabLog" data-i="tLog">Journal</button>
       <button id="tabBak" data-i="tBak">Sauvegardes</button>
     </div>
@@ -405,6 +414,14 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
       </div>
     </div>
 
+    <div id="otView" style="display:none">
+      <div class="card">
+        <h3 data-i="otTitle">Approbation des heures supplementaires</h3>
+        <p class="muted" data-i="otSub" style="margin:.4rem 0 1rem">Les heures au-dela de 8h par jour sont payees a 16$/h une fois approuvees.</p>
+        <div id="otList"></div>
+      </div>
+    </div>
+
     <div id="logView" style="display:none">
       <div class="logfilters">
         <select id="fltPerson"></select>
@@ -421,6 +438,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     <button data-tab="week"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2.5v4M16 2.5v4M7 13h2M11 13h2M15 13h2M7 17h2M11 17h2"/></svg><span data-i="tWeek">Semaine</span></button>
     <button data-tab="mgr"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M14.5 9.3c-.4-.9-1.4-1.5-2.6-1.5-1.5 0-2.6.8-2.6 1.9 0 1 .8 1.6 2.6 2 1.9.4 2.7 1 2.7 2.1 0 1.1-1.2 1.9-2.7 1.9-1.3 0-2.4-.6-2.8-1.6"/></svg><span data-i="tMgr">Gestion</span></button>
     <button data-tab="emp"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16.5 5.3a3 3 0 0 1 0 5.4M18 19a5.5 5.5 0 0 0-3-4.9"/></svg><span data-i="tEmp">Employes</span></button>
+    <button data-tab="ot"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 1.6"/></svg><span data-i="tOtShort">Sup.</span><span class="navbadge" id="otBadgeNav"></span></button>
     <button data-tab="log"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6M9 8h2"/></svg><span data-i="tLog">Journal</span></button>
     <button data-tab="bak"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v5h7"/><rect x="8" y="13" width="8" height="5"/></svg><span data-i="tBak">Sauvegardes</span></button>
   </nav>
@@ -485,7 +503,7 @@ const T={
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Debut',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
    paid:'Paye',unpaid:'A payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Deja paye',kUnpaid:'Reste a payer',del:'Retirer cet employe?',user:"Nom d'utilisateur",
    chooseWeek:'Choisir une semaine',ws_past:'Passee',ws_cur:'En cours',ws_up:'A venir',teamAll:'Toutes',teamExt:'Exterieur',teamInt:'Interieur',roleEmp:'Employe',roleMgr:'Gestionnaire',resetPwd:'MDP',clearF:'Effacer',backupsT:'Sauvegardes',backupNow:'Sauvegarder maintenant',versionT:'Version et mise a jour',forceUpd:'Forcer la mise a jour pour tous',
-   locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.<br><strong>Un jour verrouille a corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit etre apres l'heure de debut.",hoursHi:'Heures de quart regulieres en surbrillance',preseasonLbl:'Pre-saison',preseasonNote:"Pre-saison : heures de reference (avant l'ouverture du 17 aout).",lunch:'Pause 30 min',otPending:'en attente',otOk:'approuvee',approve:'Approuver',revoke:'Retirer'},
+   locked:'Verrouille',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouilles.<br><strong>Un jour verrouille a corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Verification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit etre apres l'heure de debut.",hoursHi:'Heures de quart regulieres en surbrillance',preseasonLbl:'Pre-saison',preseasonNote:"Pre-saison : heures de reference (avant l'ouverture du 17 aout).",lunch:'Pause 30 min',otPending:'en attente',otOk:'approuvee',approve:'Approuver',revoke:'Retirer',tOt:'Heures sup.',tOtShort:'Sup.',otTitle:'Approbation des heures supplementaires',otSub:'Les heures au-dela de 8h par jour sont payees a 16$/h une fois approuvees.',otNone:'Aucune heure supplementaire.'},
  en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',tEmp:'Employees',tLog:'Activity',tBak:'Backups',logout:'Log out',
    employees:'Employees and rates',add:'Add',legend:'Roles and needs',export:'Save a copy',import:'Restore',
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
@@ -497,7 +515,7 @@ const T={
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
    paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Total hours',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',del:'Remove this employee?',user:'Username',
    chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',teamExt:'Exterior',teamInt:'Interior',roleEmp:'Employee',roleMgr:'Manager',resetPwd:'PW',clearF:'Clear',backupsT:'Backups',backupNow:'Backup now',versionT:'Version and update',forceUpd:'Force update for everyone',
-   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted',preseasonLbl:'Pre-season',preseasonNote:'Pre-season: reference hours (before the Aug 17 opening).',lunch:'30-min lunch',otPending:'pending',otOk:'approved',approve:'Approve',revoke:'Undo'}
+   locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted',preseasonLbl:'Pre-season',preseasonNote:'Pre-season: reference hours (before the Aug 17 opening).',lunch:'30-min lunch',otPending:'pending',otOk:'approved',approve:'Approve',revoke:'Undo',tOt:'Overtime',tOtShort:'OT',otTitle:'Overtime approvals',otSub:'Hours beyond 8h per day are paid at $16/h once approved.',otNone:'No overtime.'}
 };
 let state={employees:[],weeks:{},current:null},lang='fr',selDay=0,mgrUnlocked=false,isEmployee=false,currentEmp=null,teamFilter='all',myId=null,myEmail='';
 
@@ -660,10 +678,22 @@ async function toggleLunch(empId,dayIdx,checked){const w=state.weeks[state.curre
  const err=await saveShift(empId,state.current,dayIdx,day);
  if(err){day.lunch=prevL;day.ot=prevO;rerenderDayViews();showToast(lang==='fr'?'Non enregistre':'Not saved',false);}
  else showToast(lang==='fr'?'Enregistre':'Saved',true);}
-async function setOT(empId,dayIdx,val){const w=state.weeks[state.current];const day=w.data[empId][DAYS[dayIdx]];const prev=day.ot;day.ot=val;rerenderDayViews();
- const err=await saveShift(empId,state.current,dayIdx,day);
- if(err){day.ot=prev;rerenderDayViews();showToast(lang==='fr'?'Refuse':'Refused',false);}
- else{showToast(val?(lang==='fr'?'Heures sup. approuvees':'Overtime approved'):(lang==='fr'?'Retire':'Undone'),true);const em=empById(empId);logAction(val?'approve_ot':'revoke_ot',(em?em.name:'')+' '+addDaysISO(state.current,dayIdx));}}
+async function setOT(empId,weekKey,dayIdx,val){const w=state.weeks[weekKey];if(!w)return;const day=w.data[empId][DAYS[dayIdx]];const prev=day.ot;day.ot=val;
+ renderOT();if(weekKey===state.current)rerenderDayViews();else{renderWeekBar();if(mgrUnlocked)renderMgr();}
+ const err=await saveShift(empId,weekKey,dayIdx,day);
+ if(err){day.ot=prev;renderOT();if(weekKey===state.current)rerenderDayViews();showToast(lang==='fr'?'Refuse':'Refused',false);alert((lang==='fr'?'Refuse : ':'Refused: ')+(err.message||''));}
+ else{showToast(val?(lang==='fr'?'Heures sup. approuvees':'Overtime approved'):(lang==='fr'?'Retire':'Undone'),true);const em=empById(empId);logAction(val?'approve_ot':'revoke_ot',(em?em.name:'')+' '+addDaysISO(weekKey,dayIdx));}}
+function otPendingCount(){let n=0;wkKeys().forEach(wk=>{const w=state.weeks[wk];adminEmps().forEach(e=>DAYS.forEach((dk,i)=>{const day=w.data[e.id][dk];if(otHours(day,e)>0&&!otApproved(day))n++;}));});return n;}
+function updateOTBadge(n){if(n==null)n=otPendingCount();['otBadge','otBadgeNav'].forEach(id=>{const b=document.getElementById(id);if(!b)return;if(n>0){b.textContent=n;b.style.display='inline-block';}else{b.textContent='';b.style.display='none';}});}
+function renderOT(){const t=T[lang];const el=document.getElementById('otList');if(!el)return;
+ const rows=[];wkKeys().forEach(wk=>{const w=state.weeks[wk];adminEmps().forEach(e=>{DAYS.forEach((dk,i)=>{const day=w.data[e.id][dk];const ot=otHours(day,e);if(ot>0)rows.push({e,wk,i,day,ot,dISO:addDaysISO(wk,i),appr:otApproved(day)});});});});
+ rows.sort((a,b)=>((a.appr?1:0)-(b.appr?1:0))||(a.dISO<b.dISO?1:-1));
+ updateOTBadge(rows.filter(r=>!r.appr).length);
+ if(!rows.length){el.innerHTML='<div class="muted" style="padding:1rem">'+t.otNone+'</div>';return;}
+ el.innerHTML=rows.map(r=>{const dObj=new Date(r.dISO+'T00:00:00');const dlabel=t.days[(dObj.getDay()+6)%7]+' '+fmtDate(r.dISO,0);
+  return '<div class="otrow'+(r.appr?' done':'')+'"><div class="oti"><div class="otn">'+esc(r.e.name)+'</div><div class="otd">'+dlabel+' &middot; '+(r.day.start||'--')+'-'+(r.day.end||'--')+' &middot; '+t.weekOf+' '+fmtLong(r.wk)+'</div></div>'
+   +'<div class="otx"><span class="otinfo '+(r.appr?'ok':'pend')+'">+'+r.ot.toFixed(2)+'h '+(r.appr?t.otOk:t.otPending)+'</span>'
+   +'<button class="otbtn'+(r.appr?' undo':'')+'" data-emp="'+r.e.id+'" data-wk="'+r.wk+'" data-di="'+r.i+'" data-otv="'+(r.appr?'0':'1')+'">'+(r.appr?t.revoke:t.approve)+'</button></div></div>';}).join('');}
 function renderDayList(){
  const w=state.weeks[state.current];const t=T[lang];const dk=DAYS[selDay];let h='';const _dISO=addDaysISO(w.start,selDay);if(isPreseason(_dISO))h='<div class="preseasonbar">'+t.preseasonNote+'</div>';
  const list=adminEmps().slice().sort((a,b)=>{if(a.id===myId)return -1;if(b.id===myId)return 1;return a.name.localeCompare(b.name);});
@@ -672,7 +702,7 @@ function renderDayList(){
    +'<div class="etime"><div class="tfield"><label>'+t.start+'</label>'+timeInput('start',day.start,false)+'</div>'
    +'<div class="tfield"><label>'+t.end+'</label>'+timeInput('end',day.end,false)+'</div></div>'
    +'<div class="ecalc"><div class="eh">'+ph.toFixed(2)+'h</div></div>'
-   +exRow(day,e,selDay,true,!isEmployee)
+   +exRow(day,e,selDay,true,false)
    +'</div>';});
  document.getElementById('dayList').innerHTML=h;
 }
@@ -730,7 +760,7 @@ function applyLang(){document.querySelectorAll('[data-i]').forEach(el=>{const k=
  document.getElementById('luser').placeholder=T[lang].user;document.getElementById('lpass').placeholder=lang==='fr'?'Mot de passe':'Password';
  document.getElementById('empUser').placeholder=T[lang].user;document.getElementById('empPass').placeholder=lang==='fr'?'Mot de passe':'Password';
  document.documentElement.lang=lang;if(document.getElementById('app').style.display==='block')renderAll();}
-function renderAll(){renderWeekBar();if(isEmployee){renderCalendar(document.getElementById('calEmp'),currentEmp);renderEmp();}else{renderCalendar(document.getElementById('calAdmin'),null);renderDayPick();renderDayList();renderWeek();setTitle();if(mgrUnlocked){renderMgr();renderEmpAdmin();}}}
+function renderAll(){renderWeekBar();if(isEmployee){renderCalendar(document.getElementById('calEmp'),currentEmp);renderEmp();}else{renderCalendar(document.getElementById('calAdmin'),null);renderDayPick();renderDayList();renderWeek();setTitle();updateOTBadge();if(mgrUnlocked){renderMgr();renderEmpAdmin();}}}
 function setTitle(){if(isEmployee)return;const t=T[lang];const cur=document.querySelector('.tabs button.on').id;
  document.getElementById('viewTitle').textContent=cur==='tabDay'?t.days[selDay]:cur==='tabWeek'?t.week:cur==='tabEmp'?t.employees:cur==='tabLog'?t.tLog:cur==='tabBak'?t.backupsT:t.payTitle;}
 
@@ -793,7 +823,8 @@ function bindApp(){
   document.getElementById('tabBak').onclick=()=>tab('bak');
   document.getElementById('daypick').addEventListener('click',e=>{const b=e.target.closest('[data-day]');if(!b)return;selDay=+b.getAttribute('data-day');renderDayPick();renderDayList();setTitle();});
   document.getElementById('dayList').addEventListener('change',e=>{if(!e.target.classList.contains('lchk'))return;const c=e.target.closest('.ecard');toggleLunch(c.getAttribute('data-id'),+e.target.getAttribute('data-day'),e.target.checked);});
-  document.getElementById('dayList').addEventListener('click',e=>{const b=e.target.closest('.otbtn');if(!b)return;const c=b.closest('.ecard');setOT(c.getAttribute('data-id'),+b.getAttribute('data-otd'),b.getAttribute('data-otv')==='1');});
+  document.getElementById('tabOt').onclick=()=>tab('ot');
+  document.getElementById('otList').addEventListener('click',e=>{const b=e.target.closest('.otbtn');if(!b)return;setOT(b.getAttribute('data-emp'),b.getAttribute('data-wk'),+b.getAttribute('data-di'),b.getAttribute('data-otv')==='1');});
   document.getElementById('dayList').addEventListener('click',e=>{const b=e.target.closest('.tbtn');if(!b||b.disabled)return;const c=b.closest('.ecard');const f=b.getAttribute('data-f');
    openTimePicker({mode:'day',id:c.getAttribute('data-id'),f:f,cur:b.getAttribute('data-val'),title:f==='start'?T[lang].start:T[lang].end});});
   document.getElementById('addEmp').onclick=async()=>{
@@ -877,13 +908,16 @@ function tab(which){
  const te=document.getElementById('tabEmp');if(te)te.classList.toggle('on',which==='emp');
  const tl=document.getElementById('tabLog');if(tl)tl.classList.toggle('on',which==='log');
  const tbk=document.getElementById('tabBak');if(tbk)tbk.classList.toggle('on',which==='bak');
+ const tot=document.getElementById('tabOt');if(tot)tot.classList.toggle('on',which==='ot');
  document.querySelectorAll('#bottomNav button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-tab')===which));
  document.getElementById('dayView').style.display=which==='day'?'block':'none';document.getElementById('weekView').style.display=which==='week'?'block':'none';document.getElementById('mgr').style.display=which==='mgr'?'block':'none';
  document.getElementById('empAdminView').style.display=which==='emp'?'block':'none';
+ document.getElementById('otView').style.display=which==='ot'?'block':'none';
  document.getElementById('logView').style.display=which==='log'?'block':'none';
  document.getElementById('backupView').style.display=which==='bak'?'block':'none';
  if(which==='mgr'){const ml=document.getElementById('mgrLock');if(ml)ml.style.display='none';document.getElementById('mgrContent').style.display='block';renderMgr();}
  if(which==='emp')renderEmpAdmin();
+ if(which==='ot')renderOT();
  if(which==='log')renderLog();
  if(which==='bak')renderBackups();
  setTitle();window.scrollTo(0,0);
