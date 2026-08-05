@@ -58,6 +58,9 @@ optgroup{color:var(--gr);font-weight:700;}
 .tourdim.show{opacity:1;}
 .tourveil{position:fixed;inset:0;z-index:40;background:rgba(6,10,18,.5);backdrop-filter:blur(3.5px);-webkit-backdrop-filter:blur(3.5px);opacity:0;pointer-events:none;transition:opacity .5s;}
 .tourraise{position:relative;z-index:45;}
+.rail.tourrail{width:242px!important;overflow:visible!important;z-index:46;}
+.rail.tourrail .rlbl,.rail.tourrail .raillogo .rfull{opacity:1;}
+.rail.tourrail .raillogo .rmark{opacity:0;}
 .tourveil.show{opacity:1;}
 #tourBlock{position:fixed;inset:0;z-index:1340;background:transparent;display:none;touch-action:none;cursor:progress;}
 .tourhi{position:relative;z-index:45;transform:scale(1.09);outline:3px solid var(--accent)!important;outline-offset:4px;box-shadow:0 0 0 8px rgba(47,158,95,.20),0 18px 55px rgba(0,0,0,.55);border-radius:10px;transition:transform .5s cubic-bezier(.34,1.4,.6,1),outline .25s,box-shadow .35s;}
@@ -2003,7 +2006,7 @@ function _showVeil(){_el('tourVeil').classList.add('show');}
 function _hideVeil(){_el('tourVeil').classList.remove('show');}
 function navEl(){const t=document.querySelector('.tabs');return (t&&t.offsetParent!==null)?t:document.getElementById('bottomNav');}
 function navBtn(w){const t=document.querySelector('.tabs');
- if(t&&t.offsetParent!==null)return document.getElementById('tab'+({day:'Day',week:'Week',mgr:'Mgr',emp:'Emp',log:'Log',bak:'Bak'}[w]));
+ if(t&&t.offsetParent!==null)return document.getElementById('tab'+({day:'Day',week:'Week',sched:'Sched',mgr:'Mgr',emp:'Emp',ot:'Ot',avail:'Avail',msg:'Msg',docs:'Docs',rep:'Rep',log:'Log',bak:'Bak'}[w]));
  return document.querySelector('#bottomNav [data-tab="'+w+'"]');}
 async function _spot(el,text,zoom){if(!el)return;const tall=el.getBoundingClientRect().height>window.innerHeight*0.58;el.scrollIntoView({behavior:'smooth',block:tall?'start':'center'});await _sleep(820);(zoom?_hi:_hiBig)(el);_moveCursor(el);_cap(text);await _sleep(150);}
 async function _act(el,travel){if(!el)return;el.scrollIntoView({behavior:'smooth',block:'center'});await _sleep(520);_moveCursor(el);await _sleep(travel||780);await _clickFx();el.click();if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();}
@@ -2038,15 +2041,23 @@ async function runAppTour(startL){
   if(tbtn){await _act(tbtn);await P(800);await _spot(document.getElementById('timeGrid'),fr?"...et on choisit dans une grille simple. Les heures habituelles sont surlignées en vert.":"...and pick from a simple grid. Usual hours are highlighted in green.",false);await P(3400);await _act(document.getElementById('timeClose'));await P(800);}
 
   // --- Navigation + each section ---
-  await _spot(navEl(),fr?"Passons en revue les sections, ici en haut.":"Let's go through the sections, up here.",false);await P(2800);
+  document.getElementById('railNav').classList.add('tourrail');await P(400);
+  await _spot(navEl(),fr?"Toutes les sections sont dans le menu de gauche. Il s'ouvre au survol.":"All the sections live in the left menu. It opens on hover.",false);await P(2900);
   await _act(navBtn('week'));await P(850);await _spot(document.querySelector('#weekView .wscroll'),fr?"Semaine : un tableau clair avec le total d'heures de chaque employé.":"Week: a clear grid with each employee's weekly hour total.",false);await P(3200);
+  await _act(navBtn('sched'));await P(850);await _spot(document.querySelector('#schedView .schedwrap')||document.getElementById('schedView'),fr?"Planification : l'horaire complet de la semaine, avec quarts ouverts, postes colorés et congés.":"Schedule: the full week roster, with open shifts, color-coded positions and time off.",false);await P(3400);
   await _act(navBtn('mgr'));await P(850);await _spot(document.getElementById('mgrKpis'),fr?"Gestion : paie brute, déjà payé et reste à payer, d'un coup d'œil.":"Manager: gross pay, already paid and still owed, at a glance.",false);await P(2900);
   await _spot(document.getElementById('mgrTable'),fr?"En dessous, le détail par personne, un bouton Payé, et un calculateur de pourboires.":"Below, the per-person detail, a Paid button, and a tip calculator.",false);await P(3200);
   await _act(navBtn('emp'));await P(850);await _spot(document.getElementById('empAdmin'),fr?"Employés : chaque ligne montre le nom, le département, le taux et le rôle.":"Employees: each row shows the name, department, rate and permission level.",false);await P(3200);
   await _spot(document.querySelector('#empAdminView .frow'),fr?"On ajoute une nouvelle personne juste ici.":"You add a new person right here.",false);await P(2600);
+  await _act(navBtn('ot'));await P(850);await _spot(document.getElementById('otView'),fr?"Approbations : heures supplémentaires et demandes de congé à valider, avec un compteur en direct.":"Approvals: overtime and time-off requests to review, with a live counter.",false);await P(3400);
+  await _act(navBtn('avail'));await P(850);await _spot(document.getElementById('availView'),fr?"Disponibilités : qui est disponible quel jour, pour chaque employé.":"Availability: who is available which day, for each employee.",false);await P(3000);
+  await _act(navBtn('msg'));await P(850);await _spot(document.getElementById('msgView'),fr?"Annonces : un fil pour communiquer avec toute l'équipe.":"Announcements: a feed to reach the whole team.",false);await P(3000);
+  await _act(navBtn('docs'));await P(850);await _spot(document.getElementById('docsView'),fr?"Documents : politiques et fichiers partagés, avec suivi de lecture.":"Documents: shared policies and files, with read tracking.",false);await P(3000);
+  await _act(navBtn('rep'));await P(850);await _spot(document.getElementById('repView'),fr?"Rapports : heures et paie par département, en un coup d'œil.":"Reports: hours and pay by department, at a glance.",false);await P(3000);
   await _act(navBtn('log'));await P(850);await _spot(document.getElementById('logList'),fr?"Journal : chaque action importante est enregistrée, avec des filtres.":"Activity: every important action is recorded, with filters.",false);await P(3000);
   await _act(navBtn('bak'));await P(850);await _spot(document.getElementById('backupList'),fr?"Sauvegardes : on peut sauvegarder et restaurer l'horaire au complet.":"Backups: you can save and restore the entire schedule.",false);await P(3000);
   await _act(navBtn('day'));await P(850);
+  document.getElementById('railNav').classList.remove('tourrail');
 
   // --- View as employee: actually do it ---
   await _spot(document.getElementById('viewAsBtn'),fr?"Dernier point : voir l'app comme un employé. On clique...":"Last thing: seeing the app as an employee. Let's click...",true);await P(2600);
@@ -2058,6 +2069,7 @@ async function runAppTour(startL){
   await _spot(document.getElementById('previewExit'),fr?"On revient à la gestion avec ce bouton.":"Return to the manager side with this button.",true);await P(2600);
   await _act(document.getElementById('previewExit'));await P(1000);
  }catch(e){}
+ const _rn=document.getElementById('railNav');if(_rn)_rn.classList.remove('tourrail');
  _el('tourBlock').style.display='none';_el('luser').readOnly=false;_el('lpass').readOnly=false;
  _clearHi();_hideVeil();_el('tourCursor').classList.remove('show');_hiEl=null;
  _cap(fr?"Voilà, la visite est terminée. À vous d'explorer !":"That's the full tour. Now explore on your own!");
