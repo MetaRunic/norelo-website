@@ -84,20 +84,20 @@ optgroup{color:var(--gr);font-weight:700;}
 .lt button.on{background:var(--accent);color:#fff;}
 
 #app{display:none;}
-header{position:sticky;top:0;z-index:50;background:rgba(16,22,30,.95);backdrop-filter:blur(18px);border-bottom:1px solid var(--bdr);padding:1rem 1.4rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+header{position:sticky;top:0;z-index:50;background:rgba(16,22,30,.95);backdrop-filter:blur(18px);border-bottom:1px solid var(--bdr);min-height:64px;padding:0 1.4rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
 header .logo{font-size:24px;}
 .spacer{flex:1;}
-.rail{display:none;position:fixed;left:0;top:0;bottom:0;width:66px;z-index:70;background:rgba(11,16,26,.98);backdrop-filter:blur(18px);border-right:1px solid var(--bdr);flex-direction:column;padding:.6rem .5rem;overflow-x:hidden;overflow-y:auto;transition:width .22s cubic-bezier(.4,0,.2,1);}
+.rail{display:none;position:fixed;left:0;top:0;bottom:0;width:66px;z-index:70;background:rgba(11,16,26,.98);backdrop-filter:blur(18px);border-right:1px solid var(--bdr);flex-direction:column;padding:0;overflow-x:hidden;overflow-y:auto;transition:width .22s cubic-bezier(.4,0,.2,1);}
 .rail::-webkit-scrollbar{width:0;}
 .rail:hover{width:242px;box-shadow:16px 0 46px rgba(0,0,0,.42);}
-.raillogo{position:relative;height:46px;margin:0 0 .7rem;font-weight:800;font-size:23px;color:#fff;white-space:nowrap;letter-spacing:-.5px;}
+.raillogo{position:relative;flex:0 0 auto;height:64px;border-bottom:1px solid var(--bdr);font-weight:800;font-size:23px;color:#fff;white-space:nowrap;letter-spacing:-.5px;}
 .raillogo .rmark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;transition:opacity .2s;}
-.raillogo .rfull{position:absolute;top:0;left:16px;height:46px;display:flex;align-items:center;color:#fff;opacity:0;transition:opacity .2s;}
+.raillogo .rfull{position:absolute;top:0;left:19px;height:64px;display:flex;align-items:center;color:#fff;opacity:0;transition:opacity .2s;}
 .raillogo .lo{color:var(--accent-l);}
 .raillogo .dot{display:inline-block;width:6px;height:6px;background:var(--accent);border-radius:50%;margin-left:4px;position:relative;top:-.55em;animation:pu 2s infinite;}
 .rail:hover .raillogo .rmark{opacity:0;}
 .rail:hover .raillogo .rfull{opacity:1;}
-.tabs{display:flex;flex-direction:column;gap:3px;flex:1;border-top:1px solid var(--bdr);padding-top:.85rem;margin-top:.2rem;}
+.tabs{display:flex;flex-direction:column;gap:3px;flex:1;padding:.7rem 8px 8px;}
 .tabs button{display:flex;align-items:center;height:46px;padding:0;border:none;background:transparent;color:var(--gr);border-radius:10px;cursor:pointer;font-size:15px;font-weight:700;white-space:nowrap;position:relative;width:100%;transition:background .15s,color .15s;}
 svg.ric{flex:0 0 22px;width:22px;height:22px;margin:0 14px;}
 .tabs button .rlbl{opacity:0;transition:opacity .2s;}
