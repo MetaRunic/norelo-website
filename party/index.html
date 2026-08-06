@@ -242,27 +242,45 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/peerjs@1/dist/peerjs.min.js"></script>
+<!-- Firebase (compat build, no npm / no build step) -->
+<script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-auth-compat.js"></script>
 <script>
-// ---------- Config ----------
-var PREFIX = "norelo-party-";
+// =====================================================================
+//  PASTE YOUR FIREBASE CONFIG HERE
+//  (Firebase console > Project settings > Your apps > Web app)
+//  Keep the databaseURL line. Everything else can stay as copied.
+// =====================================================================
+var firebaseConfig = {
+  apiKey: "AIzaSyBQ41HgUmgiD9jh0tNXQwbCSZNHbVbRjFc",
+  authDomain: "norelo-party.firebaseapp.com",
+  databaseURL: "https://norelo-party-default-rtdb.firebaseio.com",
+  projectId: "norelo-party",
+  storageBucket: "norelo-party.firebasestorage.app",
+  messagingSenderId: "32473209595",
+  appId: "1:32473209595:web:7e91d4ca8160fdc6272e5e",
+  measurementId: "G-KML5GVG4S5"
+};
+// =====================================================================
+
+// ---------- Constants ----------
 var ALPHA = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; // no 0 O 1 I L
 var COLORS = ["#2563eb","#22c55e","#f59e0b","#ef4444","#a855f7","#ec4899","#14b8a6","#f97316"];
-var PEER_OPTS = { debug:1, config:{ iceServers:[
-  {urls:"stun:stun.l.google.com:19302"},
-  {urls:"stun:global.stun.twilio.com:3478"}
-]}};
 
 // ---------- State ----------
-var peer = null;
-var mode = null;              // "host" | "join"
-var intent = null;
-var me = { id:null, name:"", color:COLORS[0] };
+var db = null, auth = null;
+var configMissing = false;
+var me = { name:"", color:COLORS[0] };
+var myId = null;
+var authReady = false;
 var roomCode = "";
-var conns = {};               // host: peerId -> connection
-var players = [];             // host: authoritative roster
-var hostConn = null;          // player: connection to host
-var joinTimer = null;
+var amHost = false;
+var players = [];
+var roomRef = null;
+var currentScreen = "s-home";
+var intent = null;
+var closedByMe = false;
 
 // ---------- Helpers ----------
 function $(id){ return document.getElementById(id); }
@@ -270,6 +288,7 @@ function show(id){
   var s = document.getElementsByClassName("screen");
   for(var i=0;i<s.length;i++){ s[i].classList.remove("on"); }
   $(id).classList.add("on");
+  currentScreen = id;
 }
 function initials(n){
   n = (n||"").trim();
@@ -295,6 +314,18 @@ function setStatus(kind, txt){
   d.className = "sdot" + (kind==="wait"?" wait":kind==="ok"?" ok":kind==="err"?" err":"");
   $("stext").textContent = txt;
 }
+function waitAuth(){
+  return new Promise(function(res){
+    if(authReady) return res();
+    var t = setInterval(function(){ if(authReady){ clearInterval(t); res(); } }, 60);
+  });
+}
+function showConfigOverlay(){
+  var d = document.createElement("div");
+  d.style.cssText = "position:fixed;inset:0;z-index:999;background:#070f2b;display:flex;align-items:center;justify-content:center;padding:30px;text-align:center;";
+  d.innerHTML = '<div style="max-width:340px;"><div style="font-size:2rem;margin-bottom:14px;">\u2699\uFE0F</div><div style="font-size:1.15rem;font-weight:700;margin-bottom:10px;color:#e9efff;">Firebase pas encore configure</div><div style="color:#8ea0cc;font-size:.92rem;line-height:1.5;">Colle ta config Firebase dans index.html (la variable firebaseConfig, en haut du script), puis redeploie.</div></div>';
+  document.body.appendChild(d);
+}
 
 // ---------- Profile ----------
 function buildSwatches(){
@@ -313,6 +344,7 @@ function updatePreview(){
   pv.style.background = me.color;
 }
 function go(which){
+  if(configMissing) return;
   intent = which;
   try{
     var sn = localStorage.getItem("norelo_party_name");
@@ -333,139 +365,122 @@ function afterProfile(){
     localStorage.setItem("norelo_party_name", me.name);
     localStorage.setItem("norelo_party_color", me.color);
   }catch(e){}
-  if(intent === "host"){ createRoom(0); }
+  if(intent === "host"){ createRoom(); }
   else { $("codeIn").value=""; $("joinBtn").disabled=true; show("s-join"); setTimeout(function(){ $("codeIn").focus(); },250); }
 }
 
-// ---------- Host ----------
-function createRoom(attempt){
-  mode = "host";
-  roomCode = genCode();
+// ---------- Lobby shells ----------
+function showHostLobby(){
+  amHost = true;
   show("s-lobby");
   $("hostBox").style.display = "block";
   $("playerBox").style.display = "none";
   $("hostCtrl").style.display = "block";
   $("playerCtrl").style.display = "none";
-  $("lobbyCode").textContent = roomCode;
-  setStatus("wait","Creation de la partie");
-  players = [{ id:"host", name:me.name, color:me.color, host:true }];
-  renderPlayers();
-
-  if(typeof Peer === "undefined"){ toast("Serveur de jeu non charge. Verifie ta connexion."); return; }
-
-  peer = new Peer(PREFIX + roomCode, PEER_OPTS);
-
-  peer.on("open", function(){
-    setStatus("ok","Partie prete");
-  });
-  peer.on("connection", function(conn){
-    conn.on("data", function(d){ hostHandle(conn, d); });
-    conn.on("close", function(){ removePlayer(conn.peer); });
-    conn.on("error", function(){});
-  });
-  peer.on("disconnected", function(){ try{ peer.reconnect(); }catch(e){} });
-  peer.on("error", function(err){
-    if(err && err.type === "unavailable-id" && attempt < 5){
-      try{ peer.destroy(); }catch(e){}
-      createRoom(attempt+1);
-    } else if(err && err.type !== "peer-unavailable"){
-      setStatus("err","Erreur");
-      toast("Impossible de creer la partie. Reessaie dans un instant.");
-    }
-  });
+  $("lobbyCode").textContent = "----";
+  players = []; renderPlayers();
 }
-function hostHandle(conn, d){
-  if(!d || d.t !== "join") return;
-  var p = {
-    id: conn.peer,
-    name: (d.name||"Joueur").toString().slice(0,14),
-    color: (COLORS.indexOf(d.color)>=0 ? d.color : "#2563eb"),
-    host: false
-  };
-  conns[conn.peer] = conn;
-  players = players.filter(function(x){ return x.id !== conn.peer; });
-  players.push(p);
-  try{ conn.send({ t:"welcome", you:p }); }catch(e){}
-  broadcast({ t:"roster", players:players });
-  renderPlayers();
-}
-function removePlayer(peerId){
-  delete conns[peerId];
-  players = players.filter(function(x){ return x.id !== peerId; });
-  broadcast({ t:"roster", players:players });
-  renderPlayers();
-}
-function broadcast(msg){
-  for(var k in conns){ if(conns.hasOwnProperty(k)){ try{ conns[k].send(msg); }catch(e){} } }
-}
-function startGame(){
-  broadcast({ t:"start" });
-  enterGame();
-}
-function backToLobby(){
-  broadcast({ t:"lobby" });
-  show("s-lobby");
-}
-
-// ---------- Player ----------
-function doJoin(){
-  var code = $("codeIn").value.toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,4);
-  if(code.length !== 4) return;
-  mode = "join";
-  roomCode = code;
+function showPlayerLobby(code){
+  amHost = false;
   show("s-lobby");
   $("hostBox").style.display = "none";
   $("playerBox").style.display = "block";
   $("hostCtrl").style.display = "none";
   $("playerCtrl").style.display = "block";
   $("lobbyCode2").textContent = code;
+  players = []; renderPlayers();
+}
+
+// ---------- Create (host) ----------
+async function createRoom(){
+  if(configMissing) return;
+  showHostLobby();
+  setStatus("wait","Creation de la partie");
+  await waitAuth();
+  var rRef, attempt = 0;
+  do {
+    roomCode = genCode();
+    rRef = db.ref("rooms/" + roomCode);
+    var snap = await rRef.once("value");
+    if(!snap.exists()) break;
+    attempt++;
+  } while(attempt < 8);
+  try {
+    amHost = true;
+    $("lobbyCode").textContent = roomCode;
+    await rRef.set({
+      createdAt: firebase.database.ServerValue.TIMESTAMP,
+      hostId: myId,
+      status: "lobby"
+    });
+    var meRef = rRef.child("players/" + myId);
+    await meRef.set({ name:me.name, color:me.color, host:true, joinedAt:firebase.database.ServerValue.TIMESTAMP });
+    meRef.onDisconnect().remove();
+    subscribeRoom(roomCode);
+    setStatus("ok","Partie prete");
+  } catch(e){
+    toast("Impossible de creer la partie.");
+    setStatus("err","Erreur");
+  }
+}
+
+// ---------- Join (player) ----------
+async function doJoin(){
+  if(configMissing) return;
+  var code = $("codeIn").value.toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,4);
+  if(code.length !== 4) return;
+  showPlayerLobby(code);
   setStatus("wait","Connexion");
-  players = [];
-  renderPlayers();
-
-  if(typeof Peer === "undefined"){ toast("Serveur de jeu non charge. Verifie ta connexion."); return; }
-
-  peer = new Peer(undefined, PEER_OPTS);
-  peer.on("open", function(){
-    var conn = peer.connect(PREFIX + code, { reliable:true });
-    hostConn = conn;
-    joinTimer = setTimeout(function(){
-      if(!conn.open){
-        toast("Aucune partie trouvee avec ce code.");
-        teardown();
-        show("s-join");
-      }
-    }, 9000);
-    conn.on("open", function(){
-      clearTimeout(joinTimer);
-      setStatus("ok","Connecte");
-      try{ conn.send({ t:"join", name:me.name, color:me.color }); }catch(e){}
-    });
-    conn.on("data", function(d){ playerHandle(d); });
-    conn.on("close", function(){
-      setStatus("err","Deconnecte");
-      toast("Connexion perdue avec l'hote.");
-    });
-    conn.on("error", function(){});
-  });
-  peer.on("disconnected", function(){ try{ peer.reconnect(); }catch(e){} });
-  peer.on("error", function(err){
-    clearTimeout(joinTimer);
-    if(err && err.type === "peer-unavailable"){ toast("Aucune partie trouvee avec ce code."); }
-    else { toast("Erreur de connexion. Reessaie."); }
-    teardown();
+  await waitAuth();
+  try {
+    var rRef = db.ref("rooms/" + code);
+    var snap = await rRef.once("value");
+    if(!snap.exists()){ toast("Aucune partie trouvee avec ce code."); show("s-join"); return; }
+    roomCode = code;
+    amHost = false;
+    var meRef = rRef.child("players/" + myId);
+    await meRef.set({ name:me.name, color:me.color, host:false, joinedAt:firebase.database.ServerValue.TIMESTAMP });
+    meRef.onDisconnect().remove();
+    subscribeRoom(code);
+    setStatus("ok","Connecte");
+  } catch(e){
+    toast("Erreur de connexion. Reessaie.");
     show("s-join");
+  }
+}
+
+// ---------- Live room listener (single source of truth) ----------
+function subscribeRoom(code){
+  detachRoom();
+  roomRef = db.ref("rooms/" + code);
+  roomRef.on("value", function(snap){
+    var data = snap.val();
+    if(!data){ handleRoomClosed(); return; }
+    var pobj = data.players || {};
+    players = Object.keys(pobj).map(function(id){
+      return { id:id, name:pobj[id].name, color:pobj[id].color, host:!!pobj[id].host, joinedAt:pobj[id].joinedAt||0 };
+    });
+    players.sort(function(a,b){ return (b.host?1:0)-(a.host?1:0) || a.joinedAt - b.joinedAt; });
+    amHost = (data.hostId === myId);
+
+    // screen transitions driven by shared status
+    if(data.status === "playing" && currentScreen === "s-lobby"){ enterGame(); }
+    else if(data.status !== "playing" && currentScreen === "s-game"){ show("s-lobby"); }
+
+    if(currentScreen === "s-lobby"){ renderPlayers(); }
+    else if(currentScreen === "s-game"){ renderGamePlayers(); }
   });
 }
-function playerHandle(d){
-  if(!d) return;
-  if(d.t === "roster"){ players = d.players || []; renderPlayers(); }
-  else if(d.t === "welcome"){ me.id = d.you ? d.you.id : null; }
-  else if(d.t === "start"){ enterGame(); }
-  else if(d.t === "lobby"){ show("s-lobby"); }
+function detachRoom(){
+  if(roomRef){ roomRef.off(); roomRef = null; }
 }
 
 // ---------- Render ----------
+function escapeHtml(s){
+  return (s||"").replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
+  });
+}
 function playerCardHTML(p){
   return '<div class="pcard">'
     + '<div class="avatar" style="background:'+p.color+'">'+initials(p.name)
@@ -489,13 +504,47 @@ function renderGamePlayers(){
 function enterGame(){
   show("s-game");
   renderGamePlayers();
-  $("gameHostCtrl").style.display = (mode==="host") ? "block" : "none";
-  $("gamePlayerCtrl").style.display = (mode==="host") ? "none" : "block";
+  $("gameHostCtrl").style.display = amHost ? "block" : "none";
+  $("gamePlayerCtrl").style.display = amHost ? "none" : "block";
 }
-function escapeHtml(s){
-  return (s||"").replace(/[&<>"']/g, function(c){
-    return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
-  });
+
+// ---------- Host controls ----------
+function startGame(){
+  if(!roomCode) return;
+  db.ref("rooms/" + roomCode + "/status").set("playing");
+}
+function backToLobby(){
+  if(!roomCode) return;
+  db.ref("rooms/" + roomCode + "/status").set("lobby");
+}
+
+// ---------- Leaving / cleanup ----------
+function handleRoomClosed(){
+  if(closedByMe) return;
+  detachRoom();
+  toast("La partie a ete fermee.");
+  setStatus("err","Deconnecte");
+  teardown();
+  show("s-home");
+}
+async function quit(){
+  closedByMe = true;
+  try{
+    if(roomCode && myId){
+      var meRef = db.ref("rooms/" + roomCode + "/players/" + myId);
+      meRef.onDisconnect().cancel();
+      detachRoom();
+      if(amHost){ await db.ref("rooms/" + roomCode).remove(); }
+      else { await meRef.remove(); }
+    }
+  }catch(e){}
+  teardown();
+  show("s-home");
+  closedByMe = false;
+}
+function teardown(){
+  detachRoom();
+  roomCode = ""; amHost = false; players = []; intent = null;
 }
 
 // ---------- Room actions ----------
@@ -511,18 +560,20 @@ function shareCode(){
     navigator.share({ title:"Norelo Party", text:txt, url:location.href }).catch(function(){});
   } else { copyCode(); }
 }
-function quit(){
-  teardown();
-  show("s-home");
-}
-function teardown(){
-  try{ if(peer){ peer.destroy(); } }catch(e){}
-  peer = null; hostConn = null;
-  conns = {}; players = []; roomCode = ""; mode = null;
-  clearTimeout(joinTimer);
+
+// ---------- Init ----------
+configMissing = (!firebaseConfig.apiKey || firebaseConfig.apiKey === "PASTE_YOUR_CONFIG_HERE" || !firebaseConfig.databaseURL);
+if(configMissing){
+  showConfigOverlay();
+} else {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.database();
+  auth = firebase.auth();
+  auth.signInAnonymously().catch(function(e){ toast("Connexion Firebase impossible. Verifie ta config."); });
+  auth.onAuthStateChanged(function(u){ if(u){ myId = u.uid; authReady = true; } });
 }
 
-// ---------- Wire inputs ----------
+// ---------- Input wiring ----------
 $("nameIn").addEventListener("input", function(){
   updatePreview();
   $("contBtn").disabled = !this.value.trim();
@@ -531,7 +582,6 @@ $("codeIn").addEventListener("input", function(){
   this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,4);
   $("joinBtn").disabled = this.value.length !== 4;
 });
-window.addEventListener("beforeunload", function(){ try{ if(peer) peer.destroy(); }catch(e){} });
 if(!navigator.share){ var sb=$("shareBtn"); if(sb) sb.style.display="none"; }
 </script>
 </body>
