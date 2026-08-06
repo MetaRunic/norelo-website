@@ -37,19 +37,20 @@
   }
   body.in-game #dvdLogo{ display:none !important; }
 
-  /* Audio Control Floating Toggle */
+  /* Compact Sleek Circular Floating Audio Toggle (Does not overlap game content) */
   #audioToggle{
-    position:fixed; top:16px; right:16px; z-index:100;
-    background:rgba(13,22,54,0.75); border:1px solid rgba(255,255,255,0.2);
-    backdrop-filter:blur(10px); color:#fff; padding:8px 12px; border-radius:20px;
-    font-size:.82rem; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:6px;
-    box-shadow:0 4px 16px rgba(0,0,0,0.3); transition:transform .12s;
+    position:fixed; top:12px; right:14px; z-index:100;
+    width: 40px; height: 40px; border-radius: 50%;
+    background:rgba(13,22,54,0.85); border:1.5px solid rgba(255,255,255,0.25);
+    backdrop-filter:blur(12px); color:#fff; font-size:1.1rem;
+    cursor:pointer; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 4px 16px rgba(0,0,0,0.35); transition:transform .12s, border-color .2s;
   }
-  #audioToggle:active{transform:scale(.94);}
+  #audioToggle:active{transform:scale(.92);}
 
   .wrap{
     flex:1; width:100%; max-width:480px; margin:0 auto;
-    padding:28px 22px calc(28px + env(safe-area-inset-bottom));
+    padding:54px 22px calc(28px + env(safe-area-inset-bottom));
     display:flex; flex-direction:column; justify-content:center;
     position:relative; z-index:1;
   }
@@ -344,9 +345,9 @@
   </svg>
 </div>
 
-<!-- Floating Music & Sound Effects Controller Toggle -->
-<button id="audioToggle" onclick="toggleAudio()">
-  <span id="audioIcon">🎵</span> <span id="audioTxt">Musique ON</span>
+<!-- Compact Floating Audio Toggle Button (Top-Right Circle) -->
+<button id="audioToggle" onclick="toggleAudio()" title="Activer / Désactiver la musique">
+  <span id="audioIcon">🎵</span>
 </button>
 
 <div class="wrap">
@@ -357,7 +358,6 @@
       <h1>Party</h1>
       <p>Le party commence sur ton téléphone.<br>Crée une partie, invite ta gang, jouez ensemble.</p>
     </div>
-    <!-- JOIN GAME HAS THE FLASHY RAINBOW EFFECT AS REQUESTED -->
     <button class="btn pri" onclick="go('join')">
       <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-2-2l2 2m2 0l-5 5a5 5 0 1 1-7.07 7.07A5 5 0 0 1 12 11l9-9z"/><circle cx="7.5" cy="16.5" r="1.5"/></svg>
       Rejoindre une partie
@@ -474,11 +474,9 @@ function initAudio(){
   }
 }
 
-// Mobile Audio unlocker (iOS & Android requirement)
 function unlockMobileAudio(){
   initAudio();
   if(audioCtx){
-    // play a 1ms silent buffer to unlock browser audio pipeline
     var buffer = audioCtx.createBuffer(1, 1, 22050);
     var source = audioCtx.createBufferSource();
     source.buffer = buffer;
@@ -541,15 +539,12 @@ function startBgMusic(){
 function toggleAudio(){
   audioEnabled = !audioEnabled;
   var icon = document.getElementById("audioIcon");
-  var txt = document.getElementById("audioTxt");
   if(audioEnabled){
     if(icon) icon.textContent = "🎵";
-    if(txt) txt.textContent = "Musique ON";
     initAudio();
     startBgMusic();
   } else {
     if(icon) icon.textContent = "🔇";
-    if(txt) txt.textContent = "Musique OFF";
     if(bgMusicInterval) clearInterval(bgMusicInterval);
   }
 }
@@ -754,7 +749,6 @@ function show(id){
   $(id).classList.add("on");
   currentScreen = id;
 
-  // DVD logo disappears during gameplay to avoid distraction
   if(id === "s-game"){ document.body.classList.add("in-game"); }
   else { document.body.classList.remove("in-game"); }
 }
@@ -1201,9 +1195,6 @@ function renderMostLikely(g){
       g._autoNextStarted = true;
       sfxWin();
       db.ref("rooms/" + roomCode + "/game/revealStartMs").set(revealStart);
-
-      // Award Points
-      var tallyPts = {};
       Object.keys(votes).forEach(function(vKey){ var target = votes[vKey]; addPoints(target, 100); });
     }
 
@@ -1414,7 +1405,6 @@ function renderWhoPosted(g){
       g._autoNextStarted = true;
       sfxWin();
       db.ref("rooms/" + roomCode + "/game/revealStartMs").set(revealStart);
-      // award 200 pts for correct guess
       Object.keys(votes).forEach(function(vUid){
         if(votes[vUid] === item.posterId) addPoints(vUid, 200);
       });
