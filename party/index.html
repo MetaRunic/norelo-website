@@ -36,6 +36,7 @@
   .screen{display:none; animation:fade .28s ease;}
   .screen.on{display:block;}
   @keyframes fade{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
+  @keyframes spin{to{transform:rotate(360deg);}}
 
   /* Brand */
   .logo{font-size:1.35rem; font-weight:800; letter-spacing:-.5px; display:inline-flex; align-items:center;}
@@ -289,6 +290,8 @@ var roomRef = null;
 var currentScreen = "s-home";
 var intent = null;
 var closedByMe = false;
+var inRoom = false;
+var bootDone = false;
 
 // ---------- Helpers ----------
 function $(id){ return document.getElementById(id); }
@@ -440,6 +443,8 @@ async function createRoom(){
     var meRef = rRef.child("players/" + myId);
     await meRef.set({ name:me.name, color:me.color, host:true, photo:me.photo||null, joinedAt:firebase.database.ServerValue.TIMESTAMP });
     meRef.onDisconnect().remove();
+    inRoom = true;
+    saveRoom(roomCode);
     subscribeRoom(roomCode);
     setStatus("ok","Partie prete");
   } catch(e){
@@ -465,6 +470,8 @@ async function doJoin(){
     var meRef = rRef.child("players/" + myId);
     await meRef.set({ name:me.name, color:me.color, host:false, photo:me.photo||null, joinedAt:firebase.database.ServerValue.TIMESTAMP });
     meRef.onDisconnect().remove();
+    inRoom = true;
+    saveRoom(code);
     subscribeRoom(code);
     setStatus("ok","Connecte");
   } catch(e){
@@ -571,7 +578,86 @@ async function quit(){
 }
 function teardown(){
   detachRoom();
+  inRoom = false;
+  clearSavedRoom();
   roomCode = ""; amHost = false; players = []; intent = null;
+}
+
+// ---------- Reconnection ----------
+function saveRoom(code){ try{ localStorage.setItem("norelo_party_room", code); }catch(e){} }
+function clearSavedRoom(){ try{ localStorage.removeItem("norelo_party_room"); }catch(e){} }
+function showReconnectOverlay(){
+  if($("reconnectOv")) return;
+  var d = document.createElement("div");
+  d.id = "reconnectOv";
+  d.style.cssText = "position:fixed;inset:0;z-index:900;background:#070f2b;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px;";
+  d.innerHTML = '<div><div style="width:34px;height:34px;border:3px solid rgba(79,163,232,0.25);border-top-color:#4fa3e8;border-radius:50%;margin:0 auto 16px;animation:spin 0.8s linear infinite;"></div><div style="color:#8ea0cc;font-size:.95rem;">Reconnexion a la partie...</div></div>';
+  document.body.appendChild(d);
+}
+function hideReconnectOverlay(){
+  var d = $("reconnectOv");
+  if(d && d.parentNode){ d.parentNode.removeChild(d); }
+}
+function enterRoomScreen(status){
+  if(amHost){ showHostLobby(); $("lobbyCode").textContent = roomCode; }
+  else { showPlayerLobby(roomCode); }
+  if(status === "playing"){ enterGame(); }
+}
+// Re-establish our presence every time the socket (re)connects, so a blip
+// that triggered onDisconnect puts us back in the roster automatically.
+function watchConnection(){
+  db.ref(".info/connected").on("value", function(snap){
+    var connected = (snap.val() === true);
+    if(inRoom){ setStatus(connected ? "ok" : "wait", connected ? "Connecte" : "Reconnexion..."); }
+    if(!connected || !inRoom || !roomCode || !myId) return;
+    var rRef = db.ref("rooms/" + roomCode);
+    rRef.once("value").then(function(s){
+      var data = s.val();
+      if(!data || (!data.hostId && !data.createdAt)) return; // room gone; main listener handles it
+      var existing = (data.players && data.players[myId]) ? data.players[myId] : null;
+      var joinedAt = (existing && existing.joinedAt) ? existing.joinedAt : firebase.database.ServerValue.TIMESTAMP;
+      var meRef = rRef.child("players/" + myId);
+      meRef.onDisconnect().remove();
+      meRef.set({ name:me.name, color:me.color, host:(data.hostId === myId), photo:me.photo||null, joinedAt:joinedAt });
+    }).catch(function(){});
+  });
+}
+// On page load / reopen, drop the player straight back into their room.
+function tryResume(){
+  var savedRoom = null;
+  try{ savedRoom = localStorage.getItem("norelo_party_room"); }catch(e){}
+  if(!savedRoom){ hideReconnectOverlay(); return; }
+  try{
+    var sn = localStorage.getItem("norelo_party_name");
+    var sc = localStorage.getItem("norelo_party_color");
+    var sp = localStorage.getItem("norelo_party_photo");
+    if(sn){ me.name = sn; }
+    if(sc && COLORS.indexOf(sc)>=0){ me.color = sc; }
+    me.photo = sp ? sp : null;
+  }catch(e){}
+  if(!me.name){ clearSavedRoom(); hideReconnectOverlay(); return; }
+  showReconnectOverlay();
+  waitAuth().then(function(){
+    var rRef = db.ref("rooms/" + savedRoom);
+    rRef.once("value").then(function(s){
+      var data = s.val();
+      if(!data || (!data.hostId && !data.createdAt)){ clearSavedRoom(); hideReconnectOverlay(); show("s-home"); return; }
+      roomCode = savedRoom;
+      amHost = (data.hostId === myId);
+      var existing = (data.players && data.players[myId]) ? data.players[myId] : null;
+      var joinedAt = (existing && existing.joinedAt) ? existing.joinedAt : firebase.database.ServerValue.TIMESTAMP;
+      var meRef = rRef.child("players/" + myId);
+      meRef.set({ name:me.name, color:me.color, host:amHost, photo:me.photo||null, joinedAt:joinedAt }).then(function(){
+        meRef.onDisconnect().remove();
+        inRoom = true;
+        saveRoom(savedRoom);
+        enterRoomScreen(data.status);
+        subscribeRoom(savedRoom);
+        setStatus("ok","Connecte");
+        hideReconnectOverlay();
+      }).catch(function(){ clearSavedRoom(); hideReconnectOverlay(); show("s-home"); });
+    }).catch(function(){ clearSavedRoom(); hideReconnectOverlay(); show("s-home"); });
+  });
 }
 
 // ---------- Room actions ----------
@@ -596,8 +682,15 @@ if(configMissing){
   firebase.initializeApp(firebaseConfig);
   db = firebase.database();
   auth = firebase.auth();
-  auth.signInAnonymously().catch(function(e){ toast("Connexion Firebase impossible. Verifie ta config."); });
-  auth.onAuthStateChanged(function(u){ if(u){ myId = u.uid; authReady = true; } });
+  try{ if(localStorage.getItem("norelo_party_room")){ showReconnectOverlay(); } }catch(e){}
+  auth.signInAnonymously().catch(function(e){ hideReconnectOverlay(); toast("Connexion Firebase impossible. Verifie ta config."); });
+  auth.onAuthStateChanged(function(u){
+    if(u){
+      myId = u.uid;
+      authReady = true;
+      if(!bootDone){ bootDone = true; watchConnection(); tryResume(); }
+    }
+  });
 }
 
 // ---------- Input wiring ----------
