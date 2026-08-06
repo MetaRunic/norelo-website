@@ -354,7 +354,7 @@
 <div id="audioControls">
   <audio id="bgMusicTrack" loop src="https://archive.org/download/eiffel-65-blue-da-ba-dee_202212/Eiffel%2065%20-%20Blue%20%28Da%20Ba%20Dee%29%20.mp3" preload="auto"></audio>
   <button id="audioToggle" onclick="toggleAudio()" title="Activer / Désactiver la musique">
-    <span id="audioIcon"></span>
+    <span id="audioIcon"><svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
   </button>
 </div>
 
@@ -658,7 +658,7 @@ function playGameMusic(type){
       track.load();
       track.volume = 0;
       track.play().then(function(){
-        fadeTrackVolume(0.08, 700);
+        fadeTrackVolume(0.06, 700);
       }).catch(function(e){});
     });
   } else {
@@ -667,7 +667,7 @@ function playGameMusic(type){
     track.volume = 0;
     if(audioEnabled){
       track.play().then(function(){
-        fadeTrackVolume(0.08, 700);
+        fadeTrackVolume(0.06, 700);
       }).catch(function(e){});
     }
   }
@@ -679,8 +679,10 @@ function startBgMusic(){
 
 function updateAudioIcon(){
   var icon = document.getElementById("audioIcon");
-  if(icon && typeof ICONS !== "undefined" && ICONS.volumeOn){
-    icon.innerHTML = audioEnabled ? ICONS.volumeOn : ICONS.volumeMute;
+  if(icon){
+    var volOn = (typeof ICONS !== "undefined" && ICONS.volumeOn) ? ICONS.volumeOn : '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+    var volMute = (typeof ICONS !== "undefined" && ICONS.volumeMute) ? ICONS.volumeMute : '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+    icon.innerHTML = audioEnabled ? volOn : volMute;
   }
 }
 
@@ -1431,8 +1433,7 @@ var MOSTLIKELY_PROMPTS = [
   "Le plus susceptible de faire une crise d'angoisse parce que son téléphone est à 4%.",
   "Le plus susceptible d'organiser une soirée à thème et d'être le seul habillé en costume.",
   "Le plus susceptible de devenir le meilleur ami du chauffeur d'Uber en 8 minutes de trajet.",
-  "Le plus susceptible d'être élu le roi ou la reine indétrônable du malaise de la gang."
-];ombat après seulement 2 bières.",
+  "Le plus susceptible d'être élu le roi ou la reine indétrônable du malaise de la gang.",
   "Le plus susceptible de gagner une médaille d'or aux Olympiques du chaos."
 ];
 
