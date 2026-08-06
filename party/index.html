@@ -29,12 +29,13 @@
 
   #bgCanvas{position:fixed; inset:0; z-index:0; pointer-events:none;}
 
-  /* Bouncing DVD Logo Meme */
+  /* Bouncing DVD Logo Meme (Hidden during gameplay) */
   #dvdLogo{
     position:fixed; width:90px; height:45px; z-index:0; pointer-events:none;
     color:#2563eb; opacity:0.85; filter:drop-shadow(0 0 14px currentColor);
-    will-change:transform;
+    will-change:transform; transition:opacity .3s;
   }
+  body.in-game #dvdLogo{ display:none !important; }
 
   /* Audio Control Floating Toggle */
   #audioToggle{
@@ -160,6 +161,42 @@
   .waiting{text-align:center; color:#8ea0cc; font-size:.95rem; padding:6px 0 8px;}
   .waiting .d::after{content:""; animation:dots 1.4s infinite;}
   @keyframes dots{0%{content:"";}25%{content:".";}50%{content:"..";}75%{content:"...";}}
+
+  /* Dynamic Live Countdown Badge */
+  .timer-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(37,99,235,0.25); border: 1.5px solid var(--bl);
+    color: #fff; padding: 6px 14px; border-radius: 20px;
+    font-size: .95rem; font-weight: 800; margin-top: 14px;
+    box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+  }
+
+  /* GRAND PRIZE CEREMONY & SCOREBOARD STYLES */
+  .ceremony-card {
+    background: linear-gradient(135deg, #1e1b4b, #311b92, #4a148c);
+    border: 3px solid #f59e0b; border-radius: 26px; padding: 26px 20px;
+    text-align: center; margin-bottom: 22px;
+    box-shadow: 0 12px 40px rgba(245,158,11,0.5); animation: jbPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .podium { display: flex; justify-content: center; align-items: flex-end; gap: 12px; margin: 20px 0 24px; }
+  .podium-place { display: flex; flex-direction: column; align-items: center; }
+  .podium-place.p1 { order: 2; width: 110px; }
+  .podium-place.p2 { order: 1; width: 90px; }
+  .podium-place.p3 { order: 3; width: 90px; }
+  .podium-block {
+    width: 100%; border-radius: 12px 12px 0 0; display: flex; align-items: center; justify-content: center;
+    font-weight: 900; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  }
+  .p1 .podium-block { height: 110px; background: linear-gradient(180deg, #f59e0b, #b45309); font-size: 2rem; }
+  .p2 .podium-block { height: 80px; background: linear-gradient(180deg, #94a3b8, #475569); font-size: 1.5rem; }
+  .p3 .podium-block { height: 60px; background: linear-gradient(180deg, #d97706, #78350f); font-size: 1.3rem; }
+
+  .sboard-row {
+    display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+    border-radius: 14px; background: rgba(255,255,255,0.06); margin-bottom: 8px;
+  }
+  .sboard-rank { font-size: 1.1rem; font-weight: 900; color: var(--amber); width: 28px; }
+  .sboard-pts { font-size: 1.15rem; font-weight: 800; color: var(--bp); }
 
   /* UPGRADED PREMIUM GAME CARDS */
   .ggrid{display:flex; flex-direction:column; gap:14px; margin-bottom:20px;}
@@ -296,7 +333,7 @@
 <!-- Ambient Particles Canvas -->
 <canvas id="bgCanvas"></canvas>
 
-<!-- Nostalgic Bouncing DVD Logo Meme -->
+<!-- Nostalgic Bouncing DVD Logo Meme (Hidden during gameplay) -->
 <div id="dvdLogo">
   <svg viewBox="0 0 120 60" fill="currentColor" width="90" height="45">
     <path d="M12 15h14c7 0 12 4 12 11.5S33 39 26 39H12V15zm8 7v10h5c3.5 0 6-1.5 6-5s-2.5-5-6-5h-5z"/>
@@ -320,13 +357,14 @@
       <h1>Party</h1>
       <p>Le party commence sur ton téléphone.<br>Crée une partie, invite ta gang, jouez ensemble.</p>
     </div>
-    <button class="btn pri" onclick="go('host')">
-      <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="6"/><path d="M6 12h4m-2-2v4"/><circle cx="15" cy="10" r="1.2" fill="currentColor"/><circle cx="18" cy="13" r="1.2" fill="currentColor"/></svg>
-      Créer une partie
-    </button>
-    <button class="btn sec" onclick="go('join')">
+    <!-- JOIN GAME HAS THE FLASHY RAINBOW EFFECT AS REQUESTED -->
+    <button class="btn pri" onclick="go('join')">
       <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-2-2l2 2m2 0l-5 5a5 5 0 1 1-7.07 7.07A5 5 0 0 1 12 11l9-9z"/><circle cx="7.5" cy="16.5" r="1.5"/></svg>
       Rejoindre une partie
+    </button>
+    <button class="btn sec" onclick="go('host')">
+      <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="6"/><path d="M6 12h4m-2-2v4"/><circle cx="15" cy="10" r="1.2" fill="currentColor"/><circle cx="18" cy="13" r="1.2" fill="currentColor"/></svg>
+      Créer une partie
     </button>
   </section>
 
@@ -420,7 +458,7 @@
 
 <div class="toast" id="toast"></div>
 
-<!-- Web Audio API Sound Effects & Party Music Synthesizer -->
+<!-- Web Audio API Sound Effects & Mobile Audio Fix -->
 <script>
 var audioCtx = null;
 var audioEnabled = true;
@@ -435,6 +473,26 @@ function initAudio(){
     audioCtx.resume();
   }
 }
+
+// Mobile Audio unlocker (iOS & Android requirement)
+function unlockMobileAudio(){
+  initAudio();
+  if(audioCtx){
+    // play a 1ms silent buffer to unlock browser audio pipeline
+    var buffer = audioCtx.createBuffer(1, 1, 22050);
+    var source = audioCtx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(audioCtx.destination);
+    source.start(0);
+    if(audioCtx.state === "suspended"){
+      audioCtx.resume();
+    }
+  }
+  if(audioEnabled && !bgMusicInterval) startBgMusic();
+}
+
+window.addEventListener("touchstart", unlockMobileAudio, { once: false, passive: true });
+window.addEventListener("click", unlockMobileAudio, { once: false });
 
 function playTone(freq, type, duration, vol){
   if(!audioEnabled) return;
@@ -495,8 +553,6 @@ function toggleAudio(){
     if(bgMusicInterval) clearInterval(bgMusicInterval);
   }
 }
-
-document.addEventListener("click", function(){ initAudio(); if(audioEnabled && !bgMusicInterval) startBgMusic(); }, { once: true });
 </script>
 
 <!-- Background Canvas & DVD Physics -->
@@ -527,7 +583,7 @@ document.addEventListener("click", function(){ initAudio(); if(audioEnabled && !
 
   var explosions = [];
 
-  function triggerExplosion(ex, ey, isCorner, color){
+  window.triggerExplosion = function(ex, ey, isCorner, color){
     var count = isCorner ? 75 : 25;
     sfxExplode();
     for(var j=0; j<count; j++){
@@ -551,7 +607,7 @@ document.addEventListener("click", function(){ initAudio(); if(audioEnabled && !
       document.body.appendChild(flash);
       setTimeout(function(){ flash.style.opacity = "0"; setTimeout(function(){ flash.remove(); }, 500); }, 50);
     }
-  }
+  };
 
   function drawCanvas(){
     ctx.clearRect(0, 0, w, h);
@@ -617,7 +673,7 @@ document.addEventListener("click", function(){ initAudio(); if(audioEnabled && !
       var centerX = x + 45;
       var centerY = y + 22.5;
 
-      triggerExplosion(centerX, centerY, isCorner, curColor);
+      if(window.triggerExplosion) window.triggerExplosion(centerX, centerY, isCorner, curColor);
     }
 
     x = Math.max(0, Math.min(x, maxW));
@@ -677,7 +733,9 @@ var closedByMe = false;
 var inRoom = false;
 var bootDone = false;
 var currentGame = null;
+var sessionScores = {};
 var resumeAborted = false;
+var countdownTicker = null;
 
 var GAME_MODES = [
   { id: "mostlikely", icon: ICONS.flame, title: "Le plus susceptible de...", desc: "Vote pour la personne la plus folle du groupe !" },
@@ -695,6 +753,10 @@ function show(id){
   for(var i=0;i<s.length;i++){ s[i].classList.remove("on"); }
   $(id).classList.add("on");
   currentScreen = id;
+
+  // DVD logo disappears during gameplay to avoid distraction
+  if(id === "s-game"){ document.body.classList.add("in-game"); }
+  else { document.body.classList.remove("in-game"); }
 }
 function initials(n){
   n = (n||"").trim();
@@ -824,7 +886,8 @@ async function createRoom(){
     await rRef.set({
       createdAt: firebase.database.ServerValue.TIMESTAMP,
       hostId: myId,
-      status: "lobby"
+      status: "lobby",
+      scores: {}
     });
     var meRef = rRef.child("players/" + myId);
     await meRef.set({ name:me.name, color:me.color, host:true, photo:me.photo||null, joinedAt:firebase.database.ServerValue.TIMESTAMP });
@@ -878,6 +941,7 @@ function subscribeRoom(code){
     players.sort(function(a,b){ return (b.host?1:0)-(a.host?1:0) || a.joinedAt - b.joinedAt; });
     amHost = (data.hostId === myId);
     currentGame = data.game || null;
+    sessionScores = data.scores || {};
 
     if(data.status === "playing"){
       if(currentScreen !== "s-game"){ show("s-game"); }
@@ -890,6 +954,7 @@ function subscribeRoom(code){
 }
 function detachRoom(){
   if(roomRef){ roomRef.off(); roomRef = null; }
+  if(countdownTicker){ clearInterval(countdownTicker); countdownTicker = null; }
 }
 
 function escapeHtml(s){
@@ -924,6 +989,29 @@ function avatarHTML(p, size){
     return '<div class="avatar" style="' + base + 'background:#0d1636;background-image:url(\'' + p.photo + '\');background-size:cover;background-position:center;border:2px solid ' + p.color + ';">' + crown + '</div>';
   }
   return '<div class="avatar" style="' + base + 'background:' + p.color + ';">' + initials(p.name) + crown + '</div>';
+}
+
+function startLiveCountdown(revealStartMs, durationSec, onEnd){
+  if(countdownTicker) clearInterval(countdownTicker);
+  function update(){
+    var elapsed = Math.floor((Date.now() - revealStartMs) / 1000);
+    var remaining = Math.max(0, durationSec - elapsed);
+    var el = document.getElementById("countdownVal");
+    if(el){ el.textContent = remaining + "s"; }
+    if(remaining <= 0){
+      clearInterval(countdownTicker);
+      countdownTicker = null;
+      if(onEnd) onEnd();
+    }
+  }
+  update();
+  countdownTicker = setInterval(update, 500);
+}
+
+function addPoints(uid, pts){
+  if(!roomCode || !amHost || !uid) return;
+  var cur = (sessionScores[uid] || 0) + pts;
+  db.ref("rooms/" + roomCode + "/scores/" + uid).set(cur);
 }
 
 // =====================================================================
@@ -998,6 +1086,7 @@ function renderGame(g){
   else if(g.type === "whosaid"){ renderWhoSaid(g); }
   else if(g.type === "twotruths"){ renderTwoTruths(g); }
   else if(g.type === "mostlikely"){ renderMostLikely(g); }
+  else if(g.type === "ceremony"){ renderGrandPrizeCeremony(g); }
   else { area.innerHTML = ""; }
 }
 
@@ -1044,7 +1133,7 @@ function renderGameVoting(g){
 }
 
 // =====================================================================
-//  GAME 1: MOST LIKELY TO (JACKBOX PARTY STYLE UPGRADE!)
+//  GAME 1: MOST LIKELY TO (JACKBOX PARTY STYLE WITH LIVE COUNTDOWN TIMER)
 // =====================================================================
 var MOSTLIKELY_PROMPTS = [
   "Le plus susceptible de se faire mettre dehors d'un resto.",
@@ -1091,8 +1180,6 @@ function renderMostLikely(g){
     }
 
     html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • Le plus susceptible de</div>';
-    
-    // JACKBOX STYLE HIGH-ENERGY PROMPT CARD
     html += '<div class="jb-prompt-card">';
     html += '<div class="jb-prompt-title">🔥 LA QUESTION CHAOTIQUE</div>';
     html += '<div class="jb-prompt-text">"' + escapeHtml(prompt) + '"</div>';
@@ -1109,11 +1196,20 @@ function renderMostLikely(g){
     html += '<div class="waiting">' + (votedCount >= players.length ? "Révélation imminente du verdict !" : (votes[myId] ? "Vote enregistré ! En attente du reste du groupe" : "Touche un joueur pour désigner le coupable")) + '<span class="d"></span></div>';
 
   } else if(g.phase === "reveal"){
-    if(amHost && !g._autoNextTimer){
-      g._autoNextTimer = true;
+    var revealStart = g.revealStartMs || Date.now();
+    if(amHost && !g._autoNextStarted){
+      g._autoNextStarted = true;
       sfxWin();
-      setTimeout(nextRound, 5500);
+      db.ref("rooms/" + roomCode + "/game/revealStartMs").set(revealStart);
+
+      // Award Points
+      var tallyPts = {};
+      Object.keys(votes).forEach(function(vKey){ var target = votes[vKey]; addPoints(target, 100); });
     }
+
+    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){
+      if(amHost) nextRound();
+    });
 
     var tally = {};
     players.forEach(function(p){ tally[p.id] = 0; });
@@ -1121,7 +1217,6 @@ function renderMostLikely(g){
     var ranked = players.slice().sort(function(a,b){ return (tally[b.id]||0) - (tally[a.id]||0); });
     var maxCount = ranked.length ? (tally[ranked[0].id]||0) : 0;
     
-    // JACKBOX STYLE DRAMATIC VERDICT REVEAL
     var top = ranked[0] || players[0];
     var pct = players.length ? Math.round((maxCount / players.length) * 100) : 0;
     
@@ -1145,14 +1240,15 @@ function renderMostLikely(g){
       if(c === 0) return;
       html += '<div class="rrow' + (c===maxCount ? " win" : "") + '">' + avatarHTML(p, 44) + '<div class="rname">' + escapeHtml(p.name) + '</div><div class="rcount">' + c + ' votes</div></div>';
     });
-    html += '<div class="waiting" style="margin-top:14px;color:var(--bp);">Manche suivante automatique<span class="d"></span></div>';
+    
+    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Prochaine manche dans <span id="countdownVal">5s</span></div></div>';
 
   } else if(g.phase === "done"){
     if(amHost && !g._autoVoteTimer){
       g._autoVoteTimer = true;
-      setTimeout(startPartyVote, 5000);
+      setTimeout(launchGrandPrizeCeremony, 1500);
     }
-    html += '<div class="gcenter" style="margin-top:24px;"><div class="big">Partie terminée !</div><p class="hint">Retour automatique au vote des jeux dans un instant...</p></div>';
+    html += '<div class="gcenter" style="margin-top:24px;"><div class="big">Calcul des points en cours<span class="d"></span></div></div>';
   }
 
   area.innerHTML = html;
@@ -1165,13 +1261,88 @@ function voteFor(uid){
 }
 function revealRound(){
   if(!roomCode) return;
-  db.ref("rooms/" + roomCode + "/game/phase").set("reveal");
+  db.ref("rooms/" + roomCode + "/game").update({ phase: "reveal", revealStartMs: Date.now() });
 }
 function nextRound(){
   if(!roomCode || !currentGame) return;
+  if(countdownTicker){ clearInterval(countdownTicker); countdownTicker = null; }
   var next = (currentGame.round || 0) + 1;
   if(next >= (currentGame.total || 1)){ db.ref("rooms/" + roomCode + "/game/phase").set("done"); }
-  else { db.ref("rooms/" + roomCode + "/game").update({ round: next, phase: "guess", votes: null }); }
+  else { db.ref("rooms/" + roomCode + "/game").update({ round: next, phase: "guess", votes: null, revealStartMs: null }); }
+}
+
+// =====================================================================
+//  GRAND PRIZE CEREMONY & SCOREBOARD (GRAND GAGNANT SOIRÉE)
+// =====================================================================
+function launchGrandPrizeCeremony(){
+  if(!roomCode || !amHost) return;
+  db.ref("rooms/" + roomCode + "/game").set({
+    type: "ceremony"
+  });
+}
+
+function renderGrandPrizeCeremony(g){
+  var area = $("gameArea");
+  
+  var sorted = players.slice().sort(function(a,b){
+    return (sessionScores[b.id]||0) - (sessionScores[a.id]||0);
+  });
+
+  var winner = sorted[0] || { name: "Champion", id: myId };
+  var runner2 = sorted[1] || null;
+  var runner3 = sorted[2] || null;
+
+  sfxWin();
+  if(window.triggerExplosion){
+    window.triggerExplosion(window.innerWidth/2, window.innerHeight/2, true, "#f59e0b");
+  }
+
+  var html = '<div class="groundhdr">🏆 GRAND GAGNANT DE LA SOIRÉE</div>';
+  html += '<div class="ceremony-card">';
+  html += '<div style="font-size:1.1rem;font-weight:900;color:var(--amber);letter-spacing:2px;margin-bottom:12px;">COURONNEMENT ULTIME</div>';
+  html += avatarHTML(winner, 110);
+  html += '<div style="font-size:2rem;font-weight:900;color:#fff;margin-top:14px;">' + escapeHtml(winner.name) + '</div>';
+  html += '<div style="font-size:1.3rem;font-weight:800;color:var(--amber);margin-top:4px;">' + (sessionScores[winner.id]||0) + ' POINTS</div>';
+  html += '</div>';
+
+  html += '<div class="podium">';
+  if(runner2){
+    html += '<div class="podium-place p2">';
+    html += avatarHTML(runner2, 54);
+    html += '<div style="font-size:.8rem;font-weight:700;margin:4px 0;">' + escapeHtml(runner2.name) + '</div>';
+    html += '<div class="podium-block">2</div>';
+    html += '</div>';
+  }
+  html += '<div class="podium-place p1">';
+  html += avatarHTML(winner, 68);
+  html += '<div style="font-size:.85rem;font-weight:800;margin:4px 0;">' + escapeHtml(winner.name) + '</div>';
+  html += '<div class="podium-block">1</div>';
+  html += '</div>';
+
+  if(runner3){
+    html += '<div class="podium-place p3">';
+    html += avatarHTML(runner3, 50);
+    html += '<div style="font-size:.78rem;font-weight:700;margin:4px 0;">' + escapeHtml(runner3.name) + '</div>';
+    html += '<div class="podium-block">3</div>';
+    html += '</div>';
+  }
+  html += '</div>';
+
+  html += '<div style="font-size:1.05rem;font-weight:800;margin-bottom:12px;">CLASSEMENT GÉNÉRAL</div>';
+  sorted.forEach(function(p, i){
+    html += '<div class="sboard-row">';
+    html += '<div class="sboard-rank">#' + (i+1) + '</div>';
+    html += avatarHTML(p, 40);
+    html += '<div class="rname" style="flex:1;">' + escapeHtml(p.name) + '</div>';
+    html += '<div class="sboard-pts">' + (sessionScores[p.id]||0) + ' pts</div>';
+    html += '</div>';
+  });
+
+  if(amHost){
+    html += '<button class="btn pri" style="margin-top:20px;" onclick="startPartyVote()">Recommencer une partie</button>';
+  }
+
+  area.innerHTML = html;
 }
 
 // =====================================================================
@@ -1238,11 +1409,17 @@ function renderWhoPosted(g){
     html += '<div class="waiting">' + (votedCount >= players.length ? "Tout le monde a deviné ! Révélation..." : (votes[myId] ? "Devinette envoyée !" : "Choisis un suspect")) + '<span class="d"></span></div>';
 
   } else if(g.phase === "reveal"){
-    if(amHost && !g._autoNextTimer){
-      g._autoNextTimer = true;
+    var revealStart = g.revealStartMs || Date.now();
+    if(amHost && !g._autoNextStarted){
+      g._autoNextStarted = true;
       sfxWin();
-      setTimeout(nextRound, 5500);
+      db.ref("rooms/" + roomCode + "/game/revealStartMs").set(revealStart);
+      // award 200 pts for correct guess
+      Object.keys(votes).forEach(function(vUid){
+        if(votes[vUid] === item.posterId) addPoints(vUid, 200);
+      });
     }
+    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) nextRound(); });
 
     var realPoster = players.find(function(p){ return p.id === item.posterId; }) || { name:"Quelqu'un", color:"#2563eb" };
     html += '<div class="groundhdr">Révélation !</div>';
@@ -1253,12 +1430,12 @@ function renderWhoPosted(g){
     html += avatarHTML(realPoster, 84);
     html += '<div style="font-size:1.4rem;font-weight:800;margin-top:10px;">C\'était ' + escapeHtml(realPoster.name) + ' !</div>';
     html += '</div>';
-    html += '<div class="waiting" style="margin-top:14px;color:var(--bp);">Manche suivante automatique<span class="d"></span></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Prochaine manche dans <span id="countdownVal">5s</span></div></div>';
 
   } else if(g.phase === "done"){
     if(amHost && !g._autoVoteTimer){
       g._autoVoteTimer = true;
-      setTimeout(startPartyVote, 5000);
+      setTimeout(launchGrandPrizeCeremony, 1500);
     }
     html += '<div class="gcenter" style="margin-top:24px;"><div class="big">Partie terminée !</div></div>';
   }
@@ -1323,11 +1500,17 @@ function renderGuessRating(g){
     html += '<div class="waiting">' + (votedCount >= players.length ? "Tout le monde a deviné ! Révélation..." : (myRating ? "Ta note: " + myRating + " étoiles" : "Choisis ta note")) + '<span class="d"></span></div>';
 
   } else if(g.phase === "reveal"){
-    if(amHost && !g._autoNextTimer){
-      g._autoNextTimer = true;
+    var revealStart = g.revealStartMs || Date.now();
+    if(amHost && !g._autoNextStarted){
+      g._autoNextStarted = true;
       sfxWin();
-      setTimeout(nextRound, 5500);
+      db.ref("rooms/" + roomCode + "/game/revealStartMs").set(revealStart);
+      Object.keys(votes).forEach(function(vUid){
+        if(votes[vUid] === item.stars) addPoints(vUid, 200);
+        else if(Math.abs(votes[vUid] - item.stars) === 1) addPoints(vUid, 100);
+      });
     }
+    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) nextRound(); });
 
     html += '<div class="groundhdr">Vraie note attribuée :</div>';
     html += '<div style="text-align:center;margin:14px 0 22px;">';
@@ -1336,12 +1519,12 @@ function renderGuessRating(g){
     html += '<div style="font-size:2rem;color:var(--amber);">' + starsStr + '</div>';
     html += '<div style="font-size:1.6rem;font-weight:800;color:var(--amber);margin-top:6px;">' + item.stars + ' / 5 Étoiles !</div>';
     html += '</div>';
-    html += '<div class="waiting" style="margin-top:14px;color:var(--bp);">Manche suivante automatique<span class="d"></span></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Prochaine manche dans <span id="countdownVal">5s</span></div></div>';
 
   } else if(g.phase === "done"){
     if(amHost && !g._autoVoteTimer){
       g._autoVoteTimer = true;
-      setTimeout(startPartyVote, 5000);
+      setTimeout(launchGrandPrizeCeremony, 1500);
     }
     html += '<div class="gcenter" style="margin-top:24px;"><div class="big">Partie terminée !</div></div>';
   }
@@ -1421,17 +1604,22 @@ function renderKnowPlayer(g){
     html += '<div class="waiting">' + (votedCount >= (players.length - 1) ? "Tout le monde a prédit ! Révélation..." : "Fais ton choix") + '<span class="d"></span></div>';
 
   } else if(g.phase === "reveal"){
+    var revealStart = g.revealStartMs || Date.now();
     if(amHost && !g._autoVoteTimer){
       g._autoVoteTimer = true;
       sfxWin();
-      setTimeout(startPartyVote, 5500);
+      db.ref("rooms/" + roomCode + "/game/revealStartMs").set(revealStart);
+      Object.keys(votes).forEach(function(vUid){
+        if(votes[vUid] === spotlightAnswer) addPoints(vUid, 200);
+      });
     }
+    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) launchGrandPrizeCeremony(); });
 
     var correctText = options[spotlightAnswer] || "Aucune";
     html += '<div class="groundhdr">La vérité est dévoilée !</div>';
     html += '<div class="gprompt">' + escapeHtml(spotlightName) + ' a répondu :</div>';
     html += '<div style="background:linear-gradient(120deg,var(--blue),var(--purple));padding:20px;border-radius:18px;font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:20px;">' + escapeHtml(correctText) + '</div>';
-    html += '<div class="waiting" style="margin-top:14px;color:var(--bp);">Retour au vote des jeux automatique<span class="d"></span></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Couronnement dans <span id="countdownVal">5s</span></div></div>';
   }
 
   area.innerHTML = html;
@@ -1519,11 +1707,17 @@ function renderRoast(g){
     html += '<div class="waiting">' + (votedCount >= players.length ? "Tous les votes sont enregistrés ! Révélation..." : "Vote pour ta préférée") + '<span class="d"></span></div>';
 
   } else if(g.phase === "reveal"){
+    var revealStart = g.revealStartMs || Date.now();
     if(amHost && !g._autoVoteTimer){
       g._autoVoteTimer = true;
       sfxWin();
-      setTimeout(startPartyVote, 5500);
+      db.ref("rooms/" + roomCode + "/game/revealStartMs").set(revealStart);
+      Object.keys(votes).forEach(function(vKey){
+        var authorUid = votes[vKey];
+        addPoints(authorUid, 150);
+      });
     }
+    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) launchGrandPrizeCeremony(); });
 
     html += '<div class="groundhdr">Résultats des répliques !</div>';
     html += '<div class="gprompt">' + escapeHtml(prompt) + '</div>';
@@ -1536,7 +1730,7 @@ function renderRoast(g){
       html += '<div style="color:var(--bp);font-size:.85rem;margin-top:6px;">— ' + escapeHtml(author.name) + '</div>';
       html += '</div>';
     });
-    html += '<div class="waiting" style="margin-top:14px;color:var(--bp);">Retour au vote des jeux automatique<span class="d"></span></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Couronnement dans <span id="countdownVal">5s</span></div></div>';
   }
 
   area.innerHTML = html;
@@ -1609,11 +1803,16 @@ function renderWhoSaid(g){
     html += '<div class="waiting">' + (votedCount >= players.length ? "Tout le monde a deviné ! Révélation..." : (votes[myId] ? "Vote envoyé !" : "Devine la personne")) + '<span class="d"></span></div>';
 
   } else if(g.phase === "reveal"){
+    var revealStart = g.revealStartMs || Date.now();
     if(amHost && !g._autoVoteTimer){
       g._autoVoteTimer = true;
       sfxWin();
-      setTimeout(startPartyVote, 5500);
+      db.ref("rooms/" + roomCode + "/game/revealStartMs").set(revealStart);
+      Object.keys(votes).forEach(function(vUid){
+        if(votes[vUid] === g.speakerId) addPoints(vUid, 200);
+      });
     }
+    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) launchGrandPrizeCeremony(); });
 
     var speaker = players.find(function(p){ return p.id === g.speakerId; }) || { name: "Quelqu'un" };
     html += '<div class="groundhdr">Auteur révélé !</div>';
@@ -1621,7 +1820,7 @@ function renderWhoSaid(g){
     html += avatarHTML(speaker, 84);
     html += '<div style="font-size:1.4rem;font-weight:800;margin-top:10px;">C\'était ' + escapeHtml(speaker.name) + ' !</div>';
     html += '</div>';
-    html += '<div class="waiting" style="margin-top:14px;color:var(--bp);">Retour au vote des jeux automatique<span class="d"></span></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Couronnement dans <span id="countdownVal">5s</span></div></div>';
   }
 
   area.innerHTML = html;
@@ -1672,16 +1871,21 @@ function renderTwoTruths(g){
     html += '<div class="waiting">' + (votedCount >= players.length ? "Tout le monde a deviné ! Révélation..." : "Trouve le mensonge") + '<span class="d"></span></div>';
 
   } else if(g.phase === "reveal"){
+    var revealStart = g.revealStartMs || Date.now();
     if(amHost && !g._autoVoteTimer){
       g._autoVoteTimer = true;
       sfxWin();
-      setTimeout(startPartyVote, 5500);
+      db.ref("rooms/" + roomCode + "/game/revealStartMs").set(revealStart);
+      Object.keys(votes).forEach(function(vUid){
+        if(votes[vUid] === g.lieIndex) addPoints(vUid, 200);
+      });
     }
+    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) launchGrandPrizeCeremony(); });
 
     html += '<div class="groundhdr">Le mensonge était :</div>';
     var lieText = statements[g.lieIndex] || "";
     html += '<div style="background:rgba(239,68,68,0.2);border:2px solid var(--red);padding:18px;border-radius:16px;font-size:1.2rem;font-weight:800;text-align:center;margin-bottom:20px;color:#fff;">' + escapeHtml(lieText) + '</div>';
-    html += '<div class="waiting" style="margin-top:14px;color:var(--bp);">Retour au vote des jeux automatique<span class="d"></span></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Couronnement dans <span id="countdownVal">5s</span></div></div>';
   }
 
   area.innerHTML = html;
