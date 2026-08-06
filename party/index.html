@@ -40,19 +40,10 @@
   }
   body.in-game #dvdLogo{ display:none !important; }
 
-  /* Compact Sleek Floating Audio Controls */
+  /* Compact Floating Audio Toggle */
   #audioControls{
     position:fixed; top:12px; right:14px; z-index:100;
-    display:flex; align-items:center; gap:8px;
   }
-  #trackBanner{
-    background:rgba(13,22,54,0.85); border:1.5px solid rgba(255,255,255,0.25);
-    backdrop-filter:blur(12px); color:#fff; font-size:.76rem; font-weight:700;
-    padding:6px 12px; border-radius:20px; cursor:pointer;
-    box-shadow:0 4px 16px rgba(0,0,0,0.35); transition:transform .12s, border-color .2s;
-    display:flex; align-items:center; gap:6px;
-  }
-  #trackBanner:active{transform:scale(.95);}
   #audioToggle{
     width: 40px; height: 40px; border-radius: 50%;
     background:rgba(13,22,54,0.85); border:1.5px solid rgba(255,255,255,0.25);
@@ -359,11 +350,8 @@
   </svg>
 </div>
 
-<!-- Compact Floating Audio Controls & Style Switcher (Top-Right) -->
+<!-- Floating Audio Toggle Button (Top-Right) -->
 <div id="audioControls">
-  <div id="trackBanner" onclick="nextTrack()" title="Changer de style de musique">
-    <span id="trackBannerText">⚡ Electro Party Beats</span>
-  </div>
   <button id="audioToggle" onclick="toggleAudio()" title="Activer / Désactiver la musique">
     <span id="audioIcon"></span>
   </button>
@@ -566,37 +554,43 @@ function sfxExplode(){
   setTimeout(function(){ playTone(45, "sine", 0.2, 0.05); }, 40);
 }
 
-var TRACKS = [
-  {
-    name: "⚡ Electro Party Beats",
-    tempo: 120,
-    bass: [130.81, 0, 130.81, 0, 116.54, 0, 116.54, 0, 103.83, 0, 103.83, 0, 116.54, 0, 116.54, 0],
-    lead: [261.63, 311.13, 392.00, 523.25, 311.13, 392.00, 523.25, 622.25, 233.08, 293.66, 349.23, 466.16, 207.65, 261.63, 311.13, 415.30],
-    kick: [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
-    hat:  [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1],
-    type: "sawtooth"
-  },
-  {
-    name: "🌴 Tropical Funk",
-    tempo: 135,
-    bass: [174.61, 0, 174.61, 220.00, 146.83, 0, 146.83, 174.61, 130.81, 0, 130.81, 164.81, 174.61, 0, 220.00, 0],
-    lead: [349.23, 440.00, 523.25, 440.00, 293.66, 349.23, 440.00, 349.23, 261.63, 329.63, 392.00, 329.63, 349.23, 440.00, 523.25, 659.25],
-    kick: [1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0],
-    hat:  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-    type: "triangle"
-  },
-  {
-    name: "👾 Retro Arcade 8-Bit",
-    tempo: 105,
-    bass: [110.00, 110.00, 146.83, 146.83, 130.81, 130.81, 164.81, 164.81, 110.00, 110.00, 146.83, 146.83, 130.81, 130.81, 164.81, 164.81],
-    lead: [440.00, 554.37, 659.25, 880.00, 587.33, 739.99, 880.00, 1174.66, 523.25, 659.25, 783.99, 1046.50, 659.25, 830.61, 987.77, 1318.51],
-    kick: [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
-    hat:  [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
-    type: "square"
-  }
-];
+// FULL 64-STEP ELECTRO PARTY SOUNDTRACK (Softened volume, complete 4-bar song progression)
+var ELECTRO_SONG = {
+  tempo: 120,
+  bass: [
+    // Bar 1: Intro Verse (C minor)
+    130.81, 0, 130.81, 0, 130.81, 0, 155.56, 0,  130.81, 0, 130.81, 0, 130.81, 0, 116.54, 0,
+    // Bar 2: Driving Build (Ab major)
+    103.83, 0, 103.83, 0, 103.83, 0, 130.81, 0,  103.83, 0, 103.83, 0, 103.83, 0, 116.54, 0,
+    // Bar 3: Chorus Melodic Drop (Eb major)
+    155.56, 0, 155.56, 0, 155.56, 0, 196.00, 0,  155.56, 0, 155.56, 0, 155.56, 0, 174.61, 0,
+    // Bar 4: Outro Crescendo (Bb major)
+    116.54, 0, 116.54, 0, 116.54, 0, 146.83, 0,  116.54, 0, 130.81, 0, 146.83, 0, 155.56, 0
+  ],
+  lead: [
+    // Bar 1: Main Arp Theme
+    261.63, 311.13, 392.00, 523.25, 392.00, 311.13, 392.00, 523.25,  261.63, 311.13, 392.00, 523.25, 622.25, 523.25, 392.00, 311.13,
+    // Bar 2: Melodic Shift
+    207.65, 261.63, 311.13, 415.30, 311.13, 261.63, 311.13, 415.30,  207.65, 261.63, 311.13, 415.30, 523.25, 415.30, 311.13, 261.63,
+    // Bar 3: High Octave Drop Chorus
+    311.13, 392.00, 466.16, 622.25, 783.99, 622.25, 466.16, 392.00,  311.13, 392.00, 466.16, 622.25, 783.99, 932.33, 783.99, 622.25,
+    // Bar 4: Resolution & Turnaround
+    233.08, 293.66, 349.23, 466.16, 587.33, 466.16, 349.23, 293.66,  233.08, 293.66, 349.23, 466.16, 587.33, 698.46, 587.33, 466.16
+  ],
+  kick: [
+    1, 0, 0, 0,  1, 0, 0, 0,  1, 0, 0, 0,  1, 0, 0, 0,
+    1, 0, 0, 0,  1, 0, 0, 0,  1, 0, 0, 0,  1, 0, 1, 0,
+    1, 0, 0, 0,  1, 0, 0, 0,  1, 0, 0, 0,  1, 0, 0, 0,
+    1, 0, 0, 0,  1, 0, 0, 0,  1, 0, 1, 0,  1, 1, 1, 0
+  ],
+  hat: [
+    0, 0, 1, 0,  0, 0, 1, 0,  0, 0, 1, 0,  0, 0, 1, 1,
+    0, 0, 1, 0,  0, 0, 1, 0,  0, 0, 1, 0,  0, 1, 1, 1,
+    0, 0, 1, 0,  0, 0, 1, 0,  0, 0, 1, 0,  0, 0, 1, 1,
+    0, 0, 1, 0,  0, 0, 1, 0,  0, 1, 1, 0,  1, 1, 1, 1
+  ]
+};
 
-var currentTrackIdx = 0;
 var seqStep = 0;
 
 function playKick(){
@@ -604,21 +598,21 @@ function playKick(){
   try{
     var osc = audioCtx.createOscillator();
     var gain = audioCtx.createGain();
-    osc.frequency.setValueAtTime(120, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-    gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+    osc.frequency.setValueAtTime(110, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.09);
+    gain.gain.setValueAtTime(0.022, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.09);
     osc.connect(gain);
     gain.connect(audioCtx.destination);
     osc.start();
-    osc.stop(audioCtx.currentTime + 0.1);
+    osc.stop(audioCtx.currentTime + 0.09);
   }catch(e){}
 }
 
 function playHiHat(){
   if(!audioEnabled || !audioCtx) return;
   try{
-    var bufferSize = Math.floor(audioCtx.sampleRate * 0.03);
+    var bufferSize = Math.floor(audioCtx.sampleRate * 0.025);
     var buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
     var data = buffer.getChannelData(0);
     for (var i = 0; i < bufferSize; i++) { data[i] = Math.random() * 2 - 1; }
@@ -626,10 +620,10 @@ function playHiHat(){
     noise.buffer = buffer;
     var filter = audioCtx.createBiquadFilter();
     filter.type = "highpass";
-    filter.frequency.value = 7500;
+    filter.frequency.value = 8000;
     var gain = audioCtx.createGain();
-    gain.gain.setValueAtTime(0.012, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
+    gain.gain.setValueAtTime(0.005, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.025);
     noise.connect(filter);
     filter.connect(gain);
     gain.connect(audioCtx.destination);
@@ -643,19 +637,18 @@ function startBgMusic(){
 
   function tick(){
     if(!audioEnabled) return;
-    var trk = TRACKS[currentTrackIdx];
-    var step = seqStep % 16;
+    var step = seqStep % 64;
 
-    if(trk.bass[step] > 0){
-      playTone(trk.bass[step], "sine", 0.16, 0.035);
+    if(ELECTRO_SONG.bass[step] > 0){
+      playTone(ELECTRO_SONG.bass[step], "sine", 0.14, 0.018);
     }
-    if(trk.lead[step] > 0){
-      playTone(trk.lead[step], trk.type, 0.14, 0.022);
+    if(ELECTRO_SONG.lead[step] > 0){
+      playTone(ELECTRO_SONG.lead[step], "sawtooth", 0.12, 0.012);
     }
-    if(trk.kick[step] === 1){
+    if(ELECTRO_SONG.kick[step] === 1){
       playKick();
     }
-    if(trk.hat[step] === 1){
+    if(ELECTRO_SONG.hat[step] === 1){
       playHiHat();
     }
 
@@ -663,17 +656,7 @@ function startBgMusic(){
   }
 
   tick();
-  var tempo = TRACKS[currentTrackIdx].tempo;
-  bgMusicInterval = setInterval(tick, tempo);
-}
-
-function nextTrack(){
-  currentTrackIdx = (currentTrackIdx + 1) % TRACKS.length;
-  var trk = TRACKS[currentTrackIdx];
-  toast("Style de musique : " + trk.name);
-  var banner = document.getElementById("trackBannerText");
-  if(banner) banner.textContent = trk.name;
-  if(audioEnabled) startBgMusic();
+  bgMusicInterval = setInterval(tick, ELECTRO_SONG.tempo);
 }
 
 function updateAudioIcon(){
