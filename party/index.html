@@ -358,7 +358,7 @@
       <h1>Party</h1>
       <p>Le party commence sur ton téléphone.<br>Crée une partie, invite ta gang, jouez ensemble.</p>
     </div>
-    <button class="btn pri" onclick="go('join')">
+    <button class="btn pri" onclick="sfxBugle(); go('join');">
       <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-2-2l2 2m2 0l-5 5a5 5 0 1 1-7.07 7.07A5 5 0 0 1 12 11l9-9z"/><circle cx="7.5" cy="16.5" r="1.5"/></svg>
       Rejoindre une partie
     </button>
@@ -397,7 +397,7 @@
     <p class="hint">Entre le code que l'hôte t'a donné.</p>
     <input class="fld code-in" id="codeIn" maxlength="4" placeholder="CODE" autocomplete="off" inputmode="latin" autocapitalize="characters">
     <div style="margin-top:26px;">
-      <button class="btn pri" id="joinBtn" onclick="doJoin()" disabled>Rejoindre</button>
+      <button class="btn pri" id="joinBtn" onclick="sfxBugle(); doJoin();" disabled>Rejoindre</button>
       <button class="btn ghost" onclick="show('s-profile');">Retour</button>
     </div>
   </section>
@@ -458,7 +458,7 @@
 
 <div class="toast" id="toast"></div>
 
-<!-- Web Audio API Sound Effects & Mobile Audio Fix -->
+<!-- Web Audio API Sound Effects & Mobile Audio Fix + PEAK Bugle Sound -->
 <script>
 var audioCtx = null;
 var audioEnabled = true;
@@ -508,6 +508,27 @@ function playTone(freq, type, duration, vol){
     osc.start();
     osc.stop(audioCtx.currentTime + duration);
   }catch(e){}
+}
+
+/* PEAK THE GAME ICONIC BUGLE CHARGE FANFARE SFX */
+function sfxBugle(){
+  if(!audioEnabled) return;
+  initAudio();
+  var notes = [
+    { f: 392.00, d: 0.11, delay: 0 },   // G4
+    { f: 523.25, d: 0.11, delay: 110 }, // C5
+    { f: 659.25, d: 0.11, delay: 220 }, // E5
+    { f: 783.99, d: 0.22, delay: 330 }, // G5
+    { f: 659.25, d: 0.11, delay: 570 }, // E5
+    { f: 783.99, d: 0.45, delay: 680 }  // G5 (Long triumph bugle blast!)
+  ];
+
+  notes.forEach(function(n){
+    setTimeout(function(){
+      playTone(n.f, "sawtooth", n.d, 0.28);
+      playTone(n.f * 1.005, "triangle", n.d, 0.2); // Brassy warmth overlay
+    }, n.delay);
+  });
 }
 
 function sfxVote(){
