@@ -567,7 +567,7 @@ function getBgTrack(){
 function startBgMusic(){
   var track = getBgTrack();
   if(!track) return;
-  track.volume = 0.22; // Comfortable background volume
+  track.volume = 0.06; // Ultra-soft subtle background level
   if(audioEnabled){
     track.play().catch(function(e){});
   }
@@ -587,7 +587,7 @@ function toggleAudio(){
   if(audioEnabled){
     initAudio();
     if(track){
-      track.volume = 0.22;
+      track.volume = 0.06;
       track.play().catch(function(e){});
     }
   } else {
