@@ -131,6 +131,21 @@
   .gcenter .big{font-size:2.4rem; font-weight:800; letter-spacing:-1px; margin-bottom:10px;}
   .gcenter .em{font-size:3rem; margin-bottom:8px;}
 
+  /* Game engine */
+  .groundhdr{font-size:.78rem; color:#8ea0cc; text-transform:uppercase; letter-spacing:.12em; text-align:center; margin-bottom:14px; font-weight:700;}
+  .gprompt{font-size:1.5rem; font-weight:800; text-align:center; line-height:1.32; margin-bottom:18px;}
+  .gsub{text-align:center; color:#8ea0cc; font-size:.9rem; margin-bottom:16px;}
+  .vgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px;}
+  .vcell{display:flex; flex-direction:column; align-items:center; gap:8px; padding:13px 6px; border-radius:14px; border:2px solid transparent; background:var(--panel); cursor:pointer; transition:border-color .15s, transform .1s, background .15s;}
+  .vcell:active{transform:scale(.95);}
+  .vcell.sel{border-color:var(--bl); background:#132152;}
+  .vcell .vn{font-size:.76rem; color:#c7d3f0; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .gprogress{text-align:center; color:#8ea0cc; font-size:.88rem; margin-bottom:16px;}
+  .rrow{display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:12px; background:var(--panel); margin-bottom:9px;}
+  .rrow.win{background:linear-gradient(120deg,rgba(37,99,235,0.28),rgba(34,197,94,0.16)); border:1px solid var(--bl);}
+  .rrow .rname{flex:1; font-weight:700;}
+  .rrow .rcount{font-weight:800; color:var(--bl); font-size:1.1rem;}
+
   /* Toast */
   .toast{
     position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom)); transform:translateX(-50%) translateY(20px);
@@ -221,7 +236,10 @@
     <div class="players" id="playerList"></div>
 
     <div id="hostCtrl">
-      <button class="btn pri" onclick="startGame()">Demarrer la partie</button>
+      <div class="plabel">Choisis un jeu</div>
+      <button class="btn pri" onclick="launchMostLikely()">Le plus susceptible de...</button>
+      <button class="btn sec" disabled>Qui a poste ca? (bientot)</button>
+      <button class="btn sec" disabled>Devine la note (bientot)</button>
     </div>
     <div id="playerCtrl" style="display:none;">
       <div class="waiting">En attente que l'hote demarre<span class="d"></span></div>
@@ -229,20 +247,9 @@
     <button class="btn ghost" onclick="quit()">Quitter</button>
   </section>
 
-  <!-- GAME PLACEHOLDER -->
+  <!-- GAME -->
   <section id="s-game" class="screen">
-    <div class="gcenter">
-      <div class="em">🎉</div>
-      <div class="big">C'est parti!</div>
-      <p class="hint">La partie est prete et tout le monde est connecte. Les mini jeux s'en viennent bientot.</p>
-    </div>
-    <div class="players" id="gamePlayers" style="margin-top:10px;"></div>
-    <div id="gameHostCtrl">
-      <button class="btn sec" onclick="backToLobby()">Retour au lobby</button>
-    </div>
-    <div id="gamePlayerCtrl" style="display:none;">
-      <div class="waiting">En attente de l'hote<span class="d"></span></div>
-    </div>
+    <div id="gameArea"></div>
   </section>
 
 </div>
@@ -292,6 +299,7 @@ var intent = null;
 var closedByMe = false;
 var inRoom = false;
 var bootDone = false;
+var currentGame = null;
 
 // ---------- Helpers ----------
 function $(id){ return document.getElementById(id); }
@@ -493,13 +501,16 @@ function subscribeRoom(code){
     });
     players.sort(function(a,b){ return (b.host?1:0)-(a.host?1:0) || a.joinedAt - b.joinedAt; });
     amHost = (data.hostId === myId);
+    currentGame = data.game || null;
 
-    // screen transitions driven by shared status
-    if(data.status === "playing" && currentScreen === "s-lobby"){ enterGame(); }
-    else if(data.status !== "playing" && currentScreen === "s-game"){ show("s-lobby"); }
-
-    if(currentScreen === "s-lobby"){ renderPlayers(); }
-    else if(currentScreen === "s-game"){ renderGamePlayers(); }
+    // screen driven by shared status
+    if(data.status === "playing"){
+      if(currentScreen !== "s-game"){ show("s-game"); }
+      renderGame(currentGame);
+    } else {
+      if(currentScreen === "s-game"){ show("s-lobby"); }
+      if(currentScreen === "s-lobby"){ renderPlayers(); }
+    }
   });
 }
 function detachRoom(){
@@ -532,23 +543,135 @@ function renderPlayers(){
   var n = players.length;
   $("pcount").textContent = n + (n===1 ? " joueur" : " joueurs");
 }
-function renderGamePlayers(){
-  $("gamePlayers").innerHTML = players.map(playerCardHTML).join("");
-}
-function enterGame(){
-  show("s-game");
-  renderGamePlayers();
-  $("gameHostCtrl").style.display = amHost ? "block" : "none";
-  $("gamePlayerCtrl").style.display = amHost ? "none" : "block";
+function avatarHTML(p, size){
+  var crown = p.host ? '<span class="crown">👑</span>' : '';
+  var base = 'width:' + size + 'px;height:' + size + 'px;font-size:' + Math.round(size*0.4) + 'px;position:relative;';
+  if(p.photo){
+    return '<div class="avatar" style="' + base + 'background:#0d1636;background-image:url(\'' + p.photo + '\');background-size:cover;background-position:center;border:2px solid ' + p.color + ';">' + crown + '</div>';
+  }
+  return '<div class="avatar" style="' + base + 'background:' + p.color + ';">' + initials(p.name) + crown + '</div>';
 }
 
-// ---------- Host controls ----------
-function startGame(){
-  if(!roomCode) return;
-  db.ref("rooms/" + roomCode + "/status").set("playing");
+// ---------- Game engine ----------
+function renderGame(g){
+  var area = $("gameArea");
+  if(!g || !g.type){ area.innerHTML = '<div class="waiting" style="margin-top:30px;">Chargement du jeu<span class="d"></span></div>'; return; }
+  if(g.type === "mostlikely"){ renderMostLikely(g); }
+  else { area.innerHTML = ""; }
 }
-function backToLobby(){
+function renderMostLikely(g){
+  var area = $("gameArea");
+  var round = g.round || 0;
+  var total = g.total || 1;
+  var votes = g.votes || {};
+  var prompt = (g.prompts && g.prompts[round]) ? g.prompts[round] : "";
+  var html = "";
+
+  if(g.phase === "guess"){
+    html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + '</div>';
+    html += '<div class="gprompt">' + escapeHtml(prompt) + '</div>';
+    html += '<div class="gsub">Vote pour la personne</div>';
+    html += '<div class="vgrid">';
+    players.forEach(function(p){
+      var sel = (votes[myId] === p.id) ? " sel" : "";
+      html += '<div class="vcell' + sel + '" onclick="voteFor(\'' + p.id + '\')">' + avatarHTML(p, 52) + '<div class="vn">' + escapeHtml(p.name) + '</div></div>';
+    });
+    html += '</div>';
+    html += '<div class="gprogress">' + Object.keys(votes).length + ' / ' + players.length + ' ont vote</div>';
+    if(amHost){
+      html += '<button class="btn pri" onclick="revealRound()">Reveler les votes</button>';
+    } else {
+      html += '<div class="waiting">' + (votes[myId] ? "Vote enregistre. En attente" : "Choisis quelqu'un") + '<span class="d"></span></div>';
+    }
+  } else if(g.phase === "reveal"){
+    var tally = {};
+    players.forEach(function(p){ tally[p.id] = 0; });
+    Object.keys(votes).forEach(function(v){ var c = votes[v]; if(tally[c] === undefined) tally[c] = 0; tally[c]++; });
+    var ranked = players.slice().sort(function(a,b){ return (tally[b.id]||0) - (tally[a.id]||0); });
+    var maxCount = ranked.length ? (tally[ranked[0].id]||0) : 0;
+    html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + '</div>';
+    html += '<div class="gprompt">' + escapeHtml(prompt) + '</div>';
+    if(maxCount > 0){
+      var top = ranked[0];
+      html += '<div style="text-align:center;margin:8px 0 20px;">' + avatarHTML(top, 84) + '<div style="font-weight:800;font-size:1.25rem;margin-top:10px;">🏆 ' + escapeHtml(top.name) + '</div></div>';
+    }
+    ranked.forEach(function(p){
+      var c = tally[p.id] || 0;
+      if(c === 0) return;
+      html += '<div class="rrow' + (c===maxCount ? " win" : "") + '">' + avatarHTML(p, 44) + '<div class="rname">' + escapeHtml(p.name) + '</div><div class="rcount">' + c + '</div></div>';
+    });
+    if(maxCount === 0){ html += '<div class="gsub" style="margin-top:10px;">Personne n\'a vote.</div>'; }
+    if(amHost){
+      var last = (round + 1 >= total);
+      html += '<button class="btn pri" style="margin-top:14px;" onclick="nextRound()">' + (last ? "Voir la fin" : "Manche suivante") + '</button>';
+    } else {
+      html += '<div class="waiting" style="margin-top:14px;">En attente de l\'hote<span class="d"></span></div>';
+    }
+  } else if(g.phase === "done"){
+    html += '<div class="gcenter" style="margin-top:24px;"><div class="em">🎉</div><div class="big">Partie terminee!</div><p class="hint">Bien joue tout le monde.</p></div>';
+    if(amHost){
+      html += '<button class="btn pri" onclick="endGame()">Retour au lobby</button>';
+    } else {
+      html += '<div class="waiting">En attente de l\'hote<span class="d"></span></div>';
+    }
+  }
+  area.innerHTML = html;
+}
+
+// ---------- Games: launch + controls ----------
+var MOSTLIKELY_PROMPTS = [
+  "Le plus susceptible de se faire mettre dehors d'un resto.",
+  "Le plus susceptible de texter son ex a 2h du matin.",
+  "Le plus susceptible de manquer son propre mariage.",
+  "Le plus susceptible de devenir riche sans qu'on comprenne comment.",
+  "Le plus susceptible de se perdre dans son propre quartier.",
+  "Le plus susceptible de partir une chicane pour rien.",
+  "Le plus susceptible de tout raconter apres deux verres.",
+  "Le plus susceptible de ghoster le groupe pendant trois semaines.",
+  "Le plus susceptible de brailler devant une pub.",
+  "Le plus susceptible de finir en prison pour une niaiserie.",
+  "Le plus susceptible de flamber sa paie en une soiree.",
+  "Le plus susceptible d'oublier la fete de quelqu'un.",
+  "Le plus susceptible de tomber en amour trop vite.",
+  "Le plus susceptible de mentir sur son age.",
+  "Le plus susceptible de rester ami avec tous ses ex.",
+  "Le plus susceptible de se ramasser dans une telerealite.",
+  "Le plus susceptible de perdre son telephone ce soir.",
+  "Le plus susceptible d'arriver en retard a sa propre fete.",
+  "Le plus susceptible de survivre a une apocalypse zombie.",
+  "Le plus susceptible de croire a une theorie du complot.",
+  "Le plus susceptible de chanter au karaoke sans qu'on lui demande.",
+  "Le plus susceptible de se faire pogner en plein mensonge.",
+  "Le plus susceptible de partir en voyage sur un coup de tete.",
+  "Le plus susceptible de devenir influenceur."
+];
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function launchMostLikely(){
+  if(!roomCode || !amHost) return;
+  var pool = MOSTLIKELY_PROMPTS.slice();
+  shuffle(pool);
+  var chosen = pool.slice(0, Math.min(8, pool.length));
+  db.ref("rooms/" + roomCode + "/game").set({ type:"mostlikely", phase:"guess", round:0, total:chosen.length, prompts:chosen }).then(function(){
+    db.ref("rooms/" + roomCode + "/status").set("playing");
+  });
+}
+function voteFor(uid){
+  if(!roomCode || !myId) return;
+  db.ref("rooms/" + roomCode + "/game/votes/" + myId).set(uid);
+}
+function revealRound(){
   if(!roomCode) return;
+  db.ref("rooms/" + roomCode + "/game/phase").set("reveal");
+}
+function nextRound(){
+  if(!roomCode || !currentGame) return;
+  var next = (currentGame.round || 0) + 1;
+  if(next >= (currentGame.total || 1)){ db.ref("rooms/" + roomCode + "/game/phase").set("done"); }
+  else { db.ref("rooms/" + roomCode + "/game").update({ round: next, phase: "guess", votes: null }); }
+}
+function endGame(){
+  if(!roomCode) return;
+  db.ref("rooms/" + roomCode + "/game").remove();
   db.ref("rooms/" + roomCode + "/status").set("lobby");
 }
 
@@ -601,7 +724,7 @@ function hideReconnectOverlay(){
 function enterRoomScreen(status){
   if(amHost){ showHostLobby(); $("lobbyCode").textContent = roomCode; }
   else { showPlayerLobby(roomCode); }
-  if(status === "playing"){ enterGame(); }
+  if(status === "playing"){ show("s-game"); renderGame(currentGame); }
 }
 // Re-establish our presence every time the socket (re)connects, so a blip
 // that triggered onDisconnect puts us back in the roster automatically.
@@ -644,6 +767,7 @@ function tryResume(){
       if(!data || (!data.hostId && !data.createdAt)){ clearSavedRoom(); hideReconnectOverlay(); show("s-home"); return; }
       roomCode = savedRoom;
       amHost = (data.hostId === myId);
+      currentGame = data.game || null;
       var existing = (data.players && data.players[myId]) ? data.players[myId] : null;
       var joinedAt = (existing && existing.joinedAt) ? existing.joinedAt : firebase.database.ServerValue.TIMESTAMP;
       var meRef = rRef.child("players/" + myId);
