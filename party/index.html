@@ -566,39 +566,39 @@ var PLAYLISTS = {
     "https://archive.org/download/we_like_to_party/VengaBoysWeLikeTheParty.mp3"
   ],
   mostlikely: [
+    "https://archive.org/download/bustin-bustin-buuuustiiiin-by-lordmau5/Bustin%20Bustin%20Buuuustiiiin.mp3",
     "https://archive.org/download/tvtunes_22626/Pokemon%20-%20Dance%20Mix.mp3",
-    "https://archive.org/download/tvtunes_13038/Ghostbusters%20-%20Techno-Reggae%20Remix.mp3",
     "https://archive.org/download/tvtunes_28083/Rick%20and%20Morty%20-%20Rick%20Dance.mp3"
   ],
   whoposted: [
     "https://archive.org/download/tvtunes_26023/Simpsons%20-%20The%20Doh%20Song%20-%20Techno%20Remix.mp3",
     "https://archive.org/download/tvtunes_20474/Bob%20the%20Builder%20-%20Mambo%20No.%205.mp3",
-    "https://archive.org/download/tvtunes_13212/The%20Mad%20Adventures%20of%20Rabbi%20Jacob%20-%20Rabbi%20Dance.mp3"
+    "https://archive.org/download/tvtunes_721/Looney%20Tunes%20-%201930.mp3"
   ],
   guessrating: [
     "https://archive.org/download/tvtunes_22804/Who%20Wants%20to%20Be%20a%20Millionaire%20-%20Music%20-%2032000W.mp3",
     "https://archive.org/download/tvtunes_31119/The%20Price%20Is%20Right%20-%20Grand%20Game%20Cue%20%28Family%20Feud%20Theme%29.mp3",
-    "https://archive.org/download/tvtunes_29828/Jeopardy%20-%202001%20-%202008.mp3"
+    "https://archive.org/download/tvtunes_5641/The%20Flintstones%20-%20Theme%20Song.mp3"
   ],
   knowplayer: [
     "https://archive.org/download/tvtunes_29828/Jeopardy%20-%202001%20-%202008.mp3",
-    "https://archive.org/download/tvtunes_22626/Pokemon%20-%20Dance%20Mix.mp3",
-    "https://archive.org/download/tvtunes_28083/Rick%20and%20Morty%20-%20Rick%20Dance.mp3"
+    "https://archive.org/download/tvtunes_6550/Futurama%20-%20Theme%20Song.mp3",
+    "https://archive.org/download/tvtunes_2224/Baywatch%20-%20Theme%20Song.mp3"
   ],
   roast: [
     "https://archive.org/download/tvtunes_154/Curb%20Your%20Enthusiasm.mp3",
     "https://archive.org/download/tvtunes_2225/Seinfeld%20-%20Ending.mp3",
-    "https://archive.org/download/tvtunes_31119/The%20Price%20Is%20Right%20-%20Grand%20Game%20Cue%20%28Family%20Feud%20Theme%29.mp3"
+    "https://archive.org/download/tvtunes_375/The%20Addams%20Family%20-%20Theme%20Song.mp3"
   ],
   whosaid: [
     "https://archive.org/download/tvtunes_9238/Mission%20Impossible%20-%201988.mp3",
-    "https://archive.org/download/tvtunes_13038/Ghostbusters%20-%20Techno-Reggae%20Remix.mp3",
-    "https://archive.org/download/tvtunes_7810/The%20New%20Pink%20Panther%20Show%20-%201971.mp3"
+    "https://archive.org/download/tvtunes_2206/Inspector%20Gadget%20-%20Theme%20Song.mp3",
+    "https://archive.org/download/tvtunes_2210/James%20Bond%20-%20Theme%20Song.mp3"
   ],
   twotruths: [
     "https://archive.org/download/tvtunes_713/The%20Match%20Game%20-%201973.mp3",
-    "https://archive.org/download/tvtunes_22804/Who%20Wants%20to%20Be%20a%20Millionaire%20-%20Music%20-%2032000W.mp3",
-    "https://archive.org/download/tvtunes_154/Curb%20Your%20Enthusiasm.mp3"
+    "https://archive.org/download/tvtunes_2218/Scooby-Doo%2C%20Where%20Are%20You%21%20-%20Theme%20Song.mp3",
+    "https://archive.org/download/tvtunes_557/Knight%20Rider%20-%20Theme%20Song.mp3"
   ]
 };
 
@@ -731,6 +731,7 @@ document.addEventListener("DOMContentLoaded", updateAudioIcon);
   var explosions = [];
 
   window.triggerExplosion = function(ex, ey, isCorner, color){
+    if(document.body.classList.contains("in-game")) return;
     var count = isCorner ? 50 : 15;
     sfxExplode();
     for(var j=0; j<count; j++){
@@ -758,6 +759,12 @@ document.addEventListener("DOMContentLoaded", updateAudioIcon);
 
   function drawCanvas(){
     ctx.clearRect(0, 0, w, h);
+    
+    if(document.body.classList.contains("in-game")){
+      explosions = [];
+      requestAnimationFrame(drawCanvas);
+      return;
+    }
     
     pts.forEach(function(p){
       p.x += p.dx; p.y += p.dy;
@@ -807,6 +814,13 @@ document.addEventListener("DOMContentLoaded", updateAudioIcon);
   var colorIdx = 0;
 
   function moveDVD(){
+    if(document.body.classList.contains("in-game")){
+      dvd.style.display = "none";
+      requestAnimationFrame(moveDVD);
+      return;
+    }
+    dvd.style.display = "block";
+
     x += dx; y += dy;
     var logoW = isMobile ? 65 : 90;
     var logoH = isMobile ? 33 : 45;
@@ -826,7 +840,9 @@ document.addEventListener("DOMContentLoaded", updateAudioIcon);
       var centerX = x + (logoW / 2);
       var centerY = y + (logoH / 2);
 
-      if(window.triggerExplosion) window.triggerExplosion(centerX, centerY, isCorner, curColor);
+      if(window.triggerExplosion && !document.body.classList.contains("in-game")){
+        window.triggerExplosion(centerX, centerY, isCorner, curColor);
+      }
     }
 
     x = Math.max(0, Math.min(x, maxW));
@@ -1313,15 +1329,12 @@ function renderGameVoting(g){
 
 // =====================================================================
 //  GAME 1: MOST LIKELY TO (JACKBOX PARTY STYLE WITH LIVE COUNTDOWN TIMER)
-// =====================================================================
-// =====================================================================
-//  SPICY & PARTY QUESTION BANKS (50 HILARIOUS PROMPTS)
+// ===========================// =====================================================================
+//  SPICY & PARTY QUESTION BANKS (100 HILARIOUS JUICY CALL-OUT PROMPTS)
 // =====================================================================
 var MOSTLIKELY_PROMPTS = [
   "Le plus susceptible de texter son ex à 2h du matin après 3 verres.",
-  "Le plus susceptible de se faire sortir d'un bar par les videurs.",
   "Le plus susceptible d'avoir un compte OnlyFans secret.",
-  "Le plus susceptible d'oublier le prénom de son coup d'un soir au réveil.",
   "Le plus susceptible de partir une chicane générale en boisson.",
   "Le plus susceptible de finir nu(e) dans une piscine à 3h du matin.",
   "Le plus susceptible de devenir millionnaire grâce à une arnaque bizarre.",
@@ -1330,7 +1343,6 @@ var MOSTLIKELY_PROMPTS = [
   "Le plus susceptible de se faire pogner en train de faire un snap coquin au mauvais destinataire.",
   "Le plus susceptible de dépenser sa paie au complet dans une seule soirée de party.",
   "Le plus susceptible de commander pour 150$ de UberEats bourré à 4h du matin.",
-  "Le plus susceptible de finir la soirée en train de pleurer dans les toilettes d'un club.",
   "Le plus susceptible d'arriver 1h en retard à sa propre fête avec un verre à la main.",
   "Le plus susceptible d'embrasser un(e) inconnu(e) pour un pari à 5$.",
   "Le plus susceptible de faire un scandale pour une frite manquante à la poutine.",
@@ -1356,7 +1368,6 @@ var MOSTLIKELY_PROMPTS = [
   "Le plus susceptible de s'embrouiller avec le DJ pour qu'il joue sa chanson préférée.",
   "Le plus susceptible de manger du fromage périmé depuis 2 mois sans s'en rendre compte.",
   "Le plus susceptible de se faire passer pour une vedette pour rentrer gratuitement VIP.",
-  "Le plus susceptible d'adopter 5 chats sur un coup de tête après une rupture.",
   "Le plus susceptible d'avoir une aventure d'un soir avec un(e) ami(e) d'enfance.",
   "Le plus susceptible de rater son vol d'avion parce qu'il buvait de la bière au bar de l'aéroport.",
   "Le plus susceptible d'envoyer un message d'amour à son prof ou collègue par accident.",
@@ -1367,6 +1378,61 @@ var MOSTLIKELY_PROMPTS = [
   "Le plus susceptible d'oublier où il habite en rentrant en taxi.",
   "Le plus susceptible d'avoir un compte Instagram secret pour espionner ses rivaux.",
   "Le plus susceptible d'être le premier à tomber au combat après seulement 2 bières.",
+  "Le plus susceptible de gagner une médaille d'or aux Olympiques du chaos.",
+  "Le plus susceptible de critiquer les affaires des autres alors que sa propre vie est un chantier.",
+  "Le plus susceptible d'avoir stalké le profil de tout le monde dans cette pièce jusqu'en 2014.",
+  "Le plus susceptible de dire 'je bois juste un verre ce soir' et finir cul sec à 4h du matin.",
+  "Le plus susceptible de donner des conseils amoureux désastreux alors qu'il est célibataire depuis 5 ans.",
+  "Le plus susceptible de disparaître de la fête sans dire au revoir à personne.",
+  "Le plus susceptible de chialer que la musique est trop forte et ensuite demander d'augmenter le son.",
+  "Le plus susceptible de tomber en amour avec quelqu'un juste parce qu'il a répondu en moins de 3 minutes.",
+  "Le plus susceptible de faire semblant d'avoir lu un livre ou vu un film juste pour avoir l'air intelligent.",
+  "Le plus susceptible de perdre un pari stupide et de devoir payer la tournée générale.",
+  "Le plus susceptible de prendre 142 selfies dans la soirée et n'en aimer aucun.",
+  "Le plus susceptible de menacer de supprimer ses réseaux sociaux tous les 6 mois.",
+  "Le plus susceptible de dire 'je suis en route' alors qu'il est encore en serviette dans sa chambre.",
+  "Le plus susceptible de passer 45 minutes à choisir quoi regarder sur Netflix et s'endormir devant l'écran.",
+  "Le plus susceptible de se plaindre d'être pauvre après avoir commandé 3 verres à 22$ chacun.",
+  "Le plus susceptible de dramatiser une simple poignée de main ou un regard de travers.",
+  "Le plus susceptible d'avoir une bucket list secrète remplie de trucs illégaux mais drôles.",
+  "Le plus susceptible de garder une rancœur pour une blague faite en 2016.",
+  "Le plus susceptible de juger les choix alimentaires des autres en mangeant un burger bien gras.",
+  "Le plus susceptible d'envoyer un screenshot d'une conversation à la personne même qui est dans la conversation.",
+  "Le plus susceptible d'inventer une histoire complètement folle et d'y croire lui-même après 10 minutes.",
+  "Le plus susceptible de réclamer 1.50$ sur Interac pour un café partagé la semaine passée.",
+  "Le plus susceptible de se vanter d'être un grand chef cuisinier parce qu'il sait faire des pâtes au beurre.",
+  "Le plus susceptible de faire la leçon sur la santé puis d'enchaîner 3 poutines dans la même semaine.",
+  "Le plus susceptible de s'auto-inviter à un événement où personne ne voulait de lui.",
+  "Le plus susceptible de pleurer de rire pour une blague que personne d'autre n'a trouvée drôle.",
+  "Le plus susceptible de casser un verre par pure maladresse et accuser le vent.",
+  "Le plus susceptible d'avoir déjà écrit des poèmes embarrassants à son crush du secondaire.",
+  "Le plus susceptible d'avoir une playlist secrète avec uniquement des chansons d'amour québécoises ultra kétaines.",
+  "Le plus susceptible de refuser de prêter son linge parce qu'il a peur qu'on lui vole son style.",
+  "Le plus susceptible d'appeler son ex en pleurant sous prétexte que 'son chat lui manquait'.",
+  "Le plus susceptible de faire un malaise théâtral pour éviter d'expliquer une erreur.",
+  "Le plus susceptible de prétendre connaître une célébrité parce qu'il a aimé une de ses photos sur Instagram.",
+  "Le plus susceptible de se lever le lendemain et d'envoyer des messages d'excuses à 12 personnes différentes.",
+  "Le plus susceptible de négocier le prix d'un truc à 2$ dans une vente de garage comme si sa vie en dépendait.",
+  "Le plus susceptible d'avoir une peur panique irrationnelle d'un animal inoffensif comme un pigeon.",
+  "Le plus susceptible d'avouer tous ses vices cachés dès qu'on lui pose deux questions un peu poussées.",
+  "Le plus susceptible de réorganiser les meubles dans un chalet loué juste parce que 'l'énergie était mauvaise'.",
+  "Le plus susceptible d'abandonner sa résolution du Nouvel An le 2 janvier à midi.",
+  "Le plus susceptible de se faire passer pour un expert en vin après avoir goûté une bouteille à 12$.",
+  "Le plus susceptible d'arriver avec une boîte de beignets et de tous les manger lui-même.",
+  "Le plus susceptible d'avoir un deuxième compte TikTok secret dédié aux vidéos de théories du complot.",
+  "Le plus susceptible de s'endormir au cinéma pendant la scène d'action principale.",
+  "Le plus susceptible d'être convaincu qu'il pourrait battre un ours à mains nues après 2 bières.",
+  "Le plus susceptible de répéter le même secret à 5 personnes différentes en disant 'dis-le à personne'.",
+  "Le plus susceptible de chanter dans son micro pendant un appel de travail en pensant être sur mute.",
+  "Le plus susceptible de dépenser 300$ en vêtements qu'il ne portera jamais.",
+  "Le plus susceptible de partir une rumeur hilarante sur lui-même pour voir qui va la répéter.",
+  "Le plus susceptible d'avoir déjà mangé la nourriture de son colocataire et blâmé le chien.",
+  "Le plus susceptible d'être bloqué par au moins 3 influenceurs majeurs pour troll excessif.",
+  "Le plus susceptible de faire une crise d'angoisse parce que son téléphone est à 4%.",
+  "Le plus susceptible d'organiser une soirée à thème et d'être le seul habillé en costume.",
+  "Le plus susceptible de devenir le meilleur ami du chauffeur d'Uber en 8 minutes de trajet.",
+  "Le plus susceptible d'être élu le roi ou la reine indétrônable du malaise de la gang."
+];ombat après seulement 2 bières.",
   "Le plus susceptible de gagner une médaille d'or aux Olympiques du chaos."
 ];
 
