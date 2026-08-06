@@ -1237,13 +1237,6 @@ function renderMostLikely(g){
 
   } else if(g.phase === "reveal"){
     var revealStart = g.revealStartMs || Date.now();
-    if(amHost && !g._autoNextStarted){
-      g._autoNextStarted = true;
-      sfxWin();
-      db.ref("rooms/" + roomCode + "/game/revealStartMs").set(revealStart);
-      Object.keys(votes).forEach(function(vKey){ var target = votes[vKey]; addPoints(target, 100); });
-    }
-
     startLiveCountdown(g.revealStartMs || revealStart, 5, function(){
       if(amHost) nextRound();
     });
@@ -1281,11 +1274,7 @@ function renderMostLikely(g){
     html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Prochaine manche dans <span id="countdownVal">5s</span></div></div>';
 
   } else if(g.phase === "done"){
-    if(amHost && !g._autoVoteTimer){
-      g._autoVoteTimer = true;
-      setTimeout(launchGrandPrizeCeremony, 1500);
-    }
-    html += '<div class="gcenter" style="margin-top:24px;"><div class="big">Calcul des points en cours<span class="d"></span></div></div>';
+    html += renderMiniGameDoneHTML();
   }
 
   area.innerHTML = html;
@@ -1297,15 +1286,39 @@ function voteFor(uid){
   db.ref("rooms/" + roomCode + "/game/votes/" + myId).set(uid);
 }
 function revealRound(){
-  if(!roomCode) return;
-  db.ref("rooms/" + roomCode + "/game").update({ phase: "reveal", revealStartMs: Date.now() });
+  if(!roomCode || !amHost) return;
+  var game = currentGame;
+  if(game && !game.scored){
+    var votes = game.votes || {};
+    if(game.type === "mostlikely"){
+      Object.keys(votes).forEach(function(vKey){ var target = votes[vKey]; addPoints(target, 100); });
+    } else if(game.type === "whoposted"){
+      var item = (game.roundsData && game.roundsData[game.round]) || {};
+      Object.keys(votes).forEach(function(vUid){ if(votes[vUid] === item.posterId) addPoints(vUid, 200); });
+    } else if(game.type === "guessrating"){
+      var item = (game.roundsData && game.roundsData[game.round]) || {};
+      Object.keys(votes).forEach(function(vUid){
+        if(votes[vUid] === item.stars) addPoints(vUid, 200);
+        else if(Math.abs(votes[vUid] - item.stars) === 1) addPoints(vUid, 100);
+      });
+    } else if(game.type === "knowplayer"){
+      Object.keys(votes).forEach(function(vUid){ if(votes[vUid] === game.spotlightAnswer) addPoints(vUid, 200); });
+    } else if(game.type === "roast"){
+      Object.keys(votes).forEach(function(vKey){ var authorUid = votes[vKey]; addPoints(authorUid, 150); });
+    } else if(game.type === "whosaid"){
+      Object.keys(votes).forEach(function(vUid){ if(votes[vUid] === game.speakerId) addPoints(vUid, 200); });
+    } else if(game.type === "twotruths"){
+      Object.keys(votes).forEach(function(vUid){ if(votes[vUid] === game.lieIndex) addPoints(vUid, 200); });
+    }
+  }
+  db.ref("rooms/" + roomCode + "/game").update({ phase: "reveal", revealStartMs: Date.now(), scored: true });
 }
 function nextRound(){
-  if(!roomCode || !currentGame) return;
+  if(!roomCode || !amHost || !currentGame) return;
   if(countdownTicker){ clearInterval(countdownTicker); countdownTicker = null; }
   var next = (currentGame.round || 0) + 1;
   if(next >= (currentGame.total || 1)){ db.ref("rooms/" + roomCode + "/game/phase").set("done"); }
-  else { db.ref("rooms/" + roomCode + "/game").update({ round: next, phase: "guess", votes: null, revealStartMs: null }); }
+  else { db.ref("rooms/" + roomCode + "/game").update({ round: next, phase: "guess", votes: null, revealStartMs: null, scored: null }); }
 }
 
 // =====================================================================
@@ -1445,17 +1458,9 @@ function renderWhoPosted(g){
     html += '<div class="gprogress">' + votedCount + ' / ' + players.length + ' ont voté</div>';
     html += '<div class="waiting">' + (votedCount >= players.length ? "Tout le monde a deviné ! Révélation..." : (votes[myId] ? "Devinette envoyée !" : "Choisis un suspect")) + '<span class="d"></span></div>';
 
-  } else if(g.phase === "reveal"){
-    var revealStart = g.revealStartMs || Date.now();
-    if(amHost && !g._autoNextStarted){
-      g._autoNextStarted = true;
-      sfxWin();
-      db.ref("rooms/" + roomCode + "/game/revealStartMs").set(revealStart);
-      Object.keys(votes).forEach(function(vUid){
-        if(votes[vUid] === item.posterId) addPoints(vUid, 200);
-      });
-    }
-    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) nextRound(); });
+    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){
+      if(amHost) db.ref("rooms/" + roomCode + "/game/phase").set("done");
+    });
 
     var realPoster = players.find(function(p){ return p.id === item.posterId; }) || { name:"Quelqu'un", color:"#2563eb" };
     html += '<div class="groundhdr">Révélation !</div>';
@@ -1466,17 +1471,38 @@ function renderWhoPosted(g){
     html += avatarHTML(realPoster, 84);
     html += '<div style="font-size:1.4rem;font-weight:800;margin-top:10px;">C\'était ' + escapeHtml(realPoster.name) + ' !</div>';
     html += '</div>';
-    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Prochaine manche dans <span id="countdownVal">5s</span></div></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Fin de la manche dans <span id="countdownVal">5s</span></div></div>';
 
   } else if(g.phase === "done"){
-    if(amHost && !g._autoVoteTimer){
-      g._autoVoteTimer = true;
-      setTimeout(launchGrandPrizeCeremony, 1500);
-    }
-    html += '<div class="gcenter" style="margin-top:24px;"><div class="big">Partie terminée !</div></div>';
+    html += renderMiniGameDoneHTML();
   }
 
   area.innerHTML = html;
+}
+
+function renderMiniGameDoneHTML(){
+  var html = '<div class="groundhdr">Fin du jeu !</div>';
+  html += '<div style="text-align:center;margin:20px 0;">';
+  html += '<div style="font-size:1.2rem;font-weight:800;margin-bottom:14px;">Scores de la soirée :</div>';
+  
+  var sorted = players.slice().sort(function(a,b){ return (sessionScores[b.id]||0) - (sessionScores[a.id]||0); });
+  sorted.forEach(function(p, i){
+    html += '<div class="sboard-row">';
+    html += '<div class="sboard-rank">#' + (i+1) + '</div>';
+    html += avatarHTML(p, 40);
+    html += '<div class="rname" style="flex:1;">' + escapeHtml(p.name) + '</div>';
+    html += '<div class="sboard-pts">' + (sessionScores[p.id]||0) + ' pts</div>';
+    html += '</div>';
+  });
+
+  if(amHost){
+    html += '<button class="btn pri" style="margin-top:20px;" onclick="startPartyVote()">🎮 Jeu suivant (Vote du groupe)</button>';
+    html += '<button class="btn sec" style="margin-top:10px;" onclick="launchGrandPrizeCeremony()">🏆 Couronner le Grand Gagnant</button>';
+  } else {
+    html += '<div class="waiting" style="margin-top:20px;">En attente de l\'hôte pour le prochain jeu<span class="d"></span></div>';
+  }
+  html += '</div>';
+  return html;
 }
 
 // =====================================================================
@@ -1537,15 +1563,6 @@ function renderGuessRating(g){
 
   } else if(g.phase === "reveal"){
     var revealStart = g.revealStartMs || Date.now();
-    if(amHost && !g._autoNextStarted){
-      g._autoNextStarted = true;
-      sfxWin();
-      db.ref("rooms/" + roomCode + "/game/revealStartMs").set(revealStart);
-      Object.keys(votes).forEach(function(vUid){
-        if(votes[vUid] === item.stars) addPoints(vUid, 200);
-        else if(Math.abs(votes[vUid] - item.stars) === 1) addPoints(vUid, 100);
-      });
-    }
     startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) nextRound(); });
 
     html += '<div class="groundhdr">Vraie note attribuée :</div>';
@@ -1558,11 +1575,7 @@ function renderGuessRating(g){
     html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Prochaine manche dans <span id="countdownVal">5s</span></div></div>';
 
   } else if(g.phase === "done"){
-    if(amHost && !g._autoVoteTimer){
-      g._autoVoteTimer = true;
-      setTimeout(launchGrandPrizeCeremony, 1500);
-    }
-    html += '<div class="gcenter" style="margin-top:24px;"><div class="big">Partie terminée !</div></div>';
+    html += renderMiniGameDoneHTML();
   }
 
   area.innerHTML = html;
@@ -1641,21 +1654,15 @@ function renderKnowPlayer(g){
 
   } else if(g.phase === "reveal"){
     var revealStart = g.revealStartMs || Date.now();
-    if(amHost && !g._autoVoteTimer){
-      g._autoVoteTimer = true;
-      sfxWin();
-      db.ref("rooms/" + roomCode + "/game/revealStartMs").set(revealStart);
-      Object.keys(votes).forEach(function(vUid){
-        if(votes[vUid] === spotlightAnswer) addPoints(vUid, 200);
-      });
-    }
-    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) launchGrandPrizeCeremony(); });
+    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) db.ref("rooms/" + roomCode + "/game/phase").set("done"); });
 
     var correctText = options[spotlightAnswer] || "Aucune";
     html += '<div class="groundhdr">La vérité est dévoilée !</div>';
     html += '<div class="gprompt">' + escapeHtml(spotlightName) + ' a répondu :</div>';
     html += '<div style="background:linear-gradient(120deg,var(--blue),var(--purple));padding:20px;border-radius:18px;font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:20px;">' + escapeHtml(correctText) + '</div>';
-    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Couronnement dans <span id="countdownVal">5s</span></div></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Fin du jeu dans <span id="countdownVal">5s</span></div></div>';
+  } else if(g.phase === "done"){
+    html += renderMiniGameDoneHTML();
   }
 
   area.innerHTML = html;
@@ -1744,16 +1751,7 @@ function renderRoast(g){
 
   } else if(g.phase === "reveal"){
     var revealStart = g.revealStartMs || Date.now();
-    if(amHost && !g._autoVoteTimer){
-      g._autoVoteTimer = true;
-      sfxWin();
-      db.ref("rooms/" + roomCode + "/game/revealStartMs").set(revealStart);
-      Object.keys(votes).forEach(function(vKey){
-        var authorUid = votes[vKey];
-        addPoints(authorUid, 150);
-      });
-    }
-    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) launchGrandPrizeCeremony(); });
+    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) db.ref("rooms/" + roomCode + "/game/phase").set("done"); });
 
     html += '<div class="groundhdr">Résultats des répliques !</div>';
     html += '<div class="gprompt">' + escapeHtml(prompt) + '</div>';
@@ -1766,7 +1764,9 @@ function renderRoast(g){
       html += '<div style="color:var(--bp);font-size:.85rem;margin-top:6px;">— ' + escapeHtml(author.name) + '</div>';
       html += '</div>';
     });
-    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Couronnement dans <span id="countdownVal">5s</span></div></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Fin du jeu dans <span id="countdownVal">5s</span></div></div>';
+  } else if(g.phase === "done"){
+    html += renderMiniGameDoneHTML();
   }
 
   area.innerHTML = html;
@@ -1840,15 +1840,7 @@ function renderWhoSaid(g){
 
   } else if(g.phase === "reveal"){
     var revealStart = g.revealStartMs || Date.now();
-    if(amHost && !g._autoVoteTimer){
-      g._autoVoteTimer = true;
-      sfxWin();
-      db.ref("rooms/" + roomCode + "/game/revealStartMs").set(revealStart);
-      Object.keys(votes).forEach(function(vUid){
-        if(votes[vUid] === g.speakerId) addPoints(vUid, 200);
-      });
-    }
-    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) launchGrandPrizeCeremony(); });
+    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) db.ref("rooms/" + roomCode + "/game/phase").set("done"); });
 
     var speaker = players.find(function(p){ return p.id === g.speakerId; }) || { name: "Quelqu'un" };
     html += '<div class="groundhdr">Auteur révélé !</div>';
@@ -1856,7 +1848,9 @@ function renderWhoSaid(g){
     html += avatarHTML(speaker, 84);
     html += '<div style="font-size:1.4rem;font-weight:800;margin-top:10px;">C\'était ' + escapeHtml(speaker.name) + ' !</div>';
     html += '</div>';
-    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Couronnement dans <span id="countdownVal">5s</span></div></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Fin du jeu dans <span id="countdownVal">5s</span></div></div>';
+  } else if(g.phase === "done"){
+    html += renderMiniGameDoneHTML();
   }
 
   area.innerHTML = html;
@@ -1908,20 +1902,14 @@ function renderTwoTruths(g){
 
   } else if(g.phase === "reveal"){
     var revealStart = g.revealStartMs || Date.now();
-    if(amHost && !g._autoVoteTimer){
-      g._autoVoteTimer = true;
-      sfxWin();
-      db.ref("rooms/" + roomCode + "/game/revealStartMs").set(revealStart);
-      Object.keys(votes).forEach(function(vUid){
-        if(votes[vUid] === g.lieIndex) addPoints(vUid, 200);
-      });
-    }
-    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) launchGrandPrizeCeremony(); });
+    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) db.ref("rooms/" + roomCode + "/game/phase").set("done"); });
 
     html += '<div class="groundhdr">Le mensonge était :</div>';
     var lieText = statements[g.lieIndex] || "";
     html += '<div style="background:rgba(239,68,68,0.2);border:2px solid var(--red);padding:18px;border-radius:16px;font-size:1.2rem;font-weight:800;text-align:center;margin-bottom:20px;color:#fff;">' + escapeHtml(lieText) + '</div>';
-    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Couronnement dans <span id="countdownVal">5s</span></div></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Fin du jeu dans <span id="countdownVal">5s</span></div></div>';
+  } else if(g.phase === "done"){
+    html += renderMiniGameDoneHTML();
   }
 
   area.innerHTML = html;
