@@ -88,6 +88,10 @@
   .sw{aspect-ratio:1; border-radius:50%; cursor:pointer; border:2.5px solid transparent; transition:transform .12s;}
   .sw:active{transform:scale(.9);}
   .sw.sel{border-color:#fff; transform:scale(1.08);}
+  .photo-actions{display:flex; gap:10px; justify-content:center; margin-top:14px;}
+  .photo-btn{background:var(--panel); border:1px solid var(--bdr); color:var(--txt); font-family:inherit; font-size:.85rem; font-weight:600; padding:9px 16px; border-radius:10px; cursor:pointer;}
+  .photo-btn:active{transform:scale(.96);}
+  .photo-btn.rm{color:#8ea0cc;}
 
   /* Status */
   .status{display:flex; align-items:center; justify-content:center; gap:8px; font-size:.82rem; color:#8ea0cc; margin-bottom:22px;}
@@ -163,6 +167,11 @@
     <h2>Ton profil</h2>
     <p class="hint">C'est comme ca que ta gang va te voir.</p>
     <div class="avatar preview-av" id="pv">?</div>
+    <div class="photo-actions">
+      <button type="button" class="photo-btn" id="photoBtn">📷 Ajouter une photo</button>
+      <button type="button" class="photo-btn rm" id="photoRm" style="display:none;">Retirer</button>
+    </div>
+    <input type="file" accept="image/*" id="photoIn" style="display:none;">
     <label class="lb">Ton nom ou surnom</label>
     <input class="fld" id="nameIn" maxlength="14" placeholder="Ex: Dan" autocomplete="off">
     <label class="lb">Choisis ta couleur</label>
@@ -270,7 +279,7 @@ var COLORS = ["#2563eb","#22c55e","#f59e0b","#ef4444","#a855f7","#ec4899","#14b8
 // ---------- State ----------
 var db = null, auth = null;
 var configMissing = false;
-var me = { name:"", color:COLORS[0] };
+var me = { name:"", color:COLORS[0], photo:null };
 var myId = null;
 var authReady = false;
 var roomCode = "";
@@ -339,8 +348,19 @@ function buildSwatches(){
 }
 function updatePreview(){
   var pv = $("pv");
-  pv.textContent = initials($("nameIn").value);
-  pv.style.background = me.color;
+  if(me.photo){
+    pv.textContent = "";
+    pv.style.background = "#0d1636";
+    pv.style.backgroundImage = "url('" + me.photo + "')";
+    pv.style.backgroundSize = "cover";
+    pv.style.backgroundPosition = "center";
+    pv.style.border = "3px solid " + me.color;
+  } else {
+    pv.style.backgroundImage = "";
+    pv.style.border = "none";
+    pv.style.background = me.color;
+    pv.textContent = initials($("nameIn").value);
+  }
 }
 function go(which){
   if(configMissing) return;
@@ -348,9 +368,13 @@ function go(which){
   try{
     var sn = localStorage.getItem("norelo_party_name");
     var sc = localStorage.getItem("norelo_party_color");
+    var sp = localStorage.getItem("norelo_party_photo");
     if(sn){ $("nameIn").value = sn; }
     if(sc && COLORS.indexOf(sc)>=0){ me.color = sc; }
+    me.photo = sp ? sp : null;
   }catch(e){}
+  if(me.photo){ $("photoRm").style.display = "inline-block"; $("photoBtn").textContent = "Changer la photo"; }
+  else { $("photoRm").style.display = "none"; $("photoBtn").textContent = "📷 Ajouter une photo"; }
   buildSwatches();
   updatePreview();
   $("contBtn").disabled = !$("nameIn").value.trim();
@@ -363,6 +387,7 @@ function afterProfile(){
   try{
     localStorage.setItem("norelo_party_name", me.name);
     localStorage.setItem("norelo_party_color", me.color);
+    localStorage.setItem("norelo_party_photo", me.photo || "");
   }catch(e){}
   if(intent === "host"){ createRoom(); }
   else { $("codeIn").value=""; $("joinBtn").disabled=true; show("s-join"); setTimeout(function(){ $("codeIn").focus(); },250); }
@@ -413,7 +438,7 @@ async function createRoom(){
       status: "lobby"
     });
     var meRef = rRef.child("players/" + myId);
-    await meRef.set({ name:me.name, color:me.color, host:true, joinedAt:firebase.database.ServerValue.TIMESTAMP });
+    await meRef.set({ name:me.name, color:me.color, host:true, photo:me.photo||null, joinedAt:firebase.database.ServerValue.TIMESTAMP });
     meRef.onDisconnect().remove();
     subscribeRoom(roomCode);
     setStatus("ok","Partie prete");
@@ -438,7 +463,7 @@ async function doJoin(){
     roomCode = code;
     amHost = false;
     var meRef = rRef.child("players/" + myId);
-    await meRef.set({ name:me.name, color:me.color, host:false, joinedAt:firebase.database.ServerValue.TIMESTAMP });
+    await meRef.set({ name:me.name, color:me.color, host:false, photo:me.photo||null, joinedAt:firebase.database.ServerValue.TIMESTAMP });
     meRef.onDisconnect().remove();
     subscribeRoom(code);
     setStatus("ok","Connecte");
@@ -457,7 +482,7 @@ function subscribeRoom(code){
     if(!data){ handleRoomClosed(); return; }
     var pobj = data.players || {};
     players = Object.keys(pobj).map(function(id){
-      return { id:id, name:pobj[id].name, color:pobj[id].color, host:!!pobj[id].host, joinedAt:pobj[id].joinedAt||0 };
+      return { id:id, name:pobj[id].name, color:pobj[id].color, host:!!pobj[id].host, joinedAt:pobj[id].joinedAt||0, photo:pobj[id].photo||null };
     });
     players.sort(function(a,b){ return (b.host?1:0)-(a.host?1:0) || a.joinedAt - b.joinedAt; });
     amHost = (data.hostId === myId);
@@ -481,11 +506,14 @@ function escapeHtml(s){
   });
 }
 function playerCardHTML(p){
-  return '<div class="pcard">'
-    + '<div class="avatar" style="background:'+p.color+'">'+initials(p.name)
-    + (p.host?'<span class="crown">👑</span>':'')
-    + '</div>'
-    + '<div class="nm">'+escapeHtml(p.name)+'</div></div>';
+  var crown = p.host ? '<span class="crown">👑</span>' : '';
+  var av;
+  if(p.photo){
+    av = '<div class="avatar" style="background:#0d1636;background-image:url(\'' + p.photo + '\');background-size:cover;background-position:center;border:2px solid ' + p.color + ';">' + crown + '</div>';
+  } else {
+    av = '<div class="avatar" style="background:' + p.color + '">' + initials(p.name) + crown + '</div>';
+  }
+  return '<div class="pcard">' + av + '<div class="nm">' + escapeHtml(p.name) + '</div></div>';
 }
 function renderPlayers(){
   var el = $("playerList");
@@ -581,6 +609,56 @@ $("codeIn").addEventListener("input", function(){
   this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,4);
   $("joinBtn").disabled = this.value.length !== 4;
 });
+// ---------- Photo upload ----------
+function processImage(file, cb){
+  var reader = new FileReader();
+  reader.onload = function(e){
+    var img = new Image();
+    img.onload = function(){
+      var size = 96;
+      var canvas = document.createElement("canvas");
+      canvas.width = size; canvas.height = size;
+      var ctx = canvas.getContext("2d");
+      var scale = Math.max(size/img.width, size/img.height);
+      var w = img.width*scale, h = img.height*scale;
+      ctx.drawImage(img, (size-w)/2, (size-h)/2, w, h);
+      var q = 0.7;
+      var url = canvas.toDataURL("image/jpeg", q);
+      while(url.length > 15000 && q > 0.35){ q -= 0.15; url = canvas.toDataURL("image/jpeg", q); }
+      cb(url);
+    };
+    img.onerror = function(){ cb(null); };
+    img.src = e.target.result;
+  };
+  reader.onerror = function(){ cb(null); };
+  reader.readAsDataURL(file);
+}
+$("photoBtn").addEventListener("click", function(){ $("photoIn").click(); });
+$("photoIn").addEventListener("change", function(e){
+  var input = e.target;
+  var f = input.files && input.files[0];
+  input.value = "";
+  if(!f) return;
+  $("photoBtn").textContent = "Chargement...";
+  processImage(f, function(url){
+    if(url){
+      me.photo = url;
+      $("photoRm").style.display = "inline-block";
+      $("photoBtn").textContent = "Changer la photo";
+      updatePreview();
+    } else {
+      toast("Image impossible a charger. Essaie une autre.");
+      $("photoBtn").textContent = me.photo ? "Changer la photo" : "📷 Ajouter une photo";
+    }
+  });
+});
+$("photoRm").addEventListener("click", function(){
+  me.photo = null;
+  $("photoRm").style.display = "none";
+  $("photoBtn").textContent = "📷 Ajouter une photo";
+  updatePreview();
+});
+
 if(!navigator.share){ var sb=$("shareBtn"); if(sb) sb.style.display="none"; }
 </script>
 </body>
