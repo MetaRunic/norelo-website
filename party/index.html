@@ -4,13 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Norelo Party</title>
-<meta name="description" content="Le party commence sur ton telephone. Cree une partie, invite ta gang et joue ensemble.">
+<meta name="description" content="Le party commence sur ton téléphone. Crée une partie, invite ta gang et jouez ensemble.">
 <link rel="icon" href="/favicon.png">
 <style>
   :root{
     --dark:#070f2b; --blue:#2563eb; --bl:#4fa3e8; --bp:#60a5fa;
     --bdr:rgba(79,163,232,0.15); --gr:#64748b; --green:#22c55e;
     --panel:#0d1636; --panel2:#111f45; --txt:#e9efff; --amber:#f59e0b; --red:#ef4444;
+    --purple:#a855f7; --pink:#ec4899;
   }
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
   html,body{overflow-x:hidden;}
@@ -126,14 +127,41 @@
   .waiting .d::after{content:""; animation:dots 1.4s infinite;}
   @keyframes dots{0%{content:"";}25%{content:".";}50%{content:"..";}75%{content:"...";}}
 
-  /* Game placeholder */
-  .gcenter{text-align:center;}
-  .gcenter .big{font-size:2.4rem; font-weight:800; letter-spacing:-1px; margin-bottom:10px;}
-  .gcenter .em{font-size:3rem; margin-bottom:8px;}
+  /* Game Cards & Voting Grid */
+  .ggrid{display:flex; flex-direction:column; gap:12px; margin-bottom:18px;}
+  .gcard{
+    background:var(--panel); border:2px solid var(--bdr); border-radius:16px;
+    padding:16px; display:flex; align-items:center; gap:14px; cursor:pointer;
+    transition:all .15s ease; position:relative;
+  }
+  .gcard:active{transform:scale(.98);}
+  .gcard.sel{border-color:var(--bl); background:#132252; box-shadow:0 4px 18px rgba(37,99,235,.25);}
+  .gcard .gicon{font-size:2.2rem; flex-shrink:0; width:52px; height:52px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.05); border-radius:14px;}
+  .gcard .ginfo{flex:1;}
+  .gcard .gtitle{font-size:1.05rem; font-weight:800; color:#fff; margin-bottom:3px;}
+  .gcard .gdesc{font-size:.82rem; color:#8ea0cc; line-height:1.3;}
+  .gcard .gbadge{background:var(--bl); color:#fff; font-size:.78rem; font-weight:800; padding:4px 9px; border-radius:20px;}
 
-  /* Game engine */
+  /* Social Media Post Card */
+  .post-card{
+    background:#111c44; border:1px solid rgba(255,255,255,0.12); border-radius:18px;
+    padding:18px; margin-bottom:18px; box-shadow:0 8px 24px rgba(0,0,0,0.3); text-align:left;
+  }
+  .post-hdr{display:flex; align-items:center; gap:12px; margin-bottom:12px;}
+  .post-anon-av{width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,var(--purple),var(--blue)); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.1rem; color:#fff;}
+  .post-author-name{font-weight:700; font-size:.95rem; color:#fff;}
+  .post-handle{font-size:.78rem; color:#8ea0cc;}
+  .post-txt{font-size:1.1rem; font-weight:600; line-height:1.45; color:#f0f4ff; margin-bottom:12px;}
+  .post-ftr{font-size:.78rem; color:#64748b; display:flex; gap:16px; border-top:1px solid rgba(255,255,255,0.08); padding-top:10px;}
+
+  /* Review Star Rating */
+  .star-box{display:flex; justify-content:center; gap:8px; margin:16px 0 20px;}
+  .star-btn{font-size:2.4rem; cursor:pointer; opacity:0.35; transition:transform .12s, opacity .12s;}
+  .star-btn.on{opacity:1; transform:scale(1.15);}
+
+  /* Game engine layout */
   .groundhdr{font-size:.78rem; color:#8ea0cc; text-transform:uppercase; letter-spacing:.12em; text-align:center; margin-bottom:14px; font-weight:700;}
-  .gprompt{font-size:1.5rem; font-weight:800; text-align:center; line-height:1.32; margin-bottom:18px;}
+  .gprompt{font-size:1.4rem; font-weight:800; text-align:center; line-height:1.35; margin-bottom:18px;}
   .gsub{text-align:center; color:#8ea0cc; font-size:.9rem; margin-bottom:16px;}
   .vgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px;}
   .vcell{display:flex; flex-direction:column; align-items:center; gap:8px; padding:13px 6px; border-radius:14px; border:2px solid transparent; background:var(--panel); cursor:pointer; transition:border-color .15s, transform .1s, background .15s;}
@@ -156,7 +184,6 @@
   .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
 
   footer{text-align:center; padding:16px; font-size:.78rem; color:var(--gr); position:relative; z-index:1;}
-  footer .dot{display:inline-block; vertical-align:middle;}
 
   @media(max-width:700px){
     .hero h1{font-size:2.9rem;}
@@ -172,16 +199,16 @@
   <section id="s-home" class="screen on">
     <div class="hero">
       <h1>Party</h1>
-      <p>Le party commence sur ton telephone.<br>Cree une partie, invite ta gang, jouez ensemble.</p>
+      <p>Le party commence sur ton téléphone.<br>Crée une partie, invite ta gang, jouez ensemble.</p>
     </div>
-    <button class="btn pri" onclick="go('host')"><span class="ico">🎮</span> Creer une partie</button>
+    <button class="btn pri" onclick="go('host')"><span class="ico">🎮</span> Créer une partie</button>
     <button class="btn sec" onclick="go('join')"><span class="ico">🔑</span> Rejoindre une partie</button>
   </section>
 
   <!-- PROFILE -->
   <section id="s-profile" class="screen">
     <h2>Ton profil</h2>
-    <p class="hint">C'est comme ca que ta gang va te voir.</p>
+    <p class="hint">C'est comme ça que ta gang va te voir.</p>
     <div class="avatar preview-av" id="pv">?</div>
     <div class="photo-actions">
       <button type="button" class="photo-btn" id="photoBtn">📷 Ajouter une photo</button>
@@ -201,7 +228,7 @@
   <!-- JOIN CODE -->
   <section id="s-join" class="screen">
     <h2>Rejoindre</h2>
-    <p class="hint">Entre le code que l'hote t'a donne.</p>
+    <p class="hint">Entre le code que l'hôte t'a donné.</p>
     <input class="fld code-in" id="codeIn" maxlength="4" placeholder="CODE" autocomplete="off" inputmode="latin" autocapitalize="characters">
     <div style="margin-top:26px;">
       <button class="btn pri" id="joinBtn" onclick="doJoin()" disabled>Rejoindre</button>
@@ -236,15 +263,12 @@
     <div class="players" id="playerList"></div>
 
     <div id="hostCtrl">
-      <div class="plabel">Choisis un jeu</div>
-      <button class="btn pri" onclick="launchMostLikely()">Le plus susceptible de...</button>
-      <button class="btn sec" disabled>Qui a poste ca? (bientot)</button>
-      <button class="btn sec" disabled>Devine la note (bientot)</button>
+      <button class="btn pri" onclick="startPartyVote()"><span class="ico">🚀</span> Lancer la soirée</button>
     </div>
     <div id="playerCtrl" style="display:none;">
-      <div class="waiting">En attente que l'hote demarre<span class="d"></span></div>
+      <div class="waiting">En attente que l'hôte lance la soirée<span class="d"></span></div>
     </div>
-    <button class="btn ghost" onclick="quit()">Quitter</button>
+    <button class="btn ghost" style="margin-top:14px;" onclick="quit()">Quitter</button>
   </section>
 
   <!-- GAME -->
@@ -259,16 +283,11 @@
 
 <div class="toast" id="toast"></div>
 
-<!-- Firebase (compat build, no npm / no build step) -->
+<!-- Firebase (compat build) -->
 <script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-auth-compat.js"></script>
 <script>
-// =====================================================================
-//  PASTE YOUR FIREBASE CONFIG HERE
-//  (Firebase console > Project settings > Your apps > Web app)
-//  Keep the databaseURL line. Everything else can stay as copied.
-// =====================================================================
 var firebaseConfig = {
   apiKey: "AIzaSyBQ41HgUmgiD9jh0tNXQwbCSZNHbVbRjFc",
   authDomain: "norelo-party.firebaseapp.com",
@@ -279,13 +298,10 @@ var firebaseConfig = {
   appId: "1:32473209595:web:7e91d4ca8160fdc6272e5e",
   measurementId: "G-KML5GVG4S5"
 };
-// =====================================================================
 
-// ---------- Constants ----------
-var ALPHA = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; // no 0 O 1 I L
+var ALPHA = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
 var COLORS = ["#2563eb","#22c55e","#f59e0b","#ef4444","#a855f7","#ec4899","#14b8a6","#f97316"];
 
-// ---------- State ----------
 var db = null, auth = null;
 var configMissing = false;
 var me = { name:"", color:COLORS[0], photo:null };
@@ -303,7 +319,17 @@ var bootDone = false;
 var currentGame = null;
 var resumeAborted = false;
 
-// ---------- Helpers ----------
+// AVAILABLE GAMES FOR DEMOCRATIC VOTING
+var GAME_MODES = [
+  { id: "whoposted", icon: "📸", title: "Qui a posté ça ?", desc: "Devine qui a écrit ce post secret sur ses réseaux sociaux !" },
+  { id: "guessrating", icon: "⭐", title: "Devine la note", desc: "Combien d'étoiles cette critique Google/Yelp hilarante a-t-elle eue ?" },
+  { id: "knowplayer", icon: "💡", title: "Connais-tu bien...", desc: "Le joueur vedette répond en secret, tout le monde prédit son choix !" },
+  { id: "roast", icon: "✍️", title: "Autobiographies & Roasts", desc: "Écris la meilleure réplique pour compléter les phrases sur tes amis !" },
+  { id: "mostlikely", icon: "🔥", title: "Le plus susceptible de...", desc: "Vote pour la personne la plus folle du groupe !" },
+  { id: "whosaid", icon: "💬", title: "Qui a dit ça ?", desc: "Retrouve l'auteur de ce message texte sorti de son contexte !" },
+  { id: "twotruths", icon: "🤥", title: "2 Vérités 1 Mensonge", desc: "Démasque le faux énoncé parmi les trois !" }
+];
+
 function $(id){ return document.getElementById(id); }
 function show(id){
   var s = document.getElementsByClassName("screen");
@@ -341,14 +367,7 @@ function waitAuth(){
     var t = setInterval(function(){ if(authReady){ clearInterval(t); res(); } }, 60);
   });
 }
-function showConfigOverlay(){
-  var d = document.createElement("div");
-  d.style.cssText = "position:fixed;inset:0;z-index:999;background:#070f2b;display:flex;align-items:center;justify-content:center;padding:30px;text-align:center;";
-  d.innerHTML = '<div style="max-width:340px;"><div style="font-size:2rem;margin-bottom:14px;">\u2699\uFE0F</div><div style="font-size:1.15rem;font-weight:700;margin-bottom:10px;color:#e9efff;">Firebase pas encore configure</div><div style="color:#8ea0cc;font-size:.92rem;line-height:1.5;">Colle ta config Firebase dans index.html (la variable firebaseConfig, en haut du script), puis redeploie.</div></div>';
-  document.body.appendChild(d);
-}
 
-// ---------- Profile ----------
 function buildSwatches(){
   var box = $("swatches"); box.innerHTML = "";
   COLORS.forEach(function(c){
@@ -406,7 +425,6 @@ function afterProfile(){
   else { $("codeIn").value=""; $("joinBtn").disabled=true; show("s-join"); setTimeout(function(){ $("codeIn").focus(); },250); }
 }
 
-// ---------- Lobby shells ----------
 function showHostLobby(){
   amHost = true;
   show("s-lobby");
@@ -414,8 +432,8 @@ function showHostLobby(){
   $("playerBox").style.display = "none";
   $("hostCtrl").style.display = "block";
   $("playerCtrl").style.display = "none";
-  $("lobbyCode").textContent = "----";
-  players = []; renderPlayers();
+  $("lobbyCode").textContent = roomCode;
+  renderPlayers();
 }
 function showPlayerLobby(code){
   amHost = false;
@@ -425,14 +443,13 @@ function showPlayerLobby(code){
   $("hostCtrl").style.display = "none";
   $("playerCtrl").style.display = "block";
   $("lobbyCode2").textContent = code;
-  players = []; renderPlayers();
+  renderPlayers();
 }
 
-// ---------- Create (host) ----------
 async function createRoom(){
   if(configMissing) return;
   showHostLobby();
-  setStatus("wait","Creation de la partie");
+  setStatus("wait","Création de la partie");
   await waitAuth();
   var rRef, attempt = 0;
   do {
@@ -456,14 +473,13 @@ async function createRoom(){
     inRoom = true;
     saveRoom(roomCode);
     subscribeRoom(roomCode);
-    setStatus("ok","Partie prete");
+    setStatus("ok","Partie prête");
   } catch(e){
-    toast("Impossible de creer la partie.");
+    toast("Impossible de créer la partie.");
     setStatus("err","Erreur");
   }
 }
 
-// ---------- Join (player) ----------
 async function doJoin(){
   if(configMissing) return;
   var code = $("codeIn").value.toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,4);
@@ -474,7 +490,7 @@ async function doJoin(){
   try {
     var rRef = db.ref("rooms/" + code);
     var snap = await rRef.once("value");
-    if(!snap.exists()){ toast("Aucune partie trouvee avec ce code."); show("s-join"); return; }
+    if(!snap.exists()){ toast("Aucune partie trouvée avec ce code."); show("s-join"); return; }
     roomCode = code;
     amHost = false;
     var meRef = rRef.child("players/" + myId);
@@ -483,14 +499,13 @@ async function doJoin(){
     inRoom = true;
     saveRoom(code);
     subscribeRoom(code);
-    setStatus("ok","Connecte");
+    setStatus("ok","Connecté");
   } catch(e){
-    toast("Erreur de connexion. Reessaie.");
+    toast("Erreur de connexion. Réessaie.");
     show("s-join");
   }
 }
 
-// ---------- Live room listener (single source of truth) ----------
 function subscribeRoom(code){
   detachRoom();
   roomRef = db.ref("rooms/" + code);
@@ -505,7 +520,6 @@ function subscribeRoom(code){
     amHost = (data.hostId === myId);
     currentGame = data.game || null;
 
-    // screen driven by shared status
     if(data.status === "playing"){
       if(currentScreen !== "s-game"){ show("s-game"); }
       renderGame(currentGame);
@@ -519,7 +533,6 @@ function detachRoom(){
   if(roomRef){ roomRef.off(); roomRef = null; }
 }
 
-// ---------- Render ----------
 function escapeHtml(s){
   return (s||"").replace(/[&<>"']/g, function(c){
     return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
@@ -554,13 +567,150 @@ function avatarHTML(p, size){
   return '<div class="avatar" style="' + base + 'background:' + p.color + ';">' + initials(p.name) + crown + '</div>';
 }
 
-// ---------- Game engine ----------
+// =====================================================================
+//  GAME ENGINE & DEMOCRATIC VOTING
+// =====================================================================
+
+function startPartyVote(){
+  if(!roomCode || !amHost) return;
+  db.ref("rooms/" + roomCode + "/game").set({
+    type: "voting",
+    phase: "vote",
+    votes: {}
+  }).then(function(){
+    db.ref("rooms/" + roomCode + "/status").set("playing");
+  });
+}
+
+function voteForGame(gameId){
+  if(!roomCode || !myId) return;
+  db.ref("rooms/" + roomCode + "/game/votes/" + myId).set(gameId);
+}
+
+function tallyGameVotes(){
+  if(!roomCode || !amHost || !currentGame) return;
+  var votes = currentGame.votes || {};
+  var counts = {};
+  GAME_MODES.forEach(function(g){ counts[g.id] = 0; });
+  Object.keys(votes).forEach(function(uid){
+    var gid = votes[uid];
+    if(counts[gid] !== undefined) counts[gid]++;
+  });
+  
+  var max = -1;
+  var winners = [];
+  Object.keys(counts).forEach(function(gid){
+    if(counts[gid] > max){
+      max = counts[gid];
+      winners = [gid];
+    } else if(counts[gid] === max){
+      winners.push(gid);
+    }
+  });
+
+  var selectedGame = winners[Math.floor(Math.random()*winners.length)] || "mostlikely";
+  launchSelectedGame(selectedGame);
+}
+
+function launchSelectedGame(type){
+  if(!roomCode || !amHost) return;
+  
+  if(type === "whoposted"){ launchWhoPosted(); }
+  else if(type === "guessrating"){ launchGuessRating(); }
+  else if(type === "knowplayer"){ launchKnowPlayer(); }
+  else if(type === "roast"){ launchRoast(); }
+  else if(type === "whosaid"){ launchWhoSaid(); }
+  else if(type === "twotruths"){ launchTwoTruths(); }
+  else { launchMostLikely(); }
+}
+
 function renderGame(g){
   var area = $("gameArea");
   if(!g || !g.type){ area.innerHTML = '<div class="waiting" style="margin-top:30px;">Chargement du jeu<span class="d"></span></div>'; return; }
-  if(g.type === "mostlikely"){ renderMostLikely(g); }
+  
+  if(g.type === "voting"){ renderGameVoting(g); }
+  else if(g.type === "whoposted"){ renderWhoPosted(g); }
+  else if(g.type === "guessrating"){ renderGuessRating(g); }
+  else if(g.type === "knowplayer"){ renderKnowPlayer(g); }
+  else if(g.type === "roast"){ renderRoast(g); }
+  else if(g.type === "whosaid"){ renderWhoSaid(g); }
+  else if(g.type === "twotruths"){ renderTwoTruths(g); }
+  else if(g.type === "mostlikely"){ renderMostLikely(g); }
   else { area.innerHTML = ""; }
 }
+
+// ---------------- DEMOCRATIC VOTING RENDER ----------------
+function renderGameVoting(g){
+  var area = $("gameArea");
+  var votes = g.votes || {};
+  var myVote = votes[myId];
+  var votedCount = Object.keys(votes).length;
+
+  var html = '<div class="groundhdr">Phase de sélection</div>';
+  html += '<div class="gprompt">À quoi voulez-vous jouer ? 🎲</div>';
+  html += '<div class="gsub">Votez pour le jeu sur votre téléphone !</div>';
+  html += '<div class="ggrid">';
+
+  GAME_MODES.forEach(function(gm){
+    var count = 0;
+    Object.keys(votes).forEach(function(uid){ if(votes[uid] === gm.id) count++; });
+    var sel = (myVote === gm.id) ? " sel" : "";
+    html += '<div class="gcard' + sel + '" onclick="voteForGame(\'' + gm.id + '\')">';
+    html += '<div class="gicon">' + gm.icon + '</div>';
+    html += '<div class="ginfo">';
+    html += '<div class="gtitle">' + gm.title + '</div>';
+    html += '<div class="gdesc">' + gm.desc + '</div>';
+    html += '</div>';
+    if(count > 0){ html += '<div class="gbadge">' + count + ' ' + (count===1?'vote':'votes') + '</div>'; }
+    html += '</div>';
+  });
+
+  html += '</div>';
+  html += '<div class="gprogress">' + votedCount + ' / ' + players.length + ' joueurs ont voté</div>';
+
+  if(amHost){
+    html += '<button class="btn pri" onclick="tallyGameVotes()">🏆 Valider & Lancer le jeu gagnant</button>';
+  } else {
+    html += '<div class="waiting">' + (myVote ? "Vote enregistré ! En attente de l'hôte" : "Touchez un jeu pour voter") + '<span class="d"></span></div>';
+  }
+
+  area.innerHTML = html;
+}
+
+// =====================================================================
+//  GAME 1: MOST LIKELY TO (Le plus susceptible de...)
+// =====================================================================
+var MOSTLIKELY_PROMPTS = [
+  "Le plus susceptible de se faire mettre dehors d'un resto.",
+  "Le plus susceptible de texter son ex à 2h du matin.",
+  "Le plus susceptible d'oublier où il a garé sa charrette.",
+  "Le plus susceptible de devenir millionnaire sans qu'on comprenne comment.",
+  "Le plus susceptible de se perdre dans son propre quartier.",
+  "Le plus susceptible de partir une chicane pour rien.",
+  "Le plus susceptible de tout raconter après deux verres.",
+  "Le plus susceptible de ghoster le groupe pendant 3 semaines.",
+  "Le plus susceptible de pleurer devant une pub de char.",
+  "Le plus susceptible de finir en prison pour une niaiserie.",
+  "Le plus susceptible de dépenser sa paie au complet en une soirée.",
+  "Le plus susceptible de se faire pogner en train de chanter sous la douche.",
+  "Le plus susceptible de commander pour 100$ de UberEats à 3h du matin.",
+  "Le plus susceptible d'arriver 45 minutes en retard à sa propre fête.",
+  "Le plus susceptible de survivre à une apocalypse zombie.",
+  "Le plus susceptible de chanter au karaoke sans qu'on lui demande."
+];
+
+function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+
+function launchMostLikely(){
+  if(!roomCode || !amHost) return;
+  var pool = MOSTLIKELY_PROMPTS.slice();
+  shuffle(pool);
+  var chosen = pool.slice(0, Math.min(6, pool.length));
+  db.ref("rooms/" + roomCode + "/game").set({ type:"mostlikely", phase:"guess", round:0, total:chosen.length, prompts:chosen }).then(function(){
+    db.ref("rooms/" + roomCode + "/status").set("playing");
+  });
+}
+
 function renderMostLikely(g){
   var area = $("gameArea");
   var round = g.round || 0;
@@ -570,7 +720,7 @@ function renderMostLikely(g){
   var html = "";
 
   if(g.phase === "guess"){
-    html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + '</div>';
+    html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • Le plus susceptible de</div>';
     html += '<div class="gprompt">' + escapeHtml(prompt) + '</div>';
     html += '<div class="gsub">Vote pour la personne</div>';
     html += '<div class="vgrid">';
@@ -579,11 +729,11 @@ function renderMostLikely(g){
       html += '<div class="vcell' + sel + '" onclick="voteFor(\'' + p.id + '\')">' + avatarHTML(p, 52) + '<div class="vn">' + escapeHtml(p.name) + '</div></div>';
     });
     html += '</div>';
-    html += '<div class="gprogress">' + Object.keys(votes).length + ' / ' + players.length + ' ont vote</div>';
+    html += '<div class="gprogress">' + Object.keys(votes).length + ' / ' + players.length + ' ont voté</div>';
     if(amHost){
-      html += '<button class="btn pri" onclick="revealRound()">Reveler les votes</button>';
+      html += '<button class="btn pri" onclick="revealRound()">Révéler les votes</button>';
     } else {
-      html += '<div class="waiting">' + (votes[myId] ? "Vote enregistre. En attente" : "Choisis quelqu'un") + '<span class="d"></span></div>';
+      html += '<div class="waiting">' + (votes[myId] ? "Vote enregistré. En attente" : "Choisis quelqu'un") + '<span class="d"></span></div>';
     }
   } else if(g.phase === "reveal"){
     var tally = {};
@@ -602,61 +752,24 @@ function renderMostLikely(g){
       if(c === 0) return;
       html += '<div class="rrow' + (c===maxCount ? " win" : "") + '">' + avatarHTML(p, 44) + '<div class="rname">' + escapeHtml(p.name) + '</div><div class="rcount">' + c + '</div></div>';
     });
-    if(maxCount === 0){ html += '<div class="gsub" style="margin-top:10px;">Personne n\'a vote.</div>'; }
+    if(maxCount === 0){ html += '<div class="gsub" style="margin-top:10px;">Personne n\'a voté.</div>'; }
     if(amHost){
       var last = (round + 1 >= total);
       html += '<button class="btn pri" style="margin-top:14px;" onclick="nextRound()">' + (last ? "Voir la fin" : "Manche suivante") + '</button>';
     } else {
-      html += '<div class="waiting" style="margin-top:14px;">En attente de l\'hote<span class="d"></span></div>';
+      html += '<div class="waiting" style="margin-top:14px;">En attente de l\'hôte<span class="d"></span></div>';
     }
   } else if(g.phase === "done"){
-    html += '<div class="gcenter" style="margin-top:24px;"><div class="em">🎉</div><div class="big">Partie terminee!</div><p class="hint">Bien joue tout le monde.</p></div>';
+    html += '<div class="gcenter" style="margin-top:24px;"><div class="em">🎉</div><div class="big">Partie terminée !</div><p class="hint">Bien joué tout le monde.</p></div>';
     if(amHost){
-      html += '<button class="btn pri" onclick="endGame()">Retour au lobby</button>';
+      html += '<button class="btn pri" onclick="startPartyVote()">🎲 Voter pour le prochain jeu</button>';
     } else {
-      html += '<div class="waiting">En attente de l\'hote<span class="d"></span></div>';
+      html += '<div class="waiting">En attente de l\'hôte<span class="d"></span></div>';
     }
   }
   area.innerHTML = html;
 }
 
-// ---------- Games: launch + controls ----------
-var MOSTLIKELY_PROMPTS = [
-  "Le plus susceptible de se faire mettre dehors d'un resto.",
-  "Le plus susceptible de texter son ex a 2h du matin.",
-  "Le plus susceptible de manquer son propre mariage.",
-  "Le plus susceptible de devenir riche sans qu'on comprenne comment.",
-  "Le plus susceptible de se perdre dans son propre quartier.",
-  "Le plus susceptible de partir une chicane pour rien.",
-  "Le plus susceptible de tout raconter apres deux verres.",
-  "Le plus susceptible de ghoster le groupe pendant trois semaines.",
-  "Le plus susceptible de brailler devant une pub.",
-  "Le plus susceptible de finir en prison pour une niaiserie.",
-  "Le plus susceptible de flamber sa paie en une soiree.",
-  "Le plus susceptible d'oublier la fete de quelqu'un.",
-  "Le plus susceptible de tomber en amour trop vite.",
-  "Le plus susceptible de mentir sur son age.",
-  "Le plus susceptible de rester ami avec tous ses ex.",
-  "Le plus susceptible de se ramasser dans une telerealite.",
-  "Le plus susceptible de perdre son telephone ce soir.",
-  "Le plus susceptible d'arriver en retard a sa propre fete.",
-  "Le plus susceptible de survivre a une apocalypse zombie.",
-  "Le plus susceptible de croire a une theorie du complot.",
-  "Le plus susceptible de chanter au karaoke sans qu'on lui demande.",
-  "Le plus susceptible de se faire pogner en plein mensonge.",
-  "Le plus susceptible de partir en voyage sur un coup de tete.",
-  "Le plus susceptible de devenir influenceur."
-];
-function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
-function launchMostLikely(){
-  if(!roomCode || !amHost) return;
-  var pool = MOSTLIKELY_PROMPTS.slice();
-  shuffle(pool);
-  var chosen = pool.slice(0, Math.min(8, pool.length));
-  db.ref("rooms/" + roomCode + "/game").set({ type:"mostlikely", phase:"guess", round:0, total:chosen.length, prompts:chosen }).then(function(){
-    db.ref("rooms/" + roomCode + "/status").set("playing");
-  });
-}
 function voteFor(uid){
   if(!roomCode || !myId) return;
   db.ref("rooms/" + roomCode + "/game/votes/" + myId).set(uid);
@@ -671,18 +784,489 @@ function nextRound(){
   if(next >= (currentGame.total || 1)){ db.ref("rooms/" + roomCode + "/game/phase").set("done"); }
   else { db.ref("rooms/" + roomCode + "/game").update({ round: next, phase: "guess", votes: null }); }
 }
-function endGame(){
-  if(!roomCode) return;
-  db.ref("rooms/" + roomCode + "/game").remove();
-  db.ref("rooms/" + roomCode + "/status").set("lobby");
+
+// =====================================================================
+//  GAME 2: WHO POSTED THIS? (Qui a posté ça ?)
+// =====================================================================
+var POSTS_PACK = [
+  { text: "J'ai essayé de faire du pain maison. La cuisine a failli brûler et le pain ressemble à une brique de béton. 10/10", handle: "@mystery_chef" },
+  { text: "Rappel amical que si tu m'écris après 22h, je dors probablement déjà depuis au moins 2 heures.", handle: "@sleep_god" },
+  { text: "Je viens de dépenser 80$ pour des plantes d'intérieur et je sais très bien qu'elles vont mourir d'ici vendredi.", handle: "@plant_parent" },
+  { text: "Si la caféine n'existait pas, je serais encore bloqué en 2018.", handle: "@coffee_addict" },
+  { text: "Est-ce que c'est légal d'annuler des plans juste parce que ton lit est trop confortable ?", handle: "@lazy_vibes" }
+];
+
+function launchWhoPosted(){
+  if(!roomCode || !amHost) return;
+  var pool = POSTS_PACK.slice();
+  shuffle(pool);
+  var rounds = pool.slice(0, 5).map(function(item){
+    var randomPlayer = players[Math.floor(Math.random()*players.length)] || { id: myId };
+    return { text: item.text, handle: item.handle, posterId: randomPlayer.id };
+  });
+
+  db.ref("rooms/" + roomCode + "/game").set({
+    type: "whoposted",
+    phase: "guess",
+    round: 0,
+    total: rounds.length,
+    roundsData: rounds
+  }).then(function(){
+    db.ref("rooms/" + roomCode + "/status").set("playing");
+  });
 }
 
-// ---------- Leaving / cleanup ----------
+function renderWhoPosted(g){
+  var area = $("gameArea");
+  var round = g.round || 0;
+  var total = g.total || 1;
+  var votes = g.votes || {};
+  var item = (g.roundsData && g.roundsData[round]) ? g.roundsData[round] : { text:"", handle:"", posterId:"" };
+  var html = "";
+
+  if(g.phase === "guess"){
+    html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • Qui a posté ça ?</div>';
+    html += '<div class="post-card">';
+    html += '<div class="post-hdr"><div class="post-anon-av">?</div><div><div class="post-author-name">Auteur Anonyme</div><div class="post-handle">' + escapeHtml(item.handle) + '</div></div></div>';
+    html += '<div class="post-txt">"' + escapeHtml(item.text) + '"</div>';
+    html += '<div class="post-ftr"><span>❤️ 421 j\'aime</span><span>💬 88 commentaires</span></div>';
+    html += '</div>';
+
+    html += '<div class="gsub">Qui dans la gang a écrit ou publié ça ?</div>';
+    html += '<div class="vgrid">';
+    players.forEach(function(p){
+      var sel = (votes[myId] === p.id) ? " sel" : "";
+      html += '<div class="vcell' + sel + '" onclick="voteFor(\'' + p.id + '\')">' + avatarHTML(p, 52) + '<div class="vn">' + escapeHtml(p.name) + '</div></div>';
+    });
+    html += '</div>';
+    html += '<div class="gprogress">' + Object.keys(votes).length + ' / ' + players.length + ' ont voté</div>';
+
+    if(amHost){
+      html += '<button class="btn pri" onclick="revealRound()">Révéler l\'auteur</button>';
+    } else {
+      html += '<div class="waiting">' + (votes[myId] ? "Devinette envoyée !" : "Choisis un suspect") + '<span class="d"></span></div>';
+    }
+  } else if(g.phase === "reveal"){
+    var realPoster = players.find(function(p){ return p.id === item.posterId; }) || { name:"Quelqu'un", color:"#2563eb" };
+    html += '<div class="groundhdr">Révélation !</div>';
+    html += '<div class="post-card" style="border-color:var(--green);">';
+    html += '<div class="post-txt">"' + escapeHtml(item.text) + '"</div>';
+    html += '</div>';
+    html += '<div style="text-align:center;margin:18px 0;">';
+    html += avatarHTML(realPoster, 84);
+    html += '<div style="font-size:1.4rem;font-weight:800;margin-top:10px;">C\'était ' + escapeHtml(realPoster.name) + ' ! 📸</div>';
+    html += '</div>';
+
+    if(amHost){
+      var last = (round + 1 >= total);
+      html += '<button class="btn pri" onclick="nextRound()">' + (last ? "Fin du jeu" : "Manche suivante") + '</button>';
+    } else {
+      html += '<div class="waiting">En attente de l\'hôte<span class="d"></span></div>';
+    }
+  } else if(g.phase === "done"){
+    html += '<div class="gcenter" style="margin-top:24px;"><div class="em">🎉</div><div class="big">Partie terminée !</div></div>';
+    if(amHost){ html += '<button class="btn pri" onclick="startPartyVote()">🎲 Voter pour le prochain jeu</button>'; }
+  }
+
+  area.innerHTML = html;
+}
+
+// =====================================================================
+//  GAME 3: GUESS THE RATING (Devine la note)
+// =====================================================================
+var REVIEWS_PACK = [
+  { place: "McDo du centre-ville", text: "J'ai commandé des frites à 2h du matin et le caissier m'a donné un conseil de vie philosophique de 20 minutes. Les frites étaient froides mais ma vie a changé.", stars: 5 },
+  { place: "Camping du Lac Solitaire", text: "Les moustiques m'ont volé mes clés de char et m'ont forcé à payer une rançon.", stars: 1 },
+  { place: "Cinéma Régal", text: "Le popcorn était super bon, mais le gars à côté de moi ronflait si fort qu'il a étouffé les dialogues du film d'action.", stars: 3 },
+  { place: "Station-Service Express", text: "Café goût d'eau de vaisselle chaude. Mais les essuie-glaces gratuits m'ont sauvé la vie pendant la tempête.", stars: 2 },
+  { place: "Restaurant Chez Mario", text: "Portions gigantesques, j'ai dû me faire rouler jusqu'à mon char après le dessert. Meilleur jeudi soir de ma vie.", stars: 5 }
+];
+
+function launchGuessRating(){
+  if(!roomCode || !amHost) return;
+  var pool = REVIEWS_PACK.slice();
+  shuffle(pool);
+  db.ref("rooms/" + roomCode + "/game").set({
+    type: "guessrating",
+    phase: "guess",
+    round: 0,
+    total: Math.min(5, pool.length),
+    roundsData: pool.slice(0, 5)
+  }).then(function(){
+    db.ref("rooms/" + roomCode + "/status").set("playing");
+  });
+}
+
+function renderGuessRating(g){
+  var area = $("gameArea");
+  var round = g.round || 0;
+  var total = g.total || 1;
+  var votes = g.votes || {};
+  var item = (g.roundsData && g.roundsData[round]) ? g.roundsData[round] : { place:"", text:"", stars:5 };
+  var myRating = votes[myId] || 0;
+  var html = "";
+
+  if(g.phase === "guess"){
+    html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • Devine la note</div>';
+    html += '<div class="gprompt">📍 ' + escapeHtml(item.place) + '</div>';
+    html += '<div class="post-card" style="font-style:italic;">"' + escapeHtml(item.text) + '"</div>';
+    html += '<div class="gsub">Combien d\'étoiles (1 à 5) cette personne a-t-elle laissées ?</div>';
+
+    html += '<div class="star-box">';
+    for(var s=1; s<=5; s++){
+      var selClass = (myRating >= s) ? " on" : "";
+      html += '<span class="star-btn' + selClass + '" onclick="rateStar(' + s + ')">⭐</span>';
+    }
+    html += '</div>';
+    html += '<div class="gprogress">' + Object.keys(votes).length + ' / ' + players.length + ' ont deviné</div>';
+
+    if(amHost){
+      html += '<button class="btn pri" onclick="revealRound()">Révéler la vraie note</button>';
+    } else {
+      html += '<div class="waiting">' + (myRating ? "Ta note: " + myRating + " ⭐" : "Choisis ta note") + '<span class="d"></span></div>';
+    }
+  } else if(g.phase === "reveal"){
+    html += '<div class="groundhdr">Vraie note attribuée :</div>';
+    html += '<div style="text-align:center;margin:14px 0 22px;">';
+    var starsStr = "";
+    for(var i=0; i<item.stars; i++){ starsStr += "⭐"; }
+    html += '<div style="font-size:3rem;">' + starsStr + '</div>';
+    html += '<div style="font-size:1.6rem;font-weight:800;color:var(--amber);margin-top:6px;">' + item.stars + ' / 5 Étoiles !</div>';
+    html += '</div>';
+
+    if(amHost){
+      var last = (round + 1 >= total);
+      html += '<button class="btn pri" onclick="nextRound()">' + (last ? "Fin du jeu" : "Manche suivante") + '</button>';
+    } else {
+      html += '<div class="waiting">En attente de l\'hôte<span class="d"></span></div>';
+    }
+  } else if(g.phase === "done"){
+    html += '<div class="gcenter" style="margin-top:24px;"><div class="em">🎉</div><div class="big">Partie terminée !</div></div>';
+    if(amHost){ html += '<button class="btn pri" onclick="startPartyVote()">🎲 Voter pour le prochain jeu</button>'; }
+  }
+
+  area.innerHTML = html;
+}
+
+function rateStar(starCount){
+  if(!roomCode || !myId) return;
+  db.ref("rooms/" + roomCode + "/game/votes/" + myId).set(starCount);
+}
+
+// =====================================================================
+//  GAME 4: HOW WELL DO YOU KNOW [NAME]? (Connais-tu bien...)
+// =====================================================================
+var KNOW_QUESTIONS = [
+  { q: "Quel est mon snack ultime de fin de soirée ?", opts: ["Poutine bien chaude", "Pizza froide du frigo", "Sac de chips au complet", "Bonbons sûrs"] },
+  { q: "Si je pouvais partir demain matin en voyage, j'irais à :", opts: ["Sur une plage au Mexique", "Explorer l'Europe", "Chalet dans le bois", "Voyage au Japon"] },
+  { q: "Mon plaisir coupable au niveau musique :", opts: ["Pop des années 2000", "Country québécois", "Métal lourd", "Comédies musicales"] }
+];
+
+function launchKnowPlayer(){
+  if(!roomCode || !amHost) return;
+  var spot = players[Math.floor(Math.random()*players.length)] || { id: myId, name: me.name };
+  var qObj = KNOW_QUESTIONS[Math.floor(Math.random()*KNOW_QUESTIONS.length)];
+
+  db.ref("rooms/" + roomCode + "/game").set({
+    type: "knowplayer",
+    phase: "spotlight_answer",
+    spotlightId: spot.id,
+    spotlightName: spot.name,
+    question: qObj.q,
+    options: qObj.opts
+  }).then(function(){
+    db.ref("rooms/" + roomCode + "/status").set("playing");
+  });
+}
+
+function renderKnowPlayer(g){
+  var area = $("gameArea");
+  var spotlightName = g.spotlightName || "quelqu'un";
+  var question = g.question || "";
+  var options = g.options || [];
+  var votes = g.votes || {};
+  var spotlightAnswer = g.spotlightAnswer;
+  var html = "";
+
+  if(g.phase === "spotlight_answer"){
+    html += '<div class="groundhdr">Connais-tu bien ' + escapeHtml(spotlightName) + ' ?</div>';
+    html += '<div class="gprompt">' + escapeHtml(question) + '</div>';
+
+    if(myId === g.spotlightId){
+      html += '<div class="gsub">Tu es la vedette ! Choisis ta vraie réponse :</div>';
+      options.forEach(function(opt, idx){
+        html += '<button class="btn sec" style="margin-bottom:10px;" onclick="pickSpotlightAnswer(' + idx + ')">' + escapeHtml(opt) + '</button>';
+      });
+    } else {
+      html += '<div class="waiting">' + escapeHtml(spotlightName) + ' est en train de choisir sa réponse secrète<span class="d"></span></div>';
+    }
+  } else if(g.phase === "guess"){
+    html += '<div class="groundhdr">Prédisez le choix de ' + escapeHtml(spotlightName) + ' !</div>';
+    html += '<div class="gprompt">' + escapeHtml(question) + '</div>';
+    html += '<div class="gsub">Qu\'est-ce que ' + escapeHtml(spotlightName) + ' a choisi ?</div>';
+
+    options.forEach(function(opt, idx){
+      var sel = (votes[myId] === idx) ? " pri" : " sec";
+      html += '<button class="btn' + sel + '" style="margin-bottom:10px;" onclick="guessSpotlight(' + idx + ')">' + escapeHtml(opt) + '</button>';
+    });
+    html += '<div class="gprogress">' + Object.keys(votes).length + ' / ' + (players.length-1) + ' ont prédit</div>';
+
+    if(amHost){
+      html += '<button class="btn pri" style="margin-top:14px;" onclick="revealRound()">Révéler la vérité</button>';
+    }
+  } else if(g.phase === "reveal"){
+    var correctText = options[spotlightAnswer] || "Aucune";
+    html += '<div class="groundhdr">La vérité est dévoilée !</div>';
+    html += '<div class="gprompt">' + escapeHtml(spotlightName) + ' a répondu :</div>';
+    html += '<div style="background:linear-gradient(120deg,var(--blue),var(--purple));padding:20px;border-radius:18px;font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:20px;">' + escapeHtml(correctText) + '</div>';
+
+    if(amHost){
+      html += '<button class="btn pri" onclick="startPartyVote()">🎲 Voter pour le prochain jeu</button>';
+    } else {
+      html += '<div class="waiting">En attente de l\'hôte<span class="d"></span></div>';
+    }
+  }
+
+  area.innerHTML = html;
+}
+
+function pickSpotlightAnswer(idx){
+  if(!roomCode) return;
+  db.ref("rooms/" + roomCode + "/game").update({ spotlightAnswer: idx, phase: "guess" });
+}
+function guessSpotlight(idx){
+  if(!roomCode || !myId) return;
+  db.ref("rooms/" + roomCode + "/game/votes/" + myId).set(idx);
+}
+
+// =====================================================================
+//  GAME 5: PERSONALIZED ROAST / AUTOBIOGRAPHIES
+// =====================================================================
+var ROAST_PROMPTS = [
+  "Le titre de l'autobiographie de [NAME] serait :",
+  "Si [NAME] ouvrait un commerce, le nom serait :",
+  "Le secret le mieux gardé de [NAME] c'est :",
+  "Si [NAME] se présentait comme maire, son slogan serait :"
+];
+
+function launchRoast(){
+  if(!roomCode || !amHost) return;
+  var randomTarget = players[Math.floor(Math.random()*players.length)] || { name: me.name };
+  var rawPrompt = ROAST_PROMPTS[Math.floor(Math.random()*ROAST_PROMPTS.length)];
+  var formatted = rawPrompt.replace("[NAME]", randomTarget.name);
+
+  db.ref("rooms/" + roomCode + "/game").set({
+    type: "roast",
+    phase: "submit",
+    prompt: formatted,
+    answers: {},
+    votes: {}
+  }).then(function(){
+    db.ref("rooms/" + roomCode + "/status").set("playing");
+  });
+}
+
+function renderRoast(g){
+  var area = $("gameArea");
+  var prompt = g.prompt || "";
+  var answers = g.answers || {};
+  var votes = g.votes || {};
+  var html = "";
+
+  if(g.phase === "submit"){
+    html += '<div class="groundhdr">Complète la réplique !</div>';
+    html += '<div class="gprompt">' + escapeHtml(prompt) + '</div>';
+    
+    if(answers[myId]){
+      html += '<div class="post-card" style="text-align:center;font-weight:700;">"' + escapeHtml(answers[myId]) + '"</div>';
+      html += '<div class="waiting">Réponse envoyée ! En attente des autres<span class="d"></span></div>';
+    } else {
+      html += '<input class="fld" id="roastIn" placeholder="Écris ta réplique drôle..." maxlength="60" style="margin-bottom:14px;">';
+      html += '<button class="btn pri" onclick="submitRoastAnswer()">Envoyer ma réplique</button>';
+    }
+    html += '<div class="gprogress" style="margin-top:16px;">' + Object.keys(answers).length + ' / ' + players.length + ' réponses soumises</div>';
+
+    if(amHost && Object.keys(answers).length > 0){
+      html += '<button class="btn sec" style="margin-top:10px;" onclick="startRoastVote()">Lancer le vote</button>';
+    }
+  } else if(g.phase === "vote"){
+    html += '<div class="groundhdr">Vote pour la meilleure réplique !</div>';
+    html += '<div class="gprompt">' + escapeHtml(prompt) + '</div>';
+
+    Object.keys(answers).forEach(function(authorId){
+      var txt = answers[authorId];
+      var sel = (votes[myId] === authorId) ? " pri" : " sec";
+      html += '<button class="btn' + sel + '" style="margin-bottom:12px;text-align:left;" onclick="voteRoast(\'' + authorId + '\')">"' + escapeHtml(txt) + '"</button>';
+    });
+
+    if(amHost){
+      html += '<button class="btn pri" style="margin-top:14px;" onclick="revealRound()">Révéler les auteurs</button>';
+    }
+  } else if(g.phase === "reveal"){
+    html += '<div class="groundhdr">Résultats des répliques !</div>';
+    html += '<div class="gprompt">' + escapeHtml(prompt) + '</div>';
+
+    Object.keys(answers).forEach(function(authorId){
+      var txt = answers[authorId];
+      var author = players.find(function(p){ return p.id === authorId; }) || { name: "Anonyme" };
+      html += '<div class="post-card" style="margin-bottom:10px;">';
+      html += '<div style="font-size:1.1rem;font-weight:700;">"' + escapeHtml(txt) + '"</div>';
+      html += '<div style="color:var(--bp);font-size:.85rem;margin-top:6px;">— ' + escapeHtml(author.name) + '</div>';
+      html += '</div>';
+    });
+
+    if(amHost){
+      html += '<button class="btn pri" onclick="startPartyVote()">🎲 Voter pour le prochain jeu</button>';
+    }
+  }
+
+  area.innerHTML = html;
+}
+
+function submitRoastAnswer(){
+  var val = $("roastIn") ? $("roastIn").value.trim() : "";
+  if(!val || !roomCode || !myId) return;
+  db.ref("rooms/" + roomCode + "/game/answers/" + myId).set(val);
+}
+function startRoastVote(){
+  if(!roomCode) return;
+  db.ref("rooms/" + roomCode + "/game/phase").set("vote");
+}
+function voteRoast(authorId){
+  if(!roomCode || !myId) return;
+  db.ref("rooms/" + roomCode + "/game/votes/" + myId).set(authorId);
+}
+
+// =====================================================================
+//  GAME 6: WHO SAID THIS? (Qui a dit ça ?)
+// =====================================================================
+var QUOTES_PACK = [
+  "Promis, j'étais juste en train de fermer les yeux 5 secondes.",
+  "Si quelqu'un demande, on n'a jamais été ici.",
+  "Pourquoi est-ce qu'il est toujours 3h du matin quand je prends mes décisions de vie ?",
+  "J'ai dit que j'arrivais dans 5 minutes, pas dans quelle dimension."
+];
+
+function launchWhoSaid(){
+  if(!roomCode || !amHost) return;
+  var randomSpeaker = players[Math.floor(Math.random()*players.length)] || { id: myId };
+  var randomQuote = QUOTES_PACK[Math.floor(Math.random()*QUOTES_PACK.length)];
+
+  db.ref("rooms/" + roomCode + "/game").set({
+    type: "whosaid",
+    phase: "guess",
+    quote: randomQuote,
+    speakerId: randomSpeaker.id,
+    votes: {}
+  }).then(function(){
+    db.ref("rooms/" + roomCode + "/status").set("playing");
+  });
+}
+
+function renderWhoSaid(g){
+  var area = $("gameArea");
+  var quote = g.quote || "";
+  var votes = g.votes || {};
+  var html = "";
+
+  if(g.phase === "guess"){
+    html += '<div class="groundhdr">Qui a dit ça ? 💬</div>';
+    html += '<div class="post-card" style="font-size:1.25rem;font-weight:700;text-align:center;">"' + escapeHtml(quote) + '"</div>';
+    html += '<div class="gsub">Vote pour l\'auteur selon toi :</div>';
+    html += '<div class="vgrid">';
+    players.forEach(function(p){
+      var sel = (votes[myId] === p.id) ? " sel" : "";
+      html += '<div class="vcell' + sel + '" onclick="voteFor(\'' + p.id + '\')">' + avatarHTML(p, 52) + '<div class="vn">' + escapeHtml(p.name) + '</div></div>';
+    });
+    html += '</div>';
+
+    if(amHost){
+      html += '<button class="btn pri" onclick="revealRound()">Révéler la personne</button>';
+    } else {
+      html += '<div class="waiting">' + (votes[myId] ? "Vote envoyé !" : "Devine la personne") + '<span class="d"></span></div>';
+    }
+  } else if(g.phase === "reveal"){
+    var speaker = players.find(function(p){ return p.id === g.speakerId; }) || { name: "Quelqu'un" };
+    html += '<div class="groundhdr">Auteur révélé !</div>';
+    html += '<div style="text-align:center;margin:20px 0;">';
+    html += avatarHTML(speaker, 84);
+    html += '<div style="font-size:1.4rem;font-weight:800;margin-top:10px;">C\'était ' + escapeHtml(speaker.name) + ' ! 💬</div>';
+    html += '</div>';
+
+    if(amHost){
+      html += '<button class="btn pri" onclick="startPartyVote()">🎲 Voter pour le prochain jeu</button>';
+    }
+  }
+
+  area.innerHTML = html;
+}
+
+// =====================================================================
+//  GAME 7: TWO TRUTHS AND A LIE (2 Vérités 1 Mensonge)
+// =====================================================================
+var TRUTHS_PACK = [
+  { statements: ["J'ai déjà croisé une célébrité dans un resto", "Je n'ai jamais mangé de sushi de ma vie", "J'ai failli rater mon permis de conduire 3 fois"], lieIndex: 1 },
+  { statements: ["Je sais jouer de 2 instruments de musique", "Je me suis déjà cassé un os en tombant de mon lit", "Je n'ai jamais regardé un seul épisode de Star Wars"], lieIndex: 0 }
+];
+
+function launchTwoTruths(){
+  if(!roomCode || !amHost) return;
+  var card = TRUTHS_PACK[Math.floor(Math.random()*TRUTHS_PACK.length)];
+  db.ref("rooms/" + roomCode + "/game").set({
+    type: "twotruths",
+    phase: "guess",
+    statements: card.statements,
+    lieIndex: card.lieIndex,
+    votes: {}
+  }).then(function(){
+    db.ref("rooms/" + roomCode + "/status").set("playing");
+  });
+}
+
+function renderTwoTruths(g){
+  var area = $("gameArea");
+  var statements = g.statements || [];
+  var votes = g.votes || {};
+  var html = "";
+
+  if(g.phase === "guess"){
+    html += '<div class="groundhdr">2 Vérités 1 Mensonge 🤥</div>';
+    html += '<div class="gprompt">Trouve le FAUX énoncé :</div>';
+
+    statements.forEach(function(stmt, idx){
+      var sel = (votes[myId] === idx) ? " pri" : " sec";
+      html += '<button class="btn' + sel + '" style="margin-bottom:12px;text-align:left;" onclick="guessLie(' + idx + ')">' + (idx+1) + '. ' + escapeHtml(stmt) + '</button>';
+    });
+
+    if(amHost){
+      html += '<button class="btn pri" style="margin-top:14px;" onclick="revealRound()">Révéler le mensonge</button>';
+    }
+  } else if(g.phase === "reveal"){
+    html += '<div class="groundhdr">Le mensonge était :</div>';
+    var lieText = statements[g.lieIndex] || "";
+    html += '<div style="background:rgba(239,68,68,0.2);border:2px solid var(--red);padding:18px;border-radius:16px;font-size:1.2rem;font-weight:800;text-align:center;margin-bottom:20px;color:#fff;">🤥 ' + escapeHtml(lieText) + '</div>';
+
+    if(amHost){
+      html += '<button class="btn pri" onclick="startPartyVote()">🎲 Voter pour le prochain jeu</button>';
+    }
+  }
+
+  area.innerHTML = html;
+}
+
+function guessLie(idx){
+  if(!roomCode || !myId) return;
+  db.ref("rooms/" + roomCode + "/game/votes/" + myId).set(idx);
+}
+
+// =====================================================================
+//  LEAVING & RECONNECTION
+// =====================================================================
 function handleRoomClosed(){
   if(closedByMe) return;
   detachRoom();
-  toast("La partie a ete fermee.");
-  setStatus("err","Deconnecte");
+  toast("La partie a été fermée.");
+  setStatus("err","Déconnecté");
   teardown();
   show("s-home");
 }
@@ -708,7 +1292,6 @@ function teardown(){
   roomCode = ""; amHost = false; players = []; intent = null;
 }
 
-// ---------- Reconnection ----------
 function saveRoom(code){ try{ localStorage.setItem("norelo_party_room", code); }catch(e){} }
 function clearSavedRoom(){ try{ localStorage.removeItem("norelo_party_room"); }catch(e){} }
 function showReconnectOverlay(){
@@ -716,7 +1299,7 @@ function showReconnectOverlay(){
   var d = document.createElement("div");
   d.id = "reconnectOv";
   d.style.cssText = "position:fixed;inset:0;z-index:900;background:#070f2b;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px;";
-  d.innerHTML = '<div><div style="width:34px;height:34px;border:3px solid rgba(79,163,232,0.25);border-top-color:#4fa3e8;border-radius:50%;margin:0 auto 16px;animation:spin 0.8s linear infinite;"></div><div style="color:#8ea0cc;font-size:.95rem;margin-bottom:22px;">Reconnexion a la partie...</div><button onclick="abortResume()" style="background:transparent;border:1px solid rgba(79,163,232,0.25);color:#8ea0cc;font-family:inherit;font-size:.9rem;font-weight:600;padding:11px 20px;border-radius:11px;cursor:pointer;">Retour au menu</button></div>';
+  d.innerHTML = '<div><div style="width:34px;height:34px;border:3px solid rgba(79,163,232,0.25);border-top-color:#4fa3e8;border-radius:50%;margin:0 auto 16px;animation:spin 0.8s linear infinite;"></div><div style="color:#8ea0cc;font-size:.95rem;margin-bottom:22px;">Reconnexion à la partie...</div><button onclick="abortResume()" style="background:transparent;border:1px solid rgba(79,163,232,0.25);color:#8ea0cc;font-family:inherit;font-size:.9rem;font-weight:600;padding:11px 20px;border-radius:11px;cursor:pointer;">Retour au menu</button></div>';
   document.body.appendChild(d);
 }
 function hideReconnectOverlay(){
@@ -734,17 +1317,16 @@ function enterRoomScreen(status){
   else { showPlayerLobby(roomCode); }
   if(status === "playing"){ show("s-game"); renderGame(currentGame); }
 }
-// Re-establish our presence every time the socket (re)connects, so a blip
-// that triggered onDisconnect puts us back in the roster automatically.
+
 function watchConnection(){
   db.ref(".info/connected").on("value", function(snap){
     var connected = (snap.val() === true);
-    if(inRoom){ setStatus(connected ? "ok" : "wait", connected ? "Connecte" : "Reconnexion..."); }
+    if(inRoom){ setStatus(connected ? "ok" : "wait", connected ? "Connecté" : "Reconnexion..."); }
     if(!connected || !inRoom || !roomCode || !myId) return;
     var rRef = db.ref("rooms/" + roomCode);
     rRef.once("value").then(function(s){
       var data = s.val();
-      if(!data || (!data.hostId && !data.createdAt)) return; // room gone; main listener handles it
+      if(!data || (!data.hostId && !data.createdAt)) return;
       var existing = (data.players && data.players[myId]) ? data.players[myId] : null;
       var joinedAt = (existing && existing.joinedAt) ? existing.joinedAt : firebase.database.ServerValue.TIMESTAMP;
       var meRef = rRef.child("players/" + myId);
@@ -753,7 +1335,7 @@ function watchConnection(){
     }).catch(function(){});
   });
 }
-// On page load / reopen, drop the player straight back into their room.
+
 function tryResume(){
   var savedRoom = null;
   try{ savedRoom = localStorage.getItem("norelo_party_room"); }catch(e){}
@@ -791,28 +1373,26 @@ function tryResume(){
         saveRoom(savedRoom);
         enterRoomScreen(data.status);
         subscribeRoom(savedRoom);
-        setStatus("ok","Connecte");
+        setStatus("ok","Connecté");
         hideReconnectOverlay();
       }).catch(function(){ clearTimeout(resumeTimer); clearSavedRoom(); hideReconnectOverlay(); show("s-home"); });
     }).catch(function(){ clearTimeout(resumeTimer); clearSavedRoom(); hideReconnectOverlay(); show("s-home"); });
   });
 }
 
-// ---------- Room actions ----------
 function copyCode(){
   var t = roomCode;
   if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(t).then(function(){ toast("Code copie"); }).catch(function(){ toast("Code: "+t); });
+    navigator.clipboard.writeText(t).then(function(){ toast("Code copié"); }).catch(function(){ toast("Code: "+t); });
   } else { toast("Code: "+t); }
 }
 function shareCode(){
-  var txt = "Rejoins mon party Norelo! Code: " + roomCode;
+  var txt = "Rejoins mon party Norelo ! Code: " + roomCode;
   if(navigator.share){
     navigator.share({ title:"Norelo Party", text:txt, url:location.href }).catch(function(){});
   } else { copyCode(); }
 }
 
-// ---------- Init ----------
 configMissing = (!firebaseConfig.apiKey || firebaseConfig.apiKey === "PASTE_YOUR_CONFIG_HERE" || !firebaseConfig.databaseURL);
 if(configMissing){
   showConfigOverlay();
@@ -821,7 +1401,7 @@ if(configMissing){
   db = firebase.database();
   auth = firebase.auth();
   try{ if(localStorage.getItem("norelo_party_room")){ showReconnectOverlay(); } }catch(e){}
-  auth.signInAnonymously().catch(function(e){ hideReconnectOverlay(); toast("Connexion Firebase impossible. Verifie ta config."); });
+  auth.signInAnonymously().catch(function(e){ hideReconnectOverlay(); toast("Connexion Firebase impossible."); });
   auth.onAuthStateChanged(function(u){
     if(u){
       myId = u.uid;
@@ -831,7 +1411,6 @@ if(configMissing){
   });
 }
 
-// ---------- Input wiring ----------
 $("nameIn").addEventListener("input", function(){
   updatePreview();
   $("contBtn").disabled = !this.value.trim();
@@ -840,7 +1419,7 @@ $("codeIn").addEventListener("input", function(){
   this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,4);
   $("joinBtn").disabled = this.value.length !== 4;
 });
-// ---------- Photo upload ----------
+
 function processImage(file, cb){
   var reader = new FileReader();
   reader.onload = function(e){
@@ -878,7 +1457,7 @@ $("photoIn").addEventListener("change", function(e){
       $("photoBtn").textContent = "Changer la photo";
       updatePreview();
     } else {
-      toast("Image impossible a charger. Essaie une autre.");
+      toast("Image impossible à charger.");
       $("photoBtn").textContent = me.photo ? "Changer la photo" : "📷 Ajouter une photo";
     }
   });
