@@ -568,7 +568,7 @@ var PLAYLISTS = {
   mostlikely: [
     "https://archive.org/download/bustin-bustin-buuuustiiiin-by-lordmau5/Bustin%20Bustin%20Buuuustiiiin.mp3",
     "https://archive.org/download/tvtunes_22626/Pokemon%20-%20Dance%20Mix.mp3",
-    "https://archive.org/download/tvtunes_28083/Rick%20and%20Morty%20-%20Rick%20Dance.mp3"
+    "https://archive.org/download/tvtunes_23926/Mortal%20Kombat%20-%20Techno-Syndrome%207%20Mix.mp3"
   ],
   whoposted: [
     "https://archive.org/download/tvtunes_26023/Simpsons%20-%20The%20Doh%20Song%20-%20Techno%20Remix.mp3",
@@ -641,6 +641,9 @@ function playGameMusic(type){
   if(!type) type = "lobby";
   var list = PLAYLISTS[type] || PLAYLISTS.lobby;
   
+  if((type === "lobby" || type === "voting") && (currentTrackType === "lobby" || currentTrackType === "voting") && bgTrackEl && !bgTrackEl.paused){
+    return;
+  }
   if(currentTrackType === type && bgTrackEl && !bgTrackEl.paused){ return; }
   currentTrackType = type;
   
@@ -1226,6 +1229,14 @@ function shuffle(arr){
   return arr;
 }
 
+function getGameMode(gid){
+  for(var i = 0; i < GAME_MODES.length; i++){
+    if(GAME_MODES[i].id === gid) return GAME_MODES[i];
+  }
+  return { id: gid, title: "Jeu", icon: ICONS.dice };
+}
+function getGameTitle(gid){ return getGameMode(gid).title; }
+
 var _tallyLock = false;
 
 function tallyGameVotes(){
@@ -1251,9 +1262,80 @@ function tallyGameVotes(){
     }
   });
 
-  var selectedGame = winners[Math.floor(Math.random()*winners.length)] || "mostlikely";
+  if(winners.length > 1){
+    var p0 = players[0] ? players[0].id : myId;
+    var p1 = players[1] ? players[1].id : myId;
+    db.ref("rooms/" + roomCode + "/game").update({
+      phase: "voting_tiebreaker",
+      tiedGames: winners,
+      gameA: winners[0],
+      gameB: winners[1],
+      remainingTiedGames: winners.slice(2),
+      duelistA: p0,
+      duelistB: p1,
+      rpsChoices: {},
+      lastResult: null
+    });
+    setTimeout(function(){ _tallyLock = false; }, 2000);
+    return;
+  }
+
+  var selectedGame = winners[0] || "mostlikely";
   launchSelectedGame(selectedGame);
   setTimeout(function(){ _tallyLock = false; }, 2000);
+}
+
+function processVotingTiebreaker(){
+  if(!roomCode || !amHost || !currentGame || currentGame.phase !== "voting_tiebreaker" || _rpsProcessing) return;
+  var g = currentGame;
+  var dA = g.duelistA;
+  var dB = g.duelistB;
+  var choices = g.rpsChoices || {};
+  
+  var cA = choices[dA];
+  var cB = choices[dB];
+  
+  if(!cA || !cB) return;
+  _rpsProcessing = true;
+  
+  var winningGame = null, losingGame = null;
+  if(cA === cB){
+    setTimeout(function(){
+      db.ref("rooms/" + roomCode + "/game/rpsChoices").set({});
+      _rpsProcessing = false;
+    }, 1500);
+    return;
+  }
+  
+  if( (cA==="rock"&&cB==="scissors") || (cA==="scissors"&&cB==="paper") || (cA==="paper"&&cB==="rock") ){
+    winningGame = g.gameA; losingGame = g.gameB;
+  } else {
+    winningGame = g.gameB; losingGame = g.gameA;
+  }
+  
+  sfxWin();
+  
+  var remaining = g.remainingTiedGames || [];
+  if(remaining.length > 0){
+    var nextGame = remaining[0];
+    var nextRemaining = remaining.slice(1);
+    
+    setTimeout(function(){
+      db.ref("rooms/" + roomCode + "/game").update({
+        gameA: winningGame,
+        gameB: nextGame,
+        remainingTiedGames: nextRemaining,
+        rpsChoices: {},
+        lastResult: getGameTitle(winningGame) + " a éliminé " + getGameTitle(losingGame) + " !"
+      });
+      _rpsProcessing = false;
+    }, 2000);
+  } else {
+    setTimeout(function(){
+      _rpsProcessing = false;
+      launchSelectedGame(winningGame);
+    }, 2000);
+  }
 }
 
 function launchSelectedGame(type){
@@ -1293,6 +1375,46 @@ function renderGame(g){
 // ---------------- DEMOCRATIC VOTING RENDER WITH AUTO-PROGRESS ----------------
 function renderGameVoting(g){
   var area = $("gameArea");
+  if(g.phase === "voting_tiebreaker"){
+    var gA = getGameMode(g.gameA);
+    var gB = getGameMode(g.gameB);
+    var pA = getPlayer(g.duelistA);
+    var pB = getPlayer(g.duelistB);
+    var choices = g.rpsChoices || {};
+    var myChoice = choices[myId];
+    
+    var html = '<div class="groundhdr">ÉGALITÉ DE VOTES POUR LE JEU !</div>';
+    html += '<div class="gprompt"><span class="dice-ico">' + ICONS.dice + '</span> BATAILLE DU ROCHE PAPIER CISEAUX !</div>';
+    html += '<div class="gsub" style="font-weight:800;color:var(--accent);margin-bottom:12px;">' + escapeHtml(gA.title) + '  VS  ' + escapeHtml(gB.title) + '</div>';
+    
+    if(g.lastResult){
+      html += '<div class="gsub" style="color:var(--green);font-weight:800;margin-bottom:12px;">' + escapeHtml(g.lastResult) + '</div>';
+    }
+    
+    html += '<div style="display:flex;justify-content:center;align-items:center;gap:24px;margin:20px 0;">';
+    html += '<div style="text-align:center;">' + avatarHTML(pA, 64) + '<div style="font-weight:800;margin-top:6px;">' + escapeHtml(pA.name) + '</div><div style="font-size:0.8rem;color:var(--accent);">' + escapeHtml(gA.title) + '</div>' + (choices[g.duelistA]?'<div style="font-size:0.85rem;color:var(--green);font-weight:800;margin-top:4px;">PRÊT</div>':'') + '</div>';
+    html += '<div style="font-size:1.6rem;font-weight:900;color:var(--accent);">VS</div>';
+    html += '<div style="text-align:center;">' + avatarHTML(pB, 64) + '<div style="font-weight:800;margin-top:6px;">' + escapeHtml(pB.name) + '</div><div style="font-size:0.8rem;color:var(--accent);">' + escapeHtml(gB.title) + '</div>' + (choices[g.duelistB]?'<div style="font-size:0.85rem;color:var(--green);font-weight:800;margin-top:4px;">PRÊT</div>':'') + '</div>';
+    html += '</div>';
+    
+    if(myId === g.duelistA || myId === g.duelistB){
+      html += '<div class="gsub" style="font-weight:800;color:#fff;">Tranche l\'égalité pour le premier jeu ! Choisis ton arme :</div>';
+      html += '<div style="display:flex;justify-content:center;gap:12px;margin-top:16px;">';
+      html += '<button class="btn ' + (myChoice==='rock'?'pri':'sec') + '" onclick="submitRPS(\'rock\')">' + ICONS.rock + ' Roche</button>';
+      html += '<button class="btn ' + (myChoice==='paper'?'pri':'sec') + '" onclick="submitRPS(\'paper\')">' + ICONS.paper + ' Papier</button>';
+      html += '<button class="btn ' + (myChoice==='scissors'?'pri':'sec') + '" onclick="submitRPS(\'scissors\')">' + ICONS.scissors + ' Ciseaux</button>';
+      html += '</div>';
+    } else {
+      html += '<div class="waiting">Duel en cours entre ' + escapeHtml(pA.name) + ' et ' + escapeHtml(pB.name) + ' pour trancher le jeu !<span class="d"></span></div>';
+    }
+    
+    if(amHost){
+      processVotingTiebreaker();
+    }
+    area.innerHTML = html;
+    return;
+  }
+
   var votes = g.votes || {};
   var myVote = votes[myId];
   var votedCount = Object.keys(votes).length;
