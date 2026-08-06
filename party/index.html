@@ -250,6 +250,7 @@
   <!-- GAME -->
   <section id="s-game" class="screen">
     <div id="gameArea"></div>
+    <button class="btn ghost" style="margin-top:14px;" onclick="quit()">Quitter</button>
   </section>
 
 </div>
@@ -300,6 +301,7 @@ var closedByMe = false;
 var inRoom = false;
 var bootDone = false;
 var currentGame = null;
+var resumeAborted = false;
 
 // ---------- Helpers ----------
 function $(id){ return document.getElementById(id); }
@@ -714,12 +716,18 @@ function showReconnectOverlay(){
   var d = document.createElement("div");
   d.id = "reconnectOv";
   d.style.cssText = "position:fixed;inset:0;z-index:900;background:#070f2b;display:flex;align-items:center;justify-content:center;text-align:center;padding:30px;";
-  d.innerHTML = '<div><div style="width:34px;height:34px;border:3px solid rgba(79,163,232,0.25);border-top-color:#4fa3e8;border-radius:50%;margin:0 auto 16px;animation:spin 0.8s linear infinite;"></div><div style="color:#8ea0cc;font-size:.95rem;">Reconnexion a la partie...</div></div>';
+  d.innerHTML = '<div><div style="width:34px;height:34px;border:3px solid rgba(79,163,232,0.25);border-top-color:#4fa3e8;border-radius:50%;margin:0 auto 16px;animation:spin 0.8s linear infinite;"></div><div style="color:#8ea0cc;font-size:.95rem;margin-bottom:22px;">Reconnexion a la partie...</div><button onclick="abortResume()" style="background:transparent;border:1px solid rgba(79,163,232,0.25);color:#8ea0cc;font-family:inherit;font-size:.9rem;font-weight:600;padding:11px 20px;border-radius:11px;cursor:pointer;">Retour au menu</button></div>';
   document.body.appendChild(d);
 }
 function hideReconnectOverlay(){
   var d = $("reconnectOv");
   if(d && d.parentNode){ d.parentNode.removeChild(d); }
+}
+function abortResume(){
+  resumeAborted = true;
+  teardown();
+  hideReconnectOverlay();
+  show("s-home");
 }
 function enterRoomScreen(status){
   if(amHost){ showHostLobby(); $("lobbyCode").textContent = roomCode; }
@@ -759,12 +767,16 @@ function tryResume(){
     me.photo = sp ? sp : null;
   }catch(e){}
   if(!me.name){ clearSavedRoom(); hideReconnectOverlay(); return; }
+  resumeAborted = false;
   showReconnectOverlay();
+  var resumeTimer = setTimeout(function(){ if(!resumeAborted){ abortResume(); } }, 9000);
   waitAuth().then(function(){
+    if(resumeAborted) return;
     var rRef = db.ref("rooms/" + savedRoom);
     rRef.once("value").then(function(s){
+      if(resumeAborted) return;
       var data = s.val();
-      if(!data || (!data.hostId && !data.createdAt)){ clearSavedRoom(); hideReconnectOverlay(); show("s-home"); return; }
+      if(!data || (!data.hostId && !data.createdAt)){ clearTimeout(resumeTimer); clearSavedRoom(); hideReconnectOverlay(); show("s-home"); return; }
       roomCode = savedRoom;
       amHost = (data.hostId === myId);
       currentGame = data.game || null;
@@ -772,6 +784,8 @@ function tryResume(){
       var joinedAt = (existing && existing.joinedAt) ? existing.joinedAt : firebase.database.ServerValue.TIMESTAMP;
       var meRef = rRef.child("players/" + myId);
       meRef.set({ name:me.name, color:me.color, host:amHost, photo:me.photo||null, joinedAt:joinedAt }).then(function(){
+        if(resumeAborted) return;
+        clearTimeout(resumeTimer);
         meRef.onDisconnect().remove();
         inRoom = true;
         saveRoom(savedRoom);
@@ -779,8 +793,8 @@ function tryResume(){
         subscribeRoom(savedRoom);
         setStatus("ok","Connecte");
         hideReconnectOverlay();
-      }).catch(function(){ clearSavedRoom(); hideReconnectOverlay(); show("s-home"); });
-    }).catch(function(){ clearSavedRoom(); hideReconnectOverlay(); show("s-home"); });
+      }).catch(function(){ clearTimeout(resumeTimer); clearSavedRoom(); hideReconnectOverlay(); show("s-home"); });
+    }).catch(function(){ clearTimeout(resumeTimer); clearSavedRoom(); hideReconnectOverlay(); show("s-home"); });
   });
 }
 
