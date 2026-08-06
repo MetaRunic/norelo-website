@@ -284,6 +284,87 @@
     display: inline-block;
   }
 
+  /* ROCK PAPER SCISSORS ARENA ANIMATIONS */
+  .rps-arena {
+    display: flex; justify-content: center; align-items: center; gap: 30px;
+    margin: 24px 0; perspective: 600px; position: relative;
+  }
+  .rps-fighter {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transition: all 0.5s ease; position: relative;
+  }
+  .rps-icon-box {
+    width: 88px; height: 88px; border-radius: 24px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+    border: 2.5px solid rgba(255,255,255,0.25); display: flex; align-items: center;
+    justify-content: center; color: #fff;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3); transition: all 0.4s ease;
+  }
+  .rps-icon-box svg { width: 46px; height: 46px; }
+  
+  .rps-clash-left {
+    animation: rpsSlamLeft 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+  .rps-clash-right {
+    animation: rpsSlamRight 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+  
+  @keyframes rpsSlamLeft {
+    0% { transform: translateX(-100px) scale(0.2) rotate(-30deg); opacity: 0; }
+    70% { transform: translateX(20px) scale(1.15) rotate(10deg); }
+    100% { transform: translateX(0) scale(1) rotate(0deg); opacity: 1; }
+  }
+  @keyframes rpsSlamRight {
+    0% { transform: translateX(100px) scale(0.2) rotate(30deg); opacity: 0; }
+    70% { transform: translateX(-20px) scale(1.15) rotate(-10deg); }
+    100% { transform: translateX(0) scale(1) rotate(0deg); opacity: 1; }
+  }
+  
+  .rps-winner .rps-icon-box {
+    border-color: var(--amber); background: linear-gradient(135deg, #f59e0b, #d97706);
+    box-shadow: 0 0 35px rgba(245, 158, 11, 0.85); transform: scale(1.25);
+    animation: victorPulse 0.8s ease-in-out infinite alternate;
+  }
+  @keyframes victorPulse {
+    0% { transform: scale(1.2); box-shadow: 0 0 25px rgba(245, 158, 11, 0.6); }
+    100% { transform: scale(1.3); box-shadow: 0 0 45px rgba(245, 158, 11, 0.95); }
+  }
+  
+  .rps-crushed .rps-icon-box {
+    animation: crushedAnim 0.8s ease forwards;
+  }
+  @keyframes crushedAnim {
+    0% { transform: scale(1) translateY(0); opacity: 1; }
+    30% { transform: scale(1.2, 0.4) translateY(25px); filter: brightness(2); }
+    100% { transform: scale(0.3, 0.1) translateY(45px) rotate(45deg); opacity: 0.2; filter: grayscale(1); }
+  }
+  
+  .rps-sliced .rps-icon-box {
+    animation: slicedAnim 0.8s ease forwards;
+  }
+  @keyframes slicedAnim {
+    0% { transform: scale(1) rotate(0deg); }
+    30% { transform: scale(1.1) rotate(-15deg); filter: contrast(2); }
+    100% { transform: scale(0.3) translateY(50px) rotate(-90deg); opacity: 0.15; filter: grayscale(1); }
+  }
+  
+  .rps-wrapped .rps-icon-box {
+    animation: wrappedAnim 0.8s ease forwards;
+  }
+  @keyframes wrappedAnim {
+    0% { transform: scale(1); }
+    40% { transform: scale(0.7) rotate(180deg); opacity: 0.6; }
+    100% { transform: scale(0.2) rotate(360deg); opacity: 0.1; filter: grayscale(1); }
+  }
+  
+  .rps-draw .rps-icon-box {
+    animation: drawBounce 0.5s ease-in-out infinite alternate;
+  }
+  @keyframes drawBounce {
+    0% { transform: translateX(-8px) rotate(-6deg); }
+    100% { transform: translateX(8px) rotate(6deg); }
+  }
+
   /* Social Media Post Card */
   .post-card{
     background:#111c44; border:1px solid rgba(255,255,255,0.12); border-radius:18px;
@@ -893,8 +974,8 @@ var ICONS = {
   volumeOn: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>',
   volumeMute: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>',
   clock: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
-  rock: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10"/></svg>',
-  paper: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+  rock: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.5L7.5 5.5A2 2 0 0 1 9.4 4h5.2a2 2 0 0 1 1.9 1.5L20 14.5a2 2 0 0 1-.5 2L15 20H9l-4.5-3.5a2 2 0 0 1-.5-2z"/><path d="M9 9l3 3M15 10l-2 4"/></svg>',
+  paper: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>',
   scissors: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.47" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>'
 };
 
@@ -1372,6 +1453,62 @@ function renderGame(g){
   else { area.innerHTML = ""; }
 }
 
+function renderRPSArenaHTML(pA, pB, choices, duelistA, duelistB, subtitle, lastResult){
+  var cA = choices[duelistA];
+  var cB = choices[duelistB];
+  var isDone = (cA && cB);
+  
+  var leftClass = "rps-clash-left";
+  var rightClass = "rps-clash-right";
+  
+  if(isDone){
+    if(cA === cB){
+      leftClass += " rps-draw";
+      rightClass += " rps-draw";
+    } else if( (cA==="rock"&&cB==="scissors") || (cA==="scissors"&&cB==="paper") || (cA==="paper"&&cB==="rock") ){
+      leftClass += " rps-winner";
+      if(cA === "rock" && cB === "scissors") rightClass += " rps-crushed";
+      else if(cA === "scissors" && cB === "paper") rightClass += " rps-sliced";
+      else if(cA === "paper" && cB === "rock") rightClass += " rps-wrapped";
+    } else {
+      rightClass += " rps-winner";
+      if(cB === "rock" && cA === "scissors") leftClass += " rps-crushed";
+      else if(cB === "scissors" && cA === "paper") leftClass += " rps-sliced";
+      else if(cB === "paper" && cA === "rock") leftClass += " rps-wrapped";
+    }
+  }
+
+  var iconA = cA ? (ICONS[cA] || ICONS.rock) : ICONS.dice;
+  var iconB = cB ? (ICONS[cB] || ICONS.rock) : ICONS.dice;
+
+  var html = '<div class="groundhdr">ÉGALITÉ AU VOTE !</div>';
+  html += '<div class="gprompt"><span class="dice-ico">' + ICONS.dice + '</span> BATAILLE DU ROCHE PAPIER CISEAUX !</div>';
+  if(subtitle) html += '<div class="gsub" style="font-weight:800;color:var(--accent);margin-bottom:12px;">' + escapeHtml(subtitle) + '</div>';
+  if(lastResult) html += '<div class="gsub" style="color:var(--green);font-weight:800;margin-bottom:12px;">' + escapeHtml(lastResult) + '</div>';
+  
+  html += '<div class="rps-arena">';
+  
+  html += '<div class="rps-fighter ' + leftClass + '">';
+  html += avatarHTML(pA, 64);
+  html += '<div style="font-weight:800;margin:6px 0 8px 0;color:#fff;">' + escapeHtml(pA.name) + '</div>';
+  html += '<div class="rps-icon-box">' + iconA + '</div>';
+  if(!isDone && cA) html += '<div style="font-size:0.85rem;color:var(--green);font-weight:800;margin-top:6px;">PRÊT</div>';
+  html += '</div>';
+  
+  html += '<div style="font-size:2rem;font-weight:900;color:var(--accent);align-self:center;">VS</div>';
+  
+  html += '<div class="rps-fighter ' + rightClass + '">';
+  html += avatarHTML(pB, 64);
+  html += '<div style="font-weight:800;margin:6px 0 8px 0;color:#fff;">' + escapeHtml(pB.name) + '</div>';
+  html += '<div class="rps-icon-box">' + iconB + '</div>';
+  if(!isDone && cB) html += '<div style="font-size:0.85rem;color:var(--green);font-weight:800;margin-top:6px;">PRÊT</div>';
+  html += '</div>';
+  
+  html += '</div>';
+  
+  return html;
+}
+
 // ---------------- DEMOCRATIC VOTING RENDER WITH AUTO-PROGRESS ----------------
 function renderGameVoting(g){
   var area = $("gameArea");
@@ -1383,19 +1520,7 @@ function renderGameVoting(g){
     var choices = g.rpsChoices || {};
     var myChoice = choices[myId];
     
-    var html = '<div class="groundhdr">ÉGALITÉ DE VOTES POUR LE JEU !</div>';
-    html += '<div class="gprompt"><span class="dice-ico">' + ICONS.dice + '</span> BATAILLE DU ROCHE PAPIER CISEAUX !</div>';
-    html += '<div class="gsub" style="font-weight:800;color:var(--accent);margin-bottom:12px;">' + escapeHtml(gA.title) + '  VS  ' + escapeHtml(gB.title) + '</div>';
-    
-    if(g.lastResult){
-      html += '<div class="gsub" style="color:var(--green);font-weight:800;margin-bottom:12px;">' + escapeHtml(g.lastResult) + '</div>';
-    }
-    
-    html += '<div style="display:flex;justify-content:center;align-items:center;gap:24px;margin:20px 0;">';
-    html += '<div style="text-align:center;">' + avatarHTML(pA, 64) + '<div style="font-weight:800;margin-top:6px;">' + escapeHtml(pA.name) + '</div><div style="font-size:0.8rem;color:var(--accent);">' + escapeHtml(gA.title) + '</div>' + (choices[g.duelistA]?'<div style="font-size:0.85rem;color:var(--green);font-weight:800;margin-top:4px;">PRÊT</div>':'') + '</div>';
-    html += '<div style="font-size:1.6rem;font-weight:900;color:var(--accent);">VS</div>';
-    html += '<div style="text-align:center;">' + avatarHTML(pB, 64) + '<div style="font-weight:800;margin-top:6px;">' + escapeHtml(pB.name) + '</div><div style="font-size:0.8rem;color:var(--accent);">' + escapeHtml(gB.title) + '</div>' + (choices[g.duelistB]?'<div style="font-size:0.85rem;color:var(--green);font-weight:800;margin-top:4px;">PRÊT</div>':'') + '</div>';
-    html += '</div>';
+    var html = renderRPSArenaHTML(pA, pB, choices, g.duelistA, g.duelistB, gA.title + " VS " + gB.title, g.lastResult);
     
     if(myId === g.duelistA || myId === g.duelistB){
       html += '<div class="gsub" style="font-weight:800;color:#fff;">Tranche l\'égalité pour le premier jeu ! Choisis ton arme :</div>';
@@ -1609,17 +1734,7 @@ function renderMostLikely(g){
     var choices = g.rpsChoices || {};
     var myChoice = choices[myId];
     
-    html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • ÉGALITÉ AU VOTE !</div>';
-    html += '<div class="gprompt"><span class="dice-ico">' + ICONS.dice + '</span> BATAILLE DU ROCHE PAPIER CISEAUX !</div>';
-    if(g.lastResult){
-      html += '<div class="gsub" style="color:var(--green);font-weight:800;margin-bottom:12px;">' + escapeHtml(g.lastResult) + '</div>';
-    }
-    
-    html += '<div style="display:flex;justify-content:center;align-items:center;gap:24px;margin:20px 0;">';
-    html += '<div style="text-align:center;">' + avatarHTML(pA, 64) + '<div style="font-weight:800;margin-top:6px;">' + escapeHtml(pA.name) + '</div>' + (choices[g.duelistA]?'<div style="font-size:0.85rem;color:var(--green);font-weight:800;margin-top:4px;">PRÊT</div>':'') + '</div>';
-    html += '<div style="font-size:1.6rem;font-weight:900;color:var(--accent);">VS</div>';
-    html += '<div style="text-align:center;">' + avatarHTML(pB, 64) + '<div style="font-weight:800;margin-top:6px;">' + escapeHtml(pB.name) + '</div>' + (choices[g.duelistB]?'<div style="font-size:0.85rem;color:var(--green);font-weight:800;margin-top:4px;">PRÊT</div>':'') + '</div>';
-    html += '</div>';
+    html += renderRPSArenaHTML(pA, pB, choices, g.duelistA, g.duelistB, "AFFRONTEMENT ULTIME DE DEUX ÉGALITÉS", g.lastResult);
     
     if(myId === g.duelistA || myId === g.duelistB){
       html += '<div class="gsub" style="font-weight:800;color:#fff;">C\'est ton tour ! Choisis ton arme :</div>';
