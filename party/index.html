@@ -27,6 +27,15 @@
   .glow::before{width:60vw; height:60vw; top:-20vw; left:-10vw; background:radial-gradient(circle,var(--blue),transparent 70%);}
   .glow::after{width:50vw; height:50vw; bottom:-15vw; right:-10vw; background:radial-gradient(circle,rgba(34,197,94,0.5),transparent 70%);}
 
+  #bgCanvas{position:fixed; inset:0; z-index:0; pointer-events:none;}
+
+  /* Bouncing DVD Logo Meme */
+  #dvdLogo{
+    position:fixed; width:88px; height:44px; z-index:0; pointer-events:none;
+    color:#2563eb; opacity:0.75; filter:drop-shadow(0 0 10px currentColor);
+    will-change:transform;
+  }
+
   .wrap{
     flex:1; width:100%; max-width:480px; margin:0 auto;
     padding:28px 22px calc(28px + env(safe-area-inset-bottom));
@@ -200,6 +209,18 @@
 <body>
 <div class="glow"></div>
 
+<!-- Ambient Particles Canvas -->
+<canvas id="bgCanvas"></canvas>
+
+<!-- Nostalgic Bouncing DVD Meme Logo -->
+<div id="dvdLogo">
+  <svg viewBox="0 0 120 60" fill="currentColor" width="88" height="44">
+    <path d="M22 15h16c8 0 14 3 14 8.5S46 32 38 32H30v13H22V15zm8 11h7c3.5 0 6-1 6-3.5S40.5 19 37 19h-7v7zM54 15h9l8 20 8-20h9L76 45H66L54 15zm38 0h16c8 0 14 3 14 8.5S116 32 108 32h-8v13h-8V15zm8 11h7c3.5 0 6-1 6-3.5s-2.5-3.5-6-3.5h-7v7z"/>
+    <ellipse cx="60" cy="50" rx="45" ry="6" fill="none" stroke="currentColor" stroke-width="3"/>
+    <text x="60" y="53" font-size="5" font-weight="900" text-anchor="middle" fill="currentColor">VIDEO</text>
+  </svg>
+</div>
+
 <div class="wrap">
 
   <!-- HOME -->
@@ -307,6 +328,83 @@
 <footer><b style="color:#8493b8;">Norelo</b> Party &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
+
+<!-- Background Particles & DVD Bounce Script -->
+<script>
+(function(){
+  // Particles Canvas
+  var cv = document.getElementById("bgCanvas");
+  if(!cv) return;
+  var ctx = cv.getContext("2d");
+  var w = cv.width = window.innerWidth;
+  var h = cv.height = window.innerHeight;
+  
+  window.addEventListener("resize", function(){
+    w = cv.width = window.innerWidth;
+    h = cv.height = window.innerHeight;
+  });
+
+  var pts = [];
+  for(var i=0; i<35; i++){
+    pts.push({
+      x: Math.random()*w,
+      y: Math.random()*h,
+      r: Math.random()*2.5 + 1,
+      dx: (Math.random()-0.5)*0.6,
+      dy: (Math.random()-0.5)*0.6,
+      o: Math.random()*0.5 + 0.2
+    });
+  }
+
+  function drawPts(){
+    ctx.clearRect(0, 0, w, h);
+    pts.forEach(function(p){
+      p.x += p.dx; p.y += p.dy;
+      if(p.x < 0) p.x = w; if(p.x > w) p.x = 0;
+      if(p.y < 0) p.y = h; if(p.y > h) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = "rgba(79, 163, 232, " + p.o + ")";
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = "#4fa3e8";
+      ctx.fill();
+    });
+    requestAnimationFrame(drawPts);
+  }
+  drawPts();
+
+  // Bouncing DVD Logo Meme
+  var dvd = document.getElementById("dvdLogo");
+  if(!dvd) return;
+  var dx = 1.6, dy = 1.2;
+  var x = Math.random() * (w - 100);
+  var y = Math.random() * (h - 60);
+  var colors = ["#2563eb","#22c55e","#f59e0b","#ef4444","#a855f7","#ec4899","#14b8a6","#f97316"];
+  var colorIdx = 0;
+
+  function moveDVD(){
+    x += dx; y += dy;
+    var maxW = window.innerWidth - 90;
+    var maxH = window.innerHeight - 45;
+
+    var bounced = false;
+    if(x <= 0 || x >= maxW){ dx = -dx; bounced = true; }
+    if(y <= 0 || y >= maxH){ dy = -dy; bounced = true; }
+
+    if(bounced){
+      colorIdx = (colorIdx + 1) % colors.length;
+      dvd.style.color = colors[colorIdx];
+    }
+
+    x = Math.max(0, Math.min(x, maxW));
+    y = Math.max(0, Math.min(y, maxH));
+
+    dvd.style.transform = "translate(" + x + "px, " + y + "px)";
+    requestAnimationFrame(moveDVD);
+  }
+  moveDVD();
+})();
+</script>
 
 <!-- Firebase (compat build) -->
 <script src="https://www.gstatic.com/firebasejs/12.11.0/firebase-app-compat.js"></script>
