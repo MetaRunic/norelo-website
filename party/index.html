@@ -1314,7 +1314,8 @@ function renderGameVoting(g){
 // =====================================================================
 //  GAME 1: MOST LIKELY TO (JACKBOX PARTY STYLE WITH LIVE COUNTDOWN TIMER)
 // =====================================================================
-//  SPICY & PARTY QUESTION BANKS (18+ & GROUP FUN)
+// =====================================================================
+//  SPICY & PARTY QUESTION BANKS (50 HILARIOUS PROMPTS)
 // =====================================================================
 var MOSTLIKELY_PROMPTS = [
   "Le plus susceptible de texter son ex à 2h du matin après 3 verres.",
@@ -1336,14 +1337,44 @@ var MOSTLIKELY_PROMPTS = [
   "Le plus susceptible d'envoyer un vocal embarrassant à son boss à minuit.",
   "Le plus susceptible de perdre ses clés, ses souliers et sa dignité dans la même soirée.",
   "Le plus susceptible de se marier à Las Vegas sur un coup de tête.",
-  "Le plus susceptible d'avoir la pire note de crédit mais la meilleure vie nocturne."
+  "Le plus susceptible d'avoir la pire note de crédit mais la meilleure vie nocturne.",
+  "Le plus susceptible d'essayer d'amadouer un policier avec une blague lors d'un contrôle routier.",
+  "Le plus susceptible de se réveiller le lendemain sans aucun souvenir de la soirée.",
+  "Le plus susceptible d'inventer une fausse urgence pour quitter un rendez-vous ennuyant.",
+  "Le plus susceptible d'avoir un tatouage impulsif fait dans un sous-sol.",
+  "Le plus susceptible de s'endormir la tête dans la pizza au milieu d'un party.",
+  "Le plus susceptible de devenir gourou d'une secte bizarre sur TikTok.",
+  "Le plus susceptible de tricher à un jeu de société entre amis et nier l'évidence.",
+  "Le plus susceptible de se faire bannir d'un groupe Facebook de quartier.",
+  "Le plus susceptible de tomber en bas des escaliers sans avoir bu une seule goutte d'alcool.",
+  "Le plus susceptible de voler un panneau de signalisation routière pour décorer son salon.",
+  "Le plus susceptible d'être recherché par la police internationale pour une erreur de frappe.",
+  "Le plus susceptible de chanter à tue-tête du Céline Dion au karaoké sans aucune note juste.",
+  "Le plus susceptible de perdre son téléphone cellulaire dans une poubelle publique.",
+  "Le plus susceptible d'avoir déjà testé une appli de rencontre sous un faux profil.",
+  "Le plus susceptible d'acheter un objet inutile à 500$ à 3h du mat sur Amazon.",
+  "Le plus susceptible de s'embrouiller avec le DJ pour qu'il joue sa chanson préférée.",
+  "Le plus susceptible de manger du fromage périmé depuis 2 mois sans s'en rendre compte.",
+  "Le plus susceptible de se faire passer pour une vedette pour rentrer gratuitement VIP.",
+  "Le plus susceptible d'adopter 5 chats sur un coup de tête après une rupture.",
+  "Le plus susceptible d'avoir une aventure d'un soir avec un(e) ami(e) d'enfance.",
+  "Le plus susceptible de rater son vol d'avion parce qu'il buvait de la bière au bar de l'aéroport.",
+  "Le plus susceptible d'envoyer un message d'amour à son prof ou collègue par accident.",
+  "Le plus susceptible de faire croire qu'il parle couramment espagnol juste avec des accents exagérés.",
+  "Le plus susceptible d'accidentellement mettre le feu en essayant d'allumer une bougie.",
+  "Le plus susceptible de finir la nuit dans un Fast-Food à raconter sa vie au cuisinier.",
+  "Le plus susceptible de faire semblant de connaître une toune en faisant du lipsync affreux.",
+  "Le plus susceptible d'oublier où il habite en rentrant en taxi.",
+  "Le plus susceptible d'avoir un compte Instagram secret pour espionner ses rivaux.",
+  "Le plus susceptible d'être le premier à tomber au combat après seulement 2 bières.",
+  "Le plus susceptible de gagner une médaille d'or aux Olympiques du chaos."
 ];
 
 function launchMostLikely(){
   if(!roomCode || !amHost) return;
   var pool = MOSTLIKELY_PROMPTS.slice();
   shuffle(pool);
-  var chosen = pool.slice(0, Math.min(6, pool.length));
+  var chosen = pool.slice(0, Math.min(10, pool.length));
   db.ref("rooms/" + roomCode + "/game").set({ type:"mostlikely", phase:"guess", round:0, total:chosen.length, prompts:chosen }).then(function(){
     db.ref("rooms/" + roomCode + "/status").set("playing");
   });
