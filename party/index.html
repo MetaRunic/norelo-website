@@ -29,11 +29,14 @@
 
   #bgCanvas{position:fixed; inset:0; z-index:0; pointer-events:none;}
 
-  /* Bouncing DVD Logo Meme (Hidden during gameplay) */
+  /* Responsive Bouncing DVD Logo Meme */
   #dvdLogo{
-    position:fixed; width:90px; height:45px; z-index:0; pointer-events:none;
+    position:fixed; width:65px; height:33px; z-index:0; pointer-events:none;
     color:#2563eb; opacity:0.85; filter:drop-shadow(0 0 14px currentColor);
     will-change:transform; transition:opacity .3s;
+  }
+  @media(min-width:600px){
+    #dvdLogo{ width:90px; height:45px; }
   }
   body.in-game #dvdLogo{ display:none !important; }
 
@@ -334,9 +337,9 @@
 <!-- Ambient Particles Canvas -->
 <canvas id="bgCanvas"></canvas>
 
-<!-- Nostalgic Bouncing DVD Logo Meme (Hidden during gameplay) -->
+<!-- Responsive Bouncing DVD Logo Meme (Hidden during gameplay) -->
 <div id="dvdLogo">
-  <svg viewBox="0 0 120 60" fill="currentColor" width="90" height="45">
+  <svg viewBox="0 0 120 60" fill="currentColor" width="100%" height="100%">
     <path d="M12 15h14c7 0 12 4 12 11.5S33 39 26 39H12V15zm8 7v10h5c3.5 0 6-1.5 6-5s-2.5-5-6-5h-5z"/>
     <path d="M42 15h8l7 17 7-17h8l-11 24H53L42 15z"/>
     <path d="M76 15h14c7 0 12 4 12 11.5S97 39 90 39H76V15zm8 7v10h5c3.5 0 6-1.5 6-5s-2.5-5-6-5h-5z"/>
@@ -501,7 +504,7 @@ function playTone(freq, type, duration, vol){
     var gain = audioCtx.createGain();
     osc.type = type || "sine";
     osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-    gain.gain.setValueAtTime(vol || 0.15, audioCtx.currentTime);
+    gain.gain.setValueAtTime(vol || 0.1, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
     osc.connect(gain);
     gain.connect(audioCtx.destination);
@@ -520,29 +523,31 @@ function sfxBugle(){
     { f: 659.25, d: 0.11, delay: 220 }, // E5
     { f: 783.99, d: 0.22, delay: 330 }, // G5
     { f: 659.25, d: 0.11, delay: 570 }, // E5
-    { f: 783.99, d: 0.45, delay: 680 }  // G5 (Long triumph bugle blast!)
+    { f: 783.99, d: 0.45, delay: 680 }  // G5
   ];
 
   notes.forEach(function(n){
     setTimeout(function(){
-      playTone(n.f, "sawtooth", n.d, 0.28);
-      playTone(n.f * 1.005, "triangle", n.d, 0.2); // Brassy warmth overlay
+      playTone(n.f, "sawtooth", n.d, 0.18);
+      playTone(n.f * 1.005, "triangle", n.d, 0.12);
     }, n.delay);
   });
 }
 
 function sfxVote(){
-  playTone(440, "sine", 0.08, 0.12);
-  setTimeout(function(){ playTone(660, "sine", 0.12, 0.15); }, 60);
+  playTone(440, "sine", 0.08, 0.08);
+  setTimeout(function(){ playTone(660, "sine", 0.12, 0.1); }, 60);
 }
 function sfxWin(){
-  playTone(523.25, "triangle", 0.15, 0.2);
-  setTimeout(function(){ playTone(659.25, "triangle", 0.15, 0.2); }, 120);
-  setTimeout(function(){ playTone(783.99, "triangle", 0.25, 0.25); }, 240);
+  playTone(523.25, "triangle", 0.15, 0.12);
+  setTimeout(function(){ playTone(659.25, "triangle", 0.15, 0.12); }, 120);
+  setTimeout(function(){ playTone(783.99, "triangle", 0.25, 0.15); }, 240);
 }
+
+/* SOFTENED SUBTLE BOUNCE EXPLOSION SFX (NOT LOUD) */
 function sfxExplode(){
-  playTone(120, "sawtooth", 0.35, 0.3);
-  setTimeout(function(){ playTone(60, "square", 0.4, 0.35); }, 50);
+  playTone(90, "sine", 0.18, 0.04);
+  setTimeout(function(){ playTone(45, "sine", 0.2, 0.05); }, 40);
 }
 
 function startBgMusic(){
@@ -551,7 +556,7 @@ function startBgMusic(){
   var idx = 0;
   bgMusicInterval = setInterval(function(){
     if(audioEnabled){
-      playTone(notes[idx], "sine", 0.22, 0.04);
+      playTone(notes[idx], "sine", 0.22, 0.03);
       idx = (idx + 1) % notes.length;
     }
   }, 450);
@@ -600,28 +605,28 @@ function toggleAudio(){
   var explosions = [];
 
   window.triggerExplosion = function(ex, ey, isCorner, color){
-    var count = isCorner ? 75 : 25;
+    var count = isCorner ? 50 : 15;
     sfxExplode();
     for(var j=0; j<count; j++){
       var angle = Math.random() * Math.PI * 2;
-      var speed = (Math.random() * (isCorner ? 9 : 4.5)) + 1;
+      var speed = (Math.random() * (isCorner ? 7 : 3.5)) + 1;
       explosions.push({
         x: ex,
         y: ey,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
-        r: Math.random() * (isCorner ? 5 : 3) + 1.5,
+        r: Math.random() * (isCorner ? 4 : 2.5) + 1,
         color: color || "#2563eb",
-        alpha: 1,
-        decay: Math.random() * 0.02 + (isCorner ? 0.01 : 0.025)
+        alpha: 0.8,
+        decay: Math.random() * 0.02 + 0.02
       });
     }
 
     if(isCorner){
       var flash = document.createElement("div");
-      flash.style.cssText = "position:fixed;inset:0;background:rgba(255,255,255,0.4);z-index:999;pointer-events:none;transition:opacity 0.5s ease-out;";
+      flash.style.cssText = "position:fixed;inset:0;background:rgba(255,255,255,0.3);z-index:999;pointer-events:none;transition:opacity 0.4s ease-out;";
       document.body.appendChild(flash);
-      setTimeout(function(){ flash.style.opacity = "0"; setTimeout(function(){ flash.remove(); }, 500); }, 50);
+      setTimeout(function(){ flash.style.opacity = "0"; setTimeout(function(){ flash.remove(); }, 400); }, 40);
     }
   };
 
@@ -653,7 +658,7 @@ function toggleAudio(){
       ctx.arc(exp.x, exp.y, exp.r, 0, Math.PI*2);
       ctx.fillStyle = exp.color;
       ctx.globalAlpha = exp.alpha;
-      ctx.shadowBlur = 12;
+      ctx.shadowBlur = 10;
       ctx.shadowColor = exp.color;
       ctx.fill();
       ctx.globalAlpha = 1;
@@ -665,7 +670,11 @@ function toggleAudio(){
 
   var dvd = document.getElementById("dvdLogo");
   if(!dvd) return;
-  var dx = 1.8, dy = 1.4;
+  
+  // DYNAMIC RESPONSIVE SPEED (Slower on mobile phones so it doesn't hyper bounce)
+  var isMobile = (window.innerWidth < 600);
+  var baseSpeed = isMobile ? 0.95 : 1.6;
+  var dx = baseSpeed, dy = baseSpeed * 0.8;
   var x = Math.random() * (w - 100);
   var y = Math.random() * (h - 60);
   var colors = ["#ef4444","#f59e0b","#10b981","#2563eb","#a855f7","#ec4899","#00e5ff","#ffbe0b"];
@@ -673,8 +682,10 @@ function toggleAudio(){
 
   function moveDVD(){
     x += dx; y += dy;
-    var maxW = window.innerWidth - 90;
-    var maxH = window.innerHeight - 45;
+    var logoW = isMobile ? 65 : 90;
+    var logoH = isMobile ? 33 : 45;
+    var maxW = window.innerWidth - logoW;
+    var maxH = window.innerHeight - logoH;
 
     var hitX = false, hitY = false;
     if(x <= 0 || x >= maxW){ dx = -dx; hitX = true; }
@@ -686,8 +697,8 @@ function toggleAudio(){
       dvd.style.color = curColor;
 
       var isCorner = (hitX && hitY) || ( (x <= 15 || x >= maxW - 15) && (y <= 15 || y >= maxH - 15) );
-      var centerX = x + 45;
-      var centerY = y + 22.5;
+      var centerX = x + (logoW / 2);
+      var centerY = y + (logoH / 2);
 
       if(window.triggerExplosion) window.triggerExplosion(centerX, centerY, isCorner, curColor);
     }
