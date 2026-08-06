@@ -40,9 +40,20 @@
   }
   body.in-game #dvdLogo{ display:none !important; }
 
-  /* Compact Sleek Circular Floating Audio Toggle (Does not overlap game content) */
-  #audioToggle{
+  /* Compact Sleek Floating Audio Controls */
+  #audioControls{
     position:fixed; top:12px; right:14px; z-index:100;
+    display:flex; align-items:center; gap:8px;
+  }
+  #trackBanner{
+    background:rgba(13,22,54,0.85); border:1.5px solid rgba(255,255,255,0.25);
+    backdrop-filter:blur(12px); color:#fff; font-size:.76rem; font-weight:700;
+    padding:6px 12px; border-radius:20px; cursor:pointer;
+    box-shadow:0 4px 16px rgba(0,0,0,0.35); transition:transform .12s, border-color .2s;
+    display:flex; align-items:center; gap:6px;
+  }
+  #trackBanner:active{transform:scale(.95);}
+  #audioToggle{
     width: 40px; height: 40px; border-radius: 50%;
     background:rgba(13,22,54,0.85); border:1.5px solid rgba(255,255,255,0.25);
     backdrop-filter:blur(12px); color:#fff; font-size:1.1rem;
@@ -348,10 +359,15 @@
   </svg>
 </div>
 
-<!-- Compact Floating Audio Toggle Button (Top-Right Circle) -->
-<button id="audioToggle" onclick="toggleAudio()" title="Activer / Désactiver la musique">
-  <span id="audioIcon">🎵</span>
-</button>
+<!-- Compact Floating Audio Controls & Style Switcher (Top-Right) -->
+<div id="audioControls">
+  <div id="trackBanner" onclick="nextTrack()" title="Changer de style de musique">
+    <span id="trackBannerText">⚡ Electro Party Beats</span>
+  </div>
+  <button id="audioToggle" onclick="toggleAudio()" title="Activer / Désactiver la musique">
+    <span id="audioIcon"></span>
+  </button>
+</div>
 
 <div class="wrap">
 
@@ -550,30 +566,134 @@ function sfxExplode(){
   setTimeout(function(){ playTone(45, "sine", 0.2, 0.05); }, 40);
 }
 
+var TRACKS = [
+  {
+    name: "⚡ Electro Party Beats",
+    tempo: 120,
+    bass: [130.81, 0, 130.81, 0, 116.54, 0, 116.54, 0, 103.83, 0, 103.83, 0, 116.54, 0, 116.54, 0],
+    lead: [261.63, 311.13, 392.00, 523.25, 311.13, 392.00, 523.25, 622.25, 233.08, 293.66, 349.23, 466.16, 207.65, 261.63, 311.13, 415.30],
+    kick: [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+    hat:  [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1],
+    type: "sawtooth"
+  },
+  {
+    name: "🌴 Tropical Funk",
+    tempo: 135,
+    bass: [174.61, 0, 174.61, 220.00, 146.83, 0, 146.83, 174.61, 130.81, 0, 130.81, 164.81, 174.61, 0, 220.00, 0],
+    lead: [349.23, 440.00, 523.25, 440.00, 293.66, 349.23, 440.00, 349.23, 261.63, 329.63, 392.00, 329.63, 349.23, 440.00, 523.25, 659.25],
+    kick: [1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0],
+    hat:  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    type: "triangle"
+  },
+  {
+    name: "👾 Retro Arcade 8-Bit",
+    tempo: 105,
+    bass: [110.00, 110.00, 146.83, 146.83, 130.81, 130.81, 164.81, 164.81, 110.00, 110.00, 146.83, 146.83, 130.81, 130.81, 164.81, 164.81],
+    lead: [440.00, 554.37, 659.25, 880.00, 587.33, 739.99, 880.00, 1174.66, 523.25, 659.25, 783.99, 1046.50, 659.25, 830.61, 987.77, 1318.51],
+    kick: [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+    hat:  [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1],
+    type: "square"
+  }
+];
+
+var currentTrackIdx = 0;
+var seqStep = 0;
+
+function playKick(){
+  if(!audioEnabled || !audioCtx) return;
+  try{
+    var osc = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+    osc.frequency.setValueAtTime(120, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.1);
+  }catch(e){}
+}
+
+function playHiHat(){
+  if(!audioEnabled || !audioCtx) return;
+  try{
+    var bufferSize = Math.floor(audioCtx.sampleRate * 0.03);
+    var buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    var data = buffer.getChannelData(0);
+    for (var i = 0; i < bufferSize; i++) { data[i] = Math.random() * 2 - 1; }
+    var noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+    var filter = audioCtx.createBiquadFilter();
+    filter.type = "highpass";
+    filter.frequency.value = 7500;
+    var gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0.012, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+    noise.start();
+  }catch(e){}
+}
+
 function startBgMusic(){
   if(bgMusicInterval) clearInterval(bgMusicInterval);
-  var notes = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63];
-  var idx = 0;
-  bgMusicInterval = setInterval(function(){
-    if(audioEnabled){
-      playTone(notes[idx], "sine", 0.22, 0.03);
-      idx = (idx + 1) % notes.length;
+  seqStep = 0;
+
+  function tick(){
+    if(!audioEnabled) return;
+    var trk = TRACKS[currentTrackIdx];
+    var step = seqStep % 16;
+
+    if(trk.bass[step] > 0){
+      playTone(trk.bass[step], "sine", 0.16, 0.035);
     }
-  }, 450);
+    if(trk.lead[step] > 0){
+      playTone(trk.lead[step], trk.type, 0.14, 0.022);
+    }
+    if(trk.kick[step] === 1){
+      playKick();
+    }
+    if(trk.hat[step] === 1){
+      playHiHat();
+    }
+
+    seqStep++;
+  }
+
+  tick();
+  var tempo = TRACKS[currentTrackIdx].tempo;
+  bgMusicInterval = setInterval(tick, tempo);
+}
+
+function nextTrack(){
+  currentTrackIdx = (currentTrackIdx + 1) % TRACKS.length;
+  var trk = TRACKS[currentTrackIdx];
+  toast("Style de musique : " + trk.name);
+  var banner = document.getElementById("trackBannerText");
+  if(banner) banner.textContent = trk.name;
+  if(audioEnabled) startBgMusic();
+}
+
+function updateAudioIcon(){
+  var icon = document.getElementById("audioIcon");
+  if(icon && typeof ICONS !== "undefined" && ICONS.volumeOn){
+    icon.innerHTML = audioEnabled ? ICONS.volumeOn : ICONS.volumeMute;
+  }
 }
 
 function toggleAudio(){
   audioEnabled = !audioEnabled;
-  var icon = document.getElementById("audioIcon");
+  updateAudioIcon();
   if(audioEnabled){
-    if(icon) icon.textContent = "🎵";
     initAudio();
     startBgMusic();
   } else {
-    if(icon) icon.textContent = "🔇";
     if(bgMusicInterval) clearInterval(bgMusicInterval);
   }
 }
+document.addEventListener("DOMContentLoaded", updateAudioIcon);
 </script>
 
 <!-- Background Canvas & DVD Physics -->
@@ -742,7 +862,10 @@ var ICONS = {
   mask: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>',
   crown: '<svg class="svg-ico crown-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M2 19h20v2H2zM2 5l5 3.5L12 3l5 5.5L22 5v12H2z"/></svg>',
   trophy: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M18 9h2a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-4"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.45 1-1 1H7v4h10v-4h-2c-.55 0-1-.45-1-1v-2.34"/><path d="M18 4H6v7a6 6 0 0 0 12 0V4z"/></svg>',
-  dice: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><circle cx="15.5" cy="15.5" r="1.5"/><circle cx="15.5" cy="8.5" r="1.5"/><circle cx="8.5" cy="15.5" r="1.5"/></svg>'
+  dice: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><circle cx="15.5" cy="15.5" r="1.5"/><circle cx="15.5" cy="8.5" r="1.5"/><circle cx="8.5" cy="15.5" r="1.5"/></svg>',
+  volumeOn: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>',
+  volumeMute: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>',
+  clock: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'
 };
 
 var db = null, auth = null;
@@ -1175,23 +1298,29 @@ function renderGameVoting(g){
 // =====================================================================
 //  GAME 1: MOST LIKELY TO (JACKBOX PARTY STYLE WITH LIVE COUNTDOWN TIMER)
 // =====================================================================
+//  SPICY & PARTY QUESTION BANKS (18+ & GROUP FUN)
+// =====================================================================
 var MOSTLIKELY_PROMPTS = [
-  "Le plus susceptible de se faire mettre dehors d'un resto.",
-  "Le plus susceptible de texter son ex à 2h du matin.",
-  "Le plus susceptible d'oublier où il a garé sa charrette.",
-  "Le plus susceptible de devenir millionnaire sans qu'on comprenne comment.",
-  "Le plus susceptible de se perdre dans son propre quartier.",
-  "Le plus susceptible de partir une chicane pour rien.",
-  "Le plus susceptible de tout raconter après deux verres.",
-  "Le plus susceptible de ghoster le groupe pendant 3 semaines.",
-  "Le plus susceptible de pleurer devant une pub de char.",
-  "Le plus susceptible de finir en prison pour une niaiserie.",
-  "Le plus susceptible de dépenser sa paie au complet en une soirée.",
-  "Le plus susceptible de se faire pogner en train de chanter sous la douche.",
-  "Le plus susceptible de commander pour 100$ de UberEats à 3h du matin.",
-  "Le plus susceptible d'arriver 45 minutes en retard à sa propre fête.",
-  "Le plus susceptible de survivre à une apocalypse zombie.",
-  "Le plus susceptible de chanter au karaoke sans qu'on lui demande."
+  "Le plus susceptible de texter son ex à 2h du matin après 3 verres.",
+  "Le plus susceptible de se faire sortir d'un bar par les videurs.",
+  "Le plus susceptible d'avoir un compte OnlyFans secret.",
+  "Le plus susceptible d'oublier le prénom de son coup d'un soir au réveil.",
+  "Le plus susceptible de partir une chicane générale en boisson.",
+  "Le plus susceptible de finir nu(e) dans une piscine à 3h du matin.",
+  "Le plus susceptible de devenir millionnaire grâce à une arnaque bizarre.",
+  "Le plus susceptible de ghoster le groupe pendant 3 semaines sans explication.",
+  "Le plus susceptible de tout raconter ses secrets intimes après 2 shooters.",
+  "Le plus susceptible de se faire pogner en train de faire un snap coquin au mauvais destinataire.",
+  "Le plus susceptible de dépenser sa paie au complet dans une seule soirée de party.",
+  "Le plus susceptible de commander pour 150$ de UberEats bourré à 4h du matin.",
+  "Le plus susceptible de finir la soirée en train de pleurer dans les toilettes d'un club.",
+  "Le plus susceptible d'arriver 1h en retard à sa propre fête avec un verre à la main.",
+  "Le plus susceptible d'embrasser un(e) inconnu(e) pour un pari à 5$.",
+  "Le plus susceptible de faire un scandale pour une frite manquante à la poutine.",
+  "Le plus susceptible d'envoyer un vocal embarrassant à son boss à minuit.",
+  "Le plus susceptible de perdre ses clés, ses souliers et sa dignité dans la même soirée.",
+  "Le plus susceptible de se marier à Las Vegas sur un coup de tête.",
+  "Le plus susceptible d'avoir la pire note de crédit mais la meilleure vie nocturne."
 ];
 
 function launchMostLikely(){
@@ -1399,11 +1528,12 @@ function renderGrandPrizeCeremony(g){
 //  GAME 2: WHO POSTED THIS? (Qui a posté ça ?)
 // =====================================================================
 var POSTS_PACK = [
-  { text: "J'ai essayé de faire du pain maison. La cuisine a failli brûler et le pain ressemble à une brique de béton. 10/10", handle: "@mystery_chef" },
-  { text: "Rappel amical que si tu m'écris après 22h, je dors probablement déjà depuis au moins 2 heures.", handle: "@sleep_god" },
-  { text: "Je viens de dépenser 80$ pour des plantes d'intérieur et je sais très bien qu'elles vont mourir d'ici vendredi.", handle: "@plant_parent" },
-  { text: "Si la caféine n'existait pas, je serais encore bloqué en 2018.", handle: "@coffee_addict" },
-  { text: "Est-ce que c'est légal d'annuler des plans juste parce que ton lit est trop confortable ?", handle: "@lazy_vibes" }
+  { text: "J'ai essayé de faire un cocktail maison. La cuisine a failli brûler et le mélange ressemble à du lave-glace. 10/10", handle: "@night_bartender" },
+  { text: "Rappel amical : si tu m'écris après 22h, je suis soit complètement soul(e), soit déjà endormi(e). Pas d'entre-deux.", handle: "@party_god" },
+  { text: "Je viens de dépenser 120$ au bar et je me rappelle même plus du nom de la personne avec qui j'ai parlé pendant 2 heures.", handle: "@party_animal" },
+  { text: "Si la tequila n'existait pas, la moitié de mes histoires hilarantes n'existeraient pas non plus.", handle: "@tequila_lover" },
+  { text: "Est-ce que c'est légal d'annuler un rendez-vous amoureux juste parce que le lit est trop confortable ?", handle: "@lazy_vibes" },
+  { text: "Ma capacité à prétendre que je comprends ce que les gens disent dans un club bruyant est phénoménale.", handle: "@club_legend" }
 ];
 
 function launchWhoPosted(){
@@ -1458,8 +1588,10 @@ function renderWhoPosted(g){
     html += '<div class="gprogress">' + votedCount + ' / ' + players.length + ' ont voté</div>';
     html += '<div class="waiting">' + (votedCount >= players.length ? "Tout le monde a deviné ! Révélation..." : (votes[myId] ? "Devinette envoyée !" : "Choisis un suspect")) + '<span class="d"></span></div>';
 
+  } else if(g.phase === "reveal"){
+    var revealStart = g.revealStartMs || Date.now();
     startLiveCountdown(g.revealStartMs || revealStart, 5, function(){
-      if(amHost) db.ref("rooms/" + roomCode + "/game/phase").set("done");
+      if(amHost) nextRound();
     });
 
     var realPoster = players.find(function(p){ return p.id === item.posterId; }) || { name:"Quelqu'un", color:"#2563eb" };
@@ -1471,7 +1603,7 @@ function renderWhoPosted(g){
     html += avatarHTML(realPoster, 84);
     html += '<div style="font-size:1.4rem;font-weight:800;margin-top:10px;">C\'était ' + escapeHtml(realPoster.name) + ' !</div>';
     html += '</div>';
-    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Fin de la manche dans <span id="countdownVal">5s</span></div></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' Fin de la manche dans <span id="countdownVal">5s</span></div></div>';
 
   } else if(g.phase === "done"){
     html += renderMiniGameDoneHTML();
@@ -1496,8 +1628,8 @@ function renderMiniGameDoneHTML(){
   });
 
   if(amHost){
-    html += '<button class="btn pri" style="margin-top:20px;" onclick="startPartyVote()">🎮 Jeu suivant (Vote du groupe)</button>';
-    html += '<button class="btn sec" style="margin-top:10px;" onclick="launchGrandPrizeCeremony()">🏆 Couronner le Grand Gagnant</button>';
+    html += '<button class="btn pri" style="margin-top:20px;" onclick="startPartyVote()">' + ICONS.dice + ' Jeu suivant (Vote du groupe)</button>';
+    html += '<button class="btn sec" style="margin-top:10px;" onclick="launchGrandPrizeCeremony()">' + ICONS.trophy + ' Couronner le Grand Gagnant</button>';
   } else {
     html += '<div class="waiting" style="margin-top:20px;">En attente de l\'hôte pour le prochain jeu<span class="d"></span></div>';
   }
@@ -1509,11 +1641,11 @@ function renderMiniGameDoneHTML(){
 //  GAME 3: GUESS THE RATING (Devine la note)
 // =====================================================================
 var REVIEWS_PACK = [
-  { place: "McDo du centre-ville", text: "J'ai commandé des frites à 2h du matin et le caissier m'a donné un conseil de vie philosophique de 20 minutes. Les frites étaient froides mais ma vie a changé.", stars: 5 },
+  { place: "Bar & Club Le Vortex", text: "J'ai commandé 3 shooters mystères. J'ai perdu mon manteau, mes clés et 4 heures de mémoire. Expérience inoubliable.", stars: 5 },
   { place: "Camping du Lac Solitaire", text: "Les moustiques m'ont volé mes clés de char et m'ont forcé à payer une rançon.", stars: 1 },
-  { place: "Cinéma Régal", text: "Le popcorn était super bon, mais le gars à côté de moi ronflait si fort qu'il a étouffé les dialogues du film d'action.", stars: 3 },
-  { place: "Station-Service Express", text: "Café goût d'eau de vaisselle chaude. Mais les essuie-glaces gratuits m'ont sauvé la vie pendant la tempête.", stars: 2 },
-  { place: "Restaurant Chez Mario", text: "Portions gigantesques, j'ai dû me faire rouler jusqu'à mon char après le dessert. Meilleur jeudi soir de ma vie.", stars: 5 }
+  { place: "Fast Food de Nuit", text: "Le caissier m'a donné un conseil de vie philosophique de 20 minutes à 3h du matin. La poutine était tiède mais ma vie a changé.", stars: 5 },
+  { place: "Motel de l'Autoroute", text: "Lit aussi dur que de l'asphalte et voisins de chambre particulièrement bruyants à 2h du matin. Très vivant.", stars: 2 },
+  { place: "Restaurant Chic Le Gourmet", text: "Portions si petites que j'ai dû aller au McDo immédiatement après la facture de 200$.", stars: 2 }
 ];
 
 function launchGuessRating(){
@@ -1590,10 +1722,15 @@ function rateStar(starCount){
 // =====================================================================
 //  GAME 4: HOW WELL DO YOU KNOW [NAME]? (Connais-tu bien...)
 // =====================================================================
+// =====================================================================
+//  GAME 4: HOW WELL DO YOU KNOW [NAME]? (Connais-tu bien...)
+// =====================================================================
 var KNOW_QUESTIONS = [
-  { q: "Quel est mon snack ultime de fin de soirée ?", opts: ["Poutine bien chaude", "Pizza froide du frigo", "Sac de chips au complet", "Bonbons sûrs"] },
-  { q: "Si je pouvais partir demain matin en voyage, j'irais à :", opts: ["Sur une plage au Mexique", "Explorer l'Europe", "Chalet dans le bois", "Voyage au Japon"] },
-  { q: "Mon plaisir coupable au niveau musique :", opts: ["Pop des années 2000", "Country québécois", "Métal lourd", "Comédies musicales"] }
+  { q: "Quelle est ma pire habitude quand je suis soul(e) ?", opts: ["Devenir le philosophe de la soirée", "Vouloir texter tout mon répertoire", "Perdre mes clés et mon téléphone", "Disparaître sans dire au revoir"] },
+  { q: "Mon snack ultime de fin de soirée après un gros party :", opts: ["Poutine bien chaude à 3h du mat", "Pizza froide directement du frigo", "Sac de chips au complet", "Burger double du McDo"] },
+  { q: "Si je devais faire un coup d'un soir avec une célébrité :", opts: ["Un(e) acteur/trice d'Hollywood", "Un(e) athlète professionnel(le)", "Un(e) chanteur/euse pop", "Un(e) influenceur/euse controversé(e)"] },
+  { q: "Mon plus grand plaisir coupable secret :", opts: ["Téléréalité de marde", "Musique pop des années 2000", "Regarder les stories de mon ex", "Dépenser trop d'argent sur UberEats"] },
+  { q: "Si je finis en prison un jour, ce sera pour :", opts: ["Un pari débile en boisson", "Un scandale au resto", "Avoir défendu mon ami(e) trop fort", "Une arnaque financière ratée"] }
 ];
 
 function launchKnowPlayer(){
@@ -1660,7 +1797,7 @@ function renderKnowPlayer(g){
     html += '<div class="groundhdr">La vérité est dévoilée !</div>';
     html += '<div class="gprompt">' + escapeHtml(spotlightName) + ' a répondu :</div>';
     html += '<div style="background:linear-gradient(120deg,var(--blue),var(--purple));padding:20px;border-radius:18px;font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:20px;">' + escapeHtml(correctText) + '</div>';
-    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Fin du jeu dans <span id="countdownVal">5s</span></div></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' Fin du jeu dans <span id="countdownVal">5s</span></div></div>';
   } else if(g.phase === "done"){
     html += renderMiniGameDoneHTML();
   }
@@ -1683,10 +1820,11 @@ function guessSpotlight(idx){
 //  GAME 5: PERSONALIZED ROAST / AUTOBIOGRAPHIES
 // =====================================================================
 var ROAST_PROMPTS = [
-  "Le titre de l'autobiographie de [NAME] serait :",
-  "Si [NAME] ouvrait un commerce, le nom serait :",
-  "Le secret le mieux gardé de [NAME] c'est :",
-  "Si [NAME] se présentait comme maire, son slogan serait :"
+  "Le titre du film 18+ de [NAME] serait :",
+  "Si [NAME] se faisait arrêter à la frontière, ce serait pour :",
+  "Le secret le plus honteux de [NAME] que personne ne doit savoir :",
+  "Si [NAME] ouvrait un OnlyFans, quel serait le thème :",
+  "Le slogan de la campagne électorale de [NAME] :"
 ];
 
 function launchRoast(){
@@ -1764,7 +1902,7 @@ function renderRoast(g){
       html += '<div style="color:var(--bp);font-size:.85rem;margin-top:6px;">— ' + escapeHtml(author.name) + '</div>';
       html += '</div>';
     });
-    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Fin du jeu dans <span id="countdownVal">5s</span></div></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' Fin du jeu dans <span id="countdownVal">5s</span></div></div>';
   } else if(g.phase === "done"){
     html += renderMiniGameDoneHTML();
   }
@@ -1792,9 +1930,10 @@ function voteRoast(authorId){
 //  GAME 6: WHO SAID THIS? (Qui a dit ça ?)
 // =====================================================================
 var QUOTES_PACK = [
-  "Promis, j'étais juste en train de fermer les yeux 5 secondes.",
-  "Si quelqu'un demande, on n'a jamais été ici.",
-  "Pourquoi est-ce qu'il est toujours 3h du matin quand je prends mes décisions de vie ?",
+  "Promis, j'étais juste en train de fermer les yeux 5 secondes...",
+  "Si quelqu'un demande à la police, on n'a jamais été ici.",
+  "Pourquoi est-ce qu'il est toujours 3h du matin quand je prends les pires décisions de ma vie ?",
+  "Je suis pas soul, c'est la gravité qui marche pas ce soir.",
   "J'ai dit que j'arrivais dans 5 minutes, pas dans quelle dimension."
 ];
 
@@ -1848,7 +1987,7 @@ function renderWhoSaid(g){
     html += avatarHTML(speaker, 84);
     html += '<div style="font-size:1.4rem;font-weight:800;margin-top:10px;">C\'était ' + escapeHtml(speaker.name) + ' !</div>';
     html += '</div>';
-    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Fin du jeu dans <span id="countdownVal">5s</span></div></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' Fin du jeu dans <span id="countdownVal">5s</span></div></div>';
   } else if(g.phase === "done"){
     html += renderMiniGameDoneHTML();
   }
@@ -1860,8 +1999,9 @@ function renderWhoSaid(g){
 //  GAME 7: TWO TRUTHS AND A LIE (2 Vérités 1 Mensonge)
 // =====================================================================
 var TRUTHS_PACK = [
-  { statements: ["J'ai déjà croisé une célébrité dans un resto", "Je n'ai jamais mangé de sushi de ma vie", "J'ai failli rater mon permis de conduire 3 fois"], lieIndex: 1 },
-  { statements: ["Je sais jouer de 2 instruments de musique", "Je me suis déjà cassé un os en tombant de mon lit", "Je n'ai jamais regardé un seul épisode de Star Wars"], lieIndex: 0 }
+  { statements: ["J'ai déjà envoyé un message coquin au mauvais destinataire", "Je n'ai jamais bu d'alcool avant 21 ans", "J'ai failli me faire arrêter par la police pendant un party"], lieIndex: 1 },
+  { statements: ["Je me suis déjà réveillé(e) dans une autre ville sans comprendre", "Je sais jouer de 2 instruments de musique", "J'ai déjà embrassé l'ex d'un(e) ami(e)"], lieIndex: 1 },
+  { statements: ["J'ai déjà vomi dans le char d'un ami après une soirée", "J'ai gagné une compétition de danse", "J'ai déjà prétendu être bilingue pour avoir un job"], lieIndex: 1 }
 ];
 
 function launchTwoTruths(){
@@ -1907,7 +2047,7 @@ function renderTwoTruths(g){
     html += '<div class="groundhdr">Le mensonge était :</div>';
     var lieText = statements[g.lieIndex] || "";
     html += '<div style="background:rgba(239,68,68,0.2);border:2px solid var(--red);padding:18px;border-radius:16px;font-size:1.2rem;font-weight:800;text-align:center;margin-bottom:20px;color:#fff;">' + escapeHtml(lieText) + '</div>';
-    html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Fin du jeu dans <span id="countdownVal">5s</span></div></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' Fin du jeu dans <span id="countdownVal">5s</span></div></div>';
   } else if(g.phase === "done"){
     html += renderMiniGameDoneHTML();
   }
