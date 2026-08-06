@@ -352,6 +352,7 @@
 
 <!-- Floating Audio Toggle Button (Top-Right) -->
 <div id="audioControls">
+  <audio id="bgMusicTrack" loop src="https://archive.org/download/eiffel-65-blue-da-ba-dee_202212/Eiffel%2065%20-%20Blue%20%28Da%20Ba%20Dee%29%20.mp3" preload="auto"></audio>
   <button id="audioToggle" onclick="toggleAudio()" title="Activer / Désactiver la musique">
     <span id="audioIcon"></span>
   </button>
@@ -554,109 +555,22 @@ function sfxExplode(){
   setTimeout(function(){ playTone(45, "sine", 0.2, 0.05); }, 40);
 }
 
-// FULL 64-STEP WEB AUDIO SYNTH COVER: Eiffel 65 - "Blue (Da Ba Dee)" (Party Anthem)
-var ELECTRO_SONG = {
-  tempo: 118, // ~128 BPM 16th-note step rate
-  bass: [
-    // Bar 1: G minor
-    98.00, 0, 98.00, 0, 98.00, 0, 98.00, 0,  98.00, 0, 98.00, 0, 98.00, 0, 98.00, 0,
-    // Bar 2: Eb major
-    77.78, 0, 77.78, 0, 77.78, 0, 77.78, 0,  77.78, 0, 77.78, 0, 77.78, 0, 77.78, 0,
-    // Bar 3: Bb major
-    116.54, 0, 116.54, 0, 116.54, 0, 116.54, 0,  116.54, 0, 116.54, 0, 116.54, 0, 116.54, 0,
-    // Bar 4: F major
-    87.31, 0, 87.31, 0, 87.31, 0, 87.31, 0,  87.31, 0, 87.31, 0, 87.31, 0, 87.31, 0
-  ],
-  lead: [
-    // Bar 1: "I'm Blue Da Ba Dee Da Ba Daa..." (G minor hook)
-    587.33, 698.46, 783.99, 587.33, 466.16, 523.25, 587.33, 392.00,  466.16, 523.25, 587.33, 392.00, 466.16, 523.25, 587.33, 698.46,
-    // Bar 2: Second phrase
-    587.33, 698.46, 783.99, 587.33, 466.16, 523.25, 587.33, 392.00,  466.16, 523.25, 587.33, 392.00, 466.16, 523.25, 587.33, 523.25,
-    // Bar 3: Bb Major shift
-    466.16, 587.33, 698.46, 466.16, 392.00, 440.00, 466.16, 293.66,  349.23, 392.00, 466.16, 293.66, 349.23, 392.00, 466.16, 587.33,
-    // Bar 4: F Major turnaround
-    523.25, 622.25, 698.46, 523.25, 440.00, 466.16, 523.25, 349.23,  440.00, 466.16, 523.25, 349.23, 440.00, 466.16, 523.25, 587.33
-  ],
-  kick: [
-    1, 0, 0, 0,  1, 0, 0, 0,  1, 0, 0, 0,  1, 0, 0, 0,
-    1, 0, 0, 0,  1, 0, 0, 0,  1, 0, 0, 0,  1, 0, 1, 0,
-    1, 0, 0, 0,  1, 0, 0, 0,  1, 0, 0, 0,  1, 0, 0, 0,
-    1, 0, 0, 0,  1, 0, 0, 0,  1, 0, 1, 0,  1, 1, 1, 0
-  ],
-  hat: [
-    0, 0, 1, 0,  0, 0, 1, 0,  0, 0, 1, 0,  0, 0, 1, 1,
-    0, 0, 1, 0,  0, 0, 1, 0,  0, 0, 1, 0,  0, 1, 1, 1,
-    0, 0, 1, 0,  0, 0, 1, 0,  0, 0, 1, 0,  0, 0, 1, 1,
-    0, 0, 1, 0,  0, 0, 1, 0,  0, 1, 1, 0,  1, 1, 1, 1
-  ]
-};
+var bgTrackEl = null;
 
-var seqStep = 0;
-
-function playKick(){
-  if(!audioEnabled || !audioCtx) return;
-  try{
-    var osc = audioCtx.createOscillator();
-    var gain = audioCtx.createGain();
-    osc.frequency.setValueAtTime(110, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.09);
-    gain.gain.setValueAtTime(0.022, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.09);
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.09);
-  }catch(e){}
-}
-
-function playHiHat(){
-  if(!audioEnabled || !audioCtx) return;
-  try{
-    var bufferSize = Math.floor(audioCtx.sampleRate * 0.025);
-    var buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-    var data = buffer.getChannelData(0);
-    for (var i = 0; i < bufferSize; i++) { data[i] = Math.random() * 2 - 1; }
-    var noise = audioCtx.createBufferSource();
-    noise.buffer = buffer;
-    var filter = audioCtx.createBiquadFilter();
-    filter.type = "highpass";
-    filter.frequency.value = 8000;
-    var gain = audioCtx.createGain();
-    gain.gain.setValueAtTime(0.005, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.025);
-    noise.connect(filter);
-    filter.connect(gain);
-    gain.connect(audioCtx.destination);
-    noise.start();
-  }catch(e){}
+function getBgTrack(){
+  if(!bgTrackEl){
+    bgTrackEl = document.getElementById("bgMusicTrack");
+  }
+  return bgTrackEl;
 }
 
 function startBgMusic(){
-  if(bgMusicInterval) clearInterval(bgMusicInterval);
-  seqStep = 0;
-
-  function tick(){
-    if(!audioEnabled) return;
-    var step = seqStep % 64;
-
-    if(ELECTRO_SONG.bass[step] > 0){
-      playTone(ELECTRO_SONG.bass[step], "sine", 0.14, 0.018);
-    }
-    if(ELECTRO_SONG.lead[step] > 0){
-      playTone(ELECTRO_SONG.lead[step], "sawtooth", 0.12, 0.012);
-    }
-    if(ELECTRO_SONG.kick[step] === 1){
-      playKick();
-    }
-    if(ELECTRO_SONG.hat[step] === 1){
-      playHiHat();
-    }
-
-    seqStep++;
+  var track = getBgTrack();
+  if(!track) return;
+  track.volume = 0.22; // Comfortable background volume
+  if(audioEnabled){
+    track.play().catch(function(e){});
   }
-
-  tick();
-  bgMusicInterval = setInterval(tick, ELECTRO_SONG.tempo);
 }
 
 function updateAudioIcon(){
@@ -669,11 +583,15 @@ function updateAudioIcon(){
 function toggleAudio(){
   audioEnabled = !audioEnabled;
   updateAudioIcon();
+  var track = getBgTrack();
   if(audioEnabled){
     initAudio();
-    startBgMusic();
+    if(track){
+      track.volume = 0.22;
+      track.play().catch(function(e){});
+    }
   } else {
-    if(bgMusicInterval) clearInterval(bgMusicInterval);
+    if(track) track.pause();
   }
 }
 document.addEventListener("DOMContentLoaded", updateAudioIcon);
