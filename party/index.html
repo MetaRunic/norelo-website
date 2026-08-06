@@ -1061,9 +1061,22 @@ function voteForGame(gameId){
   db.ref("rooms/" + roomCode + "/game/votes/" + myId).set(gameId);
 }
 
+function shuffle(arr){
+  if(!arr || !arr.length) return arr;
+  for(var i = arr.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+  }
+  return arr;
+}
+
+var _tallyLock = false;
+
 function tallyGameVotes(){
-  if(!roomCode || !amHost || !currentGame || currentGame._tallied) return;
-  currentGame._tallied = true;
+  if(!roomCode || !amHost || !currentGame || _tallyLock) return;
+  _tallyLock = true;
   sfxWin();
   var votes = currentGame.votes || {};
   var counts = {};
@@ -1086,6 +1099,7 @@ function tallyGameVotes(){
 
   var selectedGame = winners[Math.floor(Math.random()*winners.length)] || "mostlikely";
   launchSelectedGame(selectedGame);
+  setTimeout(function(){ _tallyLock = false; }, 2000);
 }
 
 function launchSelectedGame(type){
@@ -1123,8 +1137,8 @@ function renderGameVoting(g){
   var myVote = votes[myId];
   var votedCount = Object.keys(votes).length;
 
-  if(votedCount >= players.length && players.length > 0 && amHost && !g._tallied){
-    setTimeout(tallyGameVotes, 600);
+  if(votedCount >= players.length && players.length > 0 && amHost && !_tallyLock){
+    setTimeout(tallyGameVotes, 300);
   }
 
   var html = '<div class="groundhdr">Phase de sélection</div>';
