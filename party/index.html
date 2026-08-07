@@ -53,24 +53,45 @@
   @media(min-width:600px){
     #dvdLogo{ width:90px; height:45px; }
   }
-  /* Compact Floating Audio & Theme Controls (Absolute position so it scrolls away naturally on mobile) */
+  /* Collapsible Floating Controls Menu (Top-Right) */
   #audioControls{
-    position:absolute; top:14px; right:14px; z-index:100;
-    display:flex; flex-direction:column; gap:10px; align-items:center;
+    position:absolute; top:12px; right:14px; z-index:100;
+    display:flex; flex-direction:column; align-items:flex-end;
   }
-  #audioControls button {
-    width: 42px; height: 42px; border-radius: 50%;
+  #controlsMenuToggle {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--panel); border: 1.5px solid var(--bdr);
+    backdrop-filter: blur(12px); color: var(--bl);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s ease, background 0.2s ease;
+  }
+  #controlsMenuToggle:hover, #audioControls.open #controlsMenuToggle {
+    background: var(--panel2); border-color: var(--bl); color: #fff;
+    transform: rotate(90deg);
+  }
+
+  .controls-dropdown {
+    display: flex; flex-direction: column; gap: 8px; margin-top: 8px;
+    opacity: 0; transform: translateY(-10px) scale(0.9); pointer-events: none;
+    transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  #audioControls.open .controls-dropdown {
+    opacity: 1; transform: translateY(0) scale(1); pointer-events: auto;
+  }
+
+  .controls-dropdown button {
+    width: 38px; height: 38px; border-radius: 50%;
     margin: 0; padding: 0; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
-    cursor: pointer; position: relative;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+    cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.35);
     transition: transform .12s, border-color .2s, background-color .2s;
   }
-  #audioControls button:active { transform: scale(.92); }
+  .controls-dropdown button:active { transform: scale(.92); }
 
   #audioToggle, #skipTrackBtn{
     background:var(--panel); border:1.5px solid var(--bdr);
-    backdrop-filter:blur(12px); color:var(--txt); font-size:1.1rem;
+    backdrop-filter:blur(12px); color:var(--txt); font-size:1rem;
   }
   #skipTrackBtn:hover{background:var(--panel2); border-color:var(--bl);}
 
@@ -79,7 +100,7 @@
     background-size: 300% 300%;
     animation: rainbowGlow 4s linear infinite;
     border: 1.5px solid rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(12px); color: #fff; font-size: 1.1rem;
+    backdrop-filter: blur(12px); color: #fff; font-size: 1rem;
   }
 
   @keyframes rainbowGlow {
@@ -89,30 +110,22 @@
     100% { background-position: 0% 50%; box-shadow: 0 0 15px rgba(239, 68, 68, 0.6); }
   }
 
-  /* Subtle now-playing badge, bottom-left. Deliberately quiet: it should be findable
-     when you wonder "what is this song" and ignorable the rest of the time. */
+  /* Centered now-playing badge inside footer */
   #nowPlaying{
-    position:absolute; left:14px; bottom:14px; z-index:100;
-    max-width:min(58vw, 240px); padding:5px 10px; border-radius:10px;
-    background:var(--panel); border:1.5px solid var(--bdr);
-    backdrop-filter:blur(10px);
-    font-size:.66rem; font-weight:700; letter-spacing:.03em; color:var(--txt);
-    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    opacity:0; transform:translateY(6px); pointer-events:none;
-    transition:opacity .45s ease, transform .45s ease, background 0.4s ease, border-color 0.4s ease;
+    display: none; align-items: center; justify-content: center;
+    margin: 0 auto 10px auto; max-width: min(90vw, 320px);
+    background: var(--panel); border: 1.5px solid var(--bdr);
+    border-radius: 12px; padding: 5px 14px; font-size: 0.74rem; font-weight: 700;
+    letter-spacing: .03em; color: var(--txt); text-align: center;
+    backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.35);
+    transition: opacity .3s ease; opacity: 0; pointer-events: none;
   }
-  #nowPlaying.show{ opacity:1; transform:translateY(0); }
-  #nowPlaying .np-ico{ color:var(--bl); margin-right:5px; }
-
-  @media(max-width:600px){
-    #nowPlaying {
-      bottom: 46px; left: 14px; max-width: calc(100vw - 28px);
-    }
-  }
+  #nowPlaying.show{ display: inline-flex; opacity: 1; }
+  #nowPlaying .np-ico{ color: var(--bl); margin-right: 6px; }
 
   .wrap{
     flex:1; width:100%; max-width:480px; margin:0 auto;
-    padding:76px 22px calc(50px + env(safe-area-inset-bottom));
+    padding:54px 22px calc(40px + env(safe-area-inset-bottom));
     display:flex; flex-direction:column; justify-content:center;
     position:relative; z-index:1;
   }
@@ -1048,20 +1061,27 @@
   </svg>
 </div>
 
-<!-- Floating Audio & Theme Controls (Top-Right) -->
+<!-- Collapsible Floating Controls Menu (Top-Right) -->
 <div id="audioControls">
+  <button id="controlsMenuToggle" onclick="toggleControlsMenu(event)" title="Options & Musique">
+    <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+    </svg>
+  </button>
+  <div id="controlsMenuDropdown" class="controls-dropdown">
+    <button id="audioToggle" onclick="toggleAudio(); event.stopPropagation();" title="Muter / Réactiver la musique">
+      <span id="audioIcon"><svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
+    </button>
+    <button id="skipTrackBtn" onclick="skipBgTrack(); event.stopPropagation();" title="Changer de chanson (Skip)">
+      <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+    </button>
+    <button id="themeToggleBtn" onclick="openThemeShop(); closeControlsMenu(); event.stopPropagation();" title="Boutique de Thèmes (Couleurs & Styles)">
+      <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.92 0 1.7-.75 1.7-1.7 0-.42-.17-.82-.44-1.11-.28-.3-.43-.7-.43-1.12 0-.92.75-1.67 1.67-1.67H16c3.31 0 6-2.69 6-6 0-4.96-4.49-9-10-9z"/></svg>
+    </button>
+  </div>
   <audio id="bgMusicTrack" preload="auto"></audio>
-  <button id="audioToggle" onclick="toggleAudio()" title="Muter / Réactiver la musique">
-    <span id="audioIcon"><svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
-  </button>
-  <button id="skipTrackBtn" onclick="skipBgTrack()" title="Changer de chanson (Skip)">
-    <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
-  </button>
-  <button id="themeToggleBtn" onclick="openThemeShop()" title="Boutique de Thèmes (Couleurs & Styles)">
-    <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.92 0 1.7-.75 1.7-1.7 0-.42-.17-.82-.44-1.11-.28-.3-.43-.7-.43-1.12 0-.92.75-1.67 1.67-1.67H16c3.31 0 6-2.69 6-6 0-4.96-4.49-9-10-9z"/></svg>
-  </button>
 </div>
-<div id="nowPlaying" aria-live="polite"></div>
 
 <!-- Discrete Room Code Badge (Pinned to Body Top-Left Corner, Absolute position so it scrolls away naturally on mobile) -->
 <div id="discreteCodeBadge" class="discrete-code-badge" onclick="copyCode()" title="Touche pour copier le code de la partie">
@@ -1205,7 +1225,10 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.42</span> &copy; 2026 Norelo</footer>
+<footer>
+  <div id="nowPlaying" aria-live="polite"></div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.43</span> &copy; 2026 Norelo</div>
+</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -1731,6 +1754,26 @@ function skipBgTrack(){
     showToast("🎵 Chanson suivante !");
   }
 }
+
+function toggleControlsMenu(e){
+  if(e) e.stopPropagation();
+  var menu = document.getElementById("audioControls");
+  if(menu) menu.classList.toggle("open");
+}
+
+function closeControlsMenu(){
+  var menu = document.getElementById("audioControls");
+  if(menu) menu.classList.remove("open");
+}
+
+document.addEventListener("click", function(e){
+  var menu = document.getElementById("audioControls");
+  if(menu && menu.classList.contains("open")){
+    if(!menu.contains(e.target)){
+      menu.classList.remove("open");
+    }
+  }
+});
 
 /* =====================================================================
  *  THEME SYSTEM (10 UNIQUE STYLES & VISUAL EFFECTS)
