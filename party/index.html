@@ -646,6 +646,18 @@
     border-radius: 26px; padding: 26px 20px; text-align: center; position: relative; overflow: hidden;
     animation: stagePulse 2s ease-in-out infinite alternate; margin: 0 auto;
   }
+
+  /* DRAMATIC SUSPENSE CARD SHAKE */
+  .pokemon-suspense-shake {
+    animation: suspenseShake 0.35s ease-in-out infinite !important;
+  }
+  @keyframes suspenseShake {
+    0%, 100% { transform: rotate(0deg) scale(1); filter: drop-shadow(0 0 25px rgba(245,158,11,0.5)); }
+    20% { transform: rotate(-3deg) scale(1.02); filter: drop-shadow(0 0 35px rgba(245,158,11,0.8)); }
+    40% { transform: rotate(3deg) scale(1.03); filter: drop-shadow(0 0 45px rgba(250,204,21,1)); }
+    60% { transform: rotate(-2deg) scale(1.02); filter: drop-shadow(0 0 35px rgba(245,158,11,0.8)); }
+    80% { transform: rotate(2deg) scale(1.01); filter: drop-shadow(0 0 25px rgba(245,158,11,0.5)); }
+  }
   @keyframes stagePulse {
     0% { box-shadow: 0 0 25px rgba(245, 158, 11, 0.4); transform: scale(0.99); }
     100% { box-shadow: 0 0 55px rgba(245, 158, 11, 0.75); transform: scale(1.01); }
@@ -875,7 +887,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.5</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.6</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -2177,7 +2189,7 @@ function launchMostLikely(){
   if(!roomCode || !amHost) return;
   var pool = MOSTLIKELY_PROMPTS.slice();
   shuffle(pool);
-  var chosen = pool.slice(0, Math.min(10, pool.length));
+  var chosen = pool.slice(0, 3);
   db.ref("rooms/" + roomCode).update({
     status: "playing",
     game: { type:"mostlikely", phase:"guess", round:0, total:chosen.length, prompts:chosen }
@@ -2775,9 +2787,9 @@ function renderMiniGameDoneHTML(){
   });
 
   // Stage Breakdown:
-  // Each award gets 4 seconds (0s-2s Silhouette, 2s-4s Reveal Burst)
-  // Total show duration = awards.length * 4 seconds (12s total for 3 awards)
-  var totalShowSec = awards.length * 4;
+  // Each award gets 6 seconds (0s-3.5s Suspense Shake, 3.5s-6s Winner Unveiled)
+  // Total show duration = awards.length * 6 seconds (18s total for 3 awards)
+  var totalShowSec = awards.length * 6;
   var isShowComplete = (elapsedSec >= totalShowSec) || (g._skipBonusShow);
 
   var html = '';
@@ -2788,9 +2800,9 @@ function renderMiniGameDoneHTML(){
       if(currentScreen === "s-game") renderGame(currentGame);
     }, 400);
 
-    var currentAwardIdx = Math.min(awards.length - 1, Math.floor(elapsedSec / 4));
-    var subTime = elapsedSec % 4; // 0..1 = Suspense, 2..3 = Reveal Burst
-    var isRevealed = (subTime >= 2);
+    var currentAwardIdx = Math.min(awards.length - 1, Math.floor(elapsedSec / 6));
+    var subTime = elapsedSec % 6; // 0..3 = Suspense Shake, 3.5..5 = Winner Unveiled
+    var isRevealed = (subTime >= 3.5);
     var activeItem = awards[currentAwardIdx];
 
     // Trigger SFX & Fireworks on Reveal Burst
@@ -2805,21 +2817,21 @@ function renderMiniGameDoneHTML(){
 
     html += '<div class="groundhdr">⚡ CÉRÉMONIE DES BONUS STARS (STAR ' + (currentAwardIdx + 1) + ' / ' + awards.length + ')</div>';
     html += '<div class="pokemon-stage">';
-    html += '<div class="pokemon-card-container ' + (isRevealed ? 'pokemon-reveal-burst' : '') + '">';
+    html += '<div class="pokemon-card-container ' + (!isRevealed ? 'pokemon-suspense-shake' : '') + '">';
     html += '<div style="font-size:2rem;margin-bottom:6px;">' + activeItem.cat.icon + '</div>';
     html += '<div style="font-size:1.35rem;font-weight:900;color:#fff;">' + activeItem.cat.title + '</div>';
     html += '<div style="font-size:0.85rem;color:rgba(255,255,255,0.8);margin-top:4px;">' + activeItem.cat.desc + '</div>';
 
     if(!isRevealed){
-      // SUSPENSE PHASE (SILHOUETTE + QUESTION MARK)
+      // SUSPENSE PHASE (SHAKING CARD + SILHOUETTE + QUESTION MARK)
       html += '<div class="pokemon-avatar-wrapper pokemon-silhouette">';
       html += avatarHTML(activeItem.awardee, 96);
       html += '<div class="pokemon-question-mark">❓</div>';
       html += '</div>';
-      html += '<div style="font-size:1.1rem;font-weight:900;color:#fef08a;margin-top:10px;animation:pulse 1s infinite alternate;">QUI A GAGNÉ CETTE STAR ?</div>';
+      html += '<div style="font-size:1.1rem;font-weight:900;color:#fef08a;margin-top:10px;">QUI A GAGNÉ CETTE STAR ?</div>';
       html += '<div style="font-size:0.8rem;color:rgba(255,255,255,0.6);margin-top:4px;">Révélation imminente...</div>';
     } else {
-      // REVEAL BURST PHASE (WINNER UNVEILED)
+      // REVEAL BURST PHASE (STATIC WINNER UNVEILED)
       html += '<div class="pokemon-avatar-wrapper">';
       html += avatarHTML(activeItem.awardee, 104);
       html += '</div>';
