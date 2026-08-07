@@ -125,7 +125,7 @@
   label.lb{display:block; font-size:.85rem; color:#8ea0cc; margin:18px 0 9px; font-weight:600;}
 
   /* Avatar + color picker */
-  .avatar{border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; color:#fff; flex-shrink:0;}
+  .avatar{border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:800; color:#fff; flex-shrink:0; position:relative; margin:0 auto;}
   .preview-av{width:78px; height:78px; font-size:1.7rem; margin:4px auto 0; box-shadow:0 6px 18px rgba(0,0,0,.35);}
   .colors{display:grid; grid-template-columns:repeat(8,1fr); gap:10px; margin-top:4px;}
   .sw{aspect-ratio:1; border-radius:50%; cursor:pointer; border:2.5px solid transparent; transition:transform .12s;}
@@ -269,9 +269,10 @@
   }
   .jb-winner-card {
     background: linear-gradient(135deg, #f59e0b, #ec4899);
-    border: 4px solid #ffffff; border-radius: 26px; padding: 24px 18px;
-    text-align: center; margin-bottom: 20px;
+    border: 4px solid #ffffff; border-radius: 26px; padding: 26px 20px;
+    text-align: center; margin: 0 auto 20px auto; max-width: 440px;
     box-shadow: 0 12px 35px rgba(245, 158, 11, 0.5);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
     animation: jbPop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
   @keyframes jbPop {
@@ -286,21 +287,21 @@
 
   /* ROCK PAPER SCISSORS ARENA ANIMATIONS */
   .rps-arena {
-    display: flex; justify-content: center; align-items: center; gap: 36px;
-    margin: 24px 0; perspective: 800px; position: relative;
+    display: flex; justify-content: center; align-items: center; gap: 28px;
+    margin: 28px 0; perspective: 800px; position: relative; width: 100%;
   }
   .rps-fighter {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    transition: all 0.5s ease; position: relative;
+    transition: all 0.5s ease; position: relative; flex: 1; max-width: 140px;
   }
   .rps-icon-box {
-    width: 96px; height: 96px; border-radius: 28px;
+    width: 90px; height: 90px; border-radius: 26px; margin-top: 10px;
     background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
     border: 3px solid rgba(255,255,255,0.3); display: flex; align-items: center;
     justify-content: center; color: #fff;
     box-shadow: 0 12px 30px rgba(0,0,0,0.35); transition: all 0.4s ease;
   }
-  .rps-icon-box svg { width: 52px; height: 52px; }
+  .rps-icon-box svg { width: 48px; height: 48px; }
 
   /* SUSPENSE STATE */
   .rps-suspense-box {
@@ -1438,7 +1439,7 @@ function processVotingTiebreaker(){
     setTimeout(function(){
       db.ref("rooms/" + roomCode + "/game/rpsStage").set("clash");
       processVotingTiebreakerClash();
-    }, 1800);
+    }, 2200);
     return;
   }
 }
@@ -1457,7 +1458,7 @@ function processVotingTiebreakerClash(){
     setTimeout(function(){
       db.ref("rooms/" + roomCode + "/game").update({ rpsChoices: {}, rpsStage: null });
       _rpsProcessing = false;
-    }, 1800);
+    }, 2200);
     return;
   }
   
@@ -1484,12 +1485,12 @@ function processVotingTiebreakerClash(){
         lastResult: getGameTitle(winningGame) + " a éliminé " + getGameTitle(losingGame) + " !"
       });
       _rpsProcessing = false;
-    }, 2400);
+    }, 3000);
   } else {
     setTimeout(function(){
       _rpsProcessing = false;
       launchSelectedGame(winningGame);
-    }, 2600);
+    }, 3200);
   }
 }
 
@@ -1572,17 +1573,21 @@ function renderRPSArenaHTML(pA, pB, choices, duelistA, duelistB, subtitle, lastR
   html += '<div class="rps-arena">';
   
   html += '<div class="rps-fighter ' + leftClass + '">';
+  html += '<div style="display:flex;flex-direction:column;align-items:center;margin-bottom:4px;">';
   html += avatarHTML(pA, 64);
-  html += '<div style="font-weight:800;margin:6px 0 8px 0;color:#fff;">' + escapeHtml(pA.name) + '</div>';
+  html += '<div style="font-size:1.05rem;font-weight:900;color:#fff;margin-top:6px;text-shadow:0 2px 4px rgba(0,0,0,0.8);">' + escapeHtml(pA.name) + '</div>';
+  html += '</div>';
   html += '<div class="rps-icon-box">' + iconA + '</div>';
   if(!isDone && cA) html += '<div style="font-size:0.85rem;color:var(--green);font-weight:800;margin-top:6px;">PRÊT</div>';
   html += '</div>';
   
-  html += '<div style="font-size:2rem;font-weight:900;color:var(--accent);align-self:center;">VS</div>';
+  html += '<div style="font-size:2rem;font-weight:900;color:var(--accent);align-self:center;margin:0 4px;">VS</div>';
   
   html += '<div class="rps-fighter ' + rightClass + '">';
+  html += '<div style="display:flex;flex-direction:column;align-items:center;margin-bottom:4px;">';
   html += avatarHTML(pB, 64);
-  html += '<div style="font-weight:800;margin:6px 0 8px 0;color:#fff;">' + escapeHtml(pB.name) + '</div>';
+  html += '<div style="font-size:1.05rem;font-weight:900;color:#fff;margin-top:6px;text-shadow:0 2px 4px rgba(0,0,0,0.8);">' + escapeHtml(pB.name) + '</div>';
+  html += '</div>';
   html += '<div class="rps-icon-box">' + iconB + '</div>';
   if(!isDone && cB) html += '<div style="font-size:0.85rem;color:var(--green);font-weight:800;margin-top:6px;">PRÊT</div>';
   html += '</div>';
@@ -1596,11 +1601,18 @@ function renderRPSArenaHTML(pA, pB, choices, duelistA, duelistB, subtitle, lastR
 function renderGameVoting(g){
   var area = $("gameArea");
   if(g.phase === "voting_tiebreaker"){
+    if(amHost){
+      processVotingTiebreaker();
+    }
+    var choices = g.rpsChoices || {};
+    var rpsStateKey = "vtb_" + g.duelistA + "_" + g.duelistB + "_" + (g.rpsStage || "pick") + "_" + (g.lastResult || "") + "_" + (choices[g.duelistA]||"") + "_" + (choices[g.duelistB]||"");
+    if(area.dataset.rpsKey === rpsStateKey) return;
+    area.dataset.rpsKey = rpsStateKey;
+
     var gA = getGameMode(g.gameA);
     var gB = getGameMode(g.gameB);
     var pA = getPlayer(g.duelistA);
     var pB = getPlayer(g.duelistB);
-    var choices = g.rpsChoices || {};
     var myChoice = choices[myId];
     
     var html = renderRPSArenaHTML(pA, pB, choices, g.duelistA, g.duelistB, gA.title + " VS " + gB.title, g.lastResult, g.rpsStage);
@@ -1616,9 +1628,6 @@ function renderGameVoting(g){
       html += '<div class="waiting">Duel en cours entre ' + escapeHtml(pA.name) + ' et ' + escapeHtml(pB.name) + ' pour trancher le jeu !<span class="d"></span></div>';
     }
     
-    if(amHost){
-      processVotingTiebreaker();
-    }
     area.innerHTML = html;
     return;
   }
@@ -1812,9 +1821,16 @@ function renderMostLikely(g){
     html += '<div class="waiting">' + (votedCount >= players.length ? "Révélation imminente du verdict !" : (votes[myId] ? "Vote enregistré ! En attente du reste du groupe" : "Touche un joueur pour désigner le coupable")) + '<span class="d"></span></div>';
 
   } else if(g.phase === "tiebreaker"){
+    if(amHost){
+      processTiebreaker();
+    }
+    var choices = g.rpsChoices || {};
+    var rpsStateKey = "tb_" + g.duelistA + "_" + g.duelistB + "_" + (g.rpsStage || "pick") + "_" + (g.lastResult || "") + "_" + (choices[g.duelistA]||"") + "_" + (choices[g.duelistB]||"");
+    if(area.dataset.rpsKey === rpsStateKey) return;
+    area.dataset.rpsKey = rpsStateKey;
+
     var pA = getPlayer(g.duelistA);
     var pB = getPlayer(g.duelistB);
-    var choices = g.rpsChoices || {};
     var myChoice = choices[myId];
     
     var html = renderRPSArenaHTML(pA, pB, choices, g.duelistA, g.duelistB, "AFFRONTEMENT ULTIME DE DEUX ÉGALITÉS", g.lastResult, g.rpsStage);
@@ -1828,10 +1844,6 @@ function renderMostLikely(g){
       html += '</div>';
     } else {
       html += '<div class="waiting">Duel en cours entre ' + escapeHtml(pA.name) + ' et ' + escapeHtml(pB.name) + '<span class="d"></span></div>';
-    }
-    
-    if(amHost){
-      processTiebreaker();
     }
 
   } else if(g.phase === "reveal"){
@@ -1921,7 +1933,7 @@ function processTiebreaker(){
     setTimeout(function(){
       db.ref("rooms/" + roomCode + "/game/rpsStage").set("clash");
       processTiebreakerClash();
-    }, 1800);
+    }, 2200);
     return;
   }
 }
@@ -1940,7 +1952,7 @@ function processTiebreakerClash(){
     setTimeout(function(){
       db.ref("rooms/" + roomCode + "/game").update({ rpsChoices: {}, rpsStage: null });
       _rpsProcessing = false;
-    }, 1800);
+    }, 2200);
     return;
   }
   
@@ -1968,7 +1980,7 @@ function processTiebreakerClash(){
         lastResult: getPlayerName(winner) + " a battu " + getPlayerName(loser) + " !"
       });
       _rpsProcessing = false;
-    }, 2400);
+    }, 3000);
   } else {
     addPoints(winner, 100);
     
@@ -1985,7 +1997,7 @@ function processTiebreakerClash(){
         rpsStage: null
       });
       _rpsProcessing = false;
-    }, 2600);
+    }, 3200);
   }
 }
 
