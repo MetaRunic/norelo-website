@@ -1313,7 +1313,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.55</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.56</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -1525,6 +1525,94 @@ function sfxZeldaItemGet(){
 function sfxExplode(){
   playTone(90, "sine", 0.18, 0.04);
   setTimeout(function(){ playTone(45, "sine", 0.2, 0.05); }, 40);
+}
+
+/* ---- FX SOUND KIT -------------------------------------------------------------
+ * Noise-based sounds for the celebration layer. All routed through the same
+ * sfxEnabled gate as playTone, and scaled by the SFX volume the player picked.
+ * ---------------------------------------------------------------------------- */
+var _noiseBuf = null;
+function getNoiseBuffer(){
+  if(!audioCtx) return null;
+  if(_noiseBuf && _noiseBuf.sampleRate === audioCtx.sampleRate) return _noiseBuf;
+  var len = Math.floor(audioCtx.sampleRate * 1.2);
+  _noiseBuf = audioCtx.createBuffer(1, len, audioCtx.sampleRate);
+  var d = _noiseBuf.getChannelData(0);
+  for(var i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  return _noiseBuf;
+}
+
+// Filtered noise burst: the backbone of booms and whooshes.
+function noiseHit(dur, vol, filterType, fromHz, toHz){
+  if(!sfxEnabled) return;
+  initAudio();
+  if(!audioCtx) return;
+  var buf = getNoiseBuffer();
+  if(!buf) return;
+  try{
+    var src = audioCtx.createBufferSource();
+    src.buffer = buf;
+    var flt = audioCtx.createBiquadFilter();
+    flt.type = filterType || "lowpass";
+    flt.frequency.setValueAtTime(fromHz, audioCtx.currentTime);
+    flt.frequency.exponentialRampToValueAtTime(Math.max(40, toHz), audioCtx.currentTime + dur);
+    var g = audioCtx.createGain();
+    g.gain.setValueAtTime(vol, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
+    src.connect(flt); flt.connect(g); g.connect(audioCtx.destination);
+    src.start();
+    src.stop(audioCtx.currentTime + dur);
+  }catch(e){}
+}
+
+// Pitch sweep, used for the rocket whistle.
+function sweepTone(fromHz, toHz, dur, vol, type){
+  if(!sfxEnabled) return;
+  initAudio();
+  if(!audioCtx) return;
+  try{
+    var osc = audioCtx.createOscillator();
+    var g = audioCtx.createGain();
+    osc.type = type || "sine";
+    osc.frequency.setValueAtTime(fromHz, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(Math.max(30, toHz), audioCtx.currentTime + dur);
+    g.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(vol, audioCtx.currentTime + dur * 0.25);
+    g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
+    osc.connect(g); g.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + dur);
+  }catch(e){}
+}
+
+function sfxLaunch(){                       // rocket climbing
+  sweepTone(220, 1050, 0.85, 0.045, "sawtooth");
+  noiseHit(0.8, 0.018, "highpass", 500, 2600);
+}
+function sfxBoom(){                         // shell detonating
+  noiseHit(0.55, 0.075, "lowpass", 1400, 90);
+  playTone(64, "sine", 0.42, 0.075);
+  setTimeout(function(){ noiseHit(0.5, 0.03, "bandpass", 900, 260); }, 55);
+}
+function sfxCrackle(){                      // the tail of sparks after a boom
+  for(var i = 0; i < 7; i++){
+    (function(d){
+      setTimeout(function(){ noiseHit(0.07, 0.022, "highpass", 2600, 5200); }, d);
+    })(70 + Math.random() * 460);
+  }
+}
+function sfxWhoosh(){                        // shockwave ring
+  noiseHit(0.42, 0.05, "bandpass", 2400, 220);
+}
+function sfxConfettiPop(){                   // party popper
+  noiseHit(0.11, 0.055, "highpass", 1100, 3400);
+  playTone(880, "triangle", 0.09, 0.05);
+  setTimeout(function(){ playTone(1320, "triangle", 0.1, 0.04); }, 55);
+}
+function sfxSparkleUp(){                     // gold starburst shimmer
+  [784, 988, 1175, 1568].forEach(function(f, i){
+    setTimeout(function(){ playTone(f, "triangle", 0.14, 0.055); }, i * 60);
+  });
 }
 
 /* 30-SONG NOSTALGIA VAULT (AGES 25-30 & GAMER SOUNDTRACKS - 100% UNIQUE, NO DUPLICATES) */
@@ -2268,17 +2356,40 @@ document.addEventListener("DOMContentLoaded", function(){
 
   var PALETTE = ["#ef4444","#f59e0b","#fde047","#10b981","#3b82f6","#a855f7","#ec4899","#22d3ee"];
   var MAX_PARTS = 520;           // phones choke past this
-  var parts = [], rings = [], running = false;
+  var parts = [], rings = [], rockets = [], running = false;
 
   function pick(){ return PALETTE[Math.floor(Math.random()*PALETTE.length)]; }
 
   function loop(){
-    if(!parts.length && !rings.length){
+    if(!parts.length && !rings.length && !rockets.length){
       running = false;
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
       return;
     }
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+    // Rockets climb from the bottom, trailing embers, then detonate at their apex.
+    for(var j = rockets.length - 1; j >= 0; j--){
+      var k2 = rockets[j];
+      k2.x += k2.vx; k2.y += k2.vy; k2.vy += 0.055;   // gravity bleeds off the climb
+      if(parts.length < MAX_PARTS){
+        parts.push({ type:"dot", x:k2.x + (Math.random()-0.5)*3, y:k2.y + 4,
+          vx:(Math.random()-0.5)*0.5, vy:Math.random()*0.7 + 0.3,
+          r:Math.random()*1.5 + 0.8, g:0.02, drag:0.97,
+          life:0.75, decay:0.045, spin:0, spinV:0,
+          color: Math.random() < 0.4 ? "#fff7d6" : k2.color });
+      }
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = "#fff7d6";
+      ctx.shadowBlur = 14; ctx.shadowColor = k2.color;
+      ctx.beginPath(); ctx.arc(k2.x, k2.y, 2.6, 0, Math.PI*2); ctx.fill();
+      ctx.shadowBlur = 0;
+
+      if(k2.y <= k2.apex || k2.vy >= 0){
+        rockets.splice(j, 1);
+        detonate(k2.x, k2.y, k2.color);
+      }
+    }
 
     for(var i = rings.length - 1; i >= 0; i--){
       var r = rings[i];
@@ -2337,6 +2448,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
   FX.burst = function(x, y, opts){
     opts = opts || {};
+    // silent:true when a bigger composite effect is already making its own noise
+    if(!opts.silent && typeof noiseHit === "function") noiseHit(0.16, 0.04, "lowpass", 1800, 200);
     var n = Math.min(opts.count || 36, room());
     var spread = opts.speed || 6;
     for(var i = 0; i < n; i++){
@@ -2352,12 +2465,14 @@ document.addEventListener("DOMContentLoaded", function(){
     kick();
   };
 
-  FX.shockwave = function(x, y, color){
+  FX.shockwave = function(x, y, color, silent){
     addRing(x, y, color || "#fff", 9, 4);
     setTimeout(function(){ addRing(x, y, color || "#fff", 6, 2); }, 90);
+    if(!silent && typeof sfxWhoosh === "function") sfxWhoosh();
   };
 
-  FX.confetti = function(count){
+  FX.confetti = function(count, silent){
+    if(!silent && typeof sfxConfettiPop === "function") sfxConfettiPop();
     var n = Math.min(count || 90, room());
     for(var i = 0; i < n; i++){
       parts.push({ type:"ribbon",
@@ -2372,21 +2487,50 @@ document.addEventListener("DOMContentLoaded", function(){
     kick();
   };
 
-  // A firework shell: bright core burst plus trailing sparks, launched in sequence.
+  // Shell detonation: core burst, white spark tails, ring, boom + crackle.
+  function detonate(x, y, color){
+    FX.burst(x, y, { count:38, speed:7.5, color:color, g:0.15, silent:true });
+    FX.burst(x, y, { count:16, speed:9.5, color:"#fff", g:0.16, type:"spark", silent:true });
+    addRing(x, y, color, 6, 2);
+    if(typeof sfxBoom === "function") sfxBoom();
+    if(typeof sfxCrackle === "function") sfxCrackle();
+  }
+
+  // Rockets launch off the bottom edge and climb to an apex in the middle/upper
+  // screen before exploding, rather than just popping into existence.
   FX.fireworks = function(shells){
     var n = shells || 5;
     for(var i = 0; i < n; i++){
       (function(d){
         setTimeout(function(){
-          var x = window.innerWidth * (0.15 + Math.random() * 0.7);
-          var y = window.innerHeight * (0.16 + Math.random() * 0.34);
-          var c = pick();
-          FX.burst(x, y, { count:34, speed:7.5, color:c, g:0.15 });
-          FX.burst(x, y, { count:14, speed:9, color:"#fff", g:0.16, type:"spark" });
-          addRing(x, y, c, 6, 2);
+          var startX = window.innerWidth * (0.12 + Math.random() * 0.76);
+          var apex = window.innerHeight * (0.14 + Math.random() * 0.34);
+          var climb = (window.innerHeight - apex);
+          // ~55 frames to the apex, so the flight reads clearly at any screen height
+          var vy = -(climb / 55) - Math.random() * 1.2;
+          rockets.push({
+            x: startX, y: window.innerHeight + 8,
+            vx: (Math.random() - 0.5) * 1.1, vy: vy,
+            apex: apex, color: pick()
+          });
+          if(typeof sfxLaunch === "function") sfxLaunch();
+          kick();
         }, d);
-      })(i * 260);
+      })(i * 420);
     }
+  };
+
+  // Single rocket, for one-off moments.
+  FX.rocket = function(x, apexY, color){
+    var apex = apexY || window.innerHeight * 0.22;
+    rockets.push({
+      x: x || window.innerWidth * 0.5, y: window.innerHeight + 8,
+      vx: (Math.random() - 0.5) * 0.8,
+      vy: -((window.innerHeight - apex) / 55) - 0.6,
+      apex: apex, color: color || pick()
+    });
+    if(typeof sfxLaunch === "function") sfxLaunch();
+    kick();
   };
 
   FX.shake = function(){
@@ -2413,11 +2557,15 @@ document.addEventListener("DOMContentLoaded", function(){
     addRing(x, y, c, 11, 5);
     setTimeout(function(){ addRing(x, y, "#fff", 8, 3); }, 80);
     setTimeout(function(){ addRing(x, y, c, 6, 2); }, 170);
-    FX.burst(x, y, { count:44, speed:9, color:c, g:0.1 });
-    FX.burst(x, y, { count:20, speed:11, color:"#fff", g:0.08, type:"spark" });
-    FX.confetti(46);
+    FX.burst(x, y, { count:44, speed:9, color:c, g:0.1, silent:true });
+    FX.burst(x, y, { count:20, speed:11, color:"#fff", g:0.08, type:"spark", silent:true });
+    FX.confetti(46, true);
     FX.shake();
     FX.label("COIN PARFAIT !", c);
+    if(typeof sfxWhoosh === "function") sfxWhoosh();
+    if(typeof sfxBoom === "function") sfxBoom();
+    if(typeof sfxSparkleUp === "function") setTimeout(sfxSparkleUp, 120);
+    if(typeof sfxCrackle === "function") setTimeout(sfxCrackle, 200);
   };
 
   FX.clear = function(){
