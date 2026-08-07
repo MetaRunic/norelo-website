@@ -893,7 +893,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.13</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.14</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -1144,6 +1144,40 @@ var PLAYLISTS = {
   ]
 };
 
+/* 30-SONG NOSTALGIA VAULT (AGES 25-30 & GAMER SOUNDTRACKS) */
+var NOSTALGIA_VAULT = [
+  "https://archive.org/download/halo-theme-song/Halo%20Theme%20Song.mp3",
+  "https://archive.org/download/tvtunes_22626/Pokemon%20-%20Dance%20Mix.mp3",
+  "https://archive.org/download/tvtunes_4335/Mortal%20Kombat.mp3",
+  "https://archive.org/download/tvtunes_6550/Futurama%20-%20Theme%20Song.mp3",
+  "https://archive.org/download/wii-sports-theme/Wii%20Sports%20Theme.mp3",
+  "https://archive.org/download/tetris-theme-original/Tetris%20Theme.mp3",
+  "https://archive.org/download/minecraft-wet-hands/Minecraft%20-%20Wet%20Hands.mp3",
+  "https://archive.org/download/skyrim-theme-dragonborn/Skyrim%20-%20Dragonborn.mp3",
+  "https://archive.org/download/gta-san-andreas-theme/GTA%20San%20Andreas%20Theme.mp3",
+  "https://archive.org/download/sonic-green-hill-zone/Green%20Hill%20Zone.mp3",
+  "https://archive.org/download/super-mario-bros-theme/Super%20Mario%20Bros%20Theme.mp3",
+  "https://archive.org/download/zelda-main-theme/Zelda%20Main%20Theme.mp3",
+  "https://archive.org/download/donkey-kong-country-aquatic-ambience/Aquatic%20Ambience.mp3",
+  "https://archive.org/download/undertale-megalovania/Megalovania.mp3",
+  "https://archive.org/download/mii-channel-music/Mii%20Channel%20Music.mp3",
+  "https://archive.org/download/eiffel-65-blue-da-ba-dee_202212/Eiffel%2065%20-%20Blue%20%28Da%20Ba%20Dee%29%20.mp3",
+  "https://archive.org/download/we_like_to_party/VengaBoysWeLikeTheParty.mp3",
+  "https://archive.org/download/darude-sandstorm_202106/Darude%20-%20Sandstorm.mp3",
+  "https://archive.org/download/crazy-frog-axel-f/Crazy%20Frog%20-%20Axel%20F.mp3",
+  "https://archive.org/download/smash-mouth-all-star/Smash%20Mouth%20-%20All%20Star.mp3",
+  "https://archive.org/download/britney-spears-toxic/Britney%20Spears%20-%20Toxic.mp3",
+  "https://archive.org/download/outkast-hey-ya/Outkast%20-%20Hey%20Ya.mp3",
+  "https://archive.org/download/cascada-everytime-we-touch/Cascada%20-%20Everytime%20We%20Touch.mp3",
+  "https://archive.org/download/basshunter-dota/Basshunter%20-%20DotA.mp3",
+  "https://archive.org/download/linkin-park-in-the-end/Linkin%20Park%20-%20In%20The%20End.mp3",
+  "https://archive.org/download/evanescence-bring-me-to-life/Evanescence%20-%20Bring%20Me%20To%20Life.mp3",
+  "https://archive.org/download/green-day-boulevard/Green%20Day%20-%20Boulevard%20of%20Broken%20Dreams.mp3",
+  "https://archive.org/download/black-eyed-peas-i-gotta-feeling/I%20Gotta%20Feeling.mp3",
+  "https://archive.org/download/avicii-levels/Avicii%20-%20Levels.mp3",
+  "https://archive.org/download/lmfao-party-rock-anthem/LMFAO%20-%20Party%20Rock%20Anthem.mp3"
+];
+
 var currentTrackType = null;
 var bgTrackEl = null;
 var fadeInterval = null;
@@ -1200,9 +1234,10 @@ function playGameMusic(type){
   if(available.length === 0) available = list;
   var nextSrc = available[Math.floor(Math.random() * available.length)];
   
-  // When track ends, auto-switch to a different song from the same playlist
+  // When track ends, 50% chance to play from 30-Song Nostalgia Vault!
   track.onended = function(){
-    var pl = PLAYLISTS[currentTrackType] || PLAYLISTS.lobby;
+    var useNostalgia = (NOSTALGIA_VAULT.length > 0) && (Math.random() < 0.5);
+    var pl = useNostalgia ? NOSTALGIA_VAULT : (PLAYLISTS[currentTrackType] || PLAYLISTS.lobby);
     var cur = (track.src || "").trim();
     var others = pl.filter(function(url){ return url.toLowerCase() !== cur.toLowerCase(); });
     if(others.length === 0) others = pl;
