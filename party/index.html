@@ -690,7 +690,7 @@ var PLAYLISTS = {
   lobby: [
     "https://archive.org/download/eiffel-65-blue-da-ba-dee_202212/Eiffel%2065%20-%20Blue%20%28Da%20Ba%20Dee%29%20.mp3",
     "https://archive.org/download/we_like_to_party/VengaBoysWeLikeTheParty.mp3",
-    "https://archive.org/download/tvtunes_24347/Muppets%20-%201978%20-%20The%20Muppet%20Show%202%20-%2010%20-%20The%20Muppets%20-%20At%20The%20Dance.mp3"
+    "https://archive.org/download/tvtunes_4691/The%20Fresh%20Prince%20of%20Bel-Air.mp3"
   ],
   voting: [
     "https://archive.org/download/eiffel-65-blue-da-ba-dee_202212/Eiffel%2065%20-%20Blue%20%28Da%20Ba%20Dee%29%20.mp3",
@@ -782,7 +782,8 @@ function playGameMusic(type){
   if(!track) return;
   
   // Pick a random track from the pool
-  var available = list.filter(function(url){ return url !== track.src; });
+  var curSrc = (track.src || "").trim();
+  var available = list.filter(function(url){ return url.toLowerCase() !== curSrc.toLowerCase(); });
   if(available.length === 0) available = list;
   var nextSrc = available[Math.floor(Math.random() * available.length)];
   
