@@ -303,20 +303,48 @@
   }
   .rps-icon-box svg { width: 48px; height: 48px; }
 
-  /* SUSPENSE STATE */
+  /* ANIME CHAKRA SMOKE MASK SUSPENSE STATE */
   .rps-suspense-box {
-    animation: rpsShake 0.12s ease-in-out infinite alternate;
-    border-color: var(--amber) !important; background: linear-gradient(135deg, #f59e0b, #ef4444) !important;
-    box-shadow: 0 0 35px rgba(245, 158, 11, 0.8) !important;
+    position: relative;
+    animation: rpsShake 0.1s ease-in-out infinite alternate;
   }
+  .rps-suspense-box .rps-icon-box {
+    border-color: #8b5cf6 !important;
+    background: radial-gradient(circle, #3b0764 0%, #1e1b4b 70%, #0f172a 100%) !important;
+    box-shadow: 0 0 35px rgba(139, 92, 246, 0.9), inset 0 0 25px rgba(236, 72, 153, 0.6) !important;
+    position: relative; overflow: visible;
+  }
+  .rps-suspense-box .rps-icon-box::before {
+    content: ''; position: absolute; inset: -14px; border-radius: 30px;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.85) 0%, rgba(99, 102, 241, 0.65) 50%, transparent 80%);
+    filter: blur(10px); z-index: 5; pointer-events: none;
+    animation: animeSmokeSwirl 1.1s linear infinite alternate;
+  }
+  .rps-suspense-box .rps-icon-box::after {
+    content: '⚡'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 2.4rem; color: #f59e0b; font-weight: 900; z-index: 6;
+    text-shadow: 0 0 15px #f59e0b, 0 0 25px #ec4899;
+    animation: animeSparkPulse 0.35s ease-in-out infinite alternate;
+  }
+
+  @keyframes animeSmokeSwirl {
+    0% { transform: scale(0.95) rotate(-6deg); filter: blur(8px) hue-rotate(0deg); }
+    50% { transform: scale(1.15) rotate(6deg); filter: blur(14px) hue-rotate(90deg); }
+    100% { transform: scale(0.95) rotate(-6deg); filter: blur(8px) hue-rotate(180deg); }
+  }
+  @keyframes animeSparkPulse {
+    0% { transform: scale(0.85) rotate(-12deg); opacity: 0.7; }
+    100% { transform: scale(1.25) rotate(12deg); opacity: 1; }
+  }
+
   @keyframes rpsShake {
-    0% { transform: translateY(-4px) rotate(-4deg) scale(1.05); }
-    100% { transform: translateY(4px) rotate(4deg) scale(0.95); }
+    0% { transform: translateY(-4px) rotate(-3deg) scale(1.03); }
+    100% { transform: translateY(4px) rotate(3deg) scale(0.97); }
   }
 
   .rps-suspense-banner {
-    font-size: 1.5rem; font-weight: 900; color: #f59e0b; text-transform: uppercase;
-    letter-spacing: 2px; text-shadow: 0 0 20px rgba(245,158,11,0.8);
+    font-size: 1.5rem; font-weight: 900; color: #a855f7; text-transform: uppercase;
+    letter-spacing: 2px; text-shadow: 0 0 20px rgba(168,85,247,0.9), 0 0 35px rgba(245,158,11,0.7);
     animation: pulseBanner 0.4s ease-in-out infinite alternate; margin-bottom: 12px; text-align: center;
   }
   @keyframes pulseBanner {
@@ -1431,12 +1459,19 @@ function processVotingTiebreaker(){
   var cB = choices[dB];
   
   if(!cA || !cB) return;
-  _rpsProcessing = true;
   
   if(!g.rpsStage){
+    _rpsProcessing = true;
+    g.rpsStage = "suspense";
     db.ref("rooms/" + roomCode + "/game/rpsStage").set("suspense");
     sfxBugle();
+    
+    var area = $("gameArea");
+    if(area) area.dataset.rpsKey = "";
+    renderGameVoting(g);
+
     setTimeout(function(){
+      if(currentGame) currentGame.rpsStage = "clash";
       db.ref("rooms/" + roomCode + "/game/rpsStage").set("clash");
       processVotingTiebreakerClash();
     }, 2200);
@@ -1930,12 +1965,19 @@ function processTiebreaker(){
   var cB = choices[dB];
   
   if(!cA || !cB) return;
-  _rpsProcessing = true;
   
   if(!g.rpsStage){
+    _rpsProcessing = true;
+    g.rpsStage = "suspense";
     db.ref("rooms/" + roomCode + "/game/rpsStage").set("suspense");
     sfxBugle();
+    
+    var area = $("gameArea");
+    if(area) area.dataset.rpsKey = "";
+    renderMostLikely(g);
+
     setTimeout(function(){
+      if(currentGame) currentGame.rpsStage = "clash";
       db.ref("rooms/" + roomCode + "/game/rpsStage").set("clash");
       processTiebreakerClash();
     }, 2200);
