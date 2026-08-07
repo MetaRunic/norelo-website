@@ -71,23 +71,30 @@
     transform: rotate(90deg);
   }
 
+  /* One settings card instead of a column of loose circles with a box wedged in it. */
   .controls-dropdown {
-    display: flex; flex-direction: column; gap: 8px; margin-top: 8px;
-    opacity: 0; transform: translateY(-10px) scale(0.9); pointer-events: none;
+    width: 210px; margin-top: 10px; padding: 12px;
+    border-radius: 16px; text-align: left;
+    background: var(--panel); border: 1.5px solid var(--bdr);
+    backdrop-filter: blur(14px); box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+    transform-origin: top right;
+    opacity: 0; transform: translateY(-10px) scale(0.94); pointer-events: none;
     transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
   }
   #audioControls.open .controls-dropdown {
     opacity: 1; transform: translateY(0) scale(1); pointer-events: auto;
   }
 
-  .controls-dropdown button {
+  .cd-icons { display: flex; gap: 9px; align-items: center; }
+  .cd-icons button {
     width: 38px; height: 38px; border-radius: 50%;
     margin: 0; padding: 0; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
-    cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+    cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.3);
     transition: transform .12s, border-color .2s, background-color .2s;
   }
-  .controls-dropdown button:active { transform: scale(.92); }
+  .cd-icons button:active { transform: scale(.92); }
+  .cd-sep { height: 1px; background: var(--bdr); margin: 12px 0 11px; }
 
   #audioToggle, #skipTrackBtn{
     background:var(--panel); border:1.5px solid var(--bdr);
@@ -104,12 +111,6 @@
   }
 
   /* AUDIO OPTIONS PANEL (inside the settings dropdown) */
-  .controls-audio-panel {
-    width: 186px; padding: 10px 12px 12px; border-radius: 14px;
-    background: var(--panel); border: 1.5px solid var(--bdr);
-    backdrop-filter: blur(12px); box-shadow: 0 4px 16px rgba(0,0,0,0.35);
-    text-align: left; cursor: default;
-  }
   .cap-row {
     display: flex; align-items: center; justify-content: space-between;
     font-size: .66rem; font-weight: 800; letter-spacing: .06em;
@@ -134,13 +135,13 @@
   }
   .cap-slider:disabled { opacity: .4; cursor: not-allowed; }
   .cap-toggle {
-    width: 100% !important; height: auto !important; border-radius: 10px !important;
-    margin-top: 9px !important; padding: 7px 8px !important;
+    width: 100%; border-radius: 10px; margin-top: 10px; padding: 8px;
     background: var(--panel2); border: 1.5px solid var(--bdr); color: var(--txt);
     font-size: .66rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase;
-    display: flex !important; align-items: center; justify-content: center; gap: 6px;
-    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    cursor: pointer; transition: border-color .2s, color .2s;
   }
+  .cap-toggle:active { transform: scale(.97); }
   .cap-toggle .cap-dot {
     width: 7px; height: 7px; border-radius: 50%; background: var(--gr); flex-shrink: 0;
   }
@@ -1112,27 +1113,28 @@
       <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
     </svg>
   </button>
-  <div id="controlsMenuDropdown" class="controls-dropdown">
-    <button id="audioToggle" onclick="toggleAudio(); event.stopPropagation();" title="Muter / Réactiver la musique">
-      <span id="audioIcon"><svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
-    </button>
-    <button id="skipTrackBtn" onclick="skipBgTrack(); event.stopPropagation();" title="Changer de chanson (Skip)">
-      <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
-    </button>
-    <div class="controls-audio-panel" onclick="event.stopPropagation();">
-      <div class="cap-row">
-        <span>Volume musique</span>
-        <span class="cap-val" id="musicVolVal">25%</span>
-      </div>
-      <input id="musicVolSlider" class="cap-slider" type="range" min="0" max="100" step="5" value="25"
-             oninput="setMusicVolume(this.value)" title="Volume de la musique de fond">
-      <button class="cap-toggle on" id="sfxToggleBtn" onclick="toggleSfx(); event.stopPropagation();"
-              title="Activer / désactiver les effets sonores">
-        <span class="cap-dot"></span><span id="sfxToggleLabel">Effets sonores</span>
+  <div id="controlsMenuDropdown" class="controls-dropdown" onclick="event.stopPropagation();">
+    <div class="cd-icons">
+      <button id="audioToggle" onclick="toggleAudio(); event.stopPropagation();" title="Muter / Réactiver la musique">
+        <span id="audioIcon"><svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
+      </button>
+      <button id="skipTrackBtn" onclick="skipBgTrack(); event.stopPropagation();" title="Changer de chanson (Skip)">
+        <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+      </button>
+      <button id="themeToggleBtn" onclick="openThemeShop(); closeControlsMenu(); event.stopPropagation();" title="Boutique de Thèmes (Couleurs & Styles)">
+        <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.92 0 1.7-.75 1.7-1.7 0-.42-.17-.82-.44-1.11-.28-.3-.43-.7-.43-1.12 0-.92.75-1.67 1.67-1.67H16c3.31 0 6-2.69 6-6 0-4.96-4.49-9-10-9z"/></svg>
       </button>
     </div>
-    <button id="themeToggleBtn" onclick="openThemeShop(); closeControlsMenu(); event.stopPropagation();" title="Boutique de Thèmes (Couleurs & Styles)">
-      <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.92 0 1.7-.75 1.7-1.7 0-.42-.17-.82-.44-1.11-.28-.3-.43-.7-.43-1.12 0-.92.75-1.67 1.67-1.67H16c3.31 0 6-2.69 6-6 0-4.96-4.49-9-10-9z"/></svg>
+    <div class="cd-sep"></div>
+    <div class="cap-row">
+      <span>Volume musique</span>
+      <span class="cap-val" id="musicVolVal">25%</span>
+    </div>
+    <input id="musicVolSlider" class="cap-slider" type="range" min="0" max="100" step="5" value="25"
+           oninput="setMusicVolume(this.value)" title="Volume de la musique de fond">
+    <button class="cap-toggle on" id="sfxToggleBtn" onclick="toggleSfx(); event.stopPropagation();"
+            title="Activer / désactiver les effets sonores">
+      <span class="cap-dot"></span><span id="sfxToggleLabel">Effets sonores</span>
     </button>
   </div>
   <audio id="bgMusicTrack" preload="auto"></audio>
@@ -1280,7 +1282,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.51</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.52</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
