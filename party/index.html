@@ -977,7 +977,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.18</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.19</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -2095,11 +2095,12 @@ function processVotingTiebreaker(){
   var dA = g.duelistA;
   var dB = g.duelistB;
   var choices = g.rpsChoices || {};
-  
+
   var cA = choices[dA];
   var cB = choices[dB];
-  
-  if(!cA || !cB) return;
+
+  if(!cA || !cB){ armRpsAfkTimer(dA, dB, "voting_tiebreaker"); return; }
+  clearRpsAfkTimer();
   
   if(!g.rpsStage){
     _rpsProcessing = true;
@@ -2641,6 +2642,32 @@ function submitRPS(choice){
 }
 
 var _rpsProcessing = false;
+var RPS_AFK_MS = 20000;
+var _rpsAfkTimer = null, _rpsAfkKey = "";
+
+// A duelist who closes their phone mid-duel used to hang the round forever, since
+// processTiebreaker just returns until both choices exist. The host picks for them.
+function armRpsAfkTimer(dA, dB, phase){
+  var key = phase + "_" + dA + "_" + dB;
+  if(_rpsAfkTimer && _rpsAfkKey === key) return; // already waiting on this same duel
+  if(_rpsAfkTimer) clearTimeout(_rpsAfkTimer);
+  _rpsAfkKey = key;
+  _rpsAfkTimer = setTimeout(function(){
+    _rpsAfkTimer = null;
+    if(!amHost || !currentGame || currentGame.phase !== phase) return;
+    if(currentGame.duelistA !== dA || currentGame.duelistB !== dB) return;
+    var ch = currentGame.rpsChoices || {};
+    var picks = ["rock","paper","scissors"];
+    var upd = {};
+    if(!ch[dA]) upd["rpsChoices/" + dA] = picks[Math.floor(Math.random()*3)];
+    if(!ch[dB]) upd["rpsChoices/" + dB] = picks[Math.floor(Math.random()*3)];
+    if(Object.keys(upd).length) db.ref("rooms/" + roomCode + "/game").update(upd);
+  }, RPS_AFK_MS);
+}
+function clearRpsAfkTimer(){
+  if(_rpsAfkTimer) clearTimeout(_rpsAfkTimer);
+  _rpsAfkTimer = null; _rpsAfkKey = "";
+}
 
 function processTiebreaker(){
   if(!roomCode || !amHost || !currentGame || currentGame.phase !== "tiebreaker" || _rpsProcessing) return;
@@ -2648,11 +2675,12 @@ function processTiebreaker(){
   var dA = g.duelistA;
   var dB = g.duelistB;
   var choices = g.rpsChoices || {};
-  
+
   var cA = choices[dA];
   var cB = choices[dB];
-  
-  if(!cA || !cB) return;
+
+  if(!cA || !cB){ armRpsAfkTimer(dA, dB, "tiebreaker"); return; }
+  clearRpsAfkTimer();
   
   if(!g.rpsStage){
     _rpsProcessing = true;
@@ -2697,7 +2725,8 @@ function processTiebreakerClash(){
     winner = dB; loser = dA;
   }
   
-  snapshotPreRoundScores();
+  // No re-snapshot here: revealRound already baselined this round. Re-baselining per
+  // duel made a 3+ way tie show only the last duel's points in the round summary.
   addPoints(winner, 50);
   trackStat("rpsWins", winner);
   sfxWin();
@@ -2804,9 +2833,10 @@ function revealRound(){
       });
     } else if(game.type === "knowplayer"){
       var kpItem = knowRoundData(game);
+      var kpSolo = kpSoloMode();
       var kpCorrect = 0;
       Object.keys(votes).forEach(function(vUid){
-        if(vUid === kpItem.spotlightId) return; // The star's own vote never counts
+        if(!kpSolo && vUid === kpItem.spotlightId) return; // The star's own vote never counts
         if(votes[vUid] === game.spotlightAnswer){
           kpCorrect++;
           trackStat("correctGuesses", vUid);
@@ -3813,6 +3843,10 @@ function knowRoundData(g){
   return { spotlightId: "", spotlightName: "quelqu'un", q: "", opts: [] };
 }
 
+// Solo testing: with nobody else in the room the star is also the only possible
+// guesser, so the self-vote block is lifted rather than skipping the guess phase.
+function kpSoloMode(){ return players.length <= 1; }
+
 // A timer created for one round must never fire into the next round or another mode.
 function kpStillOnRound(round){
   return !!currentGame && currentGame.type === "knowplayer" && (currentGame.round || 0) === round;
@@ -3831,17 +3865,20 @@ function renderKnowPlayer(g){
                            : { id: item.spotlightId, name: spotlightName, color: "#2563eb" };
   var question = item.q || "";
   var options = item.opts || [];
+  var solo = kpSoloMode();
   var iAmSpotlight = (myId && myId === item.spotlightId);
   var spotlightAnswer = g.spotlightAnswer;
   var hasAnswer = (typeof spotlightAnswer === "number");
 
-  // The spotlight never guesses their own answer, so their vote is ignored everywhere.
+  // The spotlight never guesses their own answer, so their vote is ignored
+  // everywhere — except solo, where they are the only player left to guess.
   var rawVotes = g.votes || {};
   var votes = {};
   Object.keys(rawVotes).forEach(function(uid){
-    if(uid !== item.spotlightId) votes[uid] = rawVotes[uid];
+    if(solo || uid !== item.spotlightId) votes[uid] = rawVotes[uid];
   });
-  var guessers = players.filter(function(p){ return p.id !== item.spotlightId; });
+  var guessers = solo ? players.slice()
+                      : players.filter(function(p){ return p.id !== item.spotlightId; });
   var votedCount = Object.keys(votes).length;
   var hdr = '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • Connais-tu bien ' + escapeHtml(spotlightName) + ' ?</div>';
   var html = "";
@@ -3900,13 +3937,13 @@ function renderKnowPlayer(g){
     html += spotCardHTML(hasAnswer ? "A répondu en secret" : "Joueur vedette");
     html += '<div class="gprompt">' + escapeHtml(question) + '</div>';
 
-    if(iAmSpotlight){
+    if(iAmSpotlight && !solo){
       html += '<div class="gsub">Ta réponse secrète est verrouillée :</div>';
       html += '<div class="kp-opt correct"><div class="kp-opt-txt">' + escapeHtml(options[spotlightAnswer] || "—") + '</div><span class="kp-opt-check">' + ICONS.check + '</span></div>';
       html += '<div class="gprogress">' + votedCount + ' / ' + guessers.length + ' ont prédit</div>';
       html += '<div class="waiting">La gang essaie de te deviner<span class="d"></span></div>';
     } else {
-      html += '<div class="gsub">Qu\'est-ce que ' + escapeHtml(spotlightName) + ' a choisi ?</div>';
+      html += '<div class="gsub">' + (solo ? 'Mode solo (test) — devine ta propre réponse :' : 'Qu\'est-ce que ' + escapeHtml(spotlightName) + ' a choisi ?') + '</div>';
       options.forEach(function(opt, idx){
         var sel = (votes[myId] === idx) ? " pri" : " sec";
         html += '<button class="btn' + sel + '" style="margin-bottom:10px;text-align:left;" onclick="guessSpotlight(' + idx + ')">' + escapeHtml(opt) + '</button>';
@@ -3988,7 +4025,8 @@ function pickSpotlightAnswer(idx){
 }
 function guessSpotlight(idx){
   if(!roomCode || !myId || !currentGame) return;
-  if(myId === knowRoundData(currentGame).spotlightId) return; // The star can't bet on themselves
+  // The star can't bet on themselves, unless they're testing the mode alone.
+  if(!kpSoloMode() && myId === knowRoundData(currentGame).spotlightId) return;
   sfxVote();
   db.ref("rooms/" + roomCode + "/game/votes/" + myId).set(idx);
 }
