@@ -983,7 +983,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.21</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.23</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -991,7 +991,8 @@
 <script>
 var audioCtx = null;
 var audioEnabled = true;
-var bgMusicInterval = null;
+var bgMusicStarted = false; // was "bgMusicInterval", declared but never assigned, so the
+                            // guard below was always true and every tap restarted the music
 
 function initAudio(){
   if(!audioCtx){
@@ -1015,7 +1016,13 @@ function unlockMobileAudio(){
       audioCtx.resume();
     }
   }
-  if(audioEnabled && !bgMusicInterval) startBgMusic();
+  // Only kick the music off on the first gesture. This used to run on every tap,
+  // and a tap landing in the gap between songs (track.paused, so playGameMusic's
+  // guard fails) started a second fade+swap on top of the one already in flight.
+  if(audioEnabled && !bgMusicStarted){
+    bgMusicStarted = true;
+    startBgMusic();
+  }
 }
 
 window.addEventListener("touchstart", unlockMobileAudio, { once: false, passive: true });
@@ -1465,9 +1472,12 @@ document.addEventListener("DOMContentLoaded", updateAudioIcon);
 
   var explosions = [];
 
-  window.triggerExplosion = function(ex, ey, isCorner, color){
+  // withSound is opt-in: the idle DVD logo bounces off a wall every few seconds on the
+  // main menu, and booming every time meant an AFK player heard random explosions over
+  // the lobby music (mute is music-only, so it didn't help). Visual-only by default.
+  window.triggerExplosion = function(ex, ey, isCorner, color, withSound){
     var count = isCorner ? 50 : 15;
-    sfxExplode();
+    if(withSound) sfxExplode();
     for(var j=0; j<count; j++){
       var angle = Math.random() * Math.PI * 2;
       var speed = (Math.random() * (isCorner ? 7 : 3.5)) + 1;
@@ -2784,7 +2794,7 @@ function processTiebreakerClash(){
     
     var votes = g.votes || {};
     Object.keys(votes).forEach(function(vUid){
-      if(votes[vUid] === winner) addPoints(vUid, 100);
+      if(votes[vUid] === winner){ trackStat("majorityVotes", vUid); addPoints(vUid, 100); }
     });
     
     setTimeout(function(){
@@ -2846,7 +2856,7 @@ function revealRound(){
         if(winner){
           trackStat("mostLikelyTarget", winner);
           addPoints(winner, 100);
-          Object.keys(votes).forEach(function(vKey){ if(votes[vKey] === winner) addPoints(vKey, 100); });
+          Object.keys(votes).forEach(function(vKey){ if(votes[vKey] === winner){ trackStat("majorityVotes", vKey); addPoints(vKey, 100); } });
         }
       }
     } else if(game.type === "whoposted"){
@@ -2854,13 +2864,14 @@ function revealRound(){
       Object.keys(votes).forEach(function(vUid){
         if(votes[vUid] === item.posterId){
           trackStat("correctGuesses", vUid);
+          trackStat("sleuth", vUid);
           addPoints(vUid, 200);
         }
       });
     } else if(game.type === "guessrating"){
       var item = (game.roundsData && game.roundsData[game.round]) || {};
       Object.keys(votes).forEach(function(vUid){
-        if(votes[vUid] === item.stars){ trackStat("correctGuesses", vUid); addPoints(vUid, 200); }
+        if(votes[vUid] === item.stars){ trackStat("correctGuesses", vUid); trackStat("exactRating", vUid); addPoints(vUid, 200); }
         else if(Math.abs(votes[vUid] - item.stars) === 1) addPoints(vUid, 100);
       });
     } else if(game.type === "knowplayer"){
@@ -2877,12 +2888,18 @@ function revealRound(){
       });
       // The star is rewarded for being read correctly, so answering honestly pays.
       if(kpItem.spotlightId && kpCorrect > 0) addPoints(kpItem.spotlightId, 50 * kpCorrect);
+      var kpGuessers = kpSolo ? players.length : Math.max(0, players.length - 1);
+      if(kpItem.spotlightId && kpGuessers > 0){
+        if(kpCorrect === 0) trackStat("fooledGroup", kpItem.spotlightId);
+        else if(kpCorrect === kpGuessers) trackStat("wellKnown", kpItem.spotlightId);
+      }
     } else if(game.type === "roast"){
-      Object.keys(votes).forEach(function(vKey){ var authorUid = votes[vKey]; addPoints(authorUid, 150); });
+      Object.keys(votes).forEach(function(vKey){ var authorUid = votes[vKey]; trackStat("roastVotes", authorUid); addPoints(authorUid, 150); });
     } else if(game.type === "whosaid"){
       Object.keys(votes).forEach(function(vUid){
         if(votes[vUid] === game.speakerId){
           trackStat("correctGuesses", vUid);
+          trackStat("sleuth", vUid);
           addPoints(vUid, 200);
         }
       });
@@ -2890,6 +2907,7 @@ function revealRound(){
       Object.keys(votes).forEach(function(vUid){
         if(votes[vUid] === game.lieIndex){
           trackStat("correctGuesses", vUid);
+          trackStat("lieDetector", vUid);
           addPoints(vUid, 200);
         }
       });
@@ -2903,27 +2921,51 @@ function revealRound(){
   }
   db.ref("rooms/" + roomCode + "/game").update({ phase: "reveal", revealStartMs: Date.now(), scored: true });
 }
+// Single source of truth for bonus stars. The award logic and the ceremony used to
+// keep separate hardcoded lists that had drifted apart, so a star could be shown with
+// "+150 PTS BONUS" while paying nothing. Both now read this one array.
+var BONUS_CATEGORIES = [
+  { key: "rpsWins",         icon: ICONS.rock,    title: "Roi du Roche-Papier-Ciseaux", desc: "A gagné le plus de duels roche-papier-ciseaux", pts: 150 },
+  { key: "correctGuesses",  icon: ICONS.idea,    title: "Le Devin",                    desc: "A deviné juste le plus souvent",                 pts: 150 },
+  { key: "mostLikelyTarget",icon: ICONS.flame,   title: "Cible Préférée",              desc: "Le plus souvent pointé du doigt par la gang",    pts: 150 },
+  { key: "fooledGroup",     icon: ICONS.mask,    title: "Le Mystère Total",            desc: "Personne n'a réussi à deviner ses réponses",     pts: 200 },
+  { key: "wellKnown",       icon: ICONS.chat,    title: "Le Livre Ouvert",             desc: "Toute la gang l'a deviné du premier coup",       pts: 200 },
+  { key: "roastVotes",      icon: ICONS.feather, title: "Roi du Roast",                desc: "Ses punchlines ont récolté le plus de votes",    pts: 200 },
+  { key: "exactRating",     icon: ICONS.star,    title: "Le Critique Pro",             desc: "A trouvé le plus de notes exactes",              pts: 150 },
+  { key: "lieDetector",     icon: ICONS.check,   title: "Détecteur de Mensonges",      desc: "A démasqué le plus de mensonges",                pts: 150 },
+  { key: "sleuth",          icon: ICONS.camera,  title: "Fin Limier",                  desc: "A reconnu ses amis le plus souvent",             pts: 150 },
+  { key: "majorityVotes",   icon: ICONS.trophy,  title: "La Voix du Peuple",           desc: "A voté avec la majorité le plus souvent",        pts: 150 }
+];
+var MAX_BONUS_STARS = 4;
+
+// Only categories somebody actually earned are handed out - no consolation stars.
+// Winners are spread across players so the leader can't sweep every bonus.
+function selectBonusAwards(){
+  var awards = [];
+  var used = {};
+  BONUS_CATEGORIES.forEach(function(cat){
+    if(awards.length >= MAX_BONUS_STARS) return;
+    var stats = sessionStats[cat.key] || {};
+    var bestUid = null, bestVal = 0;
+    Object.keys(stats).forEach(function(uid){
+      if(used[uid]) return;
+      if(stats[uid] > bestVal){ bestVal = stats[uid]; bestUid = uid; }
+    });
+    if(bestUid && bestVal > 0){
+      used[bestUid] = true;
+      awards.push({ cat: cat, uid: bestUid });
+    }
+  });
+  return awards;
+}
+
 function awardEndGameBonusStars(){
   if(!roomCode || !amHost || !currentGame) return;
   var bonusKey = (currentGame.type || "") + "_bonus";
   if(_bonusAwardedTrack[bonusKey]) return; // Strictly award bonus stars once
   _bonusAwardedTrack[bonusKey] = true;
 
-  var bonusCategories = [
-    { key: "rpsWins", pts: 150 },
-    { key: "mostLikelyTarget", pts: 150 },
-    { key: "correctGuesses", pts: 150 }
-  ];
-  bonusCategories.forEach(function(cat){
-    var catStats = sessionStats[cat.key] || {};
-    var bestUid = null, bestVal = 0;
-    Object.keys(catStats).forEach(function(uid){
-      if(catStats[uid] > bestVal){ bestVal = catStats[uid]; bestUid = uid; }
-    });
-    if(bestUid && bestVal > 0){
-      addPoints(bestUid, cat.pts);
-    }
-  });
+  selectBonusAwards().forEach(function(a){ addPoints(a.uid, a.cat.pts); });
 }
 
 function nextRound(){
@@ -2973,7 +3015,7 @@ function renderGrandPrizeCeremony(g){
 
   sfxGrandCrown();
   if(window.triggerExplosion){
-    window.triggerExplosion(window.innerWidth/2, window.innerHeight/2, true, "#f59e0b");
+    window.triggerExplosion(window.innerWidth/2, window.innerHeight/2, true, "#f59e0b", true);
   }
 
   var html = '<div class="groundhdr">' + ICONS.trophy + ' GRAND GAGNANT DE LA SOIRÉE</div>';
@@ -3127,44 +3169,15 @@ function renderMiniGameDoneHTML(){
   }
   var elapsedSec = Math.max(0, Math.floor((Date.now() - _ceremonyStartMs) / 1000));
 
-  // Compute 3 Bonus Star awards
-  var bonusCategories = [
-    { key: "rpsWins", icon: ICONS.rock, title: "Roi du Roche-Papier-Ciseaux", desc: "A gagné le plus de duels roche-papier-ciseaux", pts: 150 },
-    { key: "mostLikelyTarget", icon: ICONS.flame, title: "Cible Préférée", desc: "Le plus souvent pointé du doigt par la gang", pts: 150 },
-    { key: "correctGuesses", icon: ICONS.idea, title: "Le Devin", desc: "A deviné juste le plus souvent", pts: 150 },
-    { key: "mvp", icon: ICONS.star, title: "Star de la Soirée", desc: "Le plus gros total de points de la soirée", pts: 150 }
-  ];
-
-  var awards = [];
-  var usedAwardees = {};
-  var sortedPlayers = players.slice().sort(function(a,b){ return (sessionScores[b.id]||0) - (sessionScores[a.id]||0); });
-
-  bonusCategories.forEach(function(cat){
-    if(awards.length >= 3) return;
-    var bestUid = null, bestVal = 0;
-    if(cat.key === "mvp"){
-      var topPlayer = sortedPlayers.find(function(p){ return !usedAwardees[p.id]; }) || sortedPlayers[0];
-      if(topPlayer){ bestUid = topPlayer.id; bestVal = 1; }
-    } else {
-      var catStats = sessionStats[cat.key] || {};
-      Object.keys(catStats).forEach(function(uid){
-        if(catStats[uid] > bestVal){ bestVal = catStats[uid]; bestUid = uid; }
-      });
-      if(!bestUid && sortedPlayers.length > 0){
-        var fallbackPlayer = sortedPlayers.find(function(p){ return !usedAwardees[p.id]; });
-        if(fallbackPlayer){ bestUid = fallbackPlayer.id; bestVal = 1; }
-      }
-    }
-    if(bestUid){
-      usedAwardees[bestUid] = true;
-      var awardee = getPlayer(bestUid) || { name: "Joueur", id: bestUid, color: "#2563eb" };
-      awards.push({ cat: cat, awardee: awardee });
-    }
+  // Same selection the host used to hand out the points, so the card and the
+  // scoreboard can never disagree.
+  var awards = selectBonusAwards().map(function(a){
+    return { cat: a.cat, awardee: getPlayer(a.uid) || { name: "Joueur", id: a.uid, color: "#2563eb" } };
   });
 
   // Stage Breakdown:
   // Each award gets 6 seconds (0s-3.5s Suspense Shake, 3.5s-6s Winner Unveiled)
-  // Total show duration = awards.length * 6 seconds (18s total for 3 awards)
+  // Total show duration = awards.length * 6 seconds (up to MAX_BONUS_STARS awards)
   var totalShowSec = awards.length * 6;
   var isShowComplete = (elapsedSec >= totalShowSec) || (g._skipBonusShow);
 
@@ -3188,7 +3201,7 @@ function renderMiniGameDoneHTML(){
       if(isRevealed){
         stopDrumroll();
         sfxZeldaItemGet();
-        if(window.triggerExplosion) window.triggerExplosion(window.innerWidth/2, 220, true, "#f59e0b");
+        if(window.triggerExplosion) window.triggerExplosion(window.innerWidth/2, 220, true, "#f59e0b", true);
       } else {
         startDrumroll(3.5);
       }
@@ -4004,7 +4017,7 @@ function renderKnowPlayer(g){
       if(guessers.length > 0 && (correctCount === 0 || correctCount === guessers.length)){
         sfxZeldaItemGet();
         if(window.triggerExplosion){
-          window.triggerExplosion(window.innerWidth/2, 240, true, correctCount === 0 ? "#ef4444" : "#10b981");
+          window.triggerExplosion(window.innerWidth/2, 240, true, correctCount === 0 ? "#ef4444" : "#10b981", true);
         }
       }
     }
