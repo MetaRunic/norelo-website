@@ -532,6 +532,29 @@
     100% { transform: translateX(0) scale(1); opacity: 1; }
   }
 
+  /* MARIO PARTY STYLE BONUS STAR CARDS */
+  .bonus-star-card {
+    display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+    border-radius: 16px; margin-bottom: 10px;
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(168, 85, 247, 0.15));
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    box-shadow: 0 4px 20px rgba(245, 158, 11, 0.2);
+    animation: ptRowSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  .bonus-star-icon {
+    font-size: 1.6rem; color: var(--amber); flex-shrink: 0;
+    filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.8));
+    animation: starPulse 1.2s ease-in-out infinite alternate;
+  }
+  .bonus-star-info { flex: 1; text-align: left; }
+  .bonus-star-title { font-size: 1.05rem; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 6px; }
+  .bonus-star-desc { font-size: 0.8rem; color: rgba(255,255,255,0.7); margin-top: 2px; }
+  .bonus-star-winner { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  @keyframes starPulse {
+    0% { transform: scale(1) rotate(-5deg); }
+    100% { transform: scale(1.2) rotate(5deg); }
+  }
+
   @media(max-width:700px){
     .hero h1{font-size:2.9rem;}
   }
@@ -1138,6 +1161,7 @@ var sessionScores = {};
 var _preRoundScores = {};
 var _lastAutoRevealKey = "";
 var _lastSfxKey = "";
+var sessionStats = {};
 var resumeAborted = false;
 var countdownTicker = null;
 
@@ -1348,6 +1372,7 @@ function subscribeRoom(code){
     amHost = (data.hostId === myId);
     currentGame = data.game || null;
     sessionScores = data.scores || {};
+    sessionStats = data.stats || {};
 
     if(data.status === "playing"){
       if(currentScreen !== "s-game"){ show("s-game"); }
@@ -1444,12 +1469,10 @@ function renderRoundPointsHTML(roundPts){
   var sorted = players.slice().sort(function(a,b){ return (roundPts[b.id]||0) - (roundPts[a.id]||0); });
   sorted.forEach(function(p){
     var earned = roundPts[p.id] || 0;
-    var total = sessionScores[p.id] || 0;
     html += '<div class="round-pts-row">';
     html += avatarHTML(p, 32);
     html += '<div class="round-pts-name">' + escapeHtml(p.name) + '</div>';
     html += '<div class="round-pts-val' + (earned === 0 ? ' zero' : '') + '" data-target="' + earned + '">+0</div>';
-    html += '<div class="round-pts-total">' + total + ' pts</div>';
     html += '</div>';
   });
   html += '</div>';
@@ -1473,6 +1496,27 @@ function animateCounters(){
       if(progress < 1) requestAnimationFrame(step);
     }
     setTimeout(function(){ requestAnimationFrame(step); }, 400);
+  });
+}
+
+// =====================================================================
+//  VOTE SANITIZATION & STAT TRACKING
+// =====================================================================
+function sanitizeVotes(votes){
+  if(!votes) return {};
+  var playerIds = {};
+  players.forEach(function(p){ playerIds[p.id] = true; });
+  var clean = {};
+  Object.keys(votes).forEach(function(voterUid){
+    if(playerIds[voterUid]){ clean[voterUid] = votes[voterUid]; }
+  });
+  return clean;
+}
+
+function trackStat(category, uid){
+  if(!roomCode || !amHost || !uid) return;
+  db.ref("rooms/" + roomCode + "/stats/" + category + "/" + uid).transaction(function(cur){
+    return (cur || 0) + 1;
   });
 }
 
@@ -2131,6 +2175,7 @@ function processTiebreakerClash(){
   
   snapshotPreRoundScores();
   addPoints(winner, 50);
+  trackStat("rpsWins", winner);
   sfxWin();
   
   var remaining = g.remainingTied || [];
@@ -2181,7 +2226,7 @@ function revealRound(){
   var game = currentGame;
   if(game && !game.scored){
     snapshotPreRoundScores();
-    var votes = game.votes || {};
+    var votes = sanitizeVotes(game.votes);
     if(game.type === "mostlikely"){
       var tally = {};
       players.forEach(function(p){ tally[p.id] = 0; });
@@ -2208,27 +2253,48 @@ function revealRound(){
       } else {
         var winner = tied[0] || (players[0] && players[0].id);
         if(winner){
+          trackStat("mostLikelyTarget", winner);
           addPoints(winner, 100);
           Object.keys(votes).forEach(function(vKey){ if(votes[vKey] === winner) addPoints(vKey, 100); });
         }
       }
     } else if(game.type === "whoposted"){
       var item = (game.roundsData && game.roundsData[game.round]) || {};
-      Object.keys(votes).forEach(function(vUid){ if(votes[vUid] === item.posterId) addPoints(vUid, 200); });
+      Object.keys(votes).forEach(function(vUid){
+        if(votes[vUid] === item.posterId){
+          trackStat("correctGuesses", vUid);
+          addPoints(vUid, 200);
+        }
+      });
     } else if(game.type === "guessrating"){
       var item = (game.roundsData && game.roundsData[game.round]) || {};
       Object.keys(votes).forEach(function(vUid){
-        if(votes[vUid] === item.stars) addPoints(vUid, 200);
+        if(votes[vUid] === item.stars){ trackStat("correctGuesses", vUid); addPoints(vUid, 200); }
         else if(Math.abs(votes[vUid] - item.stars) === 1) addPoints(vUid, 100);
       });
     } else if(game.type === "knowplayer"){
-      Object.keys(votes).forEach(function(vUid){ if(votes[vUid] === game.spotlightAnswer) addPoints(vUid, 200); });
+      Object.keys(votes).forEach(function(vUid){
+        if(votes[vUid] === game.spotlightAnswer){
+          trackStat("correctGuesses", vUid);
+          addPoints(vUid, 200);
+        }
+      });
     } else if(game.type === "roast"){
       Object.keys(votes).forEach(function(vKey){ var authorUid = votes[vKey]; addPoints(authorUid, 150); });
     } else if(game.type === "whosaid"){
-      Object.keys(votes).forEach(function(vUid){ if(votes[vUid] === game.speakerId) addPoints(vUid, 200); });
+      Object.keys(votes).forEach(function(vUid){
+        if(votes[vUid] === game.speakerId){
+          trackStat("correctGuesses", vUid);
+          addPoints(vUid, 200);
+        }
+      });
     } else if(game.type === "twotruths"){
-      Object.keys(votes).forEach(function(vUid){ if(votes[vUid] === game.lieIndex) addPoints(vUid, 200); });
+      Object.keys(votes).forEach(function(vUid){
+        if(votes[vUid] === game.lieIndex){
+          trackStat("correctGuesses", vUid);
+          addPoints(vUid, 200);
+        }
+      });
     }
     // Compute and store round points so all clients can display them
     setTimeout(function(){
@@ -2273,7 +2339,7 @@ function renderGrandPrizeCeremony(g){
     window.triggerExplosion(window.innerWidth/2, window.innerHeight/2, true, "#f59e0b");
   }
 
-  var html = '<div class="groundhdr">🏆 GRAND GAGNANT DE LA SOIRÉE</div>';
+  var html = '<div class="groundhdr">' + ICONS.trophy + ' GRAND GAGNANT DE LA SOIRÉE</div>';
   html += '<div class="ceremony-card">';
   html += '<div style="font-size:1.1rem;font-weight:900;color:var(--amber);letter-spacing:2px;margin-bottom:12px;">COURONNEMENT ULTIME</div>';
   html += avatarHTML(winner, 110);
@@ -2304,7 +2370,53 @@ function renderGrandPrizeCeremony(g){
   }
   html += '</div>';
 
-  html += '<div style="font-size:1.05rem;font-weight:800;margin-bottom:12px;">CLASSEMENT GÉNÉRAL</div>';
+  // ============ BONUS STAR AWARDS (Mario Party Style) ============
+  var bonusCategories = [
+    { key: "rpsWins", icon: ICONS.rock, title: "Ma\u00eetre du Duel", desc: "Le plus de manches RPS gagn\u00e9es", pts: 150 },
+    { key: "mostLikelyTarget", icon: ICONS.flame, title: "Cible Pr\u00e9f\u00e9r\u00e9e", desc: "Le plus souvent d\u00e9sign\u00e9 comme coupable", pts: 150 },
+    { key: "correctGuesses", icon: ICONS.idea, title: "Le Devin", desc: "Le plus de r\u00e9ponses correctes", pts: 150 }
+  ];
+
+  var anyBonuses = false;
+  var bonusHtml = '';
+  bonusCategories.forEach(function(cat, idx){
+    var catStats = sessionStats[cat.key] || {};
+    var bestUid = null, bestVal = 0;
+    Object.keys(catStats).forEach(function(uid){
+      if(catStats[uid] > bestVal){ bestVal = catStats[uid]; bestUid = uid; }
+    });
+    if(!bestUid || bestVal <= 0) return;
+    anyBonuses = true;
+    var awardee = getPlayer(bestUid) || { name: "???", id: bestUid, color: "#888" };
+    bonusHtml += '<div class="bonus-star-card" style="animation-delay:' + (idx * 0.3) + 's;">';
+    bonusHtml += '<div class="bonus-star-icon">' + ICONS.star + '</div>';
+    bonusHtml += '<div class="bonus-star-info">';
+    bonusHtml += '<div class="bonus-star-title">' + cat.icon + ' ' + cat.title + '</div>';
+    bonusHtml += '<div class="bonus-star-desc">' + cat.desc + '</div>';
+    bonusHtml += '</div>';
+    bonusHtml += '<div class="bonus-star-winner">';
+    bonusHtml += avatarHTML(awardee, 36);
+    bonusHtml += '<div style="font-weight:800;font-size:0.9rem;">' + escapeHtml(awardee.name) + '</div>';
+    bonusHtml += '<div style="font-weight:900;font-size:0.85rem;color:#10b981;">+' + cat.pts + ' pts</div>';
+    bonusHtml += '</div>';
+    bonusHtml += '</div>';
+    // Award bonus points (host only, once)
+    if(amHost && !g._bonusAwarded){
+      addPoints(bestUid, cat.pts);
+    }
+  });
+  if(amHost && !g._bonusAwarded){
+    g._bonusAwarded = true;
+  }
+
+  if(anyBonuses){
+    html += '<div style="margin-top:24px;">';
+    html += '<div class="groundhdr">' + ICONS.star + ' BONUS STARS</div>';
+    html += bonusHtml;
+    html += '</div>';
+  }
+
+  html += '<div style="font-size:1.05rem;font-weight:800;margin:20px 0 12px;">CLASSEMENT G\u00c9N\u00c9RAL</div>';
   sorted.forEach(function(p, i){
     html += '<div class="sboard-row">';
     html += '<div class="sboard-rank">#' + (i+1) + '</div>';
@@ -2315,7 +2427,7 @@ function renderGrandPrizeCeremony(g){
   });
 
   if(amHost){
-    html += '<button class="btn pri" style="margin-top:20px;" onclick="startPartyVote()">Recommencer une partie</button>';
+    html += '<button class="btn pri" style="margin-top:20px;" onclick="startPartyVote()">' + ICONS.dice + ' Recommencer une partie</button>';
   }
 
   area.innerHTML = html;
