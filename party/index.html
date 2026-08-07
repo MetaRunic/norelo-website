@@ -1930,10 +1930,10 @@ function renderMostLikely(g){
     html += '</div>';
 
     ranked.forEach(function(p){
+      if(p.id === top.id) return; // Winner is already highlighted in the main Winner Card above!
       var c = tally[p.id] || 0;
       if(c === 0) return;
-      var isWin = (p.id === top.id);
-      html += '<div class="rrow' + (isWin ? " win" : "") + '">' + avatarHTML(p, 44) + '<div class="rname">' + escapeHtml(p.name) + '</div><div class="rcount">' + c + ' votes</div></div>';
+      html += '<div class="rrow">' + avatarHTML(p, 44) + '<div class="rname">' + escapeHtml(p.name) + '</div><div class="rcount">' + c + ' votes</div></div>';
     });
     
     html += '<div style="text-align:center;"><div class="timer-badge"><span class="clock-ico">' + ICONS.clock + '</span> Prochaine manche dans <span id="countdownVal">5s</span></div></div>';
