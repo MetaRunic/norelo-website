@@ -893,7 +893,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.10</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.11</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -1781,7 +1781,12 @@ function renderRoundPointsHTML(roundPts){
   return html;
 }
 
-function animateCounters(){
+var _lastAnimatedPointsKey = "";
+function animateCounters(g){
+  var sfxKey = (g ? (g.type + "_" + (g.round || 0)) : "") + "_animatePts";
+  if(_lastAnimatedPointsKey === sfxKey) return;
+  _lastAnimatedPointsKey = sfxKey;
+
   var els = document.querySelectorAll('.round-pts-val[data-target]');
   if(els.length === 0) return;
   var hasPositive = false;
@@ -2426,7 +2431,7 @@ function renderMostLikely(g){
   }
 
   area.innerHTML = html;
-  if(g.phase === "reveal") animateCounters();
+  if(g.phase === "reveal") animateCounters(g);
 }
 
 function getPlayer(uid){
@@ -2840,7 +2845,7 @@ function renderWhoPosted(g){
   }
 
   area.innerHTML = html;
-  if(g.phase === "reveal") animateCounters();
+  if(g.phase === "reveal") animateCounters(g);
 }
 
 var _lastRevealStep = -1;
@@ -3085,7 +3090,7 @@ function renderGuessRating(g){
   }
 
   area.innerHTML = html;
-  if(g.phase === "reveal") animateCounters();
+  if(g.phase === "reveal") animateCounters(g);
 }
 
 function rateStar(starCount){
@@ -3179,7 +3184,7 @@ function renderKnowPlayer(g){
   }
 
   area.innerHTML = html;
-  if(g.phase === "reveal") animateCounters();
+  if(g.phase === "reveal") animateCounters(g);
 }
 
 function pickSpotlightAnswer(idx){
@@ -3289,7 +3294,7 @@ function renderRoast(g){
   }
 
   area.innerHTML = html;
-  if(g.phase === "reveal") animateCounters();
+  if(g.phase === "reveal") animateCounters(g);
 }
 
 function submitRoastAnswer(){
@@ -3379,7 +3384,7 @@ function renderWhoSaid(g){
   }
 
   area.innerHTML = html;
-  if(g.phase === "reveal") animateCounters();
+  if(g.phase === "reveal") animateCounters(g);
 }
 
 // =====================================================================
@@ -3444,7 +3449,7 @@ function renderTwoTruths(g){
   }
 
   area.innerHTML = html;
-  if(g.phase === "reveal") animateCounters();
+  if(g.phase === "reveal") animateCounters(g);
 }
 
 function guessLie(idx){
