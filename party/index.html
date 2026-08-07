@@ -303,38 +303,45 @@
   }
   .rps-icon-box svg { width: 48px; height: 48px; }
 
-  /* ANIME CHAKRA SMOKE MASK SUSPENSE STATE */
+  /* DENSE ANIME SMOKE MASK SUSPENSE STATE */
   .rps-suspense-box {
     position: relative;
-    animation: rpsShake 0.1s ease-in-out infinite alternate;
+    animation: rpsShake 0.08s ease-in-out infinite alternate;
   }
   .rps-suspense-box .rps-icon-box {
-    border-color: #8b5cf6 !important;
-    background: radial-gradient(circle, #3b0764 0%, #1e1b4b 70%, #0f172a 100%) !important;
-    box-shadow: 0 0 35px rgba(139, 92, 246, 0.9), inset 0 0 25px rgba(236, 72, 153, 0.6) !important;
+    border-color: #a855f7 !important;
+    background: #0f172a !important;
+    color: transparent !important;
+    box-shadow: 0 0 35px rgba(168, 85, 247, 0.9), inset 0 0 30px rgba(139, 92, 246, 0.8) !important;
     position: relative; overflow: visible;
   }
-  .rps-suspense-box .rps-icon-box::before {
-    content: ''; position: absolute; inset: -14px; border-radius: 30px;
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.85) 0%, rgba(99, 102, 241, 0.65) 50%, transparent 80%);
-    filter: blur(10px); z-index: 5; pointer-events: none;
-    animation: animeSmokeSwirl 1.1s linear infinite alternate;
+  .rps-suspense-box .rps-icon-box svg {
+    opacity: 0 !important; visibility: hidden !important;
   }
+  /* Dense Inner Smoke Layer */
+  .rps-suspense-box .rps-icon-box::before {
+    content: ''; position: absolute; inset: -20px; border-radius: 45%;
+    background: radial-gradient(circle, rgba(168, 85, 247, 1) 0%, rgba(99, 102, 241, 0.95) 45%, rgba(15, 23, 42, 0.95) 85%);
+    filter: blur(12px); z-index: 5; pointer-events: none;
+    animation: smokeLayerInner 0.9s ease-in-out infinite alternate;
+  }
+  /* Dense Outer Puffing Cloud Layer */
   .rps-suspense-box .rps-icon-box::after {
-    content: '⚡'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-    font-size: 2.4rem; color: #f59e0b; font-weight: 900; z-index: 6;
-    text-shadow: 0 0 15px #f59e0b, 0 0 25px #ec4899;
-    animation: animeSparkPulse 0.35s ease-in-out infinite alternate;
+    content: ''; position: absolute; inset: -28px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.9) 0%, rgba(139, 92, 246, 0.85) 50%, transparent 80%);
+    filter: blur(18px); z-index: 6; pointer-events: none;
+    animation: smokeLayerOuter 1.2s ease-in-out infinite alternate;
   }
 
-  @keyframes animeSmokeSwirl {
-    0% { transform: scale(0.95) rotate(-6deg); filter: blur(8px) hue-rotate(0deg); }
-    50% { transform: scale(1.15) rotate(6deg); filter: blur(14px) hue-rotate(90deg); }
-    100% { transform: scale(0.95) rotate(-6deg); filter: blur(8px) hue-rotate(180deg); }
+  @keyframes smokeLayerInner {
+    0% { transform: scale(0.9) rotate(-12deg); filter: blur(10px) hue-rotate(0deg); opacity: 0.9; }
+    50% { transform: scale(1.22) rotate(12deg); filter: blur(15px) hue-rotate(60deg); opacity: 1; }
+    100% { transform: scale(0.92) rotate(-8deg); filter: blur(11px) hue-rotate(120deg); opacity: 0.95; }
   }
-  @keyframes animeSparkPulse {
-    0% { transform: scale(0.85) rotate(-12deg); opacity: 0.7; }
-    100% { transform: scale(1.25) rotate(12deg); opacity: 1; }
+  @keyframes smokeLayerOuter {
+    0% { transform: scale(1.05) rotate(8deg); filter: blur(15px); }
+    50% { transform: scale(1.3) rotate(-15deg); filter: blur(22px); }
+    100% { transform: scale(1) rotate(10deg); filter: blur(16px); }
   }
 
   @keyframes rpsShake {
@@ -728,7 +735,7 @@ var PLAYLISTS = {
   mostlikely: [
     "https://archive.org/download/bustin-bustin-buuuustiiiin-by-lordmau5/Bustin%20Bustin%20Buuuustiiiin.mp3",
     "https://archive.org/download/tvtunes_22626/Pokemon%20-%20Dance%20Mix.mp3",
-    "https://archive.org/download/tvtunes_23926/Mortal%20Kombat%20-%20Techno-Syndrome%207%20Mix.mp3"
+    "https://archive.org/download/tvtunes_4335/Mortal%20Kombat.mp3"
   ],
   whoposted: [
     "https://archive.org/download/tvtunes_26023/Simpsons%20-%20The%20Doh%20Song%20-%20Techno%20Remix.mp3",
