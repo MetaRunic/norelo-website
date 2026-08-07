@@ -350,9 +350,10 @@
   }
 
   .rps-suspense-banner {
-    font-size: 1.5rem; font-weight: 900; color: #a855f7; text-transform: uppercase;
+    font-size: 1.3rem; font-weight: 900; color: #a855f7; text-transform: uppercase;
     letter-spacing: 2px; text-shadow: 0 0 20px rgba(168,85,247,0.9), 0 0 35px rgba(245,158,11,0.7);
     animation: pulseBanner 0.4s ease-in-out infinite alternate; margin-bottom: 12px; text-align: center;
+    white-space: nowrap;
   }
   @keyframes pulseBanner {
     0% { transform: scale(0.95); opacity: 0.8; }
@@ -1698,9 +1699,9 @@ function renderRPSArenaHTML(pA, pB, choices, duelistA, duelistB, subtitle, lastR
 
   var html = '<div class="groundhdr">ÉGALITÉ AU VOTE !</div>';
   if(stage === "suspense"){
-    html += '<div class="rps-suspense-banner">⚡ ROCHE... PAPIER... CISEAUX ! ⚡</div>';
+    html += '<div class="rps-suspense-banner">ROCHE... PAPIER... CISEAUX !</div>';
   } else {
-    html += '<div class="gprompt"><span class="dice-ico">' + ICONS.dice + '</span> BATAILLE DU ROCHE PAPIER CISEAUX !</div>';
+    html += '<div class="gprompt" style="white-space:nowrap;">' + ICONS.dice + ' ROCHE PAPIER CISEAUX !</div>';
   }
   if(subtitle) html += '<div class="gsub" style="font-weight:800;color:var(--accent);margin-bottom:12px;">' + escapeHtml(subtitle) + '</div>';
   if(lastResult) html += '<div class="gsub" style="color:var(--green);font-weight:800;margin-bottom:12px;">' + escapeHtml(lastResult) + '</div>';
