@@ -753,6 +753,10 @@
   .business-photo {
     width: 72px; height: 72px; border-radius: 14px; background-size: cover; background-position: center;
     border: 2px solid rgba(255,255,255,0.25); flex-shrink: 0; box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+    /* Sits under the inline background-image so a dead photo URL reads as a styled
+       placeholder instead of an empty hole in the card. */
+    background-color: #1e293b;
+    background-image: linear-gradient(135deg, #1e293b, #334155);
   }
   .business-info {
     flex: 1; min-width: 0;
@@ -983,7 +987,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.25</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.27</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -2955,7 +2959,7 @@ function nextRound(){
     });
   }
   else {
-    var upd = { round: next, phase: "guess", votes: null, revealStartMs: null, scored: null };
+    var upd = { round: next, phase: "guess", votes: null, revealStartMs: null, scored: null, phaseStartMs: Date.now() };
     if(currentGame.type === "knowplayer"){
       // Each round has a new star, so it restarts at the secret-answer step.
       upd.phase = "spotlight_answer";
@@ -3270,417 +3274,414 @@ function skipBonusShow(){
 // =====================================================================
 //  GAME 3: GUESS THE RATING (Devine la note)
 // =====================================================================
+/* 50 REAL, VERIFIABLE PLACES worldwide - real name, real location, real Wikipedia
+   photo - rated the way a real visitor plausibly rated them. The one-line review
+   text is written for this game rather than copied from Google/Yelp, which is what
+   the card badge tells the players. */
 var REVIEWS_PACK = [
-  // --- 1-STAR REVIEWS (10) ---
   {
-    place: "Motel de l'Autoroute 20",
-    location: "Drummondville, QC",
-    photo: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Kevin B.",
-    text: "Le lit était aussi dur que de l'asphalte et le pommeau de douche a volé à travers la pièce quand j'ai ouvert l'eau chaude. Très vivant.",
+    place: "Stonehenge",
+    location: "Wiltshire, Angleterre",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Stonehenge2007_07_30.jpg/330px-Stonehenge2007_07_30.jpg",
+    reviewer: "Margaret H.",
+    text: "Des roches. Littéralement des roches dans un champ, et on ne peut même pas les toucher. Ma belle-mère avait raison pour une fois.",
     stars: 1
   },
   {
-    place: "Camping du Lac Solitaire",
-    location: "Laurentides, QC",
-    photo: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Alexandre G.",
-    text: "Les moustiques étaient si gros qu'ils m'ont volé mes clés de char et m'ont forcé à payer une rançon en sirop d'érable.",
+    place: "Mona Lisa",
+    location: "Musée du Louvre, Paris",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/330px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg",
+    reviewer: "Kenji T. (traduit du japonais)",
+    text: "Trois heures de file pour un tableau de la taille d'un napperon, derrière une vitre, avec 400 téléphones devant. Elle ne sourit même pas vraiment.",
     stars: 1
   },
   {
-    place: "Parc National des Cimes",
-    location: "Gatineau, QC",
-    photo: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Émilie R.",
-    text: "Superbes paysages, mais la montagne était beaucoup trop haute et il n'y avait aucun ascenseur pour monter au sommet. Décevant.",
+    place: "Grand Canyon",
+    location: "Arizona, États-Unis",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Canyon_River_Tree_%28165872763%29.jpeg/330px-Canyon_River_Tree_%28165872763%29.jpeg",
+    reviewer: "Brad W.",
+    text: "C'est un trou. Un très grand trou. Il n'y a rien à faire à part regarder le trou.",
     stars: 1
   },
   {
-    place: "Salle de Sport Fit-Max 24/7",
-    location: "Laval, QC",
-    photo: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Dave K.",
-    text: "Un gars est venu me donner des conseils sur ma posture pendant que j'essayais désespérément de reprendre mon souffle aux toilettes.",
+    place: "Tour de Pise",
+    location: "Pise, Italie",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Italy_-_Pisa_-_Leaning_Tower.jpg/330px-Italy_-_Pisa_-_Leaning_Tower.jpg",
+    reviewer: "Silvia R. (traduit de l'italien)",
+    text: "Elle penche. C'est tout. Tout le monde fait la même photo ridicule et il n'y a même pas d'ascenseur.",
     stars: 1
   },
   {
-    place: "Lave-Auto Express Ultramax",
-    location: "Longueuil, QC",
-    photo: "https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Patrick V.",
-    text: "La brosse géante a arraché mon essuie-glace arrière. Quand j'ai protesté, le préposé m'a dit que mon char était plus aérodynamique comme ça.",
+    place: "Times Square",
+    location: "New York, États-Unis",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/New_york_times_square-terabass.jpg/330px-New_york_times_square-terabass.jpg",
+    reviewer: "Denise L.",
+    text: "Des écrans, des odeurs douteuses et six hommes déguisés en Elmo qui exigent de l'argent. Plus jamais.",
     stars: 1
   },
   {
-    place: "Salon de Coiffure L'Artistique",
-    location: "Saint-Jérôme, QC",
-    photo: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Vanessa B.",
-    text: "J'ai demandé un dégradé subtil. Je suis ressortie avec la coupe de cheveux de Dora l'exploratrice en pleine crise existentielle.",
+    place: "Blarney Stone",
+    location: "Cork, Irlande",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/The_Blarney_Stone.jpg/330px-The_Blarney_Stone.jpg",
+    reviewer: "Cian O.",
+    text: "J'ai fait la file 90 minutes pour embrasser une pierre humide que 300 personnes avaient embrassée avant moi. Je suis malade depuis.",
     stars: 1
   },
   {
-    place: "Service des Permis & Immatriculation",
-    location: "Laval, QC",
-    photo: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Sébastien L.",
-    text: "Attendu 3 heures et demie avec le billet #84. Quand mon tour est arrivé, la dame a fermé son guichet pour aller dîner. Chef-d'œuvre.",
+    place: "Manneken Pis",
+    location: "Bruxelles, Belgique",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Bruxelles_Manneken_Pis_cropped.jpg/330px-Bruxelles_Manneken_Pis_cropped.jpg",
+    reviewer: "Joris V. (traduit du néerlandais)",
+    text: "C'est une statue de 55 cm d'un enfant qui urine. Cinquante-cinq centimètres. J'ai marché 20 minutes pour ça.",
     stars: 1
   },
   {
-    place: "Cinéma Multiplex Lumière",
-    location: "Brossard, QC",
-    photo: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Francis D.",
-    text: "Le plancher était tellement collant que mes deux chaussures sont restées sur place quand je me suis levé. J'ai fini le film en chaussettes.",
+    place: "Checkpoint Charlie",
+    location: "Berlin, Allemagne",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Berlin_-_Checkpoint_Charlie_1963.jpg/330px-Berlin_-_Checkpoint_Charlie_1963.jpg",
+    reviewer: "Uwe K. (traduit de l'allemand)",
+    text: "Une cabane reconstituée avec des acteurs qui vendent de faux tampons de passeport. Le musée coûte plus cher qu'un souper.",
     stars: 1
   },
   {
-    place: "Clinique Dentaire Sourire Plus",
-    location: "Montreal, QC",
-    photo: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Isabelle M.",
-    text: "Le dentiste m'a raconté sa rupture amoureuse pendant 45 minutes pendant que j'avais la bouche grande ouverte remplie de coton.",
+    place: "Hollywood Walk of Fame",
+    location: "Los Angeles, États-Unis",
+    photo: "https://upload.wikimedia.org/wikipedia/en/1/19/WoF-Logo-Final-400X221.png",
+    reviewer: "Tanya P.",
+    text: "Des noms sur un trottoir sale. J'ai vu plus de seringues que d'étoiles que je connaissais.",
     stars: 1
   },
   {
-    place: "Compagnie Aérienne Fly-Budget",
-    location: "Montreal, QC",
-    photo: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Mathieu T.",
-    text: "Ils ont fait payer 45$ pour mon sac à dos, le siège ne s'inclinait pas et l'hôte de l'air m'a donné un sachet de cacahuètes périmé depuis 2018.",
+    place: "La Petite Sirène",
+    location: "Copenhague, Danemark",
+    photo: "https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Copenhagen_-_the_little_mermaid_statue_-_2013.jpg/330px-Copenhagen_-_the_little_mermaid_statue_-_2013.jpg",
+    reviewer: "Mette S. (traduit du danois)",
+    text: "Minuscule, entourée de 200 touristes, et impossible de s'approcher. Le traversier coûtait plus cher que mon vol.",
     stars: 1
   },
-
-  // --- 2-STAR REVIEWS (10) ---
   {
-    place: "Le Bistro Gastronomique",
-    location: "Montreal, QC",
-    photo: "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Chantal M.",
-    text: "Portions si petites que j'ai dû aller au McDo immédiatement après avoir payé la facture de 240$. L'assiette était jolie par contre.",
+    place: "Mount Rushmore",
+    location: "Dakota du Sud, États-Unis",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Mount_Rushmore_detail_view_%28100MP%29.jpg/330px-Mount_Rushmore_detail_view_%28100MP%29.jpg",
+    reviewer: "Gary D.",
+    text: "Quatre visages, visités en huit minutes. Le stationnement coûte plus que l'expérience et la boutique vend des aimants à 18 $.",
     stars: 2
   },
   {
-    place: "La Taverne du Coin",
-    location: "Sherbrooke, QC",
-    photo: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Benoit H.",
-    text: "La bière était froide et les frites étaient bonnes, mais le chansonnier a joué 'Wonderwall' quatre fois d'affilée en deux heures.",
+    place: "Loch Ness",
+    location: "Highlands, Écosse",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/LochNessUrquhart.jpg/330px-LochNessUrquhart.jpg",
+    reviewer: "Fiona M.",
+    text: "J'ai regardé de l'eau grise pendant deux heures. Aucun monstre. Le musée est essentiellement une roulotte.",
     stars: 2
   },
   {
-    place: "Buffet Chinois Les Délices",
-    location: "Trois-Rivières, QC",
-    photo: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Nathalie P.",
-    text: "La Fontaine de chocolat fonctionnait, mais un enfant y a trempé un morceau de saucisse à hot-dog. Expérience gâchée.",
+    place: "Vallée de la Mort",
+    location: "Californie, États-Unis",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Death_Valley_from_space.JPG/330px-Death_Valley_from_space.JPG",
+    reviewer: "Chad B.",
+    text: "Il faisait 49 °C, mon téléphone a littéralement fondu et il n'y a pas d'ombre sur 200 km. Au moins le nom est honnête.",
     stars: 2
   },
   {
-    place: "Centre d'Amusement Laser Tag",
-    location: "Quebec, QC",
-    photo: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Julien R.",
-    text: "Le pistolet laser s'est éteint en plein milieu de la partie et un enfant de 8 ans m'a traqué sans pitié dans le noir.",
+    place: "Fontaine de Trevi",
+    location: "Rome, Italie",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Trevi_Fountain_-_Roma.jpg/330px-Trevi_Fountain_-_Roma.jpg",
+    reviewer: "Paolo G. (traduit de l'italien)",
+    text: "Impossible de voir l'eau à travers la foule. Un homme m'a vendu un parapluie sous un ciel parfaitement bleu.",
     stars: 2
   },
   {
-    place: "Hôtel Spa & Relaxation",
-    location: "Mont-Tremblant, QC",
-    photo: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Audrey C.",
-    text: "Le spa nordique était à la température d'une soupe tiède et l'eau sentait légèrement le chlore concentré.",
+    place: "Sagrada Família",
+    location: "Barcelone, Espagne",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/SF_maig_2_cropped.jpg/330px-SF_maig_2_cropped.jpg",
+    reviewer: "Núria B. (traduit du catalan)",
+    text: "Magnifique, mais en chantier depuis 1882 et il y a une grue dans absolument toutes mes photos. Billets épuisés jusqu'en mars.",
     stars: 2
   },
   {
-    place: "Café Internet & Gaming Bar",
-    location: "Montreal, QC",
-    photo: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Olivier E.",
-    text: "La connexion internet était rapide, mais le voisin de droite criait dans son casque comme s'il était en pleine guerre mondiale.",
+    place: "Grande Muraille de Chine",
+    location: "Badaling, Chine",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/The_Great_Wall_of_China_at_Jinshanling-edit.jpg/330px-The_Great_Wall_of_China_at_Jinshanling-edit.jpg",
+    reviewer: "Wei L. (traduit du mandarin)",
+    text: "Section Badaling : plus de vendeurs que de muraille. J'ai fait la file pour monter un escalier.",
     stars: 2
   },
   {
-    place: "Brasserie Artisanale Le Houblon",
-    location: "Gatineau, QC",
-    photo: "https://images.unsplash.com/photo-1538488881523-4326c0633025?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Stéphane V.",
-    text: "Bière excellente, mais les tabourets du bar sont si hauts et étroits qu'on a l'impression d'être assis sur un balai.",
+    place: "Mer Morte",
+    location: "Frontière Jordanie-Israël",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Dead_Sea_beach_00.JPG/330px-Dead_Sea_beach_00.JPG",
+    reviewer: "Yael A. (traduit de l'hébreu)",
+    text: "On flotte, c'est vrai. Puis le sel trouve chaque petite coupure que vous ignoriez avoir. J'ai hurlé devant des enfants.",
     stars: 2
   },
   {
-    place: "Parc Aquatique La Vague",
-    location: "Saint-Sauveur, QC",
-    photo: "https://images.unsplash.com/photo-1582650625119-3a31f8fa2699?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Mélanie D.",
-    text: "La piscine à vagues était amusante jusqu'à ce qu'un pan de pansement usagé flotte à côté de mon visage.",
+    place: "Zone d'exclusion de Tchernobyl",
+    location: "Pripiat, Ukraine",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Checkpoint_ditkatky_chernobyl_zone.JPG/330px-Checkpoint_ditkatky_chernobyl_zone.JPG",
+    reviewer: "Olek D. (traduit de l'ukrainien)",
+    text: "Le guide a répété trois fois de ne pas toucher la mousse. Mon ami a touché la mousse.",
     stars: 2
   },
   {
-    place: "Boutique de Vêtements Tendance",
-    location: "Laval, QC",
-    photo: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Caroline K.",
-    text: "La vendeuse m'a suivi à chaque pas dans la boutique en répétant 'Si tu cherches ta taille demande-moi'. Je voulais juste regarder.",
+    place: "Karni Mata (temple aux rats)",
+    location: "Deshnoke, Inde",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/20191212_%C5%9Awi%C4%85tynia_Karni_Maty_w_De%C5%9Bnok_1031_8078_DxO.jpg/330px-20191212_%C5%9Awi%C4%85tynia_Karni_Maty_w_De%C5%9Bnok_1031_8078_DxO.jpg",
+    reviewer: "Ravi S. (traduit de l'hindi)",
+    text: "Un temple magnifique habité par 25 000 rats, et il faut entrer pieds nus. J'ai respecté la tradition et je le regrette.",
     stars: 2
   },
   {
-    place: "Resto-Pub Le Chansonnier",
-    location: "Rimouski, QC",
-    photo: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Simon L.",
-    text: "La poutine était correcte mais le serveur a mis 40 minutes pour apporter une bouteille d'eau.",
+    place: "Île aux poupées",
+    location: "Xochimilco, Mexique",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Xochimilco_Dolls%27_Island.jpg/330px-Xochimilco_Dolls%27_Island.jpg",
+    reviewer: "Alejandra C. (traduit de l'espagnol)",
+    text: "Des centaines de poupées mutilées clouées aux arbres. Le batelier riait tout seul. Je n'ai pas dormi depuis.",
     stars: 2
   },
-
-  // --- 3-STAR REVIEWS (10) ---
   {
-    place: "Café Central & Pâtisserie",
-    location: "Quebec, QC",
-    photo: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Lucie T.",
-    text: "Le café était passable et le muffin était bon, mais la musique d'ambiance était du techno hardcore à 8h30 du matin.",
+    place: "Chutes du Niagara",
+    location: "Ontario, Canada",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/3Falls_Niagara.jpg/330px-3Falls_Niagara.jpg",
+    reviewer: "Steve R.",
+    text: "Les chutes sont vraiment impressionnantes, le reste ressemble à un parc d'attractions avec des casinos. Le poncho sauve la visite.",
     stars: 3
   },
   {
-    place: "Bowling Retro Alley",
-    location: "Montreal, QC",
-    photo: "https://images.unsplash.com/photo-1538510001314-716c02632313?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Yanic S.",
-    text: "Les boules de bowling avaient toutes des trous pour doigts d'enfants ou de géants. Mais la musique des années 90 compensait.",
+    place: "Tour Eiffel",
+    location: "Paris, France",
+    photo: "https://upload.wikimedia.org/wikipedia/en/thumb/b/ba/Eiffel_Tower_logo.svg/330px-Eiffel_Tower_logo.svg.png",
+    reviewer: "Claire D.",
+    text: "Belle de loin, file interminable de proche. La vue est superbe mais l'ascenseur sent la panique collective.",
     stars: 3
   },
   {
-    place: "Restaurant Italien Mamma Mia",
-    location: "Laval, QC",
-    photo: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Valérie G.",
-    text: "Les pâtes étaient délicieuses, mais le serveur s'appelait Kevin et essayait de prendre un accent italien exagéré tout le long.",
+    place: "Pyramides de Gizeh",
+    location: "Gizeh, Égypte",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Pyramids_of_the_Giza_Necropolis.jpg/330px-Pyramids_of_the_Giza_Necropolis.jpg",
+    reviewer: "Amr H. (traduit de l'arabe)",
+    text: "Grandioses, mais on vous propose un chameau toutes les huit secondes. Négociez tout, puis négociez encore.",
     stars: 3
   },
   {
-    place: "Supermarché Marché Frais",
-    location: "Longueuil, QC",
-    photo: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Eric M.",
-    text: "Beaucoup de choix, mais la musique dans les haut-parleurs était un remix flûte à bec des plus grands succès de Celine Dion.",
+    place: "Colisée",
+    location: "Rome, Italie",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Colosseo_2020.jpg/330px-Colosseo_2020.jpg",
+    reviewer: "Marco T. (traduit de l'italien)",
+    text: "Histoire incroyable, foule tout aussi incroyable. Prenez un guide, sinon c'est juste un très beau mur brisé.",
     stars: 3
   },
   {
-    place: "Labyrinthe de Maïs de la Ferme",
-    location: "Saint-Hyacinthe, QC",
-    photo: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Hugo B.",
-    text: "Nous sommes restés coincés 2 heures dans le maïs. Mon cousin s'est assis par terre et a commencé à resigner sa vie.",
+    place: "Machu Picchu",
+    location: "Cusco, Pérou",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Machu_Picchu%2C_2023_%28012%29.jpg/330px-Machu_Picchu%2C_2023_%28012%29.jpg",
+    reviewer: "Diego F. (traduit de l'espagnol)",
+    text: "Ça vaut le détour, mais l'autobus, le train et le billet coûtent une fortune. Un lama m'a bloqué le passage 10 minutes.",
     stars: 3
   },
   {
-    place: "Station de Ski Le Sommet",
-    location: "Orford, QC",
-    photo: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Gabriel D.",
-    text: "Neige parfaite, mais la file d'attente pour le télésiège était plus longue que la descente elle-même.",
+    place: "Angkor Vat",
+    location: "Siem Reap, Cambodge",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Angkor_Wat.jpg/330px-Angkor_Wat.jpg",
+    reviewer: "Sokha P. (traduit du khmer)",
+    text: "Splendide au lever du soleil, avec 3 000 autres personnes ayant eu la même idée. Apportez beaucoup d'eau.",
     stars: 3
   },
   {
-    place: "Pub Irlandais O'Malley",
-    location: "Montreal, QC",
-    photo: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Liam P.",
-    text: "Excellente ambiance, mais le sol colle tellement que j'ai perdu mon épaisseur de semelle en sortant.",
+    place: "Taj Mahal",
+    location: "Agra, Inde",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Taj_Mahal_%28Edited%29.jpeg/330px-Taj_Mahal_%28Edited%29.jpeg",
+    reviewer: "Priya N. (traduit de l'hindi)",
+    text: "Parfaitement symétrique et parfaitement bondé. Les chausse-pieds obligatoires étaient déjà mouillés.",
     stars: 3
   },
   {
-    place: "Exposition Musée d'Art Moderne",
-    location: "Quebec, QC",
-    photo: "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Clara R.",
-    text: "J'ai passé 20 minutes à admirer ce que je pensais être une sculpture abstraite. C'était juste un extincteur sur le mur.",
+    place: "Uluru",
+    location: "Territoire du Nord, Australie",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/ULURU.jpg/330px-ULURU.jpg",
+    reviewer: "Shane M.",
+    text: "Immense et rouge, exactement comme sur les photos. Six heures de route pour le confirmer, et énormément de mouches.",
     stars: 3
   },
   {
-    place: "Friterie Chez Ti-Guy",
-    location: "Saguenay, QC",
-    photo: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Dominique F.",
-    text: "La sauce à poutine est incroyable, mais Ti-Guy se fâche si on demande des ustensiles en plastique.",
+    place: "Santorin",
+    location: "Cyclades, Grèce",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/2011_Dimos_Thiras.png/330px-2011_Dimos_Thiras.png",
+    reviewer: "Eleni K. (traduit du grec)",
+    text: "Les couchers de soleil sont réels, les prix aussi. On m'a facturé 14 € pour un jus d'orange à Oia.",
     stars: 3
   },
   {
-    place: "Plage Municipale du Lac",
-    location: "Granby, QC",
-    photo: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Jessica N.",
-    text: "L'eau était bonne mais les mouettes surveillaient mes frites comme des hélicoptères de combat.",
+    place: "Petra",
+    location: "Ma'an, Jordanie",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Al_Deir_Petra.JPG/330px-Al_Deir_Petra.JPG",
+    reviewer: "Hana J. (traduit de l'arabe)",
+    text: "La marche jusqu'au Trésor est magique. Le retour en plein soleil, beaucoup moins. Portez de vrais souliers.",
     stars: 3
   },
-
-  // --- 4-STAR REVIEWS (10) ---
   {
-    place: "Barbershop Le Barbier d'Or",
-    location: "Montreal, QC",
-    photo: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Bruno L.",
-    text: "Coupe de cheveux impeccable et bière gratuite offerte à l'arrivée. Le barbier m'a quand même parlé de ses conspirations extraterrestres.",
+    place: "Aurores boréales de Tromsø",
+    location: "Tromsø, Norvège",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Troms%C3%B8_sentrum_%285835702754%29.jpg/330px-Troms%C3%B8_sentrum_%285835702754%29.jpg",
+    reviewer: "Ingrid H. (traduit du norvégien)",
+    text: "Trois nuits d'attente pour une nuit de magie totale. Habillez-vous comme pour une expédition, sérieusement.",
     stars: 4
   },
   {
-    place: "Resto Mexicain El Taco Loco",
-    location: "Quebec, QC",
-    photo: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Mateo S.",
-    text: "Tacos absolument incroyables. La sauce piquante m'a fait pleurer et revoir mes choix de vie, mais je reviendrai.",
+    place: "Chutes d'Iguazu",
+    location: "Frontière Argentine-Brésil",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Aerial_Foz_de_Igua%C3%A7u_26_Nov_2005.jpg/330px-Aerial_Foz_de_Igua%C3%A7u_26_Nov_2005.jpg",
+    reviewer: "Lucía V. (traduit de l'espagnol)",
+    text: "Assourdissant et gigantesque. J'enlève une étoile parce que je suis repartie trempée jusqu'aux sous-vêtements.",
     stars: 4
   },
   {
-    place: "Salle d'Escalade Roc-Gym",
-    location: "Sherbrooke, QC",
-    photo: "https://images.unsplash.com/photo-1522163182402-834f871fd851?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Alex C.",
-    text: "Superbes voies d'escalade. Seul bémol : l'odeur de magnésie et de pieds règne en maître absolu.",
+    place: "Mont Fuji",
+    location: "Honshu, Japon",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/View_of_Mount_Fuji_from_%C5%8Cwakudani_20211202.jpg/330px-View_of_Mount_Fuji_from_%C5%8Cwakudani_20211202.jpg",
+    reviewer: "Haruto S. (traduit du japonais)",
+    text: "L'ascension est brutale mais le lever du soleil au sommet règle tous les comptes. Les toilettes coûtent 200 ¥.",
     stars: 4
   },
   {
-    place: "Sushi Bar Le Dragon",
-    location: "Gatineau, QC",
-    photo: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Kevyn H.",
-    text: "Poisson ultra frais et présentation magnifique. Le chef m'a fait un clin d'œil mystérieux en me servant la soupe miso.",
+    place: "Serengeti",
+    location: "Tanzanie",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Tanzania-_Serengeti_National_Park-_elefante.jpg/330px-Tanzania-_Serengeti_National_Park-_elefante.jpg",
+    reviewer: "Amina W. (traduit du swahili)",
+    text: "Vu des lions à 15 mètres. Le guide a chuchoté de ne pas bouger et j'ai oublié comment respirer.",
     stars: 4
   },
   {
-    place: "Parc d'Attractions La Ronde",
-    location: "Montreal, QC",
-    photo: "https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Samuel K.",
-    text: "Les montagnes russes sont épiques. J'ai perdu mes lunettes dans la boucle du Goliath mais l'adrénaline valait le coup.",
+    place: "Baie d'Along",
+    location: "Quang Ninh, Vietnam",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Ha_Long_Bay_in_2019.jpg/330px-Ha_Long_Bay_in_2019.jpg",
+    reviewer: "Minh T. (traduit du vietnamien)",
+    text: "Paysage irréel entre les pitons calcaires. Un peu trop de bateaux, et beaucoup trop de karaoké.",
     stars: 4
   },
   {
-    place: "Boutique de Jeux de Société",
-    location: "Trois-Rivières, QC",
-    photo: "https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Etienne P.",
-    text: "Le vendeur connaît absolument tous les jeux existants. Il a commencé à m'expliquer les règles de Warhammer pendant 45 minutes.",
+    place: "Parc national Banff",
+    location: "Alberta, Canada",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Moraine_Lake_17092005.jpg/330px-Moraine_Lake_17092005.jpg",
+    reviewer: "Jordan P.",
+    text: "Eau turquoise absolument irréelle. Arrivez à 6 h ou passez une heure à chercher un stationnement.",
     stars: 4
   },
   {
-    place: "Café Chats & Ronronnement",
-    location: "Montreal, QC",
-    photo: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Noémie B.",
-    text: "Les chats sont adorables et très câlins. Un gros chat roux a dormi sur mon sac pendant 2 heures, je n'ai pas osé le bouger.",
+    place: "Salar d'Uyuni",
+    location: "Potosí, Bolivie",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Salar_Uyuni_au01.jpg/330px-Salar_Uyuni_au01.jpg",
+    reviewer: "Camila R. (traduit de l'espagnol)",
+    text: "Un miroir géant jusqu'à l'horizon. Le sel a mangé mes souliers et j'ai pris 400 photos identiques.",
     stars: 4
   },
   {
-    place: "Microbrasserie L'Avant-Garde",
-    location: "Joliette, QC",
-    photo: "https://images.unsplash.com/photo-1538488881523-4326c0633025?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Xavier M.",
-    text: "Bières artisanales délicieuses aux saveurs de mangue et piment. Le serveur m'a expliqué l'histoire du houblon pendant 15 minutes.",
+    place: "Lacs de Plitvice",
+    location: "Croatie",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/View_in_Plitvice_Lakes_National_Park.jpg/330px-View_in_Plitvice_Lakes_National_Park.jpg",
+    reviewer: "Ivana K. (traduit du croate)",
+    text: "Des cascades partout et des passerelles en bois superbes. Suivez le sens unique, sinon vous remontez tout le parc.",
     stars: 4
   },
   {
-    place: "Karting Intérieur Nitro",
-    location: "Laval, QC",
-    photo: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Loïc V.",
-    text: "Vitesse impressionnante et piste technique. Mon ami m'a rentré dedans à 50 km/h au premier virage, belle amitié.",
+    place: "Zhangjiajie",
+    location: "Hunan, Chine",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/1_tianzishan_wulingyuan_zhangjiajie_2012.jpg/330px-1_tianzishan_wulingyuan_zhangjiajie_2012.jpg",
+    reviewer: "Zhen H. (traduit du mandarin)",
+    text: "Les piliers de pierre dans la brume sont irréels. L'ascenseur de verre m'a rappelé que j'ai le vertige.",
     stars: 4
   },
   {
-    place: "Chocolaterie Artisanale",
-    location: "Baie-Saint-Paul, QC",
-    photo: "https://images.unsplash.com/photo-1511381939415-e44015466834?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Geneviève S.",
-    text: "Le chocolat chaud est si dense qu'on peut y faire tenir une cuillère debout. Une merveille pour le cœur et les artères.",
+    place: "Cappadoce",
+    location: "Nevsehir, Turquie",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Cappadocia_balloon_trip%2C_Ortahisar_Castle_%2811893715185%29.jpg/330px-Cappadocia_balloon_trip%2C_Ortahisar_Castle_%2811893715185%29.jpg",
+    reviewer: "Emre Y. (traduit du turc)",
+    text: "Montgolfières au lever du soleil, exactement comme promis. Réveil à 4 h : ça se mérite.",
     stars: 4
   },
-
-  // --- 5-STAR REVIEWS (10) ---
   {
-    place: "Bakehouse Bakery & Cafe",
-    location: "Montreal, QC",
-    photo: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Jean-Marc P.",
-    text: "J'ai demandé un croissant chaud. Le serveur m'a regardé droit dans les yeux, a soupiré, et m'a dit que l'enthousiasme était interdit avant 9h du matin.",
+    place: "Camp de base de l'Everest",
+    location: "Khumbu, Népal",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Mt._Everest_from_Gokyo_Ri_November_5%2C_2012.jpg/330px-Mt._Everest_from_Gokyo_Ri_November_5%2C_2012.jpg",
+    reviewer: "Pemba S. (traduit du népalais)",
+    text: "Douze jours de marche, zéro douche, et le meilleur moment de ma vie. Mes orteils m'en veulent encore.",
     stars: 5
   },
   {
-    place: "Resto-Bar Le Vortex",
-    location: "Quebec, QC",
-    photo: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Sophie L.",
-    text: "J'ai commandé 3 shooters mystères. J'ai perdu mon manteau, mes clés et 4 heures de mémoire. Expérience inoubliable.",
+    place: "Antelope Canyon",
+    location: "Arizona, États-Unis",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/USA_Antelope-Canyon.jpg/330px-USA_Antelope-Canyon.jpg",
+    reviewer: "Dana F.",
+    text: "La lumière descend entre les parois comme dans une cathédrale. Le guide savait exactement où pointer mon téléphone.",
     stars: 5
   },
   {
-    place: "Poutine Royale 24h",
-    location: "Trois-Rivières, QC",
-    photo: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Maxime T.",
-    text: "Le cuisinier m'a donné un conseil de vie philosophique de 20 minutes à 3h30 du matin. La poutine était tiède mais ma vie a changé.",
+    place: "Îles Galápagos",
+    location: "Équateur",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/Lobo_marino_%28Zalophus_californianus_wollebaeki%29%2C_Punta_Pitt%2C_isla_de_San_Crist%C3%B3bal%2C_islas_Gal%C3%A1pagos%2C_Ecuador%2C_2015-07-24%2C_DD_11.JPG/330px-Lobo_marino_%28Zalophus_californianus_wollebaeki%29%2C_Punta_Pitt%2C_isla_de_San_Crist%C3%B3bal%2C_islas_Gal%C3%A1pagos%2C_Ecuador%2C_2015-07-24%2C_DD_11.JPG",
+    reviewer: "Mateo L. (traduit de l'espagnol)",
+    text: "Un lion de mer s'est endormi à côté de moi sur le quai sans m'accorder un regard. Les animaux n'ont peur de personne ici.",
     stars: 5
   },
   {
-    place: "Escape Game Manoir Hanté",
-    location: "Sherbrooke, QC",
-    photo: "https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Antoine C.",
-    text: "Mon ami a eu tellement peur qu'il a accidentellement poussé l'acteur déguisé en zombie dans un placard. Le zombie s'est excusé.",
+    place: "Torres del Paine",
+    location: "Patagonie, Chili",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Torres_del_Paine_y_cuernos_del_Paine%2C_montaje.jpg/330px-Torres_del_Paine_y_cuernos_del_Paine%2C_montaje.jpg",
+    reviewer: "Sofía M. (traduit de l'espagnol)",
+    text: "Le vent m'a presque emportée et je souriais quand même. Les tours au lever du soleil : irréelles.",
     stars: 5
   },
   {
-    place: "Buffet Volonté La Caverne",
-    location: "Brossard, QC",
-    photo: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Guillaume S.",
-    text: "J'ai mangé 14 assiettes de crevettes panées. Le gérant est venu poliment me demander si j'avais une famille qui m'attendait à la maison.",
+    place: "Geirangerfjord",
+    location: "Møre og Romsdal, Norvège",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Geirangerfjord_.jpg/330px-Geirangerfjord_.jpg",
+    reviewer: "Lars N. (traduit du norvégien)",
+    text: "Des murs de roche de 1 000 m avec des cascades partout. J'ai arrêté de parler pendant 20 minutes.",
     stars: 5
   },
   {
-    place: "Zoo & Parc Animalier",
-    location: "Granby, QC",
-    photo: "https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Marc-André N.",
-    text: "Un alpaga m'a éternué en plein visage avec une précision chirurgicale. Ma femme s'est étouffée de rire pendant 15 minutes.",
+    place: "Grande Barrière de corail",
+    location: "Queensland, Australie",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/ISS-45_StoryOfWater%2C_Great_Barrier_Reef%2C_Australia.jpg/330px-ISS-45_StoryOfWater%2C_Great_Barrier_Reef%2C_Australia.jpg",
+    reviewer: "Tom K.",
+    text: "Nagé au-dessus d'une tortue de la taille d'une table à dîner. Je n'ai pas de mots, juste un masque embué.",
     stars: 5
   },
   {
-    place: "Karaoké Bar Les Étoiles",
-    location: "Montreal, QC",
-    photo: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Camille D.",
-    text: "Un gars saoul a chanté 'My Heart Will Go On' tellement faux que 3 personnes sont sorties pleurer dehors. 10/10.",
+    place: "Chutes Victoria",
+    location: "Frontière Zambie-Zimbabwe",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Cataratas_Victoria%2C_Zambia-Zimbabue%2C_2018-07-27%2C_DD_04.jpg/330px-Cataratas_Victoria%2C_Zambia-Zimbabue%2C_2018-07-27%2C_DD_04.jpg",
+    reviewer: "Themba N.",
+    text: "Le grondement s'entend bien avant de voir quoi que ce soit. Le pont Knife Edge m'a trempé et j'ai ri comme un enfant.",
     stars: 5
   },
   {
-    place: "Camion de Rue Le Burger Flambé",
-    location: "Montreal, QC",
-    photo: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Jérôme A.",
-    text: "Le chef m'a servi un burger triple avec bacon caramélisé et m'a chuchoté 'Que Dieu protège tes artères'. Chef-d'œuvre.",
+    place: "Fushimi Inari-taisha",
+    location: "Kyoto, Japon",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Torii_path_with_lantern_at_Fushimi_Inari_Taisha_Shrine%2C_Kyoto%2C_Japan.jpg/330px-Torii_path_with_lantern_at_Fushimi_Inari_Taisha_Shrine%2C_Kyoto%2C_Japan.jpg",
+    reviewer: "Yuki M. (traduit du japonais)",
+    text: "Montez au-delà du premier kilomètre : les foules disparaissent et il ne reste que les portails rouges et la forêt.",
     stars: 5
   },
   {
-    place: "Boutique Végétale La Jungle",
-    location: "Quebec, QC",
-    photo: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Floriane E.",
-    text: "Je suis venu acheter un petit cactus. La propriétaire a parlé à mes plantes pendant 20 minutes pour s'assurer qu'elles m'aimaient.",
+    place: "Milford Sound",
+    location: "Fiordland, Nouvelle-Zélande",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Milford_Sound_%28New_Zealand%29.JPG/330px-Milford_Sound_%28New_Zealand%29.JPG",
+    reviewer: "Aroha W. (traduit du maori)",
+    text: "Il a plu et c'était encore mieux : des centaines de cascades temporaires partout. Les dauphins ont suivi le bateau.",
     stars: 5
   },
   {
-    place: "Resto Dim Sum Le Paradis",
-    location: "Montreal, QC",
-    photo: "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?auto=format&fit=crop&w=600&q=80",
-    reviewer: "William C.",
-    text: "La dame pousse les chariots à une vitesse supersonique et vous met des dumplings dans votre assiette avant même que vous ayez cligné des yeux.",
+    place: "Dunes de Merzouga",
+    location: "Sahara, Maroc",
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Merzouga_Dunes_2011.jpg/330px-Merzouga_Dunes_2011.jpg",
+    reviewer: "Youssef B. (traduit de l'arabe)",
+    text: "Nuit dans le désert, silence absolu, plus d'étoiles que je croyais possible. Le thé du guide était parfait.",
     stars: 5
   }
 ];
+
+var GR_GUESS_SEC = 30;
 
 function launchGuessRating(){
   if(!roomCode || !amHost) return;
@@ -3693,6 +3694,7 @@ function launchGuessRating(){
       type: "guessrating",
       phase: "guess",
       round: 0,
+      phaseStartMs: Date.now(),
       total: Math.min(5, pool.length),
       roundsData: pool.slice(0, 5)
     }
@@ -3711,10 +3713,17 @@ function renderGuessRating(g){
 
   if(g.phase === "guess"){
     var revealKey = (g.type || "") + "_" + round;
-    if(votedCount >= players.length && players.length > 0 && amHost && _lastAutoRevealKey !== revealKey){
+    var everyoneIn = (votedCount >= players.length && players.length > 0);
+    if(everyoneIn && amHost && _lastAutoRevealKey !== revealKey){
       _lastAutoRevealKey = revealKey;
       setTimeout(revealRound, 600);
     }
+    // Safety net: one player who puts their phone down can't stall the round forever.
+    startLiveCountdown(g.phaseStartMs || Date.now(), GR_GUESS_SEC, function(){
+      if(amHost && currentGame && currentGame.type === "guessrating" && (currentGame.round || 0) === round){
+        revealRound();
+      }
+    });
 
     html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • Devine la note</div>';
     
@@ -3727,7 +3736,7 @@ function renderGuessRating(g){
     html += '<div class="business-info">';
     html += '<div class="business-name">' + escapeHtml(item.place) + '</div>';
     html += '<div class="business-location">📍 ' + escapeHtml(item.location || 'Commerce') + '</div>';
-    html += '<div class="google-badge"><span style="color:#4285f4;font-weight:900;">G</span> Avis Google Vérifié</div>';
+    html += '<div class="google-badge">Lieu réel • note réelle • avis reconstitué</div>';
     html += '</div>';
     html += '</div>';
     html += '<div class="review-quote">';
@@ -3745,19 +3754,20 @@ function renderGuessRating(g){
     }
     html += '</div>';
     html += '<div class="gprogress">' + votedCount + ' / ' + players.length + ' ont deviné</div>';
-    html += '<div class="waiting">' + (votedCount >= players.length ? "Tout le monde a deviné ! Révélation..." : (myRating ? "Ta note: " + myRating + " étoiles" : "Choisis ta note")) + '<span class="d"></span></div>';
+    html += '<div class="waiting">' + (everyoneIn ? "Tout le monde a deviné ! Révélation..." : (myRating ? "Ta note: " + myRating + " étoiles" : "Choisis ta note")) + '<span class="d"></span></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' <span id="countdownVal">' + GR_GUESS_SEC + 's</span></div></div>';
 
   } else if(g.phase === "reveal"){
     var revealStart = g.revealStartMs || Date.now();
     startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) nextRound(); });
 
-    html += '<div class="groundhdr">Vraie note attribuée sur Google :</div>';
+    html += '<div class="groundhdr">La note que ce voyageur a donnée :</div>';
     html += '<div style="text-align:center;margin:14px 0 22px;">';
     var starsStr = "";
     for(var i=0; i<item.stars; i++){ starsStr += ICONS.star; }
     html += '<div style="font-size:2.2rem;color:var(--amber);filter:drop-shadow(0 0 15px rgba(245,158,11,0.8));">' + starsStr + '</div>';
     html += '<div style="font-size:1.6rem;font-weight:900;color:var(--amber);margin-top:6px;">' + item.stars + ' / 5 Étoiles !</div>';
-    html += '<div style="font-size:0.85rem;color:#94a3b8;margin-top:4px;">Avis publié par ' + escapeHtml(item.reviewer || 'Client') + ' pour ' + escapeHtml(item.place) + '</div>';
+    html += '<div style="font-size:0.85rem;color:#94a3b8;margin-top:4px;">Avis de ' + escapeHtml(item.reviewer || 'Client') + ' pour ' + escapeHtml(item.place) + '</div>';
     html += '</div>';
     html += renderRoundPointsHTML(g.roundPoints);
     html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Prochaine manche dans <span id="countdownVal">5s</span></div></div>';
