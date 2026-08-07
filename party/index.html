@@ -779,6 +779,11 @@
     background: #0b1229; border: 1px solid rgba(255,255,255,.14);
   }
   .review-shots.pair .review-shot { max-height: 196px; }
+  .review-shot.shot-missing {
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    min-height: 96px; padding: 10px; font-size: .68rem; font-weight: 700;
+    letter-spacing: .04em; color: #64748b;
+  }
   @media (max-width: 360px){
     .review-shot { max-height: 190px; }
     .review-shots.pair .review-shot { max-height: 142px; }
@@ -1020,7 +1025,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.31</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.32</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -3496,7 +3501,7 @@ var REVIEWS_PACK = [
     product: "Harnais de lingerie ajustable",
     seller: "Amazon.com",
     shots: ["reviews/CatLingerie.png"],
-    photo: null,
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Cat_August_2010-4.jpg/330px-Cat_August_2010-4.jpg",
     reviewer: "Client Amazon",
     date: "9 février 2019",
     text: "Truc incroyable ! Mon mari a ouvert le colis pendant que j'étais sortie. Il n'arrivait pas à comprendre ce que c'était. Il pensait que c'était un harnais pour chat.",
@@ -3508,7 +3513,7 @@ var REVIEWS_PACK = [
     product: "Camisole en crochet — taille unique",
     seller: "Amazon.com",
     shots: ["reviews/fitscat.png","reviews/fitscat2.png"],
-    photo: null,
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Table-cloth_2008-1.jpg/330px-Table-cloth_2008-1.jpg",
     reviewer: "Client Amazon",
     date: "11 avril 2015",
     text: "Bon, ça fait au chat. Ma fille de 16 ans a acheté ce truc. C'est ridiculement petit et je ne pourrais probablement pas publier légalement une photo de ce que ça donne si elle essayait de le porter. Mais, pour que vous puissiez voir… voici une photo de notre chat qui le porte. Pour être juste, ça couvre tous les mamelons du chat, par contre elle déteste le tissage. En résumé : n'achetez pas ça, même pour votre chat.",
@@ -3520,7 +3525,7 @@ var REVIEWS_PACK = [
     product: "Avidlove — Robe résille moulante",
     seller: "Amazon.com · 2 K+ vendus ce mois-ci",
     shots: ["reviews/gunlingerie1.png","reviews/gunlingerie2.png"],
-    photo: null,
+    photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Cocktail_Party_At_The_Imperial_Hotel_March_13%2C_1961_%28Tokyo%2C_Japan%29_%28496610682%29.jpg/330px-Cocktail_Party_At_The_Imperial_Hotel_March_13%2C_1961_%28Tokyo%2C_Japan%29_%28496610682%29.jpg",
     reviewer: "MR",
     date: "4 juillet 2018",
     text: "Wow ! J'adore la sensation moulante pendant la chasse aux serpents mocassins. Oubliez les demoiselles du club… il n'y a rien de mieux pour chasser ces serpents que quelque chose de moulant qui épouse bien le corps, mouvement des bras libre, vêtement spacieux. Je recommande définitivement ce produit pour la chasse au mocassin. Allez les filles ! Achetez ça ! Holla !",
@@ -4081,6 +4086,23 @@ var REVIEWS_PACK = [
 
 var GR_GUESS_SEC = 30;
 
+// Resolve bundled assets against the directory that holds index.html. A bare relative
+// path like "reviews/x.png" breaks when the page is served as /party with no trailing
+// slash: the browser resolves it against /party (treated as a file) and asks for
+// /reviews/x.png instead. This normalises /party, /party/, /party/index.html and
+// file:///.../party/index.html to the same base.
+function assetBase(){
+  var p = location.pathname || "/";
+  if(/\.html?$/i.test(p)) p = p.replace(/[^\/]*$/, "");
+  if(!/\/$/.test(p)) p += "/";
+  return p;
+}
+function assetUrl(p){
+  if(!p) return p;
+  if(/^(https?:)?\/\//i.test(p) || /^data:/i.test(p) || p.charAt(0) === "/") return p;
+  return assetBase() + p;
+}
+
 // A review's own screenshots when we have them, otherwise the generic fallback image.
 function reviewShotsHTML(item){
   var list = (item.shots && item.shots.length) ? item.shots : (item.photo ? [item.photo] : []);
@@ -4088,15 +4110,16 @@ function reviewShotsHTML(item){
   var fb = item.photo || '';
   var out = '<div class="review-shots' + (list.length > 1 ? ' pair' : '') + '">';
   list.forEach(function(src){
-    out += '<img class="review-shot" src="' + escapeHtml(src) + '"' +
-           ((fb && src !== fb) ? ' data-fb="' + escapeHtml(fb) + '"' : '') +
+    out += '<img class="review-shot" src="' + escapeHtml(assetUrl(src)) + '"' +
+           ((fb && src !== fb) ? ' data-fb="' + escapeHtml(assetUrl(fb)) + '"' : '') +
            ' alt="" onerror="shotFallback(this)">';
   });
   return out + '</div>';
 }
 
-// A missing or renamed crop degrades to the generic image once, then hides itself,
-// so a typo in a filename can never leave a broken-image icon on the card.
+// A missing or renamed crop degrades to the generic image once. If that fails too it
+// becomes a labelled placeholder rather than vanishing - a silently hidden image is how
+// three cards ended up with no picture at all and nothing to point at.
 function shotFallback(el){
   var fb = el.getAttribute('data-fb');
   if(fb && el.getAttribute('data-tried') !== '1'){
@@ -4104,7 +4127,13 @@ function shotFallback(el){
     el.src = fb;
     return;
   }
-  el.style.display = 'none';
+  var failed = el.getAttribute('src') || '';
+  var ph = document.createElement('div');
+  ph.className = 'review-shot shot-missing';
+  ph.textContent = 'image introuvable';
+  ph.title = failed;
+  console.warn('[reviews] image failed to load: ' + failed);
+  if(el.parentNode) el.parentNode.replaceChild(ph, el);
 }
 function launchGuessRating(){
   if(!roomCode || !amHost) return;
