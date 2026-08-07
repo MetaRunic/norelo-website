@@ -537,7 +537,7 @@
 
   /* Game engine layout */
   .groundhdr{font-size:.78rem; color:#8ea0cc; text-transform:uppercase; letter-spacing:.12em; text-align:center; margin-bottom:14px; font-weight:700;}
-  .gprompt{font-size:1.4rem; font-weight:800; text-align:center; line-height:1.35; margin-bottom:18px;}
+  .gprompt{font-size:1.4rem; font-weight:800; text-align:center; line-height:1.35; margin-bottom:18px; text-wrap:balance; overflow-wrap:break-word; hyphens:none;}
   .gsub{text-align:center; color:#8ea0cc; font-size:.9rem; margin-bottom:16px;}
   .vgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px;}
   .vcell{display:flex; flex-direction:column; align-items:center; gap:8px; padding:13px 6px; border-radius:14px; border:2px solid transparent; background:var(--panel); cursor:pointer; transition:border-color .15s, transform .1s, background .15s;}
@@ -631,6 +631,12 @@
   .kp-verdict {
     text-align: center; font-size: 1.02rem; font-weight: 900; line-height: 1.35;
     padding: 12px; border-radius: 14px; margin: 16px 0 4px;
+  }
+  .kp-solo-badge {
+    display: block; width: fit-content; margin: 0 auto 12px; padding: 3px 10px;
+    border-radius: 10px; font-size: .66rem; font-weight: 800; letter-spacing: .1em;
+    color: var(--amber); background: rgba(245,158,11,0.12);
+    border: 1px solid rgba(245,158,11,0.4);
   }
   .kp-verdict.good { color: #6ee7b7; background: rgba(16,185,129,0.14); }
   .kp-verdict.bad { color: #fca5a5; background: rgba(239,68,68,0.14); }
@@ -977,7 +983,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.20</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.21</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -1893,6 +1899,15 @@ function renderPlayers(){
   var n = players.length;
   $("pcount").textContent = n + (n===1 ? " joueur" : " joueurs");
 }
+// French typography: a no-break space belongs before : ; ! ? and inside « ».
+// It also stops the line breaking there, which is what left a lone ":" on its own row.
+function frTypo(s){
+  if(!s) return "";
+  return String(s)
+    .replace(/[ 	]+([:;!?»])/g, " $1")
+    .replace(/(«)[ 	]+/g, "$1 ");
+}
+
 function avatarHTML(p, size, hideCrown){
   var crown = (p.host && !hideCrown) ? '<span class="crown">' + ICONS.crown + '</span>' : '';
   var base = 'width:' + size + 'px;height:' + size + 'px;font-size:' + Math.round(size*0.4) + 'px;position:relative;';
@@ -3114,10 +3129,10 @@ function renderMiniGameDoneHTML(){
 
   // Compute 3 Bonus Star awards
   var bonusCategories = [
-    { key: "rpsWins", icon: ICONS.rock, title: "Maître du Duel", desc: "Le plus de manches RPS gagnées", pts: 150 },
-    { key: "mostLikelyTarget", icon: ICONS.flame, title: "Cible Préférée", desc: "Le plus souvent désigné par le groupe", pts: 150 },
-    { key: "correctGuesses", icon: ICONS.idea, title: "Le Devin", desc: "Le plus de prédictions correctes", pts: 150 },
-    { key: "mvp", icon: ICONS.star, title: "Star de la Manche", desc: "Performance exceptionnelle de la soirée", pts: 150 }
+    { key: "rpsWins", icon: ICONS.rock, title: "Roi du Roche-Papier-Ciseaux", desc: "A gagné le plus de duels roche-papier-ciseaux", pts: 150 },
+    { key: "mostLikelyTarget", icon: ICONS.flame, title: "Cible Préférée", desc: "Le plus souvent pointé du doigt par la gang", pts: 150 },
+    { key: "correctGuesses", icon: ICONS.idea, title: "Le Devin", desc: "A deviné juste le plus souvent", pts: 150 },
+    { key: "mvp", icon: ICONS.star, title: "Star de la Soirée", desc: "Le plus gros total de points de la soirée", pts: 150 }
   ];
 
   var awards = [];
@@ -3897,7 +3912,12 @@ function renderKnowPlayer(g){
   var guessers = solo ? players.slice()
                       : players.filter(function(p){ return p.id !== item.spotlightId; });
   var votedCount = Object.keys(votes).length;
-  var hdr = '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • Connais-tu bien ' + escapeHtml(spotlightName) + ' ?</div>';
+  var hdr = '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • ' + frTypo('Connais-tu bien ' + escapeHtml(spotlightName) + ' ?') + '</div>';
+  // Visible confirmation that solo mode engaged. If this badge is missing while you
+  // think you're alone, a second tab is still registered as a player in the room.
+  if(solo && g.phase !== "done"){
+    hdr += '<div class="kp-solo-badge">MODE SOLO (TEST) — 1 joueur</div>';
+  }
   var html = "";
 
   function spotCardHTML(label){
@@ -3925,7 +3945,7 @@ function renderKnowPlayer(g){
 
     html += hdr;
     html += spotCardHTML("Joueur vedette");
-    html += '<div class="gprompt">' + escapeHtml(question) + '</div>';
+    html += '<div class="gprompt">' + escapeHtml(frTypo(question)) + '</div>';
 
     if(iAmSpotlight){
       html += '<div class="gsub">Tu es la vedette ! Choisis ta vraie réponse — les autres vont essayer de te deviner.</div>';
@@ -3952,15 +3972,15 @@ function renderKnowPlayer(g){
 
     html += hdr;
     html += spotCardHTML(hasAnswer ? "A répondu en secret" : "Joueur vedette");
-    html += '<div class="gprompt">' + escapeHtml(question) + '</div>';
+    html += '<div class="gprompt">' + escapeHtml(frTypo(question)) + '</div>';
 
     if(iAmSpotlight && !solo){
-      html += '<div class="gsub">Ta réponse secrète est verrouillée :</div>';
+      html += '<div class="gsub">' + frTypo('Ta réponse secrète est verrouillée :') + '</div>';
       html += '<div class="kp-opt correct"><div class="kp-opt-txt">' + escapeHtml(options[spotlightAnswer] || "—") + '</div><span class="kp-opt-check">' + ICONS.check + '</span></div>';
       html += '<div class="gprogress">' + votedCount + ' / ' + guessers.length + ' ont prédit</div>';
       html += '<div class="waiting">La gang essaie de te deviner<span class="d"></span></div>';
     } else {
-      html += '<div class="gsub">' + (solo ? 'Mode solo (test) — devine ta propre réponse :' : 'Qu\'est-ce que ' + escapeHtml(spotlightName) + ' a choisi ?') + '</div>';
+      html += '<div class="gsub">' + (solo ? frTypo('Mode solo (test) — devine ta propre réponse :') : frTypo('Qu\'est-ce que ' + escapeHtml(spotlightName) + ' a choisi ?')) + '</div>';
       options.forEach(function(opt, idx){
         var sel = (votes[myId] === idx) ? " pri" : " sec";
         html += '<button class="btn' + sel + '" style="margin-bottom:10px;text-align:left;" onclick="guessSpotlight(' + idx + ')">' + escapeHtml(opt) + '</button>';
@@ -3991,7 +4011,7 @@ function renderKnowPlayer(g){
 
     html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • La vérité est dévoilée</div>';
     html += '<div style="text-align:center;margin-bottom:6px;">' + avatarHTML(spotlight, 84) + '</div>';
-    html += '<div class="gprompt" style="font-size:1.1rem;margin-bottom:14px;">' + escapeHtml(spotlightName) + ' a répondu :</div>';
+    html += '<div class="gprompt" style="font-size:1.1rem;margin-bottom:14px;">' + frTypo(escapeHtml(spotlightName) + ' a répondu :') + '</div>';
 
     // Every option, with the avatars of whoever bet on it.
     options.forEach(function(opt, idx){
