@@ -875,7 +875,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.2</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.3</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -1720,12 +1720,13 @@ function trackStat(category, uid){
 
 function startPartyVote(){
   if(!roomCode || !amHost) return;
-  db.ref("rooms/" + roomCode + "/game").set({
-    type: "voting",
-    phase: "vote",
-    votes: {}
-  }).then(function(){
-    db.ref("rooms/" + roomCode + "/status").set("playing");
+  db.ref("rooms/" + roomCode).update({
+    status: "playing",
+    game: {
+      type: "voting",
+      phase: "vote",
+      votes: {}
+    }
   });
 }
 
@@ -1750,7 +1751,7 @@ function getGameMode(gid){
   for(var i = 0; i < GAME_MODES.length; i++){
     if(GAME_MODES[i].id === gid) return GAME_MODES[i];
   }
-  return { id: gid, title: "Jeu", icon: ICONS.dice };
+  return GAME_MODES[0];
 }
 function getGameTitle(gid){ return getGameMode(gid).title; }
 
@@ -2176,8 +2177,9 @@ function launchMostLikely(){
   var pool = MOSTLIKELY_PROMPTS.slice();
   shuffle(pool);
   var chosen = pool.slice(0, Math.min(10, pool.length));
-  db.ref("rooms/" + roomCode + "/game").set({ type:"mostlikely", phase:"guess", round:0, total:chosen.length, prompts:chosen }).then(function(){
-    db.ref("rooms/" + roomCode + "/status").set("playing");
+  db.ref("rooms/" + roomCode).update({
+    status: "playing",
+    game: { type:"mostlikely", phase:"guess", round:0, total:chosen.length, prompts:chosen }
   });
 }
 
@@ -2550,7 +2552,10 @@ function nextRound(){
   var next = (currentGame.round || 0) + 1;
   if(next >= (currentGame.total || 1)){
     awardEndGameBonusStars();
-    db.ref("rooms/" + roomCode + "/game/phase").set("done");
+    db.ref("rooms/" + roomCode + "/game").update({
+      phase: "done",
+      ceremonyStartMs: Date.now()
+    });
   }
   else { db.ref("rooms/" + roomCode + "/game").update({ round: next, phase: "guess", votes: null, revealStartMs: null, scored: null }); }
 }
@@ -2560,8 +2565,9 @@ function nextRound(){
 // =====================================================================
 function launchGrandPrizeCeremony(){
   if(!roomCode || !amHost) return;
-  db.ref("rooms/" + roomCode + "/game").set({
-    type: "ceremony"
+  db.ref("rooms/" + roomCode).update({
+    status: "playing",
+    game: { type: "ceremony" }
   });
 }
 
@@ -2724,8 +2730,11 @@ var _lastRevealStep = -1;
 
 function renderMiniGameDoneHTML(){
   var g = currentGame || {};
-  var startTime = g.ceremonyStartMs || g.revealStartMs || Date.now();
-  var elapsedSec = Math.floor((Date.now() - startTime) / 1000);
+  if(!g._localCeremonyStart){
+    g._localCeremonyStart = g.ceremonyStartMs || Date.now();
+  }
+  var startTime = g.ceremonyStartMs || g._localCeremonyStart;
+  var elapsedSec = Math.max(0, Math.floor((Date.now() - startTime) / 1000));
 
   // Compute 3 Bonus Star awards
   var bonusCategories = [
