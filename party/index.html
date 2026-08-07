@@ -483,7 +483,7 @@
 
 <!-- Floating Audio Toggle Button (Top-Right) -->
 <div id="audioControls">
-  <audio id="bgMusicTrack" loop src="https://archive.org/download/eiffel-65-blue-da-ba-dee_202212/Eiffel%2065%20-%20Blue%20%28Da%20Ba%20Dee%29%20.mp3" preload="auto"></audio>
+  <audio id="bgMusicTrack" loop preload="auto"></audio>
   <button id="audioToggle" onclick="toggleAudio()" title="Activer / Désactiver la musique">
     <span id="audioIcon"><svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
   </button>
@@ -783,7 +783,7 @@ function playGameMusic(type){
   
   // Pick a random track from the pool
   var curSrc = (track.src || "").trim();
-  var available = list.filter(function(url){ return url.toLowerCase() !== curSrc.toLowerCase(); });
+  var available = curSrc ? list.filter(function(url){ return url.toLowerCase() !== curSrc.toLowerCase(); }) : list;
   if(available.length === 0) available = list;
   var nextSrc = available[Math.floor(Math.random() * available.length)];
   
