@@ -635,6 +635,55 @@
     100% { transform: scale(1.25) rotate(6deg); }
   }
 
+  /* POKEMON / MARIO PARTY STYLE REVEAL SHOW */
+  .pokemon-stage {
+    min-height: 340px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    margin: 10px 0 20px 0; perspective: 1000px;
+  }
+  .pokemon-card-container {
+    width: 100%; max-width: 440px; background: linear-gradient(135deg, rgba(245, 158, 11, 0.22), rgba(168, 85, 247, 0.32));
+    border: 3px solid rgba(254, 240, 138, 0.9); box-shadow: 0 0 45px rgba(245, 158, 11, 0.55), inset 0 0 25px rgba(245, 158, 11, 0.25);
+    border-radius: 26px; padding: 26px 20px; text-align: center; position: relative; overflow: hidden;
+    animation: stagePulse 2s ease-in-out infinite alternate; margin: 0 auto;
+  }
+  @keyframes stagePulse {
+    0% { box-shadow: 0 0 25px rgba(245, 158, 11, 0.4); transform: scale(0.99); }
+    100% { box-shadow: 0 0 55px rgba(245, 158, 11, 0.75); transform: scale(1.01); }
+  }
+
+  .pokemon-avatar-wrapper {
+    position: relative; display: inline-flex; align-items: center; justify-content: center; margin: 16px auto;
+  }
+
+  .pokemon-silhouette .avatar {
+    filter: brightness(0) drop-shadow(0 0 16px rgba(250, 204, 21, 0.95)) !important;
+    animation: silhouettePulse 0.8s ease-in-out infinite alternate;
+  }
+  @keyframes silhouettePulse {
+    0% { transform: scale(0.96); filter: brightness(0) drop-shadow(0 0 10px rgba(250, 204, 21, 0.6)) !important; }
+    100% { transform: scale(1.08); filter: brightness(0) drop-shadow(0 0 28px rgba(250, 204, 21, 1)) !important; }
+  }
+
+  .pokemon-question-mark {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 2.5rem; font-weight: 900; color: #fef08a; pointer-events: none;
+    text-shadow: 0 0 18px rgba(250, 204, 21, 1), 0 2px 6px rgba(0,0,0,0.9);
+    animation: qmPulse 1.2s ease-in-out infinite alternate;
+  }
+  @keyframes qmPulse {
+    0% { transform: translate(-50%, -50%) scale(0.85) rotate(-10deg); }
+    100% { transform: translate(-50%, -50%) scale(1.3) rotate(10deg); }
+  }
+
+  .pokemon-reveal-burst {
+    animation: revealPop 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+  }
+  @keyframes revealPop {
+    0% { transform: scale(0.3) rotate(-12deg); opacity: 0; }
+    50% { transform: scale(1.2) rotate(4deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
   /* RED DESTRUCTIVE QUIT BUTTON */
   .btn-danger-quit {
     background: linear-gradient(135deg, rgba(239, 68, 68, 0.18), rgba(185, 28, 28, 0.3));
@@ -826,7 +875,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.1</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.2</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -2671,17 +2720,14 @@ function renderWhoPosted(g){
   if(g.phase === "reveal") animateCounters();
 }
 
-function renderMiniGameDoneHTML(){
-  sfxWin();
-  if(window.triggerExplosion){
-    window.triggerExplosion(window.innerWidth/2, 220, true, "#f59e0b");
-  }
+var _lastRevealStep = -1;
 
-  var html = '<div class="groundhdr">FIN DU MINI-JEU !</div>';
-  html += '<div style="text-align:center;margin:20px 0;">';
-  html += '<div style="font-size:1.3rem;font-weight:900;color:#fff;margin-bottom:14px;">🔥 Bravo à tous les participants !</div>';
-  
-  // ============ MARIO PARTY BONUS STARS (FIN DU JEU) ============
+function renderMiniGameDoneHTML(){
+  var g = currentGame || {};
+  var startTime = g.ceremonyStartMs || g.revealStartMs || Date.now();
+  var elapsedSec = Math.floor((Date.now() - startTime) / 1000);
+
+  // Compute 3 Bonus Star awards
   var bonusCategories = [
     { key: "rpsWins", icon: ICONS.rock, title: "Maître du Duel", desc: "Le plus de manches RPS gagnées", pts: 150 },
     { key: "mostLikelyTarget", icon: ICONS.flame, title: "Cible Préférée", desc: "Le plus souvent désigné par le groupe", pts: 150 },
@@ -2689,16 +2735,13 @@ function renderMiniGameDoneHTML(){
     { key: "mvp", icon: ICONS.star, title: "Star de la Manche", desc: "Performance exceptionnelle de la soirée", pts: 150 }
   ];
 
-  var bonusHtml = '';
+  var awards = [];
   var usedAwardees = {};
-  var count = 0;
-
   var sortedPlayers = players.slice().sort(function(a,b){ return (sessionScores[b.id]||0) - (sessionScores[a.id]||0); });
 
   bonusCategories.forEach(function(cat){
-    if(count >= 3) return; // Max 3 cards for clean presentation
+    if(awards.length >= 3) return;
     var bestUid = null, bestVal = 0;
-    
     if(cat.key === "mvp"){
       var topPlayer = sortedPlayers.find(function(p){ return !usedAwardees[p.id]; }) || sortedPlayers[0];
       if(topPlayer){ bestUid = topPlayer.id; bestVal = 1; }
@@ -2712,51 +2755,129 @@ function renderMiniGameDoneHTML(){
         if(fallbackPlayer){ bestUid = fallbackPlayer.id; bestVal = 1; }
       }
     }
-
-    if(!bestUid) return;
-    usedAwardees[bestUid] = true;
-    count++;
-
-    var awardee = getPlayer(bestUid) || { name: "Joueur", id: bestUid, color: "#2563eb" };
-    bonusHtml += '<div class="bonus-star-card" style="animation-delay:' + (count * 0.2) + 's;">';
-    bonusHtml += '<div class="bonus-star-icon">' + ICONS.star + '</div>';
-    bonusHtml += '<div class="bonus-star-info">';
-    bonusHtml += '<div class="bonus-star-title">' + cat.icon + ' ' + cat.title + '</div>';
-    bonusHtml += '<div class="bonus-star-desc">' + cat.desc + '</div>';
-    bonusHtml += '</div>';
-    bonusHtml += '<div class="bonus-star-winner">';
-    bonusHtml += avatarHTML(awardee, 40);
-    bonusHtml += '<div style="font-weight:800;font-size:0.9rem;color:#fff;margin-top:2px;">' + escapeHtml(awardee.name) + '</div>';
-    bonusHtml += '<div style="font-weight:900;font-size:0.85rem;color:#10b981;">+' + cat.pts + ' pts</div>';
-    bonusHtml += '</div>';
-    bonusHtml += '</div>';
+    if(bestUid){
+      usedAwardees[bestUid] = true;
+      var awardee = getPlayer(bestUid) || { name: "Joueur", id: bestUid, color: "#2563eb" };
+      awards.push({ cat: cat, awardee: awardee });
+    }
   });
 
-  if(bonusHtml){
-    html += '<div class="bonus-star-ceremony">';
-    html += '<div class="groundhdr" style="color:#fef08a;margin-bottom:16px;">' + ICONS.star + ' CÉRÉMONIE DES BONUS STARS</div>';
-    html += bonusHtml;
-    html += '</div>';
-  }
+  // Stage Breakdown:
+  // Each award gets 4 seconds (0s-2s Silhouette, 2s-4s Reveal Burst)
+  // Total show duration = awards.length * 4 seconds (12s total for 3 awards)
+  var totalShowSec = awards.length * 4;
+  var isShowComplete = (elapsedSec >= totalShowSec) || (g._skipBonusShow);
 
-  html += '<div style="display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin:20px 0;">';
-  players.forEach(function(p){
-    html += '<div style="display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.06);padding:12px 16px;border-radius:14px;min-width:90px;">';
-    html += avatarHTML(p, 52);
-    html += '<div style="font-size:0.9rem;font-weight:700;color:#fff;margin-top:6px;">' + escapeHtml(p.name) + '</div>';
-    html += '<div style="font-size:0.78rem;font-weight:800;color:var(--green);margin-top:4px;">' + ICONS.check + ' Prêt</div>';
-    html += '</div>';
-  });
-  html += '</div>';
+  var html = '';
 
-  if(amHost){
-    html += '<button class="btn pri" style="margin-top:20px;" onclick="startPartyVote()">' + ICONS.dice + ' Jeu suivant (Vote du groupe)</button>';
-    html += '<button class="btn sec" style="margin-top:10px;" onclick="launchGrandPrizeCeremony()">' + ICONS.trophy + ' Couronner le Grand Gagnant</button>';
+  if(!isShowComplete && awards.length > 0){
+    // Auto re-render tick loop for smooth transitions
+    setTimeout(function(){
+      if(currentScreen === "s-game") renderGame();
+    }, 400);
+
+    var currentAwardIdx = Math.min(awards.length - 1, Math.floor(elapsedSec / 4));
+    var subTime = elapsedSec % 4; // 0..1 = Suspense, 2..3 = Reveal Burst
+    var isRevealed = (subTime >= 2);
+    var activeItem = awards[currentAwardIdx];
+
+    // Trigger SFX & Fireworks on Reveal Burst
+    var stepKey = currentAwardIdx * 10 + (isRevealed ? 1 : 0);
+    if(_lastRevealStep !== stepKey){
+      _lastRevealStep = stepKey;
+      if(isRevealed){
+        sfxWin();
+        if(window.triggerExplosion) window.triggerExplosion(window.innerWidth/2, 220, true, "#f59e0b");
+      }
+    }
+
+    html += '<div class="groundhdr">⚡ CÉRÉMONIE DES BONUS STARS (STAR ' + (currentAwardIdx + 1) + ' / ' + awards.length + ')</div>';
+    html += '<div class="pokemon-stage">';
+    html += '<div class="pokemon-card-container ' + (isRevealed ? 'pokemon-reveal-burst' : '') + '">';
+    html += '<div style="font-size:2rem;margin-bottom:6px;">' + activeItem.cat.icon + '</div>';
+    html += '<div style="font-size:1.35rem;font-weight:900;color:#fff;">' + activeItem.cat.title + '</div>';
+    html += '<div style="font-size:0.85rem;color:rgba(255,255,255,0.8);margin-top:4px;">' + activeItem.cat.desc + '</div>';
+
+    if(!isRevealed){
+      // SUSPENSE PHASE (SILHOUETTE + QUESTION MARK)
+      html += '<div class="pokemon-avatar-wrapper pokemon-silhouette">';
+      html += avatarHTML(activeItem.awardee, 96);
+      html += '<div class="pokemon-question-mark">❓</div>';
+      html += '</div>';
+      html += '<div style="font-size:1.1rem;font-weight:900;color:#fef08a;margin-top:10px;animation:pulse 1s infinite alternate;">QUI A GAGNÉ CETTE STAR ?</div>';
+      html += '<div style="font-size:0.8rem;color:rgba(255,255,255,0.6);margin-top:4px;">Révélation imminente...</div>';
+    } else {
+      // REVEAL BURST PHASE (WINNER UNVEILED)
+      html += '<div class="pokemon-avatar-wrapper">';
+      html += avatarHTML(activeItem.awardee, 104);
+      html += '</div>';
+      html += '<div style="font-size:1.6rem;font-weight:900;color:#fff;margin-top:8px;">' + escapeHtml(activeItem.awardee.name) + '</div>';
+      html += '<div style="display:inline-block;background:linear-gradient(135deg,#10b981,#059669);color:#fff;font-weight:900;font-size:1rem;padding:6px 18px;border-radius:20px;margin-top:10px;box-shadow:0 0 15px rgba(16,185,129,0.6);">+' + activeItem.cat.pts + ' PTS BONUS</div>';
+    }
+
+    html += '</div>'; // end container
+    html += '</div>'; // end stage
+
+    if(amHost){
+      html += '<div style="text-align:center;margin-top:12px;"><button class="btn ghost" style="font-size:0.8rem;" onclick="skipBonusShow()">⏩ Passer l\'animation</button></div>';
+    }
+
   } else {
-    html += '<div class="waiting" style="margin-top:20px;">En attente de l\'hôte pour le prochain jeu<span class="d"></span></div>';
+    // FINAL SHOWCASE & TOTAL SCORES SUMMARY & ACTION BUTTONS
+    html += '<div class="groundhdr">FIN DU MINI-JEU !</div>';
+    html += '<div style="text-align:center;margin:16px 0;">';
+    html += '<div style="font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:16px;">⭐ RÉCAPITULATIF DES BONUS STARS</div>';
+
+    // Show all 3 revealed cards
+    if(awards.length > 0){
+      html += '<div class="bonus-star-ceremony">';
+      awards.forEach(function(item, idx){
+        html += '<div class="bonus-star-card" style="animation-delay:' + (idx * 0.2) + 's;">';
+        html += '<div class="bonus-star-icon">' + ICONS.star + '</div>';
+        html += '<div class="bonus-star-info">';
+        html += '<div class="bonus-star-title">' + item.cat.icon + ' ' + item.cat.title + '</div>';
+        html += '<div class="bonus-star-desc">' + item.cat.desc + '</div>';
+        html += '</div>';
+        html += '<div class="bonus-star-winner">';
+        html += avatarHTML(item.awardee, 40);
+        html += '<div style="font-weight:800;font-size:0.9rem;color:#fff;margin-top:2px;">' + escapeHtml(item.awardee.name) + '</div>';
+        html += '<div style="font-weight:900;font-size:0.85rem;color:#10b981;">+' + item.cat.pts + ' pts</div>';
+        html += '</div>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+
+    // SCORES DE LA SOIRÉE (TOTAL POINTS LEADERBOARD)
+    html += '<div style="margin:24px 0 16px 0;">';
+    html += '<div style="font-size:1.25rem;font-weight:900;color:#fff;margin-bottom:14px;">🏆 SCORES DE LA SOIRÉE</div>';
+    var sorted = players.slice().sort(function(a,b){ return (sessionScores[b.id]||0) - (sessionScores[a.id]||0); });
+    sorted.forEach(function(p, i){
+      html += '<div class="sboard-row">';
+      html += '<div class="sboard-rank">#' + (i+1) + '</div>';
+      html += avatarHTML(p, 42);
+      html += '<div class="rname" style="flex:1;text-align:left;margin-left:10px;font-weight:700;">' + escapeHtml(p.name) + '</div>';
+      html += '<div class="sboard-pts">' + (sessionScores[p.id]||0) + ' pts</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+
+    // ACTION BUTTONS (JEU SUIVANT & GRAND FINALE)
+    if(amHost){
+      html += '<button class="btn pri" style="margin-top:20px;" onclick="startPartyVote()">' + ICONS.dice + ' Jeu suivant (Vote du groupe)</button>';
+      html += '<button class="btn sec" style="margin-top:10px;" onclick="launchGrandPrizeCeremony()">' + ICONS.trophy + ' Couronner le Grand Gagnant</button>';
+    } else {
+      html += '<div class="waiting" style="margin-top:20px;">En attente de l\'hôte pour le prochain jeu<span class="d"></span></div>';
+    }
+    html += '</div>';
   }
-  html += '</div>';
+
   return html;
+}
+
+function skipBonusShow(){
+  if(!roomCode || !amHost) return;
+  db.ref("rooms/" + roomCode + "/game/_skipBonusShow").set(true);
 }
 
 // =====================================================================
