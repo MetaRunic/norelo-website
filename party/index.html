@@ -893,7 +893,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.11</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.12</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -1069,6 +1069,26 @@ function sfxGrandCrown(){
   setTimeout(function(){ playTone(659.25, "triangle", 0.2, 0.15); }, 200);
   setTimeout(function(){ playTone(783.99, "triangle", 0.2, 0.18); }, 400);
   setTimeout(function(){ playTone(1046.50, "triangle", 0.5, 0.22); }, 600);
+}
+
+/* THE LEGEND OF ZELDA: OCARINA OF TIME - ICONIC ITEM GET FANFARE */
+function sfxZeldaItemGet(){
+  initAudio();
+  if(!audioCtx) return;
+  
+  var notes = [
+    { f: 880.00,  d: 0.11, delay: 0 },   // A5
+    { f: 987.77,  d: 0.11, delay: 110 }, // B5
+    { f: 1108.73, d: 0.11, delay: 220 }, // C#6
+    { f: 1318.51, d: 0.55, delay: 330 }  // E6 (High sustained triumph!)
+  ];
+
+  notes.forEach(function(n){
+    setTimeout(function(){
+      playTone(n.f, "square", n.d, 0.14);
+      playTone(n.f / 2, "triangle", n.d, 0.10);
+    }, n.delay);
+  });
 }
 
 /* SOFTENED SUBTLE BOUNCE EXPLOSION SFX (NOT LOUD) */
@@ -2918,9 +2938,7 @@ function renderMiniGameDoneHTML(){
       _lastRevealStep = stepKey;
       if(isRevealed){
         stopDrumroll();
-        sfxWin();
-        sfxStar();
-        sfxPoints();
+        sfxZeldaItemGet();
         if(window.triggerExplosion) window.triggerExplosion(window.innerWidth/2, 220, true, "#f59e0b");
       } else {
         startDrumroll(3.5);
