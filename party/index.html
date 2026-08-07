@@ -657,7 +657,7 @@
     width: 20px; height: 20px; flex-shrink: 0; margin-right: 6px;
   }
 
-  /* Social Media Post Card */
+  /* Social Media Post Card (Facebook & Instagram Dark Modes) */
   .post-card{
     background:var(--panel2); border:1px solid var(--bdr); border-radius:18px;
     padding:18px; margin-bottom:18px; box-shadow:0 8px 24px rgba(0,0,0,0.3); text-align:left;
@@ -668,6 +668,66 @@
   .post-handle{font-size:.78rem; color:#8ea0cc;}
   .post-txt{font-size:1.1rem; font-weight:600; line-height:1.45; color:#f0f4ff; margin-bottom:12px;}
   .post-ftr{font-size:.78rem; color:#64748b; display:flex; gap:16px; border-top:1px solid rgba(255,255,255,0.08); padding-top:10px;}
+
+  /* Skeleton Loading Animations for Social Posts */
+  @keyframes skelShimmer {
+    0% { background-position: -240px 0; }
+    100% { background-position: 240px 0; }
+  }
+  .skel-av {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(90deg, #3a3b3c 0%, #4e4f50 50%, #3a3b3c 100%);
+    background-size: 480px 100%;
+    animation: skelShimmer 1.5s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  .skel-bar {
+    height: 14px; border-radius: 6px;
+    background: linear-gradient(90deg, #3a3b3c 0%, #4e4f50 50%, #3a3b3c 100%);
+    background-size: 480px 100%;
+    animation: skelShimmer 1.5s ease-in-out infinite;
+  }
+  .skel-name { width: 130px; margin-bottom: 5px; }
+
+  /* Facebook Dark Mode Post Card */
+  .fb-post-card {
+    background: #242526; border: 1px solid #393a3b; border-radius: 12px;
+    padding: 14px 16px; margin-bottom: 16px; color: #e4e6eb; text-align: left;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .fb-post-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .fb-hdr-left { display: flex; align-items: center; gap: 10px; }
+  .fb-author-name { font-weight: 700; font-size: 0.95rem; color: #e4e6eb; line-height: 1.2; }
+  .fb-post-date { font-size: 0.78rem; color: #b0b3b8; display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+  .fb-post-dots { color: #b0b3b8; font-size: 1.2rem; font-weight: 900; letter-spacing: 2px; }
+  .fb-post-txt { font-size: 1.2rem; font-weight: 500; line-height: 1.4; color: #e4e6eb; margin-bottom: 14px; white-space: pre-wrap; word-break: break-word; }
+  .fb-post-reactions { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; font-size: 0.84rem; color: #b0b3b8; }
+  .fb-like-badge { display: inline-flex; align-items: center; gap: 6px; }
+  .fb-like-icon { width: 18px; height: 18px; background: #1877f2; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #fff; font-size: 10px; font-weight: 800; }
+  .fb-post-actions { display: flex; border-top: 1px solid #3e4042; border-bottom: 1px solid #3e4042; padding: 6px 0; margin-bottom: 10px; }
+  .fb-action-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; color: #b0b3b8; font-size: 0.85rem; font-weight: 600; padding: 6px 0; border-radius: 6px; }
+  .fb-comment-bar { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+  .fb-comment-input { flex: 1; background: #3a3b3c; border-radius: 20px; padding: 8px 14px; font-size: 0.82rem; color: #b0b3b8; display: flex; align-items: center; justify-content: space-between; }
+
+  /* Instagram Dark Mode Post Card */
+  .ig-post-card {
+    background: #000000; border: 1px solid #262626; border-radius: 14px;
+    padding: 12px 14px; margin-bottom: 16px; color: #f5f5f5; text-align: left;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .ig-post-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .ig-hdr-left { display: flex; align-items: center; gap: 10px; }
+  .ig-avatar-ring { padding: 2px; border-radius: 50%; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); display: inline-flex; flex-shrink: 0; }
+  .ig-handle { font-weight: 700; font-size: 0.9rem; color: #f5f5f5; }
+  .ig-location { font-size: 0.75rem; color: #a8a8a8; }
+  .ig-dots { color: #a8a8a8; font-size: 1.2rem; font-weight: 900; letter-spacing: 2px; }
+  .ig-post-actions { display: flex; justify-content: space-between; align-items: center; padding: 8px 0 6px 0; font-size: 1.25rem; }
+  .ig-action-left { display: flex; gap: 14px; }
+  .ig-post-likes { font-size: 0.85rem; font-weight: 700; color: #f5f5f5; margin-bottom: 6px; }
+  .ig-post-caption { font-size: 0.92rem; line-height: 1.4; color: #f5f5f5; margin-bottom: 6px; }
+  .ig-post-caption .ig-author-tag { font-weight: 700; margin-right: 6px; color: #fff; }
 
   /* Review Star Rating */
   .star-box{display:flex; justify-content:center; gap:8px; margin:16px 0 20px;}
@@ -1313,7 +1373,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.56</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.57</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -4087,13 +4147,32 @@ function renderGrandPrizeCeremony(g){
 //  GAME 2: WHO POSTED THIS? (Qui a posté ça ?)
 // =====================================================================
 var POSTS_PACK = [
-  { text: "J'ai essayé de faire un cocktail maison. La cuisine a failli brûler et le mélange ressemble à du lave-glace. 10/10", handle: "@night_bartender" },
-  { text: "Rappel amical : si tu m'écris après 22h, je suis soit complètement soul(e), soit déjà endormi(e). Pas d'entre-deux.", handle: "@party_god" },
-  { text: "Je viens de dépenser 120$ au bar et je me rappelle même plus du nom de la personne avec qui j'ai parlé pendant 2 heures.", handle: "@party_animal" },
-  { text: "Si la tequila n'existait pas, la moitié de mes histoires hilarantes n'existeraient pas non plus.", handle: "@tequila_lover" },
-  { text: "Est-ce que c'est légal d'annuler un rendez-vous amoureux juste parce que le lit est trop confortable ?", handle: "@lazy_vibes" },
-  { text: "Ma capacité à prétendre que je comprends ce que les gens disent dans un club bruyant est phénoménale.", handle: "@club_legend" }
+  {
+    platform: "facebook",
+    posterName: "Kevin",
+    fullName: "Kevin Kenney",
+    date: "February 24, 2014",
+    text: "BRAIN, why y no sleep!?",
+    likes: 1,
+    comments: 0
+  },
+  { platform: "facebook", posterName: "Danny", fullName: "Danny", date: "June 14, 2017", text: "J'ai essayé de faire un cocktail maison. La cuisine a failli brûler et le mélange ressemble à du lave-glace. 10/10", likes: 12, comments: 4 },
+  { platform: "facebook", posterName: "Daniel", fullName: "Daniel", date: "August 3, 2019", text: "Rappel amical : si tu m'écris après 22h, je suis soit complètement soul(e), soit déjà endormi(e). Pas d'entre-deux.", likes: 8, comments: 2 },
+  { platform: "instagram", posterName: "Jayson", fullName: "jayson_official", date: "Montreal, QC • 2h", text: "Je viens de dépenser 120$ au bar et je me rappelle même plus du nom de la personne avec qui j'ai parlé pendant 2 heures.", likes: 45, comments: 6 },
+  { platform: "facebook", posterName: "Mikael", fullName: "Mikael", date: "May 12, 2016", text: "Si la tequila n'existait pas, la moitié de mes histoires hilarantes n'existeraient pas non plus.", likes: 19, comments: 3 },
+  { platform: "instagram", posterName: "Catherine", fullName: "catherine_vibes", date: "Old Montreal • 5h", text: "Est-ce que c'est légal d'annuler un rendez-vous amoureux juste parce que le lit est trop confortable ?", likes: 62, comments: 9 },
+  { platform: "facebook", posterName: "Simon", fullName: "Simon", date: "November 18, 2018", text: "Ma capacité à prétendre que je comprends ce que les gens disent dans un club bruyant est phénoménale.", likes: 14, comments: 5 }
 ];
+
+function findAttendeePlayerId(targetName){
+  if(!targetName) return null;
+  var targetLower = targetName.toLowerCase().trim();
+  var match = players.find(function(p){
+    var pName = (p.name || "").toLowerCase().trim();
+    return pName.includes(targetLower) || targetLower.includes(pName);
+  });
+  return match ? match.id : null;
+}
 
 function launchWhoPosted(){
   if(!roomCode || !amHost) return;
@@ -4101,8 +4180,22 @@ function launchWhoPosted(){
   var pool = POSTS_PACK.slice();
   shuffle(pool);
   var rounds = pool.slice(0, 5).map(function(item){
-    var randomPlayer = players[Math.floor(Math.random()*players.length)] || { id: myId };
-    return { text: item.text, handle: item.handle, posterId: randomPlayer.id };
+    var assignedId = findAttendeePlayerId(item.posterName);
+    if(!assignedId){
+      var randomPlayer = players[Math.floor(Math.random()*players.length)] || { id: myId };
+      assignedId = randomPlayer.id;
+    }
+    var realP = getPlayer(assignedId);
+    return {
+      platform: item.platform || "facebook",
+      text: item.text || "",
+      fullName: item.fullName || (realP ? realP.name : "Anonyme"),
+      date: item.date || "Post",
+      likes: item.likes || 1,
+      comments: item.comments || 0,
+      image: item.image || "",
+      posterId: assignedId
+    };
   });
 
   db.ref("rooms/" + roomCode).update({
@@ -4117,14 +4210,118 @@ function launchWhoPosted(){
   });
 }
 
+function renderSocialPostHTML(item, isRevealed, realPoster){
+  var platform = item.platform || "facebook";
+  var myPlayer = getPlayer(myId) || { name: "Toi" };
+  var html = "";
+
+  if(platform === "instagram"){
+    // Instagram Dark Mode Card
+    html += '<div class="ig-post-card">';
+    html += '  <div class="ig-post-hdr">';
+    html += '    <div class="ig-hdr-left">';
+    if(!isRevealed){
+      html += '      <div class="ig-avatar-ring"><div class="skel-av" style="width:36px;height:36px;"></div></div>';
+      html += '      <div><div class="skel-bar skel-name"></div><div class="ig-location">' + escapeHtml(item.date || "Instagram") + '</div></div>';
+    } else {
+      html += '      <div class="ig-avatar-ring">' + avatarHTML(realPoster, 38) + '</div>';
+      html += '      <div><div class="ig-handle">' + escapeHtml(item.fullName || realPoster.name) + '</div><div class="ig-location">' + escapeHtml(item.date || "Instagram") + '</div></div>';
+    }
+    html += '    </div>';
+    html += '    <div class="ig-dots">•••</div>';
+    html += '  </div>';
+
+    if(item.image){
+      html += '  <div style="margin:8px 0;"><img src="' + item.image + '" alt="Post Image" style="width:100%;border-radius:8px;display:block;"></div>';
+    }
+
+    html += '  <div class="ig-post-actions">';
+    html += '    <div class="ig-action-left"><span>❤️</span><span>💬</span><span>✈️</span></div>';
+    html += '    <div>🔖</div>';
+    html += '  </div>';
+
+    if(item.likes){
+      html += '  <div class="ig-post-likes">Aimé par ' + item.likes + ' personnes</div>';
+    }
+
+    if(item.text){
+      html += '  <div class="ig-post-caption">';
+      if(!isRevealed){
+        html += '    <span class="skel-bar" style="display:inline-block;width:80px;height:12px;margin-right:6px;vertical-align:middle;"></span>';
+      } else {
+        html += '    <span class="ig-author-tag">' + escapeHtml(item.fullName || realPoster.name) + '</span>';
+      }
+      html += escapeHtml(item.text);
+      html += '  </div>';
+    }
+
+    html += '</div>';
+
+  } else {
+    // Facebook Dark Mode Card
+    html += '<div class="fb-post-card">';
+    html += '  <div class="fb-post-hdr">';
+    html += '    <div class="fb-hdr-left">';
+    if(!isRevealed){
+      html += '      <div class="skel-av"></div>';
+      html += '      <div>';
+      html += '        <div class="skel-bar skel-name"></div>';
+      html += '        <div class="fb-post-date">' + escapeHtml(item.date || "2014") + ' • <span style="font-size:0.7rem;">👥</span></div>';
+      html += '      </div>';
+    } else {
+      html += avatarHTML(realPoster, 40);
+      html += '      <div>';
+      html += '        <div class="fb-author-name">' + escapeHtml(item.fullName || realPoster.name) + '</div>';
+      html += '        <div class="fb-post-date">' + escapeHtml(item.date || "2014") + ' • <span style="font-size:0.7rem;">👥</span></div>';
+      html += '      </div>';
+    }
+    html += '    </div>';
+    html += '    <div class="fb-post-dots">•••</div>';
+    html += '  </div>';
+
+    if(item.text){
+      html += '  <div class="fb-post-txt">' + escapeHtml(item.text) + '</div>';
+    }
+
+    if(item.image){
+      html += '  <div style="margin-bottom:12px;"><img src="' + item.image + '" alt="Post Image" style="width:100%;border-radius:8px;display:block;"></div>';
+    }
+
+    html += '  <div class="fb-post-reactions">';
+    html += '    <div class="fb-like-badge"><span class="fb-like-icon">👍</span> ' + (item.likes || 1) + '</div>';
+    html += '    <div>' + (item.comments || 0) + ' commentaire' + ((item.comments || 0) > 1 ? 's' : '') + '</div>';
+    html += '  </div>';
+
+    html += '  <div class="fb-post-actions">';
+    html += '    <div class="fb-action-btn">👍 J\'aime</div>';
+    html += '    <div class="fb-action-btn">💬 Commenter</div>';
+    html += '    <div class="fb-action-btn">↗️ Partager</div>';
+    html += '  </div>';
+
+    html += '  <div class="fb-comment-bar">';
+    html += avatarHTML(myPlayer, 28);
+    html += '    <div class="fb-comment-input">';
+    html += '      <span>Commenter en tant que ' + escapeHtml(myPlayer.name) + '</span>';
+    html += '      <span style="letter-spacing:4px;font-size:0.9rem;opacity:0.7;">😊 📷 👾</span>';
+    html += '    </div>';
+    html += '  </div>';
+
+    html += '</div>';
+  }
+
+  return html;
+}
+
 function renderWhoPosted(g){
   var area = $("gameArea");
   var round = g.round || 0;
   var total = g.total || 1;
   var votes = g.votes || {};
-  var item = (g.roundsData && g.roundsData[round]) ? g.roundsData[round] : { text:"", handle:"", posterId:"" };
+  var item = (g.roundsData && g.roundsData[round]) ? g.roundsData[round] : { text:"", posterId:"" };
   var votedCount = Object.keys(votes).length;
   var html = "";
+
+  var realPoster = players.find(function(p){ return p.id === item.posterId; }) || { name:"Quelqu'un", color:"#2563eb" };
 
   if(g.phase === "guess"){
     var revealKey = (g.type || "") + "_" + round;
@@ -4134,11 +4331,7 @@ function renderWhoPosted(g){
     }
 
     html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • Qui a posté ça ?</div>';
-    html += '<div class="post-card">';
-    html += '<div class="post-hdr"><div class="post-anon-av">?</div><div><div class="post-author-name">Auteur Anonyme</div><div class="post-handle">' + escapeHtml(item.handle) + '</div></div></div>';
-    html += '<div class="post-txt">"' + escapeHtml(item.text) + '"</div>';
-    html += '<div class="post-ftr"><span>421 j\'aime</span><span>88 commentaires</span></div>';
-    html += '</div>';
+    html += renderSocialPostHTML(item, false, realPoster);
 
     html += '<div class="gsub">Qui dans la gang a écrit ou publié ça ?</div>';
     html += '<div class="vgrid">';
@@ -4156,11 +4349,9 @@ function renderWhoPosted(g){
       if(amHost) nextRound();
     });
 
-    var realPoster = players.find(function(p){ return p.id === item.posterId; }) || { name:"Quelqu'un", color:"#2563eb" };
     html += '<div class="groundhdr">Révélation !</div>';
-    html += '<div class="post-card" style="border-color:var(--green);">';
-    html += '<div class="post-txt">"' + escapeHtml(item.text) + '"</div>';
-    html += '</div>';
+    html += renderSocialPostHTML(item, true, realPoster);
+
     html += '<div style="text-align:center;margin:18px 0;">';
     html += avatarHTML(realPoster, 84);
     html += '<div style="font-size:1.4rem;font-weight:800;margin-top:10px;">C\'était ' + escapeHtml(realPoster.name) + ' !</div>';
