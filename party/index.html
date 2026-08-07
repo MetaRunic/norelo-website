@@ -595,27 +595,44 @@
     100% { transform: translateX(0) scale(1); opacity: 1; }
   }
 
-  /* MARIO PARTY STYLE BONUS STAR CARDS */
+  /* EPIC MARIO PARTY BONUS STAR CEREMONY */
+  .bonus-star-ceremony {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(168, 85, 247, 0.28));
+    border: 2px solid rgba(254, 240, 138, 0.8);
+    box-shadow: 0 0 35px rgba(245, 158, 11, 0.4), inset 0 0 25px rgba(245, 158, 11, 0.2);
+    border-radius: 24px; padding: 22px 18px; margin: 18px 0 24px 0;
+    animation: ceremonyGlow 2s ease-in-out infinite alternate;
+  }
+  @keyframes ceremonyGlow {
+    0% { box-shadow: 0 0 20px rgba(245, 158, 11, 0.3); transform: scale(0.99); }
+    100% { box-shadow: 0 0 45px rgba(245, 158, 11, 0.65); transform: scale(1.01); }
+  }
+
   .bonus-star-card {
-    display: flex; align-items: center; gap: 12px; padding: 14px 16px;
-    border-radius: 16px; margin-bottom: 10px;
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(168, 85, 247, 0.15));
-    border: 1px solid rgba(245, 158, 11, 0.4);
-    box-shadow: 0 4px 20px rgba(245, 158, 11, 0.2);
-    animation: ptRowSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    display: flex; align-items: center; gap: 14px; padding: 14px 18px;
+    border-radius: 18px; margin-bottom: 12px;
+    background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px);
+    border: 2px solid rgba(254, 240, 138, 0.85);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    animation: starCardPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
   }
   .bonus-star-icon {
-    font-size: 1.6rem; color: var(--amber); flex-shrink: 0;
-    filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.8));
-    animation: starPulse 1.2s ease-in-out infinite alternate;
+    font-size: 1.8rem; color: #fef08a; flex-shrink: 0;
+    filter: drop-shadow(0 0 14px rgba(250, 204, 21, 0.95));
+    animation: starBounce 0.8s ease-in-out infinite alternate;
   }
   .bonus-star-info { flex: 1; text-align: left; }
-  .bonus-star-title { font-size: 1.05rem; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 6px; }
-  .bonus-star-desc { font-size: 0.8rem; color: rgba(255,255,255,0.7); margin-top: 2px; }
+  .bonus-star-title { font-size: 1.1rem; font-weight: 900; color: #ffffff; display: flex; align-items: center; gap: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+  .bonus-star-desc { font-size: 0.82rem; color: rgba(255,255,255,0.8); margin-top: 2px; }
   .bonus-star-winner { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-  @keyframes starPulse {
-    0% { transform: scale(1) rotate(-5deg); }
-    100% { transform: scale(1.2) rotate(5deg); }
+  
+  @keyframes starCardPop {
+    0% { transform: scale(0.4) translateY(20px); opacity: 0; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+  }
+  @keyframes starBounce {
+    0% { transform: scale(0.95) rotate(-6deg); }
+    100% { transform: scale(1.25) rotate(6deg); }
   }
 
   @media(max-width:700px){
@@ -1202,7 +1219,8 @@ var ICONS = {
   clock: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
   rock: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.5L7.5 5.5A2 2 0 0 1 9.4 4h5.2a2 2 0 0 1 1.9 1.5L20 14.5a2 2 0 0 1-.5 2L15 20H9l-4.5-3.5a2 2 0 0 1-.5-2z"/><path d="M9 9l3 3M15 10l-2 4"/></svg>',
   paper: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>',
-  scissors: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.47" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>'
+  scissors: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.47" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>',
+  check: '<svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
 };
 
 var db = null, auth = null;
@@ -1225,6 +1243,8 @@ var _preRoundScores = {};
 var _lastAutoRevealKey = "";
 var _lastSfxKey = "";
 var sessionStats = {};
+var _scoredRoundsTrack = {};
+var _bonusAwardedTrack = {};
 var resumeAborted = false;
 var countdownTicker = null;
 
@@ -1505,7 +1525,9 @@ function startLiveCountdown(revealStartMs, durationSec, onEnd){
 
 function addPoints(uid, pts){
   if(!roomCode || !amHost || !uid) return;
-  var cur = (sessionScores[uid] || 0) + pts;
+  var old = sessionScores[uid] || 0;
+  var cur = old + pts;
+  sessionScores[uid] = cur; // Update in-memory immediately so rapid back-to-back calls stack correctly
   db.ref("rooms/" + roomCode + "/scores/" + uid).set(cur);
 }
 
@@ -2303,7 +2325,13 @@ function voteFor(uid){
 function revealRound(){
   if(!roomCode || !amHost) return;
   var game = currentGame;
-  if(game && !game.scored){
+  if(!game) return;
+
+  var roundKey = (game.type || "") + "_" + (game.round || 0);
+  if(_scoredRoundsTrack[roundKey]) return; // Strictly score each round once
+  _scoredRoundsTrack[roundKey] = true;
+
+  if(!game.scored){
     snapshotPreRoundScores();
     var votes = sanitizeVotes(game.votes);
     if(game.type === "mostlikely"){
@@ -2385,7 +2413,11 @@ function revealRound(){
   db.ref("rooms/" + roomCode + "/game").update({ phase: "reveal", revealStartMs: Date.now(), scored: true });
 }
 function awardEndGameBonusStars(){
-  if(!roomCode || !amHost) return;
+  if(!roomCode || !amHost || !currentGame) return;
+  var bonusKey = (currentGame.type || "") + "_bonus";
+  if(_bonusAwardedTrack[bonusKey]) return; // Strictly award bonus stars once
+  _bonusAwardedTrack[bonusKey] = true;
+
   var bonusCategories = [
     { key: "rpsWins", pts: 150 },
     { key: "mostLikelyTarget", pts: 150 },
@@ -2580,45 +2612,69 @@ function renderWhoPosted(g){
 }
 
 function renderMiniGameDoneHTML(){
-  var html = '<div class="groundhdr">FIN DU JEU !</div>';
+  sfxWin();
+  if(window.triggerExplosion){
+    window.triggerExplosion(window.innerWidth/2, 220, true, "#f59e0b");
+  }
+
+  var html = '<div class="groundhdr">FIN DU MINI-JEU !</div>';
   html += '<div style="text-align:center;margin:20px 0;">';
   html += '<div style="font-size:1.3rem;font-weight:900;color:#fff;margin-bottom:14px;">🔥 Bravo à tous les participants !</div>';
   
   // ============ MARIO PARTY BONUS STARS (FIN DU JEU) ============
   var bonusCategories = [
     { key: "rpsWins", icon: ICONS.rock, title: "Maître du Duel", desc: "Le plus de manches RPS gagnées", pts: 150 },
-    { key: "mostLikelyTarget", icon: ICONS.flame, title: "Cible Préférée", desc: "Le plus souvent désigné comme coupable", pts: 150 },
-    { key: "correctGuesses", icon: ICONS.idea, title: "Le Devin", desc: "Le plus de réponses correctes", pts: 150 }
+    { key: "mostLikelyTarget", icon: ICONS.flame, title: "Cible Préférée", desc: "Le plus souvent désigné par le groupe", pts: 150 },
+    { key: "correctGuesses", icon: ICONS.idea, title: "Le Devin", desc: "Le plus de prédictions correctes", pts: 150 },
+    { key: "mvp", icon: ICONS.star, title: "Star de la Manche", desc: "Performance exceptionnelle de la soirée", pts: 150 }
   ];
 
-  var anyBonuses = false;
   var bonusHtml = '';
-  bonusCategories.forEach(function(cat, idx){
-    var catStats = sessionStats[cat.key] || {};
+  var usedAwardees = {};
+  var count = 0;
+
+  var sortedPlayers = players.slice().sort(function(a,b){ return (sessionScores[b.id]||0) - (sessionScores[a.id]||0); });
+
+  bonusCategories.forEach(function(cat){
+    if(count >= 3) return; // Max 3 cards for clean presentation
     var bestUid = null, bestVal = 0;
-    Object.keys(catStats).forEach(function(uid){
-      if(catStats[uid] > bestVal){ bestVal = catStats[uid]; bestUid = uid; }
-    });
-    if(!bestUid || bestVal <= 0) return;
-    anyBonuses = true;
-    var awardee = getPlayer(bestUid) || { name: "???", id: bestUid, color: "#888" };
-    bonusHtml += '<div class="bonus-star-card" style="animation-delay:' + (idx * 0.2) + 's;">';
+    
+    if(cat.key === "mvp"){
+      var topPlayer = sortedPlayers.find(function(p){ return !usedAwardees[p.id]; }) || sortedPlayers[0];
+      if(topPlayer){ bestUid = topPlayer.id; bestVal = 1; }
+    } else {
+      var catStats = sessionStats[cat.key] || {};
+      Object.keys(catStats).forEach(function(uid){
+        if(catStats[uid] > bestVal){ bestVal = catStats[uid]; bestUid = uid; }
+      });
+      if(!bestUid && sortedPlayers.length > 0){
+        var fallbackPlayer = sortedPlayers.find(function(p){ return !usedAwardees[p.id]; });
+        if(fallbackPlayer){ bestUid = fallbackPlayer.id; bestVal = 1; }
+      }
+    }
+
+    if(!bestUid) return;
+    usedAwardees[bestUid] = true;
+    count++;
+
+    var awardee = getPlayer(bestUid) || { name: "Joueur", id: bestUid, color: "#2563eb" };
+    bonusHtml += '<div class="bonus-star-card" style="animation-delay:' + (count * 0.2) + 's;">';
     bonusHtml += '<div class="bonus-star-icon">' + ICONS.star + '</div>';
     bonusHtml += '<div class="bonus-star-info">';
     bonusHtml += '<div class="bonus-star-title">' + cat.icon + ' ' + cat.title + '</div>';
     bonusHtml += '<div class="bonus-star-desc">' + cat.desc + '</div>';
     bonusHtml += '</div>';
     bonusHtml += '<div class="bonus-star-winner">';
-    bonusHtml += avatarHTML(awardee, 36);
-    bonusHtml += '<div style="font-weight:800;font-size:0.9rem;color:#fff;">' + escapeHtml(awardee.name) + '</div>';
+    bonusHtml += avatarHTML(awardee, 40);
+    bonusHtml += '<div style="font-weight:800;font-size:0.9rem;color:#fff;margin-top:2px;">' + escapeHtml(awardee.name) + '</div>';
     bonusHtml += '<div style="font-weight:900;font-size:0.85rem;color:#10b981;">+' + cat.pts + ' pts</div>';
     bonusHtml += '</div>';
     bonusHtml += '</div>';
   });
 
-  if(anyBonuses){
-    html += '<div style="margin:16px 0 24px 0;">';
-    html += '<div class="groundhdr">' + ICONS.star + ' BONUS STARS DE LA MANCHE</div>';
+  if(bonusHtml){
+    html += '<div class="bonus-star-ceremony">';
+    html += '<div class="groundhdr" style="color:#fef08a;margin-bottom:16px;">' + ICONS.star + ' CÉRÉMONIE DES BONUS STARS</div>';
     html += bonusHtml;
     html += '</div>';
   }
