@@ -53,28 +53,42 @@
   @media(min-width:600px){
     #dvdLogo{ width:90px; height:45px; }
   }
-  body.in-game #dvdLogo{ display:none !important; }
-
-  /* Compact Floating Audio Controls */
+  body.in-game #dvdLogo{ display:none !important; }  /* Compact Floating Audio & Theme Controls */
   #audioControls{
     position:fixed; top:12px; right:14px; z-index:100;
     display:flex; flex-direction:column; gap:8px; align-items:center;
   }
   #audioToggle, #skipTrackBtn{
     width: 40px; height: 40px; border-radius: 50%;
-    background:rgba(13,22,54,0.85); border:1.5px solid rgba(255,255,255,0.25);
-    backdrop-filter:blur(12px); color:#fff; font-size:1.1rem;
+    background:var(--panel); border:1.5px solid var(--bdr);
+    backdrop-filter:blur(12px); color:var(--txt); font-size:1.1rem;
     cursor:pointer; display:flex; align-items:center; justify-content:center;
     box-shadow:0 4px 16px rgba(0,0,0,0.35); transition:transform .12s, border-color .2s, background-color .2s;
   }
   #audioToggle:active, #skipTrackBtn:active{transform:scale(.92);}
-  #skipTrackBtn:hover{background:rgba(30,58,138,0.9); border-color:var(--amber);}
+  #skipTrackBtn:hover{background:var(--panel2); border-color:var(--bl);}
 
-  /* Subtle now-playing badge, bottom-left. Deliberately quiet: it should be findable
-     when you wonder "what is this song" and ignorable the rest of the time. */
+  #themeToggleBtn{
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.85), rgba(245, 158, 11, 0.85), rgba(16, 185, 129, 0.85), rgba(59, 130, 246, 0.85), rgba(168, 85, 247, 0.85));
+    background-size: 300% 300%;
+    animation: rainbowGlow 4s linear infinite;
+    border: 1.5px solid rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(12px); color: #fff; font-size: 1.1rem;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    transition: transform .12s, border-color .2s;
+  }
+  #themeToggleBtn:active{ transform: scale(.92); }
+
+  @keyframes rainbowGlow {
+    0% { background-position: 0% 50%; box-shadow: 0 0 15px rgba(239, 68, 68, 0.6); }
+    33% { background-position: 50% 100%; box-shadow: 0 0 15px rgba(16, 185, 129, 0.6); }
+    66% { background-position: 100% 50%; box-shadow: 0 0 15px rgba(59, 130, 246, 0.6); }
+    100% { background-position: 0% 50%; box-shadow: 0 0 15px rgba(239, 68, 68, 0.6); }
+  }
+
   #nowPlaying{
-    position:fixed; left:12px; bottom:12px; z-index:100;
-    max-width:min(58vw, 260px); padding:5px 10px; border-radius:10px;
     background:rgba(13,22,54,0.72); border:1px solid rgba(255,255,255,0.12);
     backdrop-filter:blur(10px);
     font-size:.66rem; font-weight:700; letter-spacing:.03em; color:#93a4c8;
@@ -239,8 +253,8 @@
   /* UPGRADED PREMIUM GAME CARDS */
   .ggrid{display:flex; flex-direction:column; gap:14px; margin-bottom:20px;}
   .gcard{
-    background: linear-gradient(135deg, rgba(13,22,54,0.9), rgba(17,31,69,0.95));
-    border: 1.5px solid rgba(255,255,255,0.12); border-radius:18px;
+    background: linear-gradient(135deg, var(--panel), var(--panel2));
+    border: 1.5px solid var(--bdr); border-radius:18px;
     padding:16px 18px; display:flex; align-items:center; gap:16px; cursor:pointer;
     transition:all .2s cubic-bezier(0.4, 0, 0.2, 1); position:relative;
     box-shadow: 0 6px 20px rgba(0,0,0,0.25); overflow:hidden;
@@ -253,8 +267,8 @@
   .gcard:hover::before{opacity:1;}
   .gcard:active{transform:scale(.97);}
   .gcard.sel{
-    border-color:var(--bp); background: linear-gradient(135deg, #162863, #1f3b8b);
-    box-shadow:0 8px 26px rgba(37,99,235,.45); transform:translateY(-2px);
+    border-color:var(--bl); background: linear-gradient(135deg, var(--panel2), var(--bl));
+    box-shadow:0 8px 26px var(--bdr); transform:translateY(-2px);
   }
   .gcard .gicon{
     font-size:1.6rem; flex-shrink:0; width:56px; height:56px; display:flex;
@@ -878,21 +892,21 @@
   /* DISCRETE FLOATING GAMEPLAY ROOM CODE BADGE */
   .discrete-code-badge {
     position: fixed; top: 16px; left: 16px; z-index: 45;
-    background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px;
+    background: var(--panel); backdrop-filter: blur(10px);
+    border: 1.5px solid var(--bdr); border-radius: 12px;
     padding: 6px 12px; display: flex; align-items: center; gap: 6px;
     cursor: pointer; transition: all 0.2s ease;
     box-shadow: 0 4px 15px rgba(0,0,0,0.35);
   }
   .discrete-code-badge:hover, .discrete-code-badge:active {
-    background: rgba(30, 41, 59, 0.95); border-color: rgba(245, 158, 11, 0.8);
+    background: var(--panel2); border-color: var(--bl);
     transform: scale(1.05);
   }
   .discrete-code-badge .code-lbl {
-    font-size: 0.65rem; font-weight: 900; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;
+    font-size: 0.65rem; font-weight: 900; color: var(--txt); text-transform: uppercase; letter-spacing: 1px; opacity: 0.8;
   }
   .discrete-code-badge .code-val {
-    font-size: 0.85rem; font-weight: 900; color: #f59e0b; letter-spacing: 1.5px; font-family: monospace;
+    font-size: 0.85rem; font-weight: 900; color: var(--bl); letter-spacing: 1.5px; font-family: monospace;
   }
 
   @media(max-width:700px){
@@ -1025,14 +1039,14 @@
 <!-- Floating Audio & Theme Controls (Top-Right) -->
 <div id="audioControls">
   <audio id="bgMusicTrack" preload="auto"></audio>
-  <button id="themeToggleBtn" onclick="openThemeShop()" title="Changer le Thème & Style (10 Styles)">
-    <span style="font-size:1.15rem; line-height:1;">🎨</span>
-  </button>
   <button id="audioToggle" onclick="toggleAudio()" title="Muter / Réactiver la musique">
     <span id="audioIcon"><svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
   </button>
   <button id="skipTrackBtn" onclick="skipBgTrack()" title="Changer de chanson (Skip)">
     <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+  </button>
+  <button id="themeToggleBtn" onclick="openThemeShop()" title="Boutique de Thèmes (Couleurs & Styles)">
+    <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.92 0 1.7-.75 1.7-1.7 0-.42-.17-.82-.44-1.11-.28-.3-.43-.7-.43-1.12 0-.92.75-1.67 1.67-1.67H16c3.31 0 6-2.69 6-6 0-4.96-4.49-9-10-9z"/></svg>
   </button>
 </div>
 <div id="nowPlaying" aria-live="polite"></div>
@@ -1179,7 +1193,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.36</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.37</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
