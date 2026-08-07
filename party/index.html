@@ -88,7 +88,11 @@
     100% { background-position: 0% 50%; box-shadow: 0 0 15px rgba(239, 68, 68, 0.6); }
   }
 
+  /* Subtle now-playing badge, bottom-left. Deliberately quiet: it should be findable
+     when you wonder "what is this song" and ignorable the rest of the time. */
   #nowPlaying{
+    position:fixed; left:12px; bottom:12px; z-index:100;
+    max-width:min(58vw, 260px); padding:5px 10px; border-radius:10px;
     background:rgba(13,22,54,0.72); border:1px solid rgba(255,255,255,0.12);
     backdrop-filter:blur(10px);
     font-size:.66rem; font-weight:700; letter-spacing:.03em; color:#93a4c8;
@@ -1193,7 +1197,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.37</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.38</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
