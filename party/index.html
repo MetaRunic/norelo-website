@@ -103,6 +103,50 @@
     backdrop-filter: blur(12px); color: #fff; font-size: 1rem;
   }
 
+  /* AUDIO OPTIONS PANEL (inside the settings dropdown) */
+  .controls-audio-panel {
+    width: 186px; padding: 10px 12px 12px; border-radius: 14px;
+    background: var(--panel); border: 1.5px solid var(--bdr);
+    backdrop-filter: blur(12px); box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+    text-align: left; cursor: default;
+  }
+  .cap-row {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: .66rem; font-weight: 800; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--gr); margin-bottom: 7px;
+  }
+  .cap-val { color: var(--bl); font-variant-numeric: tabular-nums; }
+  .cap-slider {
+    -webkit-appearance: none; appearance: none; width: 100%; height: 5px;
+    border-radius: 4px; background: var(--bdr); outline: none; cursor: pointer;
+    margin: 0 0 4px;
+  }
+  .cap-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 15px; height: 15px; border-radius: 50%;
+    background: var(--bl); border: 2px solid var(--panel);
+    box-shadow: 0 0 8px rgba(0,0,0,.5); cursor: pointer;
+  }
+  .cap-slider::-moz-range-thumb {
+    width: 15px; height: 15px; border-radius: 50%;
+    background: var(--bl); border: 2px solid var(--panel);
+    box-shadow: 0 0 8px rgba(0,0,0,.5); cursor: pointer;
+  }
+  .cap-slider:disabled { opacity: .4; cursor: not-allowed; }
+  .cap-toggle {
+    width: 100% !important; height: auto !important; border-radius: 10px !important;
+    margin-top: 9px !important; padding: 7px 8px !important;
+    background: var(--panel2); border: 1.5px solid var(--bdr); color: var(--txt);
+    font-size: .66rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase;
+    display: flex !important; align-items: center; justify-content: center; gap: 6px;
+    cursor: pointer;
+  }
+  .cap-toggle .cap-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: var(--gr); flex-shrink: 0;
+  }
+  .cap-toggle.on { border-color: var(--green); color: #fff; }
+  .cap-toggle.on .cap-dot { background: var(--green); box-shadow: 0 0 7px var(--green); }
+
   @keyframes rainbowGlow {
     0% { background-position: 0% 50%; box-shadow: 0 0 15px rgba(239, 68, 68, 0.6); }
     33% { background-position: 50% 100%; box-shadow: 0 0 15px rgba(16, 185, 129, 0.6); }
@@ -1075,6 +1119,18 @@
     <button id="skipTrackBtn" onclick="skipBgTrack(); event.stopPropagation();" title="Changer de chanson (Skip)">
       <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
     </button>
+    <div class="controls-audio-panel" onclick="event.stopPropagation();">
+      <div class="cap-row">
+        <span>Volume musique</span>
+        <span class="cap-val" id="musicVolVal">25%</span>
+      </div>
+      <input id="musicVolSlider" class="cap-slider" type="range" min="0" max="100" step="5" value="25"
+             oninput="setMusicVolume(this.value)" title="Volume de la musique de fond">
+      <button class="cap-toggle on" id="sfxToggleBtn" onclick="toggleSfx(); event.stopPropagation();"
+              title="Activer / désactiver les effets sonores">
+        <span class="cap-dot"></span><span id="sfxToggleLabel">Effets sonores</span>
+      </button>
+    </div>
     <button id="themeToggleBtn" onclick="openThemeShop(); closeControlsMenu(); event.stopPropagation();" title="Boutique de Thèmes (Couleurs & Styles)">
       <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.92 0 1.7-.75 1.7-1.7 0-.42-.17-.82-.44-1.11-.28-.3-.43-.7-.43-1.12 0-.92.75-1.67 1.67-1.67H16c3.31 0 6-2.69 6-6 0-4.96-4.49-9-10-9z"/></svg>
     </button>
@@ -1224,7 +1280,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.49</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.51</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -1271,6 +1327,7 @@ window.addEventListener("touchstart", unlockMobileAudio, { once: false, passive:
 window.addEventListener("click", unlockMobileAudio, { once: false });
 
 function playTone(freq, type, duration, vol){
+  if(!sfxEnabled) return;   // every oscillator SFX funnels through here
   initAudio();
   if(!audioCtx) return;
   try{
@@ -1332,6 +1389,7 @@ function sfxPoints(){
 var _drumrollTimer = null;
 function startDrumroll(durationSec){
   stopDrumroll();
+  if(!sfxEnabled) return;   // builds oscillators directly, so it needs its own gate
   initAudio();
   if(!audioCtx) return;
   var totalMs = (durationSec || 3.5) * 1000;
@@ -1555,7 +1613,58 @@ function getBgTrack(){
   return bgTrackEl;
 }
 
-var MAX_MUSIC_VOLUME = 0.06; // Strict 6% background music volume rule
+// Background music volume is now player-controlled. The slider reads 0-100% and maps
+// onto a raw <audio>.volume ceiling, so 100% is "loud enough for a room" rather than
+// full-blast. 25% reproduces the old hard-coded 6% exactly (0.25 * 0.24 = 0.06).
+var MUSIC_VOLUME_CEILING = 0.24;
+var musicVolumePct = 25;
+var sfxEnabled = true;
+
+function musicVolume(){
+  return Math.max(0, Math.min(1, (musicVolumePct / 100) * MUSIC_VOLUME_CEILING));
+}
+
+function setMusicVolume(pct, skipSave){
+  musicVolumePct = Math.max(0, Math.min(100, parseInt(pct, 10) || 0));
+  var lbl = document.getElementById("musicVolVal");
+  if(lbl) lbl.textContent = musicVolumePct + "%";
+  var sl = document.getElementById("musicVolSlider");
+  if(sl && String(sl.value) !== String(musicVolumePct)) sl.value = musicVolumePct;
+
+  // Apply straight away rather than waiting for the next track, and cancel any
+  // in-flight fade so it can't overwrite the value the player just chose.
+  var track = getBgTrack();
+  if(track && audioEnabled && !track.paused){
+    if(fadeInterval){ clearInterval(fadeInterval); fadeInterval = null; }
+    track.volume = musicVolume();
+  }
+  if(!skipSave){
+    try{ localStorage.setItem("norelo_party_music_vol", String(musicVolumePct)); }catch(e){}
+  }
+}
+
+function toggleSfx(){
+  sfxEnabled = !sfxEnabled;
+  try{ localStorage.setItem("norelo_party_sfx", sfxEnabled ? "1" : "0"); }catch(e){}
+  updateSfxButton();
+  if(sfxEnabled) sfxVote();      // audible confirmation that they're back on
+}
+
+function updateSfxButton(){
+  var btn = document.getElementById("sfxToggleBtn");
+  if(btn) btn.className = "cap-toggle" + (sfxEnabled ? " on" : "");
+}
+
+function loadAudioPrefs(){
+  try{
+    var v = localStorage.getItem("norelo_party_music_vol");
+    if(v !== null) musicVolumePct = Math.max(0, Math.min(100, parseInt(v, 10) || 0));
+    var s = localStorage.getItem("norelo_party_sfx");
+    if(s !== null) sfxEnabled = (s === "1");
+  }catch(e){}
+  setMusicVolume(musicVolumePct, true);
+  updateSfxButton();
+}
 
 function fadeTrackVolume(targetVol, durationMs, onComplete){
   if(fadeInterval) clearInterval(fadeInterval);
@@ -1674,7 +1783,7 @@ function playFromPool(list, avoidSrc, fadeMs){
       done();
       rememberTrack(entry.u);
       setNowPlaying(entry.t);
-      fadeTrackVolume(MAX_MUSIC_VOLUME, fadeMs || 700);
+      fadeTrackVolume(musicVolume(), fadeMs || 700);
     }).catch(function(e){
       // Autoplay block is not the URL's fault - retrying other URLs won't help.
       if(e && e.name === "NotAllowedError"){ moved = true; done(); return; }
@@ -1719,7 +1828,7 @@ function toggleAudio(){
     // Resume the same song where it left off instead of jumping to a random new one.
     if(track && track.src){
       track.play().then(function(){
-        fadeTrackVolume(MAX_MUSIC_VOLUME, 500);
+        fadeTrackVolume(musicVolume(), 500);
       }).catch(function(){ playGameMusic(); });
     } else {
       playGameMusic();
@@ -1833,6 +1942,7 @@ function renderThemeShopList(){
 
 document.addEventListener("DOMContentLoaded", function(){
   updateAudioIcon();
+  loadAudioPrefs();
   applyTheme(currentTheme, false);
 });
 </script>
@@ -3410,7 +3520,22 @@ function revealRound(){
         else if(kpCorrect === kpGuessers) trackStat("wellKnown", kpItem.spotlightId);
       }
     } else if(game.type === "roast"){
-      Object.keys(votes).forEach(function(vKey){ var authorUid = votes[vKey]; trackStat("roastVotes", authorUid); addPoints(authorUid, 150); });
+      var rSolo = roastSoloMode();
+      var rTally = {};
+      Object.keys(votes).forEach(function(vKey){
+        var authorUid = votes[vKey];
+        if(!authorUid) return;
+        if(!rSolo && authorUid === vKey) return;      // self-votes are worth nothing
+        rTally[authorUid] = (rTally[authorUid] || 0) + 1;
+        trackStat("roastVotes", authorUid);
+        addPoints(authorUid, 150);
+      });
+      // Winner of the round takes an extra bonus on top of the per-vote points.
+      var rBest = 0;
+      Object.keys(rTally).forEach(function(a){ if(rTally[a] > rBest) rBest = rTally[a]; });
+      if(rBest > 0){
+        Object.keys(rTally).forEach(function(a){ if(rTally[a] === rBest) addPoints(a, 100); });
+      }
     } else if(game.type === "whosaid"){
       Object.keys(votes).forEach(function(vUid){
         if(votes[vUid] === game.speakerId){
@@ -3502,6 +3627,11 @@ function nextRound(){
       upd.phase = "spotlight_answer";
       upd.spotlightAnswer = null;
       upd.phaseStartMs = Date.now();
+    } else if(currentGame.type === "roast"){
+      // New target and prompt each round, so it restarts at the writing step and the
+      // previous round's punchlines have to be cleared out.
+      upd.phase = "submit";
+      upd.answers = null;
     }
     db.ref("rooms/" + roomCode + "/game").update(upd);
   }
@@ -5033,94 +5163,234 @@ function guessSpotlight(idx){
 // =====================================================================
 //  GAME 5: PERSONALIZED ROAST / AUTOBIOGRAPHIES
 // =====================================================================
+var ROAST_WRITE_SEC = 45;   // writing a punchline takes longer than tapping a choice
+var ROAST_VOTE_SEC = 30;
+
 var ROAST_PROMPTS = [
   "Le titre du film 18+ de [NAME] serait :",
   "Si [NAME] se faisait arrêter à la frontière, ce serait pour :",
   "Le secret le plus honteux de [NAME] que personne ne doit savoir :",
   "Si [NAME] ouvrait un OnlyFans, quel serait le thème :",
-  "Le slogan de la campagne électorale de [NAME] :"
+  "Le slogan de la campagne électorale de [NAME] :",
+  "L'autobiographie de [NAME] s'intitulerait :",
+  "La pire façon pour [NAME] de gagner de l'argent :",
+  "Ce que [NAME] cherche en navigation privée :",
+  "Le tatouage que [NAME] va regretter :",
+  "Si [NAME] devenait un produit chez Dollarama :",
+  "La raison pour laquelle [NAME] s'est fait bannir d'un party :",
+  "Le nom du groupe de musique de [NAME] :",
+  "L'excuse préférée de [NAME] pour annuler des plans :",
+  "Ce que [NAME] hurle dans son sommeil :",
+  "Le talent caché complètement inutile de [NAME] :",
+  "Si [NAME] avait sa propre téléréalité, le titre serait :",
+  "La première chose que [NAME] ferait avec un pouvoir absolu :",
+  "Ce que [NAME] a vraiment dans son historique Netflix :",
+  "Le surnom que [NAME] s'est donné en secret :",
+  "Comment [NAME] va probablement se casser un os :",
+  "Ce que [NAME] a déjà volé sans le dire à personne :",
+  "Le pire conseil que [NAME] a déjà donné avec confiance :",
+  "Si [NAME] écrivait un livre de recettes, le titre serait :",
+  "La raison pour laquelle [NAME] a été laissé(e) sur « vu » :",
+  "Le mot de passe de [NAME] est sûrement :",
+  "Ce que [NAME] dit après trois verres de trop :",
+  "Si [NAME] était une odeur, ce serait :",
+  "La chanson qui joue quand [NAME] entre dans une pièce :",
+  "Ce que [NAME] fait quand personne ne regarde :",
+  "Le métier pour lequel [NAME] serait le/la pire au monde :"
 ];
 
 function launchRoast(){
   if(!roomCode || !amHost) return;
   _ceremonyStartMs = 0;
-  var randomTarget = players[Math.floor(Math.random()*players.length)] || { name: me.name };
-  var rawPrompt = ROAST_PROMPTS[Math.floor(Math.random()*ROAST_PROMPTS.length)];
-  var formatted = rawPrompt.replace("[NAME]", randomTarget.name);
+
+  var pPool = ROAST_PROMPTS.slice();
+  shuffle(pPool);
+
+  // Rotate who gets roasted so the same person isn't the target twice before
+  // everyone has had a turn.
+  var order = players.slice();
+  shuffle(order);
+  if(order.length === 0) order = [{ id: myId, name: me.name }];
+
+  var total = Math.min(4, pPool.length);
+  var rounds = [];
+  for(var i = 0; i < total; i++){
+    var t = order[i % order.length];
+    rounds.push({
+      targetId: t.id,
+      targetName: t.name,
+      prompt: pPool[i].replace("[NAME]", t.name)
+    });
+  }
 
   db.ref("rooms/" + roomCode).update({
     status: "playing",
     game: {
       type: "roast",
       phase: "submit",
-      prompt: formatted,
+      round: 0,
+      total: rounds.length,
+      phaseStartMs: Date.now(),
+      roundsData: rounds,
       answers: {},
       votes: {}
     }
   });
 }
 
+function roastRoundData(g){
+  var r = (g && g.round) || 0;
+  if(g && g.roundsData && g.roundsData[r]) return g.roundsData[r];
+  return { targetId: "", targetName: "quelqu'un", prompt: (g && g.prompt) || "" };
+}
+function roastSoloMode(){ return players.length <= 1; }
+
 function renderRoast(g){
   var area = $("gameArea");
-  var prompt = g.prompt || "";
+  var round = g.round || 0;
+  var total = g.total || 1;
+  var item = roastRoundData(g);
+  var prompt = item.prompt || "";
+  var target = getPlayer(item.targetId);
+  if(!players.some(function(p){ return p.id === item.targetId; })){
+    target = { id: item.targetId, name: item.targetName, color: "#a855f7" };
+  }
+  var solo = roastSoloMode();
   var answers = g.answers || {};
-  var votes = g.votes || {};
+  var rawVotes = g.votes || {};
+  // A vote for your own punchline never counts (except solo, where it's the only option).
+  var votes = {};
+  Object.keys(rawVotes).forEach(function(uid){
+    if(solo || rawVotes[uid] !== uid) votes[uid] = rawVotes[uid];
+  });
   var votedCount = Object.keys(votes).length;
   var answerCount = Object.keys(answers).length;
+  var hdr = '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • On roast ' + escapeHtml(item.targetName) + '</div>';
   var html = "";
 
+  function targetCardHTML(){
+    var h = '<div class="kp-spot-card">';
+    h += avatarHTML(target, 52);
+    h += '<div class="kp-spot-meta"><div class="kp-spot-label">Cible de la manche</div>';
+    h += '<div class="kp-spot-name">' + escapeHtml(item.targetName) + '</div></div>';
+    h += '</div>';
+    return h;
+  }
+
   if(g.phase === "submit"){
-    if(answerCount >= players.length && players.length > 0 && amHost && !g._autoVoted){
-      g._autoVoted = true;
+    var advKey = "roast_submit_" + round;
+    if(answerCount >= players.length && players.length > 0 && amHost && _lastAutoRevealKey !== advKey){
+      _lastAutoRevealKey = advKey;
       setTimeout(startRoastVote, 600);
     }
+    // Nobody can be left staring at a writing box forever.
+    startLiveCountdown(g.phaseStartMs || Date.now(), ROAST_WRITE_SEC, function(){
+      if(amHost && roastStillOn(round, "submit")) startRoastVote();
+    });
 
-    html += '<div class="groundhdr">Complète la réplique !</div>';
-    html += '<div class="gprompt">' + escapeHtml(prompt) + '</div>';
-    
+    html += hdr;
+    html += targetCardHTML();
+    html += '<div class="gprompt">' + escapeHtml(frTypo(prompt)) + '</div>';
+
     if(answers[myId]){
       html += '<div class="post-card" style="text-align:center;font-weight:700;">"' + escapeHtml(answers[myId]) + '"</div>';
       html += '<div class="waiting">' + (answerCount >= players.length ? "Toutes les répliques sont reçues ! Lancement du vote..." : "Réponse envoyée ! En attente des autres") + '<span class="d"></span></div>';
     } else {
-      html += '<input class="fld" id="roastIn" placeholder="Écris ta réplique drôle..." maxlength="60" style="margin-bottom:14px;">';
+      html += '<input class="fld" id="roastIn" placeholder="Écris ta réplique drôle..." maxlength="90" style="margin-bottom:14px;">';
       html += '<button class="btn pri" onclick="submitRoastAnswer()">Envoyer ma réplique</button>';
     }
     html += '<div class="gprogress" style="margin-top:16px;">' + answerCount + ' / ' + players.length + ' réponses soumises</div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' <span id="countdownVal">' + ROAST_WRITE_SEC + 's</span></div></div>';
 
   } else if(g.phase === "vote"){
-    var revealKey = (g.type || "") + "_vote";
-    if(votedCount >= players.length && players.length > 0 && amHost && _lastAutoRevealKey !== revealKey){
-      _lastAutoRevealKey = revealKey;
+    var voters = solo ? players.length : players.filter(function(p){ return !!answers[p.id] || true; }).length;
+    var advKey2 = "roast_vote_" + round;
+    var everyoneIn = (votedCount >= players.length && players.length > 0);
+    if(everyoneIn && amHost && _lastAutoRevealKey !== advKey2){
+      _lastAutoRevealKey = advKey2;
       setTimeout(revealRound, 600);
     }
-
-    html += '<div class="groundhdr">Vote pour la meilleure réplique !</div>';
-    html += '<div class="gprompt">' + escapeHtml(prompt) + '</div>';
-
-    Object.keys(answers).forEach(function(authorId){
-      var txt = answers[authorId];
-      var sel = (votes[myId] === authorId) ? " pri" : " sec";
-      html += '<button class="btn' + sel + '" style="margin-bottom:12px;text-align:left;" onclick="voteRoast(\'' + authorId + '\')">"' + escapeHtml(txt) + '"</button>';
+    startLiveCountdown(g.phaseStartMs || Date.now(), ROAST_VOTE_SEC, function(){
+      if(amHost && roastStillOn(round, "vote")) revealRound();
     });
-    html += '<div class="waiting">' + (votedCount >= players.length ? "Tous les votes sont enregistrés ! Révélation..." : "Vote pour ta préférée") + '<span class="d"></span></div>';
+
+    html += hdr;
+    html += '<div class="gprompt">' + escapeHtml(frTypo(prompt)) + '</div>';
+    html += '<div class="gsub">' + (solo ? 'Mode solo (test) — vote pour ta réplique :' : 'Vote pour la meilleure — sauf la tienne !') + '</div>';
+
+    var options = Object.keys(answers);
+    var votable = 0;
+    options.forEach(function(authorId){
+      var txt = answers[authorId];
+      var mine = (authorId === myId) && !solo;
+      if(!mine) votable++;
+      var sel = (rawVotes[myId] === authorId) ? " pri" : " sec";
+      if(mine){
+        html += '<div class="kp-opt" style="opacity:.75;"><div class="kp-opt-txt">"' + escapeHtml(txt) + '"</div>' +
+                '<span class="authentic-tag">ta réplique</span></div>';
+      } else {
+        html += '<button class="btn' + sel + '" style="margin-bottom:12px;text-align:left;" onclick="voteRoast(\'' + authorId + '\')">"' + escapeHtml(txt) + '"</button>';
+      }
+    });
+    if(votable === 0){
+      html += '<div class="waiting">Personne d\'autre n\'a écrit de réplique<span class="d"></span></div>';
+    } else {
+      html += '<div class="gprogress">' + votedCount + ' / ' + players.length + ' ont voté</div>';
+      html += '<div class="waiting">' + (everyoneIn ? "Tous les votes sont enregistrés ! Révélation..." : "Vote pour ta préférée") + '<span class="d"></span></div>';
+    }
+    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' <span id="countdownVal">' + ROAST_VOTE_SEC + 's</span></div></div>';
 
   } else if(g.phase === "reveal"){
     var revealStart = g.revealStartMs || Date.now();
-    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) nextRound(); });
+    var isLast = (round + 1 >= total);
+    startLiveCountdown(revealStart, 6, function(){ if(amHost) nextRound(); });
 
-    html += '<div class="groundhdr">Résultats des répliques !</div>';
-    html += '<div class="gprompt">' + escapeHtml(prompt) + '</div>';
-
-    Object.keys(answers).forEach(function(authorId){
-      var txt = answers[authorId];
-      var author = players.find(function(p){ return p.id === authorId; }) || { name: "Anonyme" };
-      html += '<div class="post-card" style="margin-bottom:10px;">';
-      html += '<div style="font-size:1.1rem;font-weight:700;">"' + escapeHtml(txt) + '"</div>';
-      html += '<div style="color:var(--bp);font-size:.85rem;margin-top:6px;">— ' + escapeHtml(author.name) + '</div>';
-      html += '</div>';
+    // tally, ignoring self-votes
+    var tally = {};
+    Object.keys(answers).forEach(function(a){ tally[a] = 0; });
+    Object.keys(votes).forEach(function(voter){
+      var a = votes[voter];
+      if(tally[a] !== undefined) tally[a]++;
     });
+    var best = 0;
+    Object.keys(tally).forEach(function(a){ if(tally[a] > best) best = tally[a]; });
+
+    var sfxKey = "roast_" + round + "_reveal";
+    if(_lastSfxKey !== sfxKey){
+      _lastSfxKey = sfxKey;
+      if(best > 0){
+        sfxZeldaItemGet();
+        if(window.triggerExplosion) window.triggerExplosion(window.innerWidth/2, 240, true, "#ec4899", true);
+      }
+    }
+
+    html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • Le verdict</div>';
+    html += '<div class="gprompt" style="font-size:1.1rem;">' + escapeHtml(frTypo(prompt)) + '</div>';
+
+    // best punchlines first
+    var sorted = Object.keys(answers).sort(function(a, b){ return (tally[b]||0) - (tally[a]||0); });
+    sorted.forEach(function(authorId){
+      var txt = answers[authorId];
+      var author = getPlayer(authorId);
+      var n = tally[authorId] || 0;
+      var win = (n > 0 && n === best);
+      html += '<div class="post-card" style="margin-bottom:10px;' +
+              (win ? 'border-color:var(--amber);box-shadow:0 0 20px rgba(245,158,11,.35);' : '') + '">';
+      html += '<div style="font-size:1.1rem;font-weight:700;">"' + escapeHtml(txt) + '"</div>';
+      html += '<div style="display:flex;align-items:center;gap:8px;margin-top:8px;">';
+      html += avatarHTML(author, 26);
+      html += '<div style="color:var(--bp);font-size:.85rem;flex:1;">' + escapeHtml(author.name) + '</div>';
+      html += '<div style="font-size:.8rem;font-weight:800;color:' + (win ? 'var(--amber)' : 'var(--gr)') + ';">' +
+              (win ? ICONS.crown + ' ' : '') + n + (n === 1 ? ' vote' : ' votes') + '</div>';
+      html += '</div></div>';
+    });
+    if(Object.keys(answers).length === 0){
+      html += '<div class="waiting" style="margin:18px 0;">Aucune réplique cette manche</div>';
+    }
+
     html += renderRoundPointsHTML(g.roundPoints);
-    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' Fin du jeu dans <span id="countdownVal">5s</span></div></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' ' +
+            (isLast ? 'Fin du jeu' : 'Prochaine manche') + ' dans <span id="countdownVal">6s</span></div></div>';
   } else if(g.phase === "done"){
     html += renderMiniGameDoneHTML();
   }
@@ -5129,18 +5399,40 @@ function renderRoast(g){
   if(g.phase === "reveal") animateCounters(g);
 }
 
+// A timer created for one round/phase must never fire into a later one.
+function roastStillOn(round, phase){
+  return !!currentGame && currentGame.type === "roast" &&
+         (currentGame.round || 0) === round && currentGame.phase === phase;
+}
+
 function submitRoastAnswer(){
-  var val = $("roastIn") ? $("roastIn").value.trim() : "";
-  if(!val || !roomCode || !myId) return;
+  var el = $("roastIn");
+  var val = el ? el.value.trim() : "";
+  if(!roomCode || !myId) return;
+  if(!val){
+    if(el){ el.focus(); }
+    toast("Écris quelque chose avant d'envoyer !");
+    return;
+  }
   sfxVote();
   db.ref("rooms/" + roomCode + "/game/answers/" + myId).set(val);
 }
+
 function startRoastVote(){
-  if(!roomCode) return;
-  db.ref("rooms/" + roomCode + "/game/phase").set("vote");
+  if(!roomCode || !amHost) return;
+  var g = currentGame;
+  if(!g || g.type !== "roast") return;
+  var count = Object.keys(g.answers || {}).length;
+  // Nothing was written, so there is nothing to vote on - go straight to the verdict.
+  if(count === 0){ revealRound(); return; }
+  db.ref("rooms/" + roomCode + "/game").update({ phase: "vote", phaseStartMs: Date.now() });
 }
+
 function voteRoast(authorId){
   if(!roomCode || !myId) return;
+  // Voting for your own punchline is free points, so it's blocked - unless you're
+  // testing alone, where it's the only thing on screen.
+  if(authorId === myId && !roastSoloMode()) return;
   sfxVote();
   db.ref("rooms/" + roomCode + "/game/votes/" + myId).set(authorId);
 }
