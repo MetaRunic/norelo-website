@@ -896,13 +896,14 @@
 
   /* DISCRETE FLOATING GAMEPLAY ROOM CODE BADGE */
   .discrete-code-badge {
-    position: absolute; top: 0px; left: 0px; z-index: 45;
+    position: absolute; top: 14px; left: 16px; z-index: 45;
     background: var(--panel); backdrop-filter: blur(10px);
     border: 1.5px solid var(--bdr); border-radius: 12px;
-    padding: 6px 12px; display: flex; align-items: center; gap: 6px;
+    padding: 6px 12px; display: none; align-items: center; gap: 6px;
     cursor: pointer; transition: all 0.2s ease;
     box-shadow: 0 4px 15px rgba(0,0,0,0.35);
   }
+  body.in-game .discrete-code-badge { display: flex; }
   .discrete-code-badge:hover, .discrete-code-badge:active {
     background: var(--panel2); border-color: var(--bl);
     transform: scale(1.05);
@@ -1056,6 +1057,12 @@
 </div>
 <div id="nowPlaying" aria-live="polite"></div>
 
+<!-- Discrete Room Code Badge (Pinned to Body Top-Left Corner, Absolute position so it scrolls away naturally on mobile) -->
+<div id="discreteCodeBadge" class="discrete-code-badge" onclick="copyCode()" title="Touche pour copier le code de la partie">
+  <span class="code-lbl">CODE</span>
+  <span class="code-val" id="discreteCodeVal">----</span>
+</div>
+
 <!-- THEME SHOP MODAL OVERLAY -->
 <div id="themeShopModal" class="theme-modal-overlay" style="display:none;" onclick="if(event.target===this) closeThemeShop();">
   <div class="theme-modal-card">
@@ -1183,12 +1190,6 @@
 
   <!-- GAME -->
   <section id="s-game" class="screen">
-    <!-- Discrete Room Code Badge During Gameplay -->
-    <div id="discreteCodeBadge" class="discrete-code-badge" onclick="copyCode()" title="Touche pour copier le code de la partie">
-      <span class="code-lbl">CODE</span>
-      <span class="code-val" id="discreteCodeVal">----</span>
-    </div>
-
     <div id="gameArea"></div>
     <button class="btn-danger-quit" onclick="quit()">
       <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -1198,7 +1199,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.40</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.41</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
