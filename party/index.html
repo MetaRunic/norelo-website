@@ -1136,6 +1136,8 @@ var bootDone = false;
 var currentGame = null;
 var sessionScores = {};
 var _preRoundScores = {};
+var _lastAutoRevealKey = "";
+var _lastSfxKey = "";
 var resumeAborted = false;
 var countdownTicker = null;
 
@@ -1951,8 +1953,9 @@ function renderMostLikely(g){
   var html = "";
 
   if(g.phase === "guess"){
-    if(votedCount >= players.length && players.length > 0 && amHost && !g._autoRevealed){
-      g._autoRevealed = true;
+    var revealKey = (g.type || "") + "_" + round;
+    if(votedCount >= players.length && players.length > 0 && amHost && _lastAutoRevealKey !== revealKey){
+      _lastAutoRevealKey = revealKey;
       setTimeout(revealRound, 600);
     }
 
@@ -2001,8 +2004,9 @@ function renderMostLikely(g){
     }
 
   } else if(g.phase === "reveal"){
-    if(!g._sfxPlayed){
-      g._sfxPlayed = true;
+    var sfxKey = (g.type || "") + "_" + round + "_reveal";
+    if(_lastSfxKey !== sfxKey){
+      _lastSfxKey = sfxKey;
       sfxWin();
     }
     var revealStart = g.revealStartMs || Date.now();
@@ -2359,8 +2363,9 @@ function renderWhoPosted(g){
   var html = "";
 
   if(g.phase === "guess"){
-    if(votedCount >= players.length && players.length > 0 && amHost && !g._autoRevealed){
-      g._autoRevealed = true;
+    var revealKey = (g.type || "") + "_" + round;
+    if(votedCount >= players.length && players.length > 0 && amHost && _lastAutoRevealKey !== revealKey){
+      _lastAutoRevealKey = revealKey;
       setTimeout(revealRound, 600);
     }
 
@@ -2469,8 +2474,9 @@ function renderGuessRating(g){
   var html = "";
 
   if(g.phase === "guess"){
-    if(votedCount >= players.length && players.length > 0 && amHost && !g._autoRevealed){
-      g._autoRevealed = true;
+    var revealKey = (g.type || "") + "_" + round;
+    if(votedCount >= players.length && players.length > 0 && amHost && _lastAutoRevealKey !== revealKey){
+      _lastAutoRevealKey = revealKey;
       setTimeout(revealRound, 600);
     }
 
@@ -2570,8 +2576,9 @@ function renderKnowPlayer(g){
       html += '<div class="waiting">' + escapeHtml(spotlightName) + ' est en train de choisir sa réponse secrète<span class="d"></span></div>';
     }
   } else if(g.phase === "guess"){
-    if(votedCount >= (players.length - 1) && players.length > 1 && amHost && !g._autoRevealed){
-      g._autoRevealed = true;
+    var revealKey = (g.type || "") + "_" + round;
+    if(votedCount >= (players.length - 1) && players.length > 1 && amHost && _lastAutoRevealKey !== revealKey){
+      _lastAutoRevealKey = revealKey;
       setTimeout(revealRound, 600);
     }
 
@@ -2671,8 +2678,9 @@ function renderRoast(g){
     html += '<div class="gprogress" style="margin-top:16px;">' + answerCount + ' / ' + players.length + ' réponses soumises</div>';
 
   } else if(g.phase === "vote"){
-    if(votedCount >= players.length && players.length > 0 && amHost && !g._autoRevealed){
-      g._autoRevealed = true;
+    var revealKey = (g.type || "") + "_vote";
+    if(votedCount >= players.length && players.length > 0 && amHost && _lastAutoRevealKey !== revealKey){
+      _lastAutoRevealKey = revealKey;
       setTimeout(revealRound, 600);
     }
 
@@ -2762,8 +2770,9 @@ function renderWhoSaid(g){
   var html = "";
 
   if(g.phase === "guess"){
-    if(votedCount >= players.length && players.length > 0 && amHost && !g._autoRevealed){
-      g._autoRevealed = true;
+    var revealKey = (g.type || "") + "_" + round;
+    if(votedCount >= players.length && players.length > 0 && amHost && _lastAutoRevealKey !== revealKey){
+      _lastAutoRevealKey = revealKey;
       setTimeout(revealRound, 600);
     }
 
@@ -2829,8 +2838,9 @@ function renderTwoTruths(g){
   var html = "";
 
   if(g.phase === "guess"){
-    if(votedCount >= players.length && players.length > 0 && amHost && !g._autoRevealed){
-      g._autoRevealed = true;
+    var revealKey = (g.type || "") + "_" + round;
+    if(votedCount >= players.length && players.length > 0 && amHost && _lastAutoRevealKey !== revealKey){
+      _lastAutoRevealKey = revealKey;
       setTimeout(revealRound, 600);
     }
 
