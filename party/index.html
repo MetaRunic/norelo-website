@@ -744,6 +744,8 @@ function getBgTrack(){
   return bgTrackEl;
 }
 
+var MAX_MUSIC_VOLUME = 0.06; // Strict 6% background music volume rule
+
 function fadeTrackVolume(targetVol, durationMs, onComplete){
   if(fadeInterval) clearInterval(fadeInterval);
   var track = getBgTrack();
@@ -793,7 +795,7 @@ function playGameMusic(type){
       track.load();
       track.volume = 0;
       track.play().then(function(){
-        fadeTrackVolume(0.06, 700);
+        fadeTrackVolume(MAX_MUSIC_VOLUME, 700);
       }).catch(function(e){});
     });
   } else {
@@ -802,7 +804,7 @@ function playGameMusic(type){
     track.volume = 0;
     if(audioEnabled){
       track.play().then(function(){
-        fadeTrackVolume(0.06, 700);
+        fadeTrackVolume(MAX_MUSIC_VOLUME, 700);
       }).catch(function(e){});
     }
   }
