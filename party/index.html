@@ -597,6 +597,44 @@
     100% { transform: translateX(0) scale(1); opacity: 1; }
   }
 
+  /* CONNAIS-TU BIEN — SPOTLIGHT CARD & ANSWER REVEAL */
+  .kp-spot-card {
+    display: flex; align-items: center; gap: 14px; padding: 14px;
+    border-radius: 18px; margin-bottom: 16px;
+    background: linear-gradient(135deg, rgba(59,130,246,0.18), rgba(6,182,212,0.14));
+    border: 1px solid rgba(96,165,250,0.35);
+  }
+  .kp-spot-meta { flex: 1; min-width: 0; }
+  .kp-spot-label {
+    font-size: .68rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
+    color: #7dd3fc; margin-bottom: 3px;
+  }
+  .kp-spot-name {
+    font-size: 1.2rem; font-weight: 900; color: #fff;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .kp-opt {
+    display: flex; align-items: center; gap: 10px; padding: 12px 14px;
+    border-radius: 14px; margin-bottom: 8px; opacity: .5;
+    background: var(--panel); border: 2px solid transparent;
+  }
+  .kp-opt.correct {
+    opacity: 1; border-color: var(--green);
+    background: linear-gradient(120deg, rgba(16,185,129,0.28), rgba(16,185,129,0.08));
+    box-shadow: 0 0 22px rgba(16,185,129,0.35);
+  }
+  .kp-opt-txt { flex: 1; font-size: .93rem; font-weight: 700; color: #cbd5e1; line-height: 1.32; }
+  .kp-opt.correct .kp-opt-txt { color: #fff; }
+  .kp-opt-check { color: var(--green); flex-shrink: 0; display: flex; }
+  .kp-guessers { display: flex; gap: 3px; flex-shrink: 0; }
+  .kp-guessers .avatar { margin: 0; box-shadow: 0 0 0 2px rgba(10,16,38,.9); }
+  .kp-verdict {
+    text-align: center; font-size: 1.02rem; font-weight: 900; line-height: 1.35;
+    padding: 12px; border-radius: 14px; margin: 16px 0 4px;
+  }
+  .kp-verdict.good { color: #6ee7b7; background: rgba(16,185,129,0.14); }
+  .kp-verdict.bad { color: #fca5a5; background: rgba(239,68,68,0.14); }
+
   /* EPIC MARIO PARTY BONUS STAR CEREMONY */
   .bonus-star-ceremony {
     background: linear-gradient(135deg, rgba(245, 158, 11, 0.18), rgba(168, 85, 247, 0.28));
@@ -2134,7 +2172,12 @@ function processVotingTiebreakerClash(){
 
 function launchSelectedGame(type){
   if(!roomCode || !amHost) return;
-  
+
+  // Round keys repeat across playthroughs ("knowplayer_0" every time), so without
+  // clearing these a mode played twice in one night would score nothing the second time.
+  _scoredRoundsTrack = {};
+  _bonusAwardedTrack = {};
+
   if(type === "whoposted"){ launchWhoPosted(); }
   else if(type === "guessrating"){ launchGuessRating(); }
   else if(type === "knowplayer"){ launchKnowPlayer(); }
@@ -2142,6 +2185,24 @@ function launchSelectedGame(type){
   else if(type === "whosaid"){ launchWhoSaid(); }
   else if(type === "twotruths"){ launchTwoTruths(); }
   else { launchMostLikely(); }
+}
+
+// The "fire this once per round" render guards below are keyed by type+round, which
+// repeats on a replay. Every client clears them when a different mini-game starts
+// (the group vote screen always sits in between) or when rounds restart at 0.
+var _lastSeenGameType = "";
+var _lastSeenRound = -1;
+function resetRoundGuardsIfNewGame(g){
+  var t = g.type || "";
+  var r = g.round || 0;
+  if(t !== _lastSeenGameType || r < _lastSeenRound){
+    _lastAutoRevealKey = "";
+    _lastSfxKey = "";
+    _lastAnimatedPointsKey = "";
+    _lastRevealStep = -1;
+  }
+  _lastSeenGameType = t;
+  _lastSeenRound = r;
 }
 
 function renderGame(g){
@@ -2154,7 +2215,8 @@ function renderGame(g){
   }
   
   playGameMusic(g.type);
-  
+  resetRoundGuardsIfNewGame(g);
+
   if(g.type === "voting"){ renderGameVoting(g); }
   else if(g.type === "whoposted"){ renderWhoPosted(g); }
   else if(g.type === "guessrating"){ renderGuessRating(g); }
@@ -2741,12 +2803,18 @@ function revealRound(){
         else if(Math.abs(votes[vUid] - item.stars) === 1) addPoints(vUid, 100);
       });
     } else if(game.type === "knowplayer"){
+      var kpItem = knowRoundData(game);
+      var kpCorrect = 0;
       Object.keys(votes).forEach(function(vUid){
+        if(vUid === kpItem.spotlightId) return; // The star's own vote never counts
         if(votes[vUid] === game.spotlightAnswer){
+          kpCorrect++;
           trackStat("correctGuesses", vUid);
           addPoints(vUid, 200);
         }
       });
+      // The star is rewarded for being read correctly, so answering honestly pays.
+      if(kpItem.spotlightId && kpCorrect > 0) addPoints(kpItem.spotlightId, 50 * kpCorrect);
     } else if(game.type === "roast"){
       Object.keys(votes).forEach(function(vKey){ var authorUid = votes[vKey]; addPoints(authorUid, 150); });
     } else if(game.type === "whosaid"){
@@ -2807,7 +2875,16 @@ function nextRound(){
       ceremonyStartMs: Date.now()
     });
   }
-  else { db.ref("rooms/" + roomCode + "/game").update({ round: next, phase: "guess", votes: null, revealStartMs: null, scored: null }); }
+  else {
+    var upd = { round: next, phase: "guess", votes: null, revealStartMs: null, scored: null };
+    if(currentGame.type === "knowplayer"){
+      // Each round has a new star, so it restarts at the secret-answer step.
+      upd.phase = "spotlight_answer";
+      upd.spotlightAnswer = null;
+      upd.phaseStartMs = Date.now();
+    }
+    db.ref("rooms/" + roomCode + "/game").update(upd);
+  }
 }
 
 // =====================================================================
@@ -3657,78 +3734,238 @@ var KNOW_QUESTIONS = [
   { q: "Mon snack ultime de fin de soirée après un gros party :", opts: ["Poutine bien chaude à 3h du mat", "Pizza froide directement du frigo", "Sac de chips au complet", "Burger double du McDo"] },
   { q: "Si je devais faire un coup d'un soir avec une célébrité :", opts: ["Un(e) acteur/trice d'Hollywood", "Un(e) athlète professionnel(le)", "Un(e) chanteur/euse pop", "Un(e) influenceur/euse controversé(e)"] },
   { q: "Mon plus grand plaisir coupable secret :", opts: ["Téléréalité de marde", "Musique pop des années 2000", "Regarder les stories de mon ex", "Dépenser trop d'argent sur UberEats"] },
-  { q: "Si je finis en prison un jour, ce sera pour :", opts: ["Un pari débile en boisson", "Un scandale au resto", "Avoir défendu mon ami(e) trop fort", "Une arnaque financière ratée"] }
+  { q: "Si je finis en prison un jour, ce sera pour :", opts: ["Un pari débile en boisson", "Un scandale au resto", "Avoir défendu mon ami(e) trop fort", "Une arnaque financière ratée"] },
+  { q: "Comment je réagis quand quelqu'un me ghost ?", opts: ["Je stalke ses réseaux en silence", "Je fais semblant que ça me dérange pas", "J'envoie un dernier message à 2h du mat", "Je le raconte à toute la gang"] },
+  { q: "Ma vraie raison quand j'annule des plans à la dernière minute :", opts: ["Mon lit était trop confortable", "J'avais juste plus envie de parler", "Une nouvelle série venait de sortir", "J'avais dépensé tout mon argent"] },
+  { q: "Le premier truc que je fais en me réveillant :", opts: ["Scroller mon téléphone pendant 40 minutes", "Snooze 6 fois de suite", "Vérifier si j'ai fait honte hier soir", "Me lever d'un coup en panique"] },
+  { q: "Mon comportement le plus toxique en amour :", opts: ["Je disparais quand ça devient sérieux", "Je relis nos conversations 100 fois", "Je teste la personne exprès", "Je pardonne beaucoup trop vite"] },
+  { q: "Ce que je fais vraiment quand je dis \"je m'en vais me coucher\" :", opts: ["Je regarde des vidéos jusqu'à 3h", "Je mange en cachette dans la cuisine", "Je texte quelqu'un que je devrais pas", "Je me couche pour vrai, promis"] },
+  { q: "Si on fouillait mon téléphone maintenant, ce qui serait le plus gênant :", opts: ["Mes recherches Google", "Mes notes vocales à moi-même", "Mon dossier de photos cachées", "Mes messages avec mon ex"] },
+  { q: "Ma pire habitude que personne ose me dire :", opts: ["Je parle beaucoup trop fort", "Je coupe la parole tout le temps", "J'arrive systématiquement en retard", "Je raconte la même histoire chaque fois"] },
+  { q: "Comment je gère une chicane de couple ?", opts: ["Je boude en silence 3 jours", "J'explose tout de suite", "Je fais des blagues pour désamorcer", "Je fais comme si rien s'était passé"] },
+  { q: "Le mensonge que je dis le plus souvent :", opts: ["\"Je suis en route\"", "\"Je bois pas beaucoup\"", "\"J'ai pas vu ton message\"", "\"C'est correct, ça me dérange pas\""] },
+  { q: "Ma stratégie quand je trouve quelqu'un cute dans un bar :", opts: ["Je le regarde 2h sans rien faire", "Je bois du courage liquide d'abord", "J'envoie un(e) ami(e) en éclaireur", "Je fonce direct sans réfléchir"] },
+  { q: "Ce que je fais si je gagne 1 million demain :", opts: ["Je démissionne par message vocal", "Je disparais dans un autre pays", "Je paie les dettes de tout le monde", "Je le perds en 6 mois, on se connaît"] },
+  { q: "Mon type de party préféré, honnêtement :", opts: ["Gros club, musique forte, chaos", "Sous-sol avec 5 amis et de la bière", "Souper tranquille qui finit à 4h", "Aucun, je veux rester chez moi"] },
+  { q: "La chose la plus honteuse que j'ai déjà faite pour un(e) ex :", opts: ["Conduire 3h sans être invité(e)", "Créer un faux compte pour l'espionner", "Pleurer devant sa maison", "Réapprendre un sport que je déteste"] },
+  { q: "Comment je danse quand je pense que personne me regarde :", opts: ["Comme si j'étais dans un vidéoclip", "Juste un petit balancement gêné", "Full chaos, aucune coordination", "Je danse jamais, même seul(e)"] },
+  { q: "Mon karaoké de fin de soirée obligatoire :", opts: ["Une ballade dramatique pas dans mon ton", "Un classique québécois que tout le monde chante", "Du rap que je connais à moitié", "Je passe le micro à quelqu'un d'autre"] },
+  { q: "Ce qui me fait perdre patience le plus vite :", opts: ["Les gens lents dans une file", "Quand on mâche fort à côté de moi", "Quand on répond pas à mes messages", "Quand quelqu'un a raison avant moi"] },
+  { q: "Si je devais avouer un crush secret, ce serait :", opts: ["Quelqu'un dans cette pièce", "Un(e) collègue de travail", "L'ami(e) d'un(e) ami(e)", "Personne, je suis très bien seul(e)"] },
+  { q: "Ma réaction si mon ex m'écrit à 1h du matin :", opts: ["Je réponds tout de suite, malheureusement", "Je screenshot et j'envoie à la gang", "Je lis et je réponds jamais", "Je bloque et je regrette le lendemain"] },
+  { q: "Le compliment qui me fait le plus plaisir :", opts: ["Que je suis drôle", "Que je suis beau/belle", "Que je suis intelligent(e)", "Qu'on peut compter sur moi"] },
+  { q: "Ce que je commande vraiment quand je dis \"je mange santé\" :", opts: ["Une salade avec 4 sortes de fromage", "Un smoothie et 2 beignes", "Du poulet frit, j'ai abandonné", "Rien, je grignote debout dans le frigo"] },
+  { q: "Mon pire trait quand je joue à un jeu de société :", opts: ["Je triche subtilement", "Je boude si je perds", "J'explique les règles trop longtemps", "Je m'allie et je trahis à la fin"] },
+  { q: "Ce que je fais quand quelqu'un raconte une histoire trop longue :", opts: ["Je hoche la tête sans écouter", "Je regarde mon téléphone", "Je l'interromps pour parler de moi", "J'écoute vraiment, je suis un ange"] },
+  { q: "Ma plus grosse dépense inutile du dernier mois :", opts: ["De la livraison de bouffe", "Du linge que je porterai jamais", "Des achats en ligne à 2h du mat", "Des tournées de shooters pour la gang"] },
+  { q: "Si ma vie était un film, le genre serait :", opts: ["Comédie chaotique", "Drame romantique", "Documentaire gênant", "Film d'horreur budget zéro"] },
+  { q: "Comment je réagis quand je me fais prendre à mentir :", opts: ["Je double le mensonge", "Je ris nerveusement et j'avoue", "Je change de sujet agressivement", "Je nie jusqu'à ma mort"] },
+  { q: "La personne à qui je texte en premier quand ça va mal :", opts: ["Ma mère", "Mon/ma meilleur(e) ami(e)", "Mon ex, honteusement", "Personne, je garde tout en dedans"] },
+  { q: "Mon secret le plus embarrassant sur mes goûts musicaux :", opts: ["J'écoute encore de l'emo de 2008", "Je connais toutes les paroles de Céline", "J'aime la musique de Noël en juillet", "J'écoute des playlists \"lo-fi pour étudier\" sans étudier"] },
+  { q: "Ce que je ferais si j'étais invisible pendant une journée :", opts: ["Espionner mes amis", "Voler de la bouffe partout", "Suivre mon crush toute la journée", "Enfin dormir sans être dérangé(e)"] },
+  { q: "Mon plus gros regret de soirée :", opts: ["Un texto envoyé à 3h du mat", "Avoir embrassé la mauvaise personne", "Avoir accepté le dernier shooter", "Avoir dit ce que je pensais vraiment"] }
 ];
+
+var KP_ANSWER_SEC = 30; // Safety net so an AFK spotlight can never deadlock the room
+var KP_GUESS_SEC = 30;
 
 function launchKnowPlayer(){
   if(!roomCode || !amHost) return;
   _ceremonyStartMs = 0;
-  var spot = players[Math.floor(Math.random()*players.length)] || { id: myId, name: me.name };
-  var qObj = KNOW_QUESTIONS[Math.floor(Math.random()*KNOW_QUESTIONS.length)];
+
+  var qPool = KNOW_QUESTIONS.slice();
+  shuffle(qPool);
+
+  // Rotate the spotlight through a shuffled player order: nobody is picked
+  // a second time before everyone has had their turn in the chair.
+  var spotOrder = players.slice();
+  shuffle(spotOrder);
+  if(spotOrder.length === 0) spotOrder = [{ id: myId, name: me.name }];
+
+  var totalRounds = Math.min(5, qPool.length);
+  var rounds = [];
+  for(var i = 0; i < totalRounds; i++){
+    var spot = spotOrder[i % spotOrder.length];
+    rounds.push({
+      spotlightId: spot.id,
+      spotlightName: spot.name,
+      q: qPool[i].q,
+      opts: qPool[i].opts
+    });
+  }
 
   db.ref("rooms/" + roomCode).update({
     status: "playing",
     game: {
       type: "knowplayer",
       phase: "spotlight_answer",
-      spotlightId: spot.id,
-      spotlightName: spot.name,
-      question: qObj.q,
-      options: qObj.opts
+      round: 0,
+      total: rounds.length,
+      phaseStartMs: Date.now(),
+      roundsData: rounds
     }
   });
 }
 
+function knowRoundData(g){
+  var round = (g && g.round) || 0;
+  if(g && g.roundsData && g.roundsData[round]) return g.roundsData[round];
+  return { spotlightId: "", spotlightName: "quelqu'un", q: "", opts: [] };
+}
+
+// A timer created for one round must never fire into the next round or another mode.
+function kpStillOnRound(round){
+  return !!currentGame && currentGame.type === "knowplayer" && (currentGame.round || 0) === round;
+}
+
 function renderKnowPlayer(g){
   var area = $("gameArea");
-  var spotlightName = g.spotlightName || "quelqu'un";
-  var question = g.question || "";
-  var options = g.options || [];
-  var votes = g.votes || {};
+  var round = g.round || 0;
+  var total = g.total || 1;
+  var item = knowRoundData(g);
+  var spotlightName = item.spotlightName || "quelqu'un";
+  // Phones drop out mid-round: fall back to the name captured at launch so the
+  // card still reads correctly instead of showing a generic "Joueur".
+  var stillHere = players.some(function(p){ return p.id === item.spotlightId; });
+  var spotlight = stillHere ? getPlayer(item.spotlightId)
+                           : { id: item.spotlightId, name: spotlightName, color: "#2563eb" };
+  var question = item.q || "";
+  var options = item.opts || [];
+  var iAmSpotlight = (myId && myId === item.spotlightId);
   var spotlightAnswer = g.spotlightAnswer;
+  var hasAnswer = (typeof spotlightAnswer === "number");
+
+  // The spotlight never guesses their own answer, so their vote is ignored everywhere.
+  var rawVotes = g.votes || {};
+  var votes = {};
+  Object.keys(rawVotes).forEach(function(uid){
+    if(uid !== item.spotlightId) votes[uid] = rawVotes[uid];
+  });
+  var guessers = players.filter(function(p){ return p.id !== item.spotlightId; });
   var votedCount = Object.keys(votes).length;
+  var hdr = '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • Connais-tu bien ' + escapeHtml(spotlightName) + ' ?</div>';
   var html = "";
 
+  function spotCardHTML(label){
+    var h = '<div class="kp-spot-card">';
+    h += avatarHTML(spotlight, 58);
+    h += '<div class="kp-spot-meta"><div class="kp-spot-label">' + label + '</div>';
+    h += '<div class="kp-spot-name">' + escapeHtml(spotlightName) + '</div></div>';
+    h += '</div>';
+    return h;
+  }
+
   if(g.phase === "spotlight_answer"){
-    html += '<div class="groundhdr">Connais-tu bien ' + escapeHtml(spotlightName) + ' ?</div>';
+    // If the star goes AFK, the host picks for them so the room keeps moving.
+    // Re-read live state here: a render snapshot can be a second or two stale.
+    startLiveCountdown(g.phaseStartMs || Date.now(), KP_ANSWER_SEC, function(){
+      if(!amHost || !options.length) return;
+      if(!kpStillOnRound(round)) return;
+      if(typeof currentGame.spotlightAnswer === "number") return;
+      db.ref("rooms/" + roomCode + "/game").update({
+        spotlightAnswer: Math.floor(Math.random() * options.length),
+        phase: "guess",
+        phaseStartMs: Date.now()
+      });
+    });
+
+    html += hdr;
+    html += spotCardHTML("Joueur vedette");
     html += '<div class="gprompt">' + escapeHtml(question) + '</div>';
 
-    if(myId === g.spotlightId){
-      html += '<div class="gsub">Tu es la vedette ! Choisis ta vraie réponse :</div>';
+    if(iAmSpotlight){
+      html += '<div class="gsub">Tu es la vedette ! Choisis ta vraie réponse — les autres vont essayer de te deviner.</div>';
       options.forEach(function(opt, idx){
-        html += '<button class="btn sec" style="margin-bottom:10px;" onclick="pickSpotlightAnswer(' + idx + ')">' + escapeHtml(opt) + '</button>';
+        html += '<button class="btn sec" style="margin-bottom:10px;text-align:left;" onclick="pickSpotlightAnswer(' + idx + ')">' + escapeHtml(opt) + '</button>';
       });
     } else {
-      html += '<div class="waiting">' + escapeHtml(spotlightName) + ' est en train de choisir sa réponse secrète<span class="d"></span></div>';
+      html += '<div class="gsub">Pendant ce temps, prépare ta prédiction…</div>';
+      html += '<div class="waiting">' + escapeHtml(spotlightName) + ' choisit sa réponse secrète<span class="d"></span></div>';
     }
+    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' <span id="countdownVal">' + KP_ANSWER_SEC + 's</span></div></div>';
+
   } else if(g.phase === "guess"){
-    var revealKey = (g.type || "") + "_guess";
-    if(votedCount >= (players.length - 1) && players.length > 1 && amHost && _lastAutoRevealKey !== revealKey){
+    var revealKey = (g.type || "") + "_" + round;
+    var everyoneIn = (guessers.length === 0) || (votedCount >= guessers.length);
+    if(everyoneIn && amHost && _lastAutoRevealKey !== revealKey){
       _lastAutoRevealKey = revealKey;
       setTimeout(revealRound, 600);
     }
-
-    html += '<div class="groundhdr">Prédisez le choix de ' + escapeHtml(spotlightName) + ' !</div>';
-    html += '<div class="gprompt">' + escapeHtml(question) + '</div>';
-    html += '<div class="gsub">Qu\'est-ce que ' + escapeHtml(spotlightName) + ' a choisi ?</div>';
-
-    options.forEach(function(opt, idx){
-      var sel = (votes[myId] === idx) ? " pri" : " sec";
-      html += '<button class="btn' + sel + '" style="margin-bottom:10px;" onclick="guessSpotlight(' + idx + ')">' + escapeHtml(opt) + '</button>';
+    // Safety net: a single AFK guesser can't stall the round forever.
+    startLiveCountdown(g.phaseStartMs || Date.now(), KP_GUESS_SEC, function(){
+      if(amHost && kpStillOnRound(round)) revealRound();
     });
-    html += '<div class="gprogress">' + votedCount + ' / ' + (players.length-1) + ' ont prédit</div>';
-    html += '<div class="waiting">' + (votedCount >= (players.length - 1) ? "Tout le monde a prédit ! Révélation..." : "Fais ton choix") + '<span class="d"></span></div>';
+
+    html += hdr;
+    html += spotCardHTML(hasAnswer ? "A répondu en secret" : "Joueur vedette");
+    html += '<div class="gprompt">' + escapeHtml(question) + '</div>';
+
+    if(iAmSpotlight){
+      html += '<div class="gsub">Ta réponse secrète est verrouillée :</div>';
+      html += '<div class="kp-opt correct"><div class="kp-opt-txt">' + escapeHtml(options[spotlightAnswer] || "—") + '</div><span class="kp-opt-check">' + ICONS.check + '</span></div>';
+      html += '<div class="gprogress">' + votedCount + ' / ' + guessers.length + ' ont prédit</div>';
+      html += '<div class="waiting">La gang essaie de te deviner<span class="d"></span></div>';
+    } else {
+      html += '<div class="gsub">Qu\'est-ce que ' + escapeHtml(spotlightName) + ' a choisi ?</div>';
+      options.forEach(function(opt, idx){
+        var sel = (votes[myId] === idx) ? " pri" : " sec";
+        html += '<button class="btn' + sel + '" style="margin-bottom:10px;text-align:left;" onclick="guessSpotlight(' + idx + ')">' + escapeHtml(opt) + '</button>';
+      });
+      html += '<div class="gprogress">' + votedCount + ' / ' + guessers.length + ' ont prédit</div>';
+      html += '<div class="waiting">' + (everyoneIn ? "Tout le monde a prédit ! Révélation..." : (typeof votes[myId] === "number" ? "Prédiction envoyée !" : "Fais ton choix")) + '<span class="d"></span></div>';
+    }
+    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' <span id="countdownVal">' + KP_GUESS_SEC + 's</span></div></div>';
 
   } else if(g.phase === "reveal"){
     var revealStart = g.revealStartMs || Date.now();
-    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) nextRound(); });
+    var isLastRound = (round + 1 >= total);
+    startLiveCountdown(revealStart, 5, function(){ if(amHost) nextRound(); });
 
-    var correctText = options[spotlightAnswer] || "Aucune";
-    html += '<div class="groundhdr">La vérité est dévoilée !</div>';
-    html += '<div class="gprompt">' + escapeHtml(spotlightName) + ' a répondu :</div>';
-    html += '<div style="background:linear-gradient(120deg,var(--blue),var(--purple));padding:20px;border-radius:18px;font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:20px;">' + escapeHtml(correctText) + '</div>';
+    var correctCount = 0;
+    Object.keys(votes).forEach(function(uid){ if(votes[uid] === spotlightAnswer) correctCount++; });
+
+    var sfxKey = (g.type || "") + "_" + round + "_kpreveal";
+    if(_lastSfxKey !== sfxKey){
+      _lastSfxKey = sfxKey;
+      if(guessers.length > 0 && (correctCount === 0 || correctCount === guessers.length)){
+        sfxZeldaItemGet();
+        if(window.triggerExplosion){
+          window.triggerExplosion(window.innerWidth/2, 240, true, correctCount === 0 ? "#ef4444" : "#10b981");
+        }
+      }
+    }
+
+    html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • La vérité est dévoilée</div>';
+    html += '<div style="text-align:center;margin-bottom:6px;">' + avatarHTML(spotlight, 84) + '</div>';
+    html += '<div class="gprompt" style="font-size:1.1rem;margin-bottom:14px;">' + escapeHtml(spotlightName) + ' a répondu :</div>';
+
+    // Every option, with the avatars of whoever bet on it.
+    options.forEach(function(opt, idx){
+      var backers = guessers.filter(function(p){ return votes[p.id] === idx; });
+      html += '<div class="kp-opt' + (idx === spotlightAnswer ? ' correct' : '') + '">';
+      html += '<div class="kp-opt-txt">' + escapeHtml(opt) + '</div>';
+      if(backers.length){
+        html += '<div class="kp-guessers">';
+        backers.forEach(function(p){ html += avatarHTML(p, 28); });
+        html += '</div>';
+      }
+      if(idx === spotlightAnswer) html += '<span class="kp-opt-check">' + ICONS.check + '</span>';
+      html += '</div>';
+    });
+
+    if(guessers.length > 0){
+      if(correctCount === guessers.length){
+        html += '<div class="kp-verdict good">SANS FAUTE ! Toute la gang connaît ' + escapeHtml(spotlightName) + ' par cœur.</div>';
+      } else if(correctCount === 0){
+        html += '<div class="kp-verdict bad">PERSONNE n\'a deviné ! ' + escapeHtml(spotlightName) + ' reste un mystère total.</div>';
+      } else {
+        html += '<div class="kp-verdict good">' + correctCount + ' sur ' + guessers.length + ' ont deviné juste.</div>';
+      }
+    }
+
     html += renderRoundPointsHTML(g.roundPoints);
-    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' Fin du jeu dans <span id="countdownVal">5s</span></div></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' ' + (isLastRound ? 'Fin du jeu' : 'Prochaine manche') + ' dans <span id="countdownVal">5s</span></div></div>';
+
   } else if(g.phase === "done"){
     html += renderMiniGameDoneHTML();
   }
@@ -3738,12 +3975,20 @@ function renderKnowPlayer(g){
 }
 
 function pickSpotlightAnswer(idx){
-  if(!roomCode) return;
+  if(!roomCode || !currentGame) return;
+  var item = knowRoundData(currentGame);
+  if(myId !== item.spotlightId) return;             // Only the star sets the real answer
+  if(typeof currentGame.spotlightAnswer === "number") return; // No changing it once locked
   sfxVote();
-  db.ref("rooms/" + roomCode + "/game").update({ spotlightAnswer: idx, phase: "guess" });
+  db.ref("rooms/" + roomCode + "/game").update({
+    spotlightAnswer: idx,
+    phase: "guess",
+    phaseStartMs: Date.now()
+  });
 }
 function guessSpotlight(idx){
-  if(!roomCode || !myId) return;
+  if(!roomCode || !myId || !currentGame) return;
+  if(myId === knowRoundData(currentGame).spotlightId) return; // The star can't bet on themselves
   sfxVote();
   db.ref("rooms/" + roomCode + "/game/votes/" + myId).set(idx);
 }
