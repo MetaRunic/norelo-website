@@ -1531,35 +1531,36 @@ function renderGame(g){
 function renderRPSArenaHTML(pA, pB, choices, duelistA, duelistB, subtitle, lastResult, stage){
   var cA = choices[duelistA];
   var cB = choices[duelistB];
-  var isDone = (cA && cB);
   
   var leftClass = "rps-clash-left";
   var rightClass = "rps-clash-right";
   
-  if(isDone){
-    if(stage === "suspense"){
-      leftClass += " rps-suspense-box";
-      rightClass += " rps-suspense-box";
+  var iconA = ICONS.dice;
+  var iconB = ICONS.dice;
+
+  if(stage === "suspense"){
+    leftClass += " rps-suspense-box";
+    rightClass += " rps-suspense-box";
+    iconA = ICONS.dice;
+    iconB = ICONS.dice;
+  } else if(stage === "clash"){
+    iconA = ICONS[cA] || ICONS.rock;
+    iconB = ICONS[cB] || ICONS.rock;
+    if(cA === cB){
+      leftClass += " rps-draw";
+      rightClass += " rps-draw";
+    } else if( (cA==="rock"&&cB==="scissors") || (cA==="scissors"&&cB==="paper") || (cA==="paper"&&cB==="rock") ){
+      leftClass += (cA === "rock" ? " rps-rock-winner" : cA === "scissors" ? " rps-scissors-winner" : " rps-paper-winner");
+      if(cA === "rock" && cB === "scissors") rightClass += " rps-crushed";
+      else if(cA === "scissors" && cB === "paper") rightClass += " rps-sliced";
+      else if(cA === "paper" && cB === "rock") rightClass += " rps-wrapped";
     } else {
-      if(cA === cB){
-        leftClass += " rps-draw";
-        rightClass += " rps-draw";
-      } else if( (cA==="rock"&&cB==="scissors") || (cA==="scissors"&&cB==="paper") || (cA==="paper"&&cB==="rock") ){
-        leftClass += (cA === "rock" ? " rps-rock-winner" : cA === "scissors" ? " rps-scissors-winner" : " rps-paper-winner");
-        if(cA === "rock" && cB === "scissors") rightClass += " rps-crushed";
-        else if(cA === "scissors" && cB === "paper") rightClass += " rps-sliced";
-        else if(cA === "paper" && cB === "rock") rightClass += " rps-wrapped";
-      } else {
-        rightClass += (cB === "rock" ? " rps-rock-winner" : cB === "scissors" ? " rps-scissors-winner" : " rps-paper-winner");
-        if(cB === "rock" && cA === "scissors") leftClass += " rps-crushed";
-        else if(cB === "scissors" && cA === "paper") leftClass += " rps-sliced";
-        else if(cB === "paper" && cA === "rock") leftClass += " rps-wrapped";
-      }
+      rightClass += (cB === "rock" ? " rps-rock-winner" : cB === "scissors" ? " rps-scissors-winner" : " rps-paper-winner");
+      if(cB === "rock" && cA === "scissors") leftClass += " rps-crushed";
+      else if(cB === "scissors" && cA === "paper") leftClass += " rps-sliced";
+      else if(cB === "paper" && cA === "rock") leftClass += " rps-wrapped";
     }
   }
-
-  var iconA = (stage === "suspense") ? ICONS.dice : (cA ? (ICONS[cA] || ICONS.rock) : ICONS.dice);
-  var iconB = (stage === "suspense") ? ICONS.dice : (cB ? (ICONS[cB] || ICONS.rock) : ICONS.dice);
 
   var html = '<div class="groundhdr">ÉGALITÉ AU VOTE !</div>';
   if(stage === "suspense"){
@@ -1578,7 +1579,7 @@ function renderRPSArenaHTML(pA, pB, choices, duelistA, duelistB, subtitle, lastR
   html += '<div style="font-size:1.05rem;font-weight:900;color:#fff;margin-top:6px;text-shadow:0 2px 4px rgba(0,0,0,0.8);">' + escapeHtml(pA.name) + '</div>';
   html += '</div>';
   html += '<div class="rps-icon-box">' + iconA + '</div>';
-  if(!isDone && cA) html += '<div style="font-size:0.85rem;color:var(--green);font-weight:800;margin-top:6px;">PRÊT</div>';
+  if(!stage && cA) html += '<div style="font-size:0.85rem;color:var(--green);font-weight:800;margin-top:6px;">PRÊT</div>';
   html += '</div>';
   
   html += '<div style="font-size:2rem;font-weight:900;color:var(--accent);align-self:center;margin:0 4px;">VS</div>';
@@ -1589,7 +1590,7 @@ function renderRPSArenaHTML(pA, pB, choices, duelistA, duelistB, subtitle, lastR
   html += '<div style="font-size:1.05rem;font-weight:900;color:#fff;margin-top:6px;text-shadow:0 2px 4px rgba(0,0,0,0.8);">' + escapeHtml(pB.name) + '</div>';
   html += '</div>';
   html += '<div class="rps-icon-box">' + iconB + '</div>';
-  if(!isDone && cB) html += '<div style="font-size:0.85rem;color:var(--green);font-weight:800;margin-top:6px;">PRÊT</div>';
+  if(!stage && cB) html += '<div style="font-size:0.85rem;color:var(--green);font-weight:800;margin-top:6px;">PRÊT</div>';
   html += '</div>';
   
   html += '</div>';
@@ -1605,7 +1606,9 @@ function renderGameVoting(g){
       processVotingTiebreaker();
     }
     var choices = g.rpsChoices || {};
-    var rpsStateKey = "vtb_" + g.duelistA + "_" + g.duelistB + "_" + (g.rpsStage || "pick") + "_" + (g.lastResult || "") + "_" + (choices[g.duelistA]||"") + "_" + (choices[g.duelistB]||"");
+    var cA = choices[g.duelistA];
+    var cB = choices[g.duelistB];
+    var rpsStateKey = "vtb_" + g.duelistA + "_" + g.duelistB + "_" + (g.rpsStage || "pick") + "_" + (g.lastResult || "") + "_" + (cA ? "1" : "0") + "_" + (cB ? "1" : "0");
     if(area.dataset.rpsKey === rpsStateKey) return;
     area.dataset.rpsKey = rpsStateKey;
 
@@ -1825,7 +1828,9 @@ function renderMostLikely(g){
       processTiebreaker();
     }
     var choices = g.rpsChoices || {};
-    var rpsStateKey = "tb_" + g.duelistA + "_" + g.duelistB + "_" + (g.rpsStage || "pick") + "_" + (g.lastResult || "") + "_" + (choices[g.duelistA]||"") + "_" + (choices[g.duelistB]||"");
+    var cA = choices[g.duelistA];
+    var cB = choices[g.duelistB];
+    var rpsStateKey = "tb_" + g.duelistA + "_" + g.duelistB + "_" + (g.rpsStage || "pick") + "_" + (g.lastResult || "") + "_" + (cA ? "1" : "0") + "_" + (cB ? "1" : "0");
     if(area.dataset.rpsKey === rpsStateKey) return;
     area.dataset.rpsKey = rpsStateKey;
 
