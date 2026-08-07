@@ -875,7 +875,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.3</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.4</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -1610,26 +1610,25 @@ function avatarHTML(p, size){
 
 function startLiveCountdown(revealStartMs, durationSec, onEnd){
   if(countdownTicker) clearInterval(countdownTicker);
+  var callback = onEnd;
   function update(){
-    var elapsed = Math.floor((Date.now() - revealStartMs) / 1000);
+    var elapsed = Math.floor((Date.now() - (revealStartMs || Date.now())) / 1000);
     var remaining = Math.max(0, durationSec - elapsed);
     var el = document.getElementById("countdownVal");
     if(el){ el.textContent = remaining + "s"; }
     if(remaining <= 0){
-      clearInterval(countdownTicker);
-      countdownTicker = null;
-      if(onEnd) onEnd();
-      // Safety fallback: if final round reaches 0s, transition game phase to done
-      if(currentGame && (currentGame.round || 0) >= ((currentGame.total || 1) - 1)){
-        if(amHost){
-          awardEndGameBonusStars();
-          db.ref("rooms/" + roomCode + "/game/phase").set("done");
-        }
+      if(countdownTicker){ clearInterval(countdownTicker); countdownTicker = null; }
+      if(callback){
+        var fn = callback;
+        callback = null;
+        fn();
       }
     }
   }
   update();
-  countdownTicker = setInterval(update, 500);
+  if(callback){
+    countdownTicker = setInterval(update, 500);
+  }
 }
 
 function addPoints(uid, pts){
@@ -1720,6 +1719,7 @@ function trackStat(category, uid){
 
 function startPartyVote(){
   if(!roomCode || !amHost) return;
+  _ceremonyStartMs = 0;
   db.ref("rooms/" + roomCode).update({
     status: "playing",
     game: {
@@ -2649,6 +2649,7 @@ var POSTS_PACK = [
 
 function launchWhoPosted(){
   if(!roomCode || !amHost) return;
+  _ceremonyStartMs = 0;
   var pool = POSTS_PACK.slice();
   shuffle(pool);
   var rounds = pool.slice(0, 5).map(function(item){
@@ -2656,14 +2657,15 @@ function launchWhoPosted(){
     return { text: item.text, handle: item.handle, posterId: randomPlayer.id };
   });
 
-  db.ref("rooms/" + roomCode + "/game").set({
-    type: "whoposted",
-    phase: "guess",
-    round: 0,
-    total: rounds.length,
-    roundsData: rounds
-  }).then(function(){
-    db.ref("rooms/" + roomCode + "/status").set("playing");
+  db.ref("rooms/" + roomCode).update({
+    status: "playing",
+    game: {
+      type: "whoposted",
+      phase: "guess",
+      round: 0,
+      total: rounds.length,
+      roundsData: rounds
+    }
   });
 }
 
@@ -2727,14 +2729,14 @@ function renderWhoPosted(g){
 }
 
 var _lastRevealStep = -1;
+var _ceremonyStartMs = 0;
 
 function renderMiniGameDoneHTML(){
   var g = currentGame || {};
-  if(!g._localCeremonyStart){
-    g._localCeremonyStart = g.ceremonyStartMs || Date.now();
+  if(!_ceremonyStartMs){
+    _ceremonyStartMs = g.ceremonyStartMs || Date.now();
   }
-  var startTime = g.ceremonyStartMs || g._localCeremonyStart;
-  var elapsedSec = Math.max(0, Math.floor((Date.now() - startTime) / 1000));
+  var elapsedSec = Math.max(0, Math.floor((Date.now() - _ceremonyStartMs) / 1000));
 
   // Compute 3 Bonus Star awards
   var bonusCategories = [
@@ -2902,16 +2904,18 @@ var REVIEWS_PACK = [
 
 function launchGuessRating(){
   if(!roomCode || !amHost) return;
+  _ceremonyStartMs = 0;
   var pool = REVIEWS_PACK.slice();
   shuffle(pool);
-  db.ref("rooms/" + roomCode + "/game").set({
-    type: "guessrating",
-    phase: "guess",
-    round: 0,
-    total: Math.min(5, pool.length),
-    roundsData: pool.slice(0, 5)
-  }).then(function(){
-    db.ref("rooms/" + roomCode + "/status").set("playing");
+  db.ref("rooms/" + roomCode).update({
+    status: "playing",
+    game: {
+      type: "guessrating",
+      phase: "guess",
+      round: 0,
+      total: Math.min(5, pool.length),
+      roundsData: pool.slice(0, 5)
+    }
   });
 }
 
@@ -2977,9 +2981,6 @@ function rateStar(starCount){
 // =====================================================================
 //  GAME 4: HOW WELL DO YOU KNOW [NAME]? (Connais-tu bien...)
 // =====================================================================
-// =====================================================================
-//  GAME 4: HOW WELL DO YOU KNOW [NAME]? (Connais-tu bien...)
-// =====================================================================
 var KNOW_QUESTIONS = [
   { q: "Quelle est ma pire habitude quand je suis soul(e) ?", opts: ["Devenir le philosophe de la soirée", "Vouloir texter tout mon répertoire", "Perdre mes clés et mon téléphone", "Disparaître sans dire au revoir"] },
   { q: "Mon snack ultime de fin de soirée après un gros party :", opts: ["Poutine bien chaude à 3h du mat", "Pizza froide directement du frigo", "Sac de chips au complet", "Burger double du McDo"] },
@@ -2990,18 +2991,20 @@ var KNOW_QUESTIONS = [
 
 function launchKnowPlayer(){
   if(!roomCode || !amHost) return;
+  _ceremonyStartMs = 0;
   var spot = players[Math.floor(Math.random()*players.length)] || { id: myId, name: me.name };
   var qObj = KNOW_QUESTIONS[Math.floor(Math.random()*KNOW_QUESTIONS.length)];
 
-  db.ref("rooms/" + roomCode + "/game").set({
-    type: "knowplayer",
-    phase: "spotlight_answer",
-    spotlightId: spot.id,
-    spotlightName: spot.name,
-    question: qObj.q,
-    options: qObj.opts
-  }).then(function(){
-    db.ref("rooms/" + roomCode + "/status").set("playing");
+  db.ref("rooms/" + roomCode).update({
+    status: "playing",
+    game: {
+      type: "knowplayer",
+      phase: "spotlight_answer",
+      spotlightId: spot.id,
+      spotlightName: spot.name,
+      question: qObj.q,
+      options: qObj.opts
+    }
   });
 }
 
@@ -3028,7 +3031,7 @@ function renderKnowPlayer(g){
       html += '<div class="waiting">' + escapeHtml(spotlightName) + ' est en train de choisir sa réponse secrète<span class="d"></span></div>';
     }
   } else if(g.phase === "guess"){
-    var revealKey = (g.type || "") + "_" + round;
+    var revealKey = (g.type || "") + "_guess";
     if(votedCount >= (players.length - 1) && players.length > 1 && amHost && _lastAutoRevealKey !== revealKey){
       _lastAutoRevealKey = revealKey;
       setTimeout(revealRound, 600);
@@ -3047,7 +3050,7 @@ function renderKnowPlayer(g){
 
   } else if(g.phase === "reveal"){
     var revealStart = g.revealStartMs || Date.now();
-    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) db.ref("rooms/" + roomCode + "/game/phase").set("done"); });
+    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) nextRound(); });
 
     var correctText = options[spotlightAnswer] || "Aucune";
     html += '<div class="groundhdr">La vérité est dévoilée !</div>';
@@ -3087,18 +3090,20 @@ var ROAST_PROMPTS = [
 
 function launchRoast(){
   if(!roomCode || !amHost) return;
+  _ceremonyStartMs = 0;
   var randomTarget = players[Math.floor(Math.random()*players.length)] || { name: me.name };
   var rawPrompt = ROAST_PROMPTS[Math.floor(Math.random()*ROAST_PROMPTS.length)];
   var formatted = rawPrompt.replace("[NAME]", randomTarget.name);
 
-  db.ref("rooms/" + roomCode + "/game").set({
-    type: "roast",
-    phase: "submit",
-    prompt: formatted,
-    answers: {},
-    votes: {}
-  }).then(function(){
-    db.ref("rooms/" + roomCode + "/status").set("playing");
+  db.ref("rooms/" + roomCode).update({
+    status: "playing",
+    game: {
+      type: "roast",
+      phase: "submit",
+      prompt: formatted,
+      answers: {},
+      votes: {}
+    }
   });
 }
 
@@ -3148,7 +3153,7 @@ function renderRoast(g){
 
   } else if(g.phase === "reveal"){
     var revealStart = g.revealStartMs || Date.now();
-    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) db.ref("rooms/" + roomCode + "/game/phase").set("done"); });
+    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) nextRound(); });
 
     html += '<div class="groundhdr">Résultats des répliques !</div>';
     html += '<div class="gprompt">' + escapeHtml(prompt) + '</div>';
@@ -3200,17 +3205,19 @@ var QUOTES_PACK = [
 
 function launchWhoSaid(){
   if(!roomCode || !amHost) return;
+  _ceremonyStartMs = 0;
   var randomSpeaker = players[Math.floor(Math.random()*players.length)] || { id: myId };
   var randomQuote = QUOTES_PACK[Math.floor(Math.random()*QUOTES_PACK.length)];
 
-  db.ref("rooms/" + roomCode + "/game").set({
-    type: "whosaid",
-    phase: "guess",
-    quote: randomQuote,
-    speakerId: randomSpeaker.id,
-    votes: {}
-  }).then(function(){
-    db.ref("rooms/" + roomCode + "/status").set("playing");
+  db.ref("rooms/" + roomCode).update({
+    status: "playing",
+    game: {
+      type: "whosaid",
+      phase: "guess",
+      quote: randomQuote,
+      speakerId: randomSpeaker.id,
+      votes: {}
+    }
   });
 }
 
@@ -3222,7 +3229,7 @@ function renderWhoSaid(g){
   var html = "";
 
   if(g.phase === "guess"){
-    var revealKey = (g.type || "") + "_" + round;
+    var revealKey = (g.type || "") + "_whosaid";
     if(votedCount >= players.length && players.length > 0 && amHost && _lastAutoRevealKey !== revealKey){
       _lastAutoRevealKey = revealKey;
       setTimeout(revealRound, 600);
@@ -3241,7 +3248,7 @@ function renderWhoSaid(g){
 
   } else if(g.phase === "reveal"){
     var revealStart = g.revealStartMs || Date.now();
-    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) db.ref("rooms/" + roomCode + "/game/phase").set("done"); });
+    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) nextRound(); });
 
     var speaker = players.find(function(p){ return p.id === g.speakerId; }) || { name: "Quelqu'un" };
     html += '<div class="groundhdr">Auteur révélé !</div>';
@@ -3270,15 +3277,17 @@ var TRUTHS_PACK = [
 
 function launchTwoTruths(){
   if(!roomCode || !amHost) return;
+  _ceremonyStartMs = 0;
   var card = TRUTHS_PACK[Math.floor(Math.random()*TRUTHS_PACK.length)];
-  db.ref("rooms/" + roomCode + "/game").set({
-    type: "twotruths",
-    phase: "guess",
-    statements: card.statements,
-    lieIndex: card.lieIndex,
-    votes: {}
-  }).then(function(){
-    db.ref("rooms/" + roomCode + "/status").set("playing");
+  db.ref("rooms/" + roomCode).update({
+    status: "playing",
+    game: {
+      type: "twotruths",
+      phase: "guess",
+      statements: card.statements,
+      lieIndex: card.lieIndex,
+      votes: {}
+    }
   });
 }
 
@@ -3290,7 +3299,7 @@ function renderTwoTruths(g){
   var html = "";
 
   if(g.phase === "guess"){
-    var revealKey = (g.type || "") + "_" + round;
+    var revealKey = (g.type || "") + "_twotruths";
     if(votedCount >= players.length && players.length > 0 && amHost && _lastAutoRevealKey !== revealKey){
       _lastAutoRevealKey = revealKey;
       setTimeout(revealRound, 600);
@@ -3307,7 +3316,7 @@ function renderTwoTruths(g){
 
   } else if(g.phase === "reveal"){
     var revealStart = g.revealStartMs || Date.now();
-    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) db.ref("rooms/" + roomCode + "/game/phase").set("done"); });
+    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) nextRound(); });
 
     html += '<div class="groundhdr">Le mensonge était :</div>';
     var lieText = statements[g.lieIndex] || "";
