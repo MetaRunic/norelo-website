@@ -286,83 +286,133 @@
 
   /* ROCK PAPER SCISSORS ARENA ANIMATIONS */
   .rps-arena {
-    display: flex; justify-content: center; align-items: center; gap: 30px;
-    margin: 24px 0; perspective: 600px; position: relative;
+    display: flex; justify-content: center; align-items: center; gap: 36px;
+    margin: 24px 0; perspective: 800px; position: relative;
   }
   .rps-fighter {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     transition: all 0.5s ease; position: relative;
   }
   .rps-icon-box {
-    width: 88px; height: 88px; border-radius: 24px;
-    background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
-    border: 2.5px solid rgba(255,255,255,0.25); display: flex; align-items: center;
+    width: 96px; height: 96px; border-radius: 28px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+    border: 3px solid rgba(255,255,255,0.3); display: flex; align-items: center;
     justify-content: center; color: #fff;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3); transition: all 0.4s ease;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.35); transition: all 0.4s ease;
   }
-  .rps-icon-box svg { width: 46px; height: 46px; }
-  
-  .rps-clash-left {
-    animation: rpsSlamLeft 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  .rps-icon-box svg { width: 52px; height: 52px; }
+
+  /* SUSPENSE STATE */
+  .rps-suspense-box {
+    animation: rpsShake 0.12s ease-in-out infinite alternate;
+    border-color: var(--amber) !important; background: linear-gradient(135deg, #f59e0b, #ef4444) !important;
+    box-shadow: 0 0 35px rgba(245, 158, 11, 0.8) !important;
   }
-  .rps-clash-right {
-    animation: rpsSlamRight 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  @keyframes rpsShake {
+    0% { transform: translateY(-4px) rotate(-4deg) scale(1.05); }
+    100% { transform: translateY(4px) rotate(4deg) scale(0.95); }
   }
-  
-  @keyframes rpsSlamLeft {
-    0% { transform: translateX(-100px) scale(0.2) rotate(-30deg); opacity: 0; }
-    70% { transform: translateX(20px) scale(1.15) rotate(10deg); }
-    100% { transform: translateX(0) scale(1) rotate(0deg); opacity: 1; }
+
+  .rps-suspense-banner {
+    font-size: 1.5rem; font-weight: 900; color: #f59e0b; text-transform: uppercase;
+    letter-spacing: 2px; text-shadow: 0 0 20px rgba(245,158,11,0.8);
+    animation: pulseBanner 0.4s ease-in-out infinite alternate; margin-bottom: 12px; text-align: center;
   }
-  @keyframes rpsSlamRight {
-    0% { transform: translateX(100px) scale(0.2) rotate(30deg); opacity: 0; }
-    70% { transform: translateX(-20px) scale(1.15) rotate(-10deg); }
-    100% { transform: translateX(0) scale(1) rotate(0deg); opacity: 1; }
+  @keyframes pulseBanner {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    100% { transform: scale(1.08); opacity: 1; }
   }
-  
-  .rps-winner .rps-icon-box {
-    border-color: var(--amber); background: linear-gradient(135deg, #f59e0b, #d97706);
-    box-shadow: 0 0 35px rgba(245, 158, 11, 0.85); transform: scale(1.25);
-    animation: victorPulse 0.8s ease-in-out infinite alternate;
+
+  /* ROCK VICTORIOUS: MASSIVE BOULDER SMASH */
+  .rps-rock-winner .rps-icon-box {
+    border-color: #ef4444; background: linear-gradient(135deg, #ef4444, #b91c1c);
+    box-shadow: 0 0 45px rgba(239, 68, 68, 0.9);
+    animation: rockSmashWinner 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
   }
-  @keyframes victorPulse {
-    0% { transform: scale(1.2); box-shadow: 0 0 25px rgba(245, 158, 11, 0.6); }
-    100% { transform: scale(1.3); box-shadow: 0 0 45px rgba(245, 158, 11, 0.95); }
+  @keyframes rockSmashWinner {
+    0% { transform: translateY(0) scale(1); }
+    30% { transform: translateY(-70px) scale(1.35) rotate(-15deg); }
+    70% { transform: translateY(20px) scale(1.4) rotate(5deg); }
+    100% { transform: translateY(0) scale(1.3) rotate(0deg); }
   }
-  
+
+  /* ROCK LOSER: FLATTENED CRUSH INTO DUST */
   .rps-crushed .rps-icon-box {
-    animation: crushedAnim 0.8s ease forwards;
+    animation: crushedFlatImpact 0.8s ease forwards;
   }
-  @keyframes crushedAnim {
+  @keyframes crushedFlatImpact {
     0% { transform: scale(1) translateY(0); opacity: 1; }
-    30% { transform: scale(1.2, 0.4) translateY(25px); filter: brightness(2); }
-    100% { transform: scale(0.3, 0.1) translateY(45px) rotate(45deg); opacity: 0.2; filter: grayscale(1); }
+    35% { transform: scale(1.5, 0.2) translateY(50px); filter: brightness(3) contrast(2); }
+    60% { transform: scale(1.8, 0.05) translateY(65px); opacity: 0.5; filter: grayscale(1); }
+    100% { transform: scale(0, 0) translateY(80px); opacity: 0; filter: grayscale(1); }
   }
-  
-  .rps-sliced .rps-icon-box {
-    animation: slicedAnim 0.8s ease forwards;
+
+  /* SCISSORS VICTORIOUS: RAPID DOUBLE SNIP */
+  .rps-scissors-winner .rps-icon-box {
+    border-color: #06b6d4; background: linear-gradient(135deg, #06b6d4, #2563eb);
+    box-shadow: 0 0 45px rgba(6, 182, 212, 0.9);
+    animation: scissorsSnipWinner 0.8s ease-in-out forwards;
   }
-  @keyframes slicedAnim {
+  @keyframes scissorsSnipWinner {
     0% { transform: scale(1) rotate(0deg); }
-    30% { transform: scale(1.1) rotate(-15deg); filter: contrast(2); }
-    100% { transform: scale(0.3) translateY(50px) rotate(-90deg); opacity: 0.15; filter: grayscale(1); }
+    20% { transform: scale(1.3) rotate(-35deg); }
+    40% { transform: scale(1.35) rotate(20deg); }
+    60% { transform: scale(1.3) rotate(-25deg); }
+    80% { transform: scale(1.35) rotate(15deg); }
+    100% { transform: scale(1.25) rotate(0deg); }
   }
-  
+
+  /* SCISSORS LOSER: SLICED CLEANLY IN HALF */
+  .rps-sliced .rps-icon-box {
+    animation: slicedSplit 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+  }
+  @keyframes slicedSplit {
+    0% { transform: scale(1) rotate(0deg); opacity: 1; }
+    25% { transform: scale(1.1) rotate(15deg); }
+    60% { transform: translateX(40px) translateY(-30px) rotate(45deg) scale(0.6); opacity: 0.5; filter: contrast(3); }
+    100% { transform: translateX(80px) translateY(-60px) rotate(90deg) scale(0); opacity: 0; filter: grayscale(1); }
+  }
+
+  /* PAPER VICTORIOUS: EXPANDS & DOCK ENGULF */
+  .rps-paper-winner .rps-icon-box {
+    border-color: #10b981; background: linear-gradient(135deg, #10b981, #047857);
+    box-shadow: 0 0 45px rgba(16, 185, 129, 0.9);
+    animation: paperEngulfWinner 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+  @keyframes paperEngulfWinner {
+    0% { transform: scale(1) rotate(0deg); }
+    40% { transform: scale(1.6) rotate(10deg); }
+    100% { transform: scale(1.3) rotate(0deg); }
+  }
+
+  /* PAPER LOSER: WRAPPED INSIDE & ENGULFED */
   .rps-wrapped .rps-icon-box {
-    animation: wrappedAnim 0.8s ease forwards;
+    animation: wrappedEngulf 0.8s ease-in-out forwards;
   }
-  @keyframes wrappedAnim {
-    0% { transform: scale(1); }
-    40% { transform: scale(0.7) rotate(180deg); opacity: 0.6; }
-    100% { transform: scale(0.2) rotate(360deg); opacity: 0.1; filter: grayscale(1); }
+  @keyframes wrappedEngulf {
+    0% { transform: scale(1) rotate(0deg); opacity: 1; }
+    30% { transform: scale(0.9) rotate(-90deg); filter: brightness(0.4); }
+    70% { transform: scale(0.4) rotate(-270deg); opacity: 0.4; }
+    100% { transform: scale(0) rotate(-360deg); opacity: 0; }
   }
-  
+
   .rps-draw .rps-icon-box {
-    animation: drawBounce 0.5s ease-in-out infinite alternate;
+    animation: drawBounce 0.4s ease-in-out infinite alternate;
   }
   @keyframes drawBounce {
-    0% { transform: translateX(-8px) rotate(-6deg); }
-    100% { transform: translateX(8px) rotate(6deg); }
+    0% { transform: translateX(-12px) rotate(-8deg); }
+    100% { transform: translateX(12px) rotate(8deg); }
+  }
+
+  .rps-btn-row {
+    display: flex; justify-content: center; align-items: stretch; gap: 12px; margin-top: 16px; width: 100%; box-sizing: border-box;
+  }
+  .rps-btn-row .btn {
+    flex: 1 1 0px; margin: 0 !important; padding: 12px 8px; font-size: 0.95rem; min-height: 52px; height: 52px;
+    box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; width: auto;
+  }
+  .rps-btn-row .btn svg {
+    width: 20px; height: 20px; flex-shrink: 0; margin-right: 6px;
   }
 
   /* Social Media Post Card */
@@ -1379,12 +1429,32 @@ function processVotingTiebreaker(){
   if(!cA || !cB) return;
   _rpsProcessing = true;
   
+  if(!g.rpsStage){
+    db.ref("rooms/" + roomCode + "/game/rpsStage").set("suspense");
+    sfxBugle();
+    setTimeout(function(){
+      db.ref("rooms/" + roomCode + "/game/rpsStage").set("clash");
+      processVotingTiebreakerClash();
+    }, 1800);
+    return;
+  }
+}
+
+function processVotingTiebreakerClash(){
+  var g = currentGame;
+  if(!g) return;
+  var dA = g.duelistA;
+  var dB = g.duelistB;
+  var choices = g.rpsChoices || {};
+  var cA = choices[dA];
+  var cB = choices[dB];
+
   var winningGame = null, losingGame = null;
   if(cA === cB){
     setTimeout(function(){
-      db.ref("rooms/" + roomCode + "/game/rpsChoices").set({});
+      db.ref("rooms/" + roomCode + "/game").update({ rpsChoices: {}, rpsStage: null });
       _rpsProcessing = false;
-    }, 1500);
+    }, 1800);
     return;
   }
   
@@ -1407,15 +1477,16 @@ function processVotingTiebreaker(){
         gameB: nextGame,
         remainingTiedGames: nextRemaining,
         rpsChoices: {},
+        rpsStage: null,
         lastResult: getGameTitle(winningGame) + " a éliminé " + getGameTitle(losingGame) + " !"
       });
       _rpsProcessing = false;
-    }, 2000);
+    }, 2400);
   } else {
     setTimeout(function(){
       _rpsProcessing = false;
       launchSelectedGame(winningGame);
-    }, 2000);
+    }, 2600);
   }
 }
 
@@ -1453,7 +1524,7 @@ function renderGame(g){
   else { area.innerHTML = ""; }
 }
 
-function renderRPSArenaHTML(pA, pB, choices, duelistA, duelistB, subtitle, lastResult){
+function renderRPSArenaHTML(pA, pB, choices, duelistA, duelistB, subtitle, lastResult, stage){
   var cA = choices[duelistA];
   var cB = choices[duelistB];
   var isDone = (cA && cB);
@@ -1462,27 +1533,36 @@ function renderRPSArenaHTML(pA, pB, choices, duelistA, duelistB, subtitle, lastR
   var rightClass = "rps-clash-right";
   
   if(isDone){
-    if(cA === cB){
-      leftClass += " rps-draw";
-      rightClass += " rps-draw";
-    } else if( (cA==="rock"&&cB==="scissors") || (cA==="scissors"&&cB==="paper") || (cA==="paper"&&cB==="rock") ){
-      leftClass += " rps-winner";
-      if(cA === "rock" && cB === "scissors") rightClass += " rps-crushed";
-      else if(cA === "scissors" && cB === "paper") rightClass += " rps-sliced";
-      else if(cA === "paper" && cB === "rock") rightClass += " rps-wrapped";
+    if(stage === "suspense"){
+      leftClass += " rps-suspense-box";
+      rightClass += " rps-suspense-box";
     } else {
-      rightClass += " rps-winner";
-      if(cB === "rock" && cA === "scissors") leftClass += " rps-crushed";
-      else if(cB === "scissors" && cA === "paper") leftClass += " rps-sliced";
-      else if(cB === "paper" && cA === "rock") leftClass += " rps-wrapped";
+      if(cA === cB){
+        leftClass += " rps-draw";
+        rightClass += " rps-draw";
+      } else if( (cA==="rock"&&cB==="scissors") || (cA==="scissors"&&cB==="paper") || (cA==="paper"&&cB==="rock") ){
+        leftClass += (cA === "rock" ? " rps-rock-winner" : cA === "scissors" ? " rps-scissors-winner" : " rps-paper-winner");
+        if(cA === "rock" && cB === "scissors") rightClass += " rps-crushed";
+        else if(cA === "scissors" && cB === "paper") rightClass += " rps-sliced";
+        else if(cA === "paper" && cB === "rock") rightClass += " rps-wrapped";
+      } else {
+        rightClass += (cB === "rock" ? " rps-rock-winner" : cB === "scissors" ? " rps-scissors-winner" : " rps-paper-winner");
+        if(cB === "rock" && cA === "scissors") leftClass += " rps-crushed";
+        else if(cB === "scissors" && cA === "paper") leftClass += " rps-sliced";
+        else if(cB === "paper" && cA === "rock") leftClass += " rps-wrapped";
+      }
     }
   }
 
-  var iconA = cA ? (ICONS[cA] || ICONS.rock) : ICONS.dice;
-  var iconB = cB ? (ICONS[cB] || ICONS.rock) : ICONS.dice;
+  var iconA = (stage === "suspense") ? ICONS.dice : (cA ? (ICONS[cA] || ICONS.rock) : ICONS.dice);
+  var iconB = (stage === "suspense") ? ICONS.dice : (cB ? (ICONS[cB] || ICONS.rock) : ICONS.dice);
 
   var html = '<div class="groundhdr">ÉGALITÉ AU VOTE !</div>';
-  html += '<div class="gprompt"><span class="dice-ico">' + ICONS.dice + '</span> BATAILLE DU ROCHE PAPIER CISEAUX !</div>';
+  if(stage === "suspense"){
+    html += '<div class="rps-suspense-banner">⚡ ROCHE... PAPIER... CISEAUX ! ⚡</div>';
+  } else {
+    html += '<div class="gprompt"><span class="dice-ico">' + ICONS.dice + '</span> BATAILLE DU ROCHE PAPIER CISEAUX !</div>';
+  }
   if(subtitle) html += '<div class="gsub" style="font-weight:800;color:var(--accent);margin-bottom:12px;">' + escapeHtml(subtitle) + '</div>';
   if(lastResult) html += '<div class="gsub" style="color:var(--green);font-weight:800;margin-bottom:12px;">' + escapeHtml(lastResult) + '</div>';
   
@@ -1520,11 +1600,11 @@ function renderGameVoting(g){
     var choices = g.rpsChoices || {};
     var myChoice = choices[myId];
     
-    var html = renderRPSArenaHTML(pA, pB, choices, g.duelistA, g.duelistB, gA.title + " VS " + gB.title, g.lastResult);
+    var html = renderRPSArenaHTML(pA, pB, choices, g.duelistA, g.duelistB, gA.title + " VS " + gB.title, g.lastResult, g.rpsStage);
     
     if(myId === g.duelistA || myId === g.duelistB){
       html += '<div class="gsub" style="font-weight:800;color:#fff;">Tranche l\'égalité pour le premier jeu ! Choisis ton arme :</div>';
-      html += '<div style="display:flex;justify-content:center;gap:12px;margin-top:16px;">';
+      html += '<div class="rps-btn-row">';
       html += '<button class="btn ' + (myChoice==='rock'?'pri':'sec') + '" onclick="submitRPS(\'rock\')">' + ICONS.rock + ' Roche</button>';
       html += '<button class="btn ' + (myChoice==='paper'?'pri':'sec') + '" onclick="submitRPS(\'paper\')">' + ICONS.paper + ' Papier</button>';
       html += '<button class="btn ' + (myChoice==='scissors'?'pri':'sec') + '" onclick="submitRPS(\'scissors\')">' + ICONS.scissors + ' Ciseaux</button>';
@@ -1734,11 +1814,11 @@ function renderMostLikely(g){
     var choices = g.rpsChoices || {};
     var myChoice = choices[myId];
     
-    html += renderRPSArenaHTML(pA, pB, choices, g.duelistA, g.duelistB, "AFFRONTEMENT ULTIME DE DEUX ÉGALITÉS", g.lastResult);
+    var html = renderRPSArenaHTML(pA, pB, choices, g.duelistA, g.duelistB, "AFFRONTEMENT ULTIME DE DEUX ÉGALITÉS", g.lastResult, g.rpsStage);
     
     if(myId === g.duelistA || myId === g.duelistB){
       html += '<div class="gsub" style="font-weight:800;color:#fff;">C\'est ton tour ! Choisis ton arme :</div>';
-      html += '<div style="display:flex;justify-content:center;gap:12px;margin-top:16px;">';
+      html += '<div class="rps-btn-row">';
       html += '<button class="btn ' + (myChoice==='rock'?'pri':'sec') + '" onclick="submitRPS(\'rock\')">' + ICONS.rock + ' Roche</button>';
       html += '<button class="btn ' + (myChoice==='paper'?'pri':'sec') + '" onclick="submitRPS(\'paper\')">' + ICONS.paper + ' Papier</button>';
       html += '<button class="btn ' + (myChoice==='scissors'?'pri':'sec') + '" onclick="submitRPS(\'scissors\')">' + ICONS.scissors + ' Ciseaux</button>';
@@ -1832,12 +1912,32 @@ function processTiebreaker(){
   if(!cA || !cB) return;
   _rpsProcessing = true;
   
+  if(!g.rpsStage){
+    db.ref("rooms/" + roomCode + "/game/rpsStage").set("suspense");
+    sfxBugle();
+    setTimeout(function(){
+      db.ref("rooms/" + roomCode + "/game/rpsStage").set("clash");
+      processTiebreakerClash();
+    }, 1800);
+    return;
+  }
+}
+
+function processTiebreakerClash(){
+  var g = currentGame;
+  if(!g) return;
+  var dA = g.duelistA;
+  var dB = g.duelistB;
+  var choices = g.rpsChoices || {};
+  var cA = choices[dA];
+  var cB = choices[dB];
+
   var winner = null, loser = null;
   if(cA === cB){
     setTimeout(function(){
-      db.ref("rooms/" + roomCode + "/game/rpsChoices").set({});
+      db.ref("rooms/" + roomCode + "/game").update({ rpsChoices: {}, rpsStage: null });
       _rpsProcessing = false;
-    }, 1500);
+    }, 1800);
     return;
   }
   
@@ -1861,10 +1961,11 @@ function processTiebreaker(){
         duelistB: nextOpponent,
         remainingTied: nextRemaining,
         rpsChoices: {},
+        rpsStage: null,
         lastResult: getPlayerName(winner) + " a battu " + getPlayerName(loser) + " !"
       });
       _rpsProcessing = false;
-    }, 2000);
+    }, 2400);
   } else {
     addPoints(winner, 100);
     
@@ -1877,10 +1978,11 @@ function processTiebreaker(){
       db.ref("rooms/" + roomCode + "/game").update({
         phase: "reveal",
         winnerId: winner,
-        revealStartMs: Date.now()
+        revealStartMs: Date.now(),
+        rpsStage: null
       });
       _rpsProcessing = false;
-    }, 2500);
+    }, 2600);
   }
 }
 
