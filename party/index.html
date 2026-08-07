@@ -887,7 +887,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.6</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.8</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -926,7 +926,6 @@ window.addEventListener("touchstart", unlockMobileAudio, { once: false, passive:
 window.addEventListener("click", unlockMobileAudio, { once: false });
 
 function playTone(freq, type, duration, vol){
-  if(!audioEnabled) return;
   initAudio();
   if(!audioCtx) return;
   try{
@@ -945,7 +944,6 @@ function playTone(freq, type, duration, vol){
 
 /* PEAK THE GAME ICONIC BUGLE CHARGE FANFARE SFX */
 function sfxBugle(){
-  if(!audioEnabled) return;
   initAudio();
   var notes = [
     { f: 392.00, d: 0.11, delay: 0 },   // G4
@@ -968,10 +966,39 @@ function sfxVote(){
   playTone(440, "sine", 0.08, 0.08);
   setTimeout(function(){ playTone(660, "sine", 0.12, 0.1); }, 60);
 }
+
 function sfxWin(){
   playTone(523.25, "triangle", 0.15, 0.12);
   setTimeout(function(){ playTone(659.25, "triangle", 0.15, 0.12); }, 120);
   setTimeout(function(){ playTone(783.99, "triangle", 0.25, 0.15); }, 240);
+}
+
+function sfxStar(){
+  playTone(587.33, "triangle", 0.08, 0.1);
+  setTimeout(function(){ playTone(739.99, "triangle", 0.08, 0.12); }, 70);
+  setTimeout(function(){ playTone(880.00, "triangle", 0.15, 0.15); }, 140);
+}
+
+function sfxPoints(){
+  playTone(987.77, "sine", 0.08, 0.12);
+  setTimeout(function(){ playTone(1318.51, "sine", 0.22, 0.18); }, 80);
+}
+
+function sfxDrumroll(){
+  for(var i=0; i<5; i++){
+    setTimeout(function(){ playTone(120 + Math.random()*30, "sine", 0.05, 0.04); }, i * 70);
+  }
+}
+
+function sfxUnanimous(){
+  sfxBugle();
+  setTimeout(sfxStar, 450);
+}
+
+function sfxCrown(){
+  sfxBugle();
+  setTimeout(sfxWin, 400);
+  setTimeout(sfxStar, 850);
 }
 
 /* SOFTENED SUBTLE BOUNCE EXPLOSION SFX (NOT LOUD) */
@@ -1700,7 +1727,7 @@ function animateCounters(){
       el.textContent = '+' + current;
       if(progress < 1) requestAnimationFrame(step);
     }
-    setTimeout(function(){ requestAnimationFrame(step); }, 400);
+    setTimeout(function(){ sfxPoints(); requestAnimationFrame(step); }, 350);
   });
 }
 
@@ -2257,11 +2284,6 @@ function renderMostLikely(g){
     }
 
   } else if(g.phase === "reveal"){
-    var sfxKey = (g.type || "") + "_" + round + "_reveal";
-    if(_lastSfxKey !== sfxKey){
-      _lastSfxKey = sfxKey;
-      sfxWin();
-    }
     var revealStart = g.revealStartMs || Date.now();
     startLiveCountdown(g.revealStartMs || revealStart, 5, function(){
       if(amHost) nextRound();
@@ -2275,6 +2297,12 @@ function renderMostLikely(g){
     
     var top = (g.winnerId ? getPlayer(g.winnerId) : (ranked[0] || players[0]));
     var pct = players.length ? Math.round((maxCount / players.length) * 100) : 0;
+
+    var sfxKey = (g.type || "") + "_" + round + "_reveal";
+    if(_lastSfxKey !== sfxKey){
+      _lastSfxKey = sfxKey;
+      if(pct === 100) sfxUnanimous(); else sfxWin();
+    }
     
     var commentaryHTML = '';
     if(pct === 100){
@@ -2595,7 +2623,7 @@ function renderGrandPrizeCeremony(g){
   var runner2 = sorted[1] || null;
   var runner3 = sorted[2] || null;
 
-  sfxWin();
+  sfxCrown();
   if(window.triggerExplosion){
     window.triggerExplosion(window.innerWidth/2, window.innerHeight/2, true, "#f59e0b");
   }
@@ -2805,13 +2833,17 @@ function renderMiniGameDoneHTML(){
     var isRevealed = (subTime >= 3.5);
     var activeItem = awards[currentAwardIdx];
 
-    // Trigger SFX & Fireworks on Reveal Burst
+    // Trigger SFX & Fireworks on Reveal Burst / Suspense
     var stepKey = currentAwardIdx * 10 + (isRevealed ? 1 : 0);
     if(_lastRevealStep !== stepKey){
       _lastRevealStep = stepKey;
       if(isRevealed){
         sfxWin();
+        sfxStar();
+        sfxPoints();
         if(window.triggerExplosion) window.triggerExplosion(window.innerWidth/2, 220, true, "#f59e0b");
+      } else {
+        sfxDrumroll();
       }
     }
 
@@ -2841,10 +2873,6 @@ function renderMiniGameDoneHTML(){
 
     html += '</div>'; // end container
     html += '</div>'; // end stage
-
-    if(amHost){
-      html += '<div style="text-align:center;margin-top:12px;"><button class="btn ghost" style="font-size:0.8rem;" onclick="skipBonusShow()">⏩ Passer l\'animation</button></div>';
-    }
 
   } else {
     // FINAL SHOWCASE & TOTAL SCORES SUMMARY & ACTION BUTTONS
