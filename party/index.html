@@ -751,27 +751,37 @@
     display: flex; align-items: center; gap: 14px; margin-bottom: 14px;
   }
   .business-photo {
-    width: 72px; height: 72px; border-radius: 14px; background-size: cover; background-position: center;
+    /* Big enough to actually read the photo, since for a lot of reviews the picture
+       IS the joke. Shrinks a little on narrow phones so the text still has room. */
+    width: 116px; height: 116px; border-radius: 14px;
+    background-size: cover; background-position: center;
     border: 2px solid rgba(255,255,255,0.25); flex-shrink: 0; box-shadow: 0 4px 14px rgba(0,0,0,0.4);
     /* Sits under the inline background-image so a dead photo URL reads as a styled
        placeholder instead of an empty hole in the card. */
     background-color: #1e293b;
     background-image: linear-gradient(135deg, #1e293b, #334155);
   }
-  /* PROGRESSIVE REVEAL - card details load in as the round timer runs */
-  .skel {
-    display: block; border-radius: 6px; height: 11px; margin: 5px 0;
-    background: linear-gradient(90deg, rgba(255,255,255,.06) 25%, rgba(255,255,255,.17) 37%, rgba(255,255,255,.06) 63%);
-    background-size: 400% 100%;
-    animation: skelShimmer 1.4s ease-in-out infinite;
+  @media (max-width: 360px){
+    .business-photo { width: 92px; height: 92px; }
   }
-  .skel.w70 { width: 70%; }
-  .skel.w45 { width: 45%; }
-  .skel.w90 { width: 90%; }
-  .skel.block { width: 100%; height: 100%; margin: 0; border-radius: 14px; }
-  @keyframes skelShimmer {
-    0%   { background-position: 100% 0; }
-    100% { background-position: 0 0; }
+
+  /* REVIEW SCREENSHOTS - the supplied crops vary wildly in aspect ratio (703x221 to
+     664x869), so they are contained rather than cropped: for most of these the picture
+     IS the punchline and cover-fitting a square would cut it out. Two shots for one
+     review render side by side (product shot, then the payoff shot). */
+  .review-shots {
+    display: flex; gap: 8px; align-items: flex-start; justify-content: center;
+    margin: 12px 0 6px;
+  }
+  .review-shot {
+    flex: 1 1 0; min-width: 0; width: 100%; height: auto; max-height: 240px;
+    object-fit: contain; border-radius: 12px;
+    background: #0b1229; border: 1px solid rgba(255,255,255,.14);
+  }
+  .review-shots.pair .review-shot { max-height: 196px; }
+  @media (max-width: 360px){
+    .review-shot { max-height: 190px; }
+    .review-shots.pair .review-shot { max-height: 142px; }
   }
   .src-badge {
     display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 8px;
@@ -781,18 +791,6 @@
   .src-badge.google { color: #8ab4f8; background: rgba(66,133,244,.14); border: 1px solid rgba(66,133,244,.45); }
   .src-badge.yelp   { color: #ff7a7a; background: rgba(211,32,39,.14);  border: 1px solid rgba(211,32,39,.45); }
   .authentic-tag { font-size: .58rem; font-weight: 700; color: #64748b; margin-left: 6px; white-space: nowrap; }
-  .reveal-steps { display: flex; gap: 5px; justify-content: center; margin: 12px 0 4px; }
-  .reveal-dot {
-    width: 28px; height: 4px; border-radius: 3px; background: rgba(255,255,255,.14);
-    transition: background .35s ease, box-shadow .35s ease;
-  }
-  .reveal-dot.on { background: var(--amber); box-shadow: 0 0 8px rgba(245,158,11,.7); }
-  .reveal-hint { text-align: center; font-size: .72rem; color: #8ea0cc; margin-bottom: 12px; }
-  .speed-pill {
-    display: inline-block; padding: 2px 9px; border-radius: 8px; font-size: .66rem; font-weight: 800;
-    color: #6ee7b7; background: rgba(16,185,129,.14); border: 1px solid rgba(16,185,129,.4);
-  }
-
   .business-info {
     flex: 1; min-width: 0;
   }
@@ -1022,7 +1020,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.28</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.31</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -2885,12 +2883,7 @@ function revealRound(){
     } else if(game.type === "guessrating"){
       var item = (game.roundsData && game.roundsData[game.round]) || {};
       Object.keys(votes).forEach(function(vUid){
-        if(votes[vUid] === item.stars){
-          trackStat("correctGuesses", vUid);
-          trackStat("exactRating", vUid);
-          var vStage = (game.voteStages && typeof game.voteStages[vUid] === "number") ? game.voteStages[vUid] : 3;
-          addPoints(vUid, 200 + grSpeedBonus(vStage));   // guessing before details load pays more
-        }
+        if(votes[vUid] === item.stars){ trackStat("correctGuesses", vUid); trackStat("exactRating", vUid); addPoints(vUid, 200); }
         else if(Math.abs(votes[vUid] - item.stars) === 1) addPoints(vUid, 100);
       });
     } else if(game.type === "knowplayer"){
@@ -2999,7 +2992,7 @@ function nextRound(){
     });
   }
   else {
-    var upd = { round: next, phase: "guess", votes: null, voteStages: null, revealStartMs: null, scored: null, phaseStartMs: Date.now() };
+    var upd = { round: next, phase: "guess", votes: null, revealStartMs: null, scored: null, phaseStartMs: Date.now() };
     if(currentGame.type === "knowplayer"){
       // Each round has a new star, so it restarts at the secret-answer step.
       upd.phase = "spotlight_answer";
@@ -3314,10 +3307,12 @@ function skipBonusShow(){
 // =====================================================================
 //  GAME 3: GUESS THE RATING (Devine la note)
 // =====================================================================
-/* REVIEWS_PACK - every entry carries its own source badge and an honesty flag.
-   real:true  = a genuine review, rating exactly as posted, wording translated to French.
+/* REVIEWS_PACK - each entry carries its source badge and an honesty flag.
+   real:true  = genuine review, rating exactly as posted, wording translated to French.
    real:false = a real place with a plausible real rating, text written for this game.
-   Photos are generic Wikipedia images of the product/place, not the original listing. */
+   shots[]    = the review's OWN screenshots in party/reviews/ (exact case matters on
+                Linux hosting). Two entries render side by side: product then payoff.
+   photo      = generic fallback, used only when shots is empty. */
 var REVIEWS_PACK = [
   {
     source: "Amazon",
@@ -3345,6 +3340,7 @@ var REVIEWS_PACK = [
     source: "Amazon",
     product: "Brosse de toilette avec support",
     seller: "Amazon.co.uk",
+    shots: ["reviews/brush.png"],
     photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Klobuersten_%28fcm%29.jpg/330px-Klobuersten_%28fcm%29.jpg",
     reviewer: "Christine Campbell",
     date: "28 août 2017",
@@ -3356,6 +3352,7 @@ var REVIEWS_PACK = [
     source: "Amazon",
     product: "Lubrifiant à base d'eau — baril de 55 gallons",
     seller: "Amazon.com · Passion Lubes",
+    shots: ["reviews/drum.png"],
     photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Drum_%28container%29.jpg/330px-Drum_%28container%29.jpg",
     reviewer: "Sean McLemore",
     date: "7 septembre 2013",
@@ -3367,6 +3364,7 @@ var REVIEWS_PACK = [
     source: "Amazon",
     product: "Chaussures de course (contrefaçon)",
     seller: "Marketplace · réponse du vendeur : « hehe »",
+    shots: ["reviews/shoes.png"],
     photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Air_Jordan_1_Banned.jpg/330px-Air_Jordan_1_Banned.jpg",
     reviewer: "Client vérifié",
     date: "22 septembre 2018",
@@ -3378,6 +3376,7 @@ var REVIEWS_PACK = [
     source: "Amazon",
     product: "Accessoire pour adultes à ventouse",
     seller: "Amazon.com",
+    shots: ["reviews/bird.png"],
     photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Cockatiel_3.jpg/330px-Cockatiel_3.jpg",
     reviewer: "0543",
     date: "18 novembre 2017",
@@ -3389,6 +3388,7 @@ var REVIEWS_PACK = [
     source: "Amazon",
     product: "Matelas gonflable double hauteur",
     seller: "Amazon.com",
+    shots: ["reviews/mattress.png"],
     photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Guest_Bed_Type_Air_Mattress_With_Fake_Felt.jpg/330px-Guest_Bed_Type_Air_Mattress_With_Fake_Felt.jpg",
     reviewer: "Adam",
     date: "30 juin 2016",
@@ -3400,6 +3400,7 @@ var REVIEWS_PACK = [
     source: "Amazon",
     product: "Le Loup de Wall Street — Prime Video",
     seller: "Amazon Prime Video",
+    shots: ["reviews/wolf.png"],
     photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Wall_Street_%2855314253740%29.jpg/330px-Wall_Street_%2855314253740%29.jpg",
     reviewer: "im rick james",
     date: "16 août 2018",
@@ -3422,6 +3423,7 @@ var REVIEWS_PACK = [
     source: "Amazon",
     product: "Lit-tente pour chat",
     seller: "Amazon.com",
+    shots: ["reviews/catbed.png"],
     photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Cat_August_2010-4.jpg/330px-Cat_August_2010-4.jpg",
     reviewer: "babyswirly",
     date: "26 juillet 2021",
@@ -3433,6 +3435,7 @@ var REVIEWS_PACK = [
     source: "Amazon",
     product: "Ballons lettres « Happy Birthday »",
     seller: "Amazon.co.uk",
+    shots: ["reviews/birthday.png"],
     photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Congrats_bqt.jpg/330px-Congrats_bqt.jpg",
     reviewer: "Client Amazon",
     date: "21 septembre 2020",
@@ -3444,6 +3447,7 @@ var REVIEWS_PACK = [
     source: "Amazon",
     product: "Legging rose poudré",
     seller: "Amazon.com",
+    shots: ["reviews/leggings1.png"],
     photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Bobbi_444_%288425519757%29.jpg/330px-Bobbi_444_%288425519757%29.jpg",
     reviewer: "Veziah",
     date: "3 mars 2021",
@@ -3455,6 +3459,7 @@ var REVIEWS_PACK = [
     source: "Amazon",
     product: "Cercueil en acier Orion — Titan Casket",
     seller: "Amazon.com · 771,81 $",
+    shots: ["reviews/Casket.png"],
     photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/CoffinShopWarsaw.jpg/330px-CoffinShopWarsaw.jpg",
     reviewer: "Taylor",
     date: "12 janvier 2020",
@@ -3466,6 +3471,7 @@ var REVIEWS_PACK = [
     source: "Amazon",
     product: "Gants géants « Hulk Smash Hands »",
     seller: "Amazon.com",
+    shots: ["reviews/Hulk.png"],
     photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Sports_Model_John_Quinlan_Autographed_Muay_Thai_Boxing_Gloves.jpg/330px-Sports_Model_John_Quinlan_Autographed_Muay_Thai_Boxing_Gloves.jpg",
     reviewer: "Client Amazon",
     date: "20 septembre 2010",
@@ -3477,10 +3483,47 @@ var REVIEWS_PACK = [
     source: "Amazon",
     product: "Legging de randonnée violet",
     seller: "Amazon.com",
+    shots: ["reviews/legggins2.png"],
     photo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Hiking_to_the_Ice_Lakes._San_Juan_National_Forest%2C_Colorado.jpg/330px-Hiking_to_the_Ice_Lakes._San_Juan_National_Forest%2C_Colorado.jpg",
     reviewer: "Cory H.",
     date: "8 juin 2021",
     text: "Commandez-les tout de suite. Sur la photo, c'est moi qui roule et glisse en bas d'une montagne parce que j'avais trop peur de me relever. Mes leggings n'ont pas déchiré, pas même un peu, et je suis restée accrochée dans les roches et les arbres.",
+    stars: 5,
+    real: true
+  },
+  {
+    source: "Amazon",
+    product: "Harnais de lingerie ajustable",
+    seller: "Amazon.com",
+    shots: ["reviews/CatLingerie.png"],
+    photo: null,
+    reviewer: "Client Amazon",
+    date: "9 février 2019",
+    text: "Truc incroyable ! Mon mari a ouvert le colis pendant que j'étais sortie. Il n'arrivait pas à comprendre ce que c'était. Il pensait que c'était un harnais pour chat.",
+    stars: 4,
+    real: true
+  },
+  {
+    source: "Amazon",
+    product: "Camisole en crochet — taille unique",
+    seller: "Amazon.com",
+    shots: ["reviews/fitscat.png","reviews/fitscat2.png"],
+    photo: null,
+    reviewer: "Client Amazon",
+    date: "11 avril 2015",
+    text: "Bon, ça fait au chat. Ma fille de 16 ans a acheté ce truc. C'est ridiculement petit et je ne pourrais probablement pas publier légalement une photo de ce que ça donne si elle essayait de le porter. Mais, pour que vous puissiez voir… voici une photo de notre chat qui le porte. Pour être juste, ça couvre tous les mamelons du chat, par contre elle déteste le tissage. En résumé : n'achetez pas ça, même pour votre chat.",
+    stars: 1,
+    real: true
+  },
+  {
+    source: "Amazon",
+    product: "Avidlove — Robe résille moulante",
+    seller: "Amazon.com · 2 K+ vendus ce mois-ci",
+    shots: ["reviews/gunlingerie1.png","reviews/gunlingerie2.png"],
+    photo: null,
+    reviewer: "MR",
+    date: "4 juillet 2018",
+    text: "Wow ! J'adore la sensation moulante pendant la chasse aux serpents mocassins. Oubliez les demoiselles du club… il n'y a rien de mieux pour chasser ces serpents que quelque chose de moulant qui épouse bien le corps, mouvement des bras libre, vêtement spacieux. Je recommande définitivement ce produit pour la chasse au mocassin. Allez les filles ! Achetez ça ! Holla !",
     stars: 5,
     real: true
   },
@@ -4037,45 +4080,32 @@ var REVIEWS_PACK = [
 ];
 
 var GR_GUESS_SEC = 30;
-var GR_STAGE_SEC = 8;   // one detail loads in every 8s: 0-8 text, 8-16 product, 16-24 author
-var GR_STAGE_HINTS = [
-  "Seul l'avis est visible…",
-  "Le produit vient d'apparaître.",
-  "L'auteur et la date sont dévoilés.",
-  "Tout est révélé — dernière chance."
-];
-var GR_SPEED_BONUS = [150, 100, 50, 0];
 
-// Which details are visible right now, derived from the shared phase clock so every
-// phone reveals in lockstep instead of from its own local timer.
-function grStage(g){
-  var start = (g && g.phaseStartMs) || Date.now();
-  var elapsed = (Date.now() - start) / 1000;
-  return Math.max(0, Math.min(3, Math.floor(elapsed / GR_STAGE_SEC)));
-}
-function grSpeedBonus(stage){ return GR_SPEED_BONUS[Math.max(0, Math.min(3, stage))] || 0; }
-
-// The render only runs on Firebase updates, so nudge it exactly when the next detail
-// is due. Keyed so repeated renders inside one stage don't stack timers.
-var _grTickKey = "";
-var _grTickTimer = null;
-function scheduleStageTick(g, round, stage){
-  if(stage >= 3) return;
-  var key = round + "_" + stage;
-  if(_grTickKey === key && _grTickTimer) return;
-  if(_grTickTimer) clearTimeout(_grTickTimer);
-  _grTickKey = key;
-  var start = (g && g.phaseStartMs) || Date.now();
-  var dueMs = start + (stage + 1) * GR_STAGE_SEC * 1000 - Date.now();
-  _grTickTimer = setTimeout(function(){
-    _grTickTimer = null;
-    if(currentScreen === "s-game" && currentGame && currentGame.type === "guessrating" &&
-       currentGame.phase === "guess" && (currentGame.round || 0) === round){
-      renderGame(currentGame);
-    }
-  }, Math.max(200, dueMs));
+// A review's own screenshots when we have them, otherwise the generic fallback image.
+function reviewShotsHTML(item){
+  var list = (item.shots && item.shots.length) ? item.shots : (item.photo ? [item.photo] : []);
+  if(!list.length) return '';
+  var fb = item.photo || '';
+  var out = '<div class="review-shots' + (list.length > 1 ? ' pair' : '') + '">';
+  list.forEach(function(src){
+    out += '<img class="review-shot" src="' + escapeHtml(src) + '"' +
+           ((fb && src !== fb) ? ' data-fb="' + escapeHtml(fb) + '"' : '') +
+           ' alt="" onerror="shotFallback(this)">';
+  });
+  return out + '</div>';
 }
 
+// A missing or renamed crop degrades to the generic image once, then hides itself,
+// so a typo in a filename can never leave a broken-image icon on the card.
+function shotFallback(el){
+  var fb = el.getAttribute('data-fb');
+  if(fb && el.getAttribute('data-tried') !== '1'){
+    el.setAttribute('data-tried', '1');
+    el.src = fb;
+    return;
+  }
+  el.style.display = 'none';
+}
 function launchGuessRating(){
   if(!roomCode || !amHost) return;
   _ceremonyStartMs = 0;
@@ -4102,7 +4132,6 @@ function renderGuessRating(g){
   var item = (g.roundsData && g.roundsData[round]) ? g.roundsData[round] : { product:"", text:"", stars:5, source:"Google" };
   var myRating = votes[myId] || 0;
   var votedCount = Object.keys(votes).length;
-  var stage = grStage(g);
   var html = "";
 
   function srcBadgeHTML(){
@@ -4126,47 +4155,28 @@ function renderGuessRating(g){
         revealRound();
       }
     });
-    scheduleStageTick(g, round, stage);
 
     html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • Devine la note</div>';
 
+    // Everything except the rating is visible immediately - players get the whole
+    // round to read the card rather than waiting for details to load in.
     html += '<div class="google-review-card">';
     html += '<div class="review-header">';
-    // Photo and product name only load in at stage 1.
-    if(stage >= 1 && item.photo){
-      html += '<div class="business-photo" style="background-image:url(\'' + item.photo + '\');"></div>';
-    } else {
-      html += '<div class="business-photo"><span class="skel block"></span></div>';
-    }
     html += '<div class="business-info">';
-    if(stage >= 1){
-      html += '<div class="business-name">' + escapeHtml(item.product) + '</div>';
-      html += '<div class="business-location">' + escapeHtml(item.seller || '') + '</div>';
-    } else {
-      html += '<span class="skel w90"></span><span class="skel w45"></span>';
-    }
+    html += '<div class="business-name">' + escapeHtml(item.product) + '</div>';
+    html += '<div class="business-location">' + escapeHtml(item.seller || '') + '</div>';
     html += '<div style="margin-top:6px;">' + srcBadgeHTML() + '</div>';
     html += '</div>';
     html += '</div>';
 
+    html += reviewShotsHTML(item);
+
     html += '<div class="review-quote">';
-    // Author and date land at stage 2 - the review text itself is there from the start.
-    if(stage >= 2){
-      html += '<div class="reviewer-tag">👤 ' + escapeHtml(item.reviewer || 'Client') +
-              (item.date ? ' • ' + escapeHtml(item.date) : '') + '</div>';
-    } else {
-      html += '<div class="reviewer-tag"><span class="skel w45" style="height:9px;"></span></div>';
-    }
+    html += '<div class="reviewer-tag">👤 ' + escapeHtml(item.reviewer || 'Client') +
+            (item.date ? ' • ' + escapeHtml(item.date) : '') + '</div>';
     html += '<p>"' + escapeHtml(item.text) + '"</p>';
     html += '</div>';
     html += '</div>';
-
-    html += '<div class="reveal-steps">';
-    for(var st=0; st<4; st++){ html += '<span class="reveal-dot' + (st <= stage ? ' on' : '') + '"></span>'; }
-    html += '</div>';
-    html += '<div class="reveal-hint">' + GR_STAGE_HINTS[Math.min(stage,3)] +
-            (stage < 3 ? ' <span class="speed-pill">+' + grSpeedBonus(stage) + ' si tu devines maintenant</span>' : '') +
-            '</div>';
 
     html += '<div class="gsub">Combien d\'étoiles (1 à 5) cette personne a-t-elle laissées ?</div>';
 
@@ -4209,13 +4219,7 @@ function renderGuessRating(g){
 function rateStar(starCount){
   if(!roomCode || !myId) return;
   sfxVote();
-  // Record how much of the card was visible when the guess landed, so committing early
-  // pays more than waiting for every detail to load in.
-  var stage = grStage(currentGame || {});
-  var upd = {};
-  upd["votes/" + myId] = starCount;
-  upd["voteStages/" + myId] = stage;
-  db.ref("rooms/" + roomCode + "/game").update(upd);
+  db.ref("rooms/" + roomCode + "/game/votes/" + myId).set(starCount);
 }
 
 // =====================================================================
