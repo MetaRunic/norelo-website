@@ -495,6 +495,42 @@
 
   footer{text-align:center; padding:16px; font-size:.78rem; color:var(--gr); position:relative; z-index:1;}
 
+  /* ANIMATED ROUND POINTS COUNTER */
+  .round-pts-section {
+    margin: 18px 0 8px; padding: 14px 12px; border-radius: 16px;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(139, 92, 246, 0.12));
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .round-pts-title {
+    text-align: center; font-size: 0.85rem; font-weight: 800; color: rgba(255,255,255,0.6);
+    text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px;
+  }
+  .round-pts-row {
+    display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+    border-radius: 12px; margin-bottom: 4px;
+    animation: ptRowSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  .round-pts-row:nth-child(2) { animation-delay: 0.1s; }
+  .round-pts-row:nth-child(3) { animation-delay: 0.2s; }
+  .round-pts-row:nth-child(4) { animation-delay: 0.3s; }
+  .round-pts-row:nth-child(5) { animation-delay: 0.4s; }
+  .round-pts-row:nth-child(6) { animation-delay: 0.5s; }
+  .round-pts-row:nth-child(7) { animation-delay: 0.6s; }
+  .round-pts-row:nth-child(8) { animation-delay: 0.7s; }
+  .round-pts-name { flex: 1; font-size: 0.92rem; font-weight: 700; color: #e2e8f0; }
+  .round-pts-val {
+    font-size: 1.2rem; font-weight: 900; color: #10b981; min-width: 72px; text-align: right;
+    text-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+  }
+  .round-pts-val.zero { color: rgba(255,255,255,0.3); text-shadow: none; }
+  .round-pts-total {
+    font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.4); min-width: 60px; text-align: right;
+  }
+  @keyframes ptRowSlideIn {
+    0% { transform: translateX(-20px) scale(0.85); opacity: 0; }
+    100% { transform: translateX(0) scale(1); opacity: 1; }
+  }
+
   @media(max-width:700px){
     .hero h1{font-size:2.9rem;}
   }
@@ -1084,6 +1120,7 @@ var inRoom = false;
 var bootDone = false;
 var currentGame = null;
 var sessionScores = {};
+var _preRoundScores = {};
 var resumeAborted = false;
 var countdownTicker = null;
 
@@ -1365,6 +1402,61 @@ function addPoints(uid, pts){
   if(!roomCode || !amHost || !uid) return;
   var cur = (sessionScores[uid] || 0) + pts;
   db.ref("rooms/" + roomCode + "/scores/" + uid).set(cur);
+}
+
+function snapshotPreRoundScores(){
+  _preRoundScores = {};
+  players.forEach(function(p){ _preRoundScores[p.id] = sessionScores[p.id] || 0; });
+}
+
+function computeRoundPoints(){
+  var rp = {};
+  players.forEach(function(p){
+    var before = _preRoundScores[p.id] || 0;
+    var after = sessionScores[p.id] || 0;
+    var delta = after - before;
+    if(delta > 0) rp[p.id] = delta;
+  });
+  return rp;
+}
+
+function renderRoundPointsHTML(roundPts){
+  if(!roundPts || Object.keys(roundPts).length === 0) return '';
+  var html = '<div class="round-pts-section">';
+  html += '<div class="round-pts-title">Points gagnés cette manche</div>';
+  var sorted = players.slice().sort(function(a,b){ return (roundPts[b.id]||0) - (roundPts[a.id]||0); });
+  sorted.forEach(function(p){
+    var earned = roundPts[p.id] || 0;
+    var total = sessionScores[p.id] || 0;
+    html += '<div class="round-pts-row">';
+    html += avatarHTML(p, 32);
+    html += '<div class="round-pts-name">' + escapeHtml(p.name) + '</div>';
+    html += '<div class="round-pts-val' + (earned === 0 ? ' zero' : '') + '" data-target="' + earned + '">+0</div>';
+    html += '<div class="round-pts-total">' + total + ' pts</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+  return html;
+}
+
+function animateCounters(){
+  var els = document.querySelectorAll('.round-pts-val[data-target]');
+  els.forEach(function(el){
+    var target = parseInt(el.getAttribute('data-target'), 10);
+    if(target <= 0){ el.textContent = '+0'; return; }
+    var start = 0;
+    var duration = 1200;
+    var startTime = null;
+    function step(ts){
+      if(!startTime) startTime = ts;
+      var progress = Math.min((ts - startTime) / duration, 1);
+      var ease = 1 - Math.pow(1 - progress, 3);
+      var current = Math.round(start + (target - start) * ease);
+      el.textContent = '+' + current;
+      if(progress < 1) requestAnimationFrame(step);
+    }
+    setTimeout(function(){ requestAnimationFrame(step); }, 400);
+  });
 }
 
 // =====================================================================
@@ -1936,6 +2028,7 @@ function renderMostLikely(g){
       html += '<div class="rrow">' + avatarHTML(p, 44) + '<div class="rname">' + escapeHtml(p.name) + '</div><div class="rcount">' + c + ' votes</div></div>';
     });
     
+    html += renderRoundPointsHTML(g.roundPoints);
     html += '<div style="text-align:center;"><div class="timer-badge"><span class="clock-ico">' + ICONS.clock + '</span> Prochaine manche dans <span id="countdownVal">5s</span></div></div>';
 
   } else if(g.phase === "done"){
@@ -1943,6 +2036,7 @@ function renderMostLikely(g){
   }
 
   area.innerHTML = html;
+  if(g.phase === "reveal") animateCounters();
 }
 
 function getPlayer(uid){
@@ -2016,6 +2110,7 @@ function processTiebreakerClash(){
     winner = dB; loser = dA;
   }
   
+  snapshotPreRoundScores();
   addPoints(winner, 50);
   sfxWin();
   
@@ -2044,11 +2139,13 @@ function processTiebreakerClash(){
     });
     
     setTimeout(function(){
+      var rp = computeRoundPoints();
       db.ref("rooms/" + roomCode + "/game").update({
         phase: "reveal",
         winnerId: winner,
         revealStartMs: Date.now(),
-        rpsStage: null
+        rpsStage: null,
+        roundPoints: rp
       });
       _rpsProcessing = false;
     }, 3200);
@@ -2064,6 +2161,7 @@ function revealRound(){
   if(!roomCode || !amHost) return;
   var game = currentGame;
   if(game && !game.scored){
+    snapshotPreRoundScores();
     var votes = game.votes || {};
     if(game.type === "mostlikely"){
       var tally = {};
@@ -2113,6 +2211,12 @@ function revealRound(){
     } else if(game.type === "twotruths"){
       Object.keys(votes).forEach(function(vUid){ if(votes[vUid] === game.lieIndex) addPoints(vUid, 200); });
     }
+    // Compute and store round points so all clients can display them
+    setTimeout(function(){
+      var rp = computeRoundPoints();
+      db.ref("rooms/" + roomCode + "/game").update({ phase: "reveal", revealStartMs: Date.now(), scored: true, roundPoints: rp });
+    }, 150);
+    return;
   }
   db.ref("rooms/" + roomCode + "/game").update({ phase: "reveal", revealStartMs: Date.now(), scored: true });
 }
@@ -2277,6 +2381,7 @@ function renderWhoPosted(g){
     html += avatarHTML(realPoster, 84);
     html += '<div style="font-size:1.4rem;font-weight:800;margin-top:10px;">C\'était ' + escapeHtml(realPoster.name) + ' !</div>';
     html += '</div>';
+    html += renderRoundPointsHTML(g.roundPoints);
     html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' Fin de la manche dans <span id="countdownVal">5s</span></div></div>';
 
   } else if(g.phase === "done"){
@@ -2284,6 +2389,7 @@ function renderWhoPosted(g){
   }
 
   area.innerHTML = html;
+  if(g.phase === "reveal") animateCounters();
 }
 
 function renderMiniGameDoneHTML(){
@@ -2378,6 +2484,7 @@ function renderGuessRating(g){
     html += '<div style="font-size:2rem;color:var(--amber);">' + starsStr + '</div>';
     html += '<div style="font-size:1.6rem;font-weight:800;color:var(--amber);margin-top:6px;">' + item.stars + ' / 5 Étoiles !</div>';
     html += '</div>';
+    html += renderRoundPointsHTML(g.roundPoints);
     html += '<div style="text-align:center;"><div class="timer-badge">⏱️ Prochaine manche dans <span id="countdownVal">5s</span></div></div>';
 
   } else if(g.phase === "done"){
@@ -2385,6 +2492,7 @@ function renderGuessRating(g){
   }
 
   area.innerHTML = html;
+  if(g.phase === "reveal") animateCounters();
 }
 
 function rateStar(starCount){
@@ -2471,12 +2579,14 @@ function renderKnowPlayer(g){
     html += '<div class="groundhdr">La vérité est dévoilée !</div>';
     html += '<div class="gprompt">' + escapeHtml(spotlightName) + ' a répondu :</div>';
     html += '<div style="background:linear-gradient(120deg,var(--blue),var(--purple));padding:20px;border-radius:18px;font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:20px;">' + escapeHtml(correctText) + '</div>';
+    html += renderRoundPointsHTML(g.roundPoints);
     html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' Fin du jeu dans <span id="countdownVal">5s</span></div></div>';
   } else if(g.phase === "done"){
     html += renderMiniGameDoneHTML();
   }
 
   area.innerHTML = html;
+  if(g.phase === "reveal") animateCounters();
 }
 
 function pickSpotlightAnswer(idx){
@@ -2576,12 +2686,14 @@ function renderRoast(g){
       html += '<div style="color:var(--bp);font-size:.85rem;margin-top:6px;">— ' + escapeHtml(author.name) + '</div>';
       html += '</div>';
     });
+    html += renderRoundPointsHTML(g.roundPoints);
     html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' Fin du jeu dans <span id="countdownVal">5s</span></div></div>';
   } else if(g.phase === "done"){
     html += renderMiniGameDoneHTML();
   }
 
   area.innerHTML = html;
+  if(g.phase === "reveal") animateCounters();
 }
 
 function submitRoastAnswer(){
@@ -2661,12 +2773,14 @@ function renderWhoSaid(g){
     html += avatarHTML(speaker, 84);
     html += '<div style="font-size:1.4rem;font-weight:800;margin-top:10px;">C\'était ' + escapeHtml(speaker.name) + ' !</div>';
     html += '</div>';
+    html += renderRoundPointsHTML(g.roundPoints);
     html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' Fin du jeu dans <span id="countdownVal">5s</span></div></div>';
   } else if(g.phase === "done"){
     html += renderMiniGameDoneHTML();
   }
 
   area.innerHTML = html;
+  if(g.phase === "reveal") animateCounters();
 }
 
 // =====================================================================
@@ -2721,12 +2835,14 @@ function renderTwoTruths(g){
     html += '<div class="groundhdr">Le mensonge était :</div>';
     var lieText = statements[g.lieIndex] || "";
     html += '<div style="background:rgba(239,68,68,0.2);border:2px solid var(--red);padding:18px;border-radius:16px;font-size:1.2rem;font-weight:800;text-align:center;margin-bottom:20px;color:#fff;">' + escapeHtml(lieText) + '</div>';
+    html += renderRoundPointsHTML(g.roundPoints);
     html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' Fin du jeu dans <span id="countdownVal">5s</span></div></div>';
   } else if(g.phase === "done"){
     html += renderMiniGameDoneHTML();
   }
 
   area.innerHTML = html;
+  if(g.phase === "reveal") animateCounters();
 }
 
 function guessLie(idx){
