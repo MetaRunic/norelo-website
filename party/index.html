@@ -53,9 +53,9 @@
   @media(min-width:600px){
     #dvdLogo{ width:90px; height:45px; }
   }
-  /* Compact Floating Audio & Theme Controls */
+  /* Compact Floating Audio & Theme Controls (Absolute position so it scrolls away naturally on mobile) */
   #audioControls{
-    position:fixed; top:12px; right:14px; z-index:100;
+    position:absolute; top:14px; right:14px; z-index:100;
     display:flex; flex-direction:column; gap:10px; align-items:center;
   }
   #audioControls button {
@@ -92,21 +92,27 @@
   /* Subtle now-playing badge, bottom-left. Deliberately quiet: it should be findable
      when you wonder "what is this song" and ignorable the rest of the time. */
   #nowPlaying{
-    position:fixed; left:12px; bottom:12px; z-index:100;
-    max-width:min(58vw, 260px); padding:5px 10px; border-radius:10px;
-    background:rgba(13,22,54,0.72); border:1px solid rgba(255,255,255,0.12);
+    position:absolute; left:14px; bottom:14px; z-index:100;
+    max-width:min(58vw, 240px); padding:5px 10px; border-radius:10px;
+    background:var(--panel); border:1.5px solid var(--bdr);
     backdrop-filter:blur(10px);
-    font-size:.66rem; font-weight:700; letter-spacing:.03em; color:#93a4c8;
+    font-size:.66rem; font-weight:700; letter-spacing:.03em; color:var(--txt);
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     opacity:0; transform:translateY(6px); pointer-events:none;
-    transition:opacity .45s ease, transform .45s ease;
+    transition:opacity .45s ease, transform .45s ease, background 0.4s ease, border-color 0.4s ease;
   }
   #nowPlaying.show{ opacity:1; transform:translateY(0); }
-  #nowPlaying .np-ico{ color:var(--amber); margin-right:5px; }
+  #nowPlaying .np-ico{ color:var(--bl); margin-right:5px; }
+
+  @media(max-width:600px){
+    #nowPlaying {
+      bottom: 46px; left: 14px; max-width: calc(100vw - 28px);
+    }
+  }
 
   .wrap{
     flex:1; width:100%; max-width:480px; margin:0 auto;
-    padding:54px 22px calc(28px + env(safe-area-inset-bottom));
+    padding:76px 22px calc(50px + env(safe-area-inset-bottom));
     display:flex; flex-direction:column; justify-content:center;
     position:relative; z-index:1;
   }
@@ -1199,7 +1205,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.41</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.42</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
