@@ -921,8 +921,6 @@
     padding: 6px 12px; display: none; align-items: center; gap: 6px;
     cursor: pointer; transition: all 0.2s ease;
     box-shadow: 0 4px 15px rgba(0,0,0,0.35);
-  }
-  body.in-game .discrete-code-badge { display: flex; }
   .discrete-code-badge:hover, .discrete-code-badge:active {
     background: var(--panel2); border-color: var(--bl);
     transform: scale(1.05);
@@ -1227,7 +1225,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.43</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.44</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -2063,7 +2061,7 @@ document.addEventListener("DOMContentLoaded", function(){
   var colorIdx = 0;
 
   function moveDVD(){
-    if(document.body.classList.contains("in-game")){
+    if(typeof currentScreen !== "undefined" && currentScreen === "s-game"){
       dvd.style.display = "none";
       requestAnimationFrame(moveDVD);
       return;
@@ -2089,7 +2087,7 @@ document.addEventListener("DOMContentLoaded", function(){
       var centerX = x + (logoW / 2);
       var centerY = y + (logoH / 2);
 
-      if(window.triggerExplosion && !document.body.classList.contains("in-game")){
+      if(window.triggerExplosion && (typeof currentScreen === "undefined" || currentScreen !== "s-game")){
         window.triggerExplosion(centerX, centerY, isCorner, curColor);
       }
     }
@@ -2183,6 +2181,15 @@ function show(id){
   document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("on"); });
   $(id).classList.add("on");
   currentScreen = id;
+
+  var codeBadge = document.getElementById("discreteCodeBadge");
+  if(codeBadge){
+    if(typeof roomCode !== "undefined" && roomCode && (id === "s-host" || id === "s-lobby" || id === "s-game")){
+      codeBadge.style.display = "flex";
+    } else {
+      codeBadge.style.display = "none";
+    }
+  }
 
   if(id === "s-game"){
     document.body.classList.add("in-game");
