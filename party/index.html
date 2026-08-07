@@ -24,9 +24,23 @@
     transition: background 0.4s ease, color 0.4s ease;
   }
   .glow{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;}
-  .glow::before,.glow::after{content:""; position:absolute; border-radius:50%; filter:blur(90px); opacity:.5; transition: background 0.4s ease;}
-  .glow::before{width:60vw; height:60vw; top:-20vw; left:-10vw; background:radial-gradient(circle,var(--glow-1, var(--blue)),transparent 70%);}
-  .glow::after{width:50vw; height:50vw; bottom:-15vw; right:-10vw; background:radial-gradient(circle,var(--glow-2, rgba(34,197,94,0.5)),transparent 70%);}
+  .glow::before, .glow::after, .glow-extra{
+    content:""; position:absolute; border-radius:50%; filter:blur(100px); opacity:.65;
+    transition: background 0.5s ease; animation: ambientPulse 12s ease-in-out infinite alternate;
+  }
+  .glow::before{width:75vw; height:75vw; top:-25vw; left:-15vw; background:radial-gradient(circle,var(--glow-1, var(--blue)),transparent 68%);}
+  .glow::after{width:70vw; height:70vw; bottom:-20vw; right:-15vw; background:radial-gradient(circle,var(--glow-2, rgba(34,197,94,0.5)),transparent 68%); animation-delay:-6s;}
+  .glow-extra{width:60vw; height:60vw; top:30%; left:20%; background:radial-gradient(circle,var(--glow-3, rgba(168,85,247,0.4)),transparent 70%); animation: ambientFloat 16s ease-in-out infinite alternate;}
+
+  @keyframes ambientPulse {
+    0% { transform: scale(1) translate(0,0) rotate(0deg); opacity: 0.55; }
+    50% { transform: scale(1.18) translate(40px,-30px) rotate(45deg); opacity: 0.75; }
+    100% { transform: scale(0.9) translate(-30px,40px) rotate(-30deg); opacity: 0.5; }
+  }
+  @keyframes ambientFloat {
+    0% { transform: translate(-40px,-25px) scale(0.92); }
+    100% { transform: translate(50px,35px) scale(1.25); }
+  }
 
   #bgCanvas{position:fixed; inset:0; z-index:0; pointer-events:none;}
 
@@ -887,34 +901,34 @@
 
   /* --- 10 DYNAMIC THEME SYSTEM STYLES --- */
   [data-theme="default"] {
-    --dark: #070f2b; --panel: #0d1636; --panel2: #111f45; --glow-1: #2563eb; --glow-2: rgba(34,197,94,0.5); --bl: #4fa3e8; --bdr: rgba(79,163,232,0.15);
+    --dark: #070f2b; --panel: #0d1636; --panel2: #111f45; --glow-1: #2563eb; --glow-2: rgba(124,58,237,0.5); --glow-3: rgba(6,182,212,0.4); --bl: #4fa3e8; --bdr: rgba(79,163,232,0.15);
   }
   [data-theme="space"] {
-    --dark: #030712; --panel: #0f172a; --panel2: #1e1b4b; --glow-1: #a855f7; --glow-2: rgba(56,189,248,0.5); --bl: #a855f7; --bdr: rgba(168,85,247,0.25);
+    --dark: #030712; --panel: #0f172a; --panel2: #1e1b4b; --glow-1: #9333ea; --glow-2: rgba(236,72,153,0.5); --glow-3: rgba(2,132,199,0.4); --bl: #a855f7; --bdr: rgba(168,85,247,0.25);
   }
   [data-theme="underwater"] {
-    --dark: #022c22; --panel: #064e3b; --panel2: #065f46; --glow-1: #10b981; --glow-2: rgba(6,182,212,0.5); --bl: #10b981; --bdr: rgba(16,185,129,0.25);
+    --dark: #022c22; --panel: #064e3b; --panel2: #065f46; --glow-1: #059669; --glow-2: rgba(8,145,178,0.5); --glow-3: rgba(59,130,246,0.4); --bl: #10b981; --bdr: rgba(16,185,129,0.25);
   }
   [data-theme="cyberpunk"] {
-    --dark: #18021e; --panel: #2e0938; --panel2: #3b0764; --glow-1: #ec4899; --glow-2: rgba(168,85,247,0.55); --bl: #ec4899; --bdr: rgba(236,72,153,0.25);
+    --dark: #18021e; --panel: #2e0938; --panel2: #3b0764; --glow-1: #f43f5e; --glow-2: rgba(217,70,239,0.55); --glow-3: rgba(139,92,246,0.45); --bl: #ec4899; --bdr: rgba(236,72,153,0.25);
   }
   [data-theme="forest"] {
-    --dark: #052e16; --panel: #14532d; --panel2: #166534; --glow-1: #22c55e; --glow-2: rgba(234,179,8,0.45); --bl: #22c55e; --bdr: rgba(34,197,94,0.25);
+    --dark: #052e16; --panel: #14532d; --panel2: #166534; --glow-1: #16a34a; --glow-2: rgba(234,179,8,0.5); --glow-3: rgba(13,148,136,0.4); --bl: #22c55e; --bdr: rgba(34,197,94,0.25);
   }
   [data-theme="lava"] {
-    --dark: #1a0505; --panel: #450a0a; --panel2: #581c87; --glow-1: #ef4444; --glow-2: rgba(249,115,22,0.55); --bl: #ef4444; --bdr: rgba(239,68,68,0.25);
+    --dark: #1a0505; --panel: #450a0a; --panel2: #581c87; --glow-1: #dc2626; --glow-2: rgba(234,88,12,0.55); --glow-3: rgba(202,138,4,0.45); --bl: #ef4444; --bdr: rgba(239,68,68,0.25);
   }
   [data-theme="candy"] {
-    --dark: #2e1065; --panel: #4c1d95; --panel2: #581c87; --glow-1: #f472b6; --glow-2: rgba(192,132,252,0.55); --bl: #f472b6; --bdr: rgba(244,114,182,0.25);
+    --dark: #2e1065; --panel: #4c1d95; --panel2: #581c87; --glow-1: #ec4899; --glow-2: rgba(168,85,247,0.55); --glow-3: rgba(56,189,248,0.45); --bl: #f472b6; --bdr: rgba(244,114,182,0.25);
   }
   [data-theme="royal"] {
-    --dark: #0a0a0a; --panel: #171717; --panel2: #262626; --glow-1: #eab308; --glow-2: rgba(245,158,11,0.5); --bl: #eab308; --bdr: rgba(234,179,8,0.25);
+    --dark: #0a0a0a; --panel: #171717; --panel2: #262626; --glow-1: #ca8a04; --glow-2: rgba(217,119,6,0.5); --glow-3: rgba(120,53,15,0.4); --bl: #eab308; --bdr: rgba(234,179,8,0.25);
   }
   [data-theme="blizzard"] {
-    --dark: #0c4a6e; --panel: #0369a1; --panel2: #075985; --glow-1: #38bdf8; --glow-2: rgba(165,243,252,0.5); --bl: #38bdf8; --bdr: rgba(56,189,248,0.25);
+    --dark: #0c4a6e; --panel: #0369a1; --panel2: #075985; --glow-1: #0284c7; --glow-2: rgba(20,184,166,0.5); --glow-3: rgba(56,189,248,0.45); --bl: #38bdf8; --bdr: rgba(56,189,248,0.25);
   }
   [data-theme="matrix"] {
-    --dark: #022c22; --panel: #032e18; --panel2: #053f22; --glow-1: #4ade80; --glow-2: rgba(34,197,94,0.5); --bl: #4ade80; --bdr: rgba(74,222,128,0.25);
+    --dark: #022c22; --panel: #032e18; --panel2: #053f22; --glow-1: #16a34a; --glow-2: rgba(34,197,94,0.5); --glow-3: rgba(20,184,166,0.4); --bl: #4ade80; --bdr: rgba(74,222,128,0.25);
   }
 
   /* --- THEME SHOP MODAL STYLING --- */
@@ -974,7 +988,6 @@
 
   .theme-card-info { flex: 1; min-width: 0; }
   .theme-card-title { font-size: 1.02rem; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 8px; }
-  .theme-card-badge { font-size: 0.65rem; font-weight: 800; padding: 2px 7px; border-radius: 6px; background: rgba(255,255,255,0.15); color: #e2e8f0; }
   .theme-card-desc { font-size: 0.78rem; color: #94a3b8; margin-top: 3px; line-height: 1.3; }
 
   .theme-apply-btn {
@@ -1166,7 +1179,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.35</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.36</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -1697,16 +1710,16 @@ function skipBgTrack(){
  *  THEME SYSTEM (10 UNIQUE STYLES & VISUAL EFFECTS)
  * ===================================================================== */
 var THEMES = [
-  { id: "default", name: "Néon Profond", icon: "🌌", desc: "Nuit bleue classique avec halo luminescent et DVD bounce.", gradient: "linear-gradient(135deg, #0b132b, #1c2541)", accent: "#3b82f6", badge: "Classique" },
-  { id: "space", name: "Espace & Nébuleuse", icon: "🚀", desc: "Vide cosmique profond avec étoiles scintillantes et astéroïdes.", gradient: "linear-gradient(135deg, #030712, #1e1b4b)", accent: "#a855f7", badge: "Cosmique" },
-  { id: "underwater", name: "Sous-Marin & Abysses", icon: "🌊", desc: "Abysses turquoise avec bulles montantes et méduses bioluminescentes.", gradient: "linear-gradient(135deg, #022c22, #064e3b)", accent: "#10b981", badge: "Aquatique" },
-  { id: "cyberpunk", name: "Retro Synthwave 80s", icon: "👾", desc: "Grille néon rose et magenta avec soleil synthwave rétro.", gradient: "linear-gradient(135deg, #18021e, #3b0764)", accent: "#ec4899", badge: "Retro 80s" },
-  { id: "forest", name: "Forêt Enchantée", icon: "🍃", desc: "Sous-bois féerique émeraude avec lucioles dorées et feuilles dérivantes.", gradient: "linear-gradient(135deg, #052e16, #14532d)", accent: "#22c55e", badge: "Nature" },
-  { id: "lava", name: "Enfer Volcanique", icon: "🌋", desc: "Monde de magma ardent avec braises montantes et étincelles de feu.", gradient: "linear-gradient(135deg, #1a0505, #450a0a)", accent: "#ef4444", badge: "Feu" },
-  { id: "candy", name: "Nuage Pastel", icon: "🍭", desc: "Royaume pastel violet avec nuages cotonneux et étoiles scintillantes.", gradient: "linear-gradient(135deg, #2e1065, #581c87)", accent: "#f472b6", badge: "Douceur" },
-  { id: "royal", name: "Luxe Obscur & Or", icon: "👑", desc: "Obsidienne sombre avec poussières d'or et diamants flottants.", gradient: "linear-gradient(135deg, #0a0a0a, #262626)", accent: "#eab308", badge: "VIP" },
-  { id: "blizzard", name: "Blizzard Polaire", icon: "❄️", desc: "Froid arctique avec flocons de neige et lueurs d'aurore boréale.", gradient: "linear-gradient(135deg, #0c4a6e, #0369a1)", accent: "#38bdf8", badge: "Givre" },
-  { id: "matrix", name: "Pluie Numérique", icon: "⚡", desc: "Cyberspace vert avec cascades de code binaire numérique.", gradient: "linear-gradient(135deg, #022c22, #032e18)", accent: "#4ade80", badge: "Hacker" }
+  { id: "default", name: "Néon Profond", icon: "🌌", desc: "Nuit bleue classique avec halo luminescent et DVD bounce.", gradient: "linear-gradient(135deg, #0b132b, #1c2541)", accent: "#3b82f6" },
+  { id: "space", name: "Espace & Nébuleuse", icon: "🚀", desc: "Vide cosmique profond avec étoiles scintillantes et astéroïdes.", gradient: "linear-gradient(135deg, #030712, #1e1b4b)", accent: "#a855f7" },
+  { id: "underwater", name: "Sous-Marin & Abysses", icon: "🌊", desc: "Abysses turquoise avec bulles montantes et méduses bioluminescentes.", gradient: "linear-gradient(135deg, #022c22, #064e3b)", accent: "#10b981" },
+  { id: "cyberpunk", name: "Retro Synthwave 80s", icon: "👾", desc: "Grille néon rose et magenta avec soleil synthwave rétro.", gradient: "linear-gradient(135deg, #18021e, #3b0764)", accent: "#ec4899" },
+  { id: "forest", name: "Forêt Enchantée", icon: "🍃", desc: "Sous-bois féerique émeraude avec lucioles dorées et feuilles dérivantes.", gradient: "linear-gradient(135deg, #052e16, #14532d)", accent: "#22c55e" },
+  { id: "lava", name: "Enfer Volcanique", icon: "🌋", desc: "Monde de magma ardent avec braises montantes et étincelles de feu.", gradient: "linear-gradient(135deg, #1a0505, #450a0a)", accent: "#ef4444" },
+  { id: "candy", name: "Nuage Pastel", icon: "🍭", desc: "Royaume pastel violet avec nuages cotonneux et étoiles scintillantes.", gradient: "linear-gradient(135deg, #2e1065, #581c87)", accent: "#f472b6" },
+  { id: "royal", name: "Luxe Obscur & Or", icon: "👑", desc: "Obsidienne sombre avec poussières d'or et diamants flottants.", gradient: "linear-gradient(135deg, #0a0a0a, #262626)", accent: "#eab308" },
+  { id: "blizzard", name: "Blizzard Polaire", icon: "❄️", desc: "Froid arctique avec flocons de neige et lueurs d'aurore boréale.", gradient: "linear-gradient(135deg, #0c4a6e, #0369a1)", accent: "#38bdf8" },
+  { id: "matrix", name: "Pluie Numérique", icon: "⚡", desc: "Cyberspace vert avec cascades de code binaire numérique.", gradient: "linear-gradient(135deg, #022c22, #032e18)", accent: "#4ade80" }
 ];
 
 var currentTheme = localStorage.getItem("norelo_party_theme") || "default";
@@ -1744,7 +1757,7 @@ function renderThemeShopList(){
     html += '<div class="theme-card-item ' + (isActive ? "active" : "") + '" onclick="applyTheme(\'' + t.id + '\'); if(typeof sfxVote===\'function\') sfxVote();">';
     html += '<div class="theme-card-icon" style="background:' + t.gradient + ';">' + t.icon + '</div>';
     html += '<div class="theme-card-info">';
-    html += '<div class="theme-card-title">' + escapeHtml(t.name) + ' <span class="theme-card-badge">' + t.badge + '</span></div>';
+    html += '<div class="theme-card-title">' + escapeHtml(t.name) + '</div>';
     html += '<div class="theme-card-desc">' + escapeHtml(t.desc) + '</div>';
     html += '</div>';
     html += '<button class="theme-apply-btn">' + (isActive ? "Actif ✓" : "Choisir") + '</button>';
