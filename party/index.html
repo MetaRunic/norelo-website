@@ -279,10 +279,73 @@
     0% { transform: scale(0.3) rotate(-8deg); opacity: 0; }
     100% { transform: scale(1) rotate(0deg); opacity: 1; }
   }
-  .jb-commentary {
-    background: rgba(0,0,0,0.3); border-radius: 14px; padding: 10px 14px;
-    font-size: .92rem; font-weight: 800; color: #fff; margin-top: 14px;
-    display: inline-block;
+  /* ULTRA-PREMIUM COMMENTARY BADGE */
+  .jb-commentary-badge {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 18px;
+    padding: 12px 22px;
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    animation: commPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 90%;
+  }
+
+  .unanimous-badge {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.25), rgba(236, 72, 153, 0.35));
+    border: 2px solid rgba(254, 240, 138, 0.9);
+    box-shadow: 0 0 25px rgba(250, 204, 21, 0.6), inset 0 0 15px rgba(255, 255, 255, 0.3);
+    animation: unanimousGlow 1.5s ease-in-out infinite alternate, commPop 0.5s ease;
+  }
+
+  .duel-badge {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(59, 130, 246, 0.3));
+    border: 2px solid rgba(192, 132, 252, 0.8);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+  }
+
+  .jb-comm-title {
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    white-space: nowrap;
+  }
+
+  .unanimous-badge .jb-comm-title {
+    color: #fef08a;
+    font-size: 1.25rem;
+    text-shadow: 0 0 12px rgba(250, 204, 21, 0.9), 0 2px 4px rgba(0,0,0,0.8);
+  }
+
+  .jb-comm-sub {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.9);
+    margin-top: 4px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+    white-space: nowrap;
+  }
+
+  @keyframes unanimousGlow {
+    0% { box-shadow: 0 0 15px rgba(250, 204, 21, 0.4); transform: scale(0.98); }
+    100% { box-shadow: 0 0 30px rgba(250, 204, 21, 0.85); transform: scale(1.02); }
+  }
+
+  @keyframes commPop {
+    0% { opacity: 0; transform: scale(0.7) translateY(10px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
   }
 
   /* ROCK PAPER SCISSORS ARENA ANIMATIONS */
@@ -2067,11 +2130,27 @@ function renderMostLikely(g){
     var top = (g.winnerId ? getPlayer(g.winnerId) : (ranked[0] || players[0]));
     var pct = players.length ? Math.round((maxCount / players.length) * 100) : 0;
     
-    var commentary = '<span class="trophy-ico">' + ICONS.trophy + '</span> Le verdict du groupe est tombé !';
-    if(pct === 100){ commentary = '<span class="crown-ico">' + ICONS.crown + '</span> UNANIMITÉ ABSOLUE ! Tout le monde est d\'accord !'; }
-    else if(pct >= 60){ commentary = '<span class="flame-ico">' + ICONS.flame + '</span> La majorité a parlé sans hésiter !'; }
-    else if(g.winnerId || (maxCount > 1 && ranked[1] && tally[ranked[1].id] === maxCount)){
-      commentary = '<span class="dice-ico">' + ICONS.dice + '</span> VAINQUEUR DU DUEL SUPRÊME !';
+    var commentaryHTML = '';
+    if(pct === 100){
+      commentaryHTML = '<div class="jb-commentary-badge unanimous-badge">' +
+        '<div class="jb-comm-title"><span class="crown-ico">' + ICONS.crown + '</span> UNANIMITÉ ABSOLUE !</div>' +
+        '<div class="jb-comm-sub">Tout le monde est d\'accord !</div>' +
+        '</div>';
+    } else if(pct >= 60){
+      commentaryHTML = '<div class="jb-commentary-badge">' +
+        '<div class="jb-comm-title"><span class="flame-ico">' + ICONS.flame + '</span> MAJORITÉ ÉCLATANTE !</div>' +
+        '<div class="jb-comm-sub">La majorité a parlé sans hésiter !</div>' +
+        '</div>';
+    } else if(g.winnerId || (maxCount > 1 && ranked[1] && tally[ranked[1].id] === maxCount)){
+      commentaryHTML = '<div class="jb-commentary-badge duel-badge">' +
+        '<div class="jb-comm-title"><span class="dice-ico">' + ICONS.dice + '</span> DUEL SUPRÊME !</div>' +
+        '<div class="jb-comm-sub">Vainqueur incontesté de l\'affrontement !</div>' +
+        '</div>';
+    } else {
+      commentaryHTML = '<div class="jb-commentary-badge">' +
+        '<div class="jb-comm-title"><span class="trophy-ico">' + ICONS.trophy + '</span> VERDICT DU GROUPE</div>' +
+        '<div class="jb-comm-sub">La décision est tombée !</div>' +
+        '</div>';
     }
 
     html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • Le Verdict Jackbox</div>';
@@ -2081,7 +2160,7 @@ function renderMostLikely(g){
     html += avatarHTML(top, 96);
     html += '<div style="font-size:1.6rem;font-weight:900;color:#fff;margin-top:12px;">' + escapeHtml(top.name) + '</div>';
     html += '<div style="font-size:1.1rem;font-weight:800;color:rgba(255,255,255,0.9);margin-top:4px;">' + maxCount + ' / ' + players.length + ' votes (' + pct + '%)</div>';
-    html += '<div class="jb-commentary">' + commentary + '</div>';
+    html += commentaryHTML;
     html += '</div>';
 
     ranked.forEach(function(p){
@@ -2305,11 +2384,33 @@ function revealRound(){
   }
   db.ref("rooms/" + roomCode + "/game").update({ phase: "reveal", revealStartMs: Date.now(), scored: true });
 }
+function awardEndGameBonusStars(){
+  if(!roomCode || !amHost) return;
+  var bonusCategories = [
+    { key: "rpsWins", pts: 150 },
+    { key: "mostLikelyTarget", pts: 150 },
+    { key: "correctGuesses", pts: 150 }
+  ];
+  bonusCategories.forEach(function(cat){
+    var catStats = sessionStats[cat.key] || {};
+    var bestUid = null, bestVal = 0;
+    Object.keys(catStats).forEach(function(uid){
+      if(catStats[uid] > bestVal){ bestVal = catStats[uid]; bestUid = uid; }
+    });
+    if(bestUid && bestVal > 0){
+      addPoints(bestUid, cat.pts);
+    }
+  });
+}
+
 function nextRound(){
   if(!roomCode || !amHost || !currentGame) return;
   if(countdownTicker){ clearInterval(countdownTicker); countdownTicker = null; }
   var next = (currentGame.round || 0) + 1;
-  if(next >= (currentGame.total || 1)){ db.ref("rooms/" + roomCode + "/game/phase").set("done"); }
+  if(next >= (currentGame.total || 1)){
+    awardEndGameBonusStars();
+    db.ref("rooms/" + roomCode + "/game/phase").set("done");
+  }
   else { db.ref("rooms/" + roomCode + "/game").update({ round: next, phase: "guess", votes: null, revealStartMs: null, scored: null }); }
 }
 
@@ -2370,53 +2471,7 @@ function renderGrandPrizeCeremony(g){
   }
   html += '</div>';
 
-  // ============ BONUS STAR AWARDS (Mario Party Style) ============
-  var bonusCategories = [
-    { key: "rpsWins", icon: ICONS.rock, title: "Ma\u00eetre du Duel", desc: "Le plus de manches RPS gagn\u00e9es", pts: 150 },
-    { key: "mostLikelyTarget", icon: ICONS.flame, title: "Cible Pr\u00e9f\u00e9r\u00e9e", desc: "Le plus souvent d\u00e9sign\u00e9 comme coupable", pts: 150 },
-    { key: "correctGuesses", icon: ICONS.idea, title: "Le Devin", desc: "Le plus de r\u00e9ponses correctes", pts: 150 }
-  ];
-
-  var anyBonuses = false;
-  var bonusHtml = '';
-  bonusCategories.forEach(function(cat, idx){
-    var catStats = sessionStats[cat.key] || {};
-    var bestUid = null, bestVal = 0;
-    Object.keys(catStats).forEach(function(uid){
-      if(catStats[uid] > bestVal){ bestVal = catStats[uid]; bestUid = uid; }
-    });
-    if(!bestUid || bestVal <= 0) return;
-    anyBonuses = true;
-    var awardee = getPlayer(bestUid) || { name: "???", id: bestUid, color: "#888" };
-    bonusHtml += '<div class="bonus-star-card" style="animation-delay:' + (idx * 0.3) + 's;">';
-    bonusHtml += '<div class="bonus-star-icon">' + ICONS.star + '</div>';
-    bonusHtml += '<div class="bonus-star-info">';
-    bonusHtml += '<div class="bonus-star-title">' + cat.icon + ' ' + cat.title + '</div>';
-    bonusHtml += '<div class="bonus-star-desc">' + cat.desc + '</div>';
-    bonusHtml += '</div>';
-    bonusHtml += '<div class="bonus-star-winner">';
-    bonusHtml += avatarHTML(awardee, 36);
-    bonusHtml += '<div style="font-weight:800;font-size:0.9rem;">' + escapeHtml(awardee.name) + '</div>';
-    bonusHtml += '<div style="font-weight:900;font-size:0.85rem;color:#10b981;">+' + cat.pts + ' pts</div>';
-    bonusHtml += '</div>';
-    bonusHtml += '</div>';
-    // Award bonus points (host only, once)
-    if(amHost && !g._bonusAwarded){
-      addPoints(bestUid, cat.pts);
-    }
-  });
-  if(amHost && !g._bonusAwarded){
-    g._bonusAwarded = true;
-  }
-
-  if(anyBonuses){
-    html += '<div style="margin-top:24px;">';
-    html += '<div class="groundhdr">' + ICONS.star + ' BONUS STARS</div>';
-    html += bonusHtml;
-    html += '</div>';
-  }
-
-  html += '<div style="font-size:1.05rem;font-weight:800;margin:20px 0 12px;">CLASSEMENT G\u00c9N\u00c9RAL</div>';
+  html += '<div style="font-size:1.05rem;font-weight:800;margin:20px 0 12px;">CLASSEMENT GÉNÉRAL</div>';
   sorted.forEach(function(p, i){
     html += '<div class="sboard-row">';
     html += '<div class="sboard-rank">#' + (i+1) + '</div>';
@@ -2525,10 +2580,49 @@ function renderWhoPosted(g){
 }
 
 function renderMiniGameDoneHTML(){
-  var html = '<div class="groundhdr">MINI-JEU TERMINÉ !</div>';
+  var html = '<div class="groundhdr">FIN DU JEU !</div>';
   html += '<div style="text-align:center;margin:20px 0;">';
-  html += '<div style="font-size:1.3rem;font-weight:900;color:#fff;margin-bottom:18px;">🔥 Bravo à tous les participants !</div>';
+  html += '<div style="font-size:1.3rem;font-weight:900;color:#fff;margin-bottom:14px;">🔥 Bravo à tous les participants !</div>';
   
+  // ============ MARIO PARTY BONUS STARS (FIN DU JEU) ============
+  var bonusCategories = [
+    { key: "rpsWins", icon: ICONS.rock, title: "Maître du Duel", desc: "Le plus de manches RPS gagnées", pts: 150 },
+    { key: "mostLikelyTarget", icon: ICONS.flame, title: "Cible Préférée", desc: "Le plus souvent désigné comme coupable", pts: 150 },
+    { key: "correctGuesses", icon: ICONS.idea, title: "Le Devin", desc: "Le plus de réponses correctes", pts: 150 }
+  ];
+
+  var anyBonuses = false;
+  var bonusHtml = '';
+  bonusCategories.forEach(function(cat, idx){
+    var catStats = sessionStats[cat.key] || {};
+    var bestUid = null, bestVal = 0;
+    Object.keys(catStats).forEach(function(uid){
+      if(catStats[uid] > bestVal){ bestVal = catStats[uid]; bestUid = uid; }
+    });
+    if(!bestUid || bestVal <= 0) return;
+    anyBonuses = true;
+    var awardee = getPlayer(bestUid) || { name: "???", id: bestUid, color: "#888" };
+    bonusHtml += '<div class="bonus-star-card" style="animation-delay:' + (idx * 0.2) + 's;">';
+    bonusHtml += '<div class="bonus-star-icon">' + ICONS.star + '</div>';
+    bonusHtml += '<div class="bonus-star-info">';
+    bonusHtml += '<div class="bonus-star-title">' + cat.icon + ' ' + cat.title + '</div>';
+    bonusHtml += '<div class="bonus-star-desc">' + cat.desc + '</div>';
+    bonusHtml += '</div>';
+    bonusHtml += '<div class="bonus-star-winner">';
+    bonusHtml += avatarHTML(awardee, 36);
+    bonusHtml += '<div style="font-weight:800;font-size:0.9rem;color:#fff;">' + escapeHtml(awardee.name) + '</div>';
+    bonusHtml += '<div style="font-weight:900;font-size:0.85rem;color:#10b981;">+' + cat.pts + ' pts</div>';
+    bonusHtml += '</div>';
+    bonusHtml += '</div>';
+  });
+
+  if(anyBonuses){
+    html += '<div style="margin:16px 0 24px 0;">';
+    html += '<div class="groundhdr">' + ICONS.star + ' BONUS STARS DE LA MANCHE</div>';
+    html += bonusHtml;
+    html += '</div>';
+  }
+
   html += '<div style="display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin:20px 0;">';
   players.forEach(function(p){
     html += '<div style="display:flex;flex-direction:column;align-items:center;background:rgba(255,255,255,0.06);padding:12px 16px;border-radius:14px;min-width:90px;">';
