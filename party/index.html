@@ -983,7 +983,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.23</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.25</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -1194,55 +1194,28 @@ function sfxExplode(){
   setTimeout(function(){ playTone(45, "sine", 0.2, 0.05); }, 40);
 }
 
-var PLAYLISTS = {
-  lobby: [
-    "https://archive.org/download/eiffel-65-blue-da-ba-dee_202212/Eiffel%2065%20-%20Blue%20%28Da%20Ba%20Dee%29%20.mp3",
-    "https://archive.org/download/we_like_to_party/VengaBoysWeLikeTheParty.mp3",
-    "https://archive.org/download/tvtunes_4691/The%20Fresh%20Prince%20of%20Bel-Air.mp3"
-  ],
-  voting: [
-    "https://archive.org/download/eiffel-65-blue-da-ba-dee_202212/Eiffel%2065%20-%20Blue%20%28Da%20Ba%20Dee%29%20.mp3",
-    "https://archive.org/download/we_like_to_party/VengaBoysWeLikeTheParty.mp3"
-  ],
-  mostlikely: [
-    "https://archive.org/download/bustin-bustin-buuuustiiiin-by-lordmau5/Bustin%20Bustin%20Buuuustiiiin.mp3",
-    "https://archive.org/download/tvtunes_22626/Pokemon%20-%20Dance%20Mix.mp3",
-    "https://archive.org/download/tvtunes_4335/Mortal%20Kombat.mp3"
-  ],
-  whoposted: [
-    "https://archive.org/download/tvtunes_26023/Simpsons%20-%20The%20Doh%20Song%20-%20Techno%20Remix.mp3",
-    "https://archive.org/download/tvtunes_20474/Bob%20the%20Builder%20-%20Mambo%20No.%205.mp3",
-    "https://archive.org/download/tvtunes_11539/Looney%20Tunes.mp3"
-  ],
-  guessrating: [
-    "https://archive.org/download/tvtunes_22804/Who%20Wants%20to%20Be%20a%20Millionaire%20-%20Music%20-%2032000W.mp3",
-    "https://archive.org/download/tvtunes_31119/The%20Price%20Is%20Right%20-%20Grand%20Game%20Cue%20%28Family%20Feud%20Theme%29.mp3",
-    "https://archive.org/download/tvtunes_26926/Legends%20of%20the%20Hidden%20Temple.mp3"
-  ],
-  knowplayer: [
-    "https://archive.org/download/tvtunes_29828/Jeopardy%20-%202001%20-%202008.mp3",
-    "https://archive.org/download/tvtunes_262/Futurama.mp3",
-    "https://archive.org/download/tvtunes_66/Baywatch.mp3"
-  ],
-  roast: [
-    "https://archive.org/download/tvtunes_154/Curb%20Your%20Enthusiasm.mp3",
-    "https://archive.org/download/tvtunes_2225/Seinfeld%20-%20Ending.mp3",
-    "https://archive.org/download/tvtunes_254/Frasier.mp3"
-  ],
-  whosaid: [
-    "https://archive.org/download/tvtunes_9238/Mission%20Impossible%20-%201988.mp3",
-    "https://archive.org/download/tvtunes_347/Inspector%20Gadget.mp3",
-    "https://archive.org/download/tvtunes_4619/James%20Bond.mp3"
-  ],
-  twotruths: [
-    "https://archive.org/download/tvtunes_713/The%20Match%20Game%20-%201973.mp3",
-    "https://archive.org/download/tvtunes_2680/Goosebumps.mp3",
-    "https://archive.org/download/tvtunes_380/Knight%20Rider.mp3"
-  ]
-};
-
 /* 30-SONG NOSTALGIA VAULT (AGES 25-30 & GAMER SOUNDTRACKS - 100% UNIQUE, NO DUPLICATES) */
-var NOSTALGIA_VAULT = [
+// ONE MIXED POOL - no per-mode categories. Every track can play in any
+// screen or game mode; the order is reshuffled on every pick.
+var MUSIC_POOL = [
+  "https://archive.org/download/eiffel-65-blue-da-ba-dee_202212/Eiffel%2065%20-%20Blue%20%28Da%20Ba%20Dee%29%20.mp3", // Eiffel 65 - Blue (Da Ba Dee)
+  "https://archive.org/download/we_like_to_party/VengaBoysWeLikeTheParty.mp3", // VengaBoysWeLikeTheParty
+  "https://archive.org/download/tvtunes_4691/The%20Fresh%20Prince%20of%20Bel-Air.mp3", // The Fresh Prince of Bel-Air
+  "https://archive.org/download/bustin-bustin-buuuustiiiin-by-lordmau5/Bustin%20Bustin%20Buuuustiiiin.mp3", // Bustin Bustin Buuuustiiiin
+  "https://archive.org/download/tvtunes_22626/Pokemon%20-%20Dance%20Mix.mp3", // Pokemon - Dance Mix
+  "https://archive.org/download/tvtunes_4335/Mortal%20Kombat.mp3", // Mortal Kombat
+  "https://archive.org/download/tvtunes_26023/Simpsons%20-%20The%20Doh%20Song%20-%20Techno%20Remix.mp3", // Simpsons - The Doh Song - Techno Remix
+  "https://archive.org/download/tvtunes_11539/Looney%20Tunes.mp3", // Looney Tunes
+  "https://archive.org/download/tvtunes_262/Futurama.mp3", // Futurama
+  "https://archive.org/download/tvtunes_66/Baywatch.mp3", // Baywatch
+  "https://archive.org/download/tvtunes_154/Curb%20Your%20Enthusiasm.mp3", // Curb Your Enthusiasm
+  "https://archive.org/download/tvtunes_2225/Seinfeld%20-%20Ending.mp3", // Seinfeld - Ending
+  "https://archive.org/download/tvtunes_254/Frasier.mp3", // Frasier
+  "https://archive.org/download/tvtunes_9238/Mission%20Impossible%20-%201988.mp3", // Mission Impossible - 1988
+  "https://archive.org/download/tvtunes_347/Inspector%20Gadget.mp3", // Inspector Gadget
+  "https://archive.org/download/tvtunes_4619/James%20Bond.mp3", // James Bond
+  "https://archive.org/download/tvtunes_2680/Goosebumps.mp3", // Goosebumps
+  "https://archive.org/download/tvtunes_380/Knight%20Rider.mp3", // Knight Rider
   "https://archive.org/download/tvtunes_11560/Spongebob%20Squarepants.mp3", // Spongebob Squarepants
   "https://archive.org/download/tvtunes_1847/Recess.mp3", // Recess
   "https://archive.org/download/tvtunes_857/Digimon.mp3", // Digimon
@@ -1257,7 +1230,6 @@ var NOSTALGIA_VAULT = [
   "https://archive.org/download/tvtunes_2016/Thats%20So%20Raven.mp3", // Thats So Raven
   "https://archive.org/download/tvtunes_1409/Samurai%20Jack.mp3", // Samurai Jack
   "https://archive.org/download/tvtunes_6673/Total%20Drama%20Island.mp3", // Total Drama Island
-  "https://archive.org/download/tvtunes_2970/Double%20Dare.mp3", // Double Dare
   "https://archive.org/download/tvtunes_195/Duck%20Tales.mp3", // Duck Tales
   "https://archive.org/download/tvtunes_42/Animaniacs.mp3", // Animaniacs
   "https://archive.org/download/tvtunes_503/Pinky%20and%20the%20Brain.mp3", // Pinky and the Brain
@@ -1265,17 +1237,18 @@ var NOSTALGIA_VAULT = [
   "https://archive.org/download/tvtunes_25326/CatDog.mp3", // CatDog
   "https://archive.org/download/tvtunes_190/Doug.mp3", // Doug
   "https://archive.org/download/tvtunes_1111/Clarissa%20Explains%20It%20All.mp3", // Clarissa Explains It All
-  "https://archive.org/download/tvtunes_2582/Arthur.mp3", // Arthur
   "https://archive.org/download/tvtunes_4780/The%20Simpsons.mp3", // The Simpsons
   "https://archive.org/download/tvtunes_22407/Family%20Guy.mp3", // Family Guy
-  "https://archive.org/download/tvtunes_11525/Fresh%20Prince%20of%20Belair.mp3", // Fresh Prince of Belair
   "https://archive.org/download/tvtunes_258/Full%20House.mp3", // Full House
   "https://archive.org/download/tvtunes_2425/Saved%20by%20the%20Bell.mp3", // Saved by the Bell
   "https://archive.org/download/tvtunes_326/Home%20Improvement.mp3", // Home Improvement
   "https://archive.org/download/tvtunes_31736/Friends.mp3", // Friends
+  "https://archive.org/download/gachimuchi-archive/004%20-%20Sia%20-%20Chandelier%20(Alternative%E2%99%82Version).mp3", // Sia - Chandelier (Alternative Gachi Version)
 ];
 
 var currentTrackType = null;
+var _musicBusy = false;   // guards against two start attempts racing on one <audio>
+var _skipLockUntil = 0;   // debounce for the skip button
 var bgTrackEl = null;
 var fadeInterval = null;
 
@@ -1288,9 +1261,7 @@ function getBgTrack(){
       // it survives every src swap - it used to be re-bound inside playGameMusic,
       // which skips the assignment whenever that function early-returns.
       bgTrackEl.onended = function(){
-        var useNostalgia = (NOSTALGIA_VAULT.length > 0) && (Math.random() < 0.5);
-        var pool = useNostalgia ? NOSTALGIA_VAULT : (PLAYLISTS[currentTrackType] || PLAYLISTS.lobby);
-        playFromPool(pool, (bgTrackEl.src || "").trim(), 700);
+        playFromPool(MUSIC_POOL, (bgTrackEl.src || "").trim(), 700);
       };
     }
   }
@@ -1340,10 +1311,14 @@ function playFromPool(list, avoidSrc, fadeMs){
 
   var maxTries = Math.min(pool.length, 6);
   var i = 0;
+  _musicBusy = true;
+
+  function done(){ _musicBusy = false; track.onerror = null; }
 
   function attempt(){
     if(i >= maxTries){
       console.warn("[music] no playable track found after " + maxTries + " tries");
+      done();
       return;
     }
     var url = pool[i++];
@@ -1360,44 +1335,35 @@ function playFromPool(list, avoidSrc, fadeMs){
     track.src = url;
     track.load();
     track.volume = 0;
-    if(!audioEnabled) return;
+    if(!audioEnabled){ done(); return; }
 
     track.play().then(function(){
       moved = true;                  // committed to this one
-      track.onerror = null;
+      done();
       fadeTrackVolume(MAX_MUSIC_VOLUME, fadeMs || 700);
     }).catch(function(e){
       // Autoplay block is not the URL's fault - retrying other URLs won't help.
-      if(e && e.name === "NotAllowedError"){ moved = true; track.onerror = null; return; }
+      if(e && e.name === "NotAllowedError"){ moved = true; done(); return; }
       next(e && e.name ? e.name : "play failed");
     });
   }
   attempt();
 }
 
+// With a single shared pool there is nothing to switch to when the screen or game mode
+// changes, so this no longer cuts the song off - it only starts music when none is
+// playing. Tracks change when one finishes or the player hits skip.
 function playGameMusic(type){
-  if(!type) type = "lobby";
-  var list = PLAYLISTS[type] || PLAYLISTS.lobby;
-  
-  if((type === "lobby" || type === "voting") && (currentTrackType === "lobby" || currentTrackType === "voting") && bgTrackEl && !bgTrackEl.paused){
-    return;
-  }
-  if(currentTrackType === type && bgTrackEl && !bgTrackEl.paused){ return; }
-  currentTrackType = type;
-  
+  if(type) currentTrackType = type;
   var track = getBgTrack();
   if(!track) return;
-  
-  var curSrc = (track.src || "").trim();
-  if(audioEnabled && !track.paused){
-    fadeTrackVolume(0, 500, function(){ playFromPool(list, curSrc, 700); });
-  } else {
-    playFromPool(list, curSrc, 700);
-  }
+  if(_musicBusy) return;                       // a start attempt is already in flight
+  if(track.src && !track.paused) return;       // already playing - leave it alone
+  playFromPool(MUSIC_POOL, (track.src || "").trim(), 700);
 }
 
 function startBgMusic(){
-  playGameMusic(currentTrackType || "lobby");
+  playGameMusic();
 }
 
 function updateAudioIcon(){
@@ -1415,7 +1381,14 @@ function toggleAudio(){
   var track = getBgTrack();
   if(audioEnabled){
     initAudio();
-    playGameMusic(currentTrackType || "lobby");
+    // Resume the same song where it left off instead of jumping to a random new one.
+    if(track && track.src){
+      track.play().then(function(){
+        fadeTrackVolume(MAX_MUSIC_VOLUME, 500);
+      }).catch(function(){ playGameMusic(); });
+    } else {
+      playGameMusic();
+    }
   } else {
     if(track){
       fadeTrackVolume(0, 500, function(){
@@ -1426,16 +1399,18 @@ function toggleAudio(){
 }
 
 function skipBgTrack(){
-  sfxVote();
   var track = getBgTrack();
   if(!track) return;
-  
-  var useNostalgia = (typeof NOSTALGIA_VAULT !== "undefined" && NOSTALGIA_VAULT.length > 0) && (Math.random() < 0.5);
-  var pool = useNostalgia ? NOSTALGIA_VAULT : (PLAYLISTS[currentTrackType] || PLAYLISTS.lobby);
-  var cur = (track.src || "").trim();
+  // Spam-clicking used to stack overlapping fades and src swaps, which played a
+  // half-second burst of each track in turn. One skip at a time.
+  var now = Date.now();
+  if(now < _skipLockUntil || _musicBusy) return;
+  _skipLockUntil = now + 700;
 
-  fadeTrackVolume(0, 300, function(){ playFromPool(pool, cur, 500); });
-  
+  sfxVote();
+  var cur = (track.src || "").trim();
+  fadeTrackVolume(0, 300, function(){ playFromPool(MUSIC_POOL, cur, 500); });
+
   if(typeof showToast === "function"){
     showToast("🎵 Chanson suivante !");
   }
