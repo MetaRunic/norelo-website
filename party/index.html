@@ -53,33 +53,34 @@
   @media(min-width:600px){
     #dvdLogo{ width:90px; height:45px; }
   }
-  body.in-game #dvdLogo{ display:none !important; }  /* Compact Floating Audio & Theme Controls */
+  /* Compact Floating Audio & Theme Controls */
   #audioControls{
     position:fixed; top:12px; right:14px; z-index:100;
-    display:flex; flex-direction:column; gap:8px; align-items:center;
+    display:flex; flex-direction:column; gap:10px; align-items:center;
   }
+  #audioControls button {
+    width: 42px; height: 42px; border-radius: 50%;
+    margin: 0; padding: 0; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; position: relative;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+    transition: transform .12s, border-color .2s, background-color .2s;
+  }
+  #audioControls button:active { transform: scale(.92); }
+
   #audioToggle, #skipTrackBtn{
-    width: 40px; height: 40px; border-radius: 50%;
     background:var(--panel); border:1.5px solid var(--bdr);
     backdrop-filter:blur(12px); color:var(--txt); font-size:1.1rem;
-    cursor:pointer; display:flex; align-items:center; justify-content:center;
-    box-shadow:0 4px 16px rgba(0,0,0,0.35); transition:transform .12s, border-color .2s, background-color .2s;
   }
-  #audioToggle:active, #skipTrackBtn:active{transform:scale(.92);}
   #skipTrackBtn:hover{background:var(--panel2); border-color:var(--bl);}
 
   #themeToggleBtn{
-    width: 40px; height: 40px; border-radius: 50%;
     background: linear-gradient(135deg, rgba(239, 68, 68, 0.85), rgba(245, 158, 11, 0.85), rgba(16, 185, 129, 0.85), rgba(59, 130, 246, 0.85), rgba(168, 85, 247, 0.85));
     background-size: 300% 300%;
     animation: rainbowGlow 4s linear infinite;
     border: 1.5px solid rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(12px); color: #fff; font-size: 1.1rem;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-    transition: transform .12s, border-color .2s;
   }
-  #themeToggleBtn:active{ transform: scale(.92); }
 
   @keyframes rainbowGlow {
     0% { background-position: 0% 50%; box-shadow: 0 0 15px rgba(239, 68, 68, 0.6); }
@@ -895,7 +896,7 @@
 
   /* DISCRETE FLOATING GAMEPLAY ROOM CODE BADGE */
   .discrete-code-badge {
-    position: fixed; top: 16px; left: 16px; z-index: 45;
+    position: absolute; top: 0px; left: 0px; z-index: 45;
     background: var(--panel); backdrop-filter: blur(10px);
     border: 1.5px solid var(--bdr); border-radius: 12px;
     padding: 6px 12px; display: flex; align-items: center; gap: 6px;
@@ -1197,7 +1198,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.38</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.39</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
