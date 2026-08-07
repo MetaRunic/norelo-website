@@ -671,6 +671,12 @@
     filter: brightness(0) drop-shadow(0 0 16px rgba(250, 204, 21, 0.95)) !important;
     animation: silhouettePulse 0.8s ease-in-out infinite alternate;
   }
+  .pokemon-silhouette .crown,
+  .pokemon-silhouette .avatar-crown,
+  .pokemon-silhouette .crown-ico,
+  .pokemon-silhouette svg {
+    display: none !important;
+  }
   @keyframes silhouettePulse {
     0% { transform: scale(0.96); filter: brightness(0) drop-shadow(0 0 10px rgba(250, 204, 21, 0.6)) !important; }
     100% { transform: scale(1.08); filter: brightness(0) drop-shadow(0 0 28px rgba(250, 204, 21, 1)) !important; }
@@ -768,7 +774,7 @@
       <h1>Party</h1>
       <p>Le party commence sur ton téléphone.<br>Crée une partie, invite ta gang, jouez ensemble.</p>
     </div>
-    <button class="btn pri" onclick="sfxBugle(); go('join');">
+    <button class="btn pri" onclick="sfxVote(); go('join');">
       <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-2-2l2 2m2 0l-5 5a5 5 0 1 1-7.07 7.07A5 5 0 0 1 12 11l9-9z"/><circle cx="7.5" cy="16.5" r="1.5"/></svg>
       Rejoindre une partie
     </button>
@@ -807,7 +813,7 @@
     <p class="hint">Entre le code que l'hôte t'a donné.</p>
     <input class="fld code-in" id="codeIn" maxlength="4" placeholder="CODE" autocomplete="off" inputmode="latin" autocapitalize="characters">
     <div style="margin-top:26px;">
-      <button class="btn pri" id="joinBtn" onclick="sfxBugle(); doJoin();" disabled>Rejoindre</button>
+      <button class="btn pri" id="joinBtn" onclick="sfxVote(); doJoin();" disabled>Rejoindre</button>
       <button class="btn ghost" onclick="show('s-profile');">Retour</button>
     </div>
   </section>
@@ -887,7 +893,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.8</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.9</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -984,9 +990,42 @@ function sfxPoints(){
   setTimeout(function(){ playTone(1318.51, "sine", 0.22, 0.18); }, 80);
 }
 
-function sfxDrumroll(){
-  for(var i=0; i<5; i++){
-    setTimeout(function(){ playTone(120 + Math.random()*30, "sine", 0.05, 0.04); }, i * 70);
+var _drumrollTimer = null;
+function startDrumroll(durationSec){
+  stopDrumroll();
+  initAudio();
+  if(!audioCtx) return;
+  var totalMs = (durationSec || 3.5) * 1000;
+  var intervalMs = 70;
+  var steps = Math.floor(totalMs / intervalMs);
+  var currentStep = 0;
+  _drumrollTimer = setInterval(function(){
+    currentStep++;
+    if(currentStep >= steps){
+      stopDrumroll();
+      return;
+    }
+    var freq = 100 + (currentStep % 4) * 22 + Math.random() * 15;
+    var vol = 0.03 + (currentStep / steps) * 0.07;
+    try {
+      var osc = audioCtx.createOscillator();
+      var gain = audioCtx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.06);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.06);
+    } catch(e){}
+  }, intervalMs);
+}
+
+function stopDrumroll(){
+  if(_drumrollTimer){
+    clearInterval(_drumrollTimer);
+    _drumrollTimer = null;
   }
 }
 
@@ -1638,13 +1677,13 @@ function renderPlayers(){
   var n = players.length;
   $("pcount").textContent = n + (n===1 ? " joueur" : " joueurs");
 }
-function avatarHTML(p, size){
-  var crown = p.host ? '<span class="crown">' + ICONS.crown + '</span>' : '';
+function avatarHTML(p, size, hideCrown){
+  var crown = (p.host && !hideCrown) ? '<span class="crown">' + ICONS.crown + '</span>' : '';
   var base = 'width:' + size + 'px;height:' + size + 'px;font-size:' + Math.round(size*0.4) + 'px;position:relative;';
   if(p.photo){
     return '<div class="avatar" style="' + base + 'background:#0d1636;background-image:url(\'' + p.photo + '\');background-size:cover;background-position:center;border:2px solid ' + p.color + ';">' + crown + '</div>';
   }
-  return '<div class="avatar" style="' + base + 'background:' + p.color + ';">' + initials(p.name) + crown + '</div>';
+  return '<div class="avatar" style="' + base + 'background:' + p.color + ';">' + (hideCrown ? '' : initials(p.name)) + crown + '</div>';
 }
 
 function startLiveCountdown(revealStartMs, durationSec, onEnd){
@@ -2838,12 +2877,13 @@ function renderMiniGameDoneHTML(){
     if(_lastRevealStep !== stepKey){
       _lastRevealStep = stepKey;
       if(isRevealed){
+        stopDrumroll();
         sfxWin();
         sfxStar();
         sfxPoints();
         if(window.triggerExplosion) window.triggerExplosion(window.innerWidth/2, 220, true, "#f59e0b");
       } else {
-        sfxDrumroll();
+        startDrumroll(3.5);
       }
     }
 
@@ -2857,7 +2897,7 @@ function renderMiniGameDoneHTML(){
     if(!isRevealed){
       // SUSPENSE PHASE (SHAKING CARD + SILHOUETTE + QUESTION MARK)
       html += '<div class="pokemon-avatar-wrapper pokemon-silhouette">';
-      html += avatarHTML(activeItem.awardee, 96);
+      html += avatarHTML(activeItem.awardee, 96, true);
       html += '<div class="pokemon-question-mark">❓</div>';
       html += '</div>';
       html += '<div style="font-size:1.1rem;font-weight:900;color:#fef08a;margin-top:10px;">QUI A GAGNÉ CETTE STAR ?</div>';
