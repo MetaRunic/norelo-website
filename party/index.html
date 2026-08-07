@@ -875,7 +875,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.4</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.5</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -1897,6 +1897,7 @@ function launchSelectedGame(type){
 }
 
 function renderGame(g){
+  if(!g) g = currentGame;
   var area = $("gameArea");
   if(!g || !g.type){
     playGameMusic("lobby");
@@ -2784,7 +2785,7 @@ function renderMiniGameDoneHTML(){
   if(!isShowComplete && awards.length > 0){
     // Auto re-render tick loop for smooth transitions
     setTimeout(function(){
-      if(currentScreen === "s-game") renderGame();
+      if(currentScreen === "s-game") renderGame(currentGame);
     }, 400);
 
     var currentAwardIdx = Math.min(awards.length - 1, Math.floor(elapsedSec / 4));
