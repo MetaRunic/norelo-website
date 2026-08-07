@@ -55,6 +55,21 @@
   #audioToggle:active, #skipTrackBtn:active{transform:scale(.92);}
   #skipTrackBtn:hover{background:rgba(30,58,138,0.9); border-color:var(--amber);}
 
+  /* Subtle now-playing badge, bottom-left. Deliberately quiet: it should be findable
+     when you wonder "what is this song" and ignorable the rest of the time. */
+  #nowPlaying{
+    position:fixed; left:12px; bottom:12px; z-index:100;
+    max-width:min(58vw, 260px); padding:5px 10px; border-radius:10px;
+    background:rgba(13,22,54,0.72); border:1px solid rgba(255,255,255,0.12);
+    backdrop-filter:blur(10px);
+    font-size:.66rem; font-weight:700; letter-spacing:.03em; color:#93a4c8;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    opacity:0; transform:translateY(6px); pointer-events:none;
+    transition:opacity .45s ease, transform .45s ease;
+  }
+  #nowPlaying.show{ opacity:1; transform:translateY(0); }
+  #nowPlaying .np-ico{ color:var(--amber); margin-right:5px; }
+
   .wrap{
     flex:1; width:100%; max-width:480px; margin:0 auto;
     padding:54px 22px calc(28px + env(safe-area-inset-bottom));
@@ -897,6 +912,7 @@
     <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
   </button>
 </div>
+<div id="nowPlaying" aria-live="polite"></div>
 
 <div class="wrap">
 
@@ -1025,7 +1041,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.32</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.33</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -1239,53 +1255,99 @@ function sfxExplode(){
 /* 30-SONG NOSTALGIA VAULT (AGES 25-30 & GAMER SOUNDTRACKS - 100% UNIQUE, NO DUPLICATES) */
 // ONE MIXED POOL - no per-mode categories. Every track can play in any
 // screen or game mode; the order is reshuffled on every pick.
+/* ONE MIXED POOL - no per-mode categories. Every track can play on any screen or in
+   any game mode. Each entry carries a title so the now-playing badge can name it.
+   43 of these are game soundtracks. */
 var MUSIC_POOL = [
-  "https://archive.org/download/eiffel-65-blue-da-ba-dee_202212/Eiffel%2065%20-%20Blue%20%28Da%20Ba%20Dee%29%20.mp3", // Eiffel 65 - Blue (Da Ba Dee)
-  "https://archive.org/download/we_like_to_party/VengaBoysWeLikeTheParty.mp3", // VengaBoysWeLikeTheParty
-  "https://archive.org/download/tvtunes_4691/The%20Fresh%20Prince%20of%20Bel-Air.mp3", // The Fresh Prince of Bel-Air
-  "https://archive.org/download/bustin-bustin-buuuustiiiin-by-lordmau5/Bustin%20Bustin%20Buuuustiiiin.mp3", // Bustin Bustin Buuuustiiiin
-  "https://archive.org/download/tvtunes_22626/Pokemon%20-%20Dance%20Mix.mp3", // Pokemon - Dance Mix
-  "https://archive.org/download/tvtunes_4335/Mortal%20Kombat.mp3", // Mortal Kombat
-  "https://archive.org/download/tvtunes_26023/Simpsons%20-%20The%20Doh%20Song%20-%20Techno%20Remix.mp3", // Simpsons - The Doh Song - Techno Remix
-  "https://archive.org/download/tvtunes_11539/Looney%20Tunes.mp3", // Looney Tunes
-  "https://archive.org/download/tvtunes_262/Futurama.mp3", // Futurama
-  "https://archive.org/download/tvtunes_66/Baywatch.mp3", // Baywatch
-  "https://archive.org/download/tvtunes_154/Curb%20Your%20Enthusiasm.mp3", // Curb Your Enthusiasm
-  "https://archive.org/download/tvtunes_2225/Seinfeld%20-%20Ending.mp3", // Seinfeld - Ending
-  "https://archive.org/download/tvtunes_254/Frasier.mp3", // Frasier
-  "https://archive.org/download/tvtunes_9238/Mission%20Impossible%20-%201988.mp3", // Mission Impossible - 1988
-  "https://archive.org/download/tvtunes_347/Inspector%20Gadget.mp3", // Inspector Gadget
-  "https://archive.org/download/tvtunes_4619/James%20Bond.mp3", // James Bond
-  "https://archive.org/download/tvtunes_2680/Goosebumps.mp3", // Goosebumps
-  "https://archive.org/download/tvtunes_380/Knight%20Rider.mp3", // Knight Rider
-  "https://archive.org/download/tvtunes_11560/Spongebob%20Squarepants.mp3", // Spongebob Squarepants
-  "https://archive.org/download/tvtunes_1847/Recess.mp3", // Recess
-  "https://archive.org/download/tvtunes_857/Digimon.mp3", // Digimon
-  "https://archive.org/download/tvtunes_2490/Yu-Gi-Oh.mp3", // Yu-Gi-Oh
-  "https://archive.org/download/tvtunes_624/Teenage%20Mutant%20Ninja%20Turtles.mp3", // Teenage Mutant Ninja Turtles
-  "https://archive.org/download/tvtunes_11549/Pokemon.mp3", // Pokemon
-  "https://archive.org/download/tvtunes_11735/Super%20Smash%20Bros%20Melee.mp3", // Super Smash Bros Melee
-  "https://archive.org/download/tvtunes_7910/Kim%20Possible.mp3", // Kim Possible
-  "https://archive.org/download/tvtunes_4930/Phineas%20and%20Ferb.mp3", // Phineas and Ferb
-  "https://archive.org/download/tvtunes_4010/iCarly.mp3", // iCarly
-  "https://archive.org/download/tvtunes_861/Drake%20and%20Josh.mp3", // Drake and Josh
-  "https://archive.org/download/tvtunes_2016/Thats%20So%20Raven.mp3", // Thats So Raven
-  "https://archive.org/download/tvtunes_1409/Samurai%20Jack.mp3", // Samurai Jack
-  "https://archive.org/download/tvtunes_6673/Total%20Drama%20Island.mp3", // Total Drama Island
-  "https://archive.org/download/tvtunes_195/Duck%20Tales.mp3", // Duck Tales
-  "https://archive.org/download/tvtunes_42/Animaniacs.mp3", // Animaniacs
-  "https://archive.org/download/tvtunes_503/Pinky%20and%20the%20Brain.mp3", // Pinky and the Brain
-  "https://archive.org/download/tvtunes_3568/The%20Wild%20Thornberrys.mp3", // The Wild Thornberrys
-  "https://archive.org/download/tvtunes_25326/CatDog.mp3", // CatDog
-  "https://archive.org/download/tvtunes_190/Doug.mp3", // Doug
-  "https://archive.org/download/tvtunes_1111/Clarissa%20Explains%20It%20All.mp3", // Clarissa Explains It All
-  "https://archive.org/download/tvtunes_4780/The%20Simpsons.mp3", // The Simpsons
-  "https://archive.org/download/tvtunes_22407/Family%20Guy.mp3", // Family Guy
-  "https://archive.org/download/tvtunes_258/Full%20House.mp3", // Full House
-  "https://archive.org/download/tvtunes_2425/Saved%20by%20the%20Bell.mp3", // Saved by the Bell
-  "https://archive.org/download/tvtunes_326/Home%20Improvement.mp3", // Home Improvement
-  "https://archive.org/download/tvtunes_31736/Friends.mp3", // Friends
-  "https://archive.org/download/gachimuchi-archive/004%20-%20Sia%20-%20Chandelier%20(Alternative%E2%99%82Version).mp3", // Sia - Chandelier (Alternative Gachi Version)
+  { u: "https://archive.org/download/eiffel-65-blue-da-ba-dee_202212/Eiffel%2065%20-%20Blue%20%28Da%20Ba%20Dee%29%20.mp3", t: "Eiffel 65 - Blue (Da Ba Dee)" },
+  { u: "https://archive.org/download/we_like_to_party/VengaBoysWeLikeTheParty.mp3", t: "VengaBoysWeLikeTheParty" },
+  { u: "https://archive.org/download/tvtunes_4691/The%20Fresh%20Prince%20of%20Bel-Air.mp3", t: "The Fresh Prince of Bel-Air" },
+  { u: "https://archive.org/download/bustin-bustin-buuuustiiiin-by-lordmau5/Bustin%20Bustin%20Buuuustiiiin.mp3", t: "Bustin Bustin Buuuustiiiin" },
+  { u: "https://archive.org/download/tvtunes_22626/Pokemon%20-%20Dance%20Mix.mp3", t: "Pokemon - Dance Mix" },
+  { u: "https://archive.org/download/tvtunes_4335/Mortal%20Kombat.mp3", t: "Mortal Kombat" },
+  { u: "https://archive.org/download/tvtunes_26023/Simpsons%20-%20The%20Doh%20Song%20-%20Techno%20Remix.mp3", t: "Simpsons - The Doh Song - Techno Remix" },
+  { u: "https://archive.org/download/tvtunes_11539/Looney%20Tunes.mp3", t: "Looney Tunes" },
+  { u: "https://archive.org/download/tvtunes_262/Futurama.mp3", t: "Futurama" },
+  { u: "https://archive.org/download/tvtunes_66/Baywatch.mp3", t: "Baywatch" },
+  { u: "https://archive.org/download/tvtunes_154/Curb%20Your%20Enthusiasm.mp3", t: "Curb Your Enthusiasm" },
+  { u: "https://archive.org/download/tvtunes_2225/Seinfeld%20-%20Ending.mp3", t: "Seinfeld - Ending" },
+  { u: "https://archive.org/download/tvtunes_254/Frasier.mp3", t: "Frasier" },
+  { u: "https://archive.org/download/tvtunes_9238/Mission%20Impossible%20-%201988.mp3", t: "Mission Impossible - 1988" },
+  { u: "https://archive.org/download/tvtunes_347/Inspector%20Gadget.mp3", t: "Inspector Gadget" },
+  { u: "https://archive.org/download/tvtunes_4619/James%20Bond.mp3", t: "James Bond" },
+  { u: "https://archive.org/download/tvtunes_2680/Goosebumps.mp3", t: "Goosebumps" },
+  { u: "https://archive.org/download/tvtunes_380/Knight%20Rider.mp3", t: "Knight Rider" },
+  { u: "https://archive.org/download/tvtunes_11560/Spongebob%20Squarepants.mp3", t: "Spongebob Squarepants" },
+  { u: "https://archive.org/download/tvtunes_1847/Recess.mp3", t: "Recess" },
+  { u: "https://archive.org/download/tvtunes_857/Digimon.mp3", t: "Digimon" },
+  { u: "https://archive.org/download/tvtunes_2490/Yu-Gi-Oh.mp3", t: "Yu-Gi-Oh" },
+  { u: "https://archive.org/download/tvtunes_624/Teenage%20Mutant%20Ninja%20Turtles.mp3", t: "Teenage Mutant Ninja Turtles" },
+  { u: "https://archive.org/download/tvtunes_11549/Pokemon.mp3", t: "Pokemon" },
+  { u: "https://archive.org/download/tvtunes_11735/Super%20Smash%20Bros%20Melee.mp3", t: "Super Smash Bros Melee" },
+  { u: "https://archive.org/download/tvtunes_7910/Kim%20Possible.mp3", t: "Kim Possible" },
+  { u: "https://archive.org/download/tvtunes_4930/Phineas%20and%20Ferb.mp3", t: "Phineas and Ferb" },
+  { u: "https://archive.org/download/tvtunes_4010/iCarly.mp3", t: "iCarly" },
+  { u: "https://archive.org/download/tvtunes_861/Drake%20and%20Josh.mp3", t: "Drake and Josh" },
+  { u: "https://archive.org/download/tvtunes_2016/Thats%20So%20Raven.mp3", t: "Thats So Raven" },
+  { u: "https://archive.org/download/tvtunes_1409/Samurai%20Jack.mp3", t: "Samurai Jack" },
+  { u: "https://archive.org/download/tvtunes_6673/Total%20Drama%20Island.mp3", t: "Total Drama Island" },
+  { u: "https://archive.org/download/tvtunes_195/Duck%20Tales.mp3", t: "Duck Tales" },
+  { u: "https://archive.org/download/tvtunes_42/Animaniacs.mp3", t: "Animaniacs" },
+  { u: "https://archive.org/download/tvtunes_503/Pinky%20and%20the%20Brain.mp3", t: "Pinky and the Brain" },
+  { u: "https://archive.org/download/tvtunes_3568/The%20Wild%20Thornberrys.mp3", t: "The Wild Thornberrys" },
+  { u: "https://archive.org/download/tvtunes_25326/CatDog.mp3", t: "CatDog" },
+  { u: "https://archive.org/download/tvtunes_190/Doug.mp3", t: "Doug" },
+  { u: "https://archive.org/download/tvtunes_1111/Clarissa%20Explains%20It%20All.mp3", t: "Clarissa Explains It All" },
+  { u: "https://archive.org/download/tvtunes_4780/The%20Simpsons.mp3", t: "The Simpsons" },
+  { u: "https://archive.org/download/tvtunes_22407/Family%20Guy.mp3", t: "Family Guy" },
+  { u: "https://archive.org/download/tvtunes_258/Full%20House.mp3", t: "Full House" },
+  { u: "https://archive.org/download/tvtunes_2425/Saved%20by%20the%20Bell.mp3", t: "Saved by the Bell" },
+  { u: "https://archive.org/download/tvtunes_326/Home%20Improvement.mp3", t: "Home Improvement" },
+  { u: "https://archive.org/download/tvtunes_31736/Friends.mp3", t: "Friends" },
+  { u: "https://archive.org/download/gachimuchi-archive/004%20-%20Sia%20-%20Chandelier%20(Alternative%E2%99%82Version).mp3", t: "Sia - Chandelier (Alternative Gachi Version)" },
+  { u: "https://archive.org/download/smooth-mcgroove-remixed-2/08%20VGR%20-%20Overworld%20(Light%20World)%20%5BZelda%20Link%20To%20The%20Past%5D.mp3", t: "Zelda — Main Theme" },
+  { u: "https://archive.org/download/zelda-collectible-cd-the-legend-of-zelda-ocarina-of-time/09%20-%20Ocarina%20of%20Time.mp3", t: "Zelda — Ocarina of Time" },
+  { u: "https://archive.org/download/super-mario-bros.-theme-song_202510/Super%20Mario%20Bros.%20Theme%20Song.mp3", t: "Super Mario Bros — Theme" },
+  { u: "https://archive.org/download/proto_dolphin/delfino.mp3", t: "Mario Sunshine — Delfino" },
+  { u: "https://archive.org/download/video-games-live-level-3-myb1013/04%20-%20Tetris%C2%AE%20Opera.mp3", t: "Tetris — Type A" },
+  { u: "https://archive.org/download/green-hill-zone-azura-remix-sonic-movie/Green%20Hill%20Zone%20~%20Azura%20Remix%20~%20Sonic%20Movie.mp3", t: "Sonic — Green Hill Zone" },
+  { u: "https://archive.org/download/super-metroid-1994-ost/Super%20Metroid%20-%2001.%20Opening%20%20Title.mp3", t: "Metroid" },
+  { u: "https://archive.org/download/md_music_mega_man_the_wily_wars/07%20-%20Mega%20Man%20-%20Cut%20Man%20Stage%20-%20Manami%20Matsumae.mp3", t: "Mega Man 2 — Dr Wily" },
+  { u: "https://archive.org/download/gs_qumu-vampire-killer-from-castlevania-beginning-from-castlevania-iii-draculas-/01%20Vampire%20Killer%20(From%20%20Castlevania%20)%20%20%20Beginning%20%20(From%20%20Castlevania%20III%20%20Dracula's%20Curse%20).mp3", t: "Castlevania — Vampire Killer" },
+  { u: "https://archive.org/download/smooth-mcgroove-remixed-2/14%20Holder%20-%20Aquatic%20Ambience%20(Donkey%20Kong%20Country).mp3", t: "Donkey Kong — Aquatic Ambience" },
+  { u: "https://archive.org/download/gs_smooth-mcgroove-final-fantasy-vii-one-winged-angel-acapella/01%20Final%20Fantasy%20VII%20-%20One%20Winged%20Angel%20Acapella.mp3", t: "Final Fantasy VII" },
+  { u: "https://archive.org/download/square-enix-acoustic-arrangements-sqex-10730/05%20-%20Battle%20with%20Magus%20arrange%20from%20CHRONO%20TRIGGER%20(1995).mp3", t: "Chrono Trigger" },
+  { u: "https://archive.org/download/tvtunes_23567/Pokemon%20-%20Battle%20Frontier%20-%20Swedish.mp3", t: "Pokemon — Battle" },
+  { u: "https://archive.org/download/videogames-covers-2011-na/01%20-%20Street%20Fighter%20II%20Medley.mp3", t: "Street Fighter II — Guile" },
+  { u: "https://archive.org/download/sweden_vinyl/Sweden.mp3", t: "Minecraft — Sweden" },
+  { u: "https://archive.org/download/hide-away-x-megalovania/HideAwayXMegalovania.mp3", t: "Undertale — Megalovania" },
+  { u: "https://archive.org/download/utada-hikaru-simple-and-clean/Utada%20Hikaru%20-%20Simple%20And%20Clean.mp3", t: "Kingdom Hearts — Simple&Clean" },
+  { u: "https://archive.org/download/gs_qumu-title-theme-from-wii-sports-cover-version/01%20Title%20Theme%20(From%20%20Wii%20Sports%20)%20(Cover%20Version).mp3", t: "Wii Sports — Theme" },
+  { u: "https://archive.org/download/gs_qumu-mii-channel-from-nintendo-wii-mii-channel/01%20Mii%20Channel%20(From%20%20Nintendo%20Wii%20Mii%20Channel%20).mp3", t: "Mii Channel" },
+  { u: "https://archive.org/download/gta-san-andreas-theme-song-full/GTA_San_Andreas_Theme_Song_Full_!_!.mp3", t: "GTA San Andreas — Theme" },
+  { u: "https://archive.org/download/counter-strike-2_202603/01.Counter-Strike%202.mp3", t: "Counter-Strike" },
+  { u: "https://archive.org/download/katamari-damacy-original-soundtrack-katamari-fortissimo-damacy-flac/02%20Katamari%20On%20the%20Rocks.mp3", t: "Katamari Damacy" },
+  { u: "https://archive.org/download/crash-bandicoot-1996-ost-soundtrack/0-01.%20Crash%20Bandicoot%20-%20Theme%20Demo%20%231%20(1996).mp3", t: "Crash Bandicoot" },
+  { u: "https://archive.org/download/spyro-the-dragon-1998-ost/Spyro%20-%2001.%20Title%20Theme.mp3", t: "Spyro" },
+  { u: "https://archive.org/download/Banjo-Kazooie-Symphony/01%20-%20The%20Banjo%20Kazooie%20Symphony.mp3", t: "Banjo-Kazooie" },
+  { u: "https://archive.org/download/red-alert-remastered-soundtrack-hell-march-full-version-hq-4-k-ost/Command%20and%20Conquer%20Red%20Alert%201%20OST%2FCommand%20and%20Conquer-%20Red%20Alert%201%20-%202nd%20Hand.mp3", t: "Command & Conquer — Hell March" },
+  { u: "https://archive.org/download/pandacd-691-discography/Diablo%20_%20Tristram%20Theme%20-%20Matt%20Uelmen%20_%20Cover-Wcf35necyRc.mp3", t: "Diablo — Tristram" },
+  { u: "https://archive.org/download/metal_gear_solid_2_soundtrack/01%20-%20Metal%20Gear%20Solid%20Main%20Theme.mp3", t: "Metal Gear Solid" },
+  { u: "https://archive.org/download/gs_qumu-mute-city-from-f-zero/01%20Mute%20City%20(From%20%20F-Zero%20).mp3", t: "F-Zero — Mute City" },
+  { u: "https://archive.org/download/kirbys-dream-collection-special-edition-soundtrack_20250913/01%20Welcome%20To%20Dream%20Land%20%5BKirby's%20Dream%20Land%5D.mp3", t: "Kirby — Dream Land" },
+  { u: "https://archive.org/download/animal-crossing-your-favourite-songs-original-soundtrack/Animal%20Crossing%20-%20Your%20Favourite%20Songs%20-%20Original%20Soundtrack%2F01.%20Animal%20Crossing%20Theme.mp3", t: "Animal Crossing" },
+  { u: "https://archive.org/download/14-honest-negotiation-suite/Halo-%20Combat%20Evolved%20Anniversary%20Disc%201%20et%202%20(Original%20Soundtrack)%20MP3%20320%20kbps%2FHalo-%20Combat%20Evolved%20Anniversary%20Disc%201%20Original%20Soundtrack%2F01%20Random%20Slipspace%20Trajectory.mp3", t: "Halo — Combat Evolved" },
+  { u: "https://archive.org/download/tvtunes_7630/Halo%20-%20Mjolnir%20Mix.mp3", t: "Halo — Mjolnir Mix" },
+  { u: "https://archive.org/download/mariokart-64-greatest-hits-soundtrack/1.%20Mario%20Kart%2064%20Theme.mp3", t: "Mario Kart" },
+  { u: "https://archive.org/download/doom-1-music/02.%20At%20Doom's%20Gate.mp3", t: "DOOM — At Doom’s Gate" },
+  { u: "https://archive.org/download/the-elder-scrolls-v-skyrim-2011-ost/The%20Elder%20Scrolls%20V%20Skyrim%20-%2001.%20Dragonborn.mp3", t: "Skyrim — Dragonborn" },
+  { u: "https://archive.org/download/f-zero-t-game-music-album-13/02.%20Big%20Blue.mp3", t: "F-Zero — Big Blue" },
+  { u: "https://archive.org/download/kirbys-dream-land-2-ost/15%20-%20Ripple%20Field%20%5BFloat%20Islands%20from%20Kirby's%20Dream%20Land%5D.mp3", t: "Kirby — Dream Land II" },
+  { u: "https://archive.org/download/gs_qumu-gerudo-valley-from-the-legend-of-zelda-ocarina-of-time/01%20Gerudo%20Valley%20(From%20%20The%20Legend%20of%20Zelda%20%20Ocarina%20of%20Time%20).mp3", t: "Zelda — Gerudo Valley" },
+  { u: "https://archive.org/download/LavenderTownMusicRemakeFelipeRuizBRX11/Lavender%20Town%20Music%20Remake%20-%20Felipe%20RuizBRX11.mp3", t: "Pokemon — Lavender Town" },
+  { u: "https://archive.org/download/SonicTheHedgehog2/03.%20Chemical%20Plant%20Zone.mp3", t: "Sonic — Chemical Plant" },
+  { u: "https://archive.org/download/xoc_SMW/xoc_SMW_05_undergroundtheme.mp3", t: "Mario — Underground" },
+  { u: "https://archive.org/download/gs_qumu-main-theme-wii-shop-channel-from-wii-channels/01%20Main%20Theme%20(Wii%20Shop%20Channel)%20%5BFrom%20%E2%80%9CWii%20Channels%E2%80%9D%5D.mp3", t: "Wii — Wii Shop Channel" }
 ];
 
 var currentTrackType = null;
@@ -1339,15 +1401,60 @@ function fadeTrackVolume(targetVol, durationMs, onComplete){
 // Streams die (archive.org 503s, items taken down). A single bad URL used to kill
 // the music for the rest of the session because play() rejections were swallowed.
 // Try candidates in random order until one actually plays.
+// ---- ANTI-REPEAT ----------------------------------------------------------------
+// A plain shuffle picks uniformly every time, so with ~90 tracks you still hear the
+// same handful over one night. Recently played tracks get their odds cut instead: the
+// track just played is ~5% as likely as an unplayed one, climbing back to full weight
+// as it ages out of the remembered window.
+var MUSIC_HISTORY_LEN = 24;
+var _musicHistory = [];   // most recent first
+
+function trackWeight(url){
+  var idx = _musicHistory.indexOf(url);
+  if(idx === -1) return 1;
+  return Math.max(0.05, (idx + 1) / MUSIC_HISTORY_LEN);
+}
+function rememberTrack(url){
+  var i = _musicHistory.indexOf(url);
+  if(i !== -1) _musicHistory.splice(i, 1);
+  _musicHistory.unshift(url);
+  if(_musicHistory.length > MUSIC_HISTORY_LEN) _musicHistory.length = MUSIC_HISTORY_LEN;
+}
+// Weighted shuffle: draw without replacement so the head of the list respects the
+// weights and the tail still serves as the fallback chain for dead URLs.
+function weightedOrder(list){
+  var pool = list.slice(), out = [];
+  while(pool.length){
+    var total = 0, i;
+    for(i = 0; i < pool.length; i++) total += trackWeight(pool[i].u);
+    var r = Math.random() * total, pick = pool.length - 1;
+    for(i = 0; i < pool.length; i++){
+      r -= trackWeight(pool[i].u);
+      if(r <= 0){ pick = i; break; }
+    }
+    out.push(pool.splice(pick, 1)[0]);
+  }
+  return out;
+}
+
+var _nowPlayingTitle = "";
+function setNowPlaying(title){
+  if(typeof title === "string") _nowPlayingTitle = title;
+  var el = document.getElementById("nowPlaying");
+  if(!el) return;
+  if(!_nowPlayingTitle || !audioEnabled){ el.className = ""; el.innerHTML = ""; return; }
+  el.innerHTML = '<span class="np-ico">&#9834;</span>' + escapeHtml(_nowPlayingTitle);
+  el.className = "show";
+}
+
 function playFromPool(list, avoidSrc, fadeMs){
   var track = getBgTrack();
   if(!track || !list || !list.length) return;
 
-  var pool = list.slice();
-  shuffle(pool);
+  var pool = weightedOrder(list);
   if(avoidSrc){
     var cur = avoidSrc.toLowerCase();
-    var others = pool.filter(function(u){ return u.toLowerCase() !== cur; });
+    var others = pool.filter(function(e){ return e.u.toLowerCase() !== cur; });
     if(others.length) pool = others;
   }
 
@@ -1363,18 +1470,18 @@ function playFromPool(list, avoidSrc, fadeMs){
       done();
       return;
     }
-    var url = pool[i++];
+    var entry = pool[i++];
     var moved = false;
     function next(why){
       if(moved) return;              // onerror and play().catch can both fire
       moved = true;
       track.onerror = null;
-      console.warn("[music] skipping unplayable track (" + why + "): " + url);
+      console.warn("[music] skipping unplayable track (" + why + "): " + entry.u);
       attempt();
     }
 
     track.onerror = function(){ next("load error"); };
-    track.src = url;
+    track.src = entry.u;
     track.load();
     track.volume = 0;
     if(!audioEnabled){ done(); return; }
@@ -1382,6 +1489,8 @@ function playFromPool(list, avoidSrc, fadeMs){
     track.play().then(function(){
       moved = true;                  // committed to this one
       done();
+      rememberTrack(entry.u);
+      setNowPlaying(entry.t);
       fadeTrackVolume(MAX_MUSIC_VOLUME, fadeMs || 700);
     }).catch(function(e){
       // Autoplay block is not the URL's fault - retrying other URLs won't help.
@@ -1420,6 +1529,7 @@ function updateAudioIcon(){
 function toggleAudio(){
   audioEnabled = !audioEnabled;
   updateAudioIcon();
+  setNowPlaying();          // hides the badge while muted, restores it on unmute
   var track = getBgTrack();
   if(audioEnabled){
     initAudio();
