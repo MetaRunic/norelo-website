@@ -893,7 +893,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.9</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.10</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -1029,15 +1029,46 @@ function stopDrumroll(){
   }
 }
 
-function sfxUnanimous(){
-  sfxBugle();
-  setTimeout(sfxStar, 450);
+var _ptsCounterTimer = null;
+function startPointsChime(durationSec){
+  stopPointsChime();
+  initAudio();
+  if(!audioCtx) return;
+  var totalMs = (durationSec || 2.0) * 1000;
+  var intervalMs = 65;
+  var steps = Math.floor(totalMs / intervalMs);
+  var currentStep = 0;
+  _ptsCounterTimer = setInterval(function(){
+    currentStep++;
+    if(currentStep >= steps){
+      stopPointsChime();
+      playTone(1318.51, "sine", 0.3, 0.15);
+      return;
+    }
+    var freq = 523.25 + (currentStep / steps) * 523.25;
+    playTone(freq, "sine", 0.05, 0.08);
+  }, intervalMs);
 }
 
-function sfxCrown(){
-  sfxBugle();
-  setTimeout(sfxWin, 400);
-  setTimeout(sfxStar, 850);
+function stopPointsChime(){
+  if(_ptsCounterTimer){
+    clearInterval(_ptsCounterTimer);
+    _ptsCounterTimer = null;
+  }
+}
+
+function sfxUnanimous(){
+  sfxWin();
+  setTimeout(sfxStar, 300);
+}
+
+function sfxGrandCrown(){
+  initAudio();
+  if(!audioCtx) return;
+  playTone(523.25, "triangle", 0.2, 0.15);
+  setTimeout(function(){ playTone(659.25, "triangle", 0.2, 0.15); }, 200);
+  setTimeout(function(){ playTone(783.99, "triangle", 0.2, 0.18); }, 400);
+  setTimeout(function(){ playTone(1046.50, "triangle", 0.5, 0.22); }, 600);
 }
 
 /* SOFTENED SUBTLE BOUNCE EXPLOSION SFX (NOT LOUD) */
@@ -1752,11 +1783,15 @@ function renderRoundPointsHTML(roundPts){
 
 function animateCounters(){
   var els = document.querySelectorAll('.round-pts-val[data-target]');
+  if(els.length === 0) return;
+  var hasPositive = false;
+  els.forEach(function(el){ if(parseInt(el.getAttribute('data-target'), 10) > 0) hasPositive = true; });
+  if(hasPositive){ startPointsChime(2.0); }
   els.forEach(function(el){
     var target = parseInt(el.getAttribute('data-target'), 10);
     if(target <= 0){ el.textContent = '+0'; return; }
     var start = 0;
-    var duration = 1200;
+    var duration = 2000;
     var startTime = null;
     function step(ts){
       if(!startTime) startTime = ts;
@@ -1766,7 +1801,7 @@ function animateCounters(){
       el.textContent = '+' + current;
       if(progress < 1) requestAnimationFrame(step);
     }
-    setTimeout(function(){ sfxPoints(); requestAnimationFrame(step); }, 350);
+    requestAnimationFrame(step);
   });
 }
 
@@ -2662,7 +2697,7 @@ function renderGrandPrizeCeremony(g){
   var runner2 = sorted[1] || null;
   var runner3 = sorted[2] || null;
 
-  sfxCrown();
+  sfxGrandCrown();
   if(window.triggerExplosion){
     window.triggerExplosion(window.innerWidth/2, window.innerHeight/2, true, "#f59e0b");
   }
