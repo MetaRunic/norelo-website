@@ -934,7 +934,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.16</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.17</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -3110,14 +3110,7 @@ function skipBonusShow(){
 //  GAME 3: GUESS THE RATING (Devine la note)
 // =====================================================================
 var REVIEWS_PACK = [
-  {
-    place: "Bakehouse Bakery & Cafe",
-    location: "Montreal, QC",
-    photo: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Jean-Marc P.",
-    text: "J'ai demandé un croissant chaud. Le serveur m'a regardé droit dans les yeux, a soupiré, et m'a dit que l'enthousiasme était interdit avant 9h du matin.",
-    stars: 5
-  },
+  // --- 1-STAR REVIEWS (10) ---
   {
     place: "Motel de l'Autoroute 20",
     location: "Drummondville, QC",
@@ -3127,43 +3120,11 @@ var REVIEWS_PACK = [
     stars: 1
   },
   {
-    place: "Resto-Bar Le Vortex",
-    location: "Quebec, QC",
-    photo: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Sophie L.",
-    text: "J'ai commandé 3 shooters mystères. J'ai perdu mon manteau, mes clés et 4 heures de mémoire. Expérience inoubliable.",
-    stars: 5
-  },
-  {
-    place: "Poutine Royale 24h",
-    location: "Trois-Rivières, QC",
-    photo: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Maxime T.",
-    text: "Le cuisinier m'a donné un conseil de vie philosophique de 20 minutes à 3h30 du matin. La poutine était tiède mais ma vie a changé.",
-    stars: 5
-  },
-  {
     place: "Camping du Lac Solitaire",
     location: "Laurentides, QC",
     photo: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=600&q=80",
     reviewer: "Alexandre G.",
     text: "Les moustiques étaient si gros qu'ils m'ont volé mes clés de char et m'ont forcé à payer une rançon en sirop d'érable.",
-    stars: 1
-  },
-  {
-    place: "Le Bistro Gastronomique",
-    location: "Montreal, QC",
-    photo: "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Chantal M.",
-    text: "Portions si petites que j'ai dû aller au McDo immédiatement après avoir payé la facture de 240$. L'assiette était jolie par contre.",
-    stars: 2
-  },
-  {
-    place: "Salle de Sport Fit-Max 24/7",
-    location: "Laval, QC",
-    photo: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Dave K.",
-    text: "Un gars est venu me donner des conseils sur ma posture pendant que j'essayais désespérément de reprendre mon souffle aux toilettes.",
     stars: 1
   },
   {
@@ -3175,20 +3136,12 @@ var REVIEWS_PACK = [
     stars: 1
   },
   {
-    place: "Escape Game Manoir Hanté",
-    location: "Sherbrooke, QC",
-    photo: "https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Antoine C.",
-    text: "Mon ami a eu tellement peur qu'il a accidentellement poussé l'acteur déguisé en zombie dans un placard. Le zombie s'est excusé.",
-    stars: 5
-  },
-  {
-    place: "Buffet Volonté La Caverne",
-    location: "Brossard, QC",
-    photo: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Guillaume S.",
-    text: "J'ai mangé 14 assiettes de crevettes panées. Le gérant est venu poliment me demander si j'avais une famille qui m'attendait à la maison.",
-    stars: 5
+    place: "Salle de Sport Fit-Max 24/7",
+    location: "Laval, QC",
+    photo: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Dave K.",
+    text: "Un gars est venu me donner des conseils sur ma posture pendant que j'essayais désespérément de reprendre mon souffle aux toilettes.",
+    stars: 1
   },
   {
     place: "Lave-Auto Express Ultramax",
@@ -3207,6 +3160,326 @@ var REVIEWS_PACK = [
     stars: 1
   },
   {
+    place: "Service des Permis & Immatriculation",
+    location: "Laval, QC",
+    photo: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Sébastien L.",
+    text: "Attendu 3 heures et demie avec le billet #84. Quand mon tour est arrivé, la dame a fermé son guichet pour aller dîner. Chef-d'œuvre.",
+    stars: 1
+  },
+  {
+    place: "Cinéma Multiplex Lumière",
+    location: "Brossard, QC",
+    photo: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Francis D.",
+    text: "Le plancher était tellement collant que mes deux chaussures sont restées sur place quand je me suis levé. J'ai fini le film en chaussettes.",
+    stars: 1
+  },
+  {
+    place: "Clinique Dentaire Sourire Plus",
+    location: "Montreal, QC",
+    photo: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Isabelle M.",
+    text: "Le dentiste m'a raconté sa rupture amoureuse pendant 45 minutes pendant que j'avais la bouche grande ouverte remplie de coton.",
+    stars: 1
+  },
+  {
+    place: "Compagnie Aérienne Fly-Budget",
+    location: "Montreal, QC",
+    photo: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Mathieu T.",
+    text: "Ils ont fait payer 45$ pour mon sac à dos, le siège ne s'inclinait pas et l'hôte de l'air m'a donné un sachet de cacahuètes périmé depuis 2018.",
+    stars: 1
+  },
+
+  // --- 2-STAR REVIEWS (10) ---
+  {
+    place: "Le Bistro Gastronomique",
+    location: "Montreal, QC",
+    photo: "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Chantal M.",
+    text: "Portions si petites que j'ai dû aller au McDo immédiatement après avoir payé la facture de 240$. L'assiette était jolie par contre.",
+    stars: 2
+  },
+  {
+    place: "La Taverne du Coin",
+    location: "Sherbrooke, QC",
+    photo: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Benoit H.",
+    text: "La bière était froide et les frites étaient bonnes, mais le chansonnier a joué 'Wonderwall' quatre fois d'affilée en deux heures.",
+    stars: 2
+  },
+  {
+    place: "Buffet Chinois Les Délices",
+    location: "Trois-Rivières, QC",
+    photo: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Nathalie P.",
+    text: "La Fontaine de chocolat fonctionnait, mais un enfant y a trempé un morceau de saucisse à hot-dog. Expérience gâchée.",
+    stars: 2
+  },
+  {
+    place: "Centre d'Amusement Laser Tag",
+    location: "Quebec, QC",
+    photo: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Julien R.",
+    text: "Le pistolet laser s'est éteint en plein milieu de la partie et un enfant de 8 ans m'a traqué sans pitié dans le noir.",
+    stars: 2
+  },
+  {
+    place: "Hôtel Spa & Relaxation",
+    location: "Mont-Tremblant, QC",
+    photo: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Audrey C.",
+    text: "Le spa nordique était à la température d'une soupe tiède et l'eau sentait légèrement le chlore concentré.",
+    stars: 2
+  },
+  {
+    place: "Café Internet & Gaming Bar",
+    location: "Montreal, QC",
+    photo: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Olivier E.",
+    text: "La connexion internet était rapide, mais le voisin de droite criait dans son casque comme s'il était en pleine guerre mondiale.",
+    stars: 2
+  },
+  {
+    place: "Brasserie Artisanale Le Houblon",
+    location: "Gatineau, QC",
+    photo: "https://images.unsplash.com/photo-1538488881523-4326c0633025?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Stéphane V.",
+    text: "Bière excellente, mais les tabourets du bar sont si hauts et étroits qu'on a l'impression d'être assis sur un balai.",
+    stars: 2
+  },
+  {
+    place: "Parc Aquatique La Vague",
+    location: "Saint-Sauveur, QC",
+    photo: "https://images.unsplash.com/photo-1582650625119-3a31f8fa2699?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Mélanie D.",
+    text: "La piscine à vagues était amusante jusqu'à ce qu'un pan de pansement usagé flotte à côté de mon visage.",
+    stars: 2
+  },
+  {
+    place: "Boutique de Vêtements Tendance",
+    location: "Laval, QC",
+    photo: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Caroline K.",
+    text: "La vendeuse m'a suivi à chaque pas dans la boutique en répétant 'Si tu cherches ta taille demande-moi'. Je voulais juste regarder.",
+    stars: 2
+  },
+  {
+    place: "Resto-Pub Le Chansonnier",
+    location: "Rimouski, QC",
+    photo: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Simon L.",
+    text: "La poutine était correcte mais le serveur a mis 40 minutes pour apporter une bouteille d'eau.",
+    stars: 2
+  },
+
+  // --- 3-STAR REVIEWS (10) ---
+  {
+    place: "Café Central & Pâtisserie",
+    location: "Quebec, QC",
+    photo: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Lucie T.",
+    text: "Le café était passable et le muffin était bon, mais la musique d'ambiance était du techno hardcore à 8h30 du matin.",
+    stars: 3
+  },
+  {
+    place: "Bowling Retro Alley",
+    location: "Montreal, QC",
+    photo: "https://images.unsplash.com/photo-1538510001314-716c02632313?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Yanic S.",
+    text: "Les boules de bowling avaient toutes des trous pour doigts d'enfants ou de géants. Mais la musique des années 90 compensait.",
+    stars: 3
+  },
+  {
+    place: "Restaurant Italien Mamma Mia",
+    location: "Laval, QC",
+    photo: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Valérie G.",
+    text: "Les pâtes étaient délicieuses, mais le serveur s'appelait Kevin et essayait de prendre un accent italien exagéré tout le long.",
+    stars: 3
+  },
+  {
+    place: "Supermarché Marché Frais",
+    location: "Longueuil, QC",
+    photo: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Eric M.",
+    text: "Beaucoup de choix, mais la musique dans les haut-parleurs était un remix flûte à bec des plus grands succès de Celine Dion.",
+    stars: 3
+  },
+  {
+    place: "Labyrinthe de Maïs de la Ferme",
+    location: "Saint-Hyacinthe, QC",
+    photo: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Hugo B.",
+    text: "Nous sommes restés coincés 2 heures dans le maïs. Mon cousin s'est assis par terre et a commencé à resigner sa vie.",
+    stars: 3
+  },
+  {
+    place: "Station de Ski Le Sommet",
+    location: "Orford, QC",
+    photo: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Gabriel D.",
+    text: "Neige parfaite, mais la file d'attente pour le télésiège était plus longue que la descente elle-même.",
+    stars: 3
+  },
+  {
+    place: "Pub Irlandais O'Malley",
+    location: "Montreal, QC",
+    photo: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Liam P.",
+    text: "Excellente ambiance, mais le sol colle tellement que j'ai perdu mon épaisseur de semelle en sortant.",
+    stars: 3
+  },
+  {
+    place: "Exposition Musée d'Art Moderne",
+    location: "Quebec, QC",
+    photo: "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Clara R.",
+    text: "J'ai passé 20 minutes à admirer ce que je pensais être une sculpture abstraite. C'était juste un extincteur sur le mur.",
+    stars: 3
+  },
+  {
+    place: "Friterie Chez Ti-Guy",
+    location: "Saguenay, QC",
+    photo: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Dominique F.",
+    text: "La sauce à poutine est incroyable, mais Ti-Guy se fâche si on demande des ustensiles en plastique.",
+    stars: 3
+  },
+  {
+    place: "Plage Municipale du Lac",
+    location: "Granby, QC",
+    photo: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Jessica N.",
+    text: "L'eau était bonne mais les mouettes surveillaient mes frites comme des hélicoptères de combat.",
+    stars: 3
+  },
+
+  // --- 4-STAR REVIEWS (10) ---
+  {
+    place: "Barbershop Le Barbier d'Or",
+    location: "Montreal, QC",
+    photo: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Bruno L.",
+    text: "Coupe de cheveux impeccable et bière gratuite offerte à l'arrivée. Le barbier m'a quand même parlé de ses conspirations extraterrestres.",
+    stars: 4
+  },
+  {
+    place: "Resto Mexicain El Taco Loco",
+    location: "Quebec, QC",
+    photo: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Mateo S.",
+    text: "Tacos absolument incroyables. La sauce piquante m'a fait pleurer et revoir mes choix de vie, mais je reviendrai.",
+    stars: 4
+  },
+  {
+    place: "Salle d'Escalade Roc-Gym",
+    location: "Sherbrooke, QC",
+    photo: "https://images.unsplash.com/photo-1522163182402-834f871fd851?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Alex C.",
+    text: "Superbes voies d'escalade. Seul bémol : l'odeur de magnésie et de pieds règne en maître absolu.",
+    stars: 4
+  },
+  {
+    place: "Sushi Bar Le Dragon",
+    location: "Gatineau, QC",
+    photo: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Kevyn H.",
+    text: "Poisson ultra frais et présentation magnifique. Le chef m'a fait un clin d'œil mystérieux en me servant la soupe miso.",
+    stars: 4
+  },
+  {
+    place: "Parc d'Attractions La Ronde",
+    location: "Montreal, QC",
+    photo: "https://images.unsplash.com/photo-1513889961551-628c1e5e2ee9?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Samuel K.",
+    text: "Les montagnes russes sont épiques. J'ai perdu mes lunettes dans la boucle du Goliath mais l'adrénaline valait le coup.",
+    stars: 4
+  },
+  {
+    place: "Boutique de Jeux de Société",
+    location: "Trois-Rivières, QC",
+    photo: "https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Etienne P.",
+    text: "Le vendeur connaît absolument tous les jeux existants. Il a commencé à m'expliquer les règles de Warhammer pendant 45 minutes.",
+    stars: 4
+  },
+  {
+    place: "Café Chats & Ronronnement",
+    location: "Montreal, QC",
+    photo: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Noémie B.",
+    text: "Les chats sont adorables et très câlins. Un gros chat roux a dormi sur mon sac pendant 2 heures, je n'ai pas osé le bouger.",
+    stars: 4
+  },
+  {
+    place: "Microbrasserie L'Avant-Garde",
+    location: "Joliette, QC",
+    photo: "https://images.unsplash.com/photo-1538488881523-4326c0633025?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Xavier M.",
+    text: "Bières artisanales délicieuses aux saveurs de mangue et piment. Le serveur m'a expliqué l'histoire du houblon pendant 15 minutes.",
+    stars: 4
+  },
+  {
+    place: "Karting Intérieur Nitro",
+    location: "Laval, QC",
+    photo: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Loïc V.",
+    text: "Vitesse impressionnante et piste technique. Mon ami m'a rentré dedans à 50 km/h au premier virage, belle amitié.",
+    stars: 4
+  },
+  {
+    place: "Chocolaterie Artisanale",
+    location: "Baie-Saint-Paul, QC",
+    photo: "https://images.unsplash.com/photo-1511381939415-e44015466834?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Geneviève S.",
+    text: "Le chocolat chaud est si dense qu'on peut y faire tenir une cuillère debout. Une merveille pour le cœur et les artères.",
+    stars: 4
+  },
+
+  // --- 5-STAR REVIEWS (10) ---
+  {
+    place: "Bakehouse Bakery & Cafe",
+    location: "Montreal, QC",
+    photo: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Jean-Marc P.",
+    text: "J'ai demandé un croissant chaud. Le serveur m'a regardé droit dans les yeux, a soupiré, et m'a dit que l'enthousiasme était interdit avant 9h du matin.",
+    stars: 5
+  },
+  {
+    place: "Resto-Bar Le Vortex",
+    location: "Quebec, QC",
+    photo: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Sophie L.",
+    text: "J'ai commandé 3 shooters mystères. J'ai perdu mon manteau, mes clés et 4 heures de mémoire. Expérience inoubliable.",
+    stars: 5
+  },
+  {
+    place: "Poutine Royale 24h",
+    location: "Trois-Rivières, QC",
+    photo: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Maxime T.",
+    text: "Le cuisinier m'a donné un conseil de vie philosophique de 20 minutes à 3h30 du matin. La poutine était tiède mais ma vie a changé.",
+    stars: 5
+  },
+  {
+    place: "Escape Game Manoir Hanté",
+    location: "Sherbrooke, QC",
+    photo: "https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Antoine C.",
+    text: "Mon ami a eu tellement peur qu'il a accidentellement poussé l'acteur déguisé en zombie dans un placard. Le zombie s'est excusé.",
+    stars: 5
+  },
+  {
+    place: "Buffet Volonté La Caverne",
+    location: "Brossard, QC",
+    photo: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Guillaume S.",
+    text: "J'ai mangé 14 assiettes de crevettes panées. Le gérant est venu poliment me demander si j'avais une famille qui m'attendait à la maison.",
+    stars: 5
+  },
+  {
     place: "Zoo & Parc Animalier",
     location: "Granby, QC",
     photo: "https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=600&q=80",
@@ -3223,12 +3496,28 @@ var REVIEWS_PACK = [
     stars: 5
   },
   {
-    place: "Service des Permis & Immatriculation",
-    location: "Laval, QC",
-    photo: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80",
-    reviewer: "Sébastien L.",
-    text: "Attendu 3 heures et demie avec le billet #84. Quand mon tour est arrivé, la dame a fermé son guichet pour aller dîner. Chef-d'œuvre.",
-    stars: 1
+    place: "Camion de Rue Le Burger Flambé",
+    location: "Montreal, QC",
+    photo: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Jérôme A.",
+    text: "Le chef m'a servi un burger triple avec bacon caramélisé et m'a chuchoté 'Que Dieu protège tes artères'. Chef-d'œuvre.",
+    stars: 5
+  },
+  {
+    place: "Boutique Végétale La Jungle",
+    location: "Quebec, QC",
+    photo: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=600&q=80",
+    reviewer: "Floriane E.",
+    text: "Je suis venu acheter un petit cactus. La propriétaire a parlé à mes plantes pendant 20 minutes pour s'assurer qu'elles m'aimaient.",
+    stars: 5
+  },
+  {
+    place: "Resto Dim Sum Le Paradis",
+    location: "Montreal, QC",
+    photo: "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?auto=format&fit=crop&w=600&q=80",
+    reviewer: "William C.",
+    text: "La dame pousse les chariots à une vitesse supersonique et vous met des dumplings dans votre assiette avant même que vous ayez cligné des yeux.",
+    stars: 5
   }
 ];
 
