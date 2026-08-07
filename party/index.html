@@ -40,18 +40,20 @@
   }
   body.in-game #dvdLogo{ display:none !important; }
 
-  /* Compact Floating Audio Toggle */
+  /* Compact Floating Audio Controls */
   #audioControls{
     position:fixed; top:12px; right:14px; z-index:100;
+    display:flex; flex-direction:column; gap:8px; align-items:center;
   }
-  #audioToggle{
+  #audioToggle, #skipTrackBtn{
     width: 40px; height: 40px; border-radius: 50%;
     background:rgba(13,22,54,0.85); border:1.5px solid rgba(255,255,255,0.25);
     backdrop-filter:blur(12px); color:#fff; font-size:1.1rem;
     cursor:pointer; display:flex; align-items:center; justify-content:center;
-    box-shadow:0 4px 16px rgba(0,0,0,0.35); transition:transform .12s, border-color .2s;
+    box-shadow:0 4px 16px rgba(0,0,0,0.35); transition:transform .12s, border-color .2s, background-color .2s;
   }
-  #audioToggle:active{transform:scale(.92);}
+  #audioToggle:active, #skipTrackBtn:active{transform:scale(.92);}
+  #skipTrackBtn:hover{background:rgba(30,58,138,0.9); border-color:var(--amber);}
 
   .wrap{
     flex:1; width:100%; max-width:480px; margin:0 auto;
@@ -799,11 +801,14 @@
   </svg>
 </div>
 
-<!-- Floating Audio Toggle Button (Top-Right) -->
+<!-- Floating Audio Toggle & Skip Buttons (Top-Right) -->
 <div id="audioControls">
   <audio id="bgMusicTrack" preload="auto"></audio>
-  <button id="audioToggle" onclick="toggleAudio()" title="Activer / Désactiver la musique">
+  <button id="audioToggle" onclick="toggleAudio()" title="Muter / Réactiver la musique">
     <span id="audioIcon"><svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
+  </button>
+  <button id="skipTrackBtn" onclick="skipBgTrack()" title="Changer de chanson (Skip)">
+    <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
   </button>
 </div>
 
@@ -934,7 +939,7 @@
 
 </div>
 
-<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.17</span> &copy; 2026 Norelo</footer>
+<footer><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.18</span> &copy; 2026 Norelo</footer>
 
 <div class="toast" id="toast"></div>
 
@@ -1339,6 +1344,35 @@ function toggleAudio(){
     }
   }
 }
+
+function skipBgTrack(){
+  sfxVote();
+  var track = getBgTrack();
+  if(!track) return;
+  
+  var useNostalgia = (typeof NOSTALGIA_VAULT !== "undefined" && NOSTALGIA_VAULT.length > 0) && (Math.random() < 0.5);
+  var pl = useNostalgia ? NOSTALGIA_VAULT : (PLAYLISTS[currentTrackType] || PLAYLISTS.lobby);
+  var cur = (track.src || "").trim();
+  var others = pl.filter(function(url){ return url.toLowerCase() !== cur.toLowerCase(); });
+  if(others.length === 0) others = pl;
+  
+  var nextSrc = others[Math.floor(Math.random() * others.length)];
+  
+  fadeTrackVolume(0, 300, function(){
+    track.src = nextSrc;
+    track.load();
+    if(audioEnabled){
+      track.play().then(function(){
+        fadeTrackVolume(MAX_MUSIC_VOLUME, 500);
+      }).catch(function(e){});
+    }
+  });
+  
+  if(typeof showToast === "function"){
+    showToast("🎵 Chanson suivante !");
+  }
+}
+
 document.addEventListener("DOMContentLoaded", updateAudioIcon);
 </script>
 
