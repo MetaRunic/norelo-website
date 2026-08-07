@@ -44,6 +44,33 @@
 
   #bgCanvas{position:fixed; inset:0; z-index:0; pointer-events:none;}
 
+  /* The ambient canvas is z-index 0 and .wrap is z-index 1, so every burst drawn on
+     bgCanvas was painted UNDERNEATH the game panels - which is why the fireworks were
+     never visible. This layer sits above the content but below modals (z 1000). */
+  #fxCanvas{position:fixed; inset:0; z-index:900; pointer-events:none;}
+  #fxLabel{
+    position:fixed; left:50%; top:38%; z-index:901; pointer-events:none;
+    transform:translate(-50%,-50%) scale(.6); opacity:0;
+    font-size:1.5rem; font-weight:900; letter-spacing:.08em; text-transform:uppercase;
+    text-align:center; white-space:nowrap; color:#fff;
+    text-shadow:0 0 18px currentColor, 0 3px 10px rgba(0,0,0,.6);
+  }
+  #fxLabel.pop{ animation:fxLabelPop 1.5s cubic-bezier(.2,1.4,.3,1) forwards; }
+  @keyframes fxLabelPop{
+    0%{ opacity:0; transform:translate(-50%,-50%) scale(.5) rotate(-6deg); }
+    18%{ opacity:1; transform:translate(-50%,-50%) scale(1.12) rotate(2deg); }
+    30%{ transform:translate(-50%,-50%) scale(1) rotate(0deg); }
+    75%{ opacity:1; transform:translate(-50%,-56%) scale(1); }
+    100%{ opacity:0; transform:translate(-50%,-72%) scale(.94); }
+  }
+  body.fx-shake{ animation:fxShake .5s cubic-bezier(.36,.07,.19,.97); }
+  @keyframes fxShake{
+    10%,90%{ transform:translate(-2px,1px); }
+    20%,80%{ transform:translate(4px,-2px); }
+    30%,50%,70%{ transform:translate(-6px,2px); }
+    40%,60%{ transform:translate(6px,-1px); }
+  }
+
   /* Responsive Bouncing DVD Logo Meme */
   #dvdLogo{
     position:fixed; width:65px; height:33px; z-index:2; pointer-events:none;
@@ -1094,6 +1121,10 @@
 <!-- Ambient Particles Canvas -->
 <canvas id="bgCanvas"></canvas>
 
+<!-- Foreground celebration effects (must sit ABOVE .wrap or nothing is visible) -->
+<canvas id="fxCanvas"></canvas>
+<div id="fxLabel"></div>
+
 <!-- Responsive Bouncing DVD Logo Meme (Hidden during gameplay) -->
 <div id="dvdLogo">
   <svg viewBox="0 0 120 60" fill="currentColor" width="100%" height="100%">
@@ -1282,7 +1313,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.54</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.55</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -2001,6 +2032,8 @@ document.addEventListener("DOMContentLoaded", function(){
   window.triggerExplosion = function(ex, ey, isCorner, color, withSound){
     var count = isCorner ? 50 : 15;
     if(withSound) sfxExplode();
+    // Mirror onto the foreground layer, otherwise this is drawn behind the UI.
+    if(window.FX) window.FX.burst(ex, ey, { count: isCorner ? 40 : 14, speed: isCorner ? 7.5 : 4, color: color, g: 0.13 });
     for(var j=0; j<count; j++){
       var angle = Math.random() * Math.PI * 2;
       var speed = (Math.random() * (isCorner ? 7 : 3.5)) + 1;
@@ -2016,6 +2049,10 @@ document.addEventListener("DOMContentLoaded", function(){
       });
     }
 
+    if(isCorner && window.FX){
+      window.FX.cornerHit(ex, ey, color);
+      return;
+    }
     if(isCorner){
       var flash = document.createElement("div");
       flash.style.cssText = "position:fixed;inset:0;background:rgba(255,255,255,0.3);z-index:999;pointer-events:none;transition:opacity 0.4s ease-out;";
@@ -2209,6 +2246,186 @@ document.addEventListener("DOMContentLoaded", function(){
     requestAnimationFrame(moveDVD);
   }
   moveDVD();
+})();
+</script>
+
+<!-- Celebration FX engine (foreground layer) -->
+<script>
+(function(){
+  var cv = document.getElementById("fxCanvas");
+  if(!cv) return;
+  var ctx = cv.getContext("2d");
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  function resize(){
+    cv.width = Math.floor(window.innerWidth * dpr);
+    cv.height = Math.floor(window.innerHeight * dpr);
+    cv.style.width = window.innerWidth + "px";
+    cv.style.height = window.innerHeight + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  var PALETTE = ["#ef4444","#f59e0b","#fde047","#10b981","#3b82f6","#a855f7","#ec4899","#22d3ee"];
+  var MAX_PARTS = 520;           // phones choke past this
+  var parts = [], rings = [], running = false;
+
+  function pick(){ return PALETTE[Math.floor(Math.random()*PALETTE.length)]; }
+
+  function loop(){
+    if(!parts.length && !rings.length){
+      running = false;
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      return;
+    }
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+    for(var i = rings.length - 1; i >= 0; i--){
+      var r = rings[i];
+      r.rad += r.speed; r.speed *= 0.97; r.alpha -= r.decay;
+      if(r.alpha <= 0){ rings.splice(i, 1); continue; }
+      ctx.beginPath();
+      ctx.arc(r.x, r.y, r.rad, 0, Math.PI*2);
+      ctx.strokeStyle = r.color;
+      ctx.globalAlpha = Math.max(0, r.alpha);
+      ctx.lineWidth = r.w;
+      ctx.shadowBlur = 14; ctx.shadowColor = r.color;
+      ctx.stroke();
+      ctx.shadowBlur = 0; ctx.globalAlpha = 1;
+    }
+
+    for(var k = parts.length - 1; k >= 0; k--){
+      var p = parts[k];
+      p.vx *= p.drag; p.vy *= p.drag; p.vy += p.g;
+      p.x += p.vx; p.y += p.vy;
+      p.life -= p.decay; p.spin += p.spinV;
+      if(p.life <= 0 || p.y > window.innerHeight + 50){ parts.splice(k, 1); continue; }
+      ctx.globalAlpha = Math.max(0, Math.min(1, p.life));
+      ctx.fillStyle = p.color;
+      if(p.type === "ribbon"){
+        ctx.save();
+        ctx.translate(p.x, p.y); ctx.rotate(p.spin);
+        ctx.fillRect(-p.r, -p.r*0.38, p.r*2, p.r*0.76);
+        ctx.restore();
+      } else if(p.type === "spark"){
+        ctx.strokeStyle = p.color; ctx.lineWidth = p.r*0.7;
+        ctx.shadowBlur = 10; ctx.shadowColor = p.color;
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p.x - p.vx*2.2, p.y - p.vy*2.2);
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      } else {
+        ctx.shadowBlur = 10; ctx.shadowColor = p.color;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+      ctx.globalAlpha = 1;
+    }
+    requestAnimationFrame(loop);
+  }
+  function kick(){ if(!running){ running = true; requestAnimationFrame(loop); } }
+  function room(){ return Math.max(0, MAX_PARTS - parts.length); }
+
+  function addRing(x, y, color, speed, width){
+    rings.push({ x:x, y:y, rad:6, speed:speed||7, alpha:1, decay:0.022, w:width||3, color:color||"#fff" });
+    kick();
+  }
+
+  // ---- public effects -------------------------------------------------------
+  var FX = {};
+
+  FX.burst = function(x, y, opts){
+    opts = opts || {};
+    var n = Math.min(opts.count || 36, room());
+    var spread = opts.speed || 6;
+    for(var i = 0; i < n; i++){
+      var a = Math.random() * Math.PI * 2;
+      var s = Math.random() * spread + 1.2;
+      parts.push({ type: opts.type || "dot",
+        x:x, y:y, vx:Math.cos(a)*s, vy:Math.sin(a)*s,
+        r:(Math.random()*2.4)+1.4, g:opts.g === undefined ? 0.12 : opts.g,
+        drag:0.975, life:1, decay:(Math.random()*0.012)+0.011,
+        spin:Math.random()*6, spinV:(Math.random()-0.5)*0.3,
+        color: opts.color || pick() });
+    }
+    kick();
+  };
+
+  FX.shockwave = function(x, y, color){
+    addRing(x, y, color || "#fff", 9, 4);
+    setTimeout(function(){ addRing(x, y, color || "#fff", 6, 2); }, 90);
+  };
+
+  FX.confetti = function(count){
+    var n = Math.min(count || 90, room());
+    for(var i = 0; i < n; i++){
+      parts.push({ type:"ribbon",
+        x: Math.random() * window.innerWidth,
+        y: -20 - Math.random() * 120,
+        vx:(Math.random()-0.5)*2.4, vy:(Math.random()*1.6)+1.2,
+        r:(Math.random()*4)+3, g:0.055, drag:0.995,
+        life:1, decay:0.0045,
+        spin:Math.random()*6, spinV:(Math.random()-0.5)*0.34,
+        color: pick() });
+    }
+    kick();
+  };
+
+  // A firework shell: bright core burst plus trailing sparks, launched in sequence.
+  FX.fireworks = function(shells){
+    var n = shells || 5;
+    for(var i = 0; i < n; i++){
+      (function(d){
+        setTimeout(function(){
+          var x = window.innerWidth * (0.15 + Math.random() * 0.7);
+          var y = window.innerHeight * (0.16 + Math.random() * 0.34);
+          var c = pick();
+          FX.burst(x, y, { count:34, speed:7.5, color:c, g:0.15 });
+          FX.burst(x, y, { count:14, speed:9, color:"#fff", g:0.16, type:"spark" });
+          addRing(x, y, c, 6, 2);
+        }, d);
+      })(i * 260);
+    }
+  };
+
+  FX.shake = function(){
+    document.body.classList.remove("fx-shake");
+    void document.body.offsetWidth;              // force reflow so it can replay
+    document.body.classList.add("fx-shake");
+    setTimeout(function(){ document.body.classList.remove("fx-shake"); }, 520);
+  };
+
+  FX.label = function(text, color){
+    var el = document.getElementById("fxLabel");
+    if(!el) return;
+    el.textContent = text;
+    el.style.color = color || "#fde047";
+    el.classList.remove("pop");
+    void el.offsetWidth;
+    el.classList.add("pop");
+  };
+
+  // The DVD corner hit deserved more than a white flash: coloured triple shockwave,
+  // radiating sparks, a ring of confetti and a badge - all in the logo's current colour.
+  FX.cornerHit = function(x, y, color){
+    var c = color || "#fde047";
+    addRing(x, y, c, 11, 5);
+    setTimeout(function(){ addRing(x, y, "#fff", 8, 3); }, 80);
+    setTimeout(function(){ addRing(x, y, c, 6, 2); }, 170);
+    FX.burst(x, y, { count:44, speed:9, color:c, g:0.1 });
+    FX.burst(x, y, { count:20, speed:11, color:"#fff", g:0.08, type:"spark" });
+    FX.confetti(46);
+    FX.shake();
+    FX.label("COIN PARFAIT !", c);
+  };
+
+  FX.clear = function(){
+    parts.length = 0; rings.length = 0;
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  };
+
+  window.FX = FX;
 })();
 </script>
 
@@ -3662,8 +3879,12 @@ function renderGrandPrizeCeremony(g){
   var runner3 = sorted[2] || null;
 
   sfxGrandCrown();
-  if(window.triggerExplosion){
-    window.triggerExplosion(window.innerWidth/2, window.innerHeight/2, true, "#f59e0b", true);
+  if(window.FX){
+    FX.fireworks(7);
+    FX.confetti(140);
+    FX.shockwave(window.innerWidth/2, window.innerHeight/2, "#f59e0b");
+    FX.shake();
+    FX.label("GRAND GAGNANT !", "#f59e0b");
   }
 
   var html = '<div class="groundhdr">' + ICONS.trophy + ' GRAND GAGNANT DE LA SOIRÉE</div>';
@@ -3849,7 +4070,12 @@ function renderMiniGameDoneHTML(){
       if(isRevealed){
         stopDrumroll();
         sfxZeldaItemGet();
-        if(window.triggerExplosion) window.triggerExplosion(window.innerWidth/2, 220, true, "#f59e0b", true);
+        if(window.FX){
+          FX.burst(window.innerWidth/2, 220, {count:46, speed:8, color:"#fde047", g:0.12});
+          FX.burst(window.innerWidth/2, 220, {count:18, speed:10, color:"#fff", g:0.1, type:"spark"});
+          FX.shockwave(window.innerWidth/2, 220, "#f59e0b");
+          FX.confetti(60);
+        }
       } else {
         startDrumroll(3.5);
       }
@@ -5098,7 +5324,16 @@ function renderKnowPlayer(g){
       if(guessers.length > 0 && (correctCount === 0 || correctCount === guessers.length)){
         sfxZeldaItemGet();
         if(window.triggerExplosion){
-          window.triggerExplosion(window.innerWidth/2, 240, true, correctCount === 0 ? "#ef4444" : "#10b981", true);
+          if(correctCount === 0){
+            FX.shockwave(window.innerWidth/2, 240, "#ef4444");
+            FX.burst(window.innerWidth/2, 240, {count:34, speed:7, color:"#ef4444", g:0.14});
+            FX.shake();
+            FX.label("MYSTÈRE TOTAL", "#ef4444");
+          } else {
+            FX.confetti(100);
+            FX.burst(window.innerWidth/2, 240, {count:34, speed:7, color:"#10b981", g:0.14});
+            FX.label("SANS FAUTE !", "#10b981");
+          }
         }
       }
     }
@@ -5482,7 +5717,11 @@ function renderRoast(g){
       _lastSfxKey = sfxKey;
       if(best > 0){
         sfxZeldaItemGet();
-        if(window.triggerExplosion) window.triggerExplosion(window.innerWidth/2, 240, true, "#ec4899", true);
+        if(window.FX){
+          FX.confetti(110);
+          FX.burst(window.innerWidth/2, 240, {count:40, speed:8, color:"#ec4899", g:0.12});
+          FX.shockwave(window.innerWidth/2, 240, "#ec4899");
+        }
       }
     }
 
