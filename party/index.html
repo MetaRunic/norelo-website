@@ -212,7 +212,7 @@
     background: linear-gradient(115deg, #ef4444, #f59e0b, #10b981, #2563eb, #a855f7, #ec4899, #ef4444);
     background-size: 300% 300%;
     animation: rainbowShift 4s linear infinite;
-    box-shadow: 0 8px 24px rgba(37,99,235,0.45);
+    box-shadow: 0 8px 24px var(--glow-2, rgba(37,99,235,0.45));
     border: 1px solid rgba(255,255,255,0.35);
     text-shadow: 0 1px 3px rgba(0,0,0,0.4);
   }
@@ -275,7 +275,7 @@
   .pcard{display:flex; flex-direction:column; align-items:center; gap:7px; width:70px; animation:pop .3s ease;}
   @keyframes pop{from{opacity:0; transform:scale(.6);} to{opacity:1; transform:none;}}
   .pcard .avatar{width:56px; height:56px; font-size:1.2rem; position:relative;}
-  .pcard .nm{font-size:.78rem; color:#c7d3f0; text-align:center; max-width:70px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .pcard .nm{font-size:.78rem; color:var(--txt); text-align:center; max-width:70px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
   .crown{position:absolute; top:-8px; right:-6px; font-size:.9rem; color:#f59e0b; filter:drop-shadow(0 1px 3px rgba(0,0,0,.6));}
   .empty{color:#5f6f96; font-size:.9rem; align-self:center;}
 
@@ -286,10 +286,10 @@
   /* Dynamic Live Countdown Badge */
   .timer-badge {
     display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(37,99,235,0.25); border: 1.5px solid var(--bl);
+    background: var(--panel2); border: 1.5px solid var(--bl);
     color: #fff; padding: 6px 14px; border-radius: 20px;
     font-size: .95rem; font-weight: 800; margin-top: 14px;
-    box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+    box-shadow: 0 4px 14px var(--glow-2, rgba(37,99,235,0.3));
   }
 
   /* GRAND PRIZE CEREMONY & SCOREBOARD STYLES */
@@ -359,7 +359,7 @@
   .gcard .gbadge{
     background: linear-gradient(135deg, var(--blue), var(--purple));
     color:#fff; font-size:.8rem; font-weight:800; padding:5px 12px; border-radius:20px;
-    box-shadow: 0 3px 10px rgba(37,99,235,0.4);
+    box-shadow: 0 3px 10px var(--glow-2, rgba(37,99,235,0.4));
   }
 
   /* JACKBOX STYLE STYLES FOR "MOST LIKELY TO" */
@@ -379,7 +379,7 @@
     color: rgba(255,255,255,0.85); margin-bottom: 6px;
   }
   .jb-prompt-text {
-    font-size: 1.45rem; font-weight: 900; color: #ffffff; line-height: 1.3;
+    font-size: 1.45rem; font-weight: 900; color: var(--txt); line-height: 1.3;
     text-shadow: 0 2px 6px rgba(0,0,0,0.4);
   }
   .jb-winner-card {
@@ -427,7 +427,7 @@
   .jb-comm-title {
     font-size: 1.15rem;
     font-weight: 900;
-    color: #ffffff;
+    color: var(--txt);
     letter-spacing: 1px;
     text-transform: uppercase;
     display: flex;
@@ -632,7 +632,7 @@
 
   /* Social Media Post Card */
   .post-card{
-    background:#111c44; border:1px solid rgba(255,255,255,0.12); border-radius:18px;
+    background:var(--panel2); border:1px solid var(--bdr); border-radius:18px;
     padding:18px; margin-bottom:18px; box-shadow:0 8px 24px rgba(0,0,0,0.3); text-align:left;
   }
   .post-hdr{display:flex; align-items:center; gap:12px; margin-bottom:12px;}
@@ -655,11 +655,11 @@
   .vgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:16px;}
   .vcell{display:flex; flex-direction:column; align-items:center; gap:8px; padding:13px 6px; border-radius:14px; border:2px solid transparent; background:var(--panel); cursor:pointer; transition:border-color .15s, transform .1s, background .15s;}
   .vcell:active{transform:scale(.95);}
-  .vcell.sel{border-color:var(--bl); background:#132152;}
-  .vcell .vn{font-size:.76rem; color:#c7d3f0; max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .vcell.sel{border-color:var(--bl); background:var(--panel2);}
+  .vcell .vn{font-size:.76rem; color:var(--txt); max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
   .gprogress{text-align:center; color:#8ea0cc; font-size:.88rem; margin-bottom:16px;}
   .rrow{display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:12px; background:var(--panel); margin-bottom:9px;}
-  .rrow.win{background:linear-gradient(120deg,rgba(37,99,235,0.28),rgba(34,197,94,0.16)); border:1px solid var(--bl);}
+  .rrow.win{background:linear-gradient(120deg,var(--panel2),rgba(34,197,94,0.16)); border:1px solid var(--bl);}
   .rrow .rname{flex:1; font-weight:700;}
   .rrow .rcount{font-weight:800; color:var(--bl); font-size:1.1rem;}
 
@@ -696,7 +696,7 @@
   .round-pts-row:nth-child(6) { animation-delay: 0.5s; }
   .round-pts-row:nth-child(7) { animation-delay: 0.6s; }
   .round-pts-row:nth-child(8) { animation-delay: 0.7s; }
-  .round-pts-name { flex: 1; font-size: 0.92rem; font-weight: 700; color: #e2e8f0; }
+  .round-pts-name { flex: 1; font-size: 0.92rem; font-weight: 700; color: var(--txt); }
   .round-pts-val {
     font-size: 1.2rem; font-weight: 900; color: #10b981; min-width: 72px; text-align: right;
     text-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
@@ -714,16 +714,16 @@
   .kp-spot-card {
     display: flex; align-items: center; gap: 14px; padding: 14px;
     border-radius: 18px; margin-bottom: 16px;
-    background: linear-gradient(135deg, rgba(59,130,246,0.18), rgba(6,182,212,0.14));
-    border: 1px solid rgba(96,165,250,0.35);
+    background: var(--panel2);
+    border: 1px solid var(--bdr);
   }
   .kp-spot-meta { flex: 1; min-width: 0; }
   .kp-spot-label {
     font-size: .68rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
-    color: #7dd3fc; margin-bottom: 3px;
+    color: var(--bl); margin-bottom: 3px;
   }
   .kp-spot-name {
-    font-size: 1.2rem; font-weight: 900; color: #fff;
+    font-size: 1.2rem; font-weight: 900; color: var(--txt);
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
   .kp-opt {
@@ -736,11 +736,11 @@
     background: linear-gradient(120deg, rgba(16,185,129,0.28), rgba(16,185,129,0.08));
     box-shadow: 0 0 22px rgba(16,185,129,0.35);
   }
-  .kp-opt-txt { flex: 1; font-size: .93rem; font-weight: 700; color: #cbd5e1; line-height: 1.32; }
-  .kp-opt.correct .kp-opt-txt { color: #fff; }
+  .kp-opt-txt { flex: 1; font-size: .93rem; font-weight: 700; color: var(--txt); line-height: 1.32; }
+  .kp-opt.correct .kp-opt-txt { color: var(--txt); }
   .kp-opt-check { color: var(--green); flex-shrink: 0; display: flex; }
   .kp-guessers { display: flex; gap: 3px; flex-shrink: 0; }
-  .kp-guessers .avatar { margin: 0; box-shadow: 0 0 0 2px rgba(10,16,38,.9); }
+  .kp-guessers .avatar { margin: 0; box-shadow: 0 0 0 2px var(--dark); }
   .kp-verdict {
     text-align: center; font-size: 1.02rem; font-weight: 900; line-height: 1.35;
     padding: 12px; border-radius: 14px; margin: 16px 0 4px;
@@ -781,7 +781,7 @@
     animation: starBounce 0.8s ease-in-out infinite alternate;
   }
   .bonus-star-info { flex: 1; text-align: left; }
-  .bonus-star-title { font-size: 1.1rem; font-weight: 900; color: #ffffff; display: flex; align-items: center; gap: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+  .bonus-star-title { font-size: 1.1rem; font-weight: 900; color: var(--txt); display: flex; align-items: center; gap: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
   .bonus-star-desc { font-size: 0.82rem; color: rgba(255,255,255,0.8); margin-top: 2px; }
   .bonus-star-winner { display: flex; flex-direction: column; align-items: center; gap: 2px; }
   
@@ -868,11 +868,11 @@
        IS the joke. Shrinks a little on narrow phones so the text still has room. */
     width: 116px; height: 116px; border-radius: 14px;
     background-size: cover; background-position: center;
-    border: 2px solid rgba(255,255,255,0.25); flex-shrink: 0; box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+    border: 2px solid var(--bdr); flex-shrink: 0; box-shadow: 0 4px 14px rgba(0,0,0,0.4);
     /* Sits under the inline background-image so a dead photo URL reads as a styled
        placeholder instead of an empty hole in the card. */
-    background-color: #1e293b;
-    background-image: linear-gradient(135deg, #1e293b, #334155);
+    background-color: var(--panel);
+    background-image: linear-gradient(135deg, var(--panel), var(--panel2));
   }
   @media (max-width: 360px){
     .business-photo { width: 92px; height: 92px; }
@@ -889,7 +889,7 @@
   .review-shot {
     flex: 1 1 0; min-width: 0; width: 100%; height: auto; max-height: 240px;
     object-fit: contain; border-radius: 12px;
-    background: #0b1229; border: 1px solid rgba(255,255,255,.14);
+    background: var(--dark); border: 1px solid var(--bdr);
   }
   .review-shots.pair .review-shot { max-height: 196px; }
   .review-shot.shot-missing {
@@ -913,7 +913,7 @@
     flex: 1; min-width: 0;
   }
   .business-name {
-    font-size: 1.15rem; font-weight: 900; color: #fff; line-height: 1.25;
+    font-size: 1.15rem; font-weight: 900; color: var(--txt); line-height: 1.25;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .business-location {
@@ -932,7 +932,7 @@
     font-size: 0.75rem; font-weight: 800; color: var(--amber); margin-bottom: 4px;
   }
   .review-quote p {
-    font-size: 0.95rem; font-weight: 600; color: #f1f5f9; line-height: 1.45; font-style: italic; margin: 0;
+    font-size: 0.95rem; font-weight: 600; color: var(--txt); line-height: 1.45; font-style: italic; margin: 0;
   }
 
   .pokemon-reveal-burst {
@@ -1282,7 +1282,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.53</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.54</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
