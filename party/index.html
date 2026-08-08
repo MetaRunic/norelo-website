@@ -1373,7 +1373,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.83</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.84</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -4578,40 +4578,38 @@ var POSTS_PACK = [
     platform: "facebook",
     posterName: "Mikael",
     fullName: "Mikaël Trudeau-Buteau",
-    date: "September 16, 2011",
-    text: "J'AI UNE PS3!!!!!!!!",
-    likes: 1,
-    comments: 5,
-    featuredComment: {
-      author: "Camille Bonin",
-      time: "14y",
-      text: "ça c'est une PLAY STATION 3 (tento en arp xd)",
-      likes: 0
-    }
-  },
-  {
-    platform: "facebook",
-    posterName: "Mikael",
-    fullName: "Mikaël Trudeau-Buteau",
-    date: "September 15, 2011",
-    text: "PS3! pS3! Ps3! ps3!!!!!!",
-    likes: 0,
-    comments: 4,
-    featuredComment: {
-      author: "Pascal Frappier",
-      time: "14y",
-      text: "esque tu la?",
-      likes: 0
-    }
-  },
-  {
-    platform: "facebook",
-    posterName: "Mikael",
-    fullName: "Mikaël Trudeau-Buteau",
-    date: "September 14, 2011",
-    text: "PPPPPPPPPPPPPPPPPPPPSSSSSSSSSSSSSSSSSS333333333333333333",
-    likes: 0,
-    comments: 0
+    subPosts: [
+      {
+        date: "September 16, 2011",
+        text: "J'AI UNE PS3!!!!!!!!",
+        likes: 1,
+        comments: 5,
+        featuredComment: {
+          author: "Camille Bonin",
+          time: "14y",
+          text: "ça c'est une PLAY STATION 3 (tento en arp xd)",
+          likes: 0
+        }
+      },
+      {
+        date: "September 15, 2011",
+        text: "PS3! pS3! Ps3! ps3!!!!!!",
+        likes: 0,
+        comments: 4,
+        featuredComment: {
+          author: "Pascal Frappier",
+          time: "14y",
+          text: "esque tu la?",
+          likes: 0
+        }
+      },
+      {
+        date: "September 14, 2011",
+        text: "PPPPPPPPPPPPPPPPPPPPSSSSSSSSSSSSSSSSSS333333333333333333",
+        likes: 0,
+        comments: 0
+      }
+    ]
   }
 ];
 
@@ -4649,6 +4647,7 @@ function launchWhoPosted(){
       comments: item.comments || 0,
       image: item.image || "",
       featuredComment: item.featuredComment || null,
+      subPosts: item.subPosts || null,
       posterId: assignedId
     };
   });
@@ -4666,6 +4665,14 @@ function launchWhoPosted(){
 }
 
 function renderSocialPostHTML(item, isRevealed, realPoster){
+  if(item.subPosts && item.subPosts.length > 0){
+    return item.subPosts.map(function(sub){
+      var merged = {};
+      for(var k in item){ if(k !== 'subPosts') merged[k] = item[k]; }
+      for(var s in sub){ merged[s] = sub[s]; }
+      return renderSocialPostHTML(merged, isRevealed, realPoster);
+    }).join('<div style="height:14px;"></div>');
+  }
   var platform = item.platform || "facebook";
   var myPlayer = getPlayer(myId) || { name: "Toi" };
   var html = "";
