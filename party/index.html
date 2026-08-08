@@ -1373,7 +1373,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.92</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.93</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -4865,6 +4865,57 @@ var POSTS_PACK = [
       text: "merci",
       likes: 0
     }
+  },
+  {
+    platform: "facebook",
+    posterName: "Jasmine",
+    fullName: "Jasmine Levasseur",
+    date: "April 29, 2021",
+    text: "anyone have dogs i can walk? ;-; im tired of walking alone",
+    likes: 7,
+    likeIcon: "❤️👍😆",
+    comments: 21,
+    featuredComment: {
+      author: "Audrey Landry",
+      time: "5y",
+      text: "meeee 🙋‍♀️",
+      likes: 0
+    }
+  },
+  {
+    platform: "facebook",
+    posterName: "Jasmine",
+    fullName: "Jasmine Levasseur",
+    date: "December 27, 2019",
+    text: "Sup everyone... I got hacked... if you recieved a weird link from me just ignore it... dont be dumb like me...thanks",
+    likes: 10,
+    comments: 1
+  },
+  {
+    platform: "facebook",
+    posterName: "Jasmine",
+    fullName: "Jasmine Levasseur",
+    date: "August 5, 2019",
+    text: "Happy birthday to you, happy birthday to you, happy birthday dear curiosity rover, happy birthday to you ❤️❤️❤️",
+    likes: 6,
+    likeIcon: "👍❤️🥺",
+    comments: 0
+  },
+  {
+    platform: "facebook",
+    posterName: "Jasmine",
+    fullName: "Jasmine Levasseur",
+    date: "September 20, 2018",
+    text: "Reminder to ANYONE that my house is a safe zone ❤️ Coffee can be on in minutes, or if you prefer tea, no problem. I will always be available - even if we haven't talked in a while. Even if you think it's weird, or we aren't on speaking terms. Text me, call me, message me, anything. I will be there. I am always a shoulder to cry on and an ear to listen. Nothing is worse than being alone and going through things alone. 💕\n#MentalHealthAwareness. #ItsOkNotToBeOk",
+    likes: 20,
+    likeIcon: "👍❤️",
+    comments: 8,
+    featuredComment: {
+      author: "Zachary Marcotte",
+      time: "7y",
+      text: "That...actually sounds lovely. I'll keep it in mind",
+      likes: 1
+    }
   }
 ];
 
@@ -5025,6 +5076,10 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
       rxHTML = '<span class="fb-like-icon" style="background:#f7b125;">😆</span><span class="fb-like-icon" style="background:#e44d3a;margin-left:-4px;">😡</span><span class="fb-like-icon" style="background:#f7b125;margin-left:-4px;">😢</span>';
     } else if(rxRaw === "👍😆😡"){
       rxHTML = '<span class="fb-like-icon" style="background:#1877f2;">👍</span><span class="fb-like-icon" style="background:#f7b125;margin-left:-4px;">😆</span><span class="fb-like-icon" style="background:#e44d3a;margin-left:-4px;">😡</span>';
+    } else if(rxRaw === "❤️👍😆"){
+      rxHTML = '<span class="fb-like-icon" style="background:#f33e58;">❤️</span><span class="fb-like-icon" style="background:#1877f2;margin-left:-4px;">👍</span><span class="fb-like-icon" style="background:#f7b125;margin-left:-4px;">😆</span>';
+    } else if(rxRaw === "👍❤️🥺"){
+      rxHTML = '<span class="fb-like-icon" style="background:#1877f2;">👍</span><span class="fb-like-icon" style="background:#f33e58;margin-left:-4px;">❤️</span><span class="fb-like-icon" style="background:#f7b125;margin-left:-4px;">🥺</span>';
     } else {
       rxHTML = '<span class="fb-like-icon">' + rxRaw + '</span>';
     }
