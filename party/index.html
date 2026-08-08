@@ -803,6 +803,19 @@
     text-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
   }
   .round-pts-val.zero { color: rgba(255,255,255,0.3); text-shadow: none; }
+  .streak-chip {
+    font-size: .66rem; font-weight: 900; color: var(--amber);
+    background: rgba(245,158,11,.14); border: 1px solid rgba(245,158,11,.4);
+    border-radius: 7px; padding: 1px 5px; margin-left: 5px; white-space: nowrap;
+  }
+  .host-skip {
+    padding: 7px 16px; border-radius: 10px; cursor: pointer;
+    background: var(--panel2); border: 1.5px solid var(--bdr); color: var(--gr);
+    font-size: .68rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+    transition: border-color .2s, color .2s;
+  }
+  .host-skip:hover { border-color: var(--bl); color: var(--txt); }
+  .host-skip:active { transform: scale(.96); }
   .round-pts-total {
     font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.4); min-width: 60px; text-align: right;
   }
@@ -1428,7 +1441,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.01</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.02</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -3082,6 +3095,24 @@ function snapshotPreRoundScores(){
   players.forEach(function(p){ _preRoundScores[p.id] = sessionScores[p.id] || 0; });
 }
 
+/* ---- STREAKS ----------------------------------------------------------------
+ * Scoring in consecutive rounds builds a streak worth an escalating bonus, so a hot
+ * run is worth chasing and a cold one stings. Applied centrally off the round-points
+ * delta, which every mode already produces.
+ * -------------------------------------------------------------------------- */
+var _streaks = {};
+function streakBonus(n){ return n >= 2 ? Math.min(n - 1, 3) * 50 : 0; }
+function applyStreaks(rp){
+  players.forEach(function(p){
+    var scored = (rp[p.id] || 0) > 0;
+    _streaks[p.id] = scored ? (_streaks[p.id] || 0) + 1 : 0;
+    if(scored){
+      var b = streakBonus(_streaks[p.id]);
+      if(b > 0) addPoints(p.id, b);
+    }
+  });
+}
+
 function computeRoundPoints(){
   var rp = {};
   players.forEach(function(p){
@@ -3098,11 +3129,19 @@ function renderRoundPointsHTML(roundPts){
   var html = '<div class="round-pts-section">';
   html += '<div class="round-pts-title">Points gagnés cette manche</div>';
   var sorted = players.slice().sort(function(a,b){ return (roundPts[b.id]||0) - (roundPts[a.id]||0); });
+  // Running order so people can see where the round left them standing.
+  var byTotal = players.slice().sort(function(a,b){ return (sessionScores[b.id]||0) - (sessionScores[a.id]||0); });
+  var rankOf = {};
+  byTotal.forEach(function(p, i){ rankOf[p.id] = i + 1; });
   sorted.forEach(function(p){
     var earned = roundPts[p.id] || 0;
+    var st = (typeof _streaks !== "undefined" && _streaks[p.id]) || 0;
     html += '<div class="round-pts-row">';
     html += avatarHTML(p, 32);
-    html += '<div class="round-pts-name">' + escapeHtml(p.name) + '</div>';
+    html += '<div class="round-pts-name">' + escapeHtml(p.name);
+    if(st >= 2) html += ' <span class="streak-chip">🔥' + st + '</span>';
+    html += '</div>';
+    html += '<div class="round-pts-total">#' + rankOf[p.id] + ' · ' + (sessionScores[p.id]||0) + '</div>';
     html += '<div class="round-pts-val' + (earned === 0 ? ' zero' : '') + '" data-target="' + earned + '">+0</div>';
     html += '</div>';
   });
@@ -3339,6 +3378,7 @@ function launchSelectedGame(type){
   // clearing these a mode played twice in one night would score nothing the second time.
   _scoredRoundsTrack = {};
   _bonusAwardedTrack = {};
+  _streaks = {};
 
   if(type === "whoposted"){ launchWhoPosted(); }
   else if(type === "guessrating"){ launchGuessRating(); }
@@ -3367,6 +3407,32 @@ function resetRoundGuardsIfNewGame(g){
   _lastSeenRound = r;
 }
 
+/* The host can shove a stuck phase forward. Every mode has AFK timers now, but this
+ * saves waiting out the clock when the room already knows it is done. */
+function hostForceAdvance(){
+  if(!amHost || !currentGame) return;
+  sfxVote();
+  var ph = currentGame.phase;
+  if(ph === "reveal" || ph === "done"){ nextRound(); return; }
+  if(currentGame.type === "roast" && ph === "submit"){ startRoastVote(); return; }
+  if(currentGame.type === "twotruths" && ph === "write"){ ttAutoSubmit(currentGame.round || 0); return; }
+  if(currentGame.type === "knowplayer" && ph === "spotlight_answer"){
+    var kpIt = knowRoundData(currentGame);
+    db.ref("rooms/" + roomCode + "/game").update({
+      spotlightAnswer: Math.floor(Math.random() * ((kpIt.opts || []).length || 1)),
+      phase: "guess", phaseStartMs: Date.now()
+    });
+    return;
+  }
+  revealRound();
+}
+
+function hostSkipHTML(){
+  if(!amHost || !currentGame || currentGame.type === "voting") return "";
+  return '<div style="text-align:center;margin-top:10px;">' +
+         '<button class="host-skip" onclick="hostForceAdvance()">Passer &rsaquo;&rsaquo;</button></div>';
+}
+
 function renderGame(g){
   if(!g) g = currentGame;
   var area = $("gameArea");
@@ -3389,6 +3455,14 @@ function renderGame(g){
   else if(g.type === "mostlikely"){ renderMostLikely(g); }
   else if(g.type === "ceremony"){ renderGrandPrizeCeremony(g); }
   else { area.innerHTML = ""; }
+
+  // Appended after the mode has painted, so every screen gets it without each
+  // renderer having to remember. The guard stops the 2T1L write phase - which
+  // deliberately skips repainting - from stacking duplicates.
+  var skip = hostSkipHTML();
+  if(skip && area && !area.querySelector(".host-skip")){
+    area.insertAdjacentHTML("beforeend", skip);
+  }
 }
 
 function renderRPSArenaHTML(pA, pB, choices, duelistA, duelistB, subtitle, lastResult, stage){
@@ -3645,14 +3719,20 @@ var MOSTLIKELY_PROMPTS = [
   "Le plus susceptible de gagner une médaille d'or aux Olympiques du chaos."
 ];
 
+var ML_GUESS_SEC = 30;
+
 function launchMostLikely(){
   if(!roomCode || !amHost) return;
+  // Every other launch clears this. Without it the bonus-star ceremony reuses a stale
+  // timestamp from the previous game and the whole show is skipped.
+  _ceremonyStartMs = 0;
   var pool = MOSTLIKELY_PROMPTS.slice();
   shuffle(pool);
-  var chosen = pool.slice(0, 3);
+  var chosen = pool.slice(0, 5);
   db.ref("rooms/" + roomCode).update({
     status: "playing",
-    game: { type:"mostlikely", phase:"guess", round:0, total:chosen.length, prompts:chosen }
+    game: { type:"mostlikely", phase:"guess", round:0, total:chosen.length,
+            phaseStartMs: Date.now(), prompts:chosen }
   });
 }
 
@@ -3671,6 +3751,11 @@ function renderMostLikely(g){
       _lastAutoRevealKey = revealKey;
       setTimeout(revealRound, 600);
     }
+
+    startLiveCountdown(g.phaseStartMs || Date.now(), ML_GUESS_SEC, function(){
+      if(amHost && currentGame && currentGame.type === "mostlikely" && (currentGame.round || 0) === round &&
+         currentGame.phase === "guess") revealRound();
+    });
 
     html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • Le plus susceptible de</div>';
     html += '<div class="jb-prompt-card">';
@@ -4037,7 +4122,8 @@ function revealRound(){
       }
     } else if(game.type === "whosaid"){
       Object.keys(votes).forEach(function(vUid){
-        if(votes[vUid] === game.speakerId){
+        var wsIt = wsRoundData(game);
+        if(votes[vUid] === wsIt.speakerId){
           trackStat("correctGuesses", vUid);
           trackStat("sleuth", vUid);
           addPoints(vUid, 200);
@@ -4075,7 +4161,12 @@ function revealRound(){
     // Compute and store round points so all clients can display them
     setTimeout(function(){
       var rp = computeRoundPoints();
-      db.ref("rooms/" + roomCode + "/game").update({ phase: "reveal", revealStartMs: Date.now(), scored: true, roundPoints: rp });
+      applyStreaks(rp);                 // may add points, so recompute for the panel
+      rp = computeRoundPoints();
+      db.ref("rooms/" + roomCode + "/game").update({
+        phase: "reveal", revealStartMs: Date.now(), scored: true,
+        roundPoints: rp, streaks: _streaks
+      });
     }, 150);
     return;
   }
@@ -7580,47 +7671,113 @@ function voteRoast(authorId){
 // =====================================================================
 //  GAME 6: WHO SAID THIS? (Qui a dit ça ?)
 // =====================================================================
+/* Things somebody in the gang has definitely said. */
 var QUOTES_PACK = [
-  "Promis, j'étais juste en train de fermer les yeux 5 secondes...",
-  "Si quelqu'un demande à la police, on n'a jamais été ici.",
-  "Pourquoi est-ce qu'il est toujours 3h du matin quand je prends les pires décisions de ma vie ?",
-  "Je suis pas soul, c'est la gravité qui marche pas ce soir.",
-  "J'ai dit que j'arrivais dans 5 minutes, pas dans quelle dimension."
+  "Je bois juste une bière pis je m'en vais.",
+  "Non non, je suis correct pour conduire.",
+  "J'ai pas faim... ok juste une bouchée.",
+  "Je te jure que c'est la dernière fois.",
+  "Je me lève tôt demain, faque je reste pas tard.",
+  "C'est moi qui paye ce soir !",
+  "Je vais juste regarder un épisode.",
+  "J'ai lu les conditions d'utilisation au complet.",
+  "Je suis pas fâché, je suis juste déçu.",
+  "On devrait vraiment faire ça plus souvent.",
+  "Je commence le gym lundi, c'est sûr.",
+  "Attends, je connais un raccourci.",
+  "Fais-moi confiance, j'ai déjà fait ça.",
+  "Je vais me coucher dans 5 minutes.",
+  "C'est pas moi qui a mangé ton lunch.",
+  "J'arrive dans 2 minutes.",
+  "Je suis pas soul, c'est le plancher qui bouge.",
+  "On se texte demain pour organiser ça.",
+  "J'ai juste 20 piasses sur moi.",
+  "Je te rembourse la semaine prochaine promis.",
+  "C'est correct, j'aime ça de toute façon.",
+  "Je vais juste jouer une game.",
+  "Ah non, mon téléphone était sur silencieux.",
+  "Je pense que j'ai laissé ça chez toi.",
+  "C'est pas si pire que ça en a l'air.",
+  "Je vais commencer mon régime après les fêtes.",
+  "Je m'en souviens plus du tout de cette soirée-là.",
+  "Ça goûte weird mais je pense que c'est encore bon.",
+  "Je vais juste faire un petit somme de 10 minutes.",
+  "T'inquiète, j'ai tout backupé.",
+  "Je vais nettoyer ça demain matin.",
+  "C'est un investissement, pas une dépense.",
+  "Je te l'avais dit que ça marcherait pas.",
+  "On peut encore rattraper ça.",
+  "Je suis presque arrivé, je pars là.",
+  "J'ai jamais dit ça, tu inventes.",
+  "C'est la dernière shot pis on part.",
+  "Je vais juste checker mon téléphone deux secondes.",
+  "Ça m'a coûté rien pantoute.",
+  "Je vais y penser pis je te reviens là-dessus."
 ];
+
+var WS_GUESS_SEC = 30;
 
 function launchWhoSaid(){
   if(!roomCode || !amHost) return;
   _ceremonyStartMs = 0;
-  var randomSpeaker = players[Math.floor(Math.random()*players.length)] || { id: myId };
-  var randomQuote = QUOTES_PACK[Math.floor(Math.random()*QUOTES_PACK.length)];
+
+  var qPool = QUOTES_PACK.slice();
+  shuffle(qPool);
+  // Rotate the speaker so the same person isn't the answer twice before everyone
+  // has had a turn - the pack is shared, the attribution is what varies.
+  var order = players.slice();
+  shuffle(order);
+  if(order.length === 0) order = [{ id: myId, name: me.name }];
+
+  var total = Math.min(5, qPool.length);
+  var rounds = [];
+  for(var i = 0; i < total; i++){
+    var sp = order[i % order.length];
+    rounds.push({ quote: qPool[i], speakerId: sp.id, speakerName: sp.name });
+  }
 
   db.ref("rooms/" + roomCode).update({
     status: "playing",
     game: {
       type: "whosaid",
       phase: "guess",
-      quote: randomQuote,
-      speakerId: randomSpeaker.id,
+      round: 0,
+      total: rounds.length,
+      phaseStartMs: Date.now(),
+      roundsData: rounds,
       votes: {}
     }
   });
 }
 
+function wsRoundData(g){
+  var r = (g && g.round) || 0;
+  if(g && g.roundsData && g.roundsData[r]) return g.roundsData[r];
+  return { quote: (g && g.quote) || "", speakerId: (g && g.speakerId) || "", speakerName: "" };
+}
+
 function renderWhoSaid(g){
   var area = $("gameArea");
-  var quote = g.quote || "";
+  var wsItem = wsRoundData(g);
+  var quote = wsItem.quote || "";
+  var round = g.round || 0;
+  var total = g.total || 1;
   var votes = g.votes || {};
   var votedCount = Object.keys(votes).length;
   var html = "";
 
   if(g.phase === "guess"){
-    var revealKey = (g.type || "") + "_whosaid";
+    var revealKey = (g.type || "") + "_" + round;
     if(votedCount >= players.length && players.length > 0 && amHost && _lastAutoRevealKey !== revealKey){
       _lastAutoRevealKey = revealKey;
       setTimeout(revealRound, 600);
     }
 
-    html += '<div class="groundhdr">Qui a dit ça ?</div>';
+    startLiveCountdown(g.phaseStartMs || Date.now(), WS_GUESS_SEC, function(){
+      if(amHost && currentGame && currentGame.type === "whosaid" && (currentGame.round || 0) === round) revealRound();
+    });
+
+    html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • Qui a dit ça ?</div>';
     html += '<div class="post-card" style="font-size:1.25rem;font-weight:700;text-align:center;">"' + escapeHtml(quote) + '"</div>';
     html += '<div class="gsub">Vote pour l\'auteur selon toi :</div>';
     html += '<div class="vgrid">';
@@ -7635,7 +7792,7 @@ function renderWhoSaid(g){
     var revealStart = g.revealStartMs || Date.now();
     startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) nextRound(); });
 
-    var speaker = players.find(function(p){ return p.id === g.speakerId; }) || { name: "Quelqu'un" };
+    var speaker = getPlayer(wsItem.speakerId);
     html += '<div class="groundhdr">Auteur révélé !</div>';
     html += '<div style="text-align:center;margin:20px 0;">';
     html += avatarHTML(speaker, 84);
