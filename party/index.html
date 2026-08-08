@@ -73,7 +73,12 @@
 
   /* Responsive Bouncing DVD Logo Meme */
   #dvdLogo{
-    position:fixed; width:65px; height:33px; z-index:2; pointer-events:none;
+    /* Was z-index 2, which put it ABOVE .wrap (z-index 1) so it drifted over the menu
+       buttons. .wrap itself is transparent - only the buttons and cards are painted -
+       so sitting below it keeps the logo visible in the margins while never covering
+       anything interactive. It still paints above #bgCanvas / .glow because both are
+       z-index 0 and the logo comes later in the DOM. */
+    position:fixed; width:65px; height:33px; z-index:0; pointer-events:none;
     color:#2563eb; opacity:0.85; filter:drop-shadow(0 0 14px currentColor);
     will-change:transform; transition:opacity .3s;
   }
@@ -1389,7 +1394,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.99</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.00</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
