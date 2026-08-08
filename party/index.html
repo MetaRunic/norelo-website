@@ -1373,7 +1373,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.59</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.60</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -4163,7 +4163,13 @@ var POSTS_PACK = [
     date: "December 28, 2013",
     text: "so damn bored...",
     likes: 3,
-    comments: 27
+    comments: 27,
+    featuredComment: {
+      author: "Loïc Bergeron",
+      time: "12y",
+      text: "Just masturbate.",
+      likes: 1
+    }
   },
   {
     platform: "facebook",
@@ -4172,7 +4178,13 @@ var POSTS_PACK = [
     date: "November 29, 2013",
     text: "AARRRGGGG! ses qui toute se monde qui me veut en ami!?!?!",
     likes: 2,
-    comments: 5
+    comments: 5,
+    featuredComment: {
+      author: "Michaël Brunelle",
+      time: "12y",
+      text: "mai personne taime",
+      likes: 1
+    }
   }
 ];
 
@@ -4207,6 +4219,7 @@ function launchWhoPosted(){
       likes: item.likes || 1,
       comments: item.comments || 0,
       image: item.image || "",
+      featuredComment: item.featuredComment || null,
       posterId: assignedId
     };
   });
@@ -4268,6 +4281,12 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
       html += '  </div>';
     }
 
+    if(item.featuredComment){
+      var fcIg = item.featuredComment;
+      html += '  <div style="font-size:0.8rem;color:#a8a8a8;margin:6px 0 4px 0;">Afficher les ' + (item.comments || 1) + ' commentaires</div>';
+      html += '  <div style="font-size:0.88rem;color:#f5f5f5;"><span style="font-weight:700;margin-right:6px;">' + escapeHtml(fcIg.author) + '</span>' + escapeHtml(fcIg.text) + '</div>';
+    }
+
     html += '</div>';
 
   } else {
@@ -4310,6 +4329,23 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
     html += '    <div class="fb-action-btn">💬 Commenter</div>';
     html += '    <div class="fb-action-btn">↗️ Partager</div>';
     html += '  </div>';
+
+    if(item.featuredComment){
+      var fcFb = item.featuredComment;
+      html += '  <div style="font-size:0.82rem;color:#b0b3b8;font-weight:600;margin:8px 0 8px 0;">View more comments</div>';
+      html += '  <div style="display:flex;gap:10px;margin-bottom:12px;align-items:flex-start;">';
+      html += '    <div style="width:32px;height:32px;border-radius:50%;background:#3a3b3c;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.75rem;color:#e4e6eb;flex-shrink:0;">' + escapeHtml((fcFb.author || "?")[0]) + '</div>';
+      html += '    <div>';
+      html += '      <div style="background:#3a3b3c;border-radius:16px;padding:8px 14px;font-size:0.85rem;color:#e4e6eb;display:inline-block;">';
+      html += '        <div style="font-weight:700;font-size:0.82rem;color:#e4e6eb;">' + escapeHtml(fcFb.author) + ' <span style="font-weight:400;font-size:0.76rem;color:#b0b3b8;margin-left:6px;">• ' + escapeHtml(fcFb.time || "12y") + '</span></div>';
+      html += '        <div style="font-size:0.88rem;color:#e4e6eb;margin-top:2px;">' + escapeHtml(fcFb.text) + '</div>';
+      html += '      </div>';
+      if(fcFb.likes){
+        html += '      <div style="margin:2px 0 0 12px;font-size:0.74rem;color:#b0b3b8;display:flex;align-items:center;gap:4px;"><span>👍</span></div>';
+      }
+      html += '    </div>';
+      html += '  </div>';
+    }
 
     html += '  <div class="fb-comment-bar">';
     html += avatarHTML(myPlayer, 28);
