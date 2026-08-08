@@ -852,6 +852,40 @@
     color: var(--amber); background: rgba(245,158,11,0.12);
     border: 1px solid rgba(245,158,11,0.4);
   }
+  .tt-slot {
+    background: var(--panel2); border: 1.5px solid var(--bdr); border-radius: 14px;
+    padding: 10px 12px 12px; margin-bottom: 10px; text-align: left;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .tt-slot.lie { border-color: var(--red); box-shadow: 0 0 16px rgba(239,68,68,.28); }
+  .tt-slot-top { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+  .tt-num {
+    width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+    background: var(--panel); border: 1px solid var(--bdr); color: var(--gr);
+    font-size: .66rem; font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .tt-tag {
+    font-size: .58rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--amber); background: rgba(245,158,11,.14);
+    border: 1px solid rgba(245,158,11,.4); border-radius: 7px; padding: 2px 6px;
+  }
+  .tt-help {
+    margin-left: auto; padding: 4px 9px; border-radius: 8px; cursor: pointer;
+    background: var(--panel); border: 1px solid var(--bdr); color: var(--bl);
+    font-size: .62rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+  }
+  .tt-help:active { transform: scale(.95); }
+  .tt-input { margin-bottom: 8px; }
+  .tt-lie-btn {
+    width: 100%; padding: 7px; border-radius: 9px; cursor: pointer;
+    background: transparent; border: 1.5px dashed var(--bdr); color: var(--gr);
+    font-size: .66rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+  }
+  .tt-lie-btn.on {
+    border-style: solid; border-color: var(--red); color: #fff;
+    background: rgba(239,68,68,.22);
+  }
   .kp-verdict.good { color: #6ee7b7; background: rgba(16,185,129,0.14); }
   .kp-verdict.bad { color: #fca5a5; background: rgba(239,68,68,0.14); }
 
@@ -1394,7 +1428,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.00</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.01</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -2377,8 +2411,18 @@ document.addEventListener("DOMContentLoaded", function(){
   var colors = ["#ef4444","#f59e0b","#10b981","#2563eb","#a855f7","#ec4899","#00e5ff","#ffbe0b"];
   var colorIdx = 0;
 
+  // The game selector lives on s-game too (game.type === "voting"), so keying purely
+  // off the screen hid the logo there as well. Hide it only once an actual mini-game
+  // is running.
+  function dvdShouldHide(){
+    if(typeof currentScreen === "undefined" || currentScreen !== "s-game") return false;
+    var g = (typeof currentGame !== "undefined") ? currentGame : null;
+    if(!g || !g.type) return false;                 // still loading - keep it visible
+    return g.type !== "voting";                     // selector and its tiebreaker stay
+  }
+
   function moveDVD(){
-    if(typeof currentScreen !== "undefined" && currentScreen === "s-game"){
+    if(dvdShouldHide()){
       dvd.style.display = "none";
       requestAnimationFrame(moveDVD);
       return;
@@ -4000,13 +4044,33 @@ function revealRound(){
         }
       });
     } else if(game.type === "twotruths"){
+      var ttItem = ttRoundData(game);
+      var ttSolo = ttSoloMode();
+      var ttStats = game.statements || [];
+      var ttHouseLie = !!(ttStats[game.lieIndex] && ttStats[game.lieIndex].h);
+      var ttCaught = 0, ttFooled = 0;
       Object.keys(votes).forEach(function(vUid){
+        if(!ttSolo && vUid === ttItem.tellerId) return;      // the teller knows the answer
         if(votes[vUid] === game.lieIndex){
+          ttCaught++;
           trackStat("correctGuesses", vUid);
           trackStat("lieDetector", vUid);
-          addPoints(vUid, 200);
+          // A house lie is generic and far easier to spot, so it pays half.
+          addPoints(vUid, ttHouseLie ? 100 : 200);
+        } else {
+          ttFooled++;
         }
       });
+      if(ttItem.tellerId){
+        // The storyteller earns for every person their lie fooled, halved if they
+        // leaned on the assist rather than writing it themselves.
+        if(ttFooled > 0) addPoints(ttItem.tellerId, (ttHouseLie ? 35 : 75) * ttFooled);
+        // Clean sweep: nobody saw through it.
+        if(ttCaught === 0 && ttFooled > 0){
+          addPoints(ttItem.tellerId, ttHouseLie ? 75 : 150);
+          trackStat("fooledGroup", ttItem.tellerId);
+        }
+      }
     }
     // Compute and store round points so all clients can display them
     setTimeout(function(){
@@ -4082,6 +4146,12 @@ function nextRound(){
       upd.phase = "spotlight_answer";
       upd.spotlightAnswer = null;
       upd.phaseStartMs = Date.now();
+    } else if(currentGame.type === "twotruths"){
+      // A new storyteller each round, so it restarts at the writing step and the
+      // previous statements have to go.
+      upd.phase = "write";
+      upd.statements = null;
+      upd.lieIndex = null;
     } else if(currentGame.type === "roast"){
       // New target and prompt each round, so it restarts at the writing step and the
       // previous round's punchlines have to be cleared out.
@@ -7584,72 +7654,386 @@ function renderWhoSaid(g){
 // =====================================================================
 //  GAME 7: TWO TRUTHS AND A LIE (2 Vérités 1 Mensonge)
 // =====================================================================
-var TRUTHS_PACK = [
-  { statements: ["J'ai déjà envoyé un message coquin au mauvais destinataire", "Je n'ai jamais bu d'alcool avant 21 ans", "J'ai failli me faire arrêter par la police pendant un party"], lieIndex: 1 },
-  { statements: ["Je me suis déjà réveillé(e) dans une autre ville sans comprendre", "Je sais jouer de 2 instruments de musique", "J'ai déjà embrassé l'ex d'un(e) ami(e)"], lieIndex: 1 },
-  { statements: ["J'ai déjà vomi dans le char d'un ami après une soirée", "J'ai gagné une compétition de danse", "J'ai déjà prétendu être bilingue pour avoir un job"], lieIndex: 1 }
+var TT_WRITE_SEC = 75;      // writing three statements takes longer than tapping
+var TT_GUESS_SEC = 30;
+
+/* House statements for the "Aide-moi" assist. Deliberately generic so they fit anyone,
+   which is exactly why leaning on them is worth fewer points. */
+var TT_HOUSE = [
+  "J'ai déjà dormi dans un aéroport une nuit complète",
+  "Je sais conduire un manuel",
+  "J'ai déjà cassé un os",
+  "Je suis déjà monté(e) sur scène devant du monde",
+  "J'ai déjà mangé quelque chose de vivant",
+  "Je parle trois langues",
+  "J'ai déjà travaillé dans un restaurant",
+  "Je me suis déjà fait arrêter par la police",
+  "J'ai déjà gagné un concours",
+  "Je n'ai jamais eu de contravention",
+  "J'ai déjà voyagé seul(e) dans un autre pays",
+  "Je suis déjà tombé(e) en bicycle devant une gang de monde",
+  "J'ai déjà eu un animal exotique",
+  "Je sais jouer d'un instrument de musique",
+  "J'ai déjà fait du camping en hiver",
+  "Je me suis déjà perdu(e) dans une ville étrangère",
+  "J'ai déjà envoyé un texto au mauvais monde",
+  "Je n'ai jamais vu un film de Star Wars au complet",
+  "J'ai déjà rencontré quelqu'un de connu",
+  "Je me suis déjà endormi(e) au cinéma",
+  "J'ai déjà menti sur mon CV",
+  "Je sais faire du patin",
+  "J'ai déjà mangé une poutine à 4h du matin",
+  "Je me suis déjà fait bannir d'un serveur en ligne",
+  "J'ai déjà eu les cheveux d'une couleur pas naturelle",
+  "Je n'ai jamais bu de café de ma vie",
+  "J'ai déjà fait un road trip de plus de 10 heures",
+  "Je me suis déjà cassé un téléphone dans les toilettes",
+  "J'ai déjà chanté au karaoké devant des inconnus",
+  "Je suis capable de faire une roue",
+  "J'ai déjà oublié l'anniversaire de quelqu'un de proche",
+  "Je me suis déjà fait tatouer sur un coup de tête",
+  "J'ai déjà pleuré devant un film d'animation",
+  "Je sais nager depuis que je suis petit(e)",
+  "J'ai déjà fait semblant d'être malade pour manquer une journée",
+  "Je me suis déjà retrouvé(e) dans le mauvais autobus",
+  "J'ai déjà gagné de l'argent à la loterie",
+  "Je n'ai jamais mis les pieds dans un avion",
+  "J'ai déjà eu une job de moins d'une semaine",
+  "Je suis déjà resté(e) éveillé(e) plus de 24 heures d'affilée",
+  "J'ai déjà brisé quelque chose chez quelqu'un sans le dire",
+  "Je sais faire la cuisine sans recette",
+  "J'ai déjà eu peur d'un animal complètement inoffensif",
+  "Je me suis déjà trompé(e) de maison en revenant d'un party",
+  "J'ai déjà passé une nuit à l'hôpital",
+  "Je collectionne quelque chose depuis des années",
+  "J'ai déjà fait du bénévolat",
+  "Je me suis déjà fait couper les cheveux vraiment trop court",
+  "J'ai déjà mangé la même affaire tous les jours pendant une semaine",
+  "Je suis capable de me lever sans cadran"
 ];
+
+function ttRoundData(g){
+  var r = (g && g.round) || 0;
+  if(g && g.roundsData && g.roundsData[r]) return g.roundsData[r];
+  return { tellerId: "", tellerName: "quelqu'un" };
+}
+function ttSoloMode(){ return players.length <= 1; }
+function ttStillOn(round, phase){
+  return !!currentGame && currentGame.type === "twotruths" &&
+         (currentGame.round || 0) === round && currentGame.phase === phase;
+}
+function ttHouseSample(n){
+  var pool = TT_HOUSE.slice();
+  shuffle(pool);
+  return pool.slice(0, n);
+}
 
 function launchTwoTruths(){
   if(!roomCode || !amHost) return;
   _ceremonyStartMs = 0;
-  var card = TRUTHS_PACK[Math.floor(Math.random()*TRUTHS_PACK.length)];
+
+  // Rotate the storyteller so everyone gets a turn before anyone repeats.
+  var order = players.slice();
+  shuffle(order);
+  if(order.length === 0) order = [{ id: myId, name: me.name }];
+
+  var total = Math.min(5, Math.max(1, order.length));
+  var rounds = [];
+  for(var i = 0; i < total; i++){
+    var t = order[i % order.length];
+    rounds.push({ tellerId: t.id, tellerName: t.name });
+  }
+
   db.ref("rooms/" + roomCode).update({
     status: "playing",
     game: {
       type: "twotruths",
-      phase: "guess",
-      statements: card.statements,
-      lieIndex: card.lieIndex,
+      phase: "write",
+      round: 0,
+      total: rounds.length,
+      phaseStartMs: Date.now(),
+      roundsData: rounds,
       votes: {}
     }
   });
 }
 
+/* The storyteller's three slots live client-side until they submit, so a Firebase
+   update mid-typing can't wipe what they've written. */
+var _ttDraft = ["", "", ""];
+var _ttHouse = [false, false, false];
+var _ttLie = -1;
+
+function ttResetDraft(){
+  _ttDraft = ["", "", ""]; _ttHouse = [false, false, false]; _ttLie = -1;
+}
+function ttSyncDraftFromInputs(){
+  for(var i = 0; i < 3; i++){
+    var el = $("ttIn" + i);
+    if(el) _ttDraft[i] = el.value;
+  }
+}
+function ttFillHouse(i){
+  ttSyncDraftFromInputs();
+  var used = {};
+  _ttDraft.forEach(function(d){ if(d) used[d] = 1; });
+  var pick = TT_HOUSE.filter(function(s){ return !used[s]; });
+  if(!pick.length) pick = TT_HOUSE;
+  _ttDraft[i] = pick[Math.floor(Math.random() * pick.length)];
+  _ttHouse[i] = true;                       // flagged, and scored lower if it's the lie
+  sfxVote();
+  ttRenderWriteSlots();
+}
+function ttPickLie(i){
+  ttSyncDraftFromInputs();
+  _ttLie = i;
+  sfxVote();
+  ttRenderWriteSlots();
+}
+function ttMarkTyped(i){
+  _ttHouse[i] = false;                      // typing over a house line makes it yours
+  var tag = $("ttTag" + i);
+  if(tag) tag.style.display = "none";
+}
+
+function ttSubmit(){
+  ttSyncDraftFromInputs();
+  if(!roomCode || !myId) return;
+  for(var i = 0; i < 3; i++){
+    if(!_ttDraft[i] || !_ttDraft[i].trim()){
+      toast("Il manque l'énoncé " + (i + 1) + " !");
+      var el = $("ttIn" + i); if(el) el.focus();
+      return;
+    }
+  }
+  if(_ttLie < 0){ toast("Choisis lequel est le mensonge !"); return; }
+  var payload = [];
+  for(var j = 0; j < 3; j++){
+    payload.push({ t: _ttDraft[j].trim().slice(0, 120), h: !!_ttHouse[j] });
+  }
+  sfxVote();
+  db.ref("rooms/" + roomCode + "/game").update({
+    statements: payload,
+    lieIndex: _ttLie,
+    phase: "guess",
+    phaseStartMs: Date.now()
+  });
+  ttResetDraft();
+}
+
+/* Host fallback when the storyteller runs out the clock. */
+function ttAutoSubmit(round){
+  if(!amHost || !ttStillOn(round, "write")) return;
+  var picks = ttHouseSample(3);
+  db.ref("rooms/" + roomCode + "/game").update({
+    statements: picks.map(function(p){ return { t: p, h: true }; }),
+    lieIndex: Math.floor(Math.random() * 3),
+    phase: "guess",
+    phaseStartMs: Date.now()
+  });
+}
+
+function guessLie(idx){
+  if(!roomCode || !myId || !currentGame) return;
+  // The storyteller knows the answer, so they sit this part out unless testing alone.
+  if(!ttSoloMode() && myId === ttRoundData(currentGame).tellerId) return;
+  sfxVote();
+  db.ref("rooms/" + roomCode + "/game/votes/" + myId).set(idx);
+}
+
+/* Only the three slots repaint while typing, so the inputs keep focus and content. */
+function ttRenderWriteSlots(){
+  var box = $("ttSlots");
+  if(!box) return;
+  var html = "";
+  for(var i = 0; i < 3; i++){
+    var isLie = (_ttLie === i);
+    html += '<div class="tt-slot' + (isLie ? " lie" : "") + '">';
+    html += '  <div class="tt-slot-top">';
+    html += '    <span class="tt-num">' + (i + 1) + '</span>';
+    html += '    <span class="tt-tag" id="ttTag' + i + '" style="display:' + (_ttHouse[i] ? "inline-block" : "none") + ';">assisté</span>';
+    html += '    <button class="tt-help" onclick="ttFillHouse(' + i + ')" title="Remplir avec un énoncé maison">Aide-moi</button>';
+    html += '  </div>';
+    html += '  <input class="fld tt-input" id="ttIn' + i + '" maxlength="120" placeholder="Énoncé ' + (i + 1) + '…" ' +
+            'value="' + escapeHtml(_ttDraft[i]) + '" oninput="ttMarkTyped(' + i + ')">';
+    html += '  <button class="tt-lie-btn' + (isLie ? " on" : "") + '" onclick="ttPickLie(' + i + ')">' +
+            (isLie ? "★ C'est mon mensonge" : "Marquer comme mensonge") + '</button>';
+    html += '</div>';
+  }
+  box.innerHTML = html;
+}
+
 function renderTwoTruths(g){
   var area = $("gameArea");
+  var round = g.round || 0;
+  var total = g.total || 1;
+  var item = ttRoundData(g);
+  var teller = getPlayer(item.tellerId);
+  if(!players.some(function(p){ return p.id === item.tellerId; })){
+    teller = { id: item.tellerId, name: item.tellerName, color: "#6366f1" };
+  }
+  var solo = ttSoloMode();
+  var iAmTeller = (myId && myId === item.tellerId);
   var statements = g.statements || [];
-  var votes = g.votes || {};
+  var rawVotes = g.votes || {};
+  var votes = {};
+  Object.keys(rawVotes).forEach(function(uid){
+    if(solo || uid !== item.tellerId) votes[uid] = rawVotes[uid];
+  });
+  var guessers = solo ? players.slice()
+                      : players.filter(function(p){ return p.id !== item.tellerId; });
   var votedCount = Object.keys(votes).length;
+  var hdr = '<div class="groundhdr">Manche ' + (round + 1) + ' / ' + total +
+            ' • 2 vérités 1 mensonge</div>';
   var html = "";
 
-  if(g.phase === "guess"){
-    var revealKey = (g.type || "") + "_twotruths";
-    if(votedCount >= players.length && players.length > 0 && amHost && _lastAutoRevealKey !== revealKey){
-      _lastAutoRevealKey = revealKey;
-      setTimeout(revealRound, 600);
+  function tellerCard(label){
+    return '<div class="kp-spot-card">' + avatarHTML(teller, 52) +
+           '<div class="kp-spot-meta"><div class="kp-spot-label">' + label + '</div>' +
+           '<div class="kp-spot-name">' + escapeHtml(item.tellerName) + '</div></div></div>';
+  }
+
+  if(g.phase === "write"){
+    startLiveCountdown(g.phaseStartMs || Date.now(), TT_WRITE_SEC, function(){
+      ttAutoSubmit(round);
+    });
+
+    if(iAmTeller){
+      // Repaint the shell only when the round changes, or typing would be wiped by
+      // every unrelated Firebase update.
+      var key = "tt_write_" + round;
+      if(area.dataset.ttKey !== key){
+        area.dataset.ttKey = key;
+        ttResetDraft();
+        var shell = hdr + tellerCard("C'est ton tour");
+        shell += '<div class="gsub">Écris 2 vérités et 1 mensonge sur toi. Marque lequel est faux.</div>';
+        shell += '<div id="ttSlots"></div>';
+        shell += '<button class="btn pri" style="margin-top:6px;" onclick="ttSubmit()">Envoyer mes énoncés</button>';
+        shell += '<div style="text-align:center;margin-top:10px;"><div class="timer-badge">' +
+                 ICONS.clock + ' <span id="countdownVal">' + TT_WRITE_SEC + 's</span></div></div>';
+        area.innerHTML = shell;
+        ttRenderWriteSlots();
+      }
+      return;                                  // never blow away the inputs
     }
 
-    html += '<div class="groundhdr">2 Vérités 1 Mensonge</div>';
-    html += '<div class="gprompt">Trouve le FAUX énoncé :</div>';
+    area.dataset.ttKey = "";
+    html += hdr;
+    html += tellerCard("Rédige ses énoncés");
+    html += '<div class="gsub">Prépare-toi à démasquer le mensonge…</div>';
+    html += '<div class="waiting">' + escapeHtml(item.tellerName) + ' écrit ses 3 énoncés<span class="d"></span></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock +
+            ' <span id="countdownVal">' + TT_WRITE_SEC + 's</span></div></div>';
 
-    statements.forEach(function(stmt, idx){
-      var sel = (votes[myId] === idx) ? " pri" : " sec";
-      html += '<button class="btn' + sel + '" style="margin-bottom:12px;text-align:left;" onclick="guessLie(' + idx + ')">' + (idx+1) + '. ' + escapeHtml(stmt) + '</button>';
+  } else if(g.phase === "guess"){
+    area.dataset.ttKey = "";
+    var advKey = "twotruths_" + round;
+    var everyoneIn = (guessers.length === 0) || (votedCount >= guessers.length);
+    if(everyoneIn && amHost && _lastAutoRevealKey !== advKey){
+      _lastAutoRevealKey = advKey;
+      setTimeout(revealRound, 600);
+    }
+    startLiveCountdown(g.phaseStartMs || Date.now(), TT_GUESS_SEC, function(){
+      if(amHost && ttStillOn(round, "guess")) revealRound();
     });
-    html += '<div class="waiting">' + (votedCount >= players.length ? "Tout le monde a deviné ! Révélation..." : "Trouve le mensonge") + '<span class="d"></span></div>';
+
+    html += hdr;
+    html += tellerCard("Qui ment ?");
+    html += '<div class="gprompt" style="font-size:1.1rem;">Lequel est le mensonge de ' +
+            escapeHtml(item.tellerName) + ' ?</div>';
+
+    if(iAmTeller && !solo){
+      statements.forEach(function(st, idx){
+        var mine = (idx === g.lieIndex);
+        html += '<div class="kp-opt' + (mine ? " correct" : "") + '"><div class="kp-opt-txt">' +
+                (idx + 1) + '. ' + escapeHtml(st.t) + '</div>' +
+                (mine ? '<span class="authentic-tag">ton mensonge</span>' : '') + '</div>';
+      });
+      html += '<div class="gprogress">' + votedCount + ' / ' + guessers.length + ' ont deviné</div>';
+      html += '<div class="waiting">La gang cherche ton mensonge<span class="d"></span></div>';
+    } else {
+      statements.forEach(function(st, idx){
+        var sel = (votes[myId] === idx) ? " pri" : " sec";
+        html += '<button class="btn' + sel + '" style="margin-bottom:12px;text-align:left;" onclick="guessLie(' +
+                idx + ')">' + (idx + 1) + '. ' + escapeHtml(st.t) + '</button>';
+      });
+      html += '<div class="gprogress">' + votedCount + ' / ' + guessers.length + ' ont deviné</div>';
+      html += '<div class="waiting">' + (everyoneIn ? "Tout le monde a deviné ! Révélation..." :
+              (typeof votes[myId] === "number" ? "Réponse envoyée !" : "Trouve le mensonge")) +
+              '<span class="d"></span></div>';
+    }
+    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock +
+            ' <span id="countdownVal">' + TT_GUESS_SEC + 's</span></div></div>';
 
   } else if(g.phase === "reveal"){
-    var revealStart = g.revealStartMs || Date.now();
-    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) nextRound(); });
+    area.dataset.ttKey = "";
+    var isLast = (round + 1 >= total);
+    startLiveCountdown(g.revealStartMs || Date.now(), 6, function(){ if(amHost) nextRound(); });
 
-    html += '<div class="groundhdr">Le mensonge était :</div>';
-    var lieText = statements[g.lieIndex] || "";
-    html += '<div style="background:rgba(239,68,68,0.2);border:2px solid var(--red);padding:18px;border-radius:16px;font-size:1.2rem;font-weight:800;text-align:center;margin-bottom:20px;color:#fff;">' + escapeHtml(lieText) + '</div>';
+    var lie = g.lieIndex;
+    var fooled = 0, caught = 0;
+    Object.keys(votes).forEach(function(uid){
+      if(votes[uid] === lie) caught++; else fooled++;
+    });
+    var houseLie = !!(statements[lie] && statements[lie].h);
+
+    var sfxKey = "tt_" + round + "_reveal";
+    if(_lastSfxKey !== sfxKey){
+      _lastSfxKey = sfxKey;
+      if(guessers.length > 0 && caught === 0){
+        if(window.FX){ FX.shockwave(window.innerWidth / 2, 240, "#6366f1"); FX.shake();
+                       FX.label("PERSONNE N'A VU !", "#818cf8"); }
+      } else if(guessers.length > 0 && caught === guessers.length){
+        if(window.FX){ FX.confetti(90); FX.label("TOUS DÉMASQUÉ !", "#10b981"); }
+      }
+    }
+
+    html += '<div class="groundhdr">Manche ' + (round + 1) + ' / ' + total + ' • Le mensonge</div>';
+    html += '<div style="text-align:center;margin-bottom:8px;">' + avatarHTML(teller, 72) + '</div>';
+
+    statements.forEach(function(st, idx){
+      var isLieRow = (idx === lie);
+      var backers = guessers.filter(function(p){ return votes[p.id] === idx; });
+      html += '<div class="kp-opt' + (isLieRow ? "" : " correct") + '" style="' +
+              (isLieRow ? "border-color:var(--red);background:linear-gradient(120deg,rgba(239,68,68,.26),rgba(239,68,68,.08));opacity:1;" : "") + '">';
+      html += '<div class="kp-opt-txt">' + (idx + 1) + '. ' + escapeHtml(st.t) + '</div>';
+      if(st.h) html += '<span class="authentic-tag">maison</span>';
+      if(backers.length){
+        html += '<div class="kp-guessers">';
+        backers.forEach(function(p){ html += avatarHTML(p, 26); });
+        html += '</div>';
+      }
+      html += '<span class="kp-opt-check">' + (isLieRow ? "✕" : ICONS.check) + '</span>';
+      html += '</div>';
+    });
+
+    if(guessers.length > 0){
+      if(caught === 0){
+        html += '<div class="kp-verdict bad">Personne n\'a trouvé ! ' + escapeHtml(item.tellerName) +
+                ' ment beaucoup trop bien.</div>';
+      } else if(caught === guessers.length){
+        html += '<div class="kp-verdict good">Démasqué par tout le monde !</div>';
+      } else {
+        html += '<div class="kp-verdict good">' + caught + ' sur ' + guessers.length +
+                ' ont trouvé le mensonge.</div>';
+      }
+      if(houseLie){
+        html += '<div class="reveal-hint" style="margin-top:8px;">Mensonge maison — points réduits pour ' +
+                escapeHtml(item.tellerName) + '.</div>';
+      }
+    }
+
     html += renderRoundPointsHTML(g.roundPoints);
-    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' Fin du jeu dans <span id="countdownVal">5s</span></div></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' ' +
+            (isLast ? "Fin du jeu" : "Prochaine manche") + ' dans <span id="countdownVal">6s</span></div></div>';
+
   } else if(g.phase === "done"){
+    area.dataset.ttKey = "";
     html += renderMiniGameDoneHTML();
   }
 
   area.innerHTML = html;
   if(g.phase === "reveal") animateCounters(g);
-}
-
-function guessLie(idx){
-  if(!roomCode || !myId) return;
-  sfxVote();
-  db.ref("rooms/" + roomCode + "/game/votes/" + myId).set(idx);
 }
 
 // =====================================================================
