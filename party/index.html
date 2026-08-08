@@ -1373,7 +1373,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.63</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.64</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -4203,6 +4203,22 @@ var POSTS_PACK = [
     text: "This is awesome!!",
     likes: 0,
     comments: 0
+  },
+  {
+    platform: "facebook",
+    posterName: "Sydney",
+    fullName: "Sydney Dufresne-Kalaschnick",
+    feeling: "is 😃 feeling Itchy.",
+    date: "July 1, 2017",
+    text: "Spent a wonderful day but am now covered in 15 mosquito bites",
+    likes: 0,
+    comments: 1,
+    featuredComment: {
+      author: "Helen Aitken-Williams",
+      time: "9y",
+      text: "I feel you😂😂 I have 20 just on my legs",
+      likes: 1
+    }
   }
 ];
 
@@ -4234,6 +4250,7 @@ function launchWhoPosted(){
       text: item.text || "",
       fullName: item.fullName || (realP ? realP.name : "Anonyme"),
       date: item.date || "Post",
+      feeling: item.feeling || "",
       likes: item.likes || 1,
       comments: item.comments || 0,
       image: item.image || "",
@@ -4312,16 +4329,17 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
     html += '<div class="fb-post-card">';
     html += '  <div class="fb-post-hdr">';
     html += '    <div class="fb-hdr-left">';
+    var feelingTxt = item.feeling ? (' <span style="font-weight:400;color:#b0b3b8;font-size:0.84rem;">' + escapeHtml(item.feeling) + '</span>') : '';
     if(!isRevealed){
       html += '      <div class="skel-av"></div>';
       html += '      <div>';
-      html += '        <div class="skel-bar skel-name"></div>';
+      html += '        <div class="fb-author-name" style="display:flex;align-items:center;gap:6px;"><div class="skel-bar skel-name"></div>' + feelingTxt + '</div>';
       html += '        <div class="fb-post-date">' + escapeHtml(item.date || "2014") + ' • <span style="font-size:0.7rem;">👥</span></div>';
       html += '      </div>';
     } else {
       html += avatarHTML(realPoster, 40);
       html += '      <div>';
-      html += '        <div class="fb-author-name">' + escapeHtml(item.fullName || realPoster.name) + '</div>';
+      html += '        <div class="fb-author-name">' + escapeHtml(item.fullName || realPoster.name) + feelingTxt + '</div>';
       html += '        <div class="fb-post-date">' + escapeHtml(item.date || "2014") + ' • <span style="font-size:0.7rem;">👥</span></div>';
       html += '      </div>';
     }
