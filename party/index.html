@@ -1373,7 +1373,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.85</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.86</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -4625,6 +4625,79 @@ var POSTS_PACK = [
       text: "Cristie de PSN qui s'obstine avec ma date de fête ******* je sais quand je suis né ***** de gang d'épais!!!",
       likes: 0
     }
+  },
+  {
+    platform: "facebook",
+    posterName: "Jayson",
+    fullName: "Jayson Ritchie",
+    date: "April 2, 2022",
+    text: "Pis toé euhh... y te reste tu pomal de papier de toilet?",
+    likes: 4,
+    likeIcon: "😆",
+    comments: 5,
+    featuredComment: {
+      author: "Kaven Boudreau",
+      time: "4y",
+      text: "A date j'en ai pas manqué mais notre gouvernement fait tellement chié que ça pourrait venir vite 🤣🤣",
+      likes: 2
+    }
+  },
+  {
+    platform: "facebook",
+    posterName: "Jayson",
+    fullName: "Jayson Ritchie",
+    date: "March 16, 2020",
+    text: "Si le savon tue le virus, je peux tu boire du bleach pour être safe?",
+    likes: 3,
+    likeIcon: "👍❤️😲",
+    comments: 18,
+    featuredComment: {
+      author: "Alex Duval",
+      time: "6y",
+      text: "Jai litteralement bue du purell pis jai juste des brulure destomac true story a 100%",
+      likes: 1
+    }
+  },
+  {
+    platform: "facebook",
+    posterName: "Jayson",
+    fullName: "Jayson Ritchie",
+    date: "June 1, 2019",
+    text: "Nirvana c'est une marque de linge fight me",
+    likes: 5,
+    likeIcon: "😆😡😢",
+    comments: 10,
+    featuredComment: {
+      author: "Alex Duval",
+      time: "7y",
+      text: "Gonna beat yo ass",
+      likes: 0
+    }
+  },
+  {
+    platform: "facebook",
+    posterName: "Jayson",
+    fullName: "Jayson Ritchie",
+    date: "July 1, 2017",
+    text: "Slowly, her mouth opened, contorted with pleasure. \"Mmmmmmm,\" she moaned. \"This is a delicious sandwich.\"",
+    likes: 5,
+    comments: 1
+  },
+  {
+    platform: "facebook",
+    posterName: "Jayson",
+    fullName: "Jayson Ritchie",
+    date: "October 30, 2016",
+    text: "Rester en pyjama toute la journer compte tu comme un costume? xD",
+    likes: 7,
+    likeIcon: "👍😆😡",
+    comments: 3,
+    featuredComment: {
+      author: "Gabriel Gunther",
+      time: "9y",
+      text: "Déguise toi comme Vendredi dans Robinson",
+      likes: 1
+    }
   }
 ];
 
@@ -4775,8 +4848,14 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
     var rxHTML = "";
     if(rxRaw === "👍❤️"){
       rxHTML = '<span class="fb-like-icon" style="background:#1877f2;">👍</span><span class="fb-like-icon" style="background:#f33e58;margin-left:-4px;">❤️</span>';
+    } else if(rxRaw === "👍❤️😲"){
+      rxHTML = '<span class="fb-like-icon" style="background:#1877f2;">👍</span><span class="fb-like-icon" style="background:#f33e58;margin-left:-4px;">❤️</span><span class="fb-like-icon" style="background:#f7b125;margin-left:-4px;">😲</span>';
     } else if(rxRaw === "👍😡😲"){
       rxHTML = '<span class="fb-like-icon" style="background:#1877f2;">👍</span><span class="fb-like-icon" style="background:#e44d3a;margin-left:-4px;">😡</span><span class="fb-like-icon" style="background:#f7b125;margin-left:-4px;">😲</span>';
+    } else if(rxRaw === "😆😡😢"){
+      rxHTML = '<span class="fb-like-icon" style="background:#f7b125;">😆</span><span class="fb-like-icon" style="background:#e44d3a;margin-left:-4px;">😡</span><span class="fb-like-icon" style="background:#f7b125;margin-left:-4px;">😢</span>';
+    } else if(rxRaw === "👍😆😡"){
+      rxHTML = '<span class="fb-like-icon" style="background:#1877f2;">👍</span><span class="fb-like-icon" style="background:#f7b125;margin-left:-4px;">😆</span><span class="fb-like-icon" style="background:#e44d3a;margin-left:-4px;">😡</span>';
     } else {
       rxHTML = '<span class="fb-like-icon">' + rxRaw + '</span>';
     }
