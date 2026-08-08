@@ -1373,7 +1373,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.94</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.95</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -4146,13 +4146,19 @@ function renderGrandPrizeCeremony(g){
 // =====================================================================
 //  GAME 2: WHO POSTED THIS? (Qui a posté ça ?)
 // =====================================================================
+/* POSTS_PACK - real posts supplied by the group.
+   text / date / feeling hold the ORIGINAL wording (often English).
+   textFr / dateFr / feelingFr hold the French rendering used while LANG === "fr".
+   tx(item, key) picks the right one, so a future language toggle needs no data work. */
 var POSTS_PACK = [
   {
     platform: "facebook",
     posterName: "Kevin",
     fullName: "Kevin Kenney",
     date: "February 24, 2014",
+    dateFr: "24 février 2014",
     text: "BRAIN, why y no sleep!?",
+    textFr: "CERVEAU, pourquoi tu dors pas !?",
     likes: 1,
     comments: 0
   },
@@ -4161,14 +4167,17 @@ var POSTS_PACK = [
     posterName: "Kevin",
     fullName: "Kevin Kenney",
     date: "December 28, 2013",
+    dateFr: "28 décembre 2013",
     text: "so damn bored...",
+    textFr: "tellement écœuré de rien faire...",
     likes: 3,
     comments: 27,
     featuredComment: {
-      author: "Loïc Bergeron",
-      time: "12y",
       text: "Just masturbate.",
-      likes: 1
+      textFr: "Masturbe-toi, simple.",
+      likes: 1,
+      author: "Loïc Bergeron",
+      time: "12y"
     }
   },
   {
@@ -4176,14 +4185,16 @@ var POSTS_PACK = [
     posterName: "Kevin",
     fullName: "Kevin Kenney",
     date: "November 29, 2013",
+    dateFr: "29 novembre 2013",
     text: "AARRRGGGG! ses qui toute se monde qui me veut en ami!?!?!",
     likes: 2,
     comments: 5,
     featuredComment: {
-      author: "Michaël Brunelle",
-      time: "12y",
       text: "mai personne taime",
-      likes: 1
+      textFr: "mai personne taime",
+      likes: 1,
+      author: "Michaël Brunelle",
+      time: "12y"
     }
   },
   {
@@ -4191,7 +4202,9 @@ var POSTS_PACK = [
     posterName: "Sydney",
     fullName: "Sydney Dufresne-Kalaschnick",
     date: "December 16, 2017",
+    dateFr: "16 décembre 2017",
     text: "The special effects are the best 😂 I absolutly love this. Very creative idea!",
+    textFr: "Les effets spéciaux sont malades 😂 J'adore complètement. Super bonne idée !",
     likes: 0,
     comments: 0
   },
@@ -4200,7 +4213,9 @@ var POSTS_PACK = [
     posterName: "Sydney",
     fullName: "Sydney Dufresne-Kalaschnick",
     date: "August 3, 2017",
+    dateFr: "3 août 2017",
     text: "This is awesome!!",
+    textFr: "C'est écœurant !!",
     likes: 0,
     comments: 0
   },
@@ -4208,41 +4223,49 @@ var POSTS_PACK = [
     platform: "facebook",
     posterName: "Sydney",
     fullName: "Sydney Dufresne-Kalaschnick",
-    feeling: "is 😃 feeling Itchy.",
     date: "July 1, 2017",
+    dateFr: "1 juillet 2017",
+    feeling: "is 😃 feeling Itchy.",
+    feelingFr: "se sent 😃 qui pique.",
     text: "Spent a wonderful day but am now covered in 15 mosquito bites",
+    textFr: "Journée parfaite mais je suis maintenant couvert de 15 piqûres de maringouins",
     likes: 0,
     comments: 1,
     featuredComment: {
-      author: "Helen Aitken-Williams",
-      time: "9y",
       text: "I feel you😂😂 I have 20 just on my legs",
-      likes: 1
+      likes: 1,
+      author: "Helen Aitken-Williams",
+      time: "9y"
     }
   },
   {
     platform: "facebook",
     posterName: "Sydney",
     fullName: "Sydney Dufresne-Kalaschnick",
-    feeling: "is 😒 feeling annoyed.",
     date: "June 29, 2016",
+    dateFr: "29 juin 2016",
+    feeling: "is 😒 feeling annoyed.",
+    feelingFr: "se sent 😒 tanné.",
     text: "Freakin' mosquito woke me up by biting me 6 times, on the arms an on a hand and now I can't sleep cause it itches to much!",
     likes: 1,
     likeIcon: "😆",
     comments: 2,
     featuredComment: {
-      author: "Suzanne Desjardins",
-      time: "10y",
       text: "Pauvre cocotte. Love you",
-      likes: 0
+      textFr: "Pauvre cocotte. Love you",
+      likes: 0,
+      author: "Suzanne Desjardins",
+      time: "10y"
     }
   },
   {
     platform: "facebook",
     posterName: "Sydney",
     fullName: "Sydney Dufresne-Kalaschnick",
-    feeling: "is 😃 feeling happy with Ursula Kalaschnick.",
     date: "March 26, 2016",
+    dateFr: "26 mars 2016",
+    feeling: "is 😃 feeling happy with Ursula Kalaschnick.",
+    feelingFr: "se sent 😃 heureux avec Ursula Kalaschnick.",
     text: "Saw 3 Snowy Owls on the highway (50)!",
     likes: 4,
     likeIcon: "👍❤️",
@@ -4253,7 +4276,9 @@ var POSTS_PACK = [
     posterName: "Sydney",
     fullName: "Sydney Dufresne-Kalaschnick",
     date: "March 13, 2016",
+    dateFr: "13 mars 2016",
     text: "Americans...",
+    textFr: "Les Américains...",
     likes: 0,
     comments: 0
   },
@@ -4261,16 +4286,20 @@ var POSTS_PACK = [
     platform: "facebook",
     posterName: "Sydney",
     fullName: "Sydney Dufresne-Kalaschnick",
-    feeling: "is 😃 feeling amused.",
     date: "February 1, 2016",
+    dateFr: "1 février 2016",
+    feeling: "is 😃 feeling amused.",
+    feelingFr: "se sent 😃 amusé.",
     text: "When 70% of your timeline is your friend and your mom doing a 👍 spam war...",
+    textFr: "Quand 70% de ton fil d'actualité c'est ton ami et sa mère qui se spamment des 👍...",
     likes: 3,
     comments: 1,
     featuredComment: {
-      author: "Eloise Guilbault",
-      time: "10y",
       text: "Oops",
-      likes: 1
+      textFr: "Oups",
+      likes: 1,
+      author: "Eloise Guilbault",
+      time: "10y"
     }
   },
   {
@@ -4278,14 +4307,16 @@ var POSTS_PACK = [
     posterName: "Sydney",
     fullName: "Sydney Dufresne-Kalaschnick",
     date: "November 6, 2015",
+    dateFr: "6 novembre 2015",
     text: "Big day tomorrow, big day Sunday, Thank god there's no school on Monday!",
     likes: 1,
     comments: 1,
     featuredComment: {
-      author: "Sabrina Blais",
-      time: "10y",
       text: "Yeeessss,I have 2 night shifts to do today and tomorrow at work....it's going to be long",
-      likes: 1
+      textFr: "Ouiiiii, j'ai 2 shifts de nuit à faire aujourd'hui et demain au travail.... ça va être long",
+      likes: 1,
+      author: "Sabrina Blais",
+      time: "10y"
     }
   },
   {
@@ -4293,7 +4324,9 @@ var POSTS_PACK = [
     posterName: "Sydney",
     fullName: "Sydney Dufresne-Kalaschnick",
     date: "October 2, 2015",
+    dateFr: "2 octobre 2015",
     text: "In dance class like...\n\n(•_•)\n<)  )╯\n /  \\\n (•_•)\n<(  (>\n /  \\\n (•_•)       (•_•)\n<)  (>  uh   <)  (>   huh\n /  \\         /  \\",
+    textFr: "En cours de danse genre...\n\n(•_•)\n<)  )╯\n /  \\\n (•_•)\n<(  (>\n /  \\\n (•_•)       (•_•)\n<)  (>  euh   <)  (>   hein\n /  \\         /  \\",
     likes: 8,
     comments: 0
   },
@@ -4301,32 +4334,37 @@ var POSTS_PACK = [
     platform: "facebook",
     posterName: "Sydney",
     fullName: "Sydney Dufresne-Kalaschnick",
-    feeling: "is with Annabelle Laramee and 6 others.",
     date: "November 29, 2014",
+    dateFr: "29 novembre 2014",
+    feeling: "is with Annabelle Laramee and 6 others.",
+    feelingFr: "est avec Annabelle Laramee et 6 autres.",
     text: "Pour la SEMAINE DE RELACHE qui aimerais aller au ZOO DE GRANBY?",
     likes: 2,
     comments: 1,
     featuredComment: {
-      author: "Koraly Vincent Perreault",
-      time: "11y",
       text: "Malorie Peloquin!!!",
-      likes: 0
+      textFr: "Malorie Peloquin!!!",
+      likes: 0,
+      author: "Koraly Vincent Perreault",
+      time: "11y"
     }
   },
   {
     platform: "facebook",
     posterName: "Sydney",
     fullName: "Sydney Dufresne-Kalaschnick",
-    feeling: "is with Élo Tamblini and 6 others.",
     date: "July 21, 2014",
+    dateFr: "21 juillet 2014",
+    feeling: "is with Élo Tamblini and 6 others.",
+    feelingFr: "est avec Élo Tamblini et 6 autres.",
     text: "Quelqu'un veut faire quelque chose demain?",
     likes: 0,
     comments: 4,
     featuredComment: {
-      author: "Élo Tamblini",
-      time: "12y",
       text: "Je travaille mais pas mecredi",
-      likes: 0
+      likes: 0,
+      author: "Élo Tamblini",
+      time: "12y"
     }
   },
   {
@@ -4334,7 +4372,9 @@ var POSTS_PACK = [
     posterName: "Sydney",
     fullName: "Sydney Dufresne-Kalaschnick",
     date: "March 11, 2014",
+    dateFr: "11 mars 2014",
     text: "Jmenmerde imbox steplait",
+    textFr: "Jmenmerde imbox steplait",
     likes: 0,
     comments: 0
   },
@@ -4343,14 +4383,17 @@ var POSTS_PACK = [
     posterName: "Zachary",
     fullName: "Zachary Ritchie",
     date: "September 12, 2015",
+    dateFr: "12 septembre 2015",
     text: "Ha get BURNED!!!",
+    textFr: "Ha CARBONISÉ !!!",
     likes: 2,
     comments: 1,
     featuredComment: {
-      author: "Jesse Bisson",
-      time: "10y",
       text: "get fucking rekt",
-      likes: 2
+      textFr: "fais-toi crisser dessus",
+      likes: 2,
+      author: "Jesse Bisson",
+      time: "10y"
     }
   },
   {
@@ -4358,6 +4401,7 @@ var POSTS_PACK = [
     posterName: "Zachary",
     fullName: "Zachary Ritchie",
     date: "January 31, 2015",
+    dateFr: "31 janvier 2015",
     text: "Just got Twitter tell me ur names on it",
     likes: 0,
     comments: 0
@@ -4367,14 +4411,15 @@ var POSTS_PACK = [
     posterName: "Mikael",
     fullName: "Mikaël Trudeau-Buteau",
     date: "October 2, 2021",
+    dateFr: "2 octobre 2021",
     text: "Salut salut chers amis de facebook, est-ce que par un heureux hasard quelqu'un aurait déjà changé une toilette chez eux? Genre la démanchée du sol pis toute là. Par votre expérience c'était tu bin compliqué ou simple pis il y avait-tu du stock à checker genre pour éviter des dégâts et tout? On a 2 toilettes à changer parce que les 2 ont bien des problèmes et ma mèche est rendu assez courte sur le dit problème. Merci d'avance des conseils et des partages d'expérience! 👍",
     likes: 0,
     comments: 13,
     featuredComment: {
-      author: "Gab Bourdua",
-      time: "4y",
       text: "Personnellement, je ferais venir un plombier ou une plombière. Bonne chance!",
-      likes: 1
+      likes: 1,
+      author: "Gab Bourdua",
+      time: "4y"
     }
   },
   {
@@ -4382,15 +4427,16 @@ var POSTS_PACK = [
     posterName: "Mikael",
     fullName: "Mikaël Trudeau-Buteau",
     date: "January 23, 2021",
+    dateFr: "23 janvier 2021",
     text: "Je vois plein de memes avec Bernie, mais il est où LE meme avec Bernie sur le banc de Forest Gump? Hahaha! Je lances cette idée là juste de même 😂",
     likes: 1,
     likeIcon: "😆",
     comments: 5,
     featuredComment: {
-      author: "Claire De Lune Myeur",
-      time: "5y",
       text: "Je les vue !",
-      likes: 1
+      likes: 1,
+      author: "Claire De Lune Myeur",
+      time: "5y"
     }
   },
   {
@@ -4398,15 +4444,17 @@ var POSTS_PACK = [
     posterName: "Mikael",
     fullName: "Mikaël Trudeau-Buteau",
     date: "July 17, 2018",
+    dateFr: "17 juillet 2018",
     text: "Aller dehors et voir que ton côté conducteur extérieur de ta voiture est couvert d'oeufs explosés.... Original, très original.",
     likes: 10,
     likeIcon: "👍😡😲",
     comments: 9,
     featuredComment: {
-      author: "Steven Ellison",
-      time: "8y",
       text: "Wow, fun",
-      likes: 0
+      textFr: "Wow, le fun",
+      likes: 0,
+      author: "Steven Ellison",
+      time: "8y"
     }
   },
   {
@@ -4414,14 +4462,15 @@ var POSTS_PACK = [
     posterName: "Mikael",
     fullName: "Mikaël Trudeau-Buteau",
     date: "August 17, 2015",
+    dateFr: "17 août 2015",
     text: "Il me faut des références pour faire un passeport.... xD Un répondant aussi..",
     likes: 0,
     comments: 5,
     featuredComment: {
-      author: "Béatrice Fiset",
-      time: "10y",
       text: "Je suis dispo 🙂",
-      likes: 1
+      likes: 1,
+      author: "Béatrice Fiset",
+      time: "10y"
     }
   },
   {
@@ -4429,6 +4478,7 @@ var POSTS_PACK = [
     posterName: "Mikael",
     fullName: "Mikaël Trudeau-Buteau",
     date: "February 3, 2015",
+    dateFr: "3 février 2015",
     text: "Maudite grippe... Mal à gorge, nez qui coule et mal partout.... 2 infectés.. Moi et ma mère.. Seule différence entre les 2, moi je travails demain et elle non sauf que ça scrappe ses vacances...",
     likes: 0,
     comments: 0
@@ -4438,14 +4488,16 @@ var POSTS_PACK = [
     posterName: "Mikael",
     fullName: "Mikaël Trudeau-Buteau",
     date: "November 6, 2014",
+    dateFr: "6 novembre 2014",
     text: "Plus ça avance, plus je m'écoeure.... royalement!",
     likes: 0,
     comments: 11,
     featuredComment: {
-      author: "Jojo Buteau",
-      time: "11y",
       text: "??",
-      likes: 0
+      textFr: "??",
+      likes: 0,
+      author: "Jojo Buteau",
+      time: "11y"
     }
   },
   {
@@ -4453,14 +4505,15 @@ var POSTS_PACK = [
     posterName: "Mikael",
     fullName: "Mikaël Trudeau-Buteau",
     date: "October 22, 2014",
+    dateFr: "22 octobre 2014",
     text: "Salut tout le monde! Je voulais savoir si certains d'entre vous aurait sédulé leur examen théorique de conduite par internet quand vous l'avez fait et si oui devons-nous attendre un appel pour confirmer ou une fois la date et l'heure choisie, on a qu'à se présenter à la SAAQ pour faire l'examen théorique?",
     likes: 0,
     comments: 4,
     featuredComment: {
-      author: "Gab Bourdua",
-      time: "11y",
       text: "il me semble que dès que tu fais la demande, si la date est disponible, alors c'est déjà confirmé tu te présentes au saaq la j...",
-      likes: 0
+      likes: 0,
+      author: "Gab Bourdua",
+      time: "11y"
     }
   },
   {
@@ -4468,14 +4521,15 @@ var POSTS_PACK = [
     posterName: "Mikael",
     fullName: "Mikaël Trudeau-Buteau",
     date: "January 2, 2014",
+    dateFr: "2 janvier 2014",
     text: "Rien de mieux que d'avoir une journée organisée pour une fois et qu'elle tombe à l'eau en .5 sec... 😑",
     likes: 1,
     comments: 2,
     featuredComment: {
-      author: "Chantal Trudeau",
-      time: "12y",
       text: "désolée c ma faute 😟",
-      likes: 0
+      likes: 0,
+      author: "Chantal Trudeau",
+      time: "12y"
     }
   },
   {
@@ -4483,6 +4537,7 @@ var POSTS_PACK = [
     posterName: "Mikael",
     fullName: "Mikaël Trudeau-Buteau",
     date: "April 6, 2013",
+    dateFr: "6 avril 2013",
     text: "Merde! The Walking Dead c'est écœurant comme série, mais c'est chiant la fin de la saison 2 nous donne encore plus le gout de voir la saison 3, mais la putain de saison 3 n'est pas au FUCKING VIDÉOTRON!!!! 🙂 Ceci était une pensée du jour! XD",
     likes: 1,
     comments: 3
@@ -4492,6 +4547,7 @@ var POSTS_PACK = [
     posterName: "Mikael",
     fullName: "Mikaël Trudeau-Buteau",
     date: "February 25, 2013",
+    dateFr: "25 février 2013",
     text: "PS4 ne permettra pas le transfert des données PS3 et PSN.... Point faible définitif de Sony: Incompatibilité rétro!",
     likes: 1,
     comments: 0
@@ -4501,6 +4557,7 @@ var POSTS_PACK = [
     posterName: "Mikael",
     fullName: "Mikaël Trudeau-Buteau",
     date: "February 24, 2013",
+    dateFr: "24 février 2013",
     text: "Les labos de physique me font définitivement chier...",
     likes: 0,
     comments: 0
@@ -4510,14 +4567,15 @@ var POSTS_PACK = [
     posterName: "Mikael",
     fullName: "Mikaël Trudeau-Buteau",
     date: "October 30, 2012",
+    dateFr: "30 octobre 2012",
     text: "Assassin's Creed III, quelle belle création d'Ubisoft! 😉",
     likes: 2,
     comments: 5,
     featuredComment: {
-      author: "Jean-Gabriel Côté",
-      time: "13y",
       text: "essaie le Online !",
-      likes: 0
+      likes: 0,
+      author: "Jean-Gabriel Côté",
+      time: "13y"
     }
   },
   {
@@ -4525,6 +4583,7 @@ var POSTS_PACK = [
     posterName: "Mikael",
     fullName: "Mikaël Trudeau-Buteau",
     date: "October 4, 2012",
+    dateFr: "4 octobre 2012",
     text: "AC III Pré-commandé!!!!",
     likes: 2,
     comments: 0
@@ -4534,14 +4593,15 @@ var POSTS_PACK = [
     posterName: "Mikael",
     fullName: "Mikaël Trudeau-Buteau",
     date: "July 7, 2012",
+    dateFr: "7 juillet 2012",
     text: "Cri** que playstation ça suce à côté de Xbox pour le service enligne!",
     likes: 0,
     comments: 8,
     featuredComment: {
-      author: "Jean-Gabriel Côté",
-      time: "14y",
       text: "sparce c'est toi moi quand j'appelle 5 minute apres c'est fini lol !",
-      likes: 0
+      likes: 0,
+      author: "Jean-Gabriel Côté",
+      time: "14y"
     }
   },
   {
@@ -4549,14 +4609,16 @@ var POSTS_PACK = [
     posterName: "Mikael",
     fullName: "Mikaël Trudeau-Buteau",
     date: "April 17, 2012",
+    dateFr: "17 avril 2012",
     text: "Ya un fucking japonais qui s'est connecté avec mon compte à matin!?!? WTF??!!!!",
     likes: 0,
     comments: 2,
     featuredComment: {
-      author: "Jojo Buteau",
-      time: "14y",
       text: "change tes mots de passe....",
-      likes: 0
+      textFr: "change tes mots de passe....",
+      likes: 0,
+      author: "Jojo Buteau",
+      time: "14y"
     }
   },
   {
@@ -4564,14 +4626,16 @@ var POSTS_PACK = [
     posterName: "Mikael",
     fullName: "Mikaël Trudeau-Buteau",
     date: "December 25, 2011",
+    dateFr: "25 décembre 2011",
     text: "Skyrim sa torche!!!",
+    textFr: "Skyrim sa torche!!!",
     likes: 2,
     comments: 5,
     featuredComment: {
-      author: "Simon Pesant",
-      time: "14y",
       text: "C'est sur",
-      likes: 0
+      likes: 0,
+      author: "Simon Pesant",
+      time: "14y"
     }
   },
   {
@@ -4581,31 +4645,36 @@ var POSTS_PACK = [
     subPosts: [
       {
         date: "September 16, 2011",
+        dateFr: "16 septembre 2011",
         text: "J'AI UNE PS3!!!!!!!!",
         likes: 1,
         comments: 5,
         featuredComment: {
-          author: "Camille Bonin",
-          time: "14y",
           text: "ça c'est une PLAY STATION 3 (tento en arp xd)",
-          likes: 0
+          likes: 0,
+          author: "Camille Bonin",
+          time: "14y"
         }
       },
       {
         date: "September 15, 2011",
+        dateFr: "15 septembre 2011",
         text: "PS3! pS3! Ps3! ps3!!!!!!",
+        textFr: "PS3! pS3! Ps3! ps3!!!!!!",
         likes: 0,
         comments: 4,
         featuredComment: {
-          author: "Pascal Frappier",
-          time: "14y",
           text: "esque tu la?",
-          likes: 0
+          likes: 0,
+          author: "Pascal Frappier",
+          time: "14y"
         }
       },
       {
         date: "September 14, 2011",
+        dateFr: "14 septembre 2011",
         text: "PPPPPPPPPPPPPPPPPPPPSSSSSSSSSSSSSSSSSS333333333333333333",
+        textFr: "PPPPPPPPPPPPPPPPPPPPSSSSSSSSSSSSSSSSSS333333333333333333",
         likes: 0,
         comments: 0
       }
@@ -4616,14 +4685,15 @@ var POSTS_PACK = [
     posterName: "Mikael",
     fullName: "Mikaël Trudeau-Buteau",
     date: "May 15, 2011",
+    dateFr: "15 mai 2011",
     text: "Youppy PSN fonctionne sauf que........... J'AI PERDU MON FUCKING MOT DE PASSE!!!!",
     likes: 0,
     comments: 1,
     featuredComment: {
-      author: "Mikaël Trudeau-Buteau",
-      time: "15y",
       text: "Cristie de PSN qui s'obstine avec ma date de fête ******* je sais quand je suis né ***** de gang d'épais!!!",
-      likes: 0
+      likes: 0,
+      author: "Mikaël Trudeau-Buteau",
+      time: "15y"
     }
   },
   {
@@ -4631,15 +4701,16 @@ var POSTS_PACK = [
     posterName: "Jayson",
     fullName: "Jayson Ritchie",
     date: "April 2, 2022",
+    dateFr: "2 avril 2022",
     text: "Pis toé euhh... y te reste tu pomal de papier de toilet?",
     likes: 4,
     likeIcon: "😆",
     comments: 5,
     featuredComment: {
-      author: "Kaven Boudreau",
-      time: "4y",
       text: "A date j'en ai pas manqué mais notre gouvernement fait tellement chié que ça pourrait venir vite 🤣🤣",
-      likes: 2
+      likes: 2,
+      author: "Kaven Boudreau",
+      time: "4y"
     }
   },
   {
@@ -4647,15 +4718,16 @@ var POSTS_PACK = [
     posterName: "Jayson",
     fullName: "Jayson Ritchie",
     date: "March 16, 2020",
+    dateFr: "16 mars 2020",
     text: "Si le savon tue le virus, je peux tu boire du bleach pour être safe?",
     likes: 3,
     likeIcon: "👍❤️😲",
     comments: 18,
     featuredComment: {
-      author: "Alex Duval",
-      time: "6y",
       text: "Jai litteralement bue du purell pis jai juste des brulure destomac true story a 100%",
-      likes: 1
+      likes: 1,
+      author: "Alex Duval",
+      time: "6y"
     }
   },
   {
@@ -4663,15 +4735,17 @@ var POSTS_PACK = [
     posterName: "Jayson",
     fullName: "Jayson Ritchie",
     date: "June 1, 2019",
+    dateFr: "1 juin 2019",
     text: "Nirvana c'est une marque de linge fight me",
     likes: 5,
     likeIcon: "😆😡😢",
     comments: 10,
     featuredComment: {
-      author: "Alex Duval",
-      time: "7y",
       text: "Gonna beat yo ass",
-      likes: 0
+      textFr: "Tu vas te faire péter la yeule",
+      likes: 0,
+      author: "Alex Duval",
+      time: "7y"
     }
   },
   {
@@ -4679,7 +4753,9 @@ var POSTS_PACK = [
     posterName: "Jayson",
     fullName: "Jayson Ritchie",
     date: "July 1, 2017",
+    dateFr: "1 juillet 2017",
     text: "Slowly, her mouth opened, contorted with pleasure. \"Mmmmmmm,\" she moaned. \"This is a delicious sandwich.\"",
+    textFr: "Lentement, sa bouche s'ouvrit, tordue de plaisir. « Mmmmmmm », gémit-elle. « Ce sandwich est délicieux. »",
     likes: 5,
     comments: 1
   },
@@ -4688,15 +4764,16 @@ var POSTS_PACK = [
     posterName: "Jayson",
     fullName: "Jayson Ritchie",
     date: "October 30, 2016",
+    dateFr: "30 octobre 2016",
     text: "Rester en pyjama toute la journer compte tu comme un costume? xD",
     likes: 7,
     likeIcon: "👍😆😡",
     comments: 3,
     featuredComment: {
-      author: "Gabriel Gunther",
-      time: "9y",
       text: "Déguise toi comme Vendredi dans Robinson",
-      likes: 1
+      likes: 1,
+      author: "Gabriel Gunther",
+      time: "9y"
     }
   },
   {
@@ -4704,14 +4781,16 @@ var POSTS_PACK = [
     posterName: "Jayson",
     fullName: "Jayson Ritchie",
     date: "October 30, 2015",
+    dateFr: "30 octobre 2015",
     text: "J'ai ete a l'ecole deguiser en gangster aujourdhui... jpense que le style me vas bien parce que tout le monde pensait que j'etais pas deguiser x)",
     likes: 12,
     comments: 6,
     featuredComment: {
-      author: "Julie Decelles Poissant",
-      time: "10y",
       text: "Bad boy",
-      likes: 1
+      textFr: "Vilain garçon",
+      likes: 1,
+      author: "Julie Decelles Poissant",
+      time: "10y"
     }
   },
   {
@@ -4719,7 +4798,9 @@ var POSTS_PACK = [
     posterName: "Radu",
     fullName: "Radu Oprița",
     date: "July 11, 2016",
+    dateFr: "11 juillet 2016",
     text: "Apparently facebook didn't like me liking the Portugal football team page and now I got this:\n\"You're temporarily restricted from liking a Page or following/subscribing to a profile until Arrrrgust 10 roundabouts 9:33in the mornin'.\" Lol...\n(btw if you're wondering why it says arrrgust it's cause my language is set to pirate)",
+    textFr: "Apparemment Facebook a pas aimé que j'aime la page de l'équipe de soccer du Portugal et maintenant j'ai ça :\n« Tu es temporairement empêché d'aimer une Page ou de suivre un profil jusqu'à Arrrrgoût 10 dans les alentours de 9h33 du matin. » Lol...\n(en passant si vous vous demandez pourquoi ça dit Arrrrgoût c'est parce que ma langue est réglée sur pirate)",
     likes: 7,
     likeIcon: "👍😆",
     comments: 0
@@ -4729,7 +4810,9 @@ var POSTS_PACK = [
     posterName: "Radu",
     fullName: "Radu Oprița",
     date: "January 1, 2015",
+    dateFr: "1 janvier 2015",
     text: "Steam Logic: Civilization 5: 16$\nCivilization 5 Complete Edition (with all DLC): 13$",
+    textFr: "Logique Steam : Civilization 5 : 16$\nCivilization 5 Complete Edition (avec tous les DLC) : 13$",
     likes: 2,
     comments: 0
   },
@@ -4738,7 +4821,9 @@ var POSTS_PACK = [
     posterName: "Radu",
     fullName: "Radu Oprița",
     date: "June 10, 2014",
+    dateFr: "10 juin 2014",
     text: "GTA V CONFIRMED for PC, Xbox One and PS4 YEEES FINALLY!! GOD xD",
+    textFr: "GTA V CONFIRMÉ sur PC, Xbox One et PS4 OUIIII ENFIN !! MON DIEU xD",
     likes: 3,
     comments: 0
   },
@@ -4747,14 +4832,17 @@ var POSTS_PACK = [
     posterName: "Radu",
     fullName: "Radu Oprița",
     date: "February 12, 2014",
+    dateFr: "12 février 2014",
     text: "k so if everyone's alone for valentines day whats the point of writing it down anymore",
+    textFr: "ok donc si tout le monde est seul à la Saint-Valentin c'est quoi le point de l'écrire encore",
     likes: 4,
     comments: 3,
     featuredComment: {
-      author: "Radu Oprița",
-      time: "12y",
       text: "valentines day is just another day, nothing special xD at least you got your bro",
-      likes: 0
+      textFr: "la Saint-Valentin c'est juste une autre journée, rien de spécial xD au moins t'as ton chum",
+      likes: 0,
+      author: "Radu Oprița",
+      time: "12y"
     }
   },
   {
@@ -4762,14 +4850,17 @@ var POSTS_PACK = [
     posterName: "Radu",
     fullName: "Radu Oprița",
     date: "February 2, 2014",
+    dateFr: "2 février 2014",
     text: "Why is flappy bird so popular, it sucks imo",
+    textFr: "Pourquoi Flappy Bird est si populaire, c'est poche à mon avis",
     likes: 9,
     comments: 3,
     featuredComment: {
-      author: "Yoshita Ramchurn",
-      time: "12y",
       text: "It's addicting yet frustrating and people have something to vent about",
-      likes: 1
+      textFr: "C'est addictif mais frustrant et le monde a de quoi à chialer dessus",
+      likes: 1,
+      author: "Yoshita Ramchurn",
+      time: "12y"
     }
   },
   {
@@ -4777,7 +4868,9 @@ var POSTS_PACK = [
     posterName: "Radu",
     fullName: "Radu Oprița",
     date: "February 16, 2012",
+    dateFr: "16 février 2012",
     text: "Some Chinese prisons make prisoners play MMO's to get gold and sell it for real money for the gouvernement or the prison... OMG BEST PRISON EVER? LOL",
+    textFr: "Des prisons en Chine forcent les prisonniers à jouer à des MMO pour farmer de l'or et le vendre en vrai argent pour le gouvernement ou la prison... OMG MEILLEURE PRISON AU MONDE ? LOL",
     likes: 2,
     comments: 0
   },
@@ -4786,14 +4879,17 @@ var POSTS_PACK = [
     posterName: "Radu",
     fullName: "Radu Oprița",
     date: "October 24, 2011",
+    dateFr: "24 octobre 2011",
     text: "STOP sending me requests... i dont play facebook games anymore.",
+    textFr: "ARRÊTEZ de m'envoyer des invitations... je joue plus aux jeux Facebook.",
     likes: 1,
     comments: 12,
     featuredComment: {
-      author: "Koorosh Semsar",
-      time: "14y",
       text: "WTF",
-      likes: 0
+      textFr: "WTF",
+      likes: 0,
+      author: "Koorosh Semsar",
+      time: "14y"
     }
   },
   {
@@ -4801,6 +4897,7 @@ var POSTS_PACK = [
     posterName: "Radu",
     fullName: "Radu Oprița",
     date: "May 27, 2011",
+    dateFr: "27 mai 2011",
     text: "Nice Tertis... some how the computer maged to get 2 times in row a combo of 4.... witch makes me ALLWAYS go KO bc i got 10 bombs on my screen.... i swear to god if there werent bombs i would be rank 20 by now.... *sigh*",
     likes: 0,
     comments: 0
@@ -4810,14 +4907,16 @@ var POSTS_PACK = [
     posterName: "Radu",
     fullName: "Radu Oprița",
     date: "May 15, 2011",
+    dateFr: "15 mai 2011",
     text: "if my account on psn WAS NOT HACKED, i would still lose my acc cause i dont remember the password of the e-mail on [CENSORED] XD, (poor me and f**k sony XD)",
     likes: 1,
     comments: 1,
     featuredComment: {
-      author: "Koorosh Semsar",
-      time: "15y",
       text: "neck GARVE",
-      likes: 0
+      textFr: "neck GARVE",
+      likes: 0,
+      author: "Koorosh Semsar",
+      time: "15y"
     }
   },
   {
@@ -4825,14 +4924,16 @@ var POSTS_PACK = [
     posterName: "Radu",
     fullName: "Radu Oprița",
     date: "May 2, 2011",
+    dateFr: "2 mai 2011",
     text: "Ben Laden est mort! Yay 🙂",
     likes: 4,
     comments: 8,
     featuredComment: {
-      author: "Suhail Peerbux",
-      time: "15y",
       text: "yeah let's party !!!!!!!!!!!!",
-      likes: 1
+      textFr: "ouais on party !!!!!!!!!!!!",
+      likes: 1,
+      author: "Suhail Peerbux",
+      time: "15y"
     }
   },
   {
@@ -4840,14 +4941,17 @@ var POSTS_PACK = [
     posterName: "Radu",
     fullName: "Radu Oprița",
     date: "December 10, 2010",
+    dateFr: "10 décembre 2010",
     text: "Got a PS3? Add me: [CENSORED] 🙂",
+    textFr: "T'as une PS3 ? Ajoute-moi : [CENSURÉ] 🙂",
     likes: 2,
     comments: 3,
     featuredComment: {
-      author: "Suhail Peerbux",
-      time: "15y",
       text: "LOL you got a ps3 1 year ago",
-      likes: 0
+      textFr: "LOL t'as eu une ps3 il y a 1 an",
+      likes: 0,
+      author: "Suhail Peerbux",
+      time: "15y"
     }
   },
   {
@@ -4856,14 +4960,17 @@ var POSTS_PACK = [
     fullName: "Simon Pageau",
     wallFrom: "Camille Perreault",
     date: "December 23, 2015",
+    dateFr: "23 décembre 2015",
     text: "Bonne fete 🙂",
+    textFr: "Bonne fete 🙂",
     likes: 0,
     comments: 1,
     featuredComment: {
-      author: "Simon Pageau",
-      time: "10y",
       text: "merci",
-      likes: 0
+      textFr: "merci",
+      likes: 0,
+      author: "Simon Pageau",
+      time: "10y"
     }
   },
   {
@@ -4871,15 +4978,18 @@ var POSTS_PACK = [
     posterName: "Jasmine",
     fullName: "Jasmine Levasseur",
     date: "April 29, 2021",
+    dateFr: "29 avril 2021",
     text: "anyone have dogs i can walk? ;-; im tired of walking alone",
+    textFr: "quelqu'un a des chiens que je peux promener ? ;-; je suis tanné de marcher tout seul",
     likes: 7,
     likeIcon: "❤️👍😆",
     comments: 21,
     featuredComment: {
-      author: "Audrey Landry",
-      time: "5y",
       text: "meeee 🙋‍♀️",
-      likes: 0
+      textFr: "moiiii 🙋‍♀️",
+      likes: 0,
+      author: "Audrey Landry",
+      time: "5y"
     }
   },
   {
@@ -4887,7 +4997,9 @@ var POSTS_PACK = [
     posterName: "Jasmine",
     fullName: "Jasmine Levasseur",
     date: "December 27, 2019",
+    dateFr: "27 décembre 2019",
     text: "Sup everyone... I got hacked... if you recieved a weird link from me just ignore it... dont be dumb like me...thanks",
+    textFr: "Salut tout le monde... je me suis fait hacker... si vous avez reçu un lien bizarre de ma part ignorez-le... soyez pas cave comme moi... merci",
     likes: 10,
     comments: 1
   },
@@ -4896,7 +5008,9 @@ var POSTS_PACK = [
     posterName: "Jasmine",
     fullName: "Jasmine Levasseur",
     date: "August 5, 2019",
+    dateFr: "5 août 2019",
     text: "Happy birthday to you, happy birthday to you, happy birthday dear curiosity rover, happy birthday to you ❤️❤️❤️",
+    textFr: "Bonne fête au rover Curiosity ❤️❤️❤️",
     likes: 6,
     likeIcon: "👍❤️🥺",
     comments: 0
@@ -4906,15 +5020,17 @@ var POSTS_PACK = [
     posterName: "Jasmine",
     fullName: "Jasmine Levasseur",
     date: "September 20, 2018",
+    dateFr: "20 septembre 2018",
     text: "Reminder to ANYONE that my house is a safe zone ❤️ Coffee can be on in minutes, or if you prefer tea, no problem. I will always be available - even if we haven't talked in a while. Even if you think it's weird, or we aren't on speaking terms. Text me, call me, message me, anything. I will be there. I am always a shoulder to cry on and an ear to listen. Nothing is worse than being alone and going through things alone. 💕\n#MentalHealthAwareness. #ItsOkNotToBeOk",
     likes: 20,
     likeIcon: "👍❤️",
     comments: 8,
     featuredComment: {
-      author: "Zachary Marcotte",
-      time: "7y",
       text: "That...actually sounds lovely. I'll keep it in mind",
-      likes: 1
+      textFr: "Ça... a l'air vraiment agréable en fait. Je vais y penser",
+      likes: 1,
+      author: "Zachary Marcotte",
+      time: "7y"
     }
   },
   {
@@ -4922,14 +5038,17 @@ var POSTS_PACK = [
     posterName: "Jasmine",
     fullName: "Jasmine Levasseur",
     date: "August 6, 2013",
+    dateFr: "6 août 2013",
     text: "The ones who are crazy enough to think that they can change the world, are the ones that do. 🙂",
+    textFr: "Ceux qui sont assez fous pour penser qu'ils peuvent changer le monde sont ceux qui le font. 🙂",
     likes: 6,
     comments: 2,
     featuredComment: {
-      author: "Josh Gagné",
-      time: "13y",
       text: "Especially Hitler",
-      likes: 3
+      textFr: "Surtout Hitler",
+      likes: 3,
+      author: "Josh Gagné",
+      time: "13y"
     }
   },
   {
@@ -4937,6 +5056,7 @@ var POSTS_PACK = [
     posterName: "Jasmine",
     fullName: "Jasmine Levasseur",
     date: "June 27, 2013",
+    dateFr: "27 juin 2013",
     text: "Went snorkelling in the keys today!! 😀 though I got sun burns on my legs.... XD",
     likes: 4,
     comments: 0
@@ -4946,21 +5066,49 @@ var POSTS_PACK = [
     posterName: "Jasmine",
     fullName: "Jasmine Levasseur",
     date: "June 17, 2013",
+    dateFr: "17 juin 2013",
     text: "funny how our life depense on pieces of paper...",
     likes: 8,
     comments: 0
   }
 ];
 
+/* ---- LANGUAGE ---------------------------------------------------------------
+ * Content carries its original wording in `key` and the French rendering in
+ * `keyFr`. tx() picks whichever the current language needs, so switching to an
+ * English UI later is a LANG change rather than a data migration.
+ * -------------------------------------------------------------------------- */
+var LANG = "fr";               // "fr" | "en" - player-facing toggle comes later
+function tx(obj, key){
+  if(!obj) return "";
+  if(LANG === "fr"){
+    var f = obj[key + "Fr"];
+    if(f !== undefined && f !== null && f !== "") return f;
+  }
+  return obj[key] || "";
+}
+
+// Match a post's original author to a player in the room. The old version used
+// two-way substring matching, so a player called "Al" matched "Kalaschnick" and any
+// one-letter name matched everybody. Compare whole name tokens instead.
 function findAttendeePlayerId(targetName){
   if(!targetName) return null;
-  var targetLower = targetName.toLowerCase().trim();
+  function tokens(s){
+    return String(s || "").toLowerCase()
+      .replace(/[^a-zàâäçéèêëîïôöûùüœ\s-]/g, " ")
+      .split(/[\s-]+/)
+      .filter(function(t){ return t.length >= 3; });
+  }
+  var want = tokens(targetName);
+  if(!want.length) return null;
   var match = players.find(function(p){
-    var pName = (p.name || "").toLowerCase().trim();
-    return pName.includes(targetLower) || targetLower.includes(pName);
+    var have = tokens(p.name);
+    return have.some(function(t){ return want.indexOf(t) !== -1; });
   });
   return match ? match.id : null;
 }
+
+var WP_GUESS_SEC = 30;
 
 function launchWhoPosted(){
   if(!roomCode || !amHost) return;
@@ -4978,13 +5126,17 @@ function launchWhoPosted(){
     return {
       platform: item.platform || "facebook",
       text: item.text || "",
+      textFr: item.textFr || "",          // carried through, or the FR copy is lost here
       fullName: item.fullName || (realP ? realP.name : "Anonyme"),
       wallFrom: item.wallFrom || "",
       date: item.date || "Post",
+      dateFr: item.dateFr || "",
       feeling: item.feeling || "",
-      likes: item.likes || 1,
+      feelingFr: item.feelingFr || "",
+      // A post with 0 likes should show 0, not be bumped to 1 by a falsy check.
+      likes: (typeof item.likes === "number") ? item.likes : 1,
       likeIcon: item.likeIcon || "👍",
-      comments: item.comments || 0,
+      comments: (typeof item.comments === "number") ? item.comments : 0,
       image: item.image || "",
       featuredComment: item.featuredComment || null,
       subPosts: item.subPosts || null,
@@ -4998,6 +5150,7 @@ function launchWhoPosted(){
       type: "whoposted",
       phase: "guess",
       round: 0,
+      phaseStartMs: Date.now(),
       total: rounds.length,
       roundsData: rounds
     }
@@ -5024,10 +5177,10 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
     html += '    <div class="ig-hdr-left">';
     if(!isRevealed){
       html += '      <div class="ig-avatar-ring"><div class="skel-av" style="width:36px;height:36px;"></div></div>';
-      html += '      <div><div class="skel-bar skel-name"></div><div class="ig-location">' + escapeHtml(item.date || "Instagram") + '</div></div>';
+      html += '      <div><div class="skel-bar skel-name"></div><div class="ig-location">' + escapeHtml(tx(item, "date") || "Instagram") + '</div></div>';
     } else {
       html += '      <div class="ig-avatar-ring">' + avatarHTML(realPoster, 38) + '</div>';
-      html += '      <div><div class="ig-handle">' + escapeHtml(item.fullName || realPoster.name) + '</div><div class="ig-location">' + escapeHtml(item.date || "Instagram") + '</div></div>';
+      html += '      <div><div class="ig-handle">' + escapeHtml(item.fullName || realPoster.name) + '</div><div class="ig-location">' + escapeHtml(tx(item, "date") || "Instagram") + '</div></div>';
     }
     html += '    </div>';
     html += '    <div class="ig-dots">•••</div>';
@@ -5053,14 +5206,14 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
       } else {
         html += '    <span class="ig-author-tag">' + escapeHtml(item.fullName || realPoster.name) + '</span>';
       }
-      html += escapeHtml(item.text);
+      html += escapeHtml(tx(item, "text"));
       html += '  </div>';
     }
 
     if(item.featuredComment){
       var fcIg = item.featuredComment;
       html += '  <div style="font-size:0.8rem;color:#a8a8a8;margin:6px 0 4px 0;">Afficher les ' + (item.comments || 1) + ' commentaires</div>';
-      html += '  <div style="font-size:0.88rem;color:#f5f5f5;"><span class="skel-bar" style="display:inline-block;width:70px;height:10px;margin-right:6px;vertical-align:middle;"></span>' + escapeHtml(fcIg.text) + '</div>';
+      html += '  <div style="font-size:0.88rem;color:#f5f5f5;"><span class="skel-bar" style="display:inline-block;width:70px;height:10px;margin-right:6px;vertical-align:middle;"></span>' + escapeHtml(tx(fcIg, "text")) + '</div>';
     }
 
     html += '</div>';
@@ -5070,19 +5223,19 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
     html += '<div class="fb-post-card">';
     html += '  <div class="fb-post-hdr">';
     html += '    <div class="fb-hdr-left">';
-    var feelingTxt = item.feeling ? (' <span style="font-weight:400;color:#b0b3b8;font-size:0.84rem;">' + escapeHtml(item.feeling) + '</span>') : '';
+    var feelingTxt = item.feeling ? (' <span style="font-weight:400;color:#b0b3b8;font-size:0.84rem;">' + escapeHtml(tx(item, "feeling")) + '</span>') : '';
     var wallPrefix = item.wallFrom ? ('<span style="font-weight:700;color:#e4e6eb;">' + escapeHtml(item.wallFrom) + '</span> <span style="color:#b0b3b8;font-weight:400;font-size:0.8rem;margin:0 2px;">▶</span> ') : '';
     if(!isRevealed){
       html += '      <div class="skel-av"></div>';
       html += '      <div>';
       html += '        <div class="fb-author-name" style="display:flex;align-items:center;gap:6px;">' + wallPrefix + '<div class="skel-bar skel-name"></div>' + feelingTxt + '</div>';
-      html += '        <div class="fb-post-date">' + escapeHtml(item.date || "2014") + ' • <span style="font-size:0.7rem;">👥</span></div>';
+      html += '        <div class="fb-post-date">' + escapeHtml(tx(item, "date") || "2014") + ' • <span style="font-size:0.7rem;">👥</span></div>';
       html += '      </div>';
     } else {
       html += avatarHTML(realPoster, 40);
       html += '      <div>';
       html += '        <div class="fb-author-name">' + wallPrefix + escapeHtml(item.fullName || realPoster.name) + feelingTxt + '</div>';
-      html += '        <div class="fb-post-date">' + escapeHtml(item.date || "2014") + ' • <span style="font-size:0.7rem;">👥</span></div>';
+      html += '        <div class="fb-post-date">' + escapeHtml(tx(item, "date") || "2014") + ' • <span style="font-size:0.7rem;">👥</span></div>';
       html += '      </div>';
     }
     html += '    </div>';
@@ -5090,7 +5243,7 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
     html += '  </div>';
 
     if(item.text){
-      html += '  <div class="fb-post-txt">' + escapeHtml(item.text) + '</div>';
+      html += '  <div class="fb-post-txt">' + escapeHtml(tx(item, "text")) + '</div>';
     }
 
     if(item.image){
@@ -5135,7 +5288,7 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
       html += '    <div>';
       html += '      <div style="background:#3a3b3c;border-radius:16px;padding:8px 14px;font-size:0.85rem;color:#e4e6eb;display:inline-block;">';
       html += '        <div style="font-weight:700;font-size:0.82rem;color:#e4e6eb;display:flex;align-items:center;gap:6px;"><div class="skel-bar" style="width:90px;height:10px;"></div><span style="font-weight:400;font-size:0.76rem;color:#b0b3b8;">• ' + escapeHtml(fcFb.time || "12y") + '</span></div>';
-      html += '        <div style="font-size:0.88rem;color:#e4e6eb;margin-top:4px;">' + escapeHtml(fcFb.text) + '</div>';
+      html += '        <div style="font-size:0.88rem;color:#e4e6eb;margin-top:4px;">' + escapeHtml(tx(fcFb, "text")) + '</div>';
       html += '      </div>';
       if(fcFb.likes){
         html += '      <div style="margin:2px 0 0 12px;font-size:0.74rem;color:#b0b3b8;display:flex;align-items:center;gap:4px;"><span>👍</span></div>';
@@ -5171,10 +5324,18 @@ function renderWhoPosted(g){
 
   if(g.phase === "guess"){
     var revealKey = (g.type || "") + "_" + round;
-    if(votedCount >= players.length && players.length > 0 && amHost && _lastAutoRevealKey !== revealKey){
+    var everyoneIn = (votedCount >= players.length && players.length > 0);
+    if(everyoneIn && amHost && _lastAutoRevealKey !== revealKey){
       _lastAutoRevealKey = revealKey;
       setTimeout(revealRound, 600);
     }
+    // Safety net: this mode had no timer, so one player putting their phone down
+    // stalled the round forever.
+    startLiveCountdown(g.phaseStartMs || Date.now(), WP_GUESS_SEC, function(){
+      if(amHost && currentGame && currentGame.type === "whoposted" && (currentGame.round || 0) === round){
+        revealRound();
+      }
+    });
 
     html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • Qui a posté ça ?</div>';
     html += renderSocialPostHTML(item, false, realPoster);
@@ -5203,7 +5364,7 @@ function renderWhoPosted(g){
     html += '<div style="font-size:1.4rem;font-weight:800;margin-top:10px;">C\'était ' + escapeHtml(realPoster.name) + ' !</div>';
     html += '</div>';
     html += renderRoundPointsHTML(g.roundPoints);
-    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' Fin de la manche dans <span id="countdownVal">5s</span></div></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' ' + (round + 1 >= total ? 'Fin du jeu' : 'Prochaine manche') + ' dans <span id="countdownVal">5s</span></div></div>';
 
   } else if(g.phase === "done"){
     html += renderMiniGameDoneHTML();
