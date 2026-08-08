@@ -174,6 +174,15 @@
   }
   .cap-toggle.on { border-color: var(--green); color: #fff; }
   .cap-toggle.on .cap-dot { background: var(--green); box-shadow: 0 0 7px var(--green); }
+  .lang-row { display: flex; gap: 6px; margin-top: 8px; }
+  .lang-btn {
+    flex: 1; padding: 7px 0; border-radius: 9px; cursor: pointer;
+    background: var(--panel2); border: 1.5px solid var(--bdr); color: var(--gr);
+    font-size: .68rem; font-weight: 900; letter-spacing: .06em;
+    transition: border-color .2s, color .2s, background .2s;
+  }
+  .lang-btn:active { transform: scale(.96); }
+  .lang-btn.on { border-color: var(--bl); color: var(--txt); background: var(--panel); }
 
   @keyframes rainbowGlow {
     0% { background-position: 0% 50%; box-shadow: 0 0 15px rgba(239, 68, 68, 0.6); }
@@ -1198,7 +1207,7 @@
 
 <!-- Collapsible Floating Controls Menu (Top-Right) -->
 <div id="audioControls">
-  <button id="controlsMenuToggle" onclick="toggleControlsMenu(event)" title="Options & Musique">
+  <button id="controlsMenuToggle" onclick="toggleControlsMenu(event)" title="Options & Musique" data-i18n-attr="title:ttSettings">
     <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="12" cy="12" r="3"/>
       <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
@@ -1206,33 +1215,40 @@
   </button>
   <div id="controlsMenuDropdown" class="controls-dropdown" onclick="event.stopPropagation();">
     <div class="cd-icons">
-      <button id="audioToggle" onclick="toggleAudio(); event.stopPropagation();" title="Muter / Réactiver la musique">
+      <button id="audioToggle" onclick="toggleAudio(); event.stopPropagation();" title="Muter / Réactiver la musique" data-i18n-attr="title:ttMuteMusic">
         <span id="audioIcon"><svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></span>
       </button>
-      <button id="skipTrackBtn" onclick="skipBgTrack(); event.stopPropagation();" title="Changer de chanson (Skip)">
+      <button id="skipTrackBtn" onclick="skipBgTrack(); event.stopPropagation();" title="Changer de chanson (Skip)" data-i18n-attr="title:ttSkipTrack">
         <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
       </button>
-      <button id="themeToggleBtn" onclick="openThemeShop(); closeControlsMenu(); event.stopPropagation();" title="Boutique de Thèmes (Couleurs & Styles)">
+      <button id="themeToggleBtn" onclick="openThemeShop(); closeControlsMenu(); event.stopPropagation();" title="Boutique de Thèmes (Couleurs & Styles)" data-i18n-attr="title:ttThemeShop">
         <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.92 0 1.7-.75 1.7-1.7 0-.42-.17-.82-.44-1.11-.28-.3-.43-.7-.43-1.12 0-.92.75-1.67 1.67-1.67H16c3.31 0 6-2.69 6-6 0-4.96-4.49-9-10-9z"/></svg>
       </button>
     </div>
     <div class="cd-sep"></div>
     <div class="cap-row">
-      <span>Volume musique</span>
+      <span data-i18n="volumeLabel">Volume musique</span>
       <span class="cap-val" id="musicVolVal">25%</span>
     </div>
     <input id="musicVolSlider" class="cap-slider" type="range" min="0" max="100" step="5" value="25"
-           oninput="setMusicVolume(this.value)" title="Volume de la musique de fond">
+           oninput="setMusicVolume(this.value)" title="Volume de la musique de fond" data-i18n-attr="title:ttMusicVolume">
     <button class="cap-toggle on" id="sfxToggleBtn" onclick="toggleSfx(); event.stopPropagation();"
-            title="Activer / désactiver les effets sonores">
-      <span class="cap-dot"></span><span id="sfxToggleLabel">Effets sonores</span>
+            title="Activer / désactiver les effets sonores" data-i18n-attr="title:ttToggleSfx">
+      <span class="cap-dot"></span><span id="sfxToggleLabel" data-i18n="sfxLabel">Effets sonores</span>
     </button>
+      <div class="cd-sep"></div>
+      <div class="cap-row"><span data-i18n="languageLabel">Langue</span></div>
+      <div class="lang-row">
+        <button class="lang-btn on" id="lang-fr" onclick="setLang('fr'); event.stopPropagation();">FR</button>
+        <button class="lang-btn" id="lang-en" onclick="setLang('en'); event.stopPropagation();">EN</button>
+        <button class="lang-btn" id="lang-es" onclick="setLang('es'); event.stopPropagation();">ES</button>
+      </div>
   </div>
   <audio id="bgMusicTrack" preload="auto"></audio>
 </div>
 
 <!-- Discrete Room Code Badge (Pinned to Body Top-Left Corner, Absolute position so it scrolls away naturally on mobile) -->
-<div id="discreteCodeBadge" class="discrete-code-badge" onclick="copyCode()" title="Touche pour copier le code de la partie">
+<div id="discreteCodeBadge" class="discrete-code-badge" onclick="copyCode()" title="Touche pour copier le code de la partie" data-i18n-attr="title:ttCopyCode">
   <span class="code-lbl">CODE</span>
   <span class="code-val" id="discreteCodeVal">----</span>
 </div>
@@ -1241,8 +1257,8 @@
 <div id="themeShopModal" class="theme-modal-overlay" style="display:none;" onclick="if(event.target===this) closeThemeShop();">
   <div class="theme-modal-card">
     <div class="theme-modal-header">
-      <div style="font-size:1.5rem; font-weight:900; color:#fff;">✨ Cosmétiques</div>
-      <div style="font-size:0.82rem; color:#94a3b8; margin-top:2px;">Personnalise l'ambiance visuelle et les effets du jeu</div>
+      <div style="font-size:1.5rem; font-weight:900; color:#fff;"><span data-i18n="cosmeticsTitle">✨ Cosmétiques</span></div>
+      <div style="font-size:0.82rem; color:#94a3b8; margin-top:2px;"><span data-i18n="cosmeticsSub">Personnalise l'ambiance visuelle et les effets du jeu</span></div>
       <button class="theme-modal-close" onclick="closeThemeShop()">&times;</button>
     </div>
     <div class="theme-grid" id="themeGridList"></div>
@@ -1255,13 +1271,13 @@
   <section id="s-home" class="screen on">
     <div class="hero">
       <h1>Party</h1>
-      <p>Le party commence sur ton téléphone.<br>Crée une partie, invite ta gang, jouez ensemble.</p>
+      <p><span data-i18n="tagline">Le party commence sur ton téléphone.</span><br><span data-i18n="taglineSub">Crée une partie, invite ta gang, jouez ensemble.</span></p>
     </div>
     <button class="btn pri" onclick="sfxVote(); go('join');">
-      Rejoindre une partie
+      <span data-i18n="joinGame">Rejoindre une partie</span>
     </button>
     <button class="btn sec" onclick="go('host')">
-      Créer une partie
+      <span data-i18n="createGame">Créer une partie</span>
     </button>
     <button class="btn sec" onclick="openThemeShop()" style="margin-top:12px;">
       Cosmétiques
@@ -1270,20 +1286,20 @@
 
   <!-- PROFILE -->
   <section id="s-profile" class="screen">
-    <h2>Ton profil</h2>
-    <p class="hint">C'est comme ça que ta gang va te voir.</p>
+    <h2><span data-i18n="yourProfile">Ton profil</span></h2>
+    <p class="hint"><span data-i18n="profileSub">C'est comme ça que ta gang va te voir.</span></p>
     <div class="avatar preview-av" id="pv">?</div>
     <div class="photo-actions">
       <button type="button" class="photo-btn" id="photoBtn">
         <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        Ajouter une photo
+        <span data-i18n="addPhoto">Ajouter une photo</span>
       </button>
       <button type="button" class="photo-btn rm" id="photoRm" style="display:none;">Retirer</button>
     </div>
     <input type="file" accept="image/*" id="photoIn" style="display:none;">
     <label class="lb">Ton nom ou surnom</label>
     <input class="fld" id="nameIn" maxlength="14" placeholder="Ex: Dan" autocomplete="off">
-    <label class="lb">Choisis ta couleur</label>
+    <label class="lb"><span data-i18n="pickColour">Choisis ta couleur</span></label>
     <div class="colors" id="swatches"></div>
     <div style="margin-top:26px;">
       <button class="btn pri" id="contBtn" onclick="afterProfile()" disabled>Continuer</button>
@@ -1294,7 +1310,7 @@
   <!-- JOIN CODE -->
   <section id="s-join" class="screen">
     <h2>Rejoindre</h2>
-    <p class="hint">Entre le code que l'hôte t'a donné.</p>
+    <p class="hint"><span data-i18n="enterCodeSub">Entre le code que l'hôte t'a donné.</span></p>
     <input class="fld code-in" id="codeIn" maxlength="4" placeholder="CODE" autocomplete="off" inputmode="latin" autocapitalize="characters">
     <div style="margin-top:26px;">
       <button class="btn pri" id="joinBtn" onclick="sfxVote(); doJoin();" disabled>Rejoindre</button>
@@ -1310,7 +1326,7 @@
       <div class="codebox">
         <div class="cl">Code de la partie</div>
         <div class="cv" id="lobbyCode">----</div>
-        <div class="cs">Partage ce code avec ta gang</div>
+        <div class="cs"><span data-i18n="shareCode">Partage ce code avec ta gang</span></div>
       </div>
       <div class="rowbtns">
         <button class="btn sec" onclick="copyCode()">
@@ -1348,15 +1364,15 @@
     <div id="hostCtrl">
       <button class="btn pri" onclick="startPartyVote()">
         <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.71 1.26-1.63 1.63-2.63L3.5 12.5c-1 1-.76 2.37 1 4z"/><path d="M12 15l-3-3 7.5-7.5c1.38-1.38 3.62-1.38 5 0s1.38 3.62 0 5L14 17l-2-2z"/><path d="M9 18l3 3"/></svg>
-        Lancer la soirée
+        <span data-i18n="startNight">Lancer la soirée</span>
       </button>
     </div>
     <div id="playerCtrl" style="display:none;">
-      <div class="waiting">En attente que l'hôte lance la soirée<span class="d"></span></div>
+      <div class="waiting"><span data-i18n="waitingHost">En attente que l'hôte lance la soirée</span><span class="d"></span></div>
     </div>
     <button class="btn-danger-quit" onclick="quit()">
       <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-      Quitter la Partie
+      <span data-i18n="quitGame">Quitter la Partie</span>
     </button>
   </section>
 
@@ -1373,7 +1389,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.98</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.99</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -2124,6 +2140,7 @@ function renderThemeShopList(){
 document.addEventListener("DOMContentLoaded", function(){
   updateAudioIcon();
   loadAudioPrefs();
+  loadLang();
   applyTheme(currentTheme, false);
 });
 </script>
@@ -5185,14 +5202,213 @@ var POSTS_PACK = [
  * `keyFr`. tx() picks whichever the current language needs, so switching to an
  * English UI later is a LANG change rather than a data migration.
  * -------------------------------------------------------------------------- */
-var LANG = "fr";               // "fr" | "en" - player-facing toggle comes later
+var I18N = {
+  "cosmeticsTitle": {
+    "fr": "✨ Cosmétiques",
+    "en": "✨ Cosmetics",
+    "es": "✨ Cosméticos"
+  },
+  "cosmeticsSub": {
+    "fr": "Personnalise l'ambiance visuelle et les effets du jeu",
+    "en": "Customise the game's look and effects",
+    "es": "Personaliza el ambiente visual y los efectos del juego"
+  },
+  "tagline": {
+    "fr": "Le party commence sur ton téléphone.",
+    "en": "The party starts on your phone.",
+    "es": "La fiesta empieza en tu teléfono."
+  },
+  "taglineSub": {
+    "fr": "Crée une partie, invite ta gang, jouez ensemble.",
+    "en": "Start a game, round up your crew, play together.",
+    "es": "Crea una partida, junta a tu gente, jueguen juntos."
+  },
+  "joinGame": {
+    "fr": "Rejoindre une partie",
+    "en": "Join a game",
+    "es": "Unirse a una partida"
+  },
+  "createGame": {
+    "fr": "Créer une partie",
+    "en": "Create a game",
+    "es": "Crear una partida"
+  },
+  "cosmetics": {
+    "fr": "Cosmétiques",
+    "en": "Cosmetics",
+    "es": "Cosméticos"
+  },
+  "yourProfile": {
+    "fr": "Ton profil",
+    "en": "Your profile",
+    "es": "Tu perfil"
+  },
+  "profileSub": {
+    "fr": "C'est comme ça que ta gang va te voir.",
+    "en": "This is how your crew will see you.",
+    "es": "Así te va a ver tu gente."
+  },
+  "addPhoto": {
+    "fr": "Ajouter une photo",
+    "en": "Add a photo",
+    "es": "Añadir una foto"
+  },
+  "yourName": {
+    "fr": "Ton nom ou surnom",
+    "en": "Your name or nickname",
+    "es": "Tu nombre o apodo"
+  },
+  "pickColour": {
+    "fr": "Choisis ta couleur",
+    "en": "Pick your colour",
+    "es": "Elige tu color"
+  },
+  "enterCodeSub": {
+    "fr": "Entre le code que l'hôte t'a donné.",
+    "en": "Enter the code the host gave you.",
+    "es": "Escribe el código que te dio el anfitrión."
+  },
+  "gameCode": {
+    "fr": "Code de la partie",
+    "en": "Game code",
+    "es": "Código de la partida"
+  },
+  "shareCode": {
+    "fr": "Partage ce code avec ta gang",
+    "en": "Share this code with your crew",
+    "es": "Comparte este código con tu gente"
+  },
+  "startNight": {
+    "fr": "Lancer la soirée",
+    "en": "Start the night",
+    "es": "Empezar la noche"
+  },
+  "waitingHost": {
+    "fr": "En attente que l'hôte lance la soirée",
+    "en": "Waiting for the host to start the night",
+    "es": "Esperando a que el anfitrión empiece la noche"
+  },
+  "quitGame": {
+    "fr": "Quitter la Partie",
+    "en": "Leave the Game",
+    "es": "Salir de la Partida"
+  },
+  "ttMuteMusic": {
+    "fr": "Muter / Réactiver la musique",
+    "en": "Mute / unmute the music",
+    "es": "Silenciar / reactivar la música"
+  },
+  "ttThemeShop": {
+    "fr": "Boutique de Thèmes (Couleurs & Styles)",
+    "en": "Theme Shop (Colours & Styles)",
+    "es": "Tienda de Temas (Colores y Estilos)"
+  },
+  "ttMusicVolume": {
+    "fr": "Volume de la musique de fond",
+    "en": "Background music volume",
+    "es": "Volumen de la música de fondo"
+  },
+  "ttToggleSfx": {
+    "fr": "Activer / désactiver les effets sonores",
+    "en": "Turn sound effects on / off",
+    "es": "Activar / desactivar los efectos de sonido"
+  },
+  "ttCopyCode": {
+    "fr": "Touche pour copier le code de la partie",
+    "en": "Tap to copy the game code",
+    "es": "Toca para copiar el código de la partida"
+  },
+  "ttSkipTrack": {
+    "fr": "Changer de chanson (Skip)",
+    "en": "Skip to the next song",
+    "es": "Cambiar de canción (Skip)"
+  },
+  "ttSettings": {
+    "fr": "Options & Musique",
+    "en": "Options & Music",
+    "es": "Opciones y Música"
+  },
+  "volumeLabel": {
+    "fr": "Volume musique",
+    "en": "Music volume",
+    "es": "Volumen música"
+  },
+  "sfxLabel": {
+    "fr": "Effets sonores",
+    "en": "Sound effects",
+    "es": "Efectos de sonido"
+  },
+  "languageLabel": {
+    "fr": "Langue",
+    "en": "Language",
+    "es": "Idioma"
+  }
+};
+
+var LANG = "fr";                      // "fr" | "en" | "es"
+var LANG_SUFFIX = { fr: "Fr", en: "En", es: "Es" };
+
+/* Content lookup. Data objects keep the ORIGINAL wording in `key` and translations
+ * in keyFr / keyEn / keyEs. Falls back to the original when a translation is absent,
+ * so a half-translated pack still renders rather than showing blanks. */
 function tx(obj, key){
   if(!obj) return "";
-  if(LANG === "fr"){
-    var f = obj[key + "Fr"];
-    if(f !== undefined && f !== null && f !== "") return f;
+  var suf = LANG_SUFFIX[LANG];
+  if(suf){
+    var v = obj[key + suf];
+    if(v !== undefined && v !== null && v !== "") return v;
   }
   return obj[key] || "";
+}
+
+/* UI lookup. I18N[key] is { fr, en, es }; missing entries fall back fr -> key. */
+function t(key){
+  var e = I18N[key];
+  if(!e) return key;
+  return e[LANG] || e.fr || key;
+}
+
+/* Walk the markup and fill anything tagged with data-i18n / data-i18n-attr. */
+function applyI18n(){
+  var els = document.querySelectorAll("[data-i18n]");
+  for(var i = 0; i < els.length; i++){
+    els[i].textContent = t(els[i].getAttribute("data-i18n"));
+  }
+  var attrEls = document.querySelectorAll("[data-i18n-attr]");
+  for(var j = 0; j < attrEls.length; j++){
+    var spec = attrEls[j].getAttribute("data-i18n-attr");   // "attr:key,attr:key"
+    spec.split(",").forEach(function(pair){
+      var bits = pair.split(":");
+      if(bits.length === 2) attrEls[j].setAttribute(bits[0].trim(), t(bits[1].trim()));
+    });
+  }
+  document.documentElement.setAttribute("lang", LANG);
+}
+
+function setLang(l){
+  if(!LANG_SUFFIX[l] || l === LANG) return;
+  LANG = l;
+  try{ localStorage.setItem("norelo_party_lang", l); }catch(e){}
+  applyI18n();
+  updateLangButtons();
+  renderPlayers();
+  if(currentScreen === "s-game" && currentGame) renderGame(currentGame);
+}
+
+function updateLangButtons(){
+  ["fr","en","es"].forEach(function(l){
+    var b = document.getElementById("lang-" + l);
+    if(b) b.className = "lang-btn" + (LANG === l ? " on" : "");
+  });
+}
+
+function loadLang(){
+  try{
+    var s = localStorage.getItem("norelo_party_lang");
+    if(s && LANG_SUFFIX[s]) LANG = s;
+  }catch(e){}
+  applyI18n();
+  updateLangButtons();
 }
 
 
