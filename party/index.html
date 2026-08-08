@@ -1373,7 +1373,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.75</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.76</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -4392,6 +4392,22 @@ var POSTS_PACK = [
       text: "Je les vue !",
       likes: 1
     }
+  },
+  {
+    platform: "facebook",
+    posterName: "Mikael",
+    fullName: "Mikaël Trudeau-Buteau",
+    date: "July 17, 2018",
+    text: "Aller dehors et voir que ton côté conducteur extérieur de ta voiture est couvert d'oeufs explosés.... Original, très original.",
+    likes: 10,
+    likeIcon: "👍😡😲",
+    comments: 9,
+    featuredComment: {
+      author: "Steven Ellison",
+      time: "8y",
+      text: "Wow, fun",
+      likes: 0
+    }
   }
 ];
 
@@ -4530,7 +4546,14 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
     }
 
     var rxRaw = item.likeIcon || "👍";
-    var rxHTML = (rxRaw === "👍❤️") ? '<span class="fb-like-icon" style="background:#1877f2;">👍</span><span class="fb-like-icon" style="background:#f33e58;margin-left:-4px;">❤️</span>' : ('<span class="fb-like-icon">' + rxRaw + '</span>');
+    var rxHTML = "";
+    if(rxRaw === "👍❤️"){
+      rxHTML = '<span class="fb-like-icon" style="background:#1877f2;">👍</span><span class="fb-like-icon" style="background:#f33e58;margin-left:-4px;">❤️</span>';
+    } else if(rxRaw === "👍😡😲"){
+      rxHTML = '<span class="fb-like-icon" style="background:#1877f2;">👍</span><span class="fb-like-icon" style="background:#e44d3a;margin-left:-4px;">😡</span><span class="fb-like-icon" style="background:#f7b125;margin-left:-4px;">😲</span>';
+    } else {
+      rxHTML = '<span class="fb-like-icon">' + rxRaw + '</span>';
+    }
     html += '  <div class="fb-post-reactions">';
     html += '    <div class="fb-like-badge">' + rxHTML + ' <span style="margin-left:4px;">' + (item.likes || 1) + '</span></div>';
     html += '    <div>' + (item.comments || 0) + ' commentaire' + ((item.comments || 0) > 1 ? 's' : '') + '</div>';
