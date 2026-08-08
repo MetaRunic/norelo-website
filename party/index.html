@@ -1373,7 +1373,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.58</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.59</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -4173,13 +4173,7 @@ var POSTS_PACK = [
     text: "AARRRGGGG! ses qui toute se monde qui me veut en ami!?!?!",
     likes: 2,
     comments: 5
-  },
-  { platform: "facebook", posterName: "Danny", fullName: "Danny", date: "June 14, 2017", text: "J'ai essayé de faire un cocktail maison. La cuisine a failli brûler et le mélange ressemble à du lave-glace. 10/10", likes: 12, comments: 4 },
-  { platform: "facebook", posterName: "Daniel", fullName: "Daniel", date: "August 3, 2019", text: "Rappel amical : si tu m'écris après 22h, je suis soit complètement soul(e), soit déjà endormi(e). Pas d'entre-deux.", likes: 8, comments: 2 },
-  { platform: "instagram", posterName: "Jayson", fullName: "jayson_official", date: "Montreal, QC • 2h", text: "Je viens de dépenser 120$ au bar et je me rappelle même plus du nom de la personne avec qui j'ai parlé pendant 2 heures.", likes: 45, comments: 6 },
-  { platform: "facebook", posterName: "Mikael", fullName: "Mikael", date: "May 12, 2016", text: "Si la tequila n'existait pas, la moitié de mes histoires hilarantes n'existeraient pas non plus.", likes: 19, comments: 3 },
-  { platform: "instagram", posterName: "Catherine", fullName: "catherine_vibes", date: "Old Montreal • 5h", text: "Est-ce que c'est légal d'annuler un rendez-vous amoureux juste parce que le lit est trop confortable ?", likes: 62, comments: 9 },
-  { platform: "facebook", posterName: "Simon", fullName: "Simon", date: "November 18, 2018", text: "Ma capacité à prétendre que je comprends ce que les gens disent dans un club bruyant est phénoménale.", likes: 14, comments: 5 }
+  }
 ];
 
 function findAttendeePlayerId(targetName){
@@ -4197,7 +4191,8 @@ function launchWhoPosted(){
   _ceremonyStartMs = 0;
   var pool = POSTS_PACK.slice();
   shuffle(pool);
-  var rounds = pool.slice(0, 5).map(function(item){
+  var roundCount = Math.max(1, Math.min(5, pool.length));
+  var rounds = pool.slice(0, roundCount).map(function(item){
     var assignedId = findAttendeePlayerId(item.posterName);
     if(!assignedId){
       var randomPlayer = players[Math.floor(Math.random()*players.length)] || { id: myId };
