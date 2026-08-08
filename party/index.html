@@ -1373,7 +1373,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.65</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.66</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -4236,6 +4236,17 @@ var POSTS_PACK = [
       text: "Pauvre cocotte. Love you",
       likes: 0
     }
+  },
+  {
+    platform: "facebook",
+    posterName: "Sydney",
+    fullName: "Sydney Dufresne-Kalaschnick",
+    feeling: "is 😃 feeling happy with Ursula Kalaschnick.",
+    date: "March 26, 2016",
+    text: "Saw 3 Snowy Owls on the highway (50)!",
+    likes: 4,
+    likeIcon: "👍❤️",
+    comments: 0
   }
 ];
 
@@ -4373,9 +4384,10 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
       html += '  <div style="margin-bottom:12px;"><img src="' + item.image + '" alt="Post Image" style="width:100%;border-radius:8px;display:block;"></div>';
     }
 
-    var rxIcon = item.likeIcon || "👍";
+    var rxRaw = item.likeIcon || "👍";
+    var rxHTML = (rxRaw === "👍❤️") ? '<span class="fb-like-icon" style="background:#1877f2;">👍</span><span class="fb-like-icon" style="background:#f33e58;margin-left:-4px;">❤️</span>' : ('<span class="fb-like-icon">' + rxRaw + '</span>');
     html += '  <div class="fb-post-reactions">';
-    html += '    <div class="fb-like-badge"><span class="fb-like-icon">' + rxIcon + '</span> ' + (item.likes || 1) + '</div>';
+    html += '    <div class="fb-like-badge">' + rxHTML + ' <span style="margin-left:4px;">' + (item.likes || 1) + '</span></div>';
     html += '    <div>' + (item.comments || 0) + ' commentaire' + ((item.comments || 0) > 1 ? 's' : '') + '</div>';
     html += '  </div>';
 
