@@ -1441,7 +1441,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.02</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.03</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -2825,6 +2825,7 @@ function genCode(){
   return c;
 }
 function toast(msg){
+  msg = locPhrase(msg);
   var t = $("toast");
   t.textContent = msg;
   t.classList.add("show");
@@ -3463,6 +3464,8 @@ function renderGame(g){
   if(skip && area && !area.querySelector(".host-skip")){
     area.insertAdjacentHTML("beforeend", skip);
   }
+
+  localizeNode(area);
 }
 
 function renderRPSArenaHTML(pA, pB, choices, duelistA, duelistB, subtitle, lastResult, stage){
@@ -5368,6 +5371,239 @@ var POSTS_PACK = [
  * `keyFr`. tx() picks whichever the current language needs, so switching to an
  * English UI later is a LANG change rather than a data migration.
  * -------------------------------------------------------------------------- */
+/* ---- RUNTIME PHRASE LOCALISATION ------------------------------------------------
+ * The game screens build their markup by string concatenation, so there is no clean
+ * key per label. Rather than rewrite eight renderers, every rendered TEXT NODE is
+ * passed through this table. It only ever touches text nodes - never attributes,
+ * URLs or markup - and it is a no-op while LANG is "fr".
+ * Player names and numbers survive because the patterns capture and re-emit them.
+ * -------------------------------------------------------------------------- */
+var LOC_EXACT = {
+  "Phase de sélection": { en: "Selection phase", es: "Fase de selección" },
+  "À quoi voulez-vous jouer ?": { en: "What do you want to play?", es: "¿A qué quieren jugar?" },
+  "Votez sur votre téléphone ! Lancement automatique.": { en: "Vote on your phone! Starts automatically.", es: "¡Voten en su teléfono! Empieza solo." },
+  "Touchez un jeu pour voter": { en: "Tap a game to vote", es: "Toca un juego para votar" },
+  "Tout le monde a voté ! Lancement automatique": { en: "Everyone voted! Starting automatically", es: "¡Todos votaron! Empezando solo" },
+  "Vote enregistré ! En attente des autres joueurs": { en: "Vote locked in! Waiting on the others", es: "¡Voto registrado! Esperando a los demás" },
+
+  "Le plus susceptible de...": { en: "Most likely to...", es: "El más propenso a..." },
+  "Vote pour la personne la plus folle du groupe !": { en: "Vote for the wildest person in the group!", es: "¡Vota por la persona más loca del grupo!" },
+  "Qui a posté ça ?": { en: "Who posted this?", es: "¿Quién publicó esto?" },
+  "Devine qui a écrit ce post secret sur ses réseaux sociaux !": { en: "Guess who wrote this secret social media post!", es: "¡Adivina quién escribió esta publicación secreta!" },
+  "Devine la note": { en: "Guess the rating", es: "Adivina la nota" },
+  "Combien d'étoiles cette critique Google/Yelp hilarante a-t-elle eue ?": { en: "How many stars did this hilarious Google/Yelp review get?", es: "¿Cuántas estrellas recibió esta reseña hilarante de Google/Yelp?" },
+  "Connais-tu bien...": { en: "How well do you know...", es: "¿Qué tan bien conoces a...?" },
+  "Le joueur vedette répond en secret, tout le monde prédit son choix !": { en: "The star answers in secret, everyone predicts their pick!", es: "¡El jugador estrella responde en secreto y todos predicen su elección!" },
+  "Autobiographies & Roasts": { en: "Autobiographies & Roasts", es: "Autobiografías y Roasts" },
+  "Écris la meilleure réplique pour compléter les phrases sur tes amis !": { en: "Write the best punchline to finish the sentences about your friends!", es: "¡Escribe la mejor frase para completar las oraciones sobre tus amigos!" },
+  "Qui a dit ça ?": { en: "Who said that?", es: "¿Quién dijo eso?" },
+  "Retrouve l'auteur de ce message texte sorti de son contexte !": { en: "Track down who sent this out-of-context text!", es: "¡Descubre quién mandó este mensaje fuera de contexto!" },
+  "2 Vérités 1 Mensonge": { en: "2 Truths 1 Lie", es: "2 Verdades 1 Mentira" },
+  "Démasque le faux énoncé parmi les trois !": { en: "Unmask the false statement among the three!", es: "¡Desenmascara la afirmación falsa entre las tres!" },
+
+  "🔥 LA QUESTION CHAOTIQUE": { en: "🔥 THE CHAOTIC QUESTION", es: "🔥 LA PREGUNTA CAÓTICA" },
+  "Qui est le coupable désigné par le groupe ?": { en: "Who does the group name as guilty?", es: "¿A quién señala el grupo como culpable?" },
+  "Touche un joueur pour désigner le coupable": { en: "Tap a player to name the guilty one", es: "Toca a un jugador para señalar al culpable" },
+  "Révélation imminente du verdict !": { en: "The verdict is about to drop!", es: "¡El veredicto está por caer!" },
+  "UNANIMITÉ ABSOLUE !": { en: "COMPLETELY UNANIMOUS!", es: "¡UNANIMIDAD ABSOLUTA!" },
+  "Tout le monde est d'accord !": { en: "Everyone agrees!", es: "¡Todos están de acuerdo!" },
+  "MAJORITÉ ÉCLATANTE !": { en: "CRUSHING MAJORITY!", es: "¡MAYORÍA APLASTANTE!" },
+  "La majorité a parlé sans hésiter !": { en: "The majority spoke without hesitating!", es: "¡La mayoría habló sin dudar!" },
+  "DUEL SUPRÊME !": { en: "SUPREME DUEL!", es: "¡DUELO SUPREMO!" },
+  "Vainqueur incontesté de l'affrontement !": { en: "Undisputed winner of the showdown!", es: "¡Ganador indiscutible del enfrentamiento!" },
+  "VERDICT DU GROUPE": { en: "THE GROUP'S VERDICT", es: "VEREDICTO DEL GRUPO" },
+  "La décision est tombée !": { en: "The decision is in!", es: "¡La decisión está tomada!" },
+  "ÉGALITÉ AU VOTE !": { en: "TIED VOTE!", es: "¡EMPATE EN LA VOTACIÓN!" },
+  "PRÊT": { en: "READY", es: "LISTO" },
+  "AFFRONTEMENT ULTIME DE DEUX ÉGALITÉS": { en: "ULTIMATE TIEBREAK SHOWDOWN", es: "ENFRENTAMIENTO FINAL DE DOS EMPATADOS" },
+  "C'est ton tour ! Choisis ton arme :": { en: "Your turn! Pick your weapon:", es: "¡Tu turno! Elige tu arma:" },
+  "Tranche l'égalité pour le premier jeu ! Choisis ton arme :": { en: "Break the tie for the first game! Pick your weapon:", es: "¡Rompe el empate para el primer juego! Elige tu arma:" },
+  "Roche": { en: "Rock", es: "Piedra" },
+  "Papier": { en: "Paper", es: "Papel" },
+  "Ciseaux": { en: "Scissors", es: "Tijeras" },
+
+  "Qui a écrit ou publié ça ?": { en: "Who wrote or posted this?", es: "¿Quién escribió o publicó esto?" },
+  "Choisis un suspect": { en: "Pick a suspect", es: "Elige un sospechoso" },
+  "Devinette envoyée !": { en: "Guess sent!", es: "¡Respuesta enviada!" },
+  "Tout le monde a deviné ! Révélation...": { en: "Everyone guessed! Revealing...", es: "¡Todos adivinaron! Revelando..." },
+  "Révélation !": { en: "Reveal!", es: "¡Revelación!" },
+  "👍 J'aime": { en: "👍 Like", es: "👍 Me gusta" },
+  "💬 Commenter": { en: "💬 Comment", es: "💬 Comentar" },
+  "↗️ Partager": { en: "↗️ Share", es: "↗️ Compartir" },
+
+  "Combien d'étoiles (1 à 5) cette personne a-t-elle laissées ?": { en: "How many stars (1 to 5) did this person leave?", es: "¿Cuántas estrellas (1 a 5) dejó esta persona?" },
+  "Choisis ta note": { en: "Pick your rating", es: "Elige tu nota" },
+  "La note réellement donnée :": { en: "The rating actually given:", es: "La nota realmente dada:" },
+  "avis authentique": { en: "genuine review", es: "reseña auténtica" },
+  "avis reconstitué": { en: "reconstructed review", es: "reseña reconstruida" },
+
+  "Joueur vedette": { en: "Star player", es: "Jugador estrella" },
+  "A répondu en secret": { en: "Answered in secret", es: "Respondió en secreto" },
+  "Pendant ce temps, prépare ta prédiction…": { en: "Meanwhile, line up your prediction…", es: "Mientras tanto, prepara tu predicción…" },
+  "Tu es la vedette ! Choisis ta vraie réponse — les autres vont essayer de te deviner.": { en: "You're the star! Pick your real answer — the others will try to read you.", es: "¡Eres la estrella! Elige tu respuesta real — los demás intentarán adivinarte." },
+  "Ta réponse secrète est verrouillée :": { en: "Your secret answer is locked in:", es: "Tu respuesta secreta está bloqueada:" },
+  "La gang essaie de te deviner": { en: "The crew is trying to read you", es: "El grupo intenta adivinarte" },
+  "Fais ton choix": { en: "Make your pick", es: "Haz tu elección" },
+  "Prédiction envoyée !": { en: "Prediction sent!", es: "¡Predicción enviada!" },
+  "Tout le monde a prédit ! Révélation...": { en: "Everyone predicted! Revealing...", es: "¡Todos predijeron! Revelando..." },
+  "Mode solo (test) — devine ta propre réponse :": { en: "Solo mode (test) — guess your own answer:", es: "Modo solo (prueba) — adivina tu propia respuesta:" },
+  "MODE SOLO (TEST) — 1 joueur": { en: "SOLO MODE (TEST) — 1 player", es: "MODO SOLO (PRUEBA) — 1 jugador" },
+
+  "Cible de la manche": { en: "This round's target", es: "Objetivo de la ronda" },
+  "Envoyer ma réplique": { en: "Send my punchline", es: "Enviar mi frase" },
+  "Écris ta réplique drôle...": { en: "Write your funny punchline...", es: "Escribe tu frase graciosa..." },
+  "Réponse envoyée ! En attente des autres": { en: "Answer sent! Waiting on the others", es: "¡Respuesta enviada! Esperando a los demás" },
+  "Toutes les répliques sont reçues ! Lancement du vote...": { en: "All punchlines are in! Starting the vote...", es: "¡Todas las frases llegaron! Empezando la votación..." },
+  "Vote pour la meilleure — sauf la tienne !": { en: "Vote for the best — not your own!", es: "¡Vota por la mejor — menos la tuya!" },
+  "Mode solo (test) — vote pour ta réplique :": { en: "Solo mode (test) — vote for your punchline:", es: "Modo solo (prueba) — vota por tu frase:" },
+  "ta réplique": { en: "your punchline", es: "tu frase" },
+  "Vote pour ta préférée": { en: "Vote for your favourite", es: "Vota por tu favorita" },
+  "Tous les votes sont enregistrés ! Révélation...": { en: "All votes are in! Revealing...", es: "¡Todos los votos están! Revelando..." },
+  "Personne d'autre n'a écrit de réplique": { en: "Nobody else wrote a punchline", es: "Nadie más escribió una frase" },
+  "Aucune réplique cette manche": { en: "No punchlines this round", es: "Ninguna frase esta ronda" },
+
+  "Vote pour l'auteur selon toi :": { en: "Vote for who you think said it:", es: "Vota por quien crees que lo dijo:" },
+  "Devine la personne": { en: "Guess the person", es: "Adivina la persona" },
+  "Auteur révélé !": { en: "Author revealed!", es: "¡Autor revelado!" },
+  "Vote envoyé !": { en: "Vote sent!", es: "¡Voto enviado!" },
+
+  "Rédige ses énoncés": { en: "Writing their statements", es: "Redactando sus afirmaciones" },
+  "Prépare-toi à démasquer le mensonge…": { en: "Get ready to unmask the lie…", es: "Prepárate para desenmascarar la mentira…" },
+  "C'est ton tour": { en: "Your turn", es: "Tu turno" },
+  "Écris 2 vérités et 1 mensonge sur toi. Marque lequel est faux.": { en: "Write 2 truths and 1 lie about yourself. Mark which one is false.", es: "Escribe 2 verdades y 1 mentira sobre ti. Marca cuál es falsa." },
+  "assisté": { en: "assisted", es: "asistido" },
+  "Aide-moi": { en: "Help me", es: "Ayúdame" },
+  "Marquer comme mensonge": { en: "Mark as the lie", es: "Marcar como mentira" },
+  "★ C'est mon mensonge": { en: "★ That's my lie", es: "★ Esa es mi mentira" },
+  "Envoyer mes énoncés": { en: "Send my statements", es: "Enviar mis afirmaciones" },
+  "Qui ment ?": { en: "Who's lying?", es: "¿Quién miente?" },
+  "ton mensonge": { en: "your lie", es: "tu mentira" },
+  "Trouve le mensonge": { en: "Find the lie", es: "Encuentra la mentira" },
+  "maison": { en: "house", es: "de la casa" },
+  "Démasqué par tout le monde !": { en: "Unmasked by everyone!", es: "¡Desenmascarado por todos!" },
+
+  "Points gagnés cette manche": { en: "Points earned this round", es: "Puntos ganados esta ronda" },
+  "Prochaine manche dans": { en: "Next round in", es: "Próxima ronda en" },
+  "Fin du jeu dans": { en: "Game ends in", es: "El juego termina en" },
+  "Fin de la manche dans": { en: "Round ends in", es: "La ronda termina en" },
+  "Passer ››": { en: "Skip ››", es: "Saltar ››" },
+  "Chargement du jeu": { en: "Loading the game", es: "Cargando el juego" },
+
+  "FIN DU MINI-JEU !": { en: "MINI-GAME OVER!", es: "¡FIN DEL MINIJUEGO!" },
+  "⭐ RÉCAPITULATIF DES BONUS STARS": { en: "⭐ BONUS STAR RECAP", es: "⭐ RESUMEN DE ESTRELLAS BONUS" },
+  "🏆 SCORES DE LA SOIRÉE": { en: "🏆 TONIGHT'S SCORES", es: "🏆 PUNTAJES DE LA NOCHE" },
+  "Jeu suivant (Vote du groupe)": { en: "Next game (Group vote)", es: "Siguiente juego (Voto del grupo)" },
+  "Couronner le Grand Gagnant": { en: "Crown the Grand Winner", es: "Coronar al Gran Ganador" },
+  "En attente de l'hôte pour le prochain jeu": { en: "Waiting on the host for the next game", es: "Esperando al anfitrión para el próximo juego" },
+  "QUI A GAGNÉ CETTE STAR ?": { en: "WHO WON THIS STAR?", es: "¿QUIÉN GANÓ ESTA ESTRELLA?" },
+  "Révélation imminente...": { en: "Revealing any second...", es: "Revelación inminente..." },
+  "GRAND GAGNANT DE LA SOIRÉE": { en: "GRAND WINNER OF THE NIGHT", es: "GRAN GANADOR DE LA NOCHE" },
+  "COURONNEMENT ULTIME": { en: "ULTIMATE CORONATION", es: "CORONACIÓN SUPREMA" },
+  "CLASSEMENT GÉNÉRAL": { en: "OVERALL STANDINGS", es: "CLASIFICACIÓN GENERAL" },
+  "Recommencer une partie": { en: "Start another game", es: "Empezar otra partida" },
+
+  "Roi du Roche-Papier-Ciseaux": { en: "Rock-Paper-Scissors King", es: "Rey del Piedra-Papel-Tijera" },
+  "A gagné le plus de duels roche-papier-ciseaux": { en: "Won the most rock-paper-scissors duels", es: "Ganó más duelos de piedra-papel-tijera" },
+  "Le Devin": { en: "The Mind Reader", es: "El Adivino" },
+  "A deviné juste le plus souvent": { en: "Guessed right the most often", es: "Acertó más veces" },
+  "Cible Préférée": { en: "Favourite Target", es: "Objetivo Favorito" },
+  "Le plus souvent pointé du doigt par la gang": { en: "Most often pointed at by the crew", es: "Al que más señaló el grupo" },
+  "Le Mystère Total": { en: "Total Mystery", es: "Misterio Total" },
+  "Personne n'a réussi à deviner ses réponses": { en: "Nobody managed to guess their answers", es: "Nadie logró adivinar sus respuestas" },
+  "Le Livre Ouvert": { en: "The Open Book", es: "El Libro Abierto" },
+  "Toute la gang l'a deviné du premier coup": { en: "The whole crew read them first try", es: "Todo el grupo lo adivinó al primer intento" },
+  "Roi du Roast": { en: "Roast King", es: "Rey del Roast" },
+  "Ses punchlines ont récolté le plus de votes": { en: "Their punchlines pulled the most votes", es: "Sus frases se llevaron más votos" },
+  "Le Critique Pro": { en: "The Pro Critic", es: "El Crítico Pro" },
+  "A trouvé le plus de notes exactes": { en: "Nailed the most exact ratings", es: "Acertó más notas exactas" },
+  "Détecteur de Mensonges": { en: "Lie Detector", es: "Detector de Mentiras" },
+  "A démasqué le plus de mensonges": { en: "Unmasked the most lies", es: "Desenmascaró más mentiras" },
+  "Fin Limier": { en: "Sharp Sleuth", es: "Sabueso Fino" },
+  "A reconnu ses amis le plus souvent": { en: "Recognised their friends the most often", es: "Reconoció a sus amigos más veces" },
+  "La Voix du Peuple": { en: "Voice of the People", es: "La Voz del Pueblo" },
+  "A voté avec la majorité le plus souvent": { en: "Voted with the majority the most often", es: "Votó con la mayoría más veces" }
+};
+
+/* Patterns keep the dynamic bits (names, numbers) and translate around them.
+   $T recursively re-translates a captured tail so "Manche 2 / 5 • Qui a dit ça ?"
+   works without duplicating every suffix. */
+var LOC_PATTERNS = [
+  [/^Manche (\d+) \/ (\d+) • (.+)$/, "Round $1 / $2 • $T3", "Ronda $1 / $2 • $T3"],
+  [/^Connais-tu bien (.+) \?$/, "How well do you know $1?", "¿Qué tan bien conoces a $1?"],
+  [/^On roast (.+)$/, "Roasting $1", "Roasteando a $1"],
+  [/^Le plus susceptible de$/, "Most likely to", "El más propenso a"],
+  [/^Le Verdict Jackbox$/, "The Jackbox Verdict", "El Veredicto Jackbox"],
+  [/^La vérité est dévoilée$/, "The truth is out", "La verdad al descubierto"],
+  [/^Le verdict$/, "The verdict", "El veredicto"],
+  [/^Le mensonge$/, "The lie", "La mentira"],
+  [/^2 vérités 1 mensonge$/, "2 truths 1 lie", "2 verdades 1 mentira"],
+
+  [/^(\d+) \/ (\d+) joueurs ont voté$/, "$1 / $2 players voted", "$1 / $2 jugadores votaron"],
+  [/^(\d+) \/ (\d+) ont voté$/, "$1 / $2 voted", "$1 / $2 votaron"],
+  [/^(\d+) \/ (\d+) ont deviné$/, "$1 / $2 guessed", "$1 / $2 adivinaron"],
+  [/^(\d+) \/ (\d+) ont prédit$/, "$1 / $2 predicted", "$1 / $2 predijeron"],
+  [/^(\d+) \/ (\d+) réponses soumises$/, "$1 / $2 answers in", "$1 / $2 respuestas enviadas"],
+  [/^(\d+) \/ (\d+) votes \((\d+)%\)$/, "$1 / $2 votes ($3%)", "$1 / $2 votos ($3%)"],
+  [/^(\d+) sur (\d+) ont deviné juste\.$/, "$1 of $2 guessed right.", "$1 de $2 acertaron."],
+  [/^(\d+) sur (\d+) ont trouvé le mensonge\.$/, "$1 of $2 found the lie.", "$1 de $2 encontraron la mentira."],
+  [/^(\d+) vote$/, "$1 vote", "$1 voto"],
+  [/^(\d+) votes$/, "$1 votes", "$1 votos"],
+  [/^(\d+) pts$/, "$1 pts", "$1 pts"],
+  [/^(\d+) POINTS$/, "$1 POINTS", "$1 PUNTOS"],
+  [/^(\d+) \/ 5 Étoiles !$/, "$1 / 5 Stars!", "¡$1 / 5 Estrellas!"],
+  [/^(\d+) commentaire$/, "$1 comment", "$1 comentario"],
+  [/^(\d+) commentaires$/, "$1 comments", "$1 comentarios"],
+  [/^Afficher les (\d+) commentaires$/, "View all $1 comments", "Ver los $1 comentarios"],
+  [/^Aimé par (\d+) personnes$/, "Liked by $1 people", "Le gusta a $1 personas"],
+  [/^Commenter en tant que (.+)$/, "Comment as $1", "Comentar como $1"],
+
+  [/^C'était (.+) !$/, "It was $1!", "¡Era $1!"],
+  [/^(.+) a répondu :$/, "$1 answered:", "$1 respondió:"],
+  [/^Qu'est-ce que (.+) a choisi \?$/, "What did $1 pick?", "¿Qué eligió $1?"],
+  [/^(.+) choisit sa réponse secrète$/, "$1 is picking their secret answer", "$1 está eligiendo su respuesta secreta"],
+  [/^(.+) est en train de choisir sa réponse secrète$/, "$1 is picking their secret answer", "$1 está eligiendo su respuesta secreta"],
+  [/^Lequel est le mensonge de (.+) \?$/, "Which one is $1's lie?", "¿Cuál es la mentira de $1?"],
+  [/^(.+) écrit ses 3 énoncés$/, "$1 is writing their 3 statements", "$1 está escribiendo sus 3 afirmaciones"],
+  [/^Mensonge maison — points réduits pour (.+)\.$/, "House lie — reduced points for $1.", "Mentira de la casa — puntos reducidos para $1."],
+  [/^Personne n'a trouvé ! (.+) ment beaucoup trop bien\.$/, "Nobody found it! $1 lies far too well.", "¡Nadie la encontró! $1 miente demasiado bien."],
+  [/^SANS FAUTE ! Toute la gang connaît (.+) par cœur\.$/, "FLAWLESS! The whole crew knows $1 by heart.", "¡PERFECTO! Todo el grupo conoce a $1 de memoria."],
+  [/^PERSONNE n'a deviné ! (.+) reste un mystère total\.$/, "NOBODY guessed! $1 stays a total mystery.", "¡NADIE adivinó! $1 sigue siendo un misterio total."],
+  [/^Duel en cours entre (.+) et (.+) !$/, "Duel underway between $1 and $2!", "¡Duelo en curso entre $1 y $2!"],
+  [/^Duel en cours entre (.+) et (.+) pour trancher le jeu !$/, "$1 vs $2 to settle which game!", "¡$1 contra $2 para decidir el juego!"],
+  [/^(.+) a battu (.+) !$/, "$1 beat $2!", "¡$1 venció a $2!"]
+];
+
+function locPhrase(s){
+  if(LANG === "fr" || !s) return s;
+  var hit = LOC_EXACT[s];
+  if(hit && hit[LANG]) return hit[LANG];
+  for(var i = 0; i < LOC_PATTERNS.length; i++){
+    var p = LOC_PATTERNS[i];
+    var m = s.match(p[0]);
+    if(!m) continue;
+    var tpl = (LANG === "es") ? p[2] : p[1];
+    return tpl.replace(/\$T(\d)/g, function(_, d){ return locPhrase(m[+d]); })
+              .replace(/\$(\d)/g, function(_, d){ return m[+d]; });
+  }
+  return s;                       // untranslated strings stay readable in French
+}
+
+/* Walk text nodes only - attributes, URLs and markup are never touched. */
+function localizeNode(root){
+  if(LANG === "fr" || !root) return;
+  var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+  var n, jobs = [];
+  while((n = w.nextNode())){
+    var raw = n.nodeValue;
+    if(!raw) continue;
+    var trimmed = raw.replace(/\s+/g, " ").trim();
+    if(trimmed.length < 2 || !/[a-zA-ZÀ-ÿ]{2}/.test(trimmed)) continue;
+    var out = locPhrase(trimmed);
+    if(out !== trimmed) jobs.push([n, raw.replace(trimmed, out)]);
+  }
+  jobs.forEach(function(j){ j[0].nodeValue = j[1]; });
+}
+
 var I18N = {
   "cosmeticsTitle": {
     "fr": "✨ Cosmétiques",
@@ -5549,6 +5785,7 @@ function applyI18n(){
     });
   }
   document.documentElement.setAttribute("lang", LANG);
+  localizeNode(document.body);
 }
 
 function setLang(l){
