@@ -1373,7 +1373,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.97</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.98</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -3864,6 +3864,12 @@ function processTiebreakerClash(){
   }
 }
 
+function voteAuthor(name){
+  if(!roomCode || !myId || !name) return;
+  sfxVote();
+  db.ref("rooms/" + roomCode + "/game/votes/" + myId).set(name);
+}
+
 function voteFor(uid){
   if(!roomCode || !myId) return;
   sfxVote();
@@ -3915,7 +3921,7 @@ function revealRound(){
     } else if(game.type === "whoposted"){
       var item = (game.roundsData && game.roundsData[game.round]) || {};
       Object.keys(votes).forEach(function(vUid){
-        if(votes[vUid] === item.posterId){
+        if(item.authorName && votes[vUid] === item.authorName){
           trackStat("correctGuesses", vUid);
           trackStat("sleuth", vUid);
           addPoints(vUid, 200);
@@ -5189,27 +5195,38 @@ function tx(obj, key){
   return obj[key] || "";
 }
 
-// Match a post's original author to a player in the room. The old version used
-// two-way substring matching, so a player called "Al" matched "Kalaschnick" and any
-// one-letter name matched everybody. Compare whole name tokens instead.
-function findAttendeePlayerId(targetName){
-  if(!targetName) return null;
-  function tokens(s){
-    return String(s || "").toLowerCase()
-      .replace(/[^a-zàâäçéèêëîïôöûùüœ\s-]/g, " ")
-      .split(/[\s-]+/)
-      .filter(function(t){ return t.length >= 3; });
-  }
-  var want = tokens(targetName);
-  if(!want.length) return null;
-  var match = players.find(function(p){
-    var have = tokens(p.name);
-    return have.some(function(t){ return want.indexOf(t) !== -1; });
-  });
-  return match ? match.id : null;
-}
 
 var WP_GUESS_SEC = 30;
+
+/* ---- POST AUTHORS -----------------------------------------------------------
+ * The suspects in this mode are the people who actually have posts in the pack,
+ * not whoever happens to be in the room. Derived from POSTS_PACK so adding a new
+ * contributor's posts adds them to the line-up automatically - no list to update.
+ * -------------------------------------------------------------------------- */
+function authorColor(name){
+  var hash = 0;
+  for(var i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) % 360;
+  return "hsl(" + hash + ", 62%, 52%)";   // stable per name, so avatars never shuffle
+}
+
+function postAuthors(){
+  var seen = {}, out = [];
+  POSTS_PACK.forEach(function(p){
+    var k = p.posterName;
+    if(!k || seen[k]) return;
+    seen[k] = true;
+    out.push({ id: k, name: k, fullName: p.fullName || k, color: authorColor(k) });
+  });
+  out.sort(function(a, b){ return a.name.localeCompare(b.name, "fr"); });
+  return out;
+}
+
+function authorByName(name){
+  var all = postAuthors();
+  for(var i = 0; i < all.length; i++){ if(all[i].name === name) return all[i]; }
+  return { id: name || "?", name: name || "Quelqu'un", fullName: name || "Quelqu'un",
+           color: authorColor(name || "?") };
+}
 
 function launchWhoPosted(){
   if(!roomCode || !amHost) return;
@@ -5218,14 +5235,8 @@ function launchWhoPosted(){
   shuffle(pool);
 
   // The pack is lopsided (one person has 18 posts, another has 1), so a plain shuffle
-  // makes the same player the answer several rounds running and the game becomes
-  // guessable. Prefer posts whose real author is actually in the room, then take one
-  // per author before allowing a repeat.
-  var present = [], absent = [];
-  pool.forEach(function(item){
-    (findAttendeePlayerId(item.posterName) ? present : absent).push(item);
-  });
-
+  // makes the same author the answer several rounds running and the game becomes
+  // guessable. Take one post per author before allowing a repeat.
   function spreadByAuthor(list){
     var byAuthor = {}, order = [];
     list.forEach(function(item){
@@ -5245,26 +5256,14 @@ function launchWhoPosted(){
     return out;
   }
 
-  var ordered = spreadByAuthor(present).concat(spreadByAuthor(absent));
+  var ordered = spreadByAuthor(pool);
   var roundCount = Math.max(1, Math.min(5, ordered.length));
   var rounds = ordered.slice(0, roundCount).map(function(item){
-    var assignedId = findAttendeePlayerId(item.posterName);
-    var reassigned = false;
-    if(!assignedId){
-      var randomPlayer = players[Math.floor(Math.random()*players.length)] || { id: myId };
-      assignedId = randomPlayer.id;
-      reassigned = true;               // original author isn't here, so someone else owns it
-    }
-    var realP = getPlayer(assignedId);
     return {
       platform: item.platform || "facebook",
       text: item.text || "",
       textFr: item.textFr || "",          // carried through, or the FR copy is lost here
-      // Showing the original author's real name while the reveal announces a different
-      // player was the main source of confusion. Reassigned posts take the new owner's
-      // name so the card and the reveal always agree.
-      fullName: reassigned ? ((realP && realP.name) || "Anonyme")
-                           : (item.fullName || (realP ? realP.name : "Anonyme")),
+      fullName: item.fullName || item.posterName || "Anonyme",
       wallFrom: item.wallFrom || "",
       date: item.date || "Post",
       dateFr: item.dateFr || "",
@@ -5277,7 +5276,8 @@ function launchWhoPosted(){
       image: item.image || "",
       featuredComment: item.featuredComment || null,
       subPosts: item.subPosts || null,
-      posterId: assignedId
+      // The answer is the person who genuinely wrote it, independent of who is playing.
+      authorName: item.posterName || ""
     };
   });
 
@@ -5453,11 +5453,12 @@ function renderWhoPosted(g){
   var round = g.round || 0;
   var total = g.total || 1;
   var votes = g.votes || {};
-  var item = (g.roundsData && g.roundsData[round]) ? g.roundsData[round] : { text:"", posterId:"" };
+  var item = (g.roundsData && g.roundsData[round]) ? g.roundsData[round] : { text:"", authorName:"" };
   var votedCount = Object.keys(votes).length;
   var html = "";
 
-  var realPoster = players.find(function(p){ return p.id === item.posterId; }) || { name:"Quelqu'un", color:"#2563eb" };
+  // The suspect is the real author of the post, not a player in the room.
+  var realPoster = authorByName(item.authorName);
 
   if(g.phase === "guess"){
     var revealKey = (g.type || "") + "_" + round;
@@ -5477,11 +5478,12 @@ function renderWhoPosted(g){
     html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • Qui a posté ça ?</div>';
     html += renderSocialPostHTML(item, false, realPoster);
 
-    html += '<div class="gsub">Qui dans la gang a écrit ou publié ça ?</div>';
+    html += '<div class="gsub">Qui a écrit ou publié ça ?</div>';
     html += '<div class="vgrid">';
-    players.forEach(function(p){
-      var sel = (votes[myId] === p.id) ? " sel" : "";
-      html += '<div class="vcell' + sel + '" onclick="voteFor(\'' + p.id + '\')">' + avatarHTML(p, 52) + '<div class="vn">' + escapeHtml(p.name) + '</div></div>';
+    postAuthors().forEach(function(a){
+      var sel = (votes[myId] === a.name) ? " sel" : "";
+      html += '<div class="vcell' + sel + '" onclick="voteAuthor(\'' + escapeHtml(a.name).replace(/'/g, "\\'") + '\')">' +
+              avatarHTML(a, 52) + '<div class="vn">' + escapeHtml(a.name) + '</div></div>';
     });
     html += '</div>';
     html += '<div class="gprogress">' + votedCount + ' / ' + players.length + ' ont voté</div>';
@@ -5499,6 +5501,9 @@ function renderWhoPosted(g){
     html += '<div style="text-align:center;margin:18px 0;">';
     html += avatarHTML(realPoster, 84);
     html += '<div style="font-size:1.4rem;font-weight:800;margin-top:10px;">C\'était ' + escapeHtml(realPoster.name) + ' !</div>';
+    if(realPoster.fullName && realPoster.fullName !== realPoster.name){
+      html += '<div style="font-size:.85rem;color:var(--gr);margin-top:2px;">' + escapeHtml(realPoster.fullName) + '</div>';
+    }
     html += '</div>';
     html += renderRoundPointsHTML(g.roundPoints);
     html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' ' + (round + 1 >= total ? 'Fin du jeu' : 'Prochaine manche') + ' dans <span id="countdownVal">5s</span></div></div>';
