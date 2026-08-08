@@ -1373,7 +1373,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.91</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.92</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -4849,6 +4849,22 @@ var POSTS_PACK = [
       text: "LOL you got a ps3 1 year ago",
       likes: 0
     }
+  },
+  {
+    platform: "facebook",
+    posterName: "Simon",
+    fullName: "Simon Pageau",
+    wallFrom: "Camille Perreault",
+    date: "December 23, 2015",
+    text: "Bonne fete 🙂",
+    likes: 0,
+    comments: 1,
+    featuredComment: {
+      author: "Simon Pageau",
+      time: "10y",
+      text: "merci",
+      likes: 0
+    }
   }
 ];
 
@@ -4879,6 +4895,7 @@ function launchWhoPosted(){
       platform: item.platform || "facebook",
       text: item.text || "",
       fullName: item.fullName || (realP ? realP.name : "Anonyme"),
+      wallFrom: item.wallFrom || "",
       date: item.date || "Post",
       feeling: item.feeling || "",
       likes: item.likes || 1,
@@ -4970,16 +4987,17 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
     html += '  <div class="fb-post-hdr">';
     html += '    <div class="fb-hdr-left">';
     var feelingTxt = item.feeling ? (' <span style="font-weight:400;color:#b0b3b8;font-size:0.84rem;">' + escapeHtml(item.feeling) + '</span>') : '';
+    var wallPrefix = item.wallFrom ? ('<span style="font-weight:700;color:#e4e6eb;">' + escapeHtml(item.wallFrom) + '</span> <span style="color:#b0b3b8;font-weight:400;font-size:0.8rem;margin:0 2px;">▶</span> ') : '';
     if(!isRevealed){
       html += '      <div class="skel-av"></div>';
       html += '      <div>';
-      html += '        <div class="fb-author-name" style="display:flex;align-items:center;gap:6px;"><div class="skel-bar skel-name"></div>' + feelingTxt + '</div>';
+      html += '        <div class="fb-author-name" style="display:flex;align-items:center;gap:6px;">' + wallPrefix + '<div class="skel-bar skel-name"></div>' + feelingTxt + '</div>';
       html += '        <div class="fb-post-date">' + escapeHtml(item.date || "2014") + ' • <span style="font-size:0.7rem;">👥</span></div>';
       html += '      </div>';
     } else {
       html += avatarHTML(realPoster, 40);
       html += '      <div>';
-      html += '        <div class="fb-author-name">' + escapeHtml(item.fullName || realPoster.name) + feelingTxt + '</div>';
+      html += '        <div class="fb-author-name">' + wallPrefix + escapeHtml(item.fullName || realPoster.name) + feelingTxt + '</div>';
       html += '        <div class="fb-post-date">' + escapeHtml(item.date || "2014") + ' • <span style="font-size:0.7rem;">👥</span></div>';
       html += '      </div>';
     }
