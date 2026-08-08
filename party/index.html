@@ -1373,7 +1373,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.64</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.0.65</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -4219,6 +4219,23 @@ var POSTS_PACK = [
       text: "I feel you😂😂 I have 20 just on my legs",
       likes: 1
     }
+  },
+  {
+    platform: "facebook",
+    posterName: "Sydney",
+    fullName: "Sydney Dufresne-Kalaschnick",
+    feeling: "is 😒 feeling annoyed.",
+    date: "June 29, 2016",
+    text: "Freakin' mosquito woke me up by biting me 6 times, on the arms an on a hand and now I can't sleep cause it itches to much!",
+    likes: 1,
+    likeIcon: "😆",
+    comments: 2,
+    featuredComment: {
+      author: "Suzanne Desjardins",
+      time: "10y",
+      text: "Pauvre cocotte. Love you",
+      likes: 0
+    }
   }
 ];
 
@@ -4252,6 +4269,7 @@ function launchWhoPosted(){
       date: item.date || "Post",
       feeling: item.feeling || "",
       likes: item.likes || 1,
+      likeIcon: item.likeIcon || "👍",
       comments: item.comments || 0,
       image: item.image || "",
       featuredComment: item.featuredComment || null,
@@ -4355,8 +4373,9 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
       html += '  <div style="margin-bottom:12px;"><img src="' + item.image + '" alt="Post Image" style="width:100%;border-radius:8px;display:block;"></div>';
     }
 
+    var rxIcon = item.likeIcon || "👍";
     html += '  <div class="fb-post-reactions">';
-    html += '    <div class="fb-like-badge"><span class="fb-like-icon">👍</span> ' + (item.likes || 1) + '</div>';
+    html += '    <div class="fb-like-badge"><span class="fb-like-icon">' + rxIcon + '</span> ' + (item.likes || 1) + '</div>';
     html += '    <div>' + (item.comments || 0) + ' commentaire' + ((item.comments || 0) > 1 ? 's' : '') + '</div>';
     html += '  </div>';
 
