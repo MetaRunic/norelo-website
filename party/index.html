@@ -400,7 +400,6 @@
   .gcard[data-id="knowplayer"] .gicon { background: linear-gradient(135deg, #3b82f6, #06b6d4); }
   .gcard[data-id="roast"] .gicon { background: linear-gradient(135deg, #a855f7, #ec4899); }
   .gcard[data-id="mostlikely"] .gicon { background: linear-gradient(135deg, #ef4444, #f97316); }
-  .gcard[data-id="whosaid"] .gicon { background: linear-gradient(135deg, #10b981, #059669); }
   .gcard[data-id="twotruths"] .gicon { background: linear-gradient(135deg, #6366f1, #4f46e5); }
 
   .gcard .ginfo{flex:1;}
@@ -1474,7 +1473,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.35</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.36</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -2822,7 +2821,6 @@ var GAME_MODES = [
   { id: "guessrating", icon: ICONS.star, title: "Devine la note", desc: "Combien d'étoiles cette critique Google/Yelp hilarante a-t-elle eue ?" },
   { id: "knowplayer", icon: ICONS.idea, title: "Connais-tu bien...", desc: "Le joueur vedette répond en secret, tout le monde prédit son choix !" },
   { id: "roast", icon: ICONS.feather, title: "Autobiographies & Roasts", desc: "Écris la meilleure réplique pour compléter les phrases sur tes amis !" },
-  { id: "whosaid", icon: ICONS.chat, title: "Qui a dit ça ?", desc: "Retrouve l'auteur de ce message texte sorti de son contexte !" },
   { id: "twotruths", icon: ICONS.mask, title: "2 Vérités 1 Mensonge", desc: "Démasque le faux énoncé parmi les trois !" }
 ];
 
@@ -3156,7 +3154,6 @@ function startLiveCountdown(revealStartMs, durationSec, onEnd){
  * Bonus stars pass unscaled on purpose - they are identical in every mode and are
  * what lets a trailing player claw back. */
 var MODE_POINT_SCALE = {
-  whosaid:     1.25,
   twotruths:   1.60,
   whoposted:   1.25,
   mostlikely:  1.00,
@@ -3478,7 +3475,6 @@ function launchSelectedGame(type){
   else if(type === "guessrating"){ launchGuessRating(); }
   else if(type === "knowplayer"){ launchKnowPlayer(); }
   else if(type === "roast"){ launchRoast(); }
-  else if(type === "whosaid"){ launchWhoSaid(); }
   else if(type === "twotruths"){ launchTwoTruths(); }
   else { launchMostLikely(); }
 }
@@ -3519,7 +3515,6 @@ function renderGame(g){
   else if(g.type === "guessrating"){ renderGuessRating(g); }
   else if(g.type === "knowplayer"){ renderKnowPlayer(g); }
   else if(g.type === "roast"){ renderRoast(g); }
-  else if(g.type === "whosaid"){ renderWhoSaid(g); }
   else if(g.type === "twotruths"){ renderTwoTruths(g); }
   else if(g.type === "mostlikely"){ renderMostLikely(g); }
   else if(g.type === "ceremony"){ renderGrandPrizeCeremony(g); }
@@ -4407,16 +4402,6 @@ function revealRound(){
           if(rWinners[votes[vKey]] && (rSolo || votes[vKey] !== vKey)) trackStat("tasteMaker", vKey);
         });
       }
-    } else if(game.type === "whosaid"){
-      Object.keys(votes).forEach(function(vUid){
-        var wsIt = wsRoundData(game);
-        if(votes[vUid] === wsIt.speakerId){
-          trackStat("correctGuesses", vUid);
-          trackStat("sleuth", vUid);
-          trackStat("quoteMaster", vUid);
-          addPoints(vUid, 200);
-        }
-      });
     } else if(game.type === "twotruths"){
       var ttItem = ttRoundData(game);
       var ttSolo = ttSoloMode();
@@ -4483,17 +4468,13 @@ var BONUS_CATEGORIES = [
     title: { fr: "Le Rebelle", en: "The Contrarian", es: "El Rebelde" },
     desc:  { fr: "A voté contre la gang le plus souvent", en: "Voted against the crew most often", es: "Votó contra el grupo más veces" } },
   { key: "sleuth", icon: ICONS.camera, pts: 150,
-    modes: ["whoposted","whosaid"],
+    modes: ["whoposted"],
     title: { fr: "Fin Limier", en: "Sharp Sleuth", es: "Sabueso Fino" },
     desc:  { fr: "A reconnu ses amis le plus souvent", en: "Recognised their friends most often", es: "Reconoció a sus amigos más veces" } },
   { key: "soloSleuth", icon: ICONS.idea, pts: 200,
     modes: ["whoposted"],
     title: { fr: "Le Fouineur", en: "The Digger", es: "El Husmeador" },
     desc:  { fr: "Seul à avoir trouvé un post que personne ne voyait", en: "The only one to crack a post nobody else got", es: "El único que descifró un post que nadie más sacó" } },
-  { key: "quoteMaster", icon: ICONS.chat, pts: 200,
-    modes: ["whosaid"],
-    title: { fr: "L'Oreille Absolue", en: "Perfect Ear", es: "Oído Absoluto" },
-    desc:  { fr: "A reconnu le plus de voix du premier coup", en: "Recognised the most voices first try", es: "Reconoció más voces al primer intento" } },
   { key: "exactRating", icon: ICONS.star, pts: 150,
     modes: ["guessrating"],
     title: { fr: "Le Critique Pro", en: "The Pro Critic", es: "El Crítico Pro" },
@@ -4527,7 +4508,7 @@ var BONUS_CATEGORIES = [
     title: { fr: "Détecteur de Mensonges", en: "Lie Detector", es: "Detector de Mentiras" },
     desc:  { fr: "A démasqué le plus de mensonges", en: "Unmasked the most lies", es: "Desenmascaró más mentiras" } },
   { key: "correctGuesses", icon: ICONS.idea, pts: 150,
-    modes: ["whoposted","guessrating","knowplayer","whosaid","twotruths"],
+    modes: ["whoposted","guessrating","knowplayer","twotruths"],
     title: { fr: "Le Devin", en: "The Oracle", es: "El Adivino" },
     desc:  { fr: "A deviné juste le plus souvent", en: "Guessed right most often", es: "Adivinó bien más veces" } }
 ];
@@ -7527,232 +7508,6 @@ function voteRoast(authorId){
   if(authorId === myId && !roastSoloMode()) return;
   sfxVote();
   db.ref("rooms/" + roomCode + "/game/votes/" + myId).set(authorId);
-}
-
-// =====================================================================
-//  GAME 6: WHO SAID THIS? (Qui a dit ça ?)
-// =====================================================================
-/* Things somebody in the gang has definitely said. */
-/* Stored by index on the round so the quote re-renders in whatever language the
-   reader picked, not the one the host launched in. */
-var QUOTES_PACK = [
-  { fr: "Je bois juste une bière pis je m'en vais.",
-    en: "I'm just having one beer and then I'm out.",
-    es: "Solo me tomo una cerveza y me voy." },
-  { fr: "Non non, je suis correct pour conduire.",
-    en: "Nah nah, I'm good to drive.",
-    es: "No no, yo estoy bien para manejar." },
-  { fr: "J'ai pas faim... ok juste une bouchée.",
-    en: "I'm not hungry... ok just one bite.",
-    es: "No tengo hambre... bueno solo un bocado." },
-  { fr: "Je te jure que c'est la dernière fois.",
-    en: "I swear this is the last time.",
-    es: "Te juro que es la última vez." },
-  { fr: "Je me lève tôt demain, faque je reste pas tard.",
-    en: "I'm up early tomorrow, so I'm not staying late.",
-    es: "Mañana me levanto temprano, así que no me quedo hasta tarde." },
-  { fr: "C'est moi qui paye ce soir !",
-    en: "Tonight's on me!",
-    es: "¡Esta noche invito yo!" },
-  { fr: "Je vais juste regarder un épisode.",
-    en: "I'm just going to watch one episode.",
-    es: "Solo voy a ver un capítulo." },
-  { fr: "J'ai lu les conditions d'utilisation au complet.",
-    en: "I read the terms of service all the way through.",
-    es: "Me leí los términos y condiciones completos." },
-  { fr: "Je suis pas fâché, je suis juste déçu.",
-    en: "I'm not mad, I'm just disappointed.",
-    es: "No estoy bravo, solo decepcionado." },
-  { fr: "On devrait vraiment faire ça plus souvent.",
-    en: "We should really do this more often.",
-    es: "Deberíamos hacer esto más seguido, en serio." },
-  { fr: "Je commence le gym lundi, c'est sûr.",
-    en: "I'm starting the gym Monday, for sure.",
-    es: "El lunes empiezo el gimnasio, seguro." },
-  { fr: "Attends, je connais un raccourci.",
-    en: "Hold on, I know a shortcut.",
-    es: "Espera, yo me sé un atajo." },
-  { fr: "Fais-moi confiance, j'ai déjà fait ça.",
-    en: "Trust me, I've done this before.",
-    es: "Confía en mí, yo ya he hecho esto." },
-  { fr: "Je vais me coucher dans 5 minutes.",
-    en: "I'm going to bed in 5 minutes.",
-    es: "Me acuesto en 5 minutos." },
-  { fr: "C'est pas moi qui a mangé ton lunch.",
-    en: "I'm not the one who ate your lunch.",
-    es: "Yo no fui el que se comió tu almuerzo." },
-  { fr: "J'arrive dans 2 minutes.",
-    en: "I'll be there in 2 minutes.",
-    es: "Llego en 2 minutos." },
-  { fr: "Je suis pas soul, c'est le plancher qui bouge.",
-    en: "I'm not drunk, the floor is moving.",
-    es: "No estoy borracho, es el piso que se mueve." },
-  { fr: "On se texte demain pour organiser ça.",
-    en: "We'll text tomorrow and sort it out.",
-    es: "Mañana nos escribimos y organizamos eso." },
-  { fr: "J'ai juste 20 piasses sur moi.",
-    en: "I've only got 20 bucks on me.",
-    es: "Solo tengo 20 lucas encima." },
-  { fr: "Je te rembourse la semaine prochaine promis.",
-    en: "I'll pay you back next week, promise.",
-    es: "La otra semana te lo devuelvo, prometido." },
-  { fr: "C'est correct, j'aime ça de toute façon.",
-    en: "It's fine, I like it that way anyway.",
-    es: "Está bien, igual así me gusta." },
-  { fr: "Je vais juste jouer une game.",
-    en: "I'm just going to play one game.",
-    es: "Solo voy a jugar una partida." },
-  { fr: "Ah non, mon téléphone était sur silencieux.",
-    en: "Oh no, my phone was on silent.",
-    es: "Ay no, tenía el celular en silencio." },
-  { fr: "Je pense que j'ai laissé ça chez toi.",
-    en: "I think I left that at your place.",
-    es: "Creo que eso lo dejé en tu casa." },
-  { fr: "C'est pas si pire que ça en a l'air.",
-    en: "It's not as bad as it looks.",
-    es: "No es tan grave como se ve." },
-  { fr: "Je vais commencer mon régime après les fêtes.",
-    en: "I'll start my diet after the holidays.",
-    es: "Empiezo la dieta después de las fiestas." },
-  { fr: "Je m'en souviens plus du tout de cette soirée-là.",
-    en: "I remember absolutely nothing about that night.",
-    es: "De esa noche no me acuerdo de nada, nada." },
-  { fr: "Ça goûte weird mais je pense que c'est encore bon.",
-    en: "It tastes weird but I think it's still good.",
-    es: "Sabe raro pero creo que todavía sirve." },
-  { fr: "Je vais juste faire un petit somme de 10 minutes.",
-    en: "I'm just going to take a quick 10 minute nap.",
-    es: "Solo voy a echarme una siestica de 10 minutos." },
-  { fr: "T'inquiète, j'ai tout backupé.",
-    en: "Don't worry, I backed everything up.",
-    es: "Tranquilo, yo hice backup de todo." },
-  { fr: "Je vais nettoyer ça demain matin.",
-    en: "I'll clean that up tomorrow morning.",
-    es: "Eso lo limpio mañana por la mañana." },
-  { fr: "C'est un investissement, pas une dépense.",
-    en: "It's an investment, not an expense.",
-    es: "Es una inversión, no un gasto." },
-  { fr: "Je te l'avais dit que ça marcherait pas.",
-    en: "I told you it wasn't going to work.",
-    es: "Yo te dije que eso no iba a funcionar." },
-  { fr: "On peut encore rattraper ça.",
-    en: "We can still fix this.",
-    es: "Todavía podemos arreglar esto." },
-  { fr: "Je suis presque arrivé, je pars là.",
-    en: "I'm almost there, I'm leaving right now.",
-    es: "Ya casi llego, ya voy saliendo." },
-  { fr: "J'ai jamais dit ça, tu inventes.",
-    en: "I never said that, you're making it up.",
-    es: "Yo nunca dije eso, te lo estás inventando." },
-  { fr: "C'est la dernière shot pis on part.",
-    en: "This is the last shot and then we go.",
-    es: "Este es el último shot y nos vamos." },
-  { fr: "Je vais juste checker mon téléphone deux secondes.",
-    en: "I'm just going to check my phone for two seconds.",
-    es: "Solo voy a mirar el celular dos segundos." },
-  { fr: "Ça m'a coûté rien pantoute.",
-    en: "It cost me nothing at all.",
-    es: "Eso no me costó nada de nada." },
-  { fr: "Je vais y penser pis je te reviens là-dessus.",
-    en: "I'll think about it and get back to you.",
-    es: "Lo pienso y te cuento." }
-];
-
-var WS_GUESS_SEC = 60;
-
-function launchWhoSaid(){
-  if(!roomCode || !amHost) return;
-  _ceremonyStartMs = 0;
-
-  var qPool = QUOTES_PACK.map(function(_, i){ return i; });
-  shuffle(qPool);
-  // Rotate the speaker so the same person isn't the answer twice before everyone
-  // has had a turn - the pack is shared, the attribution is what varies.
-  var order = players.slice();
-  shuffle(order);
-  if(order.length === 0) order = [{ id: myId, name: me.name }];
-
-  var total = Math.min(8, qPool.length);
-  var rounds = [];
-  for(var i = 0; i < total; i++){
-    var sp = order[i % order.length];
-    rounds.push({ qi: qPool[i], quote: pickLang(QUOTES_PACK[qPool[i]]),
-                  speakerId: sp.id, speakerName: sp.name });
-  }
-
-  db.ref("rooms/" + roomCode).update({
-    status: "playing",
-    game: {
-      type: "whosaid",
-      phase: "guess",
-      round: 0,
-      total: rounds.length,
-      phaseStartMs: Date.now(),
-      roundsData: rounds,
-      votes: {}
-    }
-  });
-}
-
-function wsRoundData(g){
-  var r = (g && g.round) || 0;
-  if(g && g.roundsData && g.roundsData[r]) return g.roundsData[r];
-  return { quote: (g && g.quote) || "", speakerId: (g && g.speakerId) || "", speakerName: "" };
-}
-
-function renderWhoSaid(g){
-  var area = $("gameArea");
-  var wsItem = wsRoundData(g);
-  var quote = (typeof wsItem.qi === "number" && QUOTES_PACK[wsItem.qi])
-            ? pickLang(QUOTES_PACK[wsItem.qi]) : (wsItem.quote || "");
-  var round = g.round || 0;
-  var total = g.total || 1;
-  var votes = g.votes || {};
-  var votedCount = Object.keys(votes).length;
-  var html = "";
-
-  if(g.phase === "guess"){
-    var revealKey = (g.type || "") + "_" + round;
-    if(votedCount >= players.length && players.length > 0 && amHost && _lastAutoRevealKey !== revealKey){
-      _lastAutoRevealKey = revealKey;
-      setTimeout(revealRound, 600);
-    }
-
-    startLiveCountdown(g.phaseStartMs || Date.now(), WS_GUESS_SEC, function(){
-      if(amHost && currentGame && currentGame.type === "whosaid" && (currentGame.round || 0) === round) revealRound();
-    });
-
-    html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • Qui a dit ça ?</div>';
-    html += '<div class="post-card" style="font-size:1.25rem;font-weight:700;text-align:center;">"' + escapeHtml(quote) + '"</div>';
-    html += '<div class="gsub">Vote pour l\'auteur selon toi :</div>';
-    html += '<div class="vgrid">';
-    players.forEach(function(p){
-      var sel = (votes[myId] === p.id) ? " sel" : "";
-      html += '<div class="vcell' + sel + '" onclick="voteFor(\'' + p.id + '\')">' + avatarHTML(p, 52) + '<div class="vn">' + escapeHtml(p.name) + '</div></div>';
-    });
-    html += '</div>';
-    html += '<div class="waiting">' + (votedCount >= players.length ? "Tout le monde a deviné ! Révélation..." : (votes[myId] ? "Vote envoyé !" : "Devine la personne")) + '<span class="d"></span></div>';
-    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock +
-            ' <span id="countdownVal">' + WS_GUESS_SEC + 's</span></div></div>';
-
-  } else if(g.phase === "reveal"){
-    var revealStart = g.revealStartMs || Date.now();
-    startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) nextRound(); });
-
-    var speaker = getPlayer(wsItem.speakerId);
-    html += '<div class="groundhdr">Auteur révélé !</div>';
-    html += '<div style="text-align:center;margin:20px 0;">';
-    html += avatarHTML(speaker, 84);
-    html += '<div style="font-size:1.4rem;font-weight:800;margin-top:10px;">C\'était ' + escapeHtml(speaker.name) + ' !</div>';
-    html += '</div>';
-    html += renderRoundPointsHTML(g.roundPoints);
-    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' Fin du jeu dans <span id="countdownVal">5s</span></div></div>';
-  } else if(g.phase === "done"){
-    html += renderMiniGameDoneHTML();
-  }
-
-  area.innerHTML = html;
-  if(g.phase === "reveal") animateCounters(g);
 }
 
 // =====================================================================
