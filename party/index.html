@@ -1097,6 +1097,24 @@
   .review-quote p {
     font-size: 0.95rem; font-weight: 600; color: var(--txt); line-height: 1.45; font-style: italic; margin: 0;
   }
+  .review-context-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(168, 85, 247, 0.18); border: 1px solid rgba(168, 85, 247, 0.45);
+    color: #e9d5ff; font-size: 0.76rem; font-weight: 800; padding: 4px 10px;
+    border-radius: 8px; margin-top: 6px; width: fit-content; max-width: 100%;
+    word-break: break-word;
+  }
+  .owner-response-box {
+    background: rgba(59, 130, 246, 0.14); border-left: 4px solid #3b82f6;
+    border-radius: 0 12px 12px 0; padding: 10px 14px; margin-top: 10px; text-align: left;
+  }
+  .owner-response-header {
+    font-size: 0.76rem; font-weight: 800; color: #60a5fa; margin-bottom: 4px;
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  }
+  .owner-response-text {
+    font-size: 0.9rem; font-weight: 700; color: #e2e8f0; line-height: 1.4; font-style: italic;
+  }
 
   .pokemon-reveal-burst {
     animation: revealPop 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
@@ -1456,7 +1474,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.27</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.28</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -5831,6 +5849,135 @@ function skipBonusShow(){
    photo      = generic fallback, used only when shots is empty. */
 var REVIEWS_PACK = [
   {
+    "source": "Amazon",
+    "product": {
+      "fr": "Grattoir pour le dos en bambou",
+      "en": "Bamboo Backscratcher Set",
+      "es": "Rascador de espalda de bambú"
+    },
+    "seller": "Amazon.com · Achat vérifié",
+    "shots": ["reviews/backscratcher.jpg"],
+    "reviewer": "Lindsay Gandy",
+    "date": {
+      "fr": "29 octobre 2025",
+      "en": "October 29, 2025",
+      "es": "29 de octubre de 2025"
+    },
+    "text": {
+      "fr": "Efficace pour mon utilisation. Bon. Je donne des fessées à ma femme avec ça. Ça laisse une marque sur ses fesses. Je les adore.",
+      "en": "Effective for my use. Good. I spank my wife with these. They make a mark on her butt. I love them",
+      "es": "Eficaz para mi uso. Bueno. Le doy nalgadas a mi esposa con esto. Deja una marca en sus nalgas. Me encantan."
+    },
+    "stars": 3,
+    "real": true
+  },
+  {
+    "source": "Google",
+    "product": {
+      "fr": "Église locale",
+      "en": "Local Church",
+      "es": "Iglesia local"
+    },
+    "seller": "Google Maps · Guide Local",
+    "shots": ["reviews/church_interior.jpg"],
+    "reviewer": "XaZi_42",
+    "date": {
+      "fr": "il y a 2 mois",
+      "en": "2 months ago",
+      "es": "hace 2 meses"
+    },
+    "text": {
+      "fr": "Belle église mais un peu trop de Jésus",
+      "en": "Nice church but too much Jesus a little",
+      "es": "Bonita iglesia pero un poco demasiado Jesús"
+    },
+    "stars": 4,
+    "real": true
+  },
+  {
+    "source": "Google",
+    "product": {
+      "fr": "Resto à emporter local",
+      "en": "Local Takeout Diner",
+      "es": "Restaurante para llevar local"
+    },
+    "seller": "Google Maps",
+    "shots": ["reviews/closed_storefront.jpg"],
+    "reviewer": "Client (8 avis)",
+    "date": {
+      "fr": "il y a 2 ans",
+      "en": "2 years ago",
+      "es": "hace 2 años"
+    },
+    "text": {
+      "fr": "J'ai attendu plus de 50 minutes et l'endroit n'a tout simplement jamais ouvert. Et l'employé ne pouvait pas donner de raison pour laquelle son gérant avait 40 minutes de retard\n\nNourriture : 2/5",
+      "en": "I waited over 50 minutes and the place just never opened. And the employee couldn't give a reason why his manager was running 40 minutes late\n\nFood: 2/5",
+      "es": "Esperé más de 50 minutos y el lugar nunca abrió. Y el empleado no pudo dar una razón de por qué su gerente llegaba 40 minutos tarde\n\nComida: 2/5"
+    },
+    "ownerResponse": {
+      "author": "Propriétaire (Owner)",
+      "time": "2 years ago",
+      "text": {
+        "fr": "LOL HAHAHAHAHAHA",
+        "en": "LOL HAHAHAHAHAHA",
+        "es": "LOL HAHAHAHAHAHA"
+      }
+    },
+    "stars": 2,
+    "real": true
+  },
+  {
+    "source": "Google",
+    "product": {
+      "fr": "Restaurant de nouilles wonton",
+      "en": "Wonton Noodle Shop",
+      "es": "Restaurante de fideos wonton"
+    },
+    "seller": "Google Maps",
+    "shots": ["reviews/wonton_noodles_no_soup.png"],
+    "reviewer": "hangbin chen",
+    "date": {
+      "fr": "il y a 4 mois",
+      "en": "4 months ago",
+      "es": "hace 4 meses"
+    },
+    "text": {
+      "fr": "Quelle ordure ! Non seulement vous ne parlez pas chinois, mais j'ai aussi commandé des nouilles wonton et c'est ce que vous me donnez ? Vous appelez ça des nouilles wonton ? Pourquoi vous ne crevez pas ? Où est la soupe ? Vous ne voulez pas voir à quoi les nouilles wonton sont censées ressembler...",
+      "en": "What garbage! Not only do you not speak Chinese, but I also ordered wonton noodles and this is what you give me? You call this wonton noodles? Why don't you just die? Where's the soup? Don't you want to see what wonton noodles are supposed to be...",
+      "es": "¡Qué basura! No solo no hablan chino, sino que pedí fideos wonton y ¿esto es lo que me dan? ¿Llaman a esto fideos wonton? ¿Por qué no se mueren? ¿Dónde está la sopa? No quieren ver como se supone que son los fideos wonton..."
+    },
+    "stars": 1,
+    "real": true
+  },
+  {
+    "source": "Google",
+    "product": {
+      "fr": "Jehova's Witness Kingdom Hall",
+      "en": "Jehova's Witness Kingdom Hall",
+      "es": "Jehova's Witness Kingdom Hall"
+    },
+    "seller": "Google Maps · Reddit Spot",
+    "context": {
+      "fr": "Jehova's Witness Kingdom Hall",
+      "en": "Jehova's Witness Kingdom Hall",
+      "es": "Jehova's Witness Kingdom Hall"
+    },
+    "shots": ["reviews/jehovah_biscuits.png"],
+    "reviewer": "goose hole",
+    "date": {
+      "fr": "il y a 7 ans",
+      "en": "7 years ago",
+      "es": "hace 7 años"
+    },
+    "text": {
+      "fr": "Je suis assez découragé car lorsque j'étais à cette réunion de culte, on ne m'a offert que des biscuits, à ma surprise d'autres personnes de disposition plus susceptible ont eu des gâteaux. Ça ne m'aurait même pas dérangé d'habitude mais le biscuit était si vieux qu'il aurait pu appartenir à Jéhovah lui-même. Apportez vos propres snacks ou préparez-vous à ressentir la même morosité qu'eux.",
+      "en": "I'm quite disheartened as when I was at this cult meeting I was only offered biscuits, to my surprise other people of a more susceptible disposition are given cakes. I wouldn't have even minded usually but the biscuit was so old it could have belonged to Jehovah himself. Bring your own snacks or prepare to feel as doom and gloom as the rest of them.",
+      "es": "Estoy bastante desanimado ya que cuando estuve en esta reunión de culto solo me ofrecieron galletas, para mi sorpresa a otras personas de disposición más susceptible les dieron pasteles. Normalmente ni me habría importado, pero la galleta era tan vieja que podría haber pertenecido al mismísimo Jehová. Traigan sus propios snacks o prepárense para sentirse tan lúgubres como el resto."
+    },
+    "stars": 2,
+    "real": true
+  },
+  {
     "source": "Online Store",
     "product": {
       "fr": "Chapeau d'hiver avec rabats d'oreilles",
@@ -6239,6 +6386,9 @@ function renderGuessRating(g){
     html += '<div class="review-header">';
     html += '<div class="business-info">';
     html += '<div class="business-name">' + escapeHtml(pickLang(item.product)) + '</div>';
+    if(item.context){
+      html += '<div class="review-context-badge">📌 ' + escapeHtml(pickLang(item.context)) + '</div>';
+    }
     html += '<div class="business-location">' + escapeHtml(item.seller || '') + '</div>';
     html += '<div style="margin-top:6px;">' + srcBadgeHTML() + '</div>';
     html += '</div>';
@@ -6251,6 +6401,18 @@ function renderGuessRating(g){
             (item.date ? ' • ' + escapeHtml(pickLang(item.date)) : '') + '</div>';
     html += '<p>"' + escapeHtml(pickLang(item.text)) + '"</p>';
     html += '</div>';
+
+    if(item.ownerResponse){
+      var ow = item.ownerResponse;
+      var owTitle = ow.author || 'Propriétaire (Owner)';
+      var owTime = ow.time ? (' • ' + ow.time) : '';
+      var owTxt = pickLang(ow.text || ow);
+      html += '<div class="owner-response-box">';
+      html += '<div class="owner-response-header">💬 ' + escapeHtml(owTitle) + escapeHtml(owTime) + '</div>';
+      html += '<div class="owner-response-text">"' + escapeHtml(owTxt) + '"</div>';
+      html += '</div>';
+    }
+
     html += '</div>';
 
     html += '<div class="gsub">Combien d\'étoiles (1 à 5) cette personne a-t-elle laissées ?</div>';
@@ -6276,9 +6438,22 @@ function renderGuessRating(g){
     html += '<div style="font-size:2.2rem;color:var(--amber);filter:drop-shadow(0 0 15px rgba(245,158,11,0.8));">' + starsStr + '</div>';
     html += '<div style="font-size:1.6rem;font-weight:900;color:var(--amber);margin-top:6px;">' + item.stars + ' / 5 Étoiles !</div>';
     html += '<div style="margin-top:8px;">' + srcBadgeHTML() + '</div>';
+    if(item.context){
+      html += '<div class="review-context-badge" style="margin:6px auto 0 auto;">📌 ' + escapeHtml(pickLang(item.context)) + '</div>';
+    }
     html += '<div style="font-size:0.85rem;color:#94a3b8;margin-top:8px;">' + escapeHtml(pickLang(item.product)) + '</div>';
     html += '<div style="font-size:0.78rem;color:#64748b;margin-top:2px;">' + escapeHtml(item.reviewer || 'Client') +
             (item.date ? ' • ' + escapeHtml(pickLang(item.date)) : '') + '</div>';
+    if(item.ownerResponse){
+      var ow = item.ownerResponse;
+      var owTitle = ow.author || 'Propriétaire (Owner)';
+      var owTime = ow.time ? (' • ' + ow.time) : '';
+      var owTxt = pickLang(ow.text || ow);
+      html += '<div class="owner-response-box" style="max-width:400px;margin:12px auto 0 auto;">';
+      html += '<div class="owner-response-header">💬 ' + escapeHtml(owTitle) + escapeHtml(owTime) + '</div>';
+      html += '<div class="owner-response-text">"' + escapeHtml(owTxt) + '"</div>';
+      html += '</div>';
+    }
     html += '</div>';
     html += renderRoundPointsHTML(g.roundPoints);
     html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' Prochaine manche dans <span id="countdownVal">5s</span></div></div>';
