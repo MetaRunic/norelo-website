@@ -1447,7 +1447,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.17</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.18</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -7961,41 +7961,383 @@ function rateStar(starCount){
 // =====================================================================
 //  GAME 4: HOW WELL DO YOU KNOW [NAME]? (Connais-tu bien...)
 // =====================================================================
+/* Answers are stored as option indices, so the order here is load-bearing:
+   keep the three languages aligned position for position. */
 var KNOW_QUESTIONS = [
-  { q: "Quelle est ma pire habitude quand je suis soul(e) ?", opts: ["Devenir le philosophe de la soirée", "Vouloir texter tout mon répertoire", "Perdre mes clés et mon téléphone", "Disparaître sans dire au revoir"] },
-  { q: "Mon snack ultime de fin de soirée après un gros party :", opts: ["Poutine bien chaude à 3h du mat", "Pizza froide directement du frigo", "Sac de chips au complet", "Burger double du McDo"] },
-  { q: "Si je devais faire un coup d'un soir avec une célébrité :", opts: ["Un(e) acteur/trice d'Hollywood", "Un(e) athlète professionnel(le)", "Un(e) chanteur/euse pop", "Un(e) influenceur/euse controversé(e)"] },
-  { q: "Mon plus grand plaisir coupable secret :", opts: ["Téléréalité de marde", "Musique pop des années 2000", "Regarder les stories de mon ex", "Dépenser trop d'argent sur UberEats"] },
-  { q: "Si je finis en prison un jour, ce sera pour :", opts: ["Un pari débile en boisson", "Un scandale au resto", "Avoir défendu mon ami(e) trop fort", "Une arnaque financière ratée"] },
-  { q: "Comment je réagis quand quelqu'un me ghost ?", opts: ["Je stalke ses réseaux en silence", "Je fais semblant que ça me dérange pas", "J'envoie un dernier message à 2h du mat", "Je le raconte à toute la gang"] },
-  { q: "Ma vraie raison quand j'annule des plans à la dernière minute :", opts: ["Mon lit était trop confortable", "J'avais juste plus envie de parler", "Une nouvelle série venait de sortir", "J'avais dépensé tout mon argent"] },
-  { q: "Le premier truc que je fais en me réveillant :", opts: ["Scroller mon téléphone pendant 40 minutes", "Snooze 6 fois de suite", "Vérifier si j'ai fait honte hier soir", "Me lever d'un coup en panique"] },
-  { q: "Mon comportement le plus toxique en amour :", opts: ["Je disparais quand ça devient sérieux", "Je relis nos conversations 100 fois", "Je teste la personne exprès", "Je pardonne beaucoup trop vite"] },
-  { q: "Ce que je fais vraiment quand je dis \"je m'en vais me coucher\" :", opts: ["Je regarde des vidéos jusqu'à 3h", "Je mange en cachette dans la cuisine", "Je texte quelqu'un que je devrais pas", "Je me couche pour vrai, promis"] },
-  { q: "Si on fouillait mon téléphone maintenant, ce qui serait le plus gênant :", opts: ["Mes recherches Google", "Mes notes vocales à moi-même", "Mon dossier de photos cachées", "Mes messages avec mon ex"] },
-  { q: "Ma pire habitude que personne ose me dire :", opts: ["Je parle beaucoup trop fort", "Je coupe la parole tout le temps", "J'arrive systématiquement en retard", "Je raconte la même histoire chaque fois"] },
-  { q: "Comment je gère une chicane de couple ?", opts: ["Je boude en silence 3 jours", "J'explose tout de suite", "Je fais des blagues pour désamorcer", "Je fais comme si rien s'était passé"] },
-  { q: "Le mensonge que je dis le plus souvent :", opts: ["\"Je suis en route\"", "\"Je bois pas beaucoup\"", "\"J'ai pas vu ton message\"", "\"C'est correct, ça me dérange pas\""] },
-  { q: "Ma stratégie quand je trouve quelqu'un cute dans un bar :", opts: ["Je le regarde 2h sans rien faire", "Je bois du courage liquide d'abord", "J'envoie un(e) ami(e) en éclaireur", "Je fonce direct sans réfléchir"] },
-  { q: "Ce que je fais si je gagne 1 million demain :", opts: ["Je démissionne par message vocal", "Je disparais dans un autre pays", "Je paie les dettes de tout le monde", "Je le perds en 6 mois, on se connaît"] },
-  { q: "Mon type de party préféré, honnêtement :", opts: ["Gros club, musique forte, chaos", "Sous-sol avec 5 amis et de la bière", "Souper tranquille qui finit à 4h", "Aucun, je veux rester chez moi"] },
-  { q: "La chose la plus honteuse que j'ai déjà faite pour un(e) ex :", opts: ["Conduire 3h sans être invité(e)", "Créer un faux compte pour l'espionner", "Pleurer devant sa maison", "Réapprendre un sport que je déteste"] },
-  { q: "Comment je danse quand je pense que personne me regarde :", opts: ["Comme si j'étais dans un vidéoclip", "Juste un petit balancement gêné", "Full chaos, aucune coordination", "Je danse jamais, même seul(e)"] },
-  { q: "Mon karaoké de fin de soirée obligatoire :", opts: ["Une ballade dramatique pas dans mon ton", "Un classique québécois que tout le monde chante", "Du rap que je connais à moitié", "Je passe le micro à quelqu'un d'autre"] },
-  { q: "Ce qui me fait perdre patience le plus vite :", opts: ["Les gens lents dans une file", "Quand on mâche fort à côté de moi", "Quand on répond pas à mes messages", "Quand quelqu'un a raison avant moi"] },
-  { q: "Si je devais avouer un crush secret, ce serait :", opts: ["Quelqu'un dans cette pièce", "Un(e) collègue de travail", "L'ami(e) d'un(e) ami(e)", "Personne, je suis très bien seul(e)"] },
-  { q: "Ma réaction si mon ex m'écrit à 1h du matin :", opts: ["Je réponds tout de suite, malheureusement", "Je screenshot et j'envoie à la gang", "Je lis et je réponds jamais", "Je bloque et je regrette le lendemain"] },
-  { q: "Le compliment qui me fait le plus plaisir :", opts: ["Que je suis drôle", "Que je suis beau/belle", "Que je suis intelligent(e)", "Qu'on peut compter sur moi"] },
-  { q: "Ce que je commande vraiment quand je dis \"je mange santé\" :", opts: ["Une salade avec 4 sortes de fromage", "Un smoothie et 2 beignes", "Du poulet frit, j'ai abandonné", "Rien, je grignote debout dans le frigo"] },
-  { q: "Mon pire trait quand je joue à un jeu de société :", opts: ["Je triche subtilement", "Je boude si je perds", "J'explique les règles trop longtemps", "Je m'allie et je trahis à la fin"] },
-  { q: "Ce que je fais quand quelqu'un raconte une histoire trop longue :", opts: ["Je hoche la tête sans écouter", "Je regarde mon téléphone", "Je l'interromps pour parler de moi", "J'écoute vraiment, je suis un ange"] },
-  { q: "Ma plus grosse dépense inutile du dernier mois :", opts: ["De la livraison de bouffe", "Du linge que je porterai jamais", "Des achats en ligne à 2h du mat", "Des tournées de shooters pour la gang"] },
-  { q: "Si ma vie était un film, le genre serait :", opts: ["Comédie chaotique", "Drame romantique", "Documentaire gênant", "Film d'horreur budget zéro"] },
-  { q: "Comment je réagis quand je me fais prendre à mentir :", opts: ["Je double le mensonge", "Je ris nerveusement et j'avoue", "Je change de sujet agressivement", "Je nie jusqu'à ma mort"] },
-  { q: "La personne à qui je texte en premier quand ça va mal :", opts: ["Ma mère", "Mon/ma meilleur(e) ami(e)", "Mon ex, honteusement", "Personne, je garde tout en dedans"] },
-  { q: "Mon secret le plus embarrassant sur mes goûts musicaux :", opts: ["J'écoute encore de l'emo de 2008", "Je connais toutes les paroles de Céline", "J'aime la musique de Noël en juillet", "J'écoute des playlists \"lo-fi pour étudier\" sans étudier"] },
-  { q: "Ce que je ferais si j'étais invisible pendant une journée :", opts: ["Espionner mes amis", "Voler de la bouffe partout", "Suivre mon crush toute la journée", "Enfin dormir sans être dérangé(e)"] },
-  { q: "Mon plus gros regret de soirée :", opts: ["Un texto envoyé à 3h du mat", "Avoir embrassé la mauvaise personne", "Avoir accepté le dernier shooter", "Avoir dit ce que je pensais vraiment"] }
+  {
+    q: { fr: "Quelle est ma pire habitude quand je suis soul(e) ?",
+         en: "What's my worst habit when I'm drunk?",
+         es: "¿Cuál es mi peor costumbre cuando estoy borracho(a)?" },
+    opts: [
+      { fr: "Devenir le philosophe de la soirée", en: "Becoming the philosopher of the night", es: "Volverme el filósofo de la noche" },
+      { fr: "Vouloir texter tout mon répertoire", en: "Wanting to text my entire contact list", es: "Querer textearle a toda mi agenda" },
+      { fr: "Perdre mes clés et mon téléphone", en: "Losing my keys and my phone", es: "Perder las llaves y el celular" },
+      { fr: "Disparaître sans dire au revoir", en: "Vanishing without saying goodbye", es: "Desaparecer sin despedirme" }
+    ]
+  },
+  {
+    q: { fr: "Mon snack ultime de fin de soirée après un gros party :",
+         en: "My ultimate end-of-night snack after a big party:",
+         es: "Mi snack definitivo de fin de fiesta:" },
+    opts: [
+      { fr: "Poutine bien chaude à 3h du mat", en: "Piping hot poutine at 3am", es: "Poutine bien caliente a las 3am" },
+      { fr: "Pizza froide directement du frigo", en: "Cold pizza straight out of the fridge", es: "Pizza fría directo de la nevera" },
+      { fr: "Sac de chips au complet", en: "An entire bag of chips", es: "Una bolsa entera de papas" },
+      { fr: "Burger double du McDo", en: "A double burger from McDonald's", es: "Una hamburguesa doble del McDonald's" }
+    ]
+  },
+  {
+    q: { fr: "Si je devais faire un coup d'un soir avec une célébrité :",
+         en: "If I had to have a one-night stand with a celebrity:",
+         es: "Si tuviera una noche con un(a) famoso(a):" },
+    opts: [
+      { fr: "Un(e) acteur/trice d'Hollywood", en: "A Hollywood actor/actress", es: "Un(a) actor/actriz de Hollywood" },
+      { fr: "Un(e) athlète professionnel(le)", en: "A professional athlete", es: "Un(a) atleta profesional" },
+      { fr: "Un(e) chanteur/euse pop", en: "A pop singer", es: "Un(a) cantante de pop" },
+      { fr: "Un(e) influenceur/euse controversé(e)", en: "A controversial influencer", es: "Un(a) influencer polémico(a)" }
+    ]
+  },
+  {
+    q: { fr: "Mon plus grand plaisir coupable secret :",
+         en: "My biggest secret guilty pleasure:",
+         es: "Mi placer culposo más secreto:" },
+    opts: [
+      { fr: "Téléréalité de marde", en: "Garbage reality TV", es: "Realities de porquería" },
+      { fr: "Musique pop des années 2000", en: "2000s pop music", es: "Música pop de los 2000" },
+      { fr: "Regarder les stories de mon ex", en: "Watching my ex's stories", es: "Ver las historias de mi ex" },
+      { fr: "Dépenser trop d'argent sur UberEats", en: "Spending way too much on UberEats", es: "Gastar demasiado en UberEats" }
+    ]
+  },
+  {
+    q: { fr: "Si je finis en prison un jour, ce sera pour :",
+         en: "If I end up in jail one day, it'll be for:",
+         es: "Si algún día termino preso(a), será por:" },
+    opts: [
+      { fr: "Un pari débile en boisson", en: "A dumb bet while drinking", es: "Una apuesta estúpida tomando" },
+      { fr: "Un scandale au resto", en: "A scene at a restaurant", es: "Un escándalo en un restaurante" },
+      { fr: "Avoir défendu mon ami(e) trop fort", en: "Defending a friend way too hard", es: "Defender a un(a) amigo(a) demasiado fuerte" },
+      { fr: "Une arnaque financière ratée", en: "A financial scam that flopped", es: "Una estafa financiera que salió mal" }
+    ]
+  },
+  {
+    q: { fr: "Comment je réagis quand quelqu'un me ghost ?",
+         en: "How do I react when somebody ghosts me?",
+         es: "¿Cómo reacciono cuando alguien me hace ghosting?" },
+    opts: [
+      { fr: "Je stalke ses réseaux en silence", en: "I silently stalk their socials", es: "Le stalkeo las redes en silencio" },
+      { fr: "Je fais semblant que ça me dérange pas", en: "I pretend it doesn't bother me", es: "Finjo que no me importa" },
+      { fr: "J'envoie un dernier message à 2h du mat", en: "I send one last text at 2am", es: "Mando un último mensaje a las 2am" },
+      { fr: "Je le raconte à toute la gang", en: "I tell the whole group about it", es: "Se lo cuento a todo el grupo" }
+    ]
+  },
+  {
+    q: { fr: "Ma vraie raison quand j'annule des plans à la dernière minute :",
+         en: "My real reason for cancelling plans last minute:",
+         es: "Mi razón real para cancelar planes a último momento:" },
+    opts: [
+      { fr: "Mon lit était trop confortable", en: "My bed was too comfortable", es: "Mi cama estaba demasiado cómoda" },
+      { fr: "J'avais juste plus envie de parler", en: "I just didn't feel like talking anymore", es: "Simplemente ya no tenía ganas de hablar" },
+      { fr: "Une nouvelle série venait de sortir", en: "A new series had just dropped", es: "Acababa de salir una serie nueva" },
+      { fr: "J'avais dépensé tout mon argent", en: "I'd spent all my money", es: "Me había gastado toda la plata" }
+    ]
+  },
+  {
+    q: { fr: "Le premier truc que je fais en me réveillant :",
+         en: "The first thing I do when I wake up:",
+         es: "Lo primero que hago al despertarme:" },
+    opts: [
+      { fr: "Scroller mon téléphone pendant 40 minutes", en: "Scroll my phone for 40 minutes", es: "Scrollear el celular 40 minutos" },
+      { fr: "Snooze 6 fois de suite", en: "Hit snooze 6 times in a row", es: "Darle a posponer 6 veces seguidas" },
+      { fr: "Vérifier si j'ai fait honte hier soir", en: "Check whether I embarrassed myself last night", es: "Revisar si hice el ridículo anoche" },
+      { fr: "Me lever d'un coup en panique", en: "Bolt upright in a panic", es: "Levantarme de golpe en pánico" }
+    ]
+  },
+  {
+    q: { fr: "Mon comportement le plus toxique en amour :",
+         en: "My most toxic behaviour in a relationship:",
+         es: "Mi comportamiento más tóxico en el amor:" },
+    opts: [
+      { fr: "Je disparais quand ça devient sérieux", en: "I disappear when it gets serious", es: "Desaparezco cuando la cosa se pone seria" },
+      { fr: "Je relis nos conversations 100 fois", en: "I reread our conversations 100 times", es: "Releo nuestras conversaciones 100 veces" },
+      { fr: "Je teste la personne exprès", en: "I test the person on purpose", es: "Pongo a prueba a la persona a propósito" },
+      { fr: "Je pardonne beaucoup trop vite", en: "I forgive way too fast", es: "Perdono demasiado rápido" }
+    ]
+  },
+  {
+    q: { fr: "Ce que je fais vraiment quand je dis \"je m'en vais me coucher\" :",
+         en: "What I actually do when I say \"I'm going to bed\":",
+         es: "Lo que hago de verdad cuando digo «me voy a dormir»:" },
+    opts: [
+      { fr: "Je regarde des vidéos jusqu'à 3h", en: "Watch videos until 3am", es: "Ver videos hasta las 3am" },
+      { fr: "Je mange en cachette dans la cuisine", en: "Sneak food in the kitchen", es: "Comer a escondidas en la cocina" },
+      { fr: "Je texte quelqu'un que je devrais pas", en: "Text somebody I shouldn't", es: "Textearle a alguien a quien no debería" },
+      { fr: "Je me couche pour vrai, promis", en: "Actually go to bed, I swear", es: "Acostarme de verdad, lo juro" }
+    ]
+  },
+  {
+    q: { fr: "Si on fouillait mon téléphone maintenant, ce qui serait le plus gênant :",
+         en: "If somebody went through my phone right now, the worst thing would be:",
+         es: "Si alguien me revisara el celular ahora, lo más vergonzoso sería:" },
+    opts: [
+      { fr: "Mes recherches Google", en: "My Google searches", es: "Mis búsquedas de Google" },
+      { fr: "Mes notes vocales à moi-même", en: "My voice notes to myself", es: "Mis notas de voz para mí mismo(a)" },
+      { fr: "Mon dossier de photos cachées", en: "My hidden photos folder", es: "Mi carpeta de fotos ocultas" },
+      { fr: "Mes messages avec mon ex", en: "My messages with my ex", es: "Mis mensajes con mi ex" }
+    ]
+  },
+  {
+    q: { fr: "Ma pire habitude que personne ose me dire :",
+         en: "My worst habit that nobody dares mention:",
+         es: "Mi peor costumbre que nadie se atreve a decirme:" },
+    opts: [
+      { fr: "Je parle beaucoup trop fort", en: "I talk way too loud", es: "Hablo demasiado fuerte" },
+      { fr: "Je coupe la parole tout le temps", en: "I cut people off constantly", es: "Interrumpo todo el tiempo" },
+      { fr: "J'arrive systématiquement en retard", en: "I'm late to literally everything", es: "Llego tarde a absolutamente todo" },
+      { fr: "Je raconte la même histoire chaque fois", en: "I tell the same story every single time", es: "Cuento la misma historia cada vez" }
+    ]
+  },
+  {
+    q: { fr: "Comment je gère une chicane de couple ?",
+         en: "How do I handle a fight with my partner?",
+         es: "¿Cómo manejo una pelea de pareja?" },
+    opts: [
+      { fr: "Je boude en silence 3 jours", en: "Silent treatment for 3 days", es: "Me enfurruño en silencio 3 días" },
+      { fr: "J'explose tout de suite", en: "I blow up right away", es: "Exploto de una" },
+      { fr: "Je fais des blagues pour désamorcer", en: "I crack jokes to defuse it", es: "Hago chistes para bajarle el tono" },
+      { fr: "Je fais comme si rien s'était passé", en: "I act like nothing happened", es: "Actúo como si nada hubiera pasado" }
+    ]
+  },
+  {
+    q: { fr: "Le mensonge que je dis le plus souvent :",
+         en: "The lie I tell most often:",
+         es: "La mentira que digo más seguido:" },
+    opts: [
+      { fr: "\"Je suis en route\"", en: "\"I'm on my way\"", es: "«Ya voy en camino»" },
+      { fr: "\"Je bois pas beaucoup\"", en: "\"I don't drink that much\"", es: "«No tomo tanto»" },
+      { fr: "\"J'ai pas vu ton message\"", en: "\"I didn't see your message\"", es: "«No vi tu mensaje»" },
+      { fr: "\"C'est correct, ça me dérange pas\"", en: "\"It's fine, I don't mind\"", es: "«Está bien, no me molesta»" }
+    ]
+  },
+  {
+    q: { fr: "Ma stratégie quand je trouve quelqu'un cute dans un bar :",
+         en: "My strategy when I spot somebody cute at a bar:",
+         es: "Mi estrategia cuando veo a alguien lindo(a) en un bar:" },
+    opts: [
+      { fr: "Je le regarde 2h sans rien faire", en: "Stare for 2 hours and do nothing", es: "Mirarlo(a) 2 horas sin hacer nada" },
+      { fr: "Je bois du courage liquide d'abord", en: "Drink some liquid courage first", es: "Tomarme un valor líquido primero" },
+      { fr: "J'envoie un(e) ami(e) en éclaireur", en: "Send a friend in as a scout", es: "Mandar a un(a) amigo(a) de avanzada" },
+      { fr: "Je fonce direct sans réfléchir", en: "Go straight in without thinking", es: "Lanzarme directo sin pensar" }
+    ]
+  },
+  {
+    q: { fr: "Ce que je fais si je gagne 1 million demain :",
+         en: "What I'd do if I won a million tomorrow:",
+         es: "Lo que haría si me gano un millón mañana:" },
+    opts: [
+      { fr: "Je démissionne par message vocal", en: "Quit my job by voice note", es: "Renunciar por nota de voz" },
+      { fr: "Je disparais dans un autre pays", en: "Vanish to another country", es: "Desaparecer a otro país" },
+      { fr: "Je paie les dettes de tout le monde", en: "Pay off everybody's debts", es: "Pagar las deudas de todo el mundo" },
+      { fr: "Je le perds en 6 mois, on se connaît", en: "Lose it in 6 months, let's be honest", es: "Perderlo en 6 meses, seamos honestos" }
+    ]
+  },
+  {
+    q: { fr: "Mon type de party préféré, honnêtement :",
+         en: "My favourite kind of party, honestly:",
+         es: "Mi tipo de fiesta favorito, honestamente:" },
+    opts: [
+      { fr: "Gros club, musique forte, chaos", en: "Big club, loud music, chaos", es: "Club grande, música fuerte, caos" },
+      { fr: "Sous-sol avec 5 amis et de la bière", en: "A basement with 5 friends and beer", es: "Un sótano con 5 amigos y cerveza" },
+      { fr: "Souper tranquille qui finit à 4h", en: "A chill dinner that ends at 4am", es: "Una cena tranquila que termina a las 4am" },
+      { fr: "Aucun, je veux rester chez moi", en: "None, I want to stay home", es: "Ninguna, me quiero quedar en casa" }
+    ]
+  },
+  {
+    q: { fr: "La chose la plus honteuse que j'ai déjà faite pour un(e) ex :",
+         en: "The most shameful thing I've done for an ex:",
+         es: "La cosa más vergonzosa que hice por un(a) ex:" },
+    opts: [
+      { fr: "Conduire 3h sans être invité(e)", en: "Drove 3 hours uninvited", es: "Manejar 3 horas sin estar invitado(a)" },
+      { fr: "Créer un faux compte pour l'espionner", en: "Made a fake account to spy on them", es: "Crear una cuenta falsa para espiarlo(a)" },
+      { fr: "Pleurer devant sa maison", en: "Cried outside their house", es: "Llorar frente a su casa" },
+      { fr: "Réapprendre un sport que je déteste", en: "Took up a sport I hate again", es: "Volver a un deporte que odio" }
+    ]
+  },
+  {
+    q: { fr: "Comment je danse quand je pense que personne me regarde :",
+         en: "How I dance when I think nobody's watching:",
+         es: "Cómo bailo cuando creo que nadie me ve:" },
+    opts: [
+      { fr: "Comme si j'étais dans un vidéoclip", en: "Like I'm in a music video", es: "Como si estuviera en un videoclip" },
+      { fr: "Juste un petit balancement gêné", en: "Just an awkward little sway", es: "Solo un balanceo tímido" },
+      { fr: "Full chaos, aucune coordination", en: "Full chaos, zero coordination", es: "Caos total, cero coordinación" },
+      { fr: "Je danse jamais, même seul(e)", en: "I never dance, not even alone", es: "Nunca bailo, ni solo(a)" }
+    ]
+  },
+  {
+    q: { fr: "Mon karaoké de fin de soirée obligatoire :",
+         en: "My mandatory end-of-night karaoke song:",
+         es: "Mi karaoke obligatorio de fin de noche:" },
+    opts: [
+      { fr: "Une ballade dramatique pas dans mon ton", en: "A dramatic ballad nowhere near my range", es: "Una balada dramática fuera de mi tono" },
+      { fr: "Un classique québécois que tout le monde chante", en: "A Québec classic everybody sings along to", es: "Un clásico que todo el mundo canta" },
+      { fr: "Du rap que je connais à moitié", en: "Rap I only half know the words to", es: "Rap del que me sé la mitad de la letra" },
+      { fr: "Je passe le micro à quelqu'un d'autre", en: "I hand the mic to somebody else", es: "Le paso el micrófono a otra persona" }
+    ]
+  },
+  {
+    q: { fr: "Ce qui me fait perdre patience le plus vite :",
+         en: "What makes me lose my patience fastest:",
+         es: "Lo que me hace perder la paciencia más rápido:" },
+    opts: [
+      { fr: "Les gens lents dans une file", en: "Slow people in a queue", es: "La gente lenta en la fila" },
+      { fr: "Quand on mâche fort à côté de moi", en: "Loud chewing next to me", es: "Que mastiquen fuerte a mi lado" },
+      { fr: "Quand on répond pas à mes messages", en: "When people don't answer my messages", es: "Que no me respondan los mensajes" },
+      { fr: "Quand quelqu'un a raison avant moi", en: "When somebody is right before I am", es: "Que alguien tenga razón antes que yo" }
+    ]
+  },
+  {
+    q: { fr: "Si je devais avouer un crush secret, ce serait :",
+         en: "If I had to confess a secret crush, it'd be:",
+         es: "Si tuviera que confesar un crush secreto, sería:" },
+    opts: [
+      { fr: "Quelqu'un dans cette pièce", en: "Somebody in this room", es: "Alguien en esta sala" },
+      { fr: "Un(e) collègue de travail", en: "A coworker", es: "Un(a) compañero(a) de trabajo" },
+      { fr: "L'ami(e) d'un(e) ami(e)", en: "A friend of a friend", es: "El/la amigo(a) de un(a) amigo(a)" },
+      { fr: "Personne, je suis très bien seul(e)", en: "Nobody, I'm perfectly fine alone", es: "Nadie, estoy muy bien solo(a)" }
+    ]
+  },
+  {
+    q: { fr: "Ma réaction si mon ex m'écrit à 1h du matin :",
+         en: "My reaction if my ex texts me at 1am:",
+         es: "Mi reacción si mi ex me escribe a la 1am:" },
+    opts: [
+      { fr: "Je réponds tout de suite, malheureusement", en: "I answer immediately, unfortunately", es: "Respondo al instante, lamentablemente" },
+      { fr: "Je screenshot et j'envoie à la gang", en: "I screenshot it and send it to the group", es: "Le hago captura y se la mando al grupo" },
+      { fr: "Je lis et je réponds jamais", en: "I read it and never reply", es: "Lo leo y nunca respondo" },
+      { fr: "Je bloque et je regrette le lendemain", en: "I block them and regret it the next day", es: "Bloqueo y me arrepiento al día siguiente" }
+    ]
+  },
+  {
+    q: { fr: "Le compliment qui me fait le plus plaisir :",
+         en: "The compliment that makes me happiest:",
+         es: "El cumplido que más me gusta:" },
+    opts: [
+      { fr: "Que je suis drôle", en: "That I'm funny", es: "Que soy gracioso(a)" },
+      { fr: "Que je suis beau/belle", en: "That I'm good-looking", es: "Que soy guapo(a)" },
+      { fr: "Que je suis intelligent(e)", en: "That I'm smart", es: "Que soy inteligente" },
+      { fr: "Qu'on peut compter sur moi", en: "That people can count on me", es: "Que se puede contar conmigo" }
+    ]
+  },
+  {
+    q: { fr: "Ce que je commande vraiment quand je dis \"je mange santé\" :",
+         en: "What I actually order when I say \"I'm eating healthy\":",
+         es: "Lo que pido de verdad cuando digo «estoy comiendo sano»:" },
+    opts: [
+      { fr: "Une salade avec 4 sortes de fromage", en: "A salad with 4 kinds of cheese", es: "Una ensalada con 4 tipos de queso" },
+      { fr: "Un smoothie et 2 beignes", en: "A smoothie and 2 donuts", es: "Un batido y 2 donas" },
+      { fr: "Du poulet frit, j'ai abandonné", en: "Fried chicken, I gave up", es: "Pollo frito, ya me rendí" },
+      { fr: "Rien, je grignote debout dans le frigo", en: "Nothing, I graze standing in the fridge", es: "Nada, picoteo parado(a) frente a la nevera" }
+    ]
+  },
+  {
+    q: { fr: "Mon pire trait quand je joue à un jeu de société :",
+         en: "My worst trait when playing a board game:",
+         es: "Mi peor rasgo jugando un juego de mesa:" },
+    opts: [
+      { fr: "Je triche subtilement", en: "I cheat subtly", es: "Hago trampa sutilmente" },
+      { fr: "Je boude si je perds", en: "I sulk if I lose", es: "Me amargo si pierdo" },
+      { fr: "J'explique les règles trop longtemps", en: "I explain the rules for way too long", es: "Explico las reglas demasiado tiempo" },
+      { fr: "Je m'allie et je trahis à la fin", en: "I make an alliance and betray at the end", es: "Hago alianza y traiciono al final" }
+    ]
+  },
+  {
+    q: { fr: "Ce que je fais quand quelqu'un raconte une histoire trop longue :",
+         en: "What I do when somebody tells a story that's too long:",
+         es: "Lo que hago cuando alguien cuenta una historia demasiado larga:" },
+    opts: [
+      { fr: "Je hoche la tête sans écouter", en: "Nod along without listening", es: "Asiento sin escuchar" },
+      { fr: "Je regarde mon téléphone", en: "Look at my phone", es: "Miro el celular" },
+      { fr: "Je l'interromps pour parler de moi", en: "Interrupt to talk about myself", es: "Interrumpo para hablar de mí" },
+      { fr: "J'écoute vraiment, je suis un ange", en: "Actually listen, I'm an angel", es: "Escucho de verdad, soy un ángel" }
+    ]
+  },
+  {
+    q: { fr: "Ma plus grosse dépense inutile du dernier mois :",
+         en: "My biggest pointless expense last month:",
+         es: "Mi gasto más inútil del mes pasado:" },
+    opts: [
+      { fr: "De la livraison de bouffe", en: "Food delivery", es: "Domicilios de comida" },
+      { fr: "Du linge que je porterai jamais", en: "Clothes I'll never wear", es: "Ropa que nunca me voy a poner" },
+      { fr: "Des achats en ligne à 2h du mat", en: "Online shopping at 2am", es: "Compras en línea a las 2am" },
+      { fr: "Des tournées de shooters pour la gang", en: "Rounds of shots for the group", es: "Rondas de shots para el grupo" }
+    ]
+  },
+  {
+    q: { fr: "Si ma vie était un film, le genre serait :",
+         en: "If my life was a movie, the genre would be:",
+         es: "Si mi vida fuera una película, el género sería:" },
+    opts: [
+      { fr: "Comédie chaotique", en: "Chaotic comedy", es: "Comedia caótica" },
+      { fr: "Drame romantique", en: "Romantic drama", es: "Drama romántico" },
+      { fr: "Documentaire gênant", en: "Cringe documentary", es: "Documental incómodo" },
+      { fr: "Film d'horreur budget zéro", en: "Zero-budget horror film", es: "Película de terror sin presupuesto" }
+    ]
+  },
+  {
+    q: { fr: "Comment je réagis quand je me fais prendre à mentir :",
+         en: "How I react when I get caught lying:",
+         es: "Cómo reacciono cuando me pillan mintiendo:" },
+    opts: [
+      { fr: "Je double le mensonge", en: "I double down on the lie", es: "Le doblo la apuesta a la mentira" },
+      { fr: "Je ris nerveusement et j'avoue", en: "I laugh nervously and confess", es: "Me río nervioso(a) y confieso" },
+      { fr: "Je change de sujet agressivement", en: "I change the subject aggressively", es: "Cambio de tema agresivamente" },
+      { fr: "Je nie jusqu'à ma mort", en: "I deny it until my dying breath", es: "Lo niego hasta la muerte" }
+    ]
+  },
+  {
+    q: { fr: "La personne à qui je texte en premier quand ça va mal :",
+         en: "The first person I text when things go bad:",
+         es: "La primera persona a la que le escribo cuando estoy mal:" },
+    opts: [
+      { fr: "Ma mère", en: "My mom", es: "Mi mamá" },
+      { fr: "Mon/ma meilleur(e) ami(e)", en: "My best friend", es: "Mi mejor amigo(a)" },
+      { fr: "Mon ex, honteusement", en: "My ex, shamefully", es: "Mi ex, vergonzosamente" },
+      { fr: "Personne, je garde tout en dedans", en: "Nobody, I keep it all inside", es: "Nadie, me lo guardo todo" }
+    ]
+  },
+  {
+    q: { fr: "Mon secret le plus embarrassant sur mes goûts musicaux :",
+         en: "My most embarrassing secret about my music taste:",
+         es: "Mi secreto más vergonzoso sobre mis gustos musicales:" },
+    opts: [
+      { fr: "J'écoute encore de l'emo de 2008", en: "I still listen to 2008 emo", es: "Todavía escucho emo del 2008" },
+      { fr: "Je connais toutes les paroles de Céline", en: "I know every word to Céline Dion", es: "Me sé toda la letra de Céline Dion" },
+      { fr: "J'aime la musique de Noël en juillet", en: "I love Christmas music in July", es: "Me encanta la música navideña en julio" },
+      { fr: "J'écoute des playlists \"lo-fi pour étudier\" sans étudier", en: "I play \"lo-fi to study to\" without studying", es: "Pongo playlists «lo-fi para estudiar» sin estudiar" }
+    ]
+  },
+  {
+    q: { fr: "Ce que je ferais si j'étais invisible pendant une journée :",
+         en: "What I'd do if I was invisible for a day:",
+         es: "Lo que haría si fuera invisible por un día:" },
+    opts: [
+      { fr: "Espionner mes amis", en: "Spy on my friends", es: "Espiar a mis amigos" },
+      { fr: "Voler de la bouffe partout", en: "Steal food everywhere", es: "Robar comida por todas partes" },
+      { fr: "Suivre mon crush toute la journée", en: "Follow my crush all day", es: "Seguir a mi crush todo el día" },
+      { fr: "Enfin dormir sans être dérangé(e)", en: "Finally sleep without being bothered", es: "Por fin dormir sin que me molesten" }
+    ]
+  },
+  {
+    q: { fr: "Mon plus gros regret de soirée :",
+         en: "My biggest regret from a night out:",
+         es: "Mi mayor arrepentimiento de una salida:" },
+    opts: [
+      { fr: "Un texto envoyé à 3h du mat", en: "A text sent at 3am", es: "Un mensaje mandado a las 3am" },
+      { fr: "Avoir embrassé la mauvaise personne", en: "Kissing the wrong person", es: "Haber besado a la persona equivocada" },
+      { fr: "Avoir accepté le dernier shooter", en: "Accepting that last shot", es: "Haber aceptado el último shot" },
+      { fr: "Avoir dit ce que je pensais vraiment", en: "Saying what I actually thought", es: "Haber dicho lo que de verdad pensaba" }
+    ]
+  }
 ];
 
 var KP_ANSWER_SEC = 30; // Safety net so an AFK spotlight can never deadlock the room
@@ -8005,7 +8347,7 @@ function launchKnowPlayer(){
   if(!roomCode || !amHost) return;
   _ceremonyStartMs = 0;
 
-  var qPool = KNOW_QUESTIONS.slice();
+  var qPool = KNOW_QUESTIONS.map(function(_, i){ return i; });
   shuffle(qPool);
 
   // Rotate the spotlight through a shuffled player order: nobody is picked
@@ -8021,8 +8363,10 @@ function launchKnowPlayer(){
     rounds.push({
       spotlightId: spot.id,
       spotlightName: spot.name,
-      q: qPool[i].q,
-      opts: qPool[i].opts
+      qi: qPool[i],
+      // resolved copies, so a stale client still renders a readable card
+      q: pickLang(KNOW_QUESTIONS[qPool[i]].q),
+      opts: KNOW_QUESTIONS[qPool[i]].opts.map(pickLang)
     });
   }
 
@@ -8065,8 +8409,9 @@ function renderKnowPlayer(g){
   var stillHere = players.some(function(p){ return p.id === item.spotlightId; });
   var spotlight = stillHere ? getPlayer(item.spotlightId)
                            : { id: item.spotlightId, name: spotlightName, color: "#2563eb" };
-  var question = item.q || "";
-  var options = item.opts || [];
+  var kq = (typeof item.qi === "number") ? KNOW_QUESTIONS[item.qi] : null;
+  var question = kq ? pickLang(kq.q) : (item.q || "");
+  var options = kq ? kq.opts.map(pickLang) : (item.opts || []).map(pickLang);
   var solo = kpSoloMode();
   var iAmSpotlight = (myId && myId === item.spotlightId);
   var spotlightAnswer = g.spotlightAnswer;
