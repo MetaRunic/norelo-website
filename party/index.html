@@ -1447,7 +1447,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.22</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.23</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -3922,7 +3922,7 @@ var MOSTLIKELY_PROMPTS = [
     es: "El/la más propenso(a) a ser coronado rey o reina indiscutible de los momentos incómodos del grupo." }
 ];
 
-var ML_GUESS_SEC = 30;
+var ML_GUESS_SEC = 60;
 
 function launchMostLikely(){
   if(!roomCode || !amHost) return;
@@ -3931,7 +3931,7 @@ function launchMostLikely(){
   _ceremonyStartMs = 0;
   var pool = MOSTLIKELY_PROMPTS.slice();
   shuffle(pool);
-  var chosen = pool.slice(0, 5);
+  var chosen = pool.slice(0, 10);
   db.ref("rooms/" + roomCode).update({
     status: "playing",
     game: { type:"mostlikely", phase:"guess", round:0, total:chosen.length,
@@ -3975,6 +3975,8 @@ function renderMostLikely(g){
     html += '</div>';
     html += '<div class="gprogress">' + votedCount + ' / ' + players.length + ' joueurs ont voté</div>';
     html += '<div class="waiting">' + (votedCount >= players.length ? "Révélation imminente du verdict !" : (votes[myId] ? "Vote enregistré ! En attente du reste du groupe" : "Touche un joueur pour désigner le coupable")) + '<span class="d"></span></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock +
+            ' <span id="countdownVal">' + ML_GUESS_SEC + 's</span></div></div>';
 
   } else if(g.phase === "tiebreaker"){
     if(amHost){
@@ -4653,6 +4655,7 @@ var POSTS_PACK = [
  * Player names and numbers survive because the patterns capture and re-emit them.
  * -------------------------------------------------------------------------- */
 var LOC_EXACT = {
+  "assisté": { en: "assisted", es: "asistido" },
   "⚠️ Es-tu sûr de vouloir QUITTER la partie ?": { en: "⚠️ Are you sure you want to LEAVE the game?", es: "⚠️ ¿Seguro que quieres SALIR de la partida?" },
   "⚠️ Es-tu sûr de vouloir FERMER le salon pour tous les joueurs ?": { en: "⚠️ Are you sure you want to CLOSE the room for every player?", es: "⚠️ ¿Seguro que quieres CERRAR la sala para todos los jugadores?" },
   "Création de la partie": { en: "Creating the game", es: "Creando la partida" },
@@ -5153,7 +5156,7 @@ function loadLang(){
 }
 
 
-var WP_GUESS_SEC = 30;
+var WP_GUESS_SEC = 60;
 
 /* ---- POST AUTHORS -----------------------------------------------------------
  * The suspects in this mode are the people who actually have posts in the pack,
@@ -5271,7 +5274,7 @@ function launchWhoPosted(){
   }
 
   var ordered = spreadByAuthor(pool);
-  var roundCount = Math.max(1, Math.min(5, ordered.length));
+  var roundCount = Math.max(1, Math.min(8, ordered.length));
   var rounds = ordered.slice(0, roundCount).map(function(item){
     return {
       platform: item.platform || "facebook",
@@ -5555,6 +5558,8 @@ function renderWhoPosted(g){
     html += '</div>';
     html += '<div class="gprogress">' + votedCount + ' / ' + players.length + ' ont voté</div>';
     html += '<div class="waiting">' + (votedCount >= players.length ? "Tout le monde a deviné ! Révélation..." : (votes[myId] ? "Devinette envoyée !" : "Choisis un suspect")) + '<span class="d"></span></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock +
+            ' <span id="countdownVal">' + WP_GUESS_SEC + 's</span></div></div>';
 
   } else if(g.phase === "reveal"){
     var revealStart = g.revealStartMs || Date.now();
@@ -5802,7 +5807,7 @@ var REVIEWS_PACK = [
   {"source":"Google","product":{"fr":"Dunes de Merzouga","en":"Merzouga dunes","es":"Dunas de Merzouga"},"seller":"Sahara, Maroc","photo":"https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Merzouga_Dunes_2011.jpg/330px-Merzouga_Dunes_2011.jpg","reviewer":"Youssef B. (traduit de l'arabe)","date":{"fr":"8 juin 2018","en":"June 8, 2018","es":"8 de junio de 2018"},"text":{"fr":"Nuit dans le désert, silence absolu, plus d'étoiles que je croyais possible. Le thé du guide était parfait.","en":"A night in the desert, absolute silence, more stars than I thought possible. The guide's tea was perfect.","es":"Una noche en el desierto, silencio absoluto, más estrellas de las que creía posibles. El té del guía era perfecto."},"stars":5,"real":false}
 ];
 
-var GR_GUESS_SEC = 30;
+var GR_GUESS_SEC = 60;
 
 // Resolve bundled assets against the directory that holds index.html. A bare relative
 // path like "reviews/x.png" breaks when the page is served as /party with no trailing
@@ -5865,8 +5870,8 @@ function launchGuessRating(){
       phase: "guess",
       round: 0,
       phaseStartMs: Date.now(),
-      total: Math.min(5, pool.length),
-      roundsData: pool.slice(0, 5)
+      total: Math.min(8, pool.length),
+      roundsData: pool.slice(0, 8)
     }
   });
 }
@@ -6351,8 +6356,8 @@ var KNOW_QUESTIONS = [
   }
 ];
 
-var KP_ANSWER_SEC = 30; // Safety net so an AFK spotlight can never deadlock the room
-var KP_GUESS_SEC = 30;
+var KP_ANSWER_SEC = 60; // Safety net so an AFK spotlight can never deadlock the room
+var KP_GUESS_SEC = 60;
 
 function launchKnowPlayer(){
   if(!roomCode || !amHost) return;
@@ -6367,7 +6372,7 @@ function launchKnowPlayer(){
   shuffle(spotOrder);
   if(spotOrder.length === 0) spotOrder = [{ id: myId, name: me.name }];
 
-  var totalRounds = Math.min(5, qPool.length);
+  var totalRounds = Math.min(qPool.length, spotOrder.length * 3);
   var rounds = [];
   for(var i = 0; i < totalRounds; i++){
     var spot = spotOrder[i % spotOrder.length];
@@ -6606,8 +6611,8 @@ function guessSpotlight(idx){
 // =====================================================================
 //  GAME 5: PERSONALIZED ROAST / AUTOBIOGRAPHIES
 // =====================================================================
-var ROAST_WRITE_SEC = 45;   // writing a punchline takes longer than tapping a choice
-var ROAST_VOTE_SEC = 30;
+var ROAST_WRITE_SEC = 60;   // writing a punchline takes longer than tapping a choice
+var ROAST_VOTE_SEC = 60;
 
 /* [NAME] is substituted at render time, not at launch, so the prompt follows whoever
    is reading it rather than whatever language the host happened to be using. */
@@ -7445,7 +7450,7 @@ var QUOTES_PACK = [
     es: "Lo pienso y te cuento." }
 ];
 
-var WS_GUESS_SEC = 30;
+var WS_GUESS_SEC = 60;
 
 function launchWhoSaid(){
   if(!roomCode || !amHost) return;
@@ -7519,6 +7524,8 @@ function renderWhoSaid(g){
     });
     html += '</div>';
     html += '<div class="waiting">' + (votedCount >= players.length ? "Tout le monde a deviné ! Révélation..." : (votes[myId] ? "Vote envoyé !" : "Devine la personne")) + '<span class="d"></span></div>';
+    html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock +
+            ' <span id="countdownVal">' + WS_GUESS_SEC + 's</span></div></div>';
 
   } else if(g.phase === "reveal"){
     var revealStart = g.revealStartMs || Date.now();
@@ -7544,7 +7551,7 @@ function renderWhoSaid(g){
 //  GAME 7: TWO TRUTHS AND A LIE (2 Vérités 1 Mensonge)
 // =====================================================================
 var TT_WRITE_SEC = 75;      // writing three statements takes longer than tapping
-var TT_GUESS_SEC = 30;
+var TT_GUESS_SEC = 60;
 
 /* House statements for the "Aide-moi" assist. Deliberately generic so they fit anyone,
    which is exactly why leaning on them is worth fewer points. */
@@ -7843,15 +7850,16 @@ function ttRenderWriteSlots(){
     html += '  <div class="tt-slot-top">';
     html += '    <span class="tt-num">' + (i + 1) + '</span>';
     html += '    <span class="tt-tag" id="ttTag' + i + '" style="display:' + (_ttHouse[i] ? "inline-block" : "none") + ';">assisté</span>';
-    html += '    <button class="tt-help" onclick="ttFillHouse(' + i + ')" title="Remplir avec un énoncé maison">Aide-moi</button>';
+    html += '    <button class="tt-help" onclick="ttFillHouse(' + i + ')" title="' + escapeHtml(locPhrase("Remplir avec un énoncé maison")) + '">Aide-moi</button>';
     html += '  </div>';
-    html += '  <input class="fld tt-input" id="ttIn' + i + '" maxlength="120" placeholder="Énoncé ' + (i + 1) + '…" ' +
+    html += '  <input class="fld tt-input" id="ttIn' + i + '" maxlength="120" placeholder="' + escapeHtml(locPhrase("Énoncé " + (i + 1))) + '…" ' +
             'value="' + escapeHtml(_ttDraft[i]) + '" oninput="ttMarkTyped(' + i + ')">';
     html += '  <button class="tt-lie-btn' + (isLie ? " on" : "") + '" onclick="ttPickLie(' + i + ')">' +
             (isLie ? "★ C'est mon mensonge" : "Marquer comme mensonge") + '</button>';
     html += '</div>';
   }
   box.innerHTML = html;
+  localizeNode(box);   // painted outside renderGame, so it localizes itself
 }
 
 function renderTwoTruths(g){
@@ -7892,10 +7900,15 @@ function renderTwoTruths(g){
     if(iAmTeller){
       // Repaint the shell only when the round changes, or typing would be wiped by
       // every unrelated Firebase update.
-      var key = "tt_write_" + round;
+      // Keyed on the language too, or flipping FR/EN/ES leaves this panel frozen in
+      // whatever it first rendered as. Only a genuine round change clears the draft;
+      // a language flip keeps whatever they have already typed.
+      var key = "tt_write_" + round + "_" + LANG;
       if(area.dataset.ttKey !== key){
+        var sameRound = (area.dataset.ttRound === String(round));
+        if(sameRound) ttSyncDraftFromInputs(); else ttResetDraft();
         area.dataset.ttKey = key;
-        ttResetDraft();
+        area.dataset.ttRound = String(round);
         var shell = hdr + tellerCard("C'est ton tour");
         shell += '<div class="gsub">Écris 2 vérités et 1 mensonge sur toi. Marque lequel est faux.</div>';
         shell += '<div id="ttSlots"></div>';
@@ -7909,6 +7922,7 @@ function renderTwoTruths(g){
     }
 
     area.dataset.ttKey = "";
+    area.dataset.ttRound = "";
     html += hdr;
     html += tellerCard("Rédige ses énoncés");
     html += '<div class="gsub">Prépare-toi à démasquer le mensonge…</div>';
@@ -7918,6 +7932,7 @@ function renderTwoTruths(g){
 
   } else if(g.phase === "guess"){
     area.dataset.ttKey = "";
+    area.dataset.ttRound = "";
     var advKey = "twotruths_" + round;
     var everyoneIn = (guessers.length === 0) || (votedCount >= guessers.length);
     if(everyoneIn && amHost && _lastAutoRevealKey !== advKey){
@@ -7958,6 +7973,7 @@ function renderTwoTruths(g){
 
   } else if(g.phase === "reveal"){
     area.dataset.ttKey = "";
+    area.dataset.ttRound = "";
     var isLast = (round + 1 >= total);
     startLiveCountdown(g.revealStartMs || Date.now(), 6, function(){ if(amHost) nextRound(); });
 
@@ -8020,6 +8036,7 @@ function renderTwoTruths(g){
 
   } else if(g.phase === "done"){
     area.dataset.ttKey = "";
+    area.dataset.ttRound = "";
     html += renderMiniGameDoneHTML();
   }
 
