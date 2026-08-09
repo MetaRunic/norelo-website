@@ -1474,7 +1474,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.33</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.34</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -3187,10 +3187,15 @@ function snapshotPreRoundScores(){
  * delta, which every mode already produces.
  * -------------------------------------------------------------------------- */
 var _streaks = {};
+/* Modes where being close still pays (Devine la note gives 100 for landing one star
+ * out of) set this to the players who were actually RIGHT. A streak is about getting
+ * it right, so consolation points must not keep one alive. Null means "this mode has
+ * no partial credit", and earning anything counts. */
+var _roundHits = null;
 function streakBonus(n){ return n >= 2 ? Math.min(n - 1, 3) * 50 : 0; }
 function applyStreaks(rp){
   players.forEach(function(p){
-    var scored = (rp[p.id] || 0) > 0;
+    var scored = _roundHits ? !!_roundHits[p.id] : (rp[p.id] || 0) > 0;
     _streaks[p.id] = scored ? (_streaks[p.id] || 0) + 1 : 0;
     if(scored){
       var b = streakBonus(_streaks[p.id]);
@@ -3217,7 +3222,10 @@ function renderRoundPointsHTML(roundPts){
   var sorted = players.slice().sort(function(a,b){ return (roundPts[b.id]||0) - (roundPts[a.id]||0); });
   sorted.forEach(function(p){
     var earned = roundPts[p.id] || 0;
-    var st = (typeof _streaks !== "undefined" && _streaks[p.id]) || 0;
+    // The host already publishes streaks with the round points; read those, or every
+    // client except the host renders from an empty local map and shows no chips.
+    var allStreaks = (currentGame && currentGame.streaks) || _streaks || {};
+    var st = allStreaks[p.id] || 0;
     html += '<div class="round-pts-row">';
     html += avatarHTML(p, 32);
     html += '<div class="round-pts-name">' + escapeHtml(p.name);
@@ -3333,7 +3341,6 @@ var _tallyLock = false;
 function tallyGameVotes(){
   if(!roomCode || !amHost || !currentGame || _tallyLock) return;
   _tallyLock = true;
-  sfxWin();
   var votes = currentGame.votes || {};
   var counts = {};
   GAME_MODES.forEach(function(g){ counts[g.id] = 0; });
@@ -3358,7 +3365,6 @@ function tallyGameVotes(){
     var p1 = players[1] ? players[1].id : myId;
     db.ref("rooms/" + roomCode + "/game").update({
       phase: "voting_tiebreaker",
-      tiedGames: winners,
       gameA: winners[0],
       gameB: winners[1],
       remainingTiedGames: winners.slice(2),
@@ -3633,8 +3639,11 @@ function renderGameVoting(g){
   var myVote = votes[myId];
   var votedCount = Object.keys(votes).length;
 
-  if(votedCount >= players.length && players.length > 0 && amHost && !_tallyLock){
-    setTimeout(tallyGameVotes, 300);
+  if(votedCount >= players.length && players.length > 0){
+    // Everyone hears the vote close, not just whoever happens to be hosting.
+    var voteDoneKey = "votedone_" + players.length + "_" + votedCount;
+    if(_lastSfxKey !== voteDoneKey){ _lastSfxKey = voteDoneKey; sfxWin(); }
+    if(amHost && !_tallyLock) setTimeout(tallyGameVotes, 300);
   }
 
   var html = '<div class="groundhdr">Phase de sélection</div>';
@@ -4293,6 +4302,7 @@ function revealRound(){
   var roundKey = (game.type || "") + "_" + (game.round || 0);
   if(_scoredRoundsTrack[roundKey]) return; // Strictly score each round once
   _scoredRoundsTrack[roundKey] = true;
+  _roundHits = null;                       // only partial-credit modes fill this in
 
   if(!game.scored){
     snapshotPreRoundScores();
@@ -4311,7 +4321,6 @@ function revealRound(){
       if(tied.length > 1){
         db.ref("rooms/" + roomCode + "/game").update({
           phase: "tiebreaker",
-          tiedPlayers: tied,
           duelistA: tied[0],
           duelistB: tied[1],
           remainingTied: tied.slice(2),
@@ -4346,8 +4355,12 @@ function revealRound(){
       if(wpRight.length === 1 && Object.keys(votes).length > 1) trackStat("soloSleuth", wpRight[0]);
     } else if(game.type === "guessrating"){
       var item = (game.roundsData && game.roundsData[game.round]) || {};
+      _roundHits = {};
       Object.keys(votes).forEach(function(vUid){
-        if(votes[vUid] === item.stars){ trackStat("correctGuesses", vUid); trackStat("exactRating", vUid); addPoints(vUid, 200); }
+        if(votes[vUid] === item.stars){
+          _roundHits[vUid] = true;         // only an exact call keeps the run going
+          trackStat("correctGuesses", vUid); trackStat("exactRating", vUid); addPoints(vUid, 200);
+        }
         else if(Math.abs(votes[vUid] - item.stars) === 1){ trackStat("ratingClose", vUid); addPoints(vUid, 100); }
       });
     } else if(game.type === "knowplayer"){
