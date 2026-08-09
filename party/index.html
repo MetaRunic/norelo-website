@@ -811,6 +811,15 @@
     0%, 100% { transform: scale(1);    box-shadow: 0 0 0 rgba(239,68,68,0); }
     50%      { transform: scale(1.07); box-shadow: 0 0 16px rgba(239,68,68,.55); }
   }
+  .orig-row { text-align: center; margin: -6px 0 14px; }
+  .orig-btn {
+    padding: 5px 12px; border-radius: 9px; cursor: pointer;
+    background: transparent; border: 1px solid var(--bdr); color: var(--gr);
+    font-size: .64rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase;
+    transition: border-color .2s, color .2s;
+  }
+  .orig-btn:hover { border-color: var(--bl); color: var(--txt); }
+  .orig-btn.on { border-color: var(--amber); color: var(--amber); }
   .streak-chip {
     font-size: .66rem; font-weight: 900; color: var(--amber);
     background: rgba(245,158,11,.14); border: 1px solid rgba(245,158,11,.4);
@@ -1430,7 +1439,7 @@
     <div id="gameArea"></div>
     <button class="btn-danger-quit" onclick="quit()">
       <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-      Quitter la Partie
+      <span data-i18n="quitGame">Quitter la Partie</span>
     </button>
   </section>
 
@@ -1438,7 +1447,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.14</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.15</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -3610,107 +3619,307 @@ function renderGameVoting(g){
 // ===========================// =====================================================================
 //  SPICY & PARTY QUESTION BANKS (100 HILARIOUS JUICY CALL-OUT PROMPTS)
 // =====================================================================
+/* Each prompt carries all three languages. pickLang() reads whichever is active, so
+   switching language mid-game re-renders the current prompt rather than being stuck
+   with whatever was picked at launch. */
 var MOSTLIKELY_PROMPTS = [
-  "Le plus susceptible de texter son ex à 2h du matin après 3 verres.",
-  "Le plus susceptible d'avoir un compte OnlyFans secret.",
-  "Le plus susceptible de partir une chicane générale en boisson.",
-  "Le plus susceptible de finir nu(e) dans une piscine à 3h du matin.",
-  "Le plus susceptible de devenir millionnaire grâce à une arnaque bizarre.",
-  "Le plus susceptible de ghoster le groupe pendant 3 semaines sans explication.",
-  "Le plus susceptible de tout raconter ses secrets intimes après 2 shooters.",
-  "Le plus susceptible de se faire pogner en train de faire un snap coquin au mauvais destinataire.",
-  "Le plus susceptible de dépenser sa paie au complet dans une seule soirée de party.",
-  "Le plus susceptible de commander pour 150$ de UberEats bourré à 4h du matin.",
-  "Le plus susceptible d'arriver 1h en retard à sa propre fête avec un verre à la main.",
-  "Le plus susceptible d'embrasser un(e) inconnu(e) pour un pari à 5$.",
-  "Le plus susceptible de faire un scandale pour une frite manquante à la poutine.",
-  "Le plus susceptible d'envoyer un vocal embarrassant à son boss à minuit.",
-  "Le plus susceptible de perdre ses clés, ses souliers et sa dignité dans la même soirée.",
-  "Le plus susceptible de se marier à Las Vegas sur un coup de tête.",
-  "Le plus susceptible d'avoir la pire note de crédit mais la meilleure vie nocturne.",
-  "Le plus susceptible d'essayer d'amadouer un policier avec une blague lors d'un contrôle routier.",
-  "Le plus susceptible de se réveiller le lendemain sans aucun souvenir de la soirée.",
-  "Le plus susceptible d'inventer une fausse urgence pour quitter un rendez-vous ennuyant.",
-  "Le plus susceptible d'avoir un tatouage impulsif fait dans un sous-sol.",
-  "Le plus susceptible de s'endormir la tête dans la pizza au milieu d'un party.",
-  "Le plus susceptible de devenir gourou d'une secte bizarre sur TikTok.",
-  "Le plus susceptible de tricher à un jeu de société entre amis et nier l'évidence.",
-  "Le plus susceptible de se faire bannir d'un groupe Facebook de quartier.",
-  "Le plus susceptible de tomber en bas des escaliers sans avoir bu une seule goutte d'alcool.",
-  "Le plus susceptible de voler un panneau de signalisation routière pour décorer son salon.",
-  "Le plus susceptible d'être recherché par la police internationale pour une erreur de frappe.",
-  "Le plus susceptible de chanter à tue-tête du Céline Dion au karaoké sans aucune note juste.",
-  "Le plus susceptible de perdre son téléphone cellulaire dans une poubelle publique.",
-  "Le plus susceptible d'avoir déjà testé une appli de rencontre sous un faux profil.",
-  "Le plus susceptible d'acheter un objet inutile à 500$ à 3h du mat sur Amazon.",
-  "Le plus susceptible de s'embrouiller avec le DJ pour qu'il joue sa chanson préférée.",
-  "Le plus susceptible de manger du fromage périmé depuis 2 mois sans s'en rendre compte.",
-  "Le plus susceptible de se faire passer pour une vedette pour rentrer gratuitement VIP.",
-  "Le plus susceptible d'avoir une aventure d'un soir avec un(e) ami(e) d'enfance.",
-  "Le plus susceptible de rater son vol d'avion parce qu'il buvait de la bière au bar de l'aéroport.",
-  "Le plus susceptible d'envoyer un message d'amour à son prof ou collègue par accident.",
-  "Le plus susceptible de faire croire qu'il parle couramment espagnol juste avec des accents exagérés.",
-  "Le plus susceptible d'accidentellement mettre le feu en essayant d'allumer une bougie.",
-  "Le plus susceptible de finir la nuit dans un Fast-Food à raconter sa vie au cuisinier.",
-  "Le plus susceptible de faire semblant de connaître une toune en faisant du lipsync affreux.",
-  "Le plus susceptible d'oublier où il habite en rentrant en taxi.",
-  "Le plus susceptible d'avoir un compte Instagram secret pour espionner ses rivaux.",
-  "Le plus susceptible d'être le premier à tomber au combat après seulement 2 bières.",
-  "Le plus susceptible de gagner une médaille d'or aux Olympiques du chaos.",
-  "Le plus susceptible de critiquer les affaires des autres alors que sa propre vie est un chantier.",
-  "Le plus susceptible d'avoir stalké le profil de tout le monde dans cette pièce jusqu'en 2014.",
-  "Le plus susceptible de dire 'je bois juste un verre ce soir' et finir cul sec à 4h du matin.",
-  "Le plus susceptible de donner des conseils amoureux désastreux alors qu'il est célibataire depuis 5 ans.",
-  "Le plus susceptible de disparaître de la fête sans dire au revoir à personne.",
-  "Le plus susceptible de chialer que la musique est trop forte et ensuite demander d'augmenter le son.",
-  "Le plus susceptible de tomber en amour avec quelqu'un juste parce qu'il a répondu en moins de 3 minutes.",
-  "Le plus susceptible de faire semblant d'avoir lu un livre ou vu un film juste pour avoir l'air intelligent.",
-  "Le plus susceptible de perdre un pari stupide et de devoir payer la tournée générale.",
-  "Le plus susceptible de prendre 142 selfies dans la soirée et n'en aimer aucun.",
-  "Le plus susceptible de menacer de supprimer ses réseaux sociaux tous les 6 mois.",
-  "Le plus susceptible de dire 'je suis en route' alors qu'il est encore en serviette dans sa chambre.",
-  "Le plus susceptible de passer 45 minutes à choisir quoi regarder sur Netflix et s'endormir devant l'écran.",
-  "Le plus susceptible de se plaindre d'être pauvre après avoir commandé 3 verres à 22$ chacun.",
-  "Le plus susceptible de dramatiser une simple poignée de main ou un regard de travers.",
-  "Le plus susceptible d'avoir une bucket list secrète remplie de trucs illégaux mais drôles.",
-  "Le plus susceptible de garder une rancœur pour une blague faite en 2016.",
-  "Le plus susceptible de juger les choix alimentaires des autres en mangeant un burger bien gras.",
-  "Le plus susceptible d'envoyer un screenshot d'une conversation à la personne même qui est dans la conversation.",
-  "Le plus susceptible d'inventer une histoire complètement folle et d'y croire lui-même après 10 minutes.",
-  "Le plus susceptible de réclamer 1.50$ sur Interac pour un café partagé la semaine passée.",
-  "Le plus susceptible de se vanter d'être un grand chef cuisinier parce qu'il sait faire des pâtes au beurre.",
-  "Le plus susceptible de faire la leçon sur la santé puis d'enchaîner 3 poutines dans la même semaine.",
-  "Le plus susceptible de s'auto-inviter à un événement où personne ne voulait de lui.",
-  "Le plus susceptible de pleurer de rire pour une blague que personne d'autre n'a trouvée drôle.",
-  "Le plus susceptible de casser un verre par pure maladresse et accuser le vent.",
-  "Le plus susceptible d'avoir déjà écrit des poèmes embarrassants à son crush du secondaire.",
-  "Le plus susceptible d'avoir une playlist secrète avec uniquement des chansons d'amour québécoises ultra kétaines.",
-  "Le plus susceptible de refuser de prêter son linge parce qu'il a peur qu'on lui vole son style.",
-  "Le plus susceptible d'appeler son ex en pleurant sous prétexte que 'son chat lui manquait'.",
-  "Le plus susceptible de faire un malaise théâtral pour éviter d'expliquer une erreur.",
-  "Le plus susceptible de prétendre connaître une célébrité parce qu'il a aimé une de ses photos sur Instagram.",
-  "Le plus susceptible de se lever le lendemain et d'envoyer des messages d'excuses à 12 personnes différentes.",
-  "Le plus susceptible de négocier le prix d'un truc à 2$ dans une vente de garage comme si sa vie en dépendait.",
-  "Le plus susceptible d'avoir une peur panique irrationnelle d'un animal inoffensif comme un pigeon.",
-  "Le plus susceptible d'avouer tous ses vices cachés dès qu'on lui pose deux questions un peu poussées.",
-  "Le plus susceptible de réorganiser les meubles dans un chalet loué juste parce que 'l'énergie était mauvaise'.",
-  "Le plus susceptible d'abandonner sa résolution du Nouvel An le 2 janvier à midi.",
-  "Le plus susceptible de se faire passer pour un expert en vin après avoir goûté une bouteille à 12$.",
-  "Le plus susceptible d'arriver avec une boîte de beignets et de tous les manger lui-même.",
-  "Le plus susceptible d'avoir un deuxième compte TikTok secret dédié aux vidéos de théories du complot.",
-  "Le plus susceptible de s'endormir au cinéma pendant la scène d'action principale.",
-  "Le plus susceptible d'être convaincu qu'il pourrait battre un ours à mains nues après 2 bières.",
-  "Le plus susceptible de répéter le même secret à 5 personnes différentes en disant 'dis-le à personne'.",
-  "Le plus susceptible de chanter dans son micro pendant un appel de travail en pensant être sur mute.",
-  "Le plus susceptible de dépenser 300$ en vêtements qu'il ne portera jamais.",
-  "Le plus susceptible de partir une rumeur hilarante sur lui-même pour voir qui va la répéter.",
-  "Le plus susceptible d'avoir déjà mangé la nourriture de son colocataire et blâmé le chien.",
-  "Le plus susceptible d'être bloqué par au moins 3 influenceurs majeurs pour troll excessif.",
-  "Le plus susceptible de faire une crise d'angoisse parce que son téléphone est à 4%.",
-  "Le plus susceptible d'organiser une soirée à thème et d'être le seul habillé en costume.",
-  "Le plus susceptible de devenir le meilleur ami du chauffeur d'Uber en 8 minutes de trajet.",
-  "Le plus susceptible d'être élu le roi ou la reine indétrônable du malaise de la gang.",
-  "Le plus susceptible de gagner une médaille d'or aux Olympiques du chaos."
+  { fr: "Le plus susceptible de texter son ex à 2h du matin après 3 verres.",
+    en: "Most likely to text their ex at 2am after 3 drinks.",
+    es: "El/la más propenso(a) a textearle a su ex a las 2am después de 3 tragos." },
+  { fr: "Le plus susceptible d'avoir un compte OnlyFans secret.",
+    en: "Most likely to have a secret OnlyFans account.",
+    es: "El/la más propenso(a) a tener una cuenta secreta de OnlyFans." },
+  { fr: "Le plus susceptible de partir une chicane générale en boisson.",
+    en: "Most likely to start a group-wide argument while drunk.",
+    es: "El/la más propenso(a) a empezar una pelea general estando borracho." },
+  { fr: "Le plus susceptible de finir nu(e) dans une piscine à 3h du matin.",
+    en: "Most likely to end up naked in a pool at 3am.",
+    es: "El/la más propenso(a) a terminar desnudo(a) en una piscina a las 3am." },
+  { fr: "Le plus susceptible de devenir millionnaire grâce à une arnaque bizarre.",
+    en: "Most likely to get rich off some weird scam.",
+    es: "El/la más propenso(a) a hacerse millonario con una estafa rarísima." },
+  { fr: "Le plus susceptible de ghoster le groupe pendant 3 semaines sans explication.",
+    en: "Most likely to ghost the group for 3 weeks with no explanation.",
+    es: "El/la más propenso(a) a desaparecer del grupo 3 semanas sin explicación." },
+  { fr: "Le plus susceptible de tout raconter ses secrets intimes après 2 shooters.",
+    en: "Most likely to spill every intimate secret after 2 shots.",
+    es: "El/la más propenso(a) a soltar todos sus secretos íntimos después de 2 shots." },
+  { fr: "Le plus susceptible de se faire pogner en train de faire un snap coquin au mauvais destinataire.",
+    en: "Most likely to get caught sending a spicy snap to the wrong person.",
+    es: "El/la más propenso(a) a que lo cachen mandando un snap subido de tono a la persona equivocada." },
+  { fr: "Le plus susceptible de dépenser sa paie au complet dans une seule soirée de party.",
+    en: "Most likely to blow an entire paycheque in one night out.",
+    es: "El/la más propenso(a) a gastarse el sueldo entero en una sola noche de fiesta." },
+  { fr: "Le plus susceptible de commander pour 150$ de UberEats bourré à 4h du matin.",
+    en: "Most likely to order $150 of UberEats hammered at 4am.",
+    es: "El/la más propenso(a) a pedir $150 de UberEats borracho a las 4am." },
+  { fr: "Le plus susceptible d'arriver 1h en retard à sa propre fête avec un verre à la main.",
+    en: "Most likely to show up an hour late to their own party, drink already in hand.",
+    es: "El/la más propenso(a) a llegar una hora tarde a su propia fiesta, ya con un trago en la mano." },
+  { fr: "Le plus susceptible d'embrasser un(e) inconnu(e) pour un pari à 5$.",
+    en: "Most likely to kiss a stranger over a $5 bet.",
+    es: "El/la más propenso(a) a besar a un(a) desconocido(a) por una apuesta de $5." },
+  { fr: "Le plus susceptible de faire un scandale pour une frite manquante à la poutine.",
+    en: "Most likely to cause a scene over one missing fry in the poutine.",
+    es: "El/la más propenso(a) a hacer un escándalo por una papa que falta en la poutine." },
+  { fr: "Le plus susceptible d'envoyer un vocal embarrassant à son boss à minuit.",
+    en: "Most likely to send an embarrassing voice note to their boss at midnight.",
+    es: "El/la más propenso(a) a mandarle una nota de voz vergonzosa a su jefe a medianoche." },
+  { fr: "Le plus susceptible de perdre ses clés, ses souliers et sa dignité dans la même soirée.",
+    en: "Most likely to lose their keys, their shoes and their dignity in one night.",
+    es: "El/la más propenso(a) a perder las llaves, los zapatos y la dignidad en una sola noche." },
+  { fr: "Le plus susceptible de se marier à Las Vegas sur un coup de tête.",
+    en: "Most likely to get married in Vegas on a whim.",
+    es: "El/la más propenso(a) a casarse en Las Vegas por impulso." },
+  { fr: "Le plus susceptible d'avoir la pire note de crédit mais la meilleure vie nocturne.",
+    en: "Most likely to have the worst credit score but the best nightlife.",
+    es: "El/la más propenso(a) a tener el peor historial de crédito pero la mejor vida nocturna." },
+  { fr: "Le plus susceptible d'essayer d'amadouer un policier avec une blague lors d'un contrôle routier.",
+    en: "Most likely to try to talk their way out of a traffic stop with a joke.",
+    es: "El/la más propenso(a) a intentar zafarse de una multa contándole un chiste al policía." },
+  { fr: "Le plus susceptible de se réveiller le lendemain sans aucun souvenir de la soirée.",
+    en: "Most likely to wake up the next day with zero memory of the night.",
+    es: "El/la más propenso(a) a despertar al día siguiente sin ningún recuerdo de la noche." },
+  { fr: "Le plus susceptible d'inventer une fausse urgence pour quitter un rendez-vous ennuyant.",
+    en: "Most likely to invent a fake emergency to escape a boring date.",
+    es: "El/la más propenso(a) a inventarse una emergencia falsa para escapar de una cita aburrida." },
+  { fr: "Le plus susceptible d'avoir un tatouage impulsif fait dans un sous-sol.",
+    en: "Most likely to get an impulse tattoo done in somebody's basement.",
+    es: "El/la más propenso(a) a hacerse un tatuaje impulsivo en el sótano de alguien." },
+  { fr: "Le plus susceptible de s'endormir la tête dans la pizza au milieu d'un party.",
+    en: "Most likely to fall asleep face-first in the pizza mid-party.",
+    es: "El/la más propenso(a) a quedarse dormido con la cara en la pizza a media fiesta." },
+  { fr: "Le plus susceptible de devenir gourou d'une secte bizarre sur TikTok.",
+    en: "Most likely to become the guru of some weird TikTok cult.",
+    es: "El/la más propenso(a) a volverse gurú de alguna secta rara de TikTok." },
+  { fr: "Le plus susceptible de tricher à un jeu de société entre amis et nier l'évidence.",
+    en: "Most likely to cheat at a board game with friends and deny it to their face.",
+    es: "El/la más propenso(a) a hacer trampa en un juego de mesa y negarlo en la cara." },
+  { fr: "Le plus susceptible de se faire bannir d'un groupe Facebook de quartier.",
+    en: "Most likely to get banned from a neighbourhood Facebook group.",
+    es: "El/la más propenso(a) a que lo baneen de un grupo de Facebook del barrio." },
+  { fr: "Le plus susceptible de tomber en bas des escaliers sans avoir bu une seule goutte d'alcool.",
+    en: "Most likely to fall down the stairs stone cold sober.",
+    es: "El/la más propenso(a) a caerse por las escaleras sin haber tomado una gota." },
+  { fr: "Le plus susceptible de voler un panneau de signalisation routière pour décorer son salon.",
+    en: "Most likely to steal a road sign to decorate their living room.",
+    es: "El/la más propenso(a) a robarse una señal de tránsito para decorar la sala." },
+  { fr: "Le plus susceptible d'être recherché par la police internationale pour une erreur de frappe.",
+    en: "Most likely to end up wanted by international police over a typo.",
+    es: "El/la más propenso(a) a terminar buscado por la policía internacional por un error de tipeo." },
+  { fr: "Le plus susceptible de chanter à tue-tête du Céline Dion au karaoké sans aucune note juste.",
+    en: "Most likely to belt out Céline Dion at karaoke without hitting one right note.",
+    es: "El/la más propenso(a) a cantar Céline Dion a todo pulmón en el karaoke sin dar una sola nota." },
+  { fr: "Le plus susceptible de perdre son téléphone cellulaire dans une poubelle publique.",
+    en: "Most likely to lose their phone in a public garbage can.",
+    es: "El/la más propenso(a) a perder el celular en un basurero público." },
+  { fr: "Le plus susceptible d'avoir déjà testé une appli de rencontre sous un faux profil.",
+    en: "Most likely to have already tried a dating app under a fake profile.",
+    es: "El/la más propenso(a) a haber probado una app de citas con un perfil falso." },
+  { fr: "Le plus susceptible d'acheter un objet inutile à 500$ à 3h du mat sur Amazon.",
+    en: "Most likely to buy a useless $500 thing on Amazon at 3am.",
+    es: "El/la más propenso(a) a comprar una cosa inútil de $500 en Amazon a las 3am." },
+  { fr: "Le plus susceptible de s'embrouiller avec le DJ pour qu'il joue sa chanson préférée.",
+    en: "Most likely to argue with the DJ until he plays their song.",
+    es: "El/la más propenso(a) a pelearse con el DJ hasta que ponga su canción." },
+  { fr: "Le plus susceptible de manger du fromage périmé depuis 2 mois sans s'en rendre compte.",
+    en: "Most likely to eat cheese two months expired without noticing.",
+    es: "El/la más propenso(a) a comerse un queso vencido hace 2 meses sin darse cuenta." },
+  { fr: "Le plus susceptible de se faire passer pour une vedette pour rentrer gratuitement VIP.",
+    en: "Most likely to pass themselves off as a celebrity to get into VIP for free.",
+    es: "El/la más propenso(a) a hacerse pasar por famoso para entrar gratis al VIP." },
+  { fr: "Le plus susceptible d'avoir une aventure d'un soir avec un(e) ami(e) d'enfance.",
+    en: "Most likely to have a one-night thing with a childhood friend.",
+    es: "El/la más propenso(a) a tener una noche con un(a) amigo(a) de la infancia." },
+  { fr: "Le plus susceptible de rater son vol d'avion parce qu'il buvait de la bière au bar de l'aéroport.",
+    en: "Most likely to miss their flight because they were drinking at the airport bar.",
+    es: "El/la más propenso(a) a perder el vuelo por estar tomando en el bar del aeropuerto." },
+  { fr: "Le plus susceptible d'envoyer un message d'amour à son prof ou collègue par accident.",
+    en: "Most likely to accidentally send a love message to their teacher or coworker.",
+    es: "El/la más propenso(a) a mandarle sin querer un mensaje de amor a su profe o compañero de trabajo." },
+  { fr: "Le plus susceptible de faire croire qu'il parle couramment espagnol juste avec des accents exagérés.",
+    en: "Most likely to claim they speak fluent Spanish using nothing but an exaggerated accent.",
+    es: "El/la más propenso(a) a jurar que habla español fluido usando solo un acento exagerado." },
+  { fr: "Le plus susceptible d'accidentellement mettre le feu en essayant d'allumer une bougie.",
+    en: "Most likely to accidentally start a fire trying to light a candle.",
+    es: "El/la más propenso(a) a provocar un incendio tratando de prender una vela." },
+  { fr: "Le plus susceptible de finir la nuit dans un Fast-Food à raconter sa vie au cuisinier.",
+    en: "Most likely to end the night in a fast-food joint telling the cook their life story.",
+    es: "El/la más propenso(a) a terminar la noche en un fast-food contándole su vida al cocinero." },
+  { fr: "Le plus susceptible de faire semblant de connaître une toune en faisant du lipsync affreux.",
+    en: "Most likely to fake knowing a song with truly awful lip-syncing.",
+    es: "El/la más propenso(a) a fingir que se sabe una canción con un playback horrible." },
+  { fr: "Le plus susceptible d'oublier où il habite en rentrant en taxi.",
+    en: "Most likely to forget where they live while taking a taxi home.",
+    es: "El/la más propenso(a) a olvidar dónde vive mientras vuelve en taxi." },
+  { fr: "Le plus susceptible d'avoir un compte Instagram secret pour espionner ses rivaux.",
+    en: "Most likely to have a secret Instagram account to spy on their rivals.",
+    es: "El/la más propenso(a) a tener una cuenta secreta de Instagram para espiar a sus rivales." },
+  { fr: "Le plus susceptible d'être le premier à tomber au combat après seulement 2 bières.",
+    en: "Most likely to be the first one down after only 2 beers.",
+    es: "El/la más propenso(a) a ser el primero en caer después de solo 2 cervezas." },
+  { fr: "Le plus susceptible de gagner une médaille d'or aux Olympiques du chaos.",
+    en: "Most likely to win a gold medal at the Chaos Olympics.",
+    es: "El/la más propenso(a) a ganar la medalla de oro en los Juegos Olímpicos del Caos." },
+  { fr: "Le plus susceptible de critiquer les affaires des autres alors que sa propre vie est un chantier.",
+    en: "Most likely to criticise everyone else's business while their own life is a construction site.",
+    es: "El/la más propenso(a) a criticar la vida de los demás mientras la suya es una obra en construcción." },
+  { fr: "Le plus susceptible d'avoir stalké le profil de tout le monde dans cette pièce jusqu'en 2014.",
+    en: "Most likely to have stalked every profile in this room all the way back to 2014.",
+    es: "El/la más propenso(a) a haber stalkeado el perfil de todos en esta sala hasta el 2014." },
+  { fr: "Le plus susceptible de dire 'je bois juste un verre ce soir' et finir cul sec à 4h du matin.",
+    en: "Most likely to say 'just one drink tonight' and end up doing shots at 4am.",
+    es: "El/la más propenso(a) a decir 'solo un trago esta noche' y terminar tomando shots a las 4am." },
+  { fr: "Le plus susceptible de donner des conseils amoureux désastreux alors qu'il est célibataire depuis 5 ans.",
+    en: "Most likely to give disastrous love advice after 5 years single.",
+    es: "El/la más propenso(a) a dar consejos amorosos desastrosos llevando 5 años soltero." },
+  { fr: "Le plus susceptible de disparaître de la fête sans dire au revoir à personne.",
+    en: "Most likely to vanish from the party without saying goodbye to anyone.",
+    es: "El/la más propenso(a) a desaparecer de la fiesta sin despedirse de nadie." },
+  { fr: "Le plus susceptible de chialer que la musique est trop forte et ensuite demander d'augmenter le son.",
+    en: "Most likely to complain the music is too loud, then ask to turn it up.",
+    es: "El/la más propenso(a) a quejarse de que la música está muy fuerte y después pedir que la suban." },
+  { fr: "Le plus susceptible de tomber en amour avec quelqu'un juste parce qu'il a répondu en moins de 3 minutes.",
+    en: "Most likely to fall in love with somebody purely because they replied in under 3 minutes.",
+    es: "El/la más propenso(a) a enamorarse de alguien solo porque le respondió en menos de 3 minutos." },
+  { fr: "Le plus susceptible de faire semblant d'avoir lu un livre ou vu un film juste pour avoir l'air intelligent.",
+    en: "Most likely to pretend they read the book or saw the film just to sound smart.",
+    es: "El/la más propenso(a) a fingir que leyó el libro o vio la película solo para parecer inteligente." },
+  { fr: "Le plus susceptible de perdre un pari stupide et de devoir payer la tournée générale.",
+    en: "Most likely to lose a stupid bet and have to buy a round for everyone.",
+    es: "El/la más propenso(a) a perder una apuesta estúpida y tener que pagar la ronda." },
+  { fr: "Le plus susceptible de prendre 142 selfies dans la soirée et n'en aimer aucun.",
+    en: "Most likely to take 142 selfies in one night and like none of them.",
+    es: "El/la más propenso(a) a sacarse 142 selfies en una noche y no gustarle ninguna." },
+  { fr: "Le plus susceptible de menacer de supprimer ses réseaux sociaux tous les 6 mois.",
+    en: "Most likely to threaten to delete all their social media every 6 months.",
+    es: "El/la más propenso(a) a amenazar con borrar todas sus redes sociales cada 6 meses." },
+  { fr: "Le plus susceptible de dire 'je suis en route' alors qu'il est encore en serviette dans sa chambre.",
+    en: "Most likely to say 'I'm on my way' while still standing in a towel in their bedroom.",
+    es: "El/la más propenso(a) a decir 'ya voy en camino' estando todavía en toalla en su cuarto." },
+  { fr: "Le plus susceptible de passer 45 minutes à choisir quoi regarder sur Netflix et s'endormir devant l'écran.",
+    en: "Most likely to spend 45 minutes picking something on Netflix and fall asleep to it.",
+    es: "El/la más propenso(a) a pasar 45 minutos eligiendo algo en Netflix y dormirse viéndolo." },
+  { fr: "Le plus susceptible de se plaindre d'être pauvre après avoir commandé 3 verres à 22$ chacun.",
+    en: "Most likely to complain about being broke after ordering three $22 drinks.",
+    es: "El/la más propenso(a) a quejarse de estar quebrado después de pedir tres tragos de $22." },
+  { fr: "Le plus susceptible de dramatiser une simple poignée de main ou un regard de travers.",
+    en: "Most likely to turn a simple handshake or a sideways look into full drama.",
+    es: "El/la más propenso(a) a convertir un apretón de manos o una mirada de reojo en un dramón." },
+  { fr: "Le plus susceptible d'avoir une bucket list secrète remplie de trucs illégaux mais drôles.",
+    en: "Most likely to have a secret bucket list full of illegal but funny stuff.",
+    es: "El/la más propenso(a) a tener una lista secreta de cosas ilegales pero graciosas por hacer." },
+  { fr: "Le plus susceptible de garder une rancœur pour une blague faite en 2016.",
+    en: "Most likely to still hold a grudge over a joke made in 2016.",
+    es: "El/la más propenso(a) a seguir guardando rencor por un chiste del 2016." },
+  { fr: "Le plus susceptible de juger les choix alimentaires des autres en mangeant un burger bien gras.",
+    en: "Most likely to judge everyone's food choices while eating the greasiest burger going.",
+    es: "El/la más propenso(a) a juzgar lo que comen los demás mientras se come la hamburguesa más grasosa." },
+  { fr: "Le plus susceptible d'envoyer un screenshot d'une conversation à la personne même qui est dans la conversation.",
+    en: "Most likely to screenshot a conversation and send it to the person in that conversation.",
+    es: "El/la más propenso(a) a mandar la captura de una conversación a la persona que está en esa conversación." },
+  { fr: "Le plus susceptible d'inventer une histoire complètement folle et d'y croire lui-même après 10 minutes.",
+    en: "Most likely to invent a completely insane story and believe it themselves 10 minutes later.",
+    es: "El/la más propenso(a) a inventar una historia totalmente loca y creérsela él mismo 10 minutos después." },
+  { fr: "Le plus susceptible de réclamer 1.50$ sur Interac pour un café partagé la semaine passée.",
+    en: "Most likely to e-transfer request you $1.50 for a coffee they bought last week.",
+    es: "El/la más propenso(a) a cobrarte $1.50 por transferencia por un café de la semana pasada." },
+  { fr: "Le plus susceptible de se vanter d'être un grand chef cuisinier parce qu'il sait faire des pâtes au beurre.",
+    en: "Most likely to brag about being a great cook because they can make buttered pasta.",
+    es: "El/la más propenso(a) a presumir de gran chef porque sabe hacer pasta con mantequilla." },
+  { fr: "Le plus susceptible de faire la leçon sur la santé puis d'enchaîner 3 poutines dans la même semaine.",
+    en: "Most likely to lecture everyone about health then put away 3 poutines the same week.",
+    es: "El/la más propenso(a) a dar sermones de salud y comerse 3 poutines la misma semana." },
+  { fr: "Le plus susceptible de s'auto-inviter à un événement où personne ne voulait de lui.",
+    en: "Most likely to invite themselves to an event nobody wanted them at.",
+    es: "El/la más propenso(a) a autoinvitarse a un evento donde nadie lo quería." },
+  { fr: "Le plus susceptible de pleurer de rire pour une blague que personne d'autre n'a trouvée drôle.",
+    en: "Most likely to cry laughing at a joke nobody else found funny.",
+    es: "El/la más propenso(a) a llorar de risa por un chiste que a nadie más le dio gracia." },
+  { fr: "Le plus susceptible de casser un verre par pure maladresse et accuser le vent.",
+    en: "Most likely to break a glass out of pure clumsiness and blame the wind.",
+    es: "El/la más propenso(a) a romper un vaso de pura torpeza y echarle la culpa al viento." },
+  { fr: "Le plus susceptible d'avoir déjà écrit des poèmes embarrassants à son crush du secondaire.",
+    en: "Most likely to have written embarrassing poems to their high school crush.",
+    es: "El/la más propenso(a) a haberle escrito poemas vergonzosos a su crush de la secundaria." },
+  { fr: "Le plus susceptible d'avoir une playlist secrète avec uniquement des chansons d'amour québécoises ultra kétaines.",
+    en: "Most likely to have a secret playlist of nothing but the cheesiest love songs.",
+    es: "El/la más propenso(a) a tener una playlist secreta con puras canciones de amor cursísimas." },
+  { fr: "Le plus susceptible de refuser de prêter son linge parce qu'il a peur qu'on lui vole son style.",
+    en: "Most likely to refuse to lend clothes in case somebody steals their style.",
+    es: "El/la más propenso(a) a negarse a prestar ropa por miedo a que le roben el estilo." },
+  { fr: "Le plus susceptible d'appeler son ex en pleurant sous prétexte que 'son chat lui manquait'.",
+    en: "Most likely to call their ex in tears claiming they 'missed the cat'.",
+    es: "El/la más propenso(a) a llamar a su ex llorando con la excusa de que 'extrañaba al gato'." },
+  { fr: "Le plus susceptible de faire un malaise théâtral pour éviter d'expliquer une erreur.",
+    en: "Most likely to stage a theatrical fainting spell to avoid explaining a mistake.",
+    es: "El/la más propenso(a) a fingir un desmayo teatral para no explicar un error." },
+  { fr: "Le plus susceptible de prétendre connaître une célébrité parce qu'il a aimé une de ses photos sur Instagram.",
+    en: "Most likely to claim they know a celebrity because they liked one of their photos.",
+    es: "El/la más propenso(a) a decir que conoce a un famoso porque le dio like a una foto." },
+  { fr: "Le plus susceptible de se lever le lendemain et d'envoyer des messages d'excuses à 12 personnes différentes.",
+    en: "Most likely to wake up the next day and send apology texts to 12 different people.",
+    es: "El/la más propenso(a) a despertar al día siguiente y mandar disculpas a 12 personas distintas." },
+  { fr: "Le plus susceptible de négocier le prix d'un truc à 2$ dans une vente de garage comme si sa vie en dépendait.",
+    en: "Most likely to haggle over a $2 item at a yard sale like their life depends on it.",
+    es: "El/la más propenso(a) a regatear una cosa de $2 en una venta de garaje como si le fuera la vida." },
+  { fr: "Le plus susceptible d'avoir une peur panique irrationnelle d'un animal inoffensif comme un pigeon.",
+    en: "Most likely to have an irrational panic-level fear of something harmless like a pigeon.",
+    es: "El/la más propenso(a) a tenerle un miedo irracional a algo inofensivo como una paloma." },
+  { fr: "Le plus susceptible d'avouer tous ses vices cachés dès qu'on lui pose deux questions un peu poussées.",
+    en: "Most likely to confess every hidden vice after being asked two slightly pointed questions.",
+    es: "El/la más propenso(a) a confesar todos sus vicios ocultos con solo dos preguntas un poco directas." },
+  { fr: "Le plus susceptible de réorganiser les meubles dans un chalet loué juste parce que 'l'énergie était mauvaise'.",
+    en: "Most likely to rearrange the furniture in a rented cabin because 'the energy was off'.",
+    es: "El/la más propenso(a) a reacomodar los muebles de una cabaña alquilada porque 'la energía estaba mal'." },
+  { fr: "Le plus susceptible d'abandonner sa résolution du Nouvel An le 2 janvier à midi.",
+    en: "Most likely to abandon their New Year's resolution by noon on January 2nd.",
+    es: "El/la más propenso(a) a abandonar su propósito de Año Nuevo el 2 de enero al mediodía." },
+  { fr: "Le plus susceptible de se faire passer pour un expert en vin après avoir goûté une bouteille à 12$.",
+    en: "Most likely to pose as a wine expert after tasting one $12 bottle.",
+    es: "El/la más propenso(a) a hacerse el experto en vinos después de probar una botella de $12." },
+  { fr: "Le plus susceptible d'arriver avec une boîte de beignets et de tous les manger lui-même.",
+    en: "Most likely to show up with a box of donuts and eat every one themselves.",
+    es: "El/la más propenso(a) a llegar con una caja de donas y comérselas todas él mismo." },
+  { fr: "Le plus susceptible d'avoir un deuxième compte TikTok secret dédié aux vidéos de théories du complot.",
+    en: "Most likely to have a second secret TikTok account devoted to conspiracy theories.",
+    es: "El/la más propenso(a) a tener una segunda cuenta secreta de TikTok dedicada a teorías conspirativas." },
+  { fr: "Le plus susceptible de s'endormir au cinéma pendant la scène d'action principale.",
+    en: "Most likely to fall asleep at the cinema during the main action scene.",
+    es: "El/la más propenso(a) a quedarse dormido en el cine durante la escena de acción principal." },
+  { fr: "Le plus susceptible d'être convaincu qu'il pourrait battre un ours à mains nues après 2 bières.",
+    en: "Most likely to be convinced they could fight a bear bare-handed after 2 beers.",
+    es: "El/la más propenso(a) a estar convencido de que podría pelear con un oso a manos limpias después de 2 cervezas." },
+  { fr: "Le plus susceptible de répéter le même secret à 5 personnes différentes en disant 'dis-le à personne'.",
+    en: "Most likely to repeat the same secret to 5 different people saying 'don't tell anyone'.",
+    es: "El/la más propenso(a) a repetirle el mismo secreto a 5 personas distintas diciendo 'no se lo digas a nadie'." },
+  { fr: "Le plus susceptible de chanter dans son micro pendant un appel de travail en pensant être sur mute.",
+    en: "Most likely to sing into their mic on a work call thinking they're on mute.",
+    es: "El/la más propenso(a) a cantar en el micrófono en una reunión de trabajo creyendo que está en mute." },
+  { fr: "Le plus susceptible de dépenser 300$ en vêtements qu'il ne portera jamais.",
+    en: "Most likely to spend $300 on clothes they will never wear.",
+    es: "El/la más propenso(a) a gastar $300 en ropa que nunca se va a poner." },
+  { fr: "Le plus susceptible de partir une rumeur hilarante sur lui-même pour voir qui va la répéter.",
+    en: "Most likely to start a hilarious rumour about themselves just to see who repeats it.",
+    es: "El/la más propenso(a) a empezar un rumor graciosísimo sobre sí mismo solo para ver quién lo repite." },
+  { fr: "Le plus susceptible d'avoir déjà mangé la nourriture de son colocataire et blâmé le chien.",
+    en: "Most likely to have eaten their roommate's food and blamed the dog.",
+    es: "El/la más propenso(a) a haberse comido la comida de su compañero de piso y culpar al perro." },
+  { fr: "Le plus susceptible d'être bloqué par au moins 3 influenceurs majeurs pour troll excessif.",
+    en: "Most likely to be blocked by at least 3 major influencers for excessive trolling.",
+    es: "El/la más propenso(a) a estar bloqueado por al menos 3 influencers importantes por trolear demasiado." },
+  { fr: "Le plus susceptible de faire une crise d'angoisse parce que son téléphone est à 4%.",
+    en: "Most likely to have a panic attack because their phone is at 4%.",
+    es: "El/la más propenso(a) a tener un ataque de pánico porque su celular está al 4%." },
+  { fr: "Le plus susceptible d'organiser une soirée à thème et d'être le seul habillé en costume.",
+    en: "Most likely to throw a themed party and be the only one in costume.",
+    es: "El/la más propenso(a) a organizar una fiesta temática y ser el único disfrazado." },
+  { fr: "Le plus susceptible de devenir le meilleur ami du chauffeur d'Uber en 8 minutes de trajet.",
+    en: "Most likely to become the Uber driver's best friend within an 8 minute ride.",
+    es: "El/la más propenso(a) a volverse el mejor amigo del conductor de Uber en 8 minutos de viaje." },
+  { fr: "Le plus susceptible d'être élu le roi ou la reine indétrônable du malaise de la gang.",
+    en: "Most likely to be crowned undisputed king or queen of the group's awkward moments.",
+    es: "El/la más propenso(a) a ser coronado rey o reina indiscutible de los momentos incómodos del grupo." }
 ];
 
 var ML_GUESS_SEC = 30;
@@ -3735,7 +3944,7 @@ function renderMostLikely(g){
   var round = g.round || 0;
   var total = g.total || 1;
   var votes = g.votes || {};
-  var prompt = (g.prompts && g.prompts[round]) ? g.prompts[round] : "";
+  var prompt = pickLang((g.prompts && g.prompts[round]) ? g.prompts[round] : "");
   var votedCount = Object.keys(votes).length;
   var html = "";
 
@@ -6135,6 +6344,16 @@ var I18N = {
     "en": "Sound effects",
     "es": "Efectos de sonido"
   },
+  "showOriginal": {
+    "fr": "Voir l'original",
+    "en": "View original",
+    "es": "Ver original"
+  },
+  "showTranslated": {
+    "fr": "Voir la traduction",
+    "en": "View translation",
+    "es": "Ver traducción"
+  },
   "languageLabel": {
     "fr": "Langue",
     "en": "Language",
@@ -6156,6 +6375,14 @@ function tx(obj, key){
     if(v !== undefined && v !== null && v !== "") return v;
   }
   return obj[key] || "";
+}
+
+/* Content packs store { fr, en, es } per entry. Plain strings pass straight through,
+ * so a pack can be converted one at a time without breaking the ones still raw. */
+function pickLang(v){
+  if(v === null || v === undefined) return "";
+  if(typeof v === "string") return v;
+  return v[LANG] || v.fr || v.en || v.es || "";
 }
 
 /* UI lookup. I18N[key] is { fr, en, es }; missing entries fall back fr -> key. */
@@ -6366,6 +6593,41 @@ function launchWhoPosted(){
   });
 }
 
+/* These are real posts, and a translation always loses something - the typos, the
+ * stretched vowels, the joual. A toggle flips any card back to exactly what was
+ * written. Off by default, remembered for the session, and hidden entirely when the
+ * post has no translation to differ from. */
+var _showOriginal = false;
+
+function toggleOriginal(){
+  _showOriginal = !_showOriginal;
+  sfxVote();
+  if(currentScreen === "s-game" && currentGame) renderGame(currentGame);
+}
+
+// tx() but honouring the toggle - falls back to the original wording.
+function txPost(obj, key){
+  if(!obj) return "";
+  if(_showOriginal) return obj[key] || "";
+  return tx(obj, key);
+}
+
+// Does this card actually have anything different to show?
+function postHasOriginal(item){
+  if(!item || LANG === "fr") return false;   // fr IS the translation target here
+  var pairs = [[item.text, item.textFr], [item.feeling, item.feelingFr]];
+  if(item.featuredComment) pairs.push([item.featuredComment.text, item.featuredComment.textFr]);
+  (item.subPosts || []).forEach(function(s){ pairs.push([s.text, s.textFr]); });
+  return pairs.some(function(p){ return p[0] && p[1] && p[0] !== p[1]; });
+}
+
+function originalToggleHTML(item){
+  if(!postHasOriginal(item)) return "";
+  return '<div class="orig-row"><button class="orig-btn' + (_showOriginal ? ' on' : '') +
+         '" onclick="toggleOriginal()">' +
+         (_showOriginal ? t("showTranslated") : t("showOriginal")) + '</button></div>';
+}
+
 function renderSocialPostHTML(item, isRevealed, realPoster){
   if(item.subPosts && item.subPosts.length > 0){
     return item.subPosts.map(function(sub){
@@ -6387,10 +6649,10 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
     html += '    <div class="ig-hdr-left">';
     if(!isRevealed){
       html += '      <div class="ig-avatar-ring"><div class="skel-av" style="width:36px;height:36px;"></div></div>';
-      html += '      <div><div class="skel-bar skel-name"></div><div class="ig-location">' + escapeHtml(tx(item, "date") || "Instagram") + '</div></div>';
+      html += '      <div><div class="skel-bar skel-name"></div><div class="ig-location">' + escapeHtml(txPost(item, "date") || "Instagram") + '</div></div>';
     } else {
       html += '      <div class="ig-avatar-ring">' + avatarHTML(realPoster, 38) + '</div>';
-      html += '      <div><div class="ig-handle">' + escapeHtml(item.fullName || realPoster.name) + '</div><div class="ig-location">' + escapeHtml(tx(item, "date") || "Instagram") + '</div></div>';
+      html += '      <div><div class="ig-handle">' + escapeHtml(item.fullName || realPoster.name) + '</div><div class="ig-location">' + escapeHtml(txPost(item, "date") || "Instagram") + '</div></div>';
     }
     html += '    </div>';
     html += '    <div class="ig-dots">•••</div>';
@@ -6416,7 +6678,7 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
       } else {
         html += '    <span class="ig-author-tag">' + escapeHtml(item.fullName || realPoster.name) + '</span>';
       }
-      html += escapeHtml(mask(tx(item, "text")));
+      html += escapeHtml(mask(txPost(item, "text")));
       html += '  </div>';
     }
 
@@ -6427,7 +6689,7 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
               (isRevealed && fcIg.author
                 ? '<span class="ig-author-tag">' + escapeHtml(mask(fcIg.author)) + '</span>'
                 : '<span class="skel-bar" style="display:inline-block;width:70px;height:10px;margin-right:6px;vertical-align:middle;"></span>') +
-              escapeHtml(mask(tx(fcIg, "text"))) + '</div>';
+              escapeHtml(mask(txPost(fcIg, "text"))) + '</div>';
     }
 
     html += '</div>';
@@ -6437,19 +6699,19 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
     html += '<div class="fb-post-card">';
     html += '  <div class="fb-post-hdr">';
     html += '    <div class="fb-hdr-left">';
-    var feelingTxt = item.feeling ? (' <span style="font-weight:400;color:#b0b3b8;font-size:0.84rem;">' + escapeHtml(mask(tx(item, "feeling"))) + '</span>') : '';
+    var feelingTxt = item.feeling ? (' <span style="font-weight:400;color:#b0b3b8;font-size:0.84rem;">' + escapeHtml(mask(txPost(item, "feeling"))) + '</span>') : '';
     var wallPrefix = item.wallFrom ? ('<span style="font-weight:700;color:#e4e6eb;">' + escapeHtml(item.wallFrom) + '</span> <span style="color:#b0b3b8;font-weight:400;font-size:0.8rem;margin:0 2px;">▶</span> ') : '';
     if(!isRevealed){
       html += '      <div class="skel-av"></div>';
       html += '      <div>';
       html += '        <div class="fb-author-name" style="display:flex;align-items:center;gap:6px;">' + wallPrefix + '<div class="skel-bar skel-name"></div>' + feelingTxt + '</div>';
-      html += '        <div class="fb-post-date">' + escapeHtml(tx(item, "date") || "2014") + ' • <span style="font-size:0.7rem;">👥</span></div>';
+      html += '        <div class="fb-post-date">' + escapeHtml(txPost(item, "date") || "2014") + ' • <span style="font-size:0.7rem;">👥</span></div>';
       html += '      </div>';
     } else {
       html += avatarHTML(realPoster, 40);
       html += '      <div>';
       html += '        <div class="fb-author-name">' + wallPrefix + escapeHtml(item.fullName || realPoster.name) + feelingTxt + '</div>';
-      html += '        <div class="fb-post-date">' + escapeHtml(tx(item, "date") || "2014") + ' • <span style="font-size:0.7rem;">👥</span></div>';
+      html += '        <div class="fb-post-date">' + escapeHtml(txPost(item, "date") || "2014") + ' • <span style="font-size:0.7rem;">👥</span></div>';
       html += '      </div>';
     }
     html += '    </div>';
@@ -6457,7 +6719,7 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
     html += '  </div>';
 
     if(item.text){
-      html += '  <div class="fb-post-txt">' + escapeHtml(mask(tx(item, "text"))) + '</div>';
+      html += '  <div class="fb-post-txt">' + escapeHtml(mask(txPost(item, "text"))) + '</div>';
     }
 
     if(item.image){
@@ -6513,7 +6775,7 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
                 ? '<span>' + escapeHtml(mask(fcFb.author)) + '</span>'
                 : '<div class="skel-bar" style="width:90px;height:10px;"></div>') +
               '<span style="font-weight:400;font-size:0.76rem;color:#b0b3b8;">• ' + escapeHtml(fcFb.time || "12y") + '</span></div>';
-      html += '        <div style="font-size:0.88rem;color:#e4e6eb;margin-top:4px;">' + escapeHtml(mask(tx(fcFb, "text"))) + '</div>';
+      html += '        <div style="font-size:0.88rem;color:#e4e6eb;margin-top:4px;">' + escapeHtml(mask(txPost(fcFb, "text"))) + '</div>';
       html += '      </div>';
       if(fcFb.likes){
         html += '      <div style="margin:2px 0 0 12px;font-size:0.74rem;color:#b0b3b8;display:flex;align-items:center;gap:4px;"><span>👍</span></div>';
@@ -6565,6 +6827,7 @@ function renderWhoPosted(g){
 
     html += '<div class="groundhdr">Manche ' + (round+1) + ' / ' + total + ' • Qui a posté ça ?</div>';
     html += renderSocialPostHTML(item, false, realPoster);
+    html += originalToggleHTML(item);
 
     html += '<div class="gsub">Qui a écrit ou publié ça ?</div>';
     html += '<div class="vgrid">';
@@ -6585,6 +6848,7 @@ function renderWhoPosted(g){
 
     html += '<div class="groundhdr">Révélation !</div>';
     html += renderSocialPostHTML(item, true, realPoster);
+    html += originalToggleHTML(item);
 
     html += '<div style="text-align:center;margin:18px 0;">';
     html += avatarHTML(realPoster, 84);
