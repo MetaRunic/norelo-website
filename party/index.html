@@ -1447,7 +1447,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.21</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.22</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -2139,16 +2139,16 @@ document.addEventListener("click", function(e){
  *  THEME SYSTEM (10 UNIQUE STYLES & VISUAL EFFECTS)
  * ===================================================================== */
 var THEMES = [
-  { id: "default", name: "Néon Profond", icon: "🌌", desc: "Nuit bleue classique avec halo luminescent et DVD bounce.", gradient: "linear-gradient(135deg, #0b132b, #1c2541)", accent: "#3b82f6" },
-  { id: "space", name: "Espace & Nébuleuse", icon: "🚀", desc: "Vide cosmique profond avec étoiles scintillantes et astéroïdes.", gradient: "linear-gradient(135deg, #030712, #1e1b4b)", accent: "#a855f7" },
-  { id: "underwater", name: "Sous-Marin & Abysses", icon: "🌊", desc: "Abysses turquoise avec bulles montantes et méduses bioluminescentes.", gradient: "linear-gradient(135deg, #022c22, #064e3b)", accent: "#10b981" },
-  { id: "cyberpunk", name: "Retro Synthwave 80s", icon: "👾", desc: "Grille néon rose et magenta avec soleil synthwave rétro.", gradient: "linear-gradient(135deg, #18021e, #3b0764)", accent: "#ec4899" },
-  { id: "forest", name: "Forêt Enchantée", icon: "🍃", desc: "Sous-bois féerique émeraude avec lucioles dorées et feuilles dérivantes.", gradient: "linear-gradient(135deg, #052e16, #14532d)", accent: "#22c55e" },
-  { id: "lava", name: "Enfer Volcanique", icon: "🌋", desc: "Monde de magma ardent avec braises montantes et étincelles de feu.", gradient: "linear-gradient(135deg, #1a0505, #450a0a)", accent: "#ef4444" },
-  { id: "candy", name: "Nuage Pastel", icon: "🍭", desc: "Royaume pastel violet avec nuages cotonneux et étoiles scintillantes.", gradient: "linear-gradient(135deg, #2e1065, #581c87)", accent: "#f472b6" },
-  { id: "royal", name: "Luxe Obscur & Or", icon: "👑", desc: "Obsidienne sombre avec poussières d'or et diamants flottants.", gradient: "linear-gradient(135deg, #0a0a0a, #262626)", accent: "#eab308" },
-  { id: "blizzard", name: "Blizzard Polaire", icon: "❄️", desc: "Froid arctique avec flocons de neige et lueurs d'aurore boréale.", gradient: "linear-gradient(135deg, #0c4a6e, #0369a1)", accent: "#38bdf8" },
-  { id: "matrix", name: "Pluie Numérique", icon: "⚡", desc: "Cyberspace vert avec cascades de code binaire numérique.", gradient: "linear-gradient(135deg, #022c22, #032e18)", accent: "#4ade80" }
+  { id: "default", name: { fr: "Néon Profond", en: "Deep Neon", es: "Neón Profundo" }, icon: "🌌", desc: { fr: "Nuit bleue classique avec halo luminescent et DVD bounce.", en: "Classic blue night with a glowing halo and the bouncing DVD.", es: "Noche azul clásica con halo luminoso y el DVD rebotando." }, gradient: "linear-gradient(135deg, #0b132b, #1c2541)", accent: "#3b82f6" },
+  { id: "space", name: { fr: "Espace & Nébuleuse", en: "Space & Nebula", es: "Espacio y Nebulosa" }, icon: "🚀", desc: { fr: "Vide cosmique profond avec étoiles scintillantes et astéroïdes.", en: "Deep cosmic void with twinkling stars and asteroids.", es: "Vacío cósmico profundo con estrellas titilantes y asteroides." }, gradient: "linear-gradient(135deg, #030712, #1e1b4b)", accent: "#a855f7" },
+  { id: "underwater", name: { fr: "Sous-Marin & Abysses", en: "Underwater & Abyss", es: "Submarino y Abismo" }, icon: "🌊", desc: { fr: "Abysses turquoise avec bulles montantes et méduses bioluminescentes.", en: "Turquoise depths with rising bubbles and bioluminescent jellyfish.", es: "Abismos turquesa con burbujas que suben y medusas bioluminiscentes." }, gradient: "linear-gradient(135deg, #022c22, #064e3b)", accent: "#10b981" },
+  { id: "cyberpunk", name: { fr: "Retro Synthwave 80s", en: "Retro Synthwave 80s", es: "Retro Synthwave 80s" }, icon: "👾", desc: { fr: "Grille néon rose et magenta avec soleil synthwave rétro.", en: "Pink and magenta neon grid with a retro synthwave sun.", es: "Rejilla de neón rosa y magenta con sol synthwave retro." }, gradient: "linear-gradient(135deg, #18021e, #3b0764)", accent: "#ec4899" },
+  { id: "forest", name: { fr: "Forêt Enchantée", en: "Enchanted Forest", es: "Bosque Encantado" }, icon: "🍃", desc: { fr: "Sous-bois féerique émeraude avec lucioles dorées et feuilles dérivantes.", en: "Emerald fairytale undergrowth with golden fireflies and drifting leaves.", es: "Sotobosque esmeralda de cuento con luciérnagas doradas y hojas a la deriva." }, gradient: "linear-gradient(135deg, #052e16, #14532d)", accent: "#22c55e" },
+  { id: "lava", name: { fr: "Enfer Volcanique", en: "Volcanic Hell", es: "Infierno Volcánico" }, icon: "🌋", desc: { fr: "Monde de magma ardent avec braises montantes et étincelles de feu.", en: "Burning magma world with rising embers and fire sparks.", es: "Mundo de magma ardiente con brasas que suben y chispas de fuego." }, gradient: "linear-gradient(135deg, #1a0505, #450a0a)", accent: "#ef4444" },
+  { id: "candy", name: { fr: "Nuage Pastel", en: "Pastel Cloud", es: "Nube Pastel" }, icon: "🍭", desc: { fr: "Royaume pastel violet avec nuages cotonneux et étoiles scintillantes.", en: "Purple pastel realm with cotton clouds and twinkling stars.", es: "Reino pastel violeta con nubes de algodón y estrellas titilantes." }, gradient: "linear-gradient(135deg, #2e1065, #581c87)", accent: "#f472b6" },
+  { id: "royal", name: { fr: "Luxe Obscur & Or", en: "Dark Luxe & Gold", es: "Lujo Oscuro y Oro" }, icon: "👑", desc: { fr: "Obsidienne sombre avec poussières d'or et diamants flottants.", en: "Dark obsidian with gold dust and floating diamonds.", es: "Obsidiana oscura con polvo de oro y diamantes flotantes." }, gradient: "linear-gradient(135deg, #0a0a0a, #262626)", accent: "#eab308" },
+  { id: "blizzard", name: { fr: "Blizzard Polaire", en: "Polar Blizzard", es: "Ventisca Polar" }, icon: "❄️", desc: { fr: "Froid arctique avec flocons de neige et lueurs d'aurore boréale.", en: "Arctic cold with snowflakes and northern-lights glow.", es: "Frío ártico con copos de nieve y destellos de aurora boreal." }, gradient: "linear-gradient(135deg, #0c4a6e, #0369a1)", accent: "#38bdf8" },
+  { id: "matrix", name: { fr: "Pluie Numérique", en: "Digital Rain", es: "Lluvia Digital" }, icon: "⚡", desc: { fr: "Cyberspace vert avec cascades de code binaire numérique.", en: "Green cyberspace with cascading digital binary code.", es: "Ciberespacio verde con cascadas de código binario digital." }, gradient: "linear-gradient(135deg, #022c22, #032e18)", accent: "#4ade80" }
 ];
 
 var currentTheme = localStorage.getItem("norelo_party_theme") || "default";
@@ -2186,8 +2186,8 @@ function renderThemeShopList(){
     html += '<div class="theme-card-item ' + (isActive ? "active" : "") + '" onclick="applyTheme(\'' + t.id + '\'); if(typeof sfxVote===\'function\') sfxVote();">';
     html += '<div class="theme-card-icon" style="background:' + t.gradient + ';">' + t.icon + '</div>';
     html += '<div class="theme-card-info">';
-    html += '<div class="theme-card-title">' + escapeHtml(t.name) + '</div>';
-    html += '<div class="theme-card-desc">' + escapeHtml(t.desc) + '</div>';
+    html += '<div class="theme-card-title">' + escapeHtml(pickLang(t.name)) + '</div>';
+    html += '<div class="theme-card-desc">' + escapeHtml(pickLang(t.desc)) + '</div>';
     html += '</div>';
     html += '<button class="theme-apply-btn">' + (isActive ? "Actif ✓" : "Choisir") + '</button>';
     html += '</div>';
@@ -4653,6 +4653,37 @@ var POSTS_PACK = [
  * Player names and numbers survive because the patterns capture and re-emit them.
  * -------------------------------------------------------------------------- */
 var LOC_EXACT = {
+  "⚠️ Es-tu sûr de vouloir QUITTER la partie ?": { en: "⚠️ Are you sure you want to LEAVE the game?", es: "⚠️ ¿Seguro que quieres SALIR de la partida?" },
+  "⚠️ Es-tu sûr de vouloir FERMER le salon pour tous les joueurs ?": { en: "⚠️ Are you sure you want to CLOSE the room for every player?", es: "⚠️ ¿Seguro que quieres CERRAR la sala para todos los jugadores?" },
+  "Création de la partie": { en: "Creating the game", es: "Creando la partida" },
+  "Partie prête": { en: "Game ready", es: "Partida lista" },
+  "Impossible de créer la partie.": { en: "Couldn't create the game.", es: "No se pudo crear la partida." },
+  "Aucune partie trouvée avec ce code.": { en: "No game found with that code.", es: "No se encontró ninguna partida con ese código." },
+  "La partie a été fermée.": { en: "The game was closed.", es: "La partida fue cerrada." },
+  "Erreur de connexion. Réessaie.": { en: "Connection error. Try again.", es: "Error de conexión. Inténtalo de nuevo." },
+  "En attente de connexion...": { en: "Waiting for connection...", es: "Esperando conexión..." },
+  "Reconnexion à la partie...": { en: "Reconnecting to the game...", es: "Reconectando a la partida..." },
+  "Connecté": { en: "Connected", es: "Conectado" },
+  "Déconnecté": { en: "Disconnected", es: "Desconectado" },
+  "Code copié": { en: "Code copied", es: "Código copiado" },
+  "Changer la photo": { en: "Change photo", es: "Cambiar la foto" },
+  "Image impossible à charger.": { en: "Couldn't load the image.", es: "No se pudo cargar la imagen." },
+  "Écris quelque chose avant d'envoyer !": { en: "Write something before sending!", es: "¡Escribe algo antes de enviar!" },
+  "Réponse envoyée !": { en: "Answer sent!", es: "¡Respuesta enviada!" },
+  "Vote enregistré ! En attente du reste du groupe": { en: "Vote locked in! Waiting on the rest of the crew", es: "¡Voto registrado! Esperando al resto del grupo" },
+  "Fin du jeu": { en: "End of the game", es: "Fin del juego" },
+  "Prochaine manche": { en: "Next round", es: "Siguiente ronda" },
+  "GRAND GAGNANT !": { en: "GRAND WINNER!", es: "¡GRAN GANADOR!" },
+  "MYSTÈRE TOTAL": { en: "TOTAL MYSTERY", es: "MISTERIO TOTAL" },
+  "TOUS DÉMASQUÉ !": { en: "ALL UNMASKED!", es: "¡TODOS DESENMASCARADOS!" },
+  "PERSONNE N'A VU !": { en: "NOBODY SAW IT COMING!", es: "¡NADIE LO VIO VENIR!" },
+  "Choisis lequel est le mensonge !": { en: "Pick which one is the lie!", es: "¡Elige cuál es la mentira!" },
+  "La gang cherche ton mensonge": { en: "The crew is hunting for your lie", es: "El grupo está buscando tu mentira" },
+  "Joueur": { en: "Player", es: "Jugador" },
+  "Quelqu'un": { en: "Somebody", es: "Alguien" },
+  "quelqu'un": { en: "somebody", es: "alguien" },
+  "Remplir avec un énoncé maison": { en: "Fill in with a house statement", es: "Rellenar con una afirmación de la casa" },
+  "pour trancher le jeu !": { en: "to break the tie!", es: "¡para desempatar!" },
   "Phase de sélection": { en: "Selection phase", es: "Fase de selección" },
   "À quoi voulez-vous jouer ?": { en: "What do you want to play?", es: "¿A qué quieren jugar?" },
   "Votez sur votre téléphone ! Lancement automatique.": { en: "Vote on your phone! Starts automatically.", es: "¡Voten en su teléfono! Empieza solo." },
@@ -4802,6 +4833,11 @@ var LOC_EXACT = {
    $T recursively re-translates a captured tail so "Manche 2 / 5 • Qui a dit ça ?"
    works without duplicating every suffix. */
 var LOC_PATTERNS = [
+  [/^Ta note: (\d+) étoiles$/, "Your rating: $1 stars", "Tu nota: $1 estrellas"],
+  [/^⚡ CÉRÉMONIE DES BONUS STARS \(STAR (\d+) \/ (\d+)\)$/,
+   "⚡ BONUS STARS CEREMONY (STAR $1 / $2)", "⚡ CEREMONIA DE BONUS STARS (ESTRELLA $1 / $2)"],
+  [/^Il manque l'énoncé (\d+)$/, "Statement $1 is missing", "Falta la afirmación $1"],
+  [/^Énoncé (\d+)$/, "Statement $1", "Afirmación $1"],
   [/^Manche (\d+) \/ (\d+) • (.+)$/, "Round $1 / $2 • $T3", "Ronda $1 / $2 • $T3"],
   [/^Connais-tu bien (.+) \?$/, "How well do you know $1?", "¿Qué tan bien conoces a $1?"],
   [/^On roast (.+)$/, "Roasting $1", "Roasteando a $1"],
@@ -8004,7 +8040,9 @@ function handleRoomClosed(){
 }
 async function quit(){
   if(closedByMe) return;
-  var confirmMsg = amHost ? "⚠️ Es-tu sûr de vouloir FERMER le salon pour tous les joueurs ?" : "⚠️ Es-tu sûr de vouloir QUITTER la partie ?";
+  var confirmMsg = locPhrase(amHost
+  ? "⚠️ Es-tu sûr de vouloir FERMER le salon pour tous les joueurs ?"
+  : "⚠️ Es-tu sûr de vouloir QUITTER la partie ?");
   if(!confirm(confirmMsg)) return;
 
   closedByMe = true;
