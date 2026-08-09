@@ -816,9 +816,6 @@
     background: rgba(245,158,11,.14); border: 1px solid rgba(245,158,11,.4);
     border-radius: 7px; padding: 1px 5px; margin-left: 5px; white-space: nowrap;
   }
-  .round-pts-total {
-    font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.4); min-width: 60px; text-align: right;
-  }
   @keyframes ptRowSlideIn {
     0% { transform: translateX(-20px) scale(0.85); opacity: 0; }
     100% { transform: translateX(0) scale(1); opacity: 1; }
@@ -1441,7 +1438,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.13</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.14</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -3160,19 +3157,16 @@ function renderRoundPointsHTML(roundPts){
   var html = '<div class="round-pts-section">';
   html += '<div class="round-pts-title">Points gagnés cette manche</div>';
   var sorted = players.slice().sort(function(a,b){ return (roundPts[b.id]||0) - (roundPts[a.id]||0); });
-  // Running order so people can see where the round left them standing.
-  var byTotal = players.slice().sort(function(a,b){ return (sessionScores[b.id]||0) - (sessionScores[a.id]||0); });
-  var rankOf = {};
-  byTotal.forEach(function(p, i){ rankOf[p.id] = i + 1; });
   sorted.forEach(function(p){
     var earned = roundPts[p.id] || 0;
     var st = (typeof _streaks !== "undefined" && _streaks[p.id]) || 0;
     html += '<div class="round-pts-row">';
     html += avatarHTML(p, 32);
     html += '<div class="round-pts-name">' + escapeHtml(p.name);
+    // Streak stays - it is about momentum, not position. Running rank and total are
+    // deliberately absent mid-game so the standings are a surprise at the end.
     if(st >= 2) html += ' <span class="streak-chip">🔥' + st + '</span>';
     html += '</div>';
-    html += '<div class="round-pts-total">#' + rankOf[p.id] + ' · ' + (sessionScores[p.id]||0) + '</div>';
     html += '<div class="round-pts-val' + (earned === 0 ? ' zero' : '') + '" data-target="' + earned + '">+0</div>';
     html += '</div>';
   });
