@@ -1441,7 +1441,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.10</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.11</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -6232,6 +6232,18 @@ function authorColor(name){
   return "hsl(" + hash + ", 62%, 52%)";   // stable per name, so avatars never shuffle
 }
 
+var WP_OPTIONS = 5;          // real author + (WP_OPTIONS - 1) decoys
+
+function wpBuildOptions(realName){
+  var all = postAuthors().map(function(a){ return a.name; });
+  var decoys = all.filter(function(n){ return n !== realName; });
+  shuffle(decoys);
+  var picks = decoys.slice(0, Math.max(0, WP_OPTIONS - 1));
+  if(realName) picks.push(realName);
+  shuffle(picks);
+  return picks;
+}
+
 function postAuthors(){
   var seen = {}, out = [];
   POSTS_PACK.forEach(function(p){
@@ -6241,6 +6253,25 @@ function postAuthors(){
     out.push({ id: k, name: k, fullName: p.fullName || k, color: authorColor(k) });
   });
   out.sort(function(a, b){ return a.name.localeCompare(b.name, "fr"); });
+  return out;
+}
+
+/* Several posts have the author replying in their own comment thread, which puts
+ * their name straight on the card and hands over the round. Their name is redacted
+ * while people are guessing and restored at the reveal. */
+function wpMaskNames(str, item, isRevealed){
+  if(isRevealed || !str) return str;
+  var names = [];
+  if(item.authorName) names.push(item.authorName);
+  var full = (item.authorFullName || item.fullName || "");
+  full.split(/\s+/).forEach(function(tok){ if(tok.length > 3) names.push(tok); });
+  var out = String(str);
+  names.forEach(function(n){
+    if(!n || n.length < 3) return;
+    // accent-insensitive, whole word, keeps everything else intact
+    var esc = n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    out = out.replace(new RegExp("\\b" + esc + "\\b", "gi"), "•••");
+  });
   return out;
 }
 
@@ -6300,7 +6331,10 @@ function launchWhoPosted(){
       featuredComment: item.featuredComment || null,
       subPosts: item.subPosts || null,
       // The answer is the person who genuinely wrote it, independent of who is playing.
-      authorName: item.posterName || ""
+      authorName: item.posterName || "",
+      // A 12-name grid is an 8% blind guess and a lot to scan on a phone. Each round
+      // offers the real author plus a few decoys, reshuffled per round.
+      options: wpBuildOptions(item.posterName)
     };
   });
 
@@ -6328,6 +6362,7 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
   }
   var platform = item.platform || "facebook";
   var myPlayer = getPlayer(myId) || { name: "Toi" };
+  var mask = function(s){ return wpMaskNames(s, item, isRevealed); };
   var html = "";
 
   if(platform === "instagram"){
@@ -6366,14 +6401,14 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
       } else {
         html += '    <span class="ig-author-tag">' + escapeHtml(item.fullName || realPoster.name) + '</span>';
       }
-      html += escapeHtml(tx(item, "text"));
+      html += escapeHtml(mask(tx(item, "text")));
       html += '  </div>';
     }
 
     if(item.featuredComment){
       var fcIg = item.featuredComment;
       html += '  <div style="font-size:0.8rem;color:#a8a8a8;margin:6px 0 4px 0;">Afficher les ' + (item.comments || 1) + ' commentaires</div>';
-      html += '  <div style="font-size:0.88rem;color:#f5f5f5;"><span class="skel-bar" style="display:inline-block;width:70px;height:10px;margin-right:6px;vertical-align:middle;"></span>' + escapeHtml(tx(fcIg, "text")) + '</div>';
+      html += '  <div style="font-size:0.88rem;color:#f5f5f5;"><span class="skel-bar" style="display:inline-block;width:70px;height:10px;margin-right:6px;vertical-align:middle;"></span>' + escapeHtml(mask(tx(fcIg, "text"))) + '</div>';
     }
 
     html += '</div>';
@@ -6383,7 +6418,7 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
     html += '<div class="fb-post-card">';
     html += '  <div class="fb-post-hdr">';
     html += '    <div class="fb-hdr-left">';
-    var feelingTxt = item.feeling ? (' <span style="font-weight:400;color:#b0b3b8;font-size:0.84rem;">' + escapeHtml(tx(item, "feeling")) + '</span>') : '';
+    var feelingTxt = item.feeling ? (' <span style="font-weight:400;color:#b0b3b8;font-size:0.84rem;">' + escapeHtml(mask(tx(item, "feeling"))) + '</span>') : '';
     var wallPrefix = item.wallFrom ? ('<span style="font-weight:700;color:#e4e6eb;">' + escapeHtml(item.wallFrom) + '</span> <span style="color:#b0b3b8;font-weight:400;font-size:0.8rem;margin:0 2px;">▶</span> ') : '';
     if(!isRevealed){
       html += '      <div class="skel-av"></div>';
@@ -6403,7 +6438,7 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
     html += '  </div>';
 
     if(item.text){
-      html += '  <div class="fb-post-txt">' + escapeHtml(tx(item, "text")) + '</div>';
+      html += '  <div class="fb-post-txt">' + escapeHtml(mask(tx(item, "text"))) + '</div>';
     }
 
     if(item.image){
@@ -6448,7 +6483,7 @@ function renderSocialPostHTML(item, isRevealed, realPoster){
       html += '    <div>';
       html += '      <div style="background:#3a3b3c;border-radius:16px;padding:8px 14px;font-size:0.85rem;color:#e4e6eb;display:inline-block;">';
       html += '        <div style="font-weight:700;font-size:0.82rem;color:#e4e6eb;display:flex;align-items:center;gap:6px;"><div class="skel-bar" style="width:90px;height:10px;"></div><span style="font-weight:400;font-size:0.76rem;color:#b0b3b8;">• ' + escapeHtml(fcFb.time || "12y") + '</span></div>';
-      html += '        <div style="font-size:0.88rem;color:#e4e6eb;margin-top:4px;">' + escapeHtml(tx(fcFb, "text")) + '</div>';
+      html += '        <div style="font-size:0.88rem;color:#e4e6eb;margin-top:4px;">' + escapeHtml(mask(tx(fcFb, "text"))) + '</div>';
       html += '      </div>';
       if(fcFb.likes){
         html += '      <div style="margin:2px 0 0 12px;font-size:0.74rem;color:#b0b3b8;display:flex;align-items:center;gap:4px;"><span>👍</span></div>';
@@ -6503,7 +6538,10 @@ function renderWhoPosted(g){
 
     html += '<div class="gsub">Qui a écrit ou publié ça ?</div>';
     html += '<div class="vgrid">';
-    postAuthors().forEach(function(a){
+    var lineup = (item.options && item.options.length)
+      ? item.options.map(authorByName)      // this round's shortlist
+      : postAuthors();                      // older rooms fall back to everyone
+    lineup.forEach(function(a){
       var sel = (votes[myId] === a.name) ? " sel" : "";
       html += '<div class="vcell' + sel + '" onclick="voteAuthor(\'' + escapeHtml(a.name).replace(/'/g, "\\'") + '\')">' +
               avatarHTML(a, 52) + '<div class="vn">' + escapeHtml(a.name) + '</div></div>';
