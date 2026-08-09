@@ -48,12 +48,21 @@
      bgCanvas was painted UNDERNEATH the game panels - which is why the fireworks were
      never visible. This layer sits above the content but below modals (z 1000). */
   #fxCanvas{position:fixed; inset:0; z-index:900; pointer-events:none;}
+  /* Bare glowing text sat directly on top of the cards and was unreadable. The plate
+     is opaque enough to guarantee contrast whatever is behind it, and the border keeps
+     the per-event colour that carried the meaning. */
   #fxLabel{
-    position:fixed; left:50%; top:38%; z-index:901; pointer-events:none;
+    position:fixed; left:50%; top:30%; z-index:901; pointer-events:none;
     transform:translate(-50%,-50%) scale(.6); opacity:0;
-    font-size:1.5rem; font-weight:900; letter-spacing:.08em; text-transform:uppercase;
-    text-align:center; white-space:nowrap; color:#fff;
-    text-shadow:0 0 18px currentColor, 0 3px 10px rgba(0,0,0,.6);
+    font-size:clamp(1.05rem, 4.2vw, 1.6rem); font-weight:900;
+    letter-spacing:.06em; text-transform:uppercase; line-height:1.25;
+    text-align:center; white-space:normal; max-width:min(88vw, 620px);
+    padding:13px 26px; border-radius:16px;
+    border:2px solid currentColor;
+    background:rgba(8,10,20,.92);
+    -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+    box-shadow:0 0 26px -4px currentColor, 0 14px 38px rgba(0,0,0,.65);
+    text-shadow:0 0 14px currentColor, 0 2px 6px rgba(0,0,0,.9);
   }
   #fxLabel.pop{ animation:fxLabelPop 1.5s cubic-bezier(.2,1.4,.3,1) forwards; }
   @keyframes fxLabelPop{
@@ -1447,7 +1456,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.23</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.25</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -2689,7 +2698,8 @@ document.addEventListener("DOMContentLoaded", function(){
   FX.label = function(text, color){
     var el = document.getElementById("fxLabel");
     if(!el) return;
-    el.textContent = text;
+    // This overlay lives outside gameArea, so localizeNode never walks it.
+    el.textContent = locPhrase(text);
     el.style.color = color || "#fde047";
     el.classList.remove("pop");
     void el.offsetWidth;
@@ -3226,9 +3236,13 @@ function sanitizeVotes(votes){
   return clean;
 }
 
-function trackStat(category, uid){
+/* Bucketed per game mode. Flat session-wide stats are what handed somebody the
+   rock-paper-scissors star at the end of Qui a posté ça: the tiebreaker win was still
+   sitting in the same bucket several games later. */
+function trackStat(category, uid, mode){
   if(!roomCode || !amHost || !uid) return;
-  db.ref("rooms/" + roomCode + "/stats/" + category + "/" + uid).transaction(function(cur){
+  var m = mode || (currentGame && currentGame.type) || "misc";
+  db.ref("rooms/" + roomCode + "/stats/" + m + "/" + category + "/" + uid).transaction(function(cur){
     return (cur || 0) + 1;
   });
 }
@@ -3436,6 +3450,7 @@ function resetRoundGuardsIfNewGame(g){
     _lastSfxKey = "";
     _lastAnimatedPointsKey = "";
     _lastRevealStep = -1;
+    _ceremonyStartMs = 0;          // runs on every client, unlike the host-only launchers
   }
   _lastSeenGameType = t;
   _lastSeenRound = r;
@@ -4271,23 +4286,30 @@ function revealRound(){
         if(winner){
           trackStat("mostLikelyTarget", winner);
           addPoints(winner, 100);
-          Object.keys(votes).forEach(function(vKey){ if(votes[vKey] === winner){ trackStat("majorityVotes", vKey); addPoints(vKey, 100); } });
+          Object.keys(votes).forEach(function(vKey){
+            if(votes[vKey] === winner){ trackStat("majorityVotes", vKey); addPoints(vKey, 100); }
+            else if(votes[vKey]) trackStat("contrarian", vKey);
+          });
         }
       }
     } else if(game.type === "whoposted"){
       var item = (game.roundsData && game.roundsData[game.round]) || {};
+      var wpRight = [];
       Object.keys(votes).forEach(function(vUid){
         if(item.authorName && votes[vUid] === item.authorName){
+          wpRight.push(vUid);
           trackStat("correctGuesses", vUid);
           trackStat("sleuth", vUid);
           addPoints(vUid, 200);
         }
       });
+      // Cracking a post the whole rest of the table missed is its own kind of win.
+      if(wpRight.length === 1 && Object.keys(votes).length > 1) trackStat("soloSleuth", wpRight[0]);
     } else if(game.type === "guessrating"){
       var item = (game.roundsData && game.roundsData[game.round]) || {};
       Object.keys(votes).forEach(function(vUid){
         if(votes[vUid] === item.stars){ trackStat("correctGuesses", vUid); trackStat("exactRating", vUid); addPoints(vUid, 200); }
-        else if(Math.abs(votes[vUid] - item.stars) === 1) addPoints(vUid, 100);
+        else if(Math.abs(votes[vUid] - item.stars) === 1){ trackStat("ratingClose", vUid); addPoints(vUid, 100); }
       });
     } else if(game.type === "knowplayer"){
       var kpItem = knowRoundData(game);
@@ -4323,7 +4345,14 @@ function revealRound(){
       var rBest = 0;
       Object.keys(rTally).forEach(function(a){ if(rTally[a] > rBest) rBest = rTally[a]; });
       if(rBest > 0){
-        Object.keys(rTally).forEach(function(a){ if(rTally[a] === rBest) addPoints(a, 100); });
+        var rWinners = {};
+        Object.keys(rTally).forEach(function(a){
+          if(rTally[a] === rBest){ rWinners[a] = 1; addPoints(a, 100); trackStat("roastRoundWins", a); }
+        });
+        // Backing the punchline that wins is a read on the room worth rewarding.
+        Object.keys(votes).forEach(function(vKey){
+          if(rWinners[votes[vKey]] && (rSolo || votes[vKey] !== vKey)) trackStat("tasteMaker", vKey);
+        });
       }
     } else if(game.type === "whosaid"){
       Object.keys(votes).forEach(function(vUid){
@@ -4331,6 +4360,7 @@ function revealRound(){
         if(votes[vUid] === wsIt.speakerId){
           trackStat("correctGuesses", vUid);
           trackStat("sleuth", vUid);
+          trackStat("quoteMaster", vUid);
           addPoints(vUid, 200);
         }
       });
@@ -4380,17 +4410,73 @@ function revealRound(){
 // Single source of truth for bonus stars. The award logic and the ceremony used to
 // keep separate hardcoded lists that had drifted apart, so a star could be shown with
 // "+150 PTS BONUS" while paying nothing. Both now read this one array.
+/* Every category names the modes it can be handed out in. Combined with the per-mode
+   stat buckets, a star can only appear in a game that could actually have earned it. */
 var BONUS_CATEGORIES = [
-  { key: "rpsWins",         icon: ICONS.rock,    title: "Roi du Roche-Papier-Ciseaux", desc: "A gagné le plus de duels roche-papier-ciseaux", pts: 150 },
-  { key: "correctGuesses",  icon: ICONS.idea,    title: "Le Devin",                    desc: "A deviné juste le plus souvent",                 pts: 150 },
-  { key: "mostLikelyTarget",icon: ICONS.flame,   title: "Cible Préférée",              desc: "Le plus souvent pointé du doigt par la gang",    pts: 150 },
-  { key: "fooledGroup",     icon: ICONS.mask,    title: "Le Mystère Total",            desc: "Personne n'a réussi à deviner ses réponses",     pts: 200 },
-  { key: "wellKnown",       icon: ICONS.chat,    title: "Le Livre Ouvert",             desc: "Toute la gang l'a deviné du premier coup",       pts: 200 },
-  { key: "roastVotes",      icon: ICONS.feather, title: "Roi du Roast",                desc: "Ses punchlines ont récolté le plus de votes",    pts: 200 },
-  { key: "exactRating",     icon: ICONS.star,    title: "Le Critique Pro",             desc: "A trouvé le plus de notes exactes",              pts: 150 },
-  { key: "lieDetector",     icon: ICONS.check,   title: "Détecteur de Mensonges",      desc: "A démasqué le plus de mensonges",                pts: 150 },
-  { key: "sleuth",          icon: ICONS.camera,  title: "Fin Limier",                  desc: "A reconnu ses amis le plus souvent",             pts: 150 },
-  { key: "majorityVotes",   icon: ICONS.trophy,  title: "La Voix du Peuple",           desc: "A voté avec la majorité le plus souvent",        pts: 150 }
+  { key: "rpsWins", icon: ICONS.rock, pts: 150,
+    modes: ["mostlikely"],
+    title: { fr: "Roi du Roche-Papier-Ciseaux", en: "Rock-Paper-Scissors King", es: "Rey del Piedra-Papel-Tijera" },
+    desc:  { fr: "A gagné le plus de duels roche-papier-ciseaux", en: "Won the most rock-paper-scissors duels", es: "Ganó más duelos de piedra-papel-tijera" } },
+  { key: "mostLikelyTarget", icon: ICONS.flame, pts: 150,
+    modes: ["mostlikely"],
+    title: { fr: "Cible Préférée", en: "Favourite Target", es: "Blanco Favorito" },
+    desc:  { fr: "Le plus souvent pointé du doigt par la gang", en: "Pointed at most often by the crew", es: "El más señalado por el grupo" } },
+  { key: "majorityVotes", icon: ICONS.trophy, pts: 150,
+    modes: ["mostlikely"],
+    title: { fr: "La Voix du Peuple", en: "Voice of the People", es: "La Voz del Pueblo" },
+    desc:  { fr: "A voté avec la majorité le plus souvent", en: "Voted with the majority most often", es: "Votó con la mayoría más veces" } },
+  { key: "contrarian", icon: ICONS.flame, pts: 150,
+    modes: ["mostlikely"],
+    title: { fr: "Le Rebelle", en: "The Contrarian", es: "El Rebelde" },
+    desc:  { fr: "A voté contre la gang le plus souvent", en: "Voted against the crew most often", es: "Votó contra el grupo más veces" } },
+  { key: "sleuth", icon: ICONS.camera, pts: 150,
+    modes: ["whoposted","whosaid"],
+    title: { fr: "Fin Limier", en: "Sharp Sleuth", es: "Sabueso Fino" },
+    desc:  { fr: "A reconnu ses amis le plus souvent", en: "Recognised their friends most often", es: "Reconoció a sus amigos más veces" } },
+  { key: "soloSleuth", icon: ICONS.idea, pts: 200,
+    modes: ["whoposted"],
+    title: { fr: "Le Fouineur", en: "The Digger", es: "El Husmeador" },
+    desc:  { fr: "Seul à avoir trouvé un post que personne ne voyait", en: "The only one to crack a post nobody else got", es: "El único que descifró un post que nadie más sacó" } },
+  { key: "quoteMaster", icon: ICONS.chat, pts: 200,
+    modes: ["whosaid"],
+    title: { fr: "L'Oreille Absolue", en: "Perfect Ear", es: "Oído Absoluto" },
+    desc:  { fr: "A reconnu le plus de voix du premier coup", en: "Recognised the most voices first try", es: "Reconoció más voces al primer intento" } },
+  { key: "exactRating", icon: ICONS.star, pts: 150,
+    modes: ["guessrating"],
+    title: { fr: "Le Critique Pro", en: "The Pro Critic", es: "El Crítico Pro" },
+    desc:  { fr: "A trouvé le plus de notes exactes", en: "Nailed the most exact ratings", es: "Acertó más notas exactas" } },
+  { key: "ratingClose", icon: ICONS.idea, pts: 150,
+    modes: ["guessrating"],
+    title: { fr: "Presque Parfait", en: "So Close", es: "Casi Perfecto" },
+    desc:  { fr: "A frôlé la note exacte le plus souvent", en: "Came within one star most often", es: "Quedó a una estrella más veces" } },
+  { key: "fooledGroup", icon: ICONS.mask, pts: 200,
+    modes: ["knowplayer","twotruths"],
+    title: { fr: "Le Mystère Total", en: "Total Mystery", es: "Misterio Total" },
+    desc:  { fr: "Personne n'a réussi à deviner ses réponses", en: "Nobody managed to guess their answers", es: "Nadie logró adivinar sus respuestas" } },
+  { key: "wellKnown", icon: ICONS.chat, pts: 200,
+    modes: ["knowplayer"],
+    title: { fr: "Le Livre Ouvert", en: "The Open Book", es: "El Libro Abierto" },
+    desc:  { fr: "Toute la gang l'a deviné du premier coup", en: "The whole crew guessed them first try", es: "Todo el grupo lo adivinó al primer intento" } },
+  { key: "roastVotes", icon: ICONS.feather, pts: 200,
+    modes: ["roast"],
+    title: { fr: "Roi du Roast", en: "Roast King", es: "Rey del Roast" },
+    desc:  { fr: "Ses punchlines ont récolté le plus de votes", en: "Their punchlines pulled the most votes", es: "Sus remates se llevaron más votos" } },
+  { key: "roastRoundWins", icon: ICONS.trophy, pts: 200,
+    modes: ["roast"],
+    title: { fr: "La Punchline Ultime", en: "Ultimate Punchline", es: "El Remate Definitivo" },
+    desc:  { fr: "A remporté le plus de manches de roast", en: "Won the most roast rounds outright", es: "Ganó más rondas de roast" } },
+  { key: "tasteMaker", icon: ICONS.idea, pts: 150,
+    modes: ["roast"],
+    title: { fr: "Bon Goût", en: "Good Taste", es: "Buen Gusto" },
+    desc:  { fr: "A voté pour la punchline gagnante le plus souvent", en: "Voted for the winning punchline most often", es: "Votó por el remate ganador más veces" } },
+  { key: "lieDetector", icon: ICONS.check, pts: 150,
+    modes: ["twotruths"],
+    title: { fr: "Détecteur de Mensonges", en: "Lie Detector", es: "Detector de Mentiras" },
+    desc:  { fr: "A démasqué le plus de mensonges", en: "Unmasked the most lies", es: "Desenmascaró más mentiras" } },
+  { key: "correctGuesses", icon: ICONS.idea, pts: 150,
+    modes: ["whoposted","guessrating","knowplayer","whosaid","twotruths"],
+    title: { fr: "Le Devin", en: "The Oracle", es: "El Adivino" },
+    desc:  { fr: "A deviné juste le plus souvent", en: "Guessed right most often", es: "Adivinó bien más veces" } }
 ];
 var MAX_BONUS_STARS = 4;
 
@@ -4399,9 +4485,12 @@ var MAX_BONUS_STARS = 4;
 function selectBonusAwards(){
   var awards = [];
   var used = {};
+  var mode = (currentGame && currentGame.type) || "";
+  var bucket = sessionStats[mode] || {};
   BONUS_CATEGORIES.forEach(function(cat){
     if(awards.length >= MAX_BONUS_STARS) return;
-    var stats = sessionStats[cat.key] || {};
+    if(cat.modes.indexOf(mode) < 0) return;      // not earnable in this game
+    var stats = bucket[cat.key] || {};
     var bestUid = null, bestVal = 0;
     Object.keys(stats).forEach(function(uid){
       if(used[uid]) return;
@@ -4655,6 +4744,8 @@ var POSTS_PACK = [
  * Player names and numbers survive because the patterns capture and re-emit them.
  * -------------------------------------------------------------------------- */
 var LOC_EXACT = {
+  "COIN PARFAIT !": { en: "PERFECT CORNER!", es: "¡ESQUINA PERFECTA!" },
+  "SANS FAUTE !": { en: "FLAWLESS!", es: "¡PERFECTO!" },
   "assisté": { en: "assisted", es: "asistido" },
   "⚠️ Es-tu sûr de vouloir QUITTER la partie ?": { en: "⚠️ Are you sure you want to LEAVE the game?", es: "⚠️ ¿Seguro que quieres SALIR de la partida?" },
   "⚠️ Es-tu sûr de vouloir FERMER le salon pour tous les joueurs ?": { en: "⚠️ Are you sure you want to CLOSE the room for every player?", es: "⚠️ ¿Seguro que quieres CERRAR la sala para todos los jugadores?" },
@@ -5594,9 +5685,11 @@ var _ceremonyStartMs = 0;
 
 function renderMiniGameDoneHTML(){
   var g = currentGame || {};
-  if(!_ceremonyStartMs){
-    _ceremonyStartMs = g.ceremonyStartMs || Date.now();
-  }
+  // Always defer to the host's timestamp. Latching it locally meant a non-host kept
+  // the value from the PREVIOUS game - the show was already "over" before it started,
+  // so everyone but the host silently skipped the award animations from game 2 on.
+  if(g.ceremonyStartMs) _ceremonyStartMs = g.ceremonyStartMs;
+  else if(!_ceremonyStartMs) _ceremonyStartMs = Date.now();
   var elapsedSec = Math.max(0, Math.floor((Date.now() - _ceremonyStartMs) / 1000));
 
   // Same selection the host used to hand out the points, so the card and the
@@ -5646,8 +5739,8 @@ function renderMiniGameDoneHTML(){
     html += '<div class="pokemon-stage">';
     html += '<div class="pokemon-card-container ' + (!isRevealed ? 'pokemon-suspense-shake' : '') + '">';
     html += '<div style="font-size:2rem;margin-bottom:6px;">' + activeItem.cat.icon + '</div>';
-    html += '<div style="font-size:1.35rem;font-weight:900;color:#fff;">' + activeItem.cat.title + '</div>';
-    html += '<div style="font-size:0.85rem;color:rgba(255,255,255,0.8);margin-top:4px;">' + activeItem.cat.desc + '</div>';
+    html += '<div style="font-size:1.35rem;font-weight:900;color:#fff;">' + escapeHtml(pickLang(activeItem.cat.title)) + '</div>';
+    html += '<div style="font-size:0.85rem;color:rgba(255,255,255,0.8);margin-top:4px;">' + escapeHtml(pickLang(activeItem.cat.desc)) + '</div>';
 
     if(!isRevealed){
       // SUSPENSE PHASE (SHAKING CARD + SILHOUETTE + QUESTION MARK)
@@ -5682,8 +5775,8 @@ function renderMiniGameDoneHTML(){
         html += '<div class="bonus-star-card" style="animation-delay:' + (idx * 0.2) + 's;">';
         html += '<div class="bonus-star-icon">' + ICONS.star + '</div>';
         html += '<div class="bonus-star-info">';
-        html += '<div class="bonus-star-title">' + item.cat.icon + ' ' + item.cat.title + '</div>';
-        html += '<div class="bonus-star-desc">' + item.cat.desc + '</div>';
+        html += '<div class="bonus-star-title">' + item.cat.icon + ' ' + escapeHtml(pickLang(item.cat.title)) + '</div>';
+        html += '<div class="bonus-star-desc">' + escapeHtml(pickLang(item.cat.desc)) + '</div>';
         html += '</div>';
         html += '<div class="bonus-star-winner">';
         html += avatarHTML(item.awardee, 40);
