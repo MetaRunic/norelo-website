@@ -1338,7 +1338,7 @@
       <span data-i18n="createGame">Créer une partie</span>
     </button>
     <button class="btn sec" onclick="openThemeShop()" style="margin-top:12px;">
-      Cosmétiques
+      <span data-i18n="cosmetics">Cosmétiques</span>
     </button>
   </section>
 
@@ -1352,10 +1352,10 @@
         <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
         <span data-i18n="addPhoto">Ajouter une photo</span>
       </button>
-      <button type="button" class="photo-btn rm" id="photoRm" style="display:none;">Retirer</button>
+      <button type="button" class="photo-btn rm" id="photoRm" style="display:none;"><span data-i18n="removePhoto">Retirer</span></button>
     </div>
     <input type="file" accept="image/*" id="photoIn" style="display:none;">
-    <label class="lb">Ton nom ou surnom</label>
+    <label class="lb"><span data-i18n="yourName">Ton nom ou surnom</span></label>
     <input class="fld" id="nameIn" maxlength="14" placeholder="Ex: Dan" autocomplete="off">
     <label class="lb"><span data-i18n="pickColour">Choisis ta couleur</span></label>
     <div class="colors" id="swatches"></div>
@@ -1382,14 +1382,14 @@
 
     <div id="hostBox">
       <div class="codebox">
-        <div class="cl">Code de la partie</div>
+        <div class="cl"><span data-i18n="gameCode">Code de la partie</span></div>
         <div class="cv" id="lobbyCode">----</div>
         <div class="cs"><span data-i18n="shareCode">Partage ce code avec ta gang</span></div>
       </div>
       <div class="rowbtns">
         <button class="btn sec" onclick="copyCode()">
           <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          Copier
+          <span data-i18n="copyCode">Copier</span>
         </button>
         <button class="btn sec" id="shareBtn" onclick="shareCode()">
           <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
@@ -1400,14 +1400,14 @@
 
     <div id="playerBox" style="display:none;">
       <div class="codebox">
-        <div class="cl">Code de la partie</div>
+        <div class="cl"><span data-i18n="gameCode">Code de la partie</span></div>
         <div class="cv" id="lobbyCode2">----</div>
-        <div class="cs">Partage ce code avec ta gang</div>
+        <div class="cs"><span data-i18n="shareCode">Partage ce code avec ta gang</span></div>
       </div>
       <div class="rowbtns">
         <button class="btn sec" onclick="copyCode()">
           <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          Copier
+          <span data-i18n="copyCode">Copier</span>
         </button>
         <button class="btn sec" onclick="shareCode()">
           <svg class="svg-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
@@ -1447,7 +1447,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.15</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.16</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -6209,6 +6209,16 @@ function localizeNode(root){
 }
 
 var I18N = {
+  "removePhoto": {
+    "fr": "Retirer",
+    "en": "Remove",
+    "es": "Quitar"
+  },
+  "copyCode": {
+    "fr": "Copier",
+    "en": "Copy",
+    "es": "Copiar"
+  },
   "cosmeticsTitle": {
     "fr": "✨ Cosmétiques",
     "en": "✨ Cosmetics",
