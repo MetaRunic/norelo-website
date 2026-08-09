@@ -1474,7 +1474,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.31</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.32</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -3147,8 +3147,29 @@ function startLiveCountdown(revealStartMs, durationSec, onEnd){
   }
 }
 
-function addPoints(uid, pts){
+/* Each mode pays out on its own natural scale - a long game with four guessers per
+ * round hands out far more than a short one. Simulated over a full game with five
+ * players, Connais-tu bien paid 3.8x what Qui a dit ça did, so whoever happened to be
+ * good at one mode ran away with the night. These factors level the totals; the
+ * relative weights INSIDE each game are untouched, so a round still feels the same.
+ * Bonus stars pass unscaled on purpose - they are identical in every mode and are
+ * what lets a trailing player claw back. */
+var MODE_POINT_SCALE = {
+  whosaid:     1.25,
+  twotruths:   1.60,
+  whoposted:   1.25,
+  mostlikely:  1.00,
+  guessrating: 0.90,
+  roast:       0.70,
+  knowplayer:  0.50
+};
+
+function addPoints(uid, pts, unscaled){
   if(!roomCode || !amHost || !uid) return;
+  if(!unscaled){
+    var sc = MODE_POINT_SCALE[(currentGame && currentGame.type) || ""];
+    if(sc) pts = Math.round(pts * sc / 5) * 5;   // keep every score a clean multiple of 5
+  }
   var old = sessionScores[uid] || 0;
   var cur = old + pts;
   sessionScores[uid] = cur; // Update in-memory immediately so rapid back-to-back calls stack correctly
@@ -4528,7 +4549,7 @@ function awardEndGameBonusStars(){
   if(_bonusAwardedTrack[bonusKey]) return; // Strictly award bonus stars once
   _bonusAwardedTrack[bonusKey] = true;
 
-  selectBonusAwards().forEach(function(a){ addPoints(a.uid, a.cat.pts); });
+  selectBonusAwards().forEach(function(a){ addPoints(a.uid, a.cat.pts, true); });
 }
 
 function nextRound(){
@@ -5027,6 +5048,7 @@ function localizeNode(root){
 }
 
 var I18N = {
+  "ownerReply": { "fr": "Réponse du propriétaire", "en": "Response from the owner", "es": "Respuesta del propietario" },
   "removePhoto": {
     "fr": "Retirer",
     "en": "Remove",
@@ -5892,8 +5914,8 @@ var REVIEWS_PACK = [
       "es": "El servicio fue horrible, la comida estuvo excelente. Muchos artículos no estaban disponibles. El servicio fue tan malo que en realidad fue entretenido."
     },
     "ownerResponse": {
-      "author": "Propriétaire (Owner)",
-      "time": "5 months ago",
+      "author": { "fr": "Réponse du propriétaire", "en": "Response from the owner", "es": "Respuesta del propietario" },
+      "time": { "fr": "il y a 5 mois", "en": "5 months ago", "es": "hace 5 meses" },
       "text": {
         "fr": "Hé Todd, va te faire pendre. Pourquoi n'essaies-tu pas d'ouvrir ton propre endroit pendant l'ère du covid. Pourquoi ne viens-tu pas être un excellent serveur ? Il y a plein de gens qui veulent travailler maintenant hein ? J'espère que les gens comme toi ne reviendront pas dans mon restaurant parce que tu ne penses qu'à toi et pas à ce que les autres traversent. Bonne vie.",
         "en": "Hey Todd, go kill yourself. Why don't you try opening your own place during covid era. Why don't you come and be a great server? There's plenty of people wanting to work now huh? I hope people like you don't come back to my restaurant because you only care for yourself and not what others are going through. Have a nice life.",
@@ -5947,8 +5969,8 @@ var REVIEWS_PACK = [
       "es": "Vi una rata mientras comía aquí . 😷"
     },
     "ownerResponse": {
-      "author": "Propriétaire (Owner)",
-      "time": "a day ago",
+      "author": { "fr": "Réponse du propriétaire", "en": "Response from the owner", "es": "Respuesta del propietario" },
+      "time": { "fr": "il y a un jour", "en": "a day ago", "es": "hace un día" },
       "text": {
         "fr": "Ça s'appelle un miroir...",
         "en": "That's called a mirror...",
@@ -6163,8 +6185,8 @@ var REVIEWS_PACK = [
       "es": "Esperé más de 50 minutos y el lugar nunca abrió. Y el empleado no pudo dar una razón de por qué su gerente llegaba 40 minutos tarde\n\nComida: 2/5"
     },
     "ownerResponse": {
-      "author": "Propriétaire (Owner)",
-      "time": "2 years ago",
+      "author": { "fr": "Réponse du propriétaire", "en": "Response from the owner", "es": "Respuesta del propietario" },
+      "time": { "fr": "il y a 2 ans", "en": "2 years ago", "es": "hace 2 años" },
       "text": {
         "fr": "LOL HAHAHAHAHAHA",
         "en": "LOL HAHAHAHAHAHA",
@@ -6652,8 +6674,8 @@ function renderGuessRating(g){
 
     if(item.ownerResponse){
       var ow = item.ownerResponse;
-      var owTitle = ow.author || 'Propriétaire (Owner)';
-      var owTime = ow.time ? (' • ' + ow.time) : '';
+      var owTitle = pickLang(ow.author) || t("ownerReply");
+      var owTime = ow.time ? (' • ' + pickLang(ow.time)) : '';
       var owTxt = pickLang(ow.text || ow);
       html += '<div class="owner-response-box">';
       html += '<div class="owner-response-header">💬 ' + escapeHtml(owTitle) + escapeHtml(owTime) + '</div>';
@@ -6694,8 +6716,8 @@ function renderGuessRating(g){
             (item.date ? ' • ' + escapeHtml(pickLang(item.date)) : '') + '</div>';
     if(item.ownerResponse){
       var ow = item.ownerResponse;
-      var owTitle = ow.author || 'Propriétaire (Owner)';
-      var owTime = ow.time ? (' • ' + ow.time) : '';
+      var owTitle = pickLang(ow.author) || t("ownerReply");
+      var owTime = ow.time ? (' • ' + pickLang(ow.time)) : '';
       var owTxt = pickLang(ow.text || ow);
       html += '<div class="owner-response-box" style="max-width:400px;margin:12px auto 0 auto;">';
       html += '<div class="owner-response-header">💬 ' + escapeHtml(owTitle) + escapeHtml(owTime) + '</div>';
@@ -8210,7 +8232,7 @@ function launchWhoSaid(){
   shuffle(order);
   if(order.length === 0) order = [{ id: myId, name: me.name }];
 
-  var total = Math.min(5, qPool.length);
+  var total = Math.min(8, qPool.length);
   var rounds = [];
   for(var i = 0; i < total; i++){
     var sp = order[i % order.length];
