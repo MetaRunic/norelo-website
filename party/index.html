@@ -1474,7 +1474,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.32</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.33</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -5870,613 +5870,31 @@ function skipBonusShow(){
                 Linux hosting). Two entries render side by side: product then payoff.
    photo      = generic fallback, used only when shots is empty. */
 var REVIEWS_PACK = [
-  {
-    "source": "Google",
-    "product": {
-      "fr": "Salon de massage & Spa",
-      "en": "Massage Parlour & Spa",
-      "es": "Salón de masajes y Spa"
-    },
-    "seller": "Google Maps · 11 avis",
-    "photo": "reviews/wiki/a_place_for_a_massage_service_on_the_beach.jpg",
-    "reviewer": "David Boyd",
-    "date": {
-      "fr": "il y a 10 mois",
-      "en": "10 months ago",
-      "es": "hace 10 meses"
-    },
-    "text": {
-      "fr": "Le massage était plutôt bon mais le côté drôle c'est que la dame a pété 4 fois pendant le massage et ne l'a jamais reconnu. Un peu dégoûtant",
-      "en": "Massage was pretty good but the funny part was the lady farted 4 times during the massage and never acknowledged it. Kinda gross",
-      "es": "El masaje estuvo bastante bueno pero lo gracioso fue que la señora se tiró 4 pedos durante el masaje y nunca lo admitió. Un poco asqueroso"
-    },
-    "stars": 3,
-    "real": true
-  },
-  {
-    "source": "Google",
-    "product": {
-      "fr": "Bistro / Restaurant local",
-      "en": "Local Bistro / Diner",
-      "es": "Restaurante local"
-    },
-    "seller": "Google Maps",
-    "photo": "reviews/wiki/evening_interior_dining_room_of_cholada_thai_restaurant_in_malibu_.jpg",
-    "reviewer": "Todd Purdy",
-    "date": {
-      "fr": "il y a 4 mois",
-      "en": "4 months ago",
-      "es": "hace 4 meses"
-    },
-    "text": {
-      "fr": "Le service était horrible, la nourriture était excellente. Plusieurs articles n'étaient pas disponibles. Le service était si mauvais que c'était en fait divertissant.",
-      "en": "Service was awful, food was great. Many items were not available. The service was so bad it was actually entertaining.",
-      "es": "El servicio fue horrible, la comida estuvo excelente. Muchos artículos no estaban disponibles. El servicio fue tan malo que en realidad fue entretenido."
-    },
-    "ownerResponse": {
-      "author": { "fr": "Réponse du propriétaire", "en": "Response from the owner", "es": "Respuesta del propietario" },
-      "time": { "fr": "il y a 5 mois", "en": "5 months ago", "es": "hace 5 meses" },
-      "text": {
-        "fr": "Hé Todd, va te faire pendre. Pourquoi n'essaies-tu pas d'ouvrir ton propre endroit pendant l'ère du covid. Pourquoi ne viens-tu pas être un excellent serveur ? Il y a plein de gens qui veulent travailler maintenant hein ? J'espère que les gens comme toi ne reviendront pas dans mon restaurant parce que tu ne penses qu'à toi et pas à ce que les autres traversent. Bonne vie.",
-        "en": "Hey Todd, go kill yourself. Why don't you try opening your own place during covid era. Why don't you come and be a great server? There's plenty of people wanting to work now huh? I hope people like you don't come back to my restaurant because you only care for yourself and not what others are going through. Have a nice life.",
-        "es": "Oye Todd, vete a la mierda. Por qué no intentas abrir tu propio lugar en la era covid. Por qué no vienes y eres un gran mesero. Hay mucha gente queriendo trabajar ahora ¿eh? Espero que gente como tú no vuelva a mi restaurante porque solo te importa tu ombligo y no lo que otros pasan. Que tengas buena vida."
-      }
-    },
-    "stars": 1,
-    "real": true
-  },
-  {
-    "source": "Google",
-    "product": {
-      "fr": "Sandwicherie / Restaurant",
-      "en": "Subway / Sandwich Shop",
-      "es": "Sandwichería / Restaurante"
-    },
-    "seller": "Google Maps",
-    "photo": "reviews/wiki/fresh_scali_bread_loaf_from_winter_hill_bakery.jpg",
-    "reviewer": "Client (4 avis)",
-    "date": {
-      "fr": "il y a un an",
-      "en": "a year ago",
-      "es": "hace un año"
-    },
-    "text": {
-      "fr": "Nous sommes partis parce qu'ils n'avaient pas de pain italien",
-      "en": "We left because they didn't have any Italian bread",
-      "es": "Nos fuimos porque no tenían pan italiano"
-    },
-    "stars": 1,
-    "real": true
-  },
-  {
-    "source": "Google",
-    "product": {
-      "fr": "Fast-food / Restaurant",
-      "en": "Diner / Restaurant",
-      "es": "Restaurante de comida rápida"
-    },
-    "seller": "Google Maps",
-    "photo": "reviews/wiki/a_vintage_hand-carved_wooden_wall_mirror_frame.jpg",
-    "reviewer": "natasha horvath",
-    "date": {
-      "fr": "il y a un jour",
-      "en": "a day ago",
-      "es": "hace un día"
-    },
-    "text": {
-      "fr": "J'ai vu un rat pendant que je mangeais ici . 😷",
-      "en": "I saw a rat whilst eating here . 😷",
-      "es": "Vi una rata mientras comía aquí . 😷"
-    },
-    "ownerResponse": {
-      "author": { "fr": "Réponse du propriétaire", "en": "Response from the owner", "es": "Respuesta del propietario" },
-      "time": { "fr": "il y a un jour", "en": "a day ago", "es": "hace un día" },
-      "text": {
-        "fr": "Ça s'appelle un miroir...",
-        "en": "That's called a mirror...",
-        "es": "Eso se llama espejo..."
-      }
-    },
-    "stars": 1,
-    "real": true
-  },
-  {
-    "source": "Google",
-    "product": {
-      "fr": "Garage Mécanique Mr Kenwell",
-      "en": "Mr Kenwell Auto Repair",
-      "es": "Taller mecánico Mr Kenwell"
-    },
-    "seller": "Google Maps",
-    "photo": "reviews/wiki/a_man_who_sanding_with_a_grinder_and_prepares_the_paint_for_the_ca.jpg",
-    "reviewer": "Ben Lau",
-    "date": {
-      "fr": "il y a une semaine",
-      "en": "a week ago",
-      "es": "hace una semana"
-    },
-    "text": {
-      "fr": "Très bonne réparation d'auto.\nAuto roule plus. Je pousse jusqu'au garage.\nM. Kenwell fait de la magie.\nL'auto roule à nouveau.\nJe suis content de l'auto, ressemble à une Ferrari maintenant.\nJe pousserais l'auto ici à nouveau.\n10/10 réparation d'auto",
-      "en": "Very good car fixing.\nCar no drive. I push to shop.\nMr Kenwell works magic.\nCar drives again.\nI am happy with car, feels like Ferrari now.\nWould push car here again.\n10/10 car fix",
-      "es": "Muy buena reparación de auto.\nAuto no anda. Empujo hasta el taller.\nMr Kenwell hace magia.\nAuto anda de nuevo.\nEstoy feliz con auto, se siente como Ferrari ahora.\nEmpujaría auto aquí de nuevo.\n10/10 reparación de auto"
-    },
-    "stars": 5,
-    "real": true
-  },
-  {
-    "source": "Google",
-    "product": {
-      "fr": "Boulangerie / Épicerie",
-      "en": "Bakery / Grocery Store",
-      "es": "Panadería / Tienda de comestibles"
-    },
-    "seller": "Google Maps · Guide Local",
-    "shots": ["reviews/oatmeal_raisin_cookie.jpg"],
-    "reviewer": "Ozair Abbasi",
-    "date": {
-      "fr": "il y a une semaine",
-      "en": "a week ago",
-      "es": "hace una semana"
-    },
-    "text": {
-      "fr": "Je suis écœuré et fatigué qu'ils mettent des biscuits à l'avoine et raisins dans la section étiquetée biscuits aux pépites de chocolat.\n\nNourriture : 4 | Service : 5 | Ambiance : 3",
-      "en": "I am sick and tired of them putting oatmeal raisin cookies in the section labeled chocolate chip cookies.\n\nFood: 4 | Service: 5 | Atmosphere: 3",
-      "es": "Estoy harto y cansado de que pongan galletas de avena y pasas en la sección etiquetada como galletas con chispas de chocolate.\n\nComida: 4 | Servicio: 5 | Ambiente: 3"
-    },
-    "stars": 2,
-    "real": true
-  },
-  {
-    "source": "Store",
-    "product": {
-      "fr": "Gâteau d'anniversaire personnalisé",
-      "en": "Custom Birthday Cake",
-      "es": "Pastel de cumpleaños personalizado"
-    },
-    "seller": "Pâtisserie locale",
-    "shots": ["reviews/robret_birthday_cake.jpg"],
-    "reviewer": "Robert",
-    "date": {
-      "fr": "il y a un mois",
-      "en": "a month ago",
-      "es": "hace un mes"
-    },
-    "text": {
-      "fr": "Ma copine a rapporté ce gâteau à la maison pour mon anniversaire et nous venons de remarquer que la personne qui a écrit mon nom sur le gâteau ne sait pas épeler l'un des prénoms les plus courants en Amérique.\nJe trouvais ça drôle mais je me suis dit mec je dois avertir les autres que vous devriez probablement donner le nom sur papier pour l'épeler correctement afin qu'ils ne le gâchent pas.\nHonnêtement, avez-vous déjà rencontré quelqu'un nommé Robret ? Lol",
-      "en": "My girl brought this cake home for my birthday and we just noticed the person that spelled my name on my cake can't spell one of the most common names in America.\nI thought it was funny but I was like man I gotta warn others that you might wanna give the the name on paper to spell it right so they can't mess it up.\nHonestly have you ever met someone named Robret? Lol",
-      "es": "Mi novia trajo este pastel a casa para mi cumpleaños y nos acabamos de dar cuenta de que la persona que escribió mi nombre en mi pastel no sabe deletrear uno de los nombres más comunes en América.\nPensé que era divertido pero dije viejo tengo que advertir a los demás que probablemente deberían dar el nombre en papel para deletrearlo bien y que no lo arruinen.\nSinceramente, ¿alguna vez han conocido a alguien llamado Robret? Lol"
-    },
-    "stars": 2,
-    "real": true
-  },
-  {
-    "source": "Google",
-    "product": {
-      "fr": "Service d'ambulance",
-      "en": "Ambulance Service",
-      "es": "Servicio de ambulancia"
-    },
-    "seller": "Google Maps · Guide Local",
-    "shots": ["reviews/ambulance_exterior.jpg"],
-    "reviewer": "Adrianna Lidiski (Age of Tarot)",
-    "date": {
-      "fr": "il y a un an",
-      "en": "a year ago",
-      "es": "hace un año"
-    },
-    "text": {
-      "fr": "Les chauffeurs d'ambulance étaient des pervers.",
-      "en": "The ambulance drivers were perverts.",
-      "es": "Los conductores de ambulancia eran pervertidos."
-    },
-    "stars": 3,
-    "real": true
-  },
-  {
-    "source": "Google",
-    "product": {
-      "fr": "Bibliothèque publique",
-      "en": "Public Library",
-      "es": "Biblioteca pública"
-    },
-    "seller": "Google Maps · Guide Local",
-    "shots": ["reviews/public_library.jpg"],
-    "reviewer": "Ron M.",
-    "date": {
-      "fr": "il y a 3 jours",
-      "en": "3 days ago",
-      "es": "hace 3 días"
-    },
-    "text": {
-      "fr": "Le vendredi 19 juin cette bibliothèque était et est fermée pour le congé du Juneteenth. J'ai essayé d'entrer mais un passant s'est arrêté et a dit qu'ils sont fermés aujourd'hui. Je ne ferai jamais mes impôts",
-      "en": "Friday June 19th this library was and is closed for the Juneteenth holiday. Tried walking in but a passerby stopped and said they're closed today. I'll never get my taxes done",
-      "es": "El viernes 19 de junio esta biblioteca estaba y está cerrada por el festivo de Juneteenth. Intenté entrar pero un transeúnte se detuvo y dijo que están cerrados hoy. Nunca haré mis impuestos"
-    },
-    "stars": 3,
-    "real": true
-  },
-  {
-    "source": "Google",
-    "product": {
-      "fr": "Toilettes publiques",
-      "en": "Public Restroom",
-      "es": "Baños públicos"
-    },
-    "seller": "Google Maps",
-    "shots": ["reviews/no_restroom_doors.png"],
-    "reviewer": "Client Anonyme",
-    "date": {
-      "fr": "il y a un jour",
-      "en": "a day ago",
-      "es": "hace un día"
-    },
-    "text": {
-      "fr": "Où calvaire sont les portes",
-      "en": "Where the fuck are the doors",
-      "es": "Dónde carajos están las puertas"
-    },
-    "stars": 5,
-    "real": true
-  },
-  {
-    "source": "Amazon",
-    "product": {
-      "fr": "Grattoir pour le dos en bambou",
-      "en": "Bamboo Backscratcher Set",
-      "es": "Rascador de espalda de bambú"
-    },
-    "seller": "Amazon.com · Achat vérifié",
-    "shots": ["reviews/backscratcher.jpg"],
-    "reviewer": "Lindsay Gandy",
-    "date": {
-      "fr": "29 octobre 2025",
-      "en": "October 29, 2025",
-      "es": "29 de octubre de 2025"
-    },
-    "text": {
-      "fr": "Efficace pour mon utilisation. Bon. Je donne des fessées à ma femme avec ça. Ça laisse une marque sur ses fesses. Je les adore.",
-      "en": "Effective for my use. Good. I spank my wife with these. They make a mark on her butt. I love them",
-      "es": "Eficaz para mi uso. Bueno. Le doy nalgadas a mi esposa con esto. Deja una marca en sus nalgas. Me encantan."
-    },
-    "stars": 3,
-    "real": true
-  },
-  {
-    "source": "Google",
-    "product": {
-      "fr": "Église locale",
-      "en": "Local Church",
-      "es": "Iglesia local"
-    },
-    "seller": "Google Maps · Guide Local",
-    "shots": ["reviews/church_interior.jpg"],
-    "reviewer": "XaZi_42",
-    "date": {
-      "fr": "il y a 2 mois",
-      "en": "2 months ago",
-      "es": "hace 2 meses"
-    },
-    "text": {
-      "fr": "Belle église mais un peu trop de Jésus",
-      "en": "Nice church but too much Jesus a little",
-      "es": "Bonita iglesia pero un poco demasiado Jesús"
-    },
-    "stars": 4,
-    "real": true
-  },
-  {
-    "source": "Google",
-    "product": {
-      "fr": "Resto à emporter local",
-      "en": "Local Takeout Diner",
-      "es": "Restaurante para llevar local"
-    },
-    "seller": "Google Maps",
-    "shots": ["reviews/closed_storefront.jpg"],
-    "reviewer": "Client (8 avis)",
-    "date": {
-      "fr": "il y a 2 ans",
-      "en": "2 years ago",
-      "es": "hace 2 años"
-    },
-    "text": {
-      "fr": "J'ai attendu plus de 50 minutes et l'endroit n'a tout simplement jamais ouvert. Et l'employé ne pouvait pas donner de raison pour laquelle son gérant avait 40 minutes de retard\n\nNourriture : 2/5",
-      "en": "I waited over 50 minutes and the place just never opened. And the employee couldn't give a reason why his manager was running 40 minutes late\n\nFood: 2/5",
-      "es": "Esperé más de 50 minutos y el lugar nunca abrió. Y el empleado no pudo dar una razón de por qué su gerente llegaba 40 minutos tarde\n\nComida: 2/5"
-    },
-    "ownerResponse": {
-      "author": { "fr": "Réponse du propriétaire", "en": "Response from the owner", "es": "Respuesta del propietario" },
-      "time": { "fr": "il y a 2 ans", "en": "2 years ago", "es": "hace 2 años" },
-      "text": {
-        "fr": "LOL HAHAHAHAHAHA",
-        "en": "LOL HAHAHAHAHAHA",
-        "es": "LOL HAHAHAHAHAHA"
-      }
-    },
-    "stars": 2,
-    "real": true
-  },
-  {
-    "source": "Google",
-    "product": {
-      "fr": "Restaurant de nouilles wonton",
-      "en": "Wonton Noodle Shop",
-      "es": "Restaurante de fideos wonton"
-    },
-    "seller": "Google Maps",
-    "shots": ["reviews/wonton_noodles_no_soup.png"],
-    "reviewer": "hangbin chen",
-    "date": {
-      "fr": "il y a 4 mois",
-      "en": "4 months ago",
-      "es": "hace 4 meses"
-    },
-    "text": {
-      "fr": "Quelle ordure ! Non seulement vous ne parlez pas chinois, mais j'ai aussi commandé des nouilles wonton et c'est ce que vous me donnez ? Vous appelez ça des nouilles wonton ? Pourquoi vous ne crevez pas ? Où est la soupe ? Vous ne voulez pas voir à quoi les nouilles wonton sont censées ressembler...",
-      "en": "What garbage! Not only do you not speak Chinese, but I also ordered wonton noodles and this is what you give me? You call this wonton noodles? Why don't you just die? Where's the soup? Don't you want to see what wonton noodles are supposed to be...",
-      "es": "¡Qué basura! No solo no hablan chino, sino que pedí fideos wonton y ¿esto es lo que me dan? ¿Llaman a esto fideos wonton? ¿Por qué no se mueren? ¿Dónde está la sopa? No quieren ver como se supone que son los fideos wonton..."
-    },
-    "stars": 1,
-    "real": true
-  },
-  {
-    "source": "Google",
-    "product": {
-      "fr": "Jehova's Witness Kingdom Hall",
-      "en": "Jehova's Witness Kingdom Hall",
-      "es": "Jehova's Witness Kingdom Hall"
-    },
-    "seller": "Google Maps · Reddit Spot",
-    "context": {
-      "fr": "Jehova's Witness Kingdom Hall",
-      "en": "Jehova's Witness Kingdom Hall",
-      "es": "Jehova's Witness Kingdom Hall"
-    },
-    "shots": ["reviews/jehovah_biscuits.png"],
-    "reviewer": "goose hole",
-    "date": {
-      "fr": "il y a 7 ans",
-      "en": "7 years ago",
-      "es": "hace 7 años"
-    },
-    "text": {
-      "fr": "Je suis assez découragé car lorsque j'étais à cette réunion de culte, on ne m'a offert que des biscuits, à ma surprise d'autres personnes de disposition plus susceptible ont eu des gâteaux. Ça ne m'aurait même pas dérangé d'habitude mais le biscuit était si vieux qu'il aurait pu appartenir à Jéhovah lui-même. Apportez vos propres snacks ou préparez-vous à ressentir la même morosité qu'eux.",
-      "en": "I'm quite disheartened as when I was at this cult meeting I was only offered biscuits, to my surprise other people of a more susceptible disposition are given cakes. I wouldn't have even minded usually but the biscuit was so old it could have belonged to Jehovah himself. Bring your own snacks or prepare to feel as doom and gloom as the rest of them.",
-      "es": "Estoy bastante desanimado ya que cuando estuve en esta reunión de culto solo me ofrecieron galletas, para mi sorpresa a otras personas de disposición más susceptible les dieron pasteles. Normalmente ni me habría importado, pero la galleta era tan vieja que podría haber pertenecido al mismísimo Jehová. Traigan sus propios snacks o prepárense para sentirse tan lúgubres como el resto."
-    },
-    "stars": 2,
-    "real": true
-  },
-  {
-    "source": "Online Store",
-    "product": {
-      "fr": "Chapeau d'hiver avec rabats d'oreilles",
-      "en": "Winter Flap Hat",
-      "es": "Sombrero de invierno con orejeras"
-    },
-    "seller": "Edgerton ohio · Achat vérifié",
-    "shots": ["reviews/nice_hat_too_big.png"],
-    "reviewer": "Edgerton ohio",
-    "date": {
-      "fr": "31 décembre 2025",
-      "en": "December 31, 2025",
-      "es": "31 de diciembre de 2025"
-    },
-    "text": {
-      "fr": "Beau chapeau mais trop grand. Le vent s'infiltre par l'avant dans les conditions froides et venteuses. Les rabats d'oreilles s'évasent vers l'extérieur.",
-      "en": "Nice hat but to big. Wind blows in from the front in cold windy conditions. Ear flaps flare out.",
-      "es": "Bonito sombrero pero demasiado grande. El viento entra por el frente en condiciones frías y ventosas. Las orejeras se abren hacia afuera."
-    },
-    "stars": 4,
-    "real": true
-  },
-  {
-    "source": "Google",
-    "product": {
-      "fr": "Phare & Zone Côtière",
-      "en": "Lighthouse & Coastal Site",
-      "es": "Faro y Zona Costera"
-    },
-    "seller": "Google Maps · Guide Local",
-    "shots": ["reviews/empty_coastline_lighthouse.jpg"],
-    "reviewer": "Anonyme (Local Guide)",
-    "date": {
-      "fr": "il y a 10 mois",
-      "en": "10 months ago",
-      "es": "hace 10 meses"
-    },
-    "text": {
-      "fr": "Pas de phare, scandaleux. Est-ce qu'il a été détruit ou quelque chose du genre ?",
-      "en": "no lighthouse, outrageos. did it get destroyed or sumn?",
-      "es": "sin faro, indignante. ¿se destruyó o algo así?"
-    },
-    "stars": 2,
-    "real": true
-  },
-  {
-    "source": "Store",
-    "product": {
-      "fr": "Revêtement de raquette de tennis de table",
-      "en": "Table Tennis Racket Rubber",
-      "es": "Goma para raqueta de tenis de mesa"
-    },
-    "seller": "Vendeur en ligne · LT",
-    "shots": ["reviews/table_tennis_rubber.jpg"],
-    "reviewer": "Customer",
-    "date": {
-      "fr": "4 août 2025",
-      "en": "Aug 4, 2025",
-      "es": "4 de agosto de 2025"
-    },
-    "text": {
-      "fr": "Prix de livraison venant de l'espace\n\nJ'ai commandé un revêtement de raquette de ping-pong. La livraison avec UPS coûte presque 25 Eur, car le poids d'un seul revêtement, qui pèse environ 110 g avec l'emballage, a été indiqué à 110 kg. Cosmonautes. À éviter si vous en avez l'occasion.",
-      "en": "Shiping price from space\n\nI ordered a table tennis racket rubber. Shipping with UPS is almost 25 Eur, because the weight of one rubber, which weights about 110 g with packaging, was stated as 110 kg. Cosmonauts. Avoid if you have the opportunity.",
-      "es": "Precio de envío desde el espacio\n\nPedí una goma de raqueta de tenis de mesa. El envío con UPS cuesta casi 25 Eur, porque el peso de una sola goma, que pesa unos 110 g con embalaje, se indicó como 110 kg. Cosmonautas. Evitar si tienen la oportunidad."
-    },
-    "stars": 1,
-    "real": true
-  },
-  {
-    "source": "Macy's",
-    "product": {
-      "fr": "Protège-matelas classique Macy's",
-      "en": "Classic Mattress Pad, Exclusively at Macy's",
-      "es": "Protector de colchón clásico Macy's"
-    },
-    "seller": "Macy's",
-    "shots": ["reviews/waterproof_mattress_pad.jpg"],
-    "reviewer": "thatbxtch69",
-    "date": {
-      "fr": "11 janvier 2026",
-      "en": "January 11, 2026",
-      "es": "11 de enero de 2026"
-    },
-    "text": {
-      "fr": "Soak City !!!\n\nAcheté pour jouer. Je me fais défoncer régulièrement. Je parle du genre lance d'incendie. C'est littéralement Soak City ici et ce protecteur garde mon matelas au sec, contrairement à moi. 10/10 je reviendrais !",
-      "en": "Soak City!!!\n\nPurchased this for play. I get my shxt blasted on the regular. Im talking fire-hydrant style. Its literally Soak City over here and this protector keeps my mattress dry unlike me. 10/10 would come again!",
-      "es": "¡¡¡Soak City!!!\n\nCompré esto para jugar. Me explotan con regularidad. Hablo estilo manguera de bomberos. Es literalmente Soak City aquí y este protector mantiene mi colchón seco, a diferencia de mí. 10/10 ¡volvería a venir!"
-    },
-    "stars": 5,
-    "real": true
-  },
-  {
-    "source": "Store",
-    "product": {
-      "fr": "Rouge à lèvres liquide mat longue tenue",
-      "en": "Long-lasting Matte Liquid Lipstick",
-      "es": "Lápiz labial líquido mate de larga duración"
-    },
-    "seller": "Boutique de beauté",
-    "shots": ["reviews/lipstick_julia.png"],
-    "reviewer": "Julia",
-    "date": {
-      "fr": "4 février",
-      "en": "February 04",
-      "es": "4 de febrero"
-    },
-    "text": {
-      "fr": "J'ai pleuré pendant 2 heures, puis j'ai fait une gâterie pendant la même durée, puis j'ai pleuré à nouveau. Un jour plus tard, j'ai réalisé que ce rouge à lèvres tient encore ! Et mon moral est remonté. Rouge à lèvres 10/10 😍",
-      "en": "I cried for 2 hours, then I gave a b🅱️owjob for the same amount of time, then I cried again. A day later, I realized that this lipstick still holds! And my mood lifted. Lipstick 10/10 😍",
-      es: "Lloré durante 2 horas, luego hice un oral durante la misma cantidad de tiempo, luego lloré de nuevo. ¡Un día después, me di cuenta de que este lápiz labial todavía aguanta! Y mi ánimo se levantó. Lápiz labial 10/10 😍"
-    },
-    "stars": 5,
-    "real": true
-  },
-  {
-    "source": "Google",
-    "product": {
-      "fr": "Service de livraison d'eau",
-      "en": "Water Delivery Service",
-      "es": "Servicio de entrega de agua"
-    },
-    "seller": "Google Reviews",
-    "shots": ["reviews/water_delivery.jpg"],
-    "reviewer": "Jarno Balk",
-    "date": {
-      "fr": "il y a un an",
-      "en": "a year ago",
-      "es": "hace un año"
-    },
-    "text": {
-      "fr": "L'eau n'est pas arrivée\n\nMise à jour : j'ai reçu mon eau et elle est bonne !",
-      "en": "Water not get\n\nUpdate: got my water and is good!",
-      "es": "Agua no llega\n\nActualización: ¡recibí mi agua y está buena!"
-    },
-    "stars": 4,
-    "real": true
-  },
-  {
-    "source": "Google",
-    "product": {
-      "fr": "Restaurant chinois local",
-      "en": "Local Chinese Restaurant",
-      "es": "Restaurante chino local"
-    },
-    "seller": "Google Maps · Guide Local",
-    "shots": ["reviews/chinese_restaurant_food.jpg"],
-    "reviewer": "Vickie Gonzalez",
-    "date": {
-      "fr": "il y a 10 mois",
-      "en": "10 months ago",
-      "es": "hace 10 meses"
-    },
-    "text": {
-      "fr": "La nourriture est brûlée et j'ai trouvé un cheveu dans mon plat,. J'ai demandé sans riz et elle met du riz dedans. J'ai découvert 6 mois plus tard qu'elle et sa fille couchaient avec mon mari. Elles font aussi semblant de ne pas parler anglais mais elles le parlent, beaucoup d'entre elles le parlent.",
-      "en": "The food is burned and I found a hair in my food,. I ask for no rice and she puts rice in it I found out 6 month later her and her daughter was sleeping with my husband. They also pretend that they don't speak English but they do a lot of them do",
-      "es": "La comida está quemada y encontré un pelo en mi comida,. Pedí sin arroz y le puso arroz. Me enteré 6 meses después que ella y su hija se acostaban con mi esposo. También pretenden que no hablan inglés pero sí lo hablan, muchas de ellas lo hacen"
-    },
-    "stars": 1,
-    "real": true
-  },
-  {
-    "source": "Store",
-    "product": {
-      "fr": "Tabouret de bar White Mixology",
-      "en": "White Mixology Bar Stool",
-      "es": "Taburete de bar White Mixology"
-    },
-    "seller": "Magasin de meubles",
-    "shots": ["reviews/white_bar_stool.jpg"],
-    "reviewer": "Jaco",
-    "date": {
-      "fr": "18 août 2025",
-      "en": "18 Aug 2025",
-      "es": "18 de agosto de 2025"
-    },
-    "text": {
-      "fr": "C'est le meilleur achat que j'ai fait en 30 ans. Rembourré avec du cuir de qualité. J'aime la largeur du siège et même mes amis plus lourds peuvent s'asseoir confortablement et en toute sécurité. Le réglage en hauteur ajustable est définitivement fait pour le couple plus aventureux. C'est absolument pratique pour une pénétration profonde et passionnée.",
-      "en": "This is the best buy I have ever done in 30 years. Upholstered with quality leather. I love the width of the seat and even my heavier friends can sit down comfortably, and safely. The adjustable height setting is definitely made for the more adventurous couple. It is absolutely convenient for a deep and passionate penetration.",
-      "es": "Es la mejor compra que he hecho en 30 años. Tapizado con cuero de calidad. Me encanta el ancho del asiento e incluso mis amigos más pesados se pueden sentar cómoda y seguro. El ajuste de altura graduable está hecho definitivamente para la pareja más aventurera. Es absolutamente conveniente para una penetración profunda y apasionada."
-    },
-    "stars": 5,
-    "real": true
-  },
-  {
-    "source": "Amazon",
-    "product": {
-      "fr": "Porte-bébé ergonomique (Oxford Blue)",
-      "en": "Ergonomic Baby Carrier (Oxford Blue)",
-      "es": "Portabebés ergonómico (Oxford Blue)"
-    },
-    "seller": "Amazon.com · Achat vérifié",
-    "shots": ["reviews/fat_baby_carrier.png"],
-    "reviewer": "Steve",
-    "date": {
-      "fr": "22 février 2020",
-      "en": "February 22, 2020",
-      "es": "22 de febrero de 2020"
-    },
-    "text": {
-      "fr": "Capable de supporter un gros bébé.\nRécemment acheté ce produit en tant que nouveau père. Je voulais m'assurer que le produit convenait à mon fils de 2 mois.\n\nJ'ai testé le porte-bébé avec mon ami de 28 ans et 80 kg pour m'assurer que le système était solide. Aucune marque de déchirement ou de rupture n'était évidente.\n\nJe recommanderais ce porte-bébé à quiconque a un bébé en surpoids.",
-      "en": "Fat baby capable.\nRecently bought this product as a new father. Wanted to ensure product was suitable for my 2 month old year old son.\n\nTested the carrier with my 28 year old, 80kg friend to ensure the carrier system was serviceable. Nil indications of carrier ripping or breaking was evident.\n\nWould recommend this carrier to anyone with an overweight baby.",
-      "es": "Apto para bebés gordos.\nRecientemente compré este producto como nuevo padre. Quería asegurarme de que el producto fuera adecuado para mi hijo de 2 meses.\n\nProbé el portabebés con mi amigo de 28 años y 80 kg para asegurarme de que el sistema fuera funcional. Sin evidencia de desgarros o roturas.\n\nRecomendaría este portabebés a cualquiera que tenga un bebé con sobrepeso."
-    },
-    "stars": 5,
-    "real": true
-  },
-  {
-    "source": "Amazon",
-    "product": {
-      "fr": "Lingerie sexy / Thong taille XXL (Vert)",
-      "en": "Sexy Lingerie / Thong XXL (Green)",
-      "es": "Lencería sexy / Tanga XXL (Verde)"
-    },
-    "seller": "Amazon.com · Achat vérifié",
-    "shots": ["reviews/crossdresser_thong.png"],
-    "reviewer": "William",
-    "date": {
-      "fr": "19 mars 2026",
-      "en": "March 19, 2026",
-      "es": "19 de marzo de 2026"
-    },
-    "text": {
-      "fr": "Super pour tout le monde\nJe suis travesti et j'adore porter des vêtements sexy pour femmes. Je fais 6'3\" et je pèse 265 livres et la taille XXL me va parfaitement. C'est super seul ou avec une mini-jupe ou un short.",
-      "en": "Great for everyone\nI am a crossdresser and love wearing sexy women's clothes. I am 6'3\" and weigh 265 pounds and the xxl fit me perfectly. Looks great alone or with a mini skirt or shorts.",
-      es: "Excelente para todos\nSoy travesti y me encanta usar ropa sexy de mujer. Mido 6'3\" y peso 265 libras y la talla XXL me queda perfectamente. Se ve genial solo o con una minifalda o shorts."
-    },
-    "stars": 5,
-    "real": true
-  },
+  {"source":"Google","product":{"fr":"Salon de massage & Spa","en":"Massage Parlour & Spa","es":"Salón de masajes y Spa"},"seller":"Google Maps · 11 avis","photo":"reviews/wiki/a_place_for_a_massage_service_on_the_beach.jpg","reviewer":"David Boyd","date":{"fr":"il y a 10 mois","en":"10 months ago","es":"hace 10 meses"},"text":{"fr":"Le massage était plutôt bon mais le côté drôle c'est que la dame a pété 4 fois pendant le massage et ne l'a jamais reconnu. Un peu dégoûtant","en":"Massage was pretty good but the funny part was the lady farted 4 times during the massage and never acknowledged it. Kinda gross","es":"El masaje estuvo bastante bueno pero lo gracioso fue que la señora se tiró 4 pedos durante el masaje y nunca lo admitió. Un poco asqueroso"},"stars":3,"real":true},
+  {"source":"Google","product":{"fr":"Bistro / Restaurant local","en":"Local Bistro / Diner","es":"Restaurante local"},"seller":"Google Maps","photo":"reviews/wiki/evening_interior_dining_room_of_cholada_thai_restaurant_in_malibu_.jpg","reviewer":"Todd Purdy","date":{"fr":"il y a 4 mois","en":"4 months ago","es":"hace 4 meses"},"text":{"fr":"Le service était horrible, la nourriture était excellente. Plusieurs articles n'étaient pas disponibles. Le service était si mauvais que c'était en fait divertissant.","en":"Service was awful, food was great. Many items were not available. The service was so bad it was actually entertaining.","es":"El servicio fue horrible, la comida estuvo excelente. Muchos artículos no estaban disponibles. El servicio fue tan malo que en realidad fue entretenido."},"ownerResponse":{"author":{"fr":"Réponse du propriétaire","en":"Response from the owner","es":"Respuesta del propietario"},"time":{"fr":"il y a 5 mois","en":"5 months ago","es":"hace 5 meses"},"text":{"fr":"Hé Todd, va te faire pendre. Pourquoi n'essaies-tu pas d'ouvrir ton propre endroit pendant l'ère du covid. Pourquoi ne viens-tu pas être un excellent serveur ? Il y a plein de gens qui veulent travailler maintenant hein ? J'espère que les gens comme toi ne reviendront pas dans mon restaurant parce que tu ne penses qu'à toi et pas à ce que les autres traversent. Bonne vie.","en":"Hey Todd, go kill yourself. Why don't you try opening your own place during covid era. Why don't you come and be a great server? There's plenty of people wanting to work now huh? I hope people like you don't come back to my restaurant because you only care for yourself and not what others are going through. Have a nice life.","es":"Oye Todd, vete a la mierda. Por qué no intentas abrir tu propio lugar en la era covid. Por qué no vienes y eres un gran mesero. Hay mucha gente queriendo trabajar ahora ¿eh? Espero que gente como tú no vuelva a mi restaurante porque solo te importa tu ombligo y no lo que otros pasan. Que tengas buena vida."}},"stars":1,"real":true},
+  {"source":"Google","product":{"fr":"Sandwicherie / Restaurant","en":"Subway / Sandwich Shop","es":"Sandwichería / Restaurante"},"seller":"Google Maps","photo":"reviews/wiki/fresh_scali_bread_loaf_from_winter_hill_bakery.jpg","reviewer":"Client (4 avis)","date":{"fr":"il y a un an","en":"a year ago","es":"hace un año"},"text":{"fr":"Nous sommes partis parce qu'ils n'avaient pas de pain italien","en":"We left because they didn't have any Italian bread","es":"Nos fuimos porque no tenían pan italiano"},"stars":1,"real":true},
+  {"source":"Google","product":{"fr":"Fast-food / Restaurant","en":"Diner / Restaurant","es":"Restaurante de comida rápida"},"seller":"Google Maps","photo":"reviews/wiki/a_vintage_hand-carved_wooden_wall_mirror_frame.jpg","reviewer":"natasha horvath","date":{"fr":"il y a un jour","en":"a day ago","es":"hace un día"},"text":{"fr":"J'ai vu un rat pendant que je mangeais ici . 😷","en":"I saw a rat whilst eating here . 😷","es":"Vi una rata mientras comía aquí . 😷"},"ownerResponse":{"author":{"fr":"Réponse du propriétaire","en":"Response from the owner","es":"Respuesta del propietario"},"time":{"fr":"il y a un jour","en":"a day ago","es":"hace un día"},"text":{"fr":"Ça s'appelle un miroir...","en":"That's called a mirror...","es":"Eso se llama espejo..."}},"stars":1,"real":true},
+  {"source":"Google","product":{"fr":"Garage Mécanique Mr Kenwell","en":"Mr Kenwell Auto Repair","es":"Taller mecánico Mr Kenwell"},"seller":"Google Maps","photo":"reviews/wiki/a_man_who_sanding_with_a_grinder_and_prepares_the_paint_for_the_ca.jpg","reviewer":"Ben Lau","date":{"fr":"il y a une semaine","en":"a week ago","es":"hace una semana"},"text":{"fr":"Très bonne réparation d'auto.\nAuto roule plus. Je pousse jusqu'au garage.\nM. Kenwell fait de la magie.\nL'auto roule à nouveau.\nJe suis content de l'auto, ressemble à une Ferrari maintenant.\nJe pousserais l'auto ici à nouveau.\n10/10 réparation d'auto","en":"Very good car fixing.\nCar no drive. I push to shop.\nMr Kenwell works magic.\nCar drives again.\nI am happy with car, feels like Ferrari now.\nWould push car here again.\n10/10 car fix","es":"Muy buena reparación de auto.\nAuto no anda. Empujo hasta el taller.\nMr Kenwell hace magia.\nAuto anda de nuevo.\nEstoy feliz con auto, se siente como Ferrari ahora.\nEmpujaría auto aquí de nuevo.\n10/10 reparación de auto"},"stars":5,"real":true},
+  {"source":"Google","product":{"fr":"Boulangerie / Épicerie","en":"Bakery / Grocery Store","es":"Panadería / Tienda de comestibles"},"seller":"Google Maps · Guide Local","shots":["reviews/oatmeal_raisin_cookie.jpg"],"reviewer":"Ozair Abbasi","date":{"fr":"il y a une semaine","en":"a week ago","es":"hace una semana"},"text":{"fr":"Je suis écœuré et fatigué qu'ils mettent des biscuits à l'avoine et raisins dans la section étiquetée biscuits aux pépites de chocolat.\n\nNourriture : 4 | Service : 5 | Ambiance : 3","en":"I am sick and tired of them putting oatmeal raisin cookies in the section labeled chocolate chip cookies.\n\nFood: 4 | Service: 5 | Atmosphere: 3","es":"Estoy harto y cansado de que pongan galletas de avena y pasas en la sección etiquetada como galletas con chispas de chocolate.\n\nComida: 4 | Servicio: 5 | Ambiente: 3"},"stars":2,"real":true},
+  {"source":"Store","product":{"fr":"Gâteau d'anniversaire personnalisé","en":"Custom Birthday Cake","es":"Pastel de cumpleaños personalizado"},"seller":"Pâtisserie locale","shots":["reviews/robret_birthday_cake.jpg"],"reviewer":"Robert","date":{"fr":"il y a un mois","en":"a month ago","es":"hace un mes"},"text":{"fr":"Ma copine a rapporté ce gâteau à la maison pour mon anniversaire et nous venons de remarquer que la personne qui a écrit mon nom sur le gâteau ne sait pas épeler l'un des prénoms les plus courants en Amérique.\nJe trouvais ça drôle mais je me suis dit mec je dois avertir les autres que vous devriez probablement donner le nom sur papier pour l'épeler correctement afin qu'ils ne le gâchent pas.\nHonnêtement, avez-vous déjà rencontré quelqu'un nommé Robret ? Lol","en":"My girl brought this cake home for my birthday and we just noticed the person that spelled my name on my cake can't spell one of the most common names in America.\nI thought it was funny but I was like man I gotta warn others that you might wanna give the the name on paper to spell it right so they can't mess it up.\nHonestly have you ever met someone named Robret? Lol","es":"Mi novia trajo este pastel a casa para mi cumpleaños y nos acabamos de dar cuenta de que la persona que escribió mi nombre en mi pastel no sabe deletrear uno de los nombres más comunes en América.\nPensé que era divertido pero dije viejo tengo que advertir a los demás que probablemente deberían dar el nombre en papel para deletrearlo bien y que no lo arruinen.\nSinceramente, ¿alguna vez han conocido a alguien llamado Robret? Lol"},"stars":2,"real":true},
+  {"source":"Google","product":{"fr":"Service d'ambulance","en":"Ambulance Service","es":"Servicio de ambulancia"},"seller":"Google Maps · Guide Local","shots":["reviews/ambulance_exterior.jpg"],"reviewer":"Adrianna Lidiski (Age of Tarot)","date":{"fr":"il y a un an","en":"a year ago","es":"hace un año"},"text":{"fr":"Les chauffeurs d'ambulance étaient des pervers.","en":"The ambulance drivers were perverts.","es":"Los conductores de ambulancia eran pervertidos."},"stars":3,"real":true},
+  {"source":"Google","product":{"fr":"Bibliothèque publique","en":"Public Library","es":"Biblioteca pública"},"seller":"Google Maps · Guide Local","shots":["reviews/public_library.jpg"],"reviewer":"Ron M.","date":{"fr":"il y a 3 jours","en":"3 days ago","es":"hace 3 días"},"text":{"fr":"Le vendredi 19 juin cette bibliothèque était et est fermée pour le congé du Juneteenth. J'ai essayé d'entrer mais un passant s'est arrêté et a dit qu'ils sont fermés aujourd'hui. Je ne ferai jamais mes impôts","en":"Friday June 19th this library was and is closed for the Juneteenth holiday. Tried walking in but a passerby stopped and said they're closed today. I'll never get my taxes done","es":"El viernes 19 de junio esta biblioteca estaba y está cerrada por el festivo de Juneteenth. Intenté entrar pero un transeúnte se detuvo y dijo que están cerrados hoy. Nunca haré mis impuestos"},"stars":3,"real":true},
+  {"source":"Google","product":{"fr":"Toilettes publiques","en":"Public Restroom","es":"Baños públicos"},"seller":"Google Maps","shots":["reviews/no_restroom_doors.png"],"reviewer":"Client Anonyme","date":{"fr":"il y a un jour","en":"a day ago","es":"hace un día"},"text":{"fr":"Où calvaire sont les portes","en":"Where the fuck are the doors","es":"Dónde carajos están las puertas"},"stars":5,"real":true},
+  {"source":"Amazon","product":{"fr":"Grattoir pour le dos en bambou","en":"Bamboo Backscratcher Set","es":"Rascador de espalda de bambú"},"seller":"Amazon.com · Achat vérifié","shots":["reviews/backscratcher.jpg"],"reviewer":"Lindsay Gandy","date":{"fr":"29 octobre 2025","en":"October 29, 2025","es":"29 de octubre de 2025"},"text":{"fr":"Efficace pour mon utilisation. Bon. Je donne des fessées à ma femme avec ça. Ça laisse une marque sur ses fesses. Je les adore.","en":"Effective for my use. Good. I spank my wife with these. They make a mark on her butt. I love them","es":"Eficaz para mi uso. Bueno. Le doy nalgadas a mi esposa con esto. Deja una marca en sus nalgas. Me encantan."},"stars":3,"real":true},
+  {"source":"Google","product":{"fr":"Église locale","en":"Local Church","es":"Iglesia local"},"seller":"Google Maps · Guide Local","shots":["reviews/church_interior.jpg"],"reviewer":"XaZi_42","date":{"fr":"il y a 2 mois","en":"2 months ago","es":"hace 2 meses"},"text":{"fr":"Belle église mais un peu trop de Jésus","en":"Nice church but too much Jesus a little","es":"Bonita iglesia pero un poco demasiado Jesús"},"stars":4,"real":true},
+  {"source":"Google","product":{"fr":"Resto à emporter local","en":"Local Takeout Diner","es":"Restaurante para llevar local"},"seller":"Google Maps","shots":["reviews/closed_storefront.jpg"],"reviewer":"Client (8 avis)","date":{"fr":"il y a 2 ans","en":"2 years ago","es":"hace 2 años"},"text":{"fr":"J'ai attendu plus de 50 minutes et l'endroit n'a tout simplement jamais ouvert. Et l'employé ne pouvait pas donner de raison pour laquelle son gérant avait 40 minutes de retard\n\nNourriture : 2/5","en":"I waited over 50 minutes and the place just never opened. And the employee couldn't give a reason why his manager was running 40 minutes late\n\nFood: 2/5","es":"Esperé más de 50 minutos y el lugar nunca abrió. Y el empleado no pudo dar una razón de por qué su gerente llegaba 40 minutos tarde\n\nComida: 2/5"},"ownerResponse":{"author":{"fr":"Réponse du propriétaire","en":"Response from the owner","es":"Respuesta del propietario"},"time":{"fr":"il y a 2 ans","en":"2 years ago","es":"hace 2 años"},"text":{"fr":"LOL HAHAHAHAHAHA","en":"LOL HAHAHAHAHAHA","es":"LOL HAHAHAHAHAHA"}},"stars":2,"real":true},
+  {"source":"Google","product":{"fr":"Restaurant de nouilles wonton","en":"Wonton Noodle Shop","es":"Restaurante de fideos wonton"},"seller":"Google Maps","shots":["reviews/wonton_noodles_no_soup.png"],"reviewer":"hangbin chen","date":{"fr":"il y a 4 mois","en":"4 months ago","es":"hace 4 meses"},"text":{"fr":"Quelle ordure ! Non seulement vous ne parlez pas chinois, mais j'ai aussi commandé des nouilles wonton et c'est ce que vous me donnez ? Vous appelez ça des nouilles wonton ? Pourquoi vous ne crevez pas ? Où est la soupe ? Vous ne voulez pas voir à quoi les nouilles wonton sont censées ressembler...","en":"What garbage! Not only do you not speak Chinese, but I also ordered wonton noodles and this is what you give me? You call this wonton noodles? Why don't you just die? Where's the soup? Don't you want to see what wonton noodles are supposed to be...","es":"¡Qué basura! No solo no hablan chino, sino que pedí fideos wonton y ¿esto es lo que me dan? ¿Llaman a esto fideos wonton? ¿Por qué no se mueren? ¿Dónde está la sopa? No quieren ver como se supone que son los fideos wonton..."},"stars":1,"real":true},
+  {"source":"Google","product":{"fr":"Jehova's Witness Kingdom Hall","en":"Jehova's Witness Kingdom Hall","es":"Jehova's Witness Kingdom Hall"},"seller":"Google Maps · Reddit Spot","context":{"fr":"Jehova's Witness Kingdom Hall","en":"Jehova's Witness Kingdom Hall","es":"Jehova's Witness Kingdom Hall"},"shots":["reviews/jehovah_biscuits.png"],"reviewer":"goose hole","date":{"fr":"il y a 7 ans","en":"7 years ago","es":"hace 7 años"},"text":{"fr":"Je suis assez découragé car lorsque j'étais à cette réunion de culte, on ne m'a offert que des biscuits, à ma surprise d'autres personnes de disposition plus susceptible ont eu des gâteaux. Ça ne m'aurait même pas dérangé d'habitude mais le biscuit était si vieux qu'il aurait pu appartenir à Jéhovah lui-même. Apportez vos propres snacks ou préparez-vous à ressentir la même morosité qu'eux.","en":"I'm quite disheartened as when I was at this cult meeting I was only offered biscuits, to my surprise other people of a more susceptible disposition are given cakes. I wouldn't have even minded usually but the biscuit was so old it could have belonged to Jehovah himself. Bring your own snacks or prepare to feel as doom and gloom as the rest of them.","es":"Estoy bastante desanimado ya que cuando estuve en esta reunión de culto solo me ofrecieron galletas, para mi sorpresa a otras personas de disposición más susceptible les dieron pasteles. Normalmente ni me habría importado, pero la galleta era tan vieja que podría haber pertenecido al mismísimo Jehová. Traigan sus propios snacks o prepárense para sentirse tan lúgubres como el resto."},"stars":2,"real":true},
+  {"source":"Online Store","product":{"fr":"Chapeau d'hiver avec rabats d'oreilles","en":"Winter Flap Hat","es":"Sombrero de invierno con orejeras"},"seller":"Edgerton ohio · Achat vérifié","shots":["reviews/nice_hat_too_big.png"],"reviewer":"Edgerton ohio","date":{"fr":"31 décembre 2025","en":"December 31, 2025","es":"31 de diciembre de 2025"},"text":{"fr":"Beau chapeau mais trop grand. Le vent s'infiltre par l'avant dans les conditions froides et venteuses. Les rabats d'oreilles s'évasent vers l'extérieur.","en":"Nice hat but to big. Wind blows in from the front in cold windy conditions. Ear flaps flare out.","es":"Bonito sombrero pero demasiado grande. El viento entra por el frente en condiciones frías y ventosas. Las orejeras se abren hacia afuera."},"stars":4,"real":true},
+  {"source":"Google","product":{"fr":"Phare & Zone Côtière","en":"Lighthouse & Coastal Site","es":"Faro y Zona Costera"},"seller":"Google Maps · Guide Local","shots":["reviews/empty_coastline_lighthouse.jpg"],"reviewer":"Anonyme (Local Guide)","date":{"fr":"il y a 10 mois","en":"10 months ago","es":"hace 10 meses"},"text":{"fr":"Pas de phare, scandaleux. Est-ce qu'il a été détruit ou quelque chose du genre ?","en":"no lighthouse, outrageos. did it get destroyed or sumn?","es":"sin faro, indignante. ¿se destruyó o algo así?"},"stars":2,"real":true},
+  {"source":"Store","product":{"fr":"Revêtement de raquette de tennis de table","en":"Table Tennis Racket Rubber","es":"Goma para raqueta de tenis de mesa"},"seller":"Vendeur en ligne · LT","shots":["reviews/table_tennis_rubber.jpg"],"reviewer":"Customer","date":{"fr":"4 août 2025","en":"Aug 4, 2025","es":"4 de agosto de 2025"},"text":{"fr":"Prix de livraison venant de l'espace\n\nJ'ai commandé un revêtement de raquette de ping-pong. La livraison avec UPS coûte presque 25 Eur, car le poids d'un seul revêtement, qui pèse environ 110 g avec l'emballage, a été indiqué à 110 kg. Cosmonautes. À éviter si vous en avez l'occasion.","en":"Shiping price from space\n\nI ordered a table tennis racket rubber. Shipping with UPS is almost 25 Eur, because the weight of one rubber, which weights about 110 g with packaging, was stated as 110 kg. Cosmonauts. Avoid if you have the opportunity.","es":"Precio de envío desde el espacio\n\nPedí una goma de raqueta de tenis de mesa. El envío con UPS cuesta casi 25 Eur, porque el peso de una sola goma, que pesa unos 110 g con embalaje, se indicó como 110 kg. Cosmonautas. Evitar si tienen la oportunidad."},"stars":1,"real":true},
+  {"source":"Macy's","product":{"fr":"Protège-matelas classique Macy's","en":"Classic Mattress Pad, Exclusively at Macy's","es":"Protector de colchón clásico Macy's"},"seller":"Macy's","shots":["reviews/waterproof_mattress_pad.jpg"],"reviewer":"thatbxtch69","date":{"fr":"11 janvier 2026","en":"January 11, 2026","es":"11 de enero de 2026"},"text":{"fr":"Soak City !!!\n\nAcheté pour jouer. Je me fais défoncer régulièrement. Je parle du genre lance d'incendie. C'est littéralement Soak City ici et ce protecteur garde mon matelas au sec, contrairement à moi. 10/10 je reviendrais !","en":"Soak City!!!\n\nPurchased this for play. I get my shxt blasted on the regular. Im talking fire-hydrant style. Its literally Soak City over here and this protector keeps my mattress dry unlike me. 10/10 would come again!","es":"¡¡¡Soak City!!!\n\nCompré esto para jugar. Me explotan con regularidad. Hablo estilo manguera de bomberos. Es literalmente Soak City aquí y este protector mantiene mi colchón seco, a diferencia de mí. 10/10 ¡volvería a venir!"},"stars":5,"real":true},
+  {"source":"Store","product":{"fr":"Rouge à lèvres liquide mat longue tenue","en":"Long-lasting Matte Liquid Lipstick","es":"Lápiz labial líquido mate de larga duración"},"seller":"Boutique de beauté","shots":["reviews/lipstick_julia.png"],"reviewer":"Julia","date":{"fr":"4 février","en":"February 04","es":"4 de febrero"},"text":{"fr":"J'ai pleuré pendant 2 heures, puis j'ai fait une gâterie pendant la même durée, puis j'ai pleuré à nouveau. Un jour plus tard, j'ai réalisé que ce rouge à lèvres tient encore ! Et mon moral est remonté. Rouge à lèvres 10/10 😍","en":"I cried for 2 hours, then I gave a b🅱️owjob for the same amount of time, then I cried again. A day later, I realized that this lipstick still holds! And my mood lifted. Lipstick 10/10 😍","es":"Lloré durante 2 horas, luego hice un oral durante la misma cantidad de tiempo, luego lloré de nuevo. ¡Un día después, me di cuenta de que este lápiz labial todavía aguanta! Y mi ánimo se levantó. Lápiz labial 10/10 😍"},"stars":5,"real":true},
+  {"source":"Google","product":{"fr":"Service de livraison d'eau","en":"Water Delivery Service","es":"Servicio de entrega de agua"},"seller":"Google Reviews","shots":["reviews/water_delivery.jpg"],"reviewer":"Jarno Balk","date":{"fr":"il y a un an","en":"a year ago","es":"hace un año"},"text":{"fr":"L'eau n'est pas arrivée\n\nMise à jour : j'ai reçu mon eau et elle est bonne !","en":"Water not get\n\nUpdate: got my water and is good!","es":"Agua no llega\n\nActualización: ¡recibí mi agua y está buena!"},"stars":4,"real":true},
+  {"source":"Google","product":{"fr":"Restaurant chinois local","en":"Local Chinese Restaurant","es":"Restaurante chino local"},"seller":"Google Maps · Guide Local","shots":["reviews/chinese_restaurant_food.jpg"],"reviewer":"Vickie Gonzalez","date":{"fr":"il y a 10 mois","en":"10 months ago","es":"hace 10 meses"},"text":{"fr":"La nourriture est brûlée et j'ai trouvé un cheveu dans mon plat,. J'ai demandé sans riz et elle met du riz dedans. J'ai découvert 6 mois plus tard qu'elle et sa fille couchaient avec mon mari. Elles font aussi semblant de ne pas parler anglais mais elles le parlent, beaucoup d'entre elles le parlent.","en":"The food is burned and I found a hair in my food,. I ask for no rice and she puts rice in it I found out 6 month later her and her daughter was sleeping with my husband. They also pretend that they don't speak English but they do a lot of them do","es":"La comida está quemada y encontré un pelo en mi comida,. Pedí sin arroz y le puso arroz. Me enteré 6 meses después que ella y su hija se acostaban con mi esposo. También pretenden que no hablan inglés pero sí lo hablan, muchas de ellas lo hacen"},"stars":1,"real":true},
+  {"source":"Store","product":{"fr":"Tabouret de bar White Mixology","en":"White Mixology Bar Stool","es":"Taburete de bar White Mixology"},"seller":"Magasin de meubles","shots":["reviews/white_bar_stool.jpg"],"reviewer":"Jaco","date":{"fr":"18 août 2025","en":"18 Aug 2025","es":"18 de agosto de 2025"},"text":{"fr":"C'est le meilleur achat que j'ai fait en 30 ans. Rembourré avec du cuir de qualité. J'aime la largeur du siège et même mes amis plus lourds peuvent s'asseoir confortablement et en toute sécurité. Le réglage en hauteur ajustable est définitivement fait pour le couple plus aventureux. C'est absolument pratique pour une pénétration profonde et passionnée.","en":"This is the best buy I have ever done in 30 years. Upholstered with quality leather. I love the width of the seat and even my heavier friends can sit down comfortably, and safely. The adjustable height setting is definitely made for the more adventurous couple. It is absolutely convenient for a deep and passionate penetration.","es":"Es la mejor compra que he hecho en 30 años. Tapizado con cuero de calidad. Me encanta el ancho del asiento e incluso mis amigos más pesados se pueden sentar cómoda y seguro. El ajuste de altura graduable está hecho definitivamente para la pareja más aventurera. Es absolutamente conveniente para una penetración profunda y apasionada."},"stars":5,"real":true},
+  {"source":"Amazon","product":{"fr":"Porte-bébé ergonomique (Oxford Blue)","en":"Ergonomic Baby Carrier (Oxford Blue)","es":"Portabebés ergonómico (Oxford Blue)"},"seller":"Amazon.com · Achat vérifié","shots":["reviews/fat_baby_carrier.png"],"reviewer":"Steve","date":{"fr":"22 février 2020","en":"February 22, 2020","es":"22 de febrero de 2020"},"text":{"fr":"Capable de supporter un gros bébé.\nRécemment acheté ce produit en tant que nouveau père. Je voulais m'assurer que le produit convenait à mon fils de 2 mois.\n\nJ'ai testé le porte-bébé avec mon ami de 28 ans et 80 kg pour m'assurer que le système était solide. Aucune marque de déchirement ou de rupture n'était évidente.\n\nJe recommanderais ce porte-bébé à quiconque a un bébé en surpoids.","en":"Fat baby capable.\nRecently bought this product as a new father. Wanted to ensure product was suitable for my 2 month old year old son.\n\nTested the carrier with my 28 year old, 80kg friend to ensure the carrier system was serviceable. Nil indications of carrier ripping or breaking was evident.\n\nWould recommend this carrier to anyone with an overweight baby.","es":"Apto para bebés gordos.\nRecientemente compré este producto como nuevo padre. Quería asegurarme de que el producto fuera adecuado para mi hijo de 2 meses.\n\nProbé el portabebés con mi amigo de 28 años y 80 kg para asegurarme de que el sistema fuera funcional. Sin evidencia de desgarros o roturas.\n\nRecomendaría este portabebés a cualquiera que tenga un bebé con sobrepeso."},"stars":5,"real":true},
+  {"source":"Amazon","product":{"fr":"Lingerie sexy / Thong taille XXL (Vert)","en":"Sexy Lingerie / Thong XXL (Green)","es":"Lencería sexy / Tanga XXL (Verde)"},"seller":"Amazon.com · Achat vérifié","shots":["reviews/crossdresser_thong.png"],"reviewer":"William","date":{"fr":"19 mars 2026","en":"March 19, 2026","es":"19 de marzo de 2026"},"text":{"fr":"Super pour tout le monde\nJe suis travesti et j'adore porter des vêtements sexy pour femmes. Je fais 6'3\" et je pèse 265 livres et la taille XXL me va parfaitement. C'est super seul ou avec une mini-jupe ou un short.","en":"Great for everyone\nI am a crossdresser and love wearing sexy women's clothes. I am 6'3\" and weigh 265 pounds and the xxl fit me perfectly. Looks great alone or with a mini skirt or shorts.","es":"Excelente para todos\nSoy travesti y me encanta usar ropa sexy de mujer. Mido 6'3\" y peso 265 libras y la talla XXL me queda perfectamente. Se ve genial solo o con una minifalda o shorts."},"stars":5,"real":true},
   {"source":"Amazon","product":{"fr":"Sennheiser HD 800 S — Écouteurs","en":"Sennheiser HD 800 S — Headphones","es":"Sennheiser HD 800 S — Audífonos"},"seller":"Amazon.in · 1 39 990 ₹","photo":"reviews/wiki/s_uchawki_referencyjne_k-701_firmy_akg.jpg","reviewer":"Alm","date":{"fr":"15 juillet 2019","en":"July 15, 2019","es":"15 de julio de 2019"},"text":{"fr":"Ces écouteurs déchirent ! J'hésitais à cause du prix, mais ma tante m'a conseillé de vendre un rein si je les voulais vraiment. J'ai dû vendre les deux, parce qu'un seul ne suffisait pas. Je n'ai jamais regretté ma décision. Il y a juste un problème : ma tante n'est plus là :-(","en":"These headphones rock! I was hesitant because of the price, but my aunt advised me to sell a kidney if I really wanted them. I had to sell both, because one wasn't enough. I have never regretted my decision. There's just one problem: my aunt isn't around anymore :-(","es":"¡Estos audífonos son una locura! Dudaba por el precio, pero mi tía me aconsejó vender un riñón si de verdad los quería. Tuve que vender los dos, porque con uno no alcanzaba. Nunca me he arrepentido de la decisión. Solo hay un problema: mi tía ya no está :-("},"stars":5,"real":true},
   {"source":"Amazon","product":{"fr":"Bandes de blanchiment dentaire","en":"Teeth whitening strips","es":"Tiras blanqueadoras dentales"},"seller":"Amazon.com","photo":"reviews/wiki/06-10-06smile.jpg","reviewer":"Roan Ricker","date":{"fr":"14 octobre 2018","en":"October 14, 2018","es":"14 de octubre de 2018"},"text":{"fr":"Ça fonctionne ! Mes dents sont si blanches qu'elles ont commencé à annexer les terres des voisins !","en":"It works! My teeth are so white they've started annexing neighbouring land!","es":"¡Funciona! ¡Mis dientes están tan blancos que empezaron a anexarse los terrenos vecinos!"},"stars":5,"real":true},
   {"source":"Amazon","product":{"fr":"Brosse de toilette avec support","en":"Toilet brush with holder","es":"Cepillo de baño con soporte"},"seller":"Amazon.co.uk","shots":["reviews/brush.png"],"photo":"reviews/wiki/klobuersten_fcm_.jpg","reviewer":"Christine Campbell","date":{"fr":"28 août 2017","en":"August 28, 2017","es":"28 de agosto de 2017"},"text":{"fr":"Beaucoup trop de douleur. Ça cause trop de souffrance et d'agonie, je ne comprends pas pourquoi c'est si populaire de nos jours. Je vais simplement retourner au papier de toilette.","en":"Way too much pain. It causes too much suffering and agony, I don't understand why it's so popular these days. I'll just go back to toilet paper.","es":"Demasiado dolor. Causa demasiado sufrimiento y agonía, no entiendo por qué está tan de moda hoy en día. Mejor me devuelvo al papel higiénico."},"stars":2,"real":true},
@@ -6498,14 +5916,14 @@ var REVIEWS_PACK = [
   {"source":"Google","product":{"fr":"Stonehenge","en":"Stonehenge","es":"Stonehenge"},"seller":"Wiltshire, Angleterre","photo":"reviews/wiki/stonehenge2007_07_30.jpg","reviewer":"Margaret H.","date":{"fr":"1 janvier 2017","en":"January 1, 2017","es":"1 de enero de 2017"},"text":{"fr":"Des roches. Littéralement des roches dans un champ, et on ne peut même pas les toucher. Ma belle-mère avait raison pour une fois.","en":"Rocks. Literally rocks in a field, and you can't even touch them. My mother-in-law was right for once.","es":"Piedras. Literalmente piedras en un potrero, y ni siquiera se pueden tocar. Mi suegra tenía razón por una vez."},"stars":1,"real":false},
   {"source":"Google","product":{"fr":"Mona Lisa","en":"Mona Lisa","es":"La Mona Lisa"},"seller":"Musée du Louvre, Paris","photo":"reviews/wiki/mona_lisa_by_leonardo_da_vinci_from_c2rmf_retouched.jpg","reviewer":"Kenji T. (traduit du japonais)","date":{"fr":"8 juin 2018","en":"June 8, 2018","es":"8 de junio de 2018"},"text":{"fr":"Trois heures de file pour un tableau de la taille d'un napperon, derrière une vitre, avec 400 téléphones devant. Elle ne sourit même pas vraiment.","en":"Three hours in line for a painting the size of a placemat, behind glass, with 400 phones in front of it. She isn't even really smiling.","es":"Tres horas de fila para un cuadro del tamaño de un individual, detrás de un vidrio, con 400 celulares al frente. Ni siquiera está sonriendo de verdad."},"stars":1,"real":false},
   {"source":"Google","product":{"fr":"Grand Canyon","en":"Grand Canyon","es":"Gran Cañón"},"seller":"Arizona, États-Unis","photo":"reviews/wiki/canyon_river_tree_165872763_.jpeg","reviewer":"Brad W.","date":{"fr":"15 novembre 2019","en":"November 15, 2019","es":"15 de noviembre de 2019"},"text":{"fr":"C'est un trou. Un très grand trou. Il n'y a rien à faire à part regarder le trou.","en":"It's a hole. A very big hole. There's nothing to do except look at the hole.","es":"Es un hueco. Un hueco muy grande. No hay nada que hacer aparte de mirar el hueco."},"stars":1,"real":false},
-  {"source":"Google","product":{"fr":"Tour de Pise","en":"Leaning Tower of Pisa","es":"Torre de Pisa"},"seller":"Pise, Italie","photo":"reviews/wiki/italy_-_pisa_-_leaning_tower.jpg","reviewer":"Silvia R. (traduit de l'italien)","date":{"fr":"22 avril 2020","en":"April 22, 2020","es":"22 de abril de 2020"},"text":{"fr":"Elle penche. C'est tout. Tout le monde fait la même photo ridicule et il n'y a même pas d'ascenseur.","en":"It leans. That's it. Everybody takes the same ridiculous photo and there isn't even an elevator.","es":"Se inclina. Ya. Todo el mundo se toma la misma foto ridícula y ni siquiera hay ascensor."},"stars":1,"real":false},
+  {"source":"Google","product":{"fr":"Tour de Pise","en":"Leaning Tower of Pisa","es":"Torre de Pisa"},"seller":"Pise, Italie","photo":"reviews/wiki/italy_-_pisa_-_leaning_tower.jpg","reviewer":"Silvia R. (traduit de l'italien)","date":{"fr":"22 avril 2020","en":"April 22, 2020","es":"22 de abril de 2020"},"text":{"fr":"Elle penche. C'est tout le concept. Quarante personnes dans le stationnement font le même geste ridicule avec les bras et personne n'ose être la première à arrêter. J'ai fait la photo aussi. Je ne suis pas fier.","en":"It leans. That is the entire concept. Forty people in the car park are doing the same ridiculous thing with their arms and nobody dares be the first to stop. I took the photo too. I am not proud.","es":"Se inclina. Ese es todo el concepto. Cuarenta personas en el parqueadero haciendo la misma bobada con los brazos y nadie se atreve a ser el primero en parar. Yo también me tomé la foto. No estoy orgulloso."},"stars":1,"real":false},
   {"source":"Google","product":{"fr":"Times Square","en":"Times Square","es":"Times Square"},"seller":"New York, États-Unis","photo":"reviews/wiki/new_york_times_square-terabass.jpg","reviewer":"Denise L.","date":{"fr":"1 septembre 2021","en":"September 1, 2021","es":"1 de septiembre de 2021"},"text":{"fr":"Des écrans, des odeurs douteuses et six hommes déguisés en Elmo qui exigent de l'argent. Plus jamais.","en":"Screens, questionable smells and six men dressed as Elmo demanding money. Never again.","es":"Pantallas, olores dudosos y seis hombres disfrazados de Elmo exigiendo plata. Nunca más."},"stars":1,"real":false},
   {"source":"Google","product":{"fr":"Blarney Stone","en":"Blarney Stone","es":"La Piedra de Blarney"},"seller":"Cork, Irlande","photo":"reviews/wiki/the_blarney_stone.jpg","reviewer":"Cian O.","date":{"fr":"8 février 2022","en":"February 8, 2022","es":"8 de febrero de 2022"},"text":{"fr":"J'ai fait la file 90 minutes pour embrasser une pierre humide que 300 personnes avaient embrassée avant moi. Je suis malade depuis.","en":"I queued 90 minutes to kiss a damp stone that 300 people had kissed before me. I've been sick ever since.","es":"Hice 90 minutos de fila para besar una piedra húmeda que 300 personas habían besado antes que yo. Llevo enfermo desde entonces."},"stars":1,"real":false},
   {"source":"Google","product":{"fr":"Manneken Pis","en":"Manneken Pis","es":"Manneken Pis"},"seller":"Bruxelles, Belgique","photo":"reviews/wiki/bruxelles_manneken_pis_cropped.jpg","reviewer":"Joris V. (traduit du néerlandais)","date":{"fr":"15 juillet 2023","en":"July 15, 2023","es":"15 de julio de 2023"},"text":{"fr":"C'est une statue de 55 cm d'un enfant qui urine. Cinquante-cinq centimètres. J'ai marché 20 minutes pour ça.","en":"It's a 55 cm statue of a child urinating. Fifty-five centimetres. I walked 20 minutes for that.","es":"Es una estatua de 55 cm de un niño orinando. Cincuenta y cinco centímetros. Caminé 20 minutos por eso."},"stars":1,"real":false},
   {"source":"Google","product":{"fr":"Checkpoint Charlie","en":"Checkpoint Charlie","es":"Checkpoint Charlie"},"seller":"Berlin, Allemagne","photo":"reviews/wiki/berlin_-_checkpoint_charlie_1963.jpg","reviewer":"Uwe K. (traduit de l'allemand)","date":{"fr":"22 décembre 2024","en":"December 22, 2024","es":"22 de diciembre de 2024"},"text":{"fr":"Une cabane reconstituée avec des acteurs qui vendent de faux tampons de passeport. Le musée coûte plus cher qu'un souper.","en":"A rebuilt shack with actors selling fake passport stamps. The museum costs more than dinner.","es":"Una caseta reconstruida con actores vendiendo sellos de pasaporte falsos. El museo cuesta más que una cena."},"stars":1,"real":false},
   {"source":"Google","product":{"fr":"Hollywood Walk of Fame","en":"Hollywood Walk of Fame","es":"Paseo de la Fama de Hollywood"},"seller":"Los Angeles, États-Unis","photo":"reviews/wiki/wof-logo-final-400x221.png","reviewer":"Tanya P.","date":{"fr":"1 mai 2017","en":"May 1, 2017","es":"1 de mayo de 2017"},"text":{"fr":"Des noms sur un trottoir sale. J'ai vu plus de seringues que d'étoiles que je connaissais.","en":"Names on a dirty sidewalk. I saw more needles than stars I actually recognised.","es":"Nombres en un andén sucio. Vi más jeringas que estrellas que reconociera."},"stars":1,"real":false},
   {"source":"Google","product":{"fr":"La Petite Sirène","en":"The Little Mermaid","es":"La Sirenita"},"seller":"Copenhague, Danemark","photo":"reviews/wiki/copenhagen_-_the_little_mermaid_statue_-_2013.jpg","reviewer":"Mette S. (traduit du danois)","date":{"fr":"8 octobre 2018","en":"October 8, 2018","es":"8 de octubre de 2018"},"text":{"fr":"Minuscule, entourée de 200 touristes, et impossible de s'approcher. Le traversier coûtait plus cher que mon vol.","en":"Tiny, surrounded by 200 tourists, and impossible to get close to. The ferry cost more than my flight.","es":"Diminuta, rodeada de 200 turistas, e imposible acercarse. El ferry costó más que mi vuelo."},"stars":1,"real":false},
-  {"source":"Google","product":{"fr":"Mount Rushmore","en":"Mount Rushmore","es":"Monte Rushmore"},"seller":"Dakota du Sud, États-Unis","photo":"reviews/wiki/mount_rushmore_detail_view_100mp_.jpg","reviewer":"Gary D.","date":{"fr":"15 mars 2019","en":"March 15, 2019","es":"15 de marzo de 2019"},"text":{"fr":"Quatre visages, visités en huit minutes. Le stationnement coûte plus que l'expérience et la boutique vend des aimants à 18 $.","en":"Four faces, done in eight minutes. Parking costs more than the experience and the gift shop sells $18 magnets.","es":"Cuatro caras, visitadas en ocho minutos. El parqueadero cuesta más que la experiencia y la tienda vende imanes de $18."},"stars":2,"real":false},
+  {"source":"Google","product":{"fr":"Mount Rushmore","en":"Mount Rushmore","es":"Monte Rushmore"},"seller":"Dakota du Sud, États-Unis","photo":"reviews/wiki/mount_rushmore_detail_view_100mp_.jpg","reviewer":"Gary D.","date":{"fr":"15 mars 2019","en":"March 15, 2019","es":"15 de marzo de 2019"},"text":{"fr":"Quatre présidents, huit minutes, 22 $ de stationnement. J'ai passé plus de temps dans la boutique que devant la montagne, et j'y ai acheté un aimant de la même montagne que je venais de voir gratuitement de la route.","en":"Four presidents, eight minutes, $22 to park. I spent longer in the gift shop than looking at the mountain, and in there I bought a magnet of the same mountain I had just seen from the road for free.","es":"Cuatro presidentes, ocho minutos, $22 de parqueadero. Pasé más tiempo en la tienda que mirando la montaña, y ahí compré un imán de la misma montaña que acababa de ver gratis desde la carretera."},"stars":2,"real":false},
   {"source":"Google","product":{"fr":"Loch Ness","en":"Loch Ness","es":"Lago Ness"},"seller":"Highlands, Écosse","photo":"reviews/wiki/lochnessurquhart.jpg","reviewer":"Fiona M.","date":{"fr":"22 août 2020","en":"August 22, 2020","es":"22 de agosto de 2020"},"text":{"fr":"J'ai regardé de l'eau grise pendant deux heures. Aucun monstre. Le musée est essentiellement une roulotte.","en":"I stared at grey water for two hours. No monster. The museum is basically a trailer.","es":"Miré agua gris durante dos horas. Ningún monstruo. El museo es básicamente un tráiler."},"stars":2,"real":false},
   {"source":"Google","product":{"fr":"Vallée de la Mort","en":"Death Valley","es":"Valle de la Muerte"},"seller":"Californie, États-Unis","photo":"reviews/wiki/death_valley_from_space.jpg","reviewer":"Chad B.","date":{"fr":"1 janvier 2021","en":"January 1, 2021","es":"1 de enero de 2021"},"text":{"fr":"Il faisait 49 °C, mon téléphone a littéralement fondu et il n'y a pas d'ombre sur 200 km. Au moins le nom est honnête.","en":"It was 49 °C, my phone literally melted and there's no shade for 200 km. At least the name is honest.","es":"Hacía 49 °C, el celular literalmente se me derritió y no hay sombra en 200 km. Al menos el nombre es honesto."},"stars":2,"real":false},
   {"source":"Google","product":{"fr":"Fontaine de Trevi","en":"Trevi Fountain","es":"Fontana di Trevi"},"seller":"Rome, Italie","photo":"reviews/wiki/trevi_fountain_-_roma.jpg","reviewer":"Paolo G. (traduit de l'italien)","date":{"fr":"8 juin 2022","en":"June 8, 2022","es":"8 de junio de 2022"},"text":{"fr":"Impossible de voir l'eau à travers la foule. Un homme m'a vendu un parapluie sous un ciel parfaitement bleu.","en":"Couldn't see the water through the crowd. A man sold me an umbrella under a perfectly blue sky.","es":"No pude ver el agua entre la multitud. Un señor me vendió un paraguas bajo un cielo perfectamente azul."},"stars":2,"real":false},
@@ -6515,36 +5933,44 @@ var REVIEWS_PACK = [
   {"source":"Google","product":{"fr":"Zone d'exclusion de Tchernobyl","en":"Chernobyl Exclusion Zone","es":"Zona de exclusión de Chernóbil"},"seller":"Pripiat, Ukraine","photo":"reviews/wiki/checkpoint_ditkatky_chernobyl_zone.jpg","reviewer":"Olek D. (traduit de l'ukrainien)","date":{"fr":"8 février 2018","en":"February 8, 2018","es":"8 de febrero de 2018"},"text":{"fr":"Le guide a répété trois fois de ne pas toucher la mousse. Mon ami a touché la mousse.","en":"The guide said three times not to touch the moss. My friend touched the moss.","es":"El guía repitió tres veces que no tocáramos el musgo. Mi amigo tocó el musgo."},"stars":2,"real":false},
   {"source":"Google","product":{"fr":"Karni Mata (temple aux rats)","en":"Karni Mata (the rat temple)","es":"Karni Mata (el templo de las ratas)"},"seller":"Deshnoke, Inde","photo":"reviews/wiki/20191212_wi_tynia_karni_maty_w_de_nok_1031_8078_dxo.jpg","reviewer":"Ravi S. (traduit de l'hindi)","date":{"fr":"15 juillet 2019","en":"July 15, 2019","es":"15 de julio de 2019"},"text":{"fr":"Un temple magnifique habité par 25 000 rats, et il faut entrer pieds nus. J'ai respecté la tradition et je le regrette.","en":"A beautiful temple inhabited by 25,000 rats, and you have to go in barefoot. I respected the tradition and I regret it.","es":"Un templo hermoso habitado por 25.000 ratas, y hay que entrar descalzo. Respeté la tradición y me arrepiento."},"stars":2,"real":false},
   {"source":"Google","product":{"fr":"Île aux poupées","en":"Island of the Dolls","es":"Isla de las Muñecas"},"seller":"Xochimilco, Mexique","photo":"reviews/wiki/xochimilco_dolls_island.jpg","reviewer":"Alejandra C. (traduit de l'espagnol)","date":{"fr":"22 décembre 2020","en":"December 22, 2020","es":"22 de diciembre de 2020"},"text":{"fr":"Des centaines de poupées mutilées clouées aux arbres. Le batelier riait tout seul. Je n'ai pas dormi depuis.","en":"Hundreds of mutilated dolls nailed to the trees. The boatman was laughing to himself. I haven't slept since.","es":"Cientos de muñecas mutiladas clavadas en los árboles. El barquero se reía solo. No he dormido desde entonces."},"stars":2,"real":false},
-  {"source":"Google","product":{"fr":"Chutes du Niagara","en":"Niagara Falls","es":"Cataratas del Niágara"},"seller":"Ontario, Canada","photo":"reviews/wiki/3falls_niagara.jpg","reviewer":"Steve R.","date":{"fr":"1 mai 2021","en":"May 1, 2021","es":"1 de mayo de 2021"},"text":{"fr":"Les chutes sont vraiment impressionnantes, le reste ressemble à un parc d'attractions avec des casinos. Le poncho sauve la visite.","en":"The falls really are impressive, the rest feels like a theme park with casinos. The poncho saves the visit.","es":"Las cataratas sí son impresionantes, el resto parece un parque de diversiones con casinos. El poncho salva la visita."},"stars":3,"real":false},
+  {"source":"Google","product":{"fr":"Chutes du Niagara","en":"Niagara Falls","es":"Cataratas del Niágara"},"seller":"Ontario, Canada","photo":"reviews/wiki/3falls_niagara.jpg","reviewer":"Steve R.","date":{"fr":"1 mai 2021","en":"May 1, 2021","es":"1 de mayo de 2021"},"text":{"fr":"Les chutes : spectaculaires. Tout ce qui se trouve dans un rayon de 400 mètres autour des chutes : un centre d'achats hanté avec un casino collé dessus. J'ai payé 9 $ pour un poncho et 14 $ pour un aimant en forme de baril.","en":"The falls: spectacular. Everything within 400 metres of the falls: a haunted shopping mall with a casino stapled to it. I paid $9 for a poncho and $14 for a magnet shaped like a barrel.","es":"Las cataratas: espectaculares. Todo lo que hay en 400 metros a la redonda: un centro comercial embrujado con un casino pegado encima. Pagué $9 por un poncho y $14 por un imán en forma de barril."},"stars":3,"real":false},
   {"source":"Google","product":{"fr":"Tour Eiffel","en":"Eiffel Tower","es":"Torre Eiffel"},"seller":"Paris, France","photo":"reviews/wiki/eiffel_tower_logo.svg.png","reviewer":"Claire D.","date":{"fr":"8 octobre 2022","en":"October 8, 2022","es":"8 de octubre de 2022"},"text":{"fr":"Belle de loin, file interminable de proche. La vue est superbe mais l'ascenseur sent la panique collective.","en":"Beautiful from far away, endless queue up close. The view is superb but the elevator smells like collective panic.","es":"Linda de lejos, fila interminable de cerca. La vista es espectacular pero el ascensor huele a pánico colectivo."},"stars":3,"real":false},
   {"source":"Google","product":{"fr":"Pyramides de Gizeh","en":"Pyramids of Giza","es":"Pirámides de Guiza"},"seller":"Gizeh, Égypte","photo":"reviews/wiki/pyramids_of_the_giza_necropolis.jpg","reviewer":"Amr H. (traduit de l'arabe)","date":{"fr":"15 mars 2023","en":"March 15, 2023","es":"15 de marzo de 2023"},"text":{"fr":"Grandioses, mais on vous propose un chameau toutes les huit secondes. Négociez tout, puis négociez encore.","en":"Magnificent, but somebody offers you a camel every eight seconds. Haggle over everything, then haggle again.","es":"Grandiosas, pero te ofrecen un camello cada ocho segundos. Regatea todo, y después vuelve a regatear."},"stars":3,"real":false},
   {"source":"Google","product":{"fr":"Colisée","en":"Colosseum","es":"Coliseo"},"seller":"Rome, Italie","photo":"reviews/wiki/colosseo_2020.jpg","reviewer":"Marco T. (traduit de l'italien)","date":{"fr":"22 août 2024","en":"August 22, 2024","es":"22 de agosto de 2024"},"text":{"fr":"Histoire incroyable, foule tout aussi incroyable. Prenez un guide, sinon c'est juste un très beau mur brisé.","en":"Incredible history, equally incredible crowd. Get a guide, otherwise it's just a very nice broken wall.","es":"Historia increíble, multitud igual de increíble. Contrata un guía, si no es solo un muro roto muy bonito."},"stars":3,"real":false},
   {"source":"Google","product":{"fr":"Machu Picchu","en":"Machu Picchu","es":"Machu Picchu"},"seller":"Cusco, Pérou","photo":"reviews/wiki/machu_picchu_2023_012_.jpg","reviewer":"Diego F. (traduit de l'espagnol)","date":{"fr":"1 janvier 2017","en":"January 1, 2017","es":"1 de enero de 2017"},"text":{"fr":"Ça vaut le détour, mais l'autobus, le train et le billet coûtent une fortune. Un lama m'a bloqué le passage 10 minutes.","en":"Worth the trip, but the bus, the train and the ticket cost a fortune. A llama blocked my path for 10 minutes.","es":"Vale la pena, pero el bus, el tren y la entrada cuestan una fortuna. Una llama me bloqueó el paso 10 minutos."},"stars":3,"real":false},
   {"source":"Google","product":{"fr":"Angkor Vat","en":"Angkor Wat","es":"Angkor Wat"},"seller":"Siem Reap, Cambodge","photo":"reviews/wiki/angkor_wat.jpg","reviewer":"Sokha P. (traduit du khmer)","date":{"fr":"8 juin 2018","en":"June 8, 2018","es":"8 de junio de 2018"},"text":{"fr":"Splendide au lever du soleil, avec 3 000 autres personnes ayant eu la même idée. Apportez beaucoup d'eau.","en":"Stunning at sunrise, along with 3,000 other people who had the same idea. Bring lots of water.","es":"Espléndido al amanecer, con otras 3.000 personas que tuvieron la misma idea. Lleva mucha agua."},"stars":3,"real":false},
-  {"source":"Google","product":{"fr":"Taj Mahal","en":"Taj Mahal","es":"Taj Mahal"},"seller":"Agra, Inde","photo":"reviews/wiki/taj_mahal_edited_.jpeg","reviewer":"Priya N. (traduit de l'hindi)","date":{"fr":"15 novembre 2019","en":"November 15, 2019","es":"15 de noviembre de 2019"},"text":{"fr":"Parfaitement symétrique et parfaitement bondé. Les chausse-pieds obligatoires étaient déjà mouillés.","en":"Perfectly symmetrical and perfectly packed. The mandatory shoe covers were already wet.","es":"Perfectamente simétrico y perfectamente atestado. Las cubrezapatos obligatorias ya estaban mojadas."},"stars":3,"real":false},
+  {"source":"Google","product":{"fr":"Taj Mahal","en":"Taj Mahal","es":"Taj Mahal"},"seller":"Agra, Inde","photo":"reviews/wiki/taj_mahal_edited_.jpeg","reviewer":"Priya N. (traduit de l'hindi)","date":{"fr":"15 novembre 2019","en":"November 15, 2019","es":"15 de noviembre de 2019"},"text":{"fr":"Parfaitement symétrique. Parfaitement bondé. Les chausse-pieds obligatoires étaient déjà mouillés et personne n'a voulu m'expliquer pourquoi. J'y repense encore. Le monument, lui, est irréprochable.","en":"Perfectly symmetrical. Perfectly packed. The mandatory shoe covers were already wet and nobody would explain to me why. I still think about it. The monument itself is beyond reproach.","es":"Perfectamente simétrico. Perfectamente atestado. Las cubrezapatos obligatorias ya estaban mojadas y nadie me quiso explicar por qué. Todavía lo pienso. El monumento en sí es intachable."},"stars":3,"real":false},
   {"source":"Google","product":{"fr":"Uluru","en":"Uluru","es":"Uluru"},"seller":"Territoire du Nord, Australie","photo":"reviews/wiki/uluru.jpg","reviewer":"Shane M.","date":{"fr":"22 avril 2020","en":"April 22, 2020","es":"22 de abril de 2020"},"text":{"fr":"Immense et rouge, exactement comme sur les photos. Six heures de route pour le confirmer, et énormément de mouches.","en":"Huge and red, exactly like in the photos. Six hours of driving to confirm it, and a tremendous number of flies.","es":"Enorme y rojo, exactamente como en las fotos. Seis horas de carretera para confirmarlo, y muchísimas moscas."},"stars":3,"real":false},
-  {"source":"Google","product":{"fr":"Santorin","en":"Santorini","es":"Santorini"},"seller":"Cyclades, Grèce","photo":"reviews/wiki/2011_dimos_thiras.png","reviewer":"Eleni K. (traduit du grec)","date":{"fr":"1 septembre 2021","en":"September 1, 2021","es":"1 de septiembre de 2021"},"text":{"fr":"Les couchers de soleil sont réels, les prix aussi. On m'a facturé 14 € pour un jus d'orange à Oia.","en":"The sunsets are real, so are the prices. I was charged €14 for an orange juice in Oia.","es":"Los atardeceres son reales, los precios también. Me cobraron 14 € por un jugo de naranja en Oía."},"stars":3,"real":false},
+  {"source":"Google","product":{"fr":"Santorin","en":"Santorini","es":"Santorini"},"seller":"Cyclades, Grèce","photo":"reviews/wiki/2011_dimos_thiras.png","reviewer":"Eleni K. (traduit du grec)","date":{"fr":"1 septembre 2021","en":"September 1, 2021","es":"1 de septiembre de 2021"},"text":{"fr":"Les couchers de soleil sont réels. Les prix aussi. 14 € pour un jus d'orange à Oia, servi par un homme qui savait exactement ce qu'il faisait. On s'est regardés. On a tous les deux compris. J'ai payé.","en":"The sunsets are real. So are the prices. €14 for an orange juice in Oia, served by a man who knew exactly what he was doing. We looked at each other. We both understood. I paid.","es":"Los atardeceres son reales. Los precios también. 14 € por un jugo de naranja en Oía, servido por un señor que sabía exactamente lo que hacía. Nos miramos. Los dos entendimos. Pagué."},"stars":3,"real":false},
   {"source":"Google","product":{"fr":"Petra","en":"Petra","es":"Petra"},"seller":"Ma'an, Jordanie","photo":"reviews/wiki/al_deir_petra.jpg","reviewer":"Hana J. (traduit de l'arabe)","date":{"fr":"8 février 2022","en":"February 8, 2022","es":"8 de febrero de 2022"},"text":{"fr":"La marche jusqu'au Trésor est magique. Le retour en plein soleil, beaucoup moins. Portez de vrais souliers.","en":"The walk to the Treasury is magical. The walk back in full sun, much less so. Wear real shoes.","es":"La caminata hasta el Tesoro es mágica. El regreso a pleno sol, mucho menos. Usa zapatos de verdad."},"stars":3,"real":false},
   {"source":"Google","product":{"fr":"Aurores boréales de Tromsø","en":"Northern lights in Tromsø","es":"Auroras boreales en Tromsø"},"seller":"Tromsø, Norvège","photo":"reviews/wiki/troms_sentrum_5835702754_.jpg","reviewer":"Ingrid H. (traduit du norvégien)","date":{"fr":"15 juillet 2023","en":"July 15, 2023","es":"15 de julio de 2023"},"text":{"fr":"Trois nuits d'attente pour une nuit de magie totale. Habillez-vous comme pour une expédition, sérieusement.","en":"Three nights of waiting for one night of total magic. Dress like you're on an expedition, seriously.","es":"Tres noches de espera por una noche de magia total. Vístete como para una expedición, en serio."},"stars":4,"real":false},
   {"source":"Google","product":{"fr":"Chutes d'Iguazu","en":"Iguazu Falls","es":"Cataratas del Iguazú"},"seller":"Frontière Argentine-Brésil","photo":"reviews/wiki/aerial_foz_de_igua_u_26_nov_2005.jpg","reviewer":"Lucía V. (traduit de l'espagnol)","date":{"fr":"22 décembre 2024","en":"December 22, 2024","es":"22 de diciembre de 2024"},"text":{"fr":"Assourdissant et gigantesque. J'enlève une étoile parce que je suis repartie trempée jusqu'aux sous-vêtements.","en":"Deafening and gigantic. I'm taking off one star because I left soaked all the way to my underwear.","es":"Ensordecedoras y gigantescas. Le quito una estrella porque salí empapada hasta la ropa interior."},"stars":4,"real":false},
-  {"source":"Google","product":{"fr":"Mont Fuji","en":"Mount Fuji","es":"Monte Fuji"},"seller":"Honshu, Japon","photo":"reviews/wiki/view_of_mount_fuji_from_wakudani_20211202.jpg","reviewer":"Haruto S. (traduit du japonais)","date":{"fr":"1 mai 2017","en":"May 1, 2017","es":"1 de mayo de 2017"},"text":{"fr":"L'ascension est brutale mais le lever du soleil au sommet règle tous les comptes. Les toilettes coûtent 200 ¥.","en":"The climb is brutal but the sunrise at the summit settles all debts. The toilets cost ¥200.","es":"El ascenso es brutal pero el amanecer en la cima salda todas las cuentas. Los baños cuestan 200 ¥."},"stars":4,"real":false},
+  {"source":"Google","product":{"fr":"Mont Fuji","en":"Mount Fuji","es":"Monte Fuji"},"seller":"Honshu, Japon","photo":"reviews/wiki/view_of_mount_fuji_from_wakudani_20211202.jpg","reviewer":"Haruto S. (traduit du japonais)","date":{"fr":"1 mai 2017","en":"May 1, 2017","es":"1 de mayo de 2017"},"text":{"fr":"L'ascension est brutale, il faisait -4 °C, et un homme de 71 ans m'a doublé en sifflant. Le lever du soleil au sommet efface absolument tout. Les toilettes coûtent 200 ¥ et je les aurais payées 2000.","en":"The climb is brutal, it was -4°C, and a 71 year old man overtook me whistling. The sunrise at the summit erases absolutely all of it. The toilets cost ¥200 and I would have paid ¥2000.","es":"El ascenso es brutal, hacía -4 °C y un señor de 71 años me pasó silbando. El amanecer en la cima borra absolutamente todo. Los baños cuestan 200 ¥ y habría pagado 2000."},"stars":4,"real":false},
   {"source":"Google","product":{"fr":"Serengeti","en":"Serengeti","es":"Serengeti"},"seller":"Tanzanie","photo":"reviews/wiki/tanzania-_serengeti_national_park-_elefante.jpg","reviewer":"Amina W. (traduit du swahili)","date":{"fr":"8 octobre 2018","en":"October 8, 2018","es":"8 de octubre de 2018"},"text":{"fr":"Vu des lions à 15 mètres. Le guide a chuchoté de ne pas bouger et j'ai oublié comment respirer.","en":"Saw lions from 15 metres away. The guide whispered not to move and I forgot how to breathe.","es":"Vi leones a 15 metros. El guía susurró que no nos moviéramos y se me olvidó cómo respirar."},"stars":4,"real":false},
   {"source":"Google","product":{"fr":"Baie d'Along","en":"Ha Long Bay","es":"Bahía de Ha Long"},"seller":"Quang Ninh, Vietnam","photo":"reviews/wiki/ha_long_bay_in_2019.jpg","reviewer":"Minh T. (traduit du vietnamien)","date":{"fr":"15 mars 2019","en":"March 15, 2019","es":"15 de marzo de 2019"},"text":{"fr":"Paysage irréel entre les pitons calcaires. Un peu trop de bateaux, et beaucoup trop de karaoké.","en":"Unreal landscape between the limestone peaks. A few too many boats, and far too much karaoke.","es":"Paisaje irreal entre los picos de piedra caliza. Demasiados barcos, y muchísimo karaoke."},"stars":4,"real":false},
   {"source":"Google","product":{"fr":"Parc national Banff","en":"Banff National Park","es":"Parque Nacional Banff"},"seller":"Alberta, Canada","photo":"reviews/wiki/moraine_lake_17092005.jpg","reviewer":"Jordan P.","date":{"fr":"22 août 2020","en":"August 22, 2020","es":"22 de agosto de 2020"},"text":{"fr":"Eau turquoise absolument irréelle. Arrivez à 6 h ou passez une heure à chercher un stationnement.","en":"Absolutely unreal turquoise water. Show up at 6am or spend an hour hunting for parking.","es":"Agua turquesa absolutamente irreal. Llega a las 6 a.m. o pasa una hora buscando parqueadero."},"stars":4,"real":false},
   {"source":"Google","product":{"fr":"Salar d'Uyuni","en":"Salar de Uyuni","es":"Salar de Uyuni"},"seller":"Potosí, Bolivie","photo":"reviews/wiki/salar_uyuni_au01.jpg","reviewer":"Camila R. (traduit de l'espagnol)","date":{"fr":"1 janvier 2021","en":"January 1, 2021","es":"1 de enero de 2021"},"text":{"fr":"Un miroir géant jusqu'à l'horizon. Le sel a mangé mes souliers et j'ai pris 400 photos identiques.","en":"A giant mirror all the way to the horizon. The salt ate my shoes and I took 400 identical photos.","es":"Un espejo gigante hasta el horizonte. La sal se comió mis zapatos y tomé 400 fotos idénticas."},"stars":4,"real":false},
   {"source":"Google","product":{"fr":"Lacs de Plitvice","en":"Plitvice Lakes","es":"Lagos de Plitvice"},"seller":"Croatie","photo":"reviews/wiki/view_in_plitvice_lakes_national_park.jpg","reviewer":"Ivana K. (traduit du croate)","date":{"fr":"8 juin 2022","en":"June 8, 2022","es":"8 de junio de 2022"},"text":{"fr":"Des cascades partout et des passerelles en bois superbes. Suivez le sens unique, sinon vous remontez tout le parc.","en":"Waterfalls everywhere and gorgeous wooden walkways. Follow the one-way route or you'll be climbing back up the whole park.","es":"Cascadas por todas partes y pasarelas de madera preciosas. Sigue el sentido único o te toca subir todo el parque de vuelta."},"stars":4,"real":false},
   {"source":"Google","product":{"fr":"Zhangjiajie","en":"Zhangjiajie","es":"Zhangjiajie"},"seller":"Hunan, Chine","photo":"reviews/wiki/1_tianzishan_wulingyuan_zhangjiajie_2012.jpg","reviewer":"Zhen H. (traduit du mandarin)","date":{"fr":"15 novembre 2023","en":"November 15, 2023","es":"15 de noviembre de 2023"},"text":{"fr":"Les piliers de pierre dans la brume sont irréels. L'ascenseur de verre m'a rappelé que j'ai le vertige.","en":"The stone pillars in the mist are unreal. The glass elevator reminded me that I'm afraid of heights.","es":"Los pilares de piedra entre la niebla son irreales. El ascensor de vidrio me recordó que le tengo miedo a las alturas."},"stars":4,"real":false},
-  {"source":"Google","product":{"fr":"Cappadoce","en":"Cappadocia","es":"Capadocia"},"seller":"Nevsehir, Turquie","photo":"reviews/wiki/cappadocia_balloon_trip_ortahisar_castle_11893715185_.jpg","reviewer":"Emre Y. (traduit du turc)","date":{"fr":"22 avril 2024","en":"April 22, 2024","es":"22 de abril de 2024"},"text":{"fr":"Montgolfières au lever du soleil, exactement comme promis. Réveil à 4 h : ça se mérite.","en":"Hot air balloons at sunrise, exactly as promised. Up at 4am: you earn it.","es":"Globos aerostáticos al amanecer, exactamente como prometieron. Levantarse a las 4 a.m.: hay que ganárselo."},"stars":4,"real":false},
-  {"source":"Google","product":{"fr":"Camp de base de l'Everest","en":"Everest Base Camp","es":"Campo base del Everest"},"seller":"Khumbu, Népal","photo":"reviews/wiki/mt._everest_from_gokyo_ri_november_5_2012.jpg","reviewer":"Pemba S. (traduit du népalais)","date":{"fr":"1 septembre 2017","en":"September 1, 2017","es":"1 de septiembre de 2017"},"text":{"fr":"Douze jours de marche, zéro douche, et le meilleur moment de ma vie. Mes orteils m'en veulent encore.","en":"Twelve days of walking, zero showers, and the best moment of my life. My toes still hold a grudge.","es":"Doce días caminando, cero duchas, y el mejor momento de mi vida. Mis dedos de los pies todavía me guardan rencor."},"stars":5,"real":false},
+  {"source":"Google","product":{"fr":"Cappadoce","en":"Cappadocia","es":"Capadocia"},"seller":"Nevsehir, Turquie","photo":"reviews/wiki/cappadocia_balloon_trip_ortahisar_castle_11893715185_.jpg","reviewer":"Emre Y. (traduit du turc)","date":{"fr":"22 avril 2024","en":"April 22, 2024","es":"22 de abril de 2024"},"text":{"fr":"Réveil à 4 h. Il faisait noir, il faisait froid, et notre pilote a allumé le brûleur juste au-dessus de ma tête sans prévenir. J'ai crié devant onze inconnus. Puis le soleil s'est levé et plus personne n'a parlé pendant vingt minutes.","en":"Up at 4am. It was dark, it was cold, and our pilot fired the burner directly over my head with no warning. I screamed in front of eleven strangers. Then the sun came up and nobody spoke for twenty minutes.","es":"Levantada a las 4 a.m. Estaba oscuro, hacía frío y el piloto prendió el quemador justo encima de mi cabeza sin avisar. Grité delante de once desconocidos. Después salió el sol y nadie habló durante veinte minutos."},"stars":4,"real":false},
+  {"source":"Google","product":{"fr":"Camp de base de l'Everest","en":"Everest Base Camp","es":"Campo base del Everest"},"seller":"Khumbu, Népal","photo":"reviews/wiki/mt._everest_from_gokyo_ri_november_5_2012.jpg","reviewer":"Pemba S. (traduit du népalais)","date":{"fr":"1 septembre 2017","en":"September 1, 2017","es":"1 de septiembre de 2017"},"text":{"fr":"Douze jours de marche, zéro douche, et une nuit où j'ai sérieusement pensé écrire mon testament sur un sachet de soupe. J'ai perdu un ongle d'orteil. J'ai pleuré devant un yak. Refais-je le trajet demain matin ? Oui. Immédiatement.","en":"Twelve days of walking, zero showers, and one night where I genuinely considered writing my will on a soup packet. I lost a toenail. I cried in front of a yak. Would I do it again tomorrow morning? Yes. Immediately.","es":"Doce días caminando, cero duchas y una noche en la que de verdad pensé en escribir mi testamento en un sobre de sopa. Perdí una uña del pie. Lloré frente a un yak. ¿Lo volvería a hacer mañana? Sí. De una."},"stars":5,"real":false},
   {"source":"Google","product":{"fr":"Antelope Canyon","en":"Antelope Canyon","es":"Cañón del Antílope"},"seller":"Arizona, États-Unis","photo":"reviews/wiki/usa_antelope-canyon.jpg","reviewer":"Dana F.","date":{"fr":"8 février 2018","en":"February 8, 2018","es":"8 de febrero de 2018"},"text":{"fr":"La lumière descend entre les parois comme dans une cathédrale. Le guide savait exactement où pointer mon téléphone.","en":"The light comes down between the walls like in a cathedral. The guide knew exactly where to point my phone.","es":"La luz baja entre las paredes como en una catedral. El guía sabía exactamente hacia dónde apuntar mi celular."},"stars":5,"real":false},
   {"source":"Google","product":{"fr":"Îles Galápagos","en":"Galápagos Islands","es":"Islas Galápagos"},"seller":"Équateur","photo":"reviews/wiki/lobo_marino_zalophus_californianus_wollebaeki_punta_pitt_isla_de_s.jpg","reviewer":"Mateo L. (traduit de l'espagnol)","date":{"fr":"15 juillet 2019","en":"July 15, 2019","es":"15 de julio de 2019"},"text":{"fr":"Un lion de mer s'est endormi à côté de moi sur le quai sans m'accorder un regard. Les animaux n'ont peur de personne ici.","en":"A sea lion fell asleep next to me on the dock without so much as a glance. The animals here are afraid of nobody.","es":"Un lobo marino se durmió a mi lado en el muelle sin dedicarme una mirada. Aquí los animales no le tienen miedo a nadie."},"stars":5,"real":false},
   {"source":"Google","product":{"fr":"Torres del Paine","en":"Torres del Paine","es":"Torres del Paine"},"seller":"Patagonie, Chili","photo":"reviews/wiki/torres_del_paine_y_cuernos_del_paine_montaje.jpg","reviewer":"Sofía M. (traduit de l'espagnol)","date":{"fr":"22 décembre 2020","en":"December 22, 2020","es":"22 de diciembre de 2020"},"text":{"fr":"Le vent m'a presque emportée et je souriais quand même. Les tours au lever du soleil : irréelles.","en":"The wind nearly carried me off and I was still smiling. The towers at sunrise: unreal.","es":"El viento casi me lleva y yo seguía sonriendo. Las torres al amanecer: irreales."},"stars":5,"real":false},
   {"source":"Google","product":{"fr":"Geirangerfjord","en":"Geirangerfjord","es":"Geirangerfjord"},"seller":"Møre og Romsdal, Norvège","photo":"reviews/wiki/geirangerfjord_.jpg","reviewer":"Lars N. (traduit du norvégien)","date":{"fr":"1 mai 2021","en":"May 1, 2021","es":"1 de mayo de 2021"},"text":{"fr":"Des murs de roche de 1 000 m avec des cascades partout. J'ai arrêté de parler pendant 20 minutes.","en":"Thousand-metre rock walls with waterfalls everywhere. I stopped talking for 20 minutes.","es":"Paredes de roca de 1.000 m con cascadas por todas partes. Dejé de hablar durante 20 minutos."},"stars":5,"real":false},
-  {"source":"Google","product":{"fr":"Grande Barrière de corail","en":"Great Barrier Reef","es":"Gran Barrera de Coral"},"seller":"Queensland, Australie","photo":"reviews/wiki/iss-45_storyofwater_great_barrier_reef_australia.jpg","reviewer":"Tom K.","date":{"fr":"8 octobre 2022","en":"October 8, 2022","es":"8 de octubre de 2022"},"text":{"fr":"Nagé au-dessus d'une tortue de la taille d'une table à dîner. Je n'ai pas de mots, juste un masque embué.","en":"Swam over a turtle the size of a dinner table. I have no words, just a fogged-up mask.","es":"Nadé encima de una tortuga del tamaño de una mesa de comedor. No tengo palabras, solo una máscara empañada."},"stars":5,"real":false},
+  {"source":"Google","product":{"fr":"Grande Barrière de corail","en":"Great Barrier Reef","es":"Gran Barrera de Coral"},"seller":"Queensland, Australie","photo":"reviews/wiki/iss-45_storyofwater_great_barrier_reef_australia.jpg","reviewer":"Tom K.","date":{"fr":"8 octobre 2022","en":"October 8, 2022","es":"8 de octubre de 2022"},"text":{"fr":"Une tortue de la taille d'une table de cuisine m'a regardé dans les yeux et a continué son chemin comme si j'étais un lampadaire. Zéro respect. Vingt ans que je rêve de ça. Elle ne m'a même pas salué. Cinq étoiles.","en":"A turtle the size of a kitchen table looked me dead in the eyes and carried on past me like I was a lamppost. Zero respect. Twenty years I dreamed about this. She did not even nod. Five stars.","es":"Una tortuga del tamaño de una mesa de cocina me miró fijo a los ojos y siguió de largo como si yo fuera un poste. Cero respeto. Veinte años soñando con esto. Ni me saludó. Cinco estrellas."},"stars":5,"real":false},
   {"source":"Google","product":{"fr":"Chutes Victoria","en":"Victoria Falls","es":"Cataratas Victoria"},"seller":"Frontière Zambie-Zimbabwe","photo":"reviews/wiki/cataratas_victoria_zambia-zimbabue_2018-07-27_dd_04.jpg","reviewer":"Themba N.","date":{"fr":"15 mars 2023","en":"March 15, 2023","es":"15 de marzo de 2023"},"text":{"fr":"Le grondement s'entend bien avant de voir quoi que ce soit. Le pont Knife Edge m'a trempé et j'ai ri comme un enfant.","en":"You hear the roar long before you see anything. The Knife Edge bridge soaked me and I laughed like a kid.","es":"El rugido se oye mucho antes de ver nada. El puente Knife Edge me empapó y me reí como un niño."},"stars":5,"real":false},
-  {"source":"Google","product":{"fr":"Fushimi Inari-taisha","en":"Fushimi Inari-taisha","es":"Fushimi Inari-taisha"},"seller":"Kyoto, Japon","photo":"reviews/wiki/torii_path_with_lantern_at_fushimi_inari_taisha_shrine_kyoto_japan.jpg","reviewer":"Yuki M. (traduit du japonais)","date":{"fr":"22 août 2024","en":"August 22, 2024","es":"22 de agosto de 2024"},"text":{"fr":"Montez au-delà du premier kilomètre : les foules disparaissent et il ne reste que les portails rouges et la forêt.","en":"Climb past the first kilometre: the crowds vanish and all that's left is the red gates and the forest.","es":"Sube más allá del primer kilómetro: las multitudes desaparecen y solo quedan los portales rojos y el bosque."},"stars":5,"real":false},
+  {"source":"Google","product":{"fr":"Fushimi Inari-taisha","en":"Fushimi Inari-taisha","es":"Fushimi Inari-taisha"},"seller":"Kyoto, Japon","photo":"reviews/wiki/torii_path_with_lantern_at_fushimi_inari_taisha_shrine_kyoto_japan.jpg","reviewer":"Yuki M. (traduit du japonais)","date":{"fr":"22 août 2024","en":"August 22, 2024","es":"22 de agosto de 2024"},"text":{"fr":"Tout le monde s'arrête après le premier kilomètre pour prendre la même photo. Continuez. À partir de là il n'y a plus que les portails rouges, la forêt, et le bruit de vos propres poumons qui vous détestent.","en":"Everybody stops after the first kilometre to take the same photo. Keep going. From there on it is nothing but the red gates, the forest, and the sound of your own lungs hating you.","es":"Todo el mundo se para después del primer kilómetro a tomarse la misma foto. Sigan subiendo. De ahí en adelante solo quedan los portales rojos, el bosque y el sonido de tus propios pulmones odiándote."},"stars":5,"real":false},
   {"source":"Google","product":{"fr":"Milford Sound","en":"Milford Sound","es":"Milford Sound"},"seller":"Fiordland, Nouvelle-Zélande","photo":"reviews/wiki/milford_sound_new_zealand_.jpg","reviewer":"Aroha W. (traduit du maori)","date":{"fr":"1 janvier 2017","en":"January 1, 2017","es":"1 de enero de 2017"},"text":{"fr":"Il a plu et c'était encore mieux : des centaines de cascades temporaires partout. Les dauphins ont suivi le bateau.","en":"It rained and it was even better: hundreds of temporary waterfalls everywhere. The dolphins followed the boat.","es":"Llovió y fue todavía mejor: cientos de cascadas temporales por todas partes. Los delfines siguieron el barco."},"stars":5,"real":false},
-  {"source":"Google","product":{"fr":"Dunes de Merzouga","en":"Merzouga dunes","es":"Dunas de Merzouga"},"seller":"Sahara, Maroc","photo":"reviews/wiki/merzouga_dunes_2011.jpg","reviewer":"Youssef B. (traduit de l'arabe)","date":{"fr":"8 juin 2018","en":"June 8, 2018","es":"8 de junio de 2018"},"text":{"fr":"Nuit dans le désert, silence absolu, plus d'étoiles que je croyais possible. Le thé du guide était parfait.","en":"A night in the desert, absolute silence, more stars than I thought possible. The guide's tea was perfect.","es":"Una noche en el desierto, silencio absoluto, más estrellas de las que creía posibles. El té del guía era perfecto."},"stars":5,"real":false}
+  {"source":"Google","product":{"fr":"Dunes de Merzouga","en":"Merzouga dunes","es":"Dunas de Merzouga"},"seller":"Sahara, Maroc","photo":"reviews/wiki/merzouga_dunes_2011.jpg","reviewer":"Youssef B. (traduit de l'arabe)","date":{"fr":"8 juin 2018","en":"June 8, 2018","es":"8 de junio de 2018"},"text":{"fr":"Nuit dans le désert, silence absolu, plus d'étoiles que je croyais possible. Le thé du guide était parfait.","en":"A night in the desert, absolute silence, more stars than I thought possible. The guide's tea was perfect.","es":"Una noche en el desierto, silencio absoluto, más estrellas de las que creía posibles. El té del guía era perfecto."},"stars":5,"real":false},
+  {"source":"Amazon","product":{"fr":"Masque de cheval en latex — taille unique","en":"Latex Horse Head Mask — One Size","es":"Máscara de caballo de látex — talla única"},"seller":"Amazon.ca · 24,99 $","photo":"reviews/wiki/huge_ass_beers_and_horse_head_beers.jpg","reviewer":"Greg V.","date":{"fr":"3 novembre 2019","en":"November 3, 2019","es":"3 de noviembre de 2019"},"text":{"fr":"Je l'ai porté pour aller chercher ma fille à l'école. Elle est montée dans l'auto, elle a regardé droit devant, et elle n'a pas dit un mot pendant 22 minutes. Sa mère dit que j'ai «franchi une ligne». Le masque, lui, est impeccable. Cinq étoiles.","en":"Wore it to pick my daughter up from school. She got in the car, stared straight ahead, and did not speak for 22 minutes. Her mother says I \"crossed a line\". The mask itself is flawless. Five stars.","es":"Me la puse para recoger a mi hija del colegio. Se subió al carro, miró al frente y no dijo una palabra durante 22 minutos. Su mamá dice que \"me pasé de la raya\". La máscara en sí es impecable. Cinco estrellas."},"stars":5,"real":false},
+  {"source":"Amazon","product":{"fr":"Yeux mobiles autocollants — paquet de 1000","en":"Self-Adhesive Googly Eyes — 1000 Pack","es":"Ojos móviles autoadhesivos — paquete de 1000"},"seller":"Amazon.ca · 8,49 $ · Paquet de 1000","photo":"reviews/wiki/googly_drain.jpg","reviewer":"Denise Ha.","date":{"fr":"17 janvier 2021","en":"January 17, 2021","es":"17 de enero de 2021"},"text":{"fr":"Il en manquait deux. J'ai recompté trois fois. Mon mari m'a demandé si «ça valait vraiment la peine». Neuf cent quatre-vingt-dix-huit. Il y a maintenant des yeux sur la sécheuse, sur le chien, et sur la porte de son bureau. Trois étoiles, à cause des deux qui manquaient.","en":"Two were missing. I recounted three times. My husband asked if this was \"really worth it\". Nine hundred and ninety eight. There are now eyes on the dryer, on the dog, and on the door of his office. Three stars, on account of the two that were missing.","es":"Faltaban dos. Los volví a contar tres veces. Mi esposo me preguntó si \"de verdad valía la pena\". Novecientos noventa y ocho. Ahora hay ojos en la secadora, en el perro y en la puerta de su oficina. Tres estrellas, por los dos que faltaban."},"stars":3,"real":false},
+  {"source":"Amazon","product":{"fr":"Trancheuse à bananes en plastique","en":"Plastic Banana Slicer","es":"Cortador de bananos de plástico"},"seller":"Amazon.ca · 6,99 $","photo":"reviews/wiki/banana_bunch_top_virus.jpg","reviewer":"T. Lemieux","date":{"fr":"9 mai 2016","en":"May 9, 2016","es":"9 de mayo de 2016"},"text":{"fr":"Ça ne tranche que des bananes. J'ai essayé un concombre : non. Une carotte : non. Un hot-dog : absolument pas. Un objet, une fonction. On est en 2016. Je m'attendais à mieux.","en":"It only slices bananas. I tried a cucumber: no. A carrot: no. A hot dog: absolutely not. One object, one function. It is 2016. I expected more.","es":"Solo corta bananos. Probé con un pepino: no. Una zanahoria: no. Un perro caliente: para nada. Un objeto, una función. Estamos en 2016. Esperaba más."},"stars":1,"real":false},
+  {"source":"Amazon","product":{"fr":"Répulsif à ours en aérosol 325 g","en":"Bear Spray Deterrent 325g","es":"Repelente de osos en aerosol 325 g"},"seller":"Amazon.ca · 42,00 $","photo":"reviews/wiki/fossil_springs_trail_no._18_26313310233_.jpg","reviewer":"Marc-André P.","date":{"fr":"22 juillet 2022","en":"July 22, 2022","es":"22 de julio de 2022"},"text":{"fr":"Je l'ai vaporisé sur moi avant de partir en randonnée, comme du chasse-moustiques. Je tiens à préciser que le produit n'est pas en cause. L'ours est venu quand même. Il avait l'air très content. Les instructions sont pourtant claires, je ne les avais juste pas lues. Excellent produit, 5 étoiles.","en":"I sprayed it on myself before the hike, like bug spray. I want to be clear that the product is not at fault here. The bear came anyway. It seemed thrilled. The instructions are perfectly clear, I simply had not read them. Excellent product, 5 stars.","es":"Me lo rocié encima antes de la caminata, como si fuera repelente de zancudos. Quiero aclarar que el producto no tiene la culpa. El oso llegó igual. Se veía encantado. Las instrucciones son clarísimas, yo simplemente no las había leído. Excelente producto, 5 estrellas."},"stars":5,"real":false},
+  {"source":"Amazon","product":{"fr":"Réveil-matin sur roues qui se sauve","en":"Runaway Alarm Clock on Wheels","es":"Despertador con ruedas que se escapa"},"seller":"Amazon.ca · 31,50 $","photo":"reviews/wiki/the_use_of_nightstand.jpg","reviewer":"Kim R.","date":{"fr":"4 février 2020","en":"February 4, 2020","es":"4 de febrero de 2020"},"text":{"fr":"Il fonctionne trop bien. Le premier matin il a roulé sous le lit et il a hurlé depuis un endroit que mon bras n'atteint pas. J'ai dû sortir du lit, ce qui est techniquement le but, mais à quatre pattes et en pleurant. Deux étoiles parce que j'avais demandé un réveil, pas un adversaire.","en":"It works too well. The first morning it rolled under the bed and screamed at me from somewhere my arm does not reach. I had to get out of bed, which is technically the point, but on all fours and crying. Two stars because I asked for an alarm clock, not an opponent.","es":"Funciona demasiado bien. La primera mañana se metió rodando debajo de la cama y me gritó desde un lugar al que no me llega el brazo. Tuve que levantarme, que técnicamente es el objetivo, pero a gatas y llorando. Dos estrellas porque pedí un despertador, no un rival."},"stars":2,"real":false},
+  {"source":"Amazon","product":{"fr":"Harnais d'extérieur pour chat avec laisse","en":"Outdoor Cat Harness with Leash","es":"Arnés para gato con correa"},"seller":"Amazon.ca · 19,99 $","photo":"reviews/wiki/cat_on_a_leash_enjoying_the_outdoors.jpg","reviewer":"Sophie D.","date":{"fr":"12 août 2021","en":"August 12, 2021","es":"12 de agosto de 2021"},"text":{"fr":"Le harnais tient parfaitement. Le chat, lui, a décidé qu'il ne possédait plus de squelette. Il s'est liquéfié sur le trottoir et il est resté comme ça pendant quarante minutes pendant que les voisins passaient. Une étoile en moins, pas pour le produit, mais pour le chat.","en":"The harness fits perfectly. The cat has decided he no longer possesses a skeleton. He liquefied onto the sidewalk and stayed that way for forty minutes while the neighbours walked past. One star off, not for the product, for the cat.","es":"El arnés queda perfecto. El gato, en cambio, decidió que ya no tiene esqueleto. Se licuó sobre el andén y se quedó así cuarenta minutos mientras pasaban los vecinos. Le quito una estrella, no por el producto, sino por el gato."},"stars":4,"real":false},
+  {"source":"Amazon","product":{"fr":"Tapis de yoga antidérapant 6 mm","en":"Non-Slip Yoga Mat 6mm","es":"Tapete de yoga antideslizante 6 mm"},"seller":"Amazon.ca · 27,99 $","photo":"reviews/wiki/yoga_mat_made_of_carpet_underlay.jpg","reviewer":"Val T.","date":{"fr":"30 mars 2023","en":"March 30, 2023","es":"30 de marzo de 2023"},"text":{"fr":"Ça sent le pneu qui brûle. Je l'ai laissé dehors neuf jours. Ça sent le pneu qui brûle, mais mouillé. Ma chienne refuse d'entrer dans le salon. Mon chien de bas vers le haut est devenu un risque chimique.","en":"It smells like a tire fire. I left it outside for nine days. Now it smells like a tire fire, but damp. My dog refuses to enter the living room. My downward dog is now a chemical hazard.","es":"Huele a llanta quemada. Lo dejé afuera nueve días. Ahora huele a llanta quemada, pero mojada. Mi perra se niega a entrar a la sala. Mi perro boca abajo ahora es un riesgo químico."},"stars":1,"real":false},
+  {"source":"Store","product":{"fr":"Nain de jardin en résine, 30 cm","en":"Resin Garden Gnome, 30cm","es":"Enano de jardín de resina, 30 cm"},"seller":"Centre de jardin · 14,99 $ ch.","photo":"reviews/wiki/7_garden_gnomes.jpg","reviewer":"Robert Beauchamp","date":{"fr":"6 juin 2018","en":"June 6, 2018","es":"6 de junio de 2018"},"text":{"fr":"J'en ai acheté un. Puis sept. Ma femme a dit «un de plus et je pars». Il y en a maintenant onze. Elle est partie. Les nains sont d'une qualité exceptionnelle et résistent très bien au gel. Je recommande fortement.","en":"I bought one. Then seven. My wife said \"one more and I'm leaving\". There are now eleven. She left. The gnomes are of exceptional quality and hold up extremely well to frost. Highly recommend.","es":"Compré uno. Después siete. Mi esposa dijo \"uno más y me voy\". Ahora hay once. Se fue. Los enanos son de una calidad excepcional y aguantan muy bien las heladas. Los recomiendo muchísimo."},"stars":5,"real":false}
 ];
 
 var GR_GUESS_SEC = 60;
