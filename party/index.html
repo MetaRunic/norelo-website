@@ -803,19 +803,19 @@
     text-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
   }
   .round-pts-val.zero { color: rgba(255,255,255,0.3); text-shadow: none; }
+  .timer-badge.cd-urgent {
+    border-color: var(--red); color: #fff;
+    animation: cdPulse 1s ease-in-out infinite;
+  }
+  @keyframes cdPulse {
+    0%, 100% { transform: scale(1);    box-shadow: 0 0 0 rgba(239,68,68,0); }
+    50%      { transform: scale(1.07); box-shadow: 0 0 16px rgba(239,68,68,.55); }
+  }
   .streak-chip {
     font-size: .66rem; font-weight: 900; color: var(--amber);
     background: rgba(245,158,11,.14); border: 1px solid rgba(245,158,11,.4);
     border-radius: 7px; padding: 1px 5px; margin-left: 5px; white-space: nowrap;
   }
-  .host-skip {
-    padding: 7px 16px; border-radius: 10px; cursor: pointer;
-    background: var(--panel2); border: 1.5px solid var(--bdr); color: var(--gr);
-    font-size: .68rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
-    transition: border-color .2s, color .2s;
-  }
-  .host-skip:hover { border-color: var(--bl); color: var(--txt); }
-  .host-skip:active { transform: scale(.96); }
   .round-pts-total {
     font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.4); min-width: 60px; text-align: right;
   }
@@ -1441,7 +1441,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.12</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.13</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -3061,14 +3061,43 @@ function avatarHTML(p, size, hideCrown){
   return '<div class="avatar" style="' + base + 'background:' + p.color + ';">' + (hideCrown ? '' : initials(p.name)) + crown + '</div>';
 }
 
+/* Final-countdown tick. Each of the last 5 seconds is higher, louder and sharper
+ * than the last, with a double-hit on the final second. Rides the existing
+ * sfxEnabled gate through playTone/noiseHit. */
+function sfxTick(secondsLeft){
+  var step = Math.max(0, Math.min(4, 5 - secondsLeft));   // 0 at 5s left, 4 at 1s
+  var freq = 620 + step * 210;                            // 620 -> 1460 Hz
+  var vol  = 0.05 + step * 0.028;
+  var dur  = 0.10 + step * 0.012;
+  playTone(freq, "square", dur, vol);
+  noiseHit(0.05 + step * 0.012, 0.018 + step * 0.010, "highpass", 1800 + step * 700, 4200);
+  if(secondsLeft <= 1){                                   // last second lands twice
+    setTimeout(function(){ playTone(freq + 180, "square", 0.16, vol + 0.02); }, 110);
+  }
+}
+
 function startLiveCountdown(revealStartMs, durationSec, onEnd){
   if(countdownTicker) clearInterval(countdownTicker);
   var callback = onEnd;
+  // Only answer clocks get the tick - the 5-6s reveal countdown runs every round and
+  // would turn into a permanent metronome.
+  var tickable = (durationSec >= 15);
+  var lastTick = -1;
+
   function update(){
     var elapsed = Math.floor((Date.now() - (revealStartMs || Date.now())) / 1000);
     var remaining = Math.max(0, durationSec - elapsed);
     var el = document.getElementById("countdownVal");
-    if(el){ el.textContent = remaining + "s"; }
+    if(el){
+      el.textContent = remaining + "s";
+      // the badge tightens up alongside the sound
+      if(remaining <= 5 && remaining > 0) el.parentNode.classList.add("cd-urgent");
+      else el.parentNode.classList.remove("cd-urgent");
+    }
+    if(tickable && remaining > 0 && remaining <= 5 && remaining !== lastTick){
+      lastTick = remaining;                 // ticker runs at 500ms, so gate per second
+      sfxTick(remaining);
+    }
     if(remaining <= 0){
       if(countdownTicker){ clearInterval(countdownTicker); countdownTicker = null; }
       if(callback){
@@ -3409,32 +3438,6 @@ function resetRoundGuardsIfNewGame(g){
   _lastSeenRound = r;
 }
 
-/* The host can shove a stuck phase forward. Every mode has AFK timers now, but this
- * saves waiting out the clock when the room already knows it is done. */
-function hostForceAdvance(){
-  if(!amHost || !currentGame) return;
-  sfxVote();
-  var ph = currentGame.phase;
-  if(ph === "reveal" || ph === "done"){ nextRound(); return; }
-  if(currentGame.type === "roast" && ph === "submit"){ startRoastVote(); return; }
-  if(currentGame.type === "twotruths" && ph === "write"){ ttAutoSubmit(currentGame.round || 0); return; }
-  if(currentGame.type === "knowplayer" && ph === "spotlight_answer"){
-    var kpIt = knowRoundData(currentGame);
-    db.ref("rooms/" + roomCode + "/game").update({
-      spotlightAnswer: Math.floor(Math.random() * ((kpIt.opts || []).length || 1)),
-      phase: "guess", phaseStartMs: Date.now()
-    });
-    return;
-  }
-  revealRound();
-}
-
-function hostSkipHTML(){
-  if(!amHost || !currentGame || currentGame.type === "voting") return "";
-  return '<div style="text-align:center;margin-top:10px;">' +
-         '<button class="host-skip" onclick="hostForceAdvance()">Passer &rsaquo;&rsaquo;</button></div>';
-}
-
 function renderGame(g){
   if(!g) g = currentGame;
   var area = $("gameArea");
@@ -3458,13 +3461,6 @@ function renderGame(g){
   else if(g.type === "ceremony"){ renderGrandPrizeCeremony(g); }
   else { area.innerHTML = ""; }
 
-  // Appended after the mode has painted, so every screen gets it without each
-  // renderer having to remember. The guard stops the 2T1L write phase - which
-  // deliberately skips repainting - from stacking duplicates.
-  var skip = hostSkipHTML();
-  if(skip && area && !area.querySelector(".host-skip")){
-    area.insertAdjacentHTML("beforeend", skip);
-  }
 
   localizeNode(area);
 }
