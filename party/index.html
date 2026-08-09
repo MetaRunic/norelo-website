@@ -1473,7 +1473,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.37</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.38</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -2678,7 +2678,8 @@ document.addEventListener("DOMContentLoaded", function(){
   window.addEventListener("resize", resize);
 
   var PALETTE = ["#ef4444","#f59e0b","#fde047","#10b981","#3b82f6","#a855f7","#ec4899","#22d3ee"];
-  var MAX_PARTS = 520;           // phones choke past this
+  // A finale puts a dozen shells in the air at once; phones still need a ceiling.
+  var MAX_PARTS = (window.innerWidth < 700 || (navigator.hardwareConcurrency || 4) <= 4) ? 560 : 1100;
   var parts = [], rings = [], rockets = [], running = false;
 
   function pick(){ return PALETTE[Math.floor(Math.random()*PALETTE.length)]; }
@@ -2710,7 +2711,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
       if(k2.y <= k2.apex || k2.vy >= 0){
         rockets.splice(j, 1);
-        detonate(k2.x, k2.y, k2.color);
+        detonate(k2.x, k2.y, k2.color, k2.shell);
       }
     }
 
@@ -2731,15 +2732,56 @@ document.addEventListener("DOMContentLoaded", function(){
     for(var k = parts.length - 1; k >= 0; k--){
       var p = parts[k];
       p.vx *= p.drag; p.vy *= p.drag; p.vy += p.g;
+      // fish and bees do not fly straight - they wander across their own path
+      if(p.wobA){ p.wobP += p.wobS; p.x += Math.cos(p.wobP) * p.wobA; p.y += Math.sin(p.wobP * 1.7) * p.wobA * 0.5; }
       p.x += p.vx; p.y += p.vy;
       p.life -= p.decay; p.spin += p.spinV;
+
+      // crossette stars break into a small cross partway through the fall
+      if(p.splitAt && p.life <= p.splitAt && parts.length < MAX_PARTS - 4){
+        p.splitAt = 0;
+        for(var sp = 0; sp < 4; sp++){
+          var sa = (Math.PI / 2) * sp + Math.PI / 4;
+          parts.push({ type:"dot", x:p.x, y:p.y,
+            vx:Math.cos(sa) * 2.6, vy:Math.sin(sa) * 2.6,
+            r:p.r * 0.8, g:p.g, drag:0.94, life:0.55, decay:0.03,
+            spin:0, spinV:0, color:p.color });
+        }
+        if(typeof crossettePop === "function") crossettePop();
+      }
+
+      // willow and brocade hang glowing embers behind them
+      if(p.trail && parts.length < MAX_PARTS && (k & 1) === 0){
+        parts.push({ type:"dot", x:p.x, y:p.y, vx:0, vy:0.16,
+          r:p.r * 0.5, g:0.004, drag:0.99, life:0.4, decay:0.035,
+          spin:0, spinV:0, color:p.color });
+      }
+
       if(p.life <= 0 || p.y > window.innerHeight + 50){ parts.splice(k, 1); continue; }
-      ctx.globalAlpha = Math.max(0, Math.min(1, p.life));
+
+      var alpha = Math.max(0, Math.min(1, p.life));
+      if(p.twk){ alpha *= 0.35 + 0.65 * Math.abs(Math.sin((p.spin += 0.45) * 3)); }
+      if(p.strobe){ p.stP = (p.stP || 0) + 1; if(p.stP % 7 < 3) alpha = 0; else alpha = 1; }
+      ctx.globalAlpha = alpha;
       ctx.fillStyle = p.color;
       if(p.type === "ribbon"){
         ctx.save();
         ctx.translate(p.x, p.y); ctx.rotate(p.spin);
         ctx.fillRect(-p.r, -p.r*0.38, p.r*2, p.r*0.76);
+        ctx.restore();
+      } else if(p.type === "star5"){
+        ctx.save();
+        ctx.translate(p.x, p.y); ctx.rotate(p.spin);
+        ctx.beginPath();
+        for(var v = 0; v < 10; v++){
+          var rad = (v % 2 === 0) ? p.r * 1.9 : p.r * 0.75;
+          var ang = (Math.PI / 5) * v - Math.PI / 2;
+          if(v === 0) ctx.moveTo(Math.cos(ang) * rad, Math.sin(ang) * rad);
+          else ctx.lineTo(Math.cos(ang) * rad, Math.sin(ang) * rad);
+        }
+        ctx.closePath();
+        ctx.shadowBlur = 10; ctx.shadowColor = p.color;
+        ctx.fill(); ctx.shadowBlur = 0;
         ctx.restore();
       } else if(p.type === "spark"){
         ctx.strokeStyle = p.color; ctx.lineWidth = p.r*0.7;
@@ -2811,36 +2853,264 @@ document.addEventListener("DOMContentLoaded", function(){
   };
 
   // Shell detonation: core burst, white spark tails, ring, boom + crackle.
-  function detonate(x, y, color){
-    FX.burst(x, y, { count:38, speed:7.5, color:color, g:0.15, silent:true });
-    FX.burst(x, y, { count:16, speed:9.5, color:"#fff", g:0.16, type:"spark", silent:true });
-    addRing(x, y, color, 6, 2);
-    if(typeof sfxBoom === "function") sfxBoom();
-    if(typeof sfxCrackle === "function") sfxCrackle();
+  /* ---- shell library -------------------------------------------------------
+   * Real shells differ in how the stars are packed and how they burn, so each type
+   * gets its own spawn pattern AND its own sound. Firing them at random is what
+   * makes a show read as a show instead of the same pop thirteen times.
+   * -------------------------------------------------------------------------- */
+  var GOLD = "#fde047", EMBER = "#ffb347", SILVER = "#e8f0ff";
+
+  function star(x, y, o){
+    if(parts.length >= MAX_PARTS) return;
+    parts.push({
+      type: o.type || "dot", x:x, y:y, vx:o.vx, vy:o.vy,
+      r: o.r || 2.2, g: (o.g === undefined ? 0.14 : o.g), drag: o.drag || 0.965,
+      life: o.life || 1, decay: o.decay || 0.016,
+      spin: o.spin || 0, spinV: o.spinV || 0, color: o.color,
+      trail: o.trail || 0, twk: o.twk || 0, strobe: o.strobe || 0,
+      splitAt: o.splitAt || 0,
+      wobA: o.wobA || 0, wobS: o.wobS || 0.3, wobP: Math.random() * 6.28
+    });
+  }
+  function sphere(x, y, n, speed, o){
+    for(var i = 0; i < n; i++){
+      var a = (Math.PI * 2 * i) / n + Math.random() * 0.12;
+      var s = speed * (0.75 + Math.random() * 0.45);
+      star(x, y, Object.assign({ vx: Math.cos(a) * s, vy: Math.sin(a) * s }, o));
+    }
+  }
+
+  var SHELLS = {
+    // dense even sphere - the default skyburst
+    peony: function(x, y, c){
+      sphere(x, y, 46, 7.2, { color:c, r:2.4, decay:0.017 });
+      sphere(x, y, 14, 9.4, { color:"#fff", type:"spark", r:1.6, decay:0.03 });
+      addRing(x, y, c, 6, 2); fwBoom(1);
+    },
+    // bigger, slower, with trailing embers
+    chrysanthemum: function(x, y, c){
+      sphere(x, y, 54, 6.4, { color:c, r:2.6, decay:0.012, trail:1, drag:0.972 });
+      addRing(x, y, c, 5, 2.4); fwBoom(0.9); fwSizzle(0.5);
+    },
+    // long gold fronds that droop and hang
+    willow: function(x, y, c){
+      sphere(x, y, 34, 5.2, { color:GOLD, r:2.3, g:0.075, drag:0.985, decay:0.0075, trail:1 });
+      fwBoom(0.75); fwHang();
+    },
+    // thick fronds rising then falling - fewer, fatter arms
+    palm: function(x, y, c){
+      for(var i = 0; i < 9; i++){
+        var a = (Math.PI * 2 * i) / 9;
+        for(var j = 0; j < 5; j++){
+          var s = 4.2 + j * 1.15;
+          star(x, y, { vx:Math.cos(a) * s, vy:Math.sin(a) * s - 1.1,
+            color: j > 2 ? EMBER : GOLD, r:3 - j * 0.25, g:0.1, drag:0.983,
+            decay:0.0095, trail:1 });
+        }
+      }
+      fwBoom(1.05); fwHang();
+    },
+    // heavy gold body, very long burn
+    brocade: function(x, y, c){
+      sphere(x, y, 44, 5.6, { color:GOLD, r:2.8, g:0.085, drag:0.984, decay:0.007, trail:1 });
+      sphere(x, y, 16, 3.1, { color:EMBER, r:2.2, g:0.09, drag:0.985, decay:0.008, trail:1 });
+      addRing(x, y, GOLD, 5, 2.6); fwBoom(0.85); fwHang(); fwSizzle(0.4);
+    },
+    // darting stars that never fly straight
+    fish: function(x, y, c){
+      for(var i = 0; i < 26; i++){
+        var a = Math.random() * Math.PI * 2, s = 3 + Math.random() * 4;
+        star(x, y, { vx:Math.cos(a) * s, vy:Math.sin(a) * s, color:c, r:2.3,
+          g:0.06, drag:0.985, decay:0.014, wobA:1.5 + Math.random(), wobS:0.34 });
+      }
+      fwBoom(0.7); fwWarble();
+    },
+    // a cloud of tiny twinkling flecks
+    glitter: function(x, y, c){
+      for(var i = 0; i < 66; i++){
+        var a = Math.random() * Math.PI * 2, s = Math.random() * 6.5;
+        star(x, y, { vx:Math.cos(a) * s, vy:Math.sin(a) * s, color: Math.random() < 0.5 ? SILVER : c,
+          r:1.1 + Math.random(), g:0.05, drag:0.97, decay:0.012, twk:1 });
+      }
+      fwBoom(0.55); fwSizzle(1);
+    },
+    // hard on/off flashing stars
+    strobe: function(x, y, c){
+      sphere(x, y, 30, 5.4, { color:SILVER, r:2.5, g:0.05, drag:0.982, decay:0.0085, strobe:1 });
+      fwBoom(0.6); fwStrobeTicks();
+    },
+    // stars that split into little crosses
+    crossette: function(x, y, c){
+      sphere(x, y, 16, 5.4, { color:c, r:2.8, g:0.08, drag:0.98, decay:0.011, splitAt:0.55 });
+      fwBoom(0.9);
+    },
+    // coloured core inside a contrasting shell
+    pistil: function(x, y, c){
+      var inner = c === GOLD ? "#ec4899" : GOLD;
+      sphere(x, y, 40, 7.4, { color:c, r:2.3, decay:0.017 });
+      sphere(x, y, 22, 3.4, { color:inner, r:2.6, decay:0.014 });
+      addRing(x, y, inner, 4, 2); fwBoom(1); fwSizzle(0.35);
+    },
+    // flat expanding ring seen edge-on
+    ring: function(x, y, c){
+      for(var i = 0; i < 40; i++){
+        var a = (Math.PI * 2 * i) / 40;
+        star(x, y, { vx:Math.cos(a) * 7.4, vy:Math.sin(a) * 7.4 * 0.28,
+          color:c, r:2.3, g:0.055, drag:0.985, decay:0.012 });
+      }
+      addRing(x, y, c, 8, 2); fwBoom(0.8);
+    },
+    // erratic buzzing sparks that spiral off
+    bees: function(x, y, c){
+      for(var i = 0; i < 22; i++){
+        var a = Math.random() * Math.PI * 2, s = 2 + Math.random() * 3;
+        star(x, y, { vx:Math.cos(a) * s, vy:Math.sin(a) * s, color:GOLD, r:1.8,
+          g:0.03, drag:0.99, decay:0.011, wobA:2.6, wobS:0.55 + Math.random() * 0.3, type:"spark" });
+      }
+      fwBoom(0.5); fwBuzz();
+    },
+    // a handful of fat, slow, glowing stars
+    pearls: function(x, y, c){
+      sphere(x, y, 12, 4.2, { color:c, r:4.2, g:0.055, drag:0.987, decay:0.0075 });
+      fwBoom(0.7); fwHang();
+    },
+    // a spinning wheel that throws sparks tangentially
+    spinner: function(x, y, c){
+      for(var i = 0; i < 30; i++){
+        var a = (Math.PI * 2 * i) / 30;
+        star(x, y, { vx:Math.cos(a) * 6.2 - Math.sin(a) * 3.4, vy:Math.sin(a) * 6.2 + Math.cos(a) * 3.4,
+          color: i % 2 ? c : GOLD, r:1.9, g:0.05, drag:0.978, decay:0.013, type:"spark" });
+      }
+      fwWhistle(); fwBoom(0.65);
+    },
+    // literal five-pointed stars
+    stars: function(x, y, c){
+      for(var i = 0; i < 18; i++){
+        var a = (Math.PI * 2 * i) / 18, s = 4 + Math.random() * 2.4;
+        star(x, y, { type:"star5", vx:Math.cos(a) * s, vy:Math.sin(a) * s,
+          color: i % 3 === 0 ? GOLD : c, r:2.6, g:0.06, drag:0.982,
+          decay:0.011, spinV:0.09 + Math.random() * 0.08 });
+      }
+      fwBoom(0.8); fwSparkleDown();
+    }
+  };
+  var SHELL_NAMES = Object.keys(SHELLS);
+  FX.shellTypes = SHELL_NAMES.slice();
+
+  /* ---- per-shell sound -----------------------------------------------------
+   * All synthesised, so there is nothing to download and nothing to go out of sync.
+   */
+  function fwBoom(power){
+    if(typeof noiseHit !== "function") return;
+    noiseHit(0.30 * (power || 1), 0.16 * (power || 1), "lowpass", 900, 60);
+    if(typeof playTone === "function") playTone(48 * (power || 1), "sine", 0.22, 0.13);
+  }
+  function fwSizzle(amt){
+    if(typeof noiseHit !== "function") return;
+    for(var i = 0; i < Math.round(6 * (amt || 1)); i++){
+      (function(d){ setTimeout(function(){ noiseHit(0.05, 0.035, "highpass", 5200, 8000); }, d); })(90 + i * 85);
+    }
+  }
+  function fwHang(){
+    if(typeof playTone !== "function") return;
+    for(var i = 0; i < 5; i++){
+      (function(d, f){ setTimeout(function(){ playTone(f, "sine", 0.5, 0.045); }, d); })(120 + i * 140, 900 - i * 120);
+    }
+  }
+  function fwWhistle(){
+    if(typeof playTone !== "function") return;
+    for(var i = 0; i < 10; i++){
+      (function(d, f){ setTimeout(function(){ playTone(f, "sine", 0.07, 0.05); }, d); })(i * 32, 500 + i * 190);
+    }
+  }
+  function fwBuzz(){
+    if(typeof playTone !== "function") return;
+    for(var i = 0; i < 12; i++){
+      (function(d, f){ setTimeout(function(){ playTone(f, "sawtooth", 0.06, 0.03); }, d); })(i * 55, 180 + (i % 3) * 90);
+    }
+  }
+  function fwWarble(){
+    if(typeof playTone !== "function") return;
+    for(var i = 0; i < 8; i++){
+      (function(d, f){ setTimeout(function(){ playTone(f, "triangle", 0.08, 0.04); }, d); })(i * 70, 620 + Math.sin(i) * 300);
+    }
+  }
+  function fwStrobeTicks(){
+    if(typeof noiseHit !== "function") return;
+    for(var i = 0; i < 9; i++){
+      (function(d){ setTimeout(function(){ noiseHit(0.03, 0.05, "bandpass", 3000, 3600); }, d); })(i * 95);
+    }
+  }
+  function fwSparkleDown(){
+    if(typeof playTone !== "function") return;
+    for(var i = 0; i < 7; i++){
+      (function(d, f){ setTimeout(function(){ playTone(f, "triangle", 0.12, 0.05); }, d); })(i * 80, 1500 - i * 150);
+    }
+  }
+  function crossettePop(){
+    if(typeof noiseHit === "function") noiseHit(0.04, 0.05, "bandpass", 2200, 2600);
+  }
+  window.crossettePop = crossettePop;
+
+  function detonate(x, y, color, shellType){
+    var t = shellType && SHELLS[shellType] ? shellType : SHELL_NAMES[Math.floor(Math.random() * SHELL_NAMES.length)];
+    SHELLS[t](x, y, color);
+    kick();
   }
 
   // Rockets launch off the bottom edge and climb to an apex in the middle/upper
   // screen before exploding, rather than just popping into existence.
-  FX.fireworks = function(shells){
+  function launchShell(shellType, delay, spread){
+    setTimeout(function(){
+      var sp = spread === undefined ? 0.76 : spread;
+      var startX = window.innerWidth * ((1 - sp) / 2 + Math.random() * sp);
+      var apex = window.innerHeight * (0.12 + Math.random() * 0.34);
+      var climb = (window.innerHeight - apex);
+      // ~55 frames to the apex, so the flight reads clearly at any screen height
+      rockets.push({
+        x: startX, y: window.innerHeight + 8,
+        vx: (Math.random() - 0.5) * 1.1,
+        vy: -(climb / 55) - Math.random() * 1.2,
+        apex: apex, color: pick(),
+        shell: shellType || SHELL_NAMES[Math.floor(Math.random() * SHELL_NAMES.length)]
+      });
+      if(typeof sfxLaunch === "function") sfxLaunch();
+      kick();
+    }, delay);
+  }
+
+  FX.fireworks = function(shells, shellType){
     var n = shells || 5;
-    for(var i = 0; i < n; i++){
-      (function(d){
-        setTimeout(function(){
-          var startX = window.innerWidth * (0.12 + Math.random() * 0.76);
-          var apex = window.innerHeight * (0.14 + Math.random() * 0.34);
-          var climb = (window.innerHeight - apex);
-          // ~55 frames to the apex, so the flight reads clearly at any screen height
-          var vy = -(climb / 55) - Math.random() * 1.2;
-          rockets.push({
-            x: startX, y: window.innerHeight + 8,
-            vx: (Math.random() - 0.5) * 1.1, vy: vy,
-            apex: apex, color: pick()
-          });
-          if(typeof sfxLaunch === "function") sfxLaunch();
-          kick();
-        }, d);
-      })(i * 420);
+    for(var i = 0; i < n; i++) launchShell(shellType, i * 420);
+  };
+
+  /* A show, rather than n identical pops: shells go up at an accelerating pace,
+   * never repeat the previous type back to back, and finish on an overlapping
+   * volley so the ending lands. */
+  FX.fireworkShow = function(shellCount, totalMs){
+    var n = Math.max(3, shellCount || 12);
+    var span = totalMs || (n * 340);
+    var finaleCount = Math.max(3, Math.round(n * 0.25));
+    var body = n - finaleCount;
+    var prev = null, t = 0;
+
+    for(var i = 0; i < body; i++){
+      // ease from lazy at the start to rapid before the finale
+      var frac = i / Math.max(1, body);
+      var gap = (span * 0.72 / body) * (1.55 - frac);
+      var type;
+      do { type = SHELL_NAMES[Math.floor(Math.random() * SHELL_NAMES.length)]; }
+      while(type === prev && SHELL_NAMES.length > 1);
+      prev = type;
+      launchShell(type, t);
+      t += gap;
     }
+    // finale: big showy types, overlapping, full screen width
+    var FINALE = ["brocade","willow","palm","chrysanthemum","pistil","stars"];
+    for(var f = 0; f < finaleCount; f++){
+      launchShell(FINALE[f % FINALE.length], t + f * 130, 0.9);
+    }
+    return t + finaleCount * 130 + 900;
   };
 
   // Single rocket, for one-off moments.
@@ -3389,6 +3659,7 @@ function renderRoundPointsHTML(roundPts){
 }
 
 var _lastAnimatedPointsKey = "";
+var _lastFireworkKey = "";
 function animateCounters(g){
   var sfxKey = (g ? (g.type + "_" + (g.round || 0)) : "") + "_animatePts";
   if(_lastAnimatedPointsKey === sfxKey) return;
@@ -3641,6 +3912,7 @@ function resetRoundGuardsIfNewGame(g){
     _lastAutoRevealKey = "";
     _lastSfxKey = "";
     _lastAnimatedPointsKey = "";
+    _lastFireworkKey = "";
     _lastRevealStep = -1;
     _ceremonyStartMs = 0;          // runs on every client, unlike the host-only launchers
   }
@@ -4755,7 +5027,7 @@ function renderGrandPrizeCeremony(g){
 
   sfxGrandCrown();
   if(window.FX){
-    FX.fireworks(7);
+    FX.fireworkShow(30, 16000);
     FX.confetti(140);
     FX.shockwave(window.innerWidth/2, window.innerHeight/2, "#f59e0b");
     FX.shake();
@@ -5948,6 +6220,13 @@ function renderMiniGameDoneHTML(){
     html += '</div>'; // end stage
 
   } else {
+    // A dozen-shell send-off when the recap lands - keyed so the repeated renders
+    // of this panel do not relaunch it every tick.
+    var showKey = 'minishow_' + (g.type || '') + '_' + (g.round || 0);
+    if(_lastFireworkKey !== showKey){
+      _lastFireworkKey = showKey;
+      if(window.FX && FX.fireworkShow) FX.fireworkShow(12);
+    }
     // FINAL SHOWCASE & TOTAL SCORES SUMMARY & ACTION BUTTONS
     html += '<div class="groundhdr">FIN DU MINI-JEU !</div>';
     html += '<div style="text-align:center;margin:16px 0;">';
