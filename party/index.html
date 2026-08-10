@@ -1478,7 +1478,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.39</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.40</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -3543,7 +3543,7 @@ function startLiveCountdown(revealStartMs, durationSec, onEnd){
   var lastTick = -1;
 
   function update(){
-    var elapsed = Math.floor((Date.now() - (revealStartMs || Date.now())) / 1000);
+    var elapsed = Math.floor((serverNow() - (revealStartMs || serverNow())) / 1000);
     var remaining = Math.max(0, durationSec - elapsed);
     var el = document.getElementById("countdownVal");
     if(el){
@@ -3711,6 +3711,30 @@ function sanitizeVotes(votes){
 /* Bucketed per game mode. Flat session-wide stats are what handed somebody the
    rock-paper-scissors star at the end of Qui a posté ça: the tiebreaker win was still
    sitting in the same bucket several games later. */
+/* ---- SHARED CLOCK ----------------------------------------------------------
+ * Every phase used to be stamped with the host's Date.now() and then measured
+ * against each player's own Date.now(). Phone clocks routinely disagree by several
+ * seconds, so the timers, the auto-reveals and the countdowns all drifted apart by
+ * however wrong a given handset happened to be - the 3-4s lag between the host and
+ * everybody else.
+ *
+ * Firebase publishes its estimate of this device's error at .info/serverTimeOffset.
+ * Adding it gives every client the same timebase, so a timestamp written by one
+ * device means the same instant on all of them. Until it resolves the offset is 0,
+ * which is exactly the old behaviour, so nothing breaks while it settles.
+ * -------------------------------------------------------------------------- */
+var _serverSkew = 0;
+function serverNow(){ return Date.now() + _serverSkew; }
+function startClockSync(){
+  if(!window.db) return;
+  try{
+    db.ref("/.info/serverTimeOffset").on("value", function(snap){
+      var v = snap.val();
+      if(typeof v === "number" && isFinite(v)) _serverSkew = v;
+    });
+  }catch(e){ /* offline: keep the local clock */ }
+}
+
 function trackStat(category, uid, mode){
   if(!roomCode || !amHost || !uid) return;
   var m = mode || (currentGame && currentGame.type) || "misc";
@@ -4422,7 +4446,7 @@ function launchMostLikely(){
   db.ref("rooms/" + roomCode).update({
     status: "playing",
     game: { type:"mostlikely", phase:"guess", round:0, total:chosen.length,
-            phaseStartMs: Date.now(), prompts:chosen }
+            phaseStartMs: serverNow(), prompts:chosen }
   });
 }
 
@@ -4442,7 +4466,7 @@ function renderMostLikely(g){
       setTimeout(revealRound, 600);
     }
 
-    startLiveCountdown(g.phaseStartMs || Date.now(), ML_GUESS_SEC, function(){
+    startLiveCountdown(g.phaseStartMs || serverNow(), ML_GUESS_SEC, function(){
       if(amHost && currentGame && currentGame.type === "mostlikely" && (currentGame.round || 0) === round &&
          currentGame.phase === "guess") revealRound();
     });
@@ -4494,7 +4518,7 @@ function renderMostLikely(g){
     }
 
   } else if(g.phase === "reveal"){
-    var revealStart = g.revealStartMs || Date.now();
+    var revealStart = g.revealStartMs || serverNow();
     startLiveCountdown(g.revealStartMs || revealStart, 5, function(){
       if(amHost) nextRound();
     });
@@ -4698,7 +4722,7 @@ function processTiebreakerClash(){
       db.ref("rooms/" + roomCode + "/game").update({
         phase: "reveal",
         winnerId: winner,
-        revealStartMs: Date.now(),
+        revealStartMs: serverNow(),
         rpsStage: null,
         roundPoints: rp
       });
@@ -4865,13 +4889,13 @@ function revealRound(){
       applyStreaks(rp);                 // may add points, so recompute for the panel
       rp = computeRoundPoints();
       db.ref("rooms/" + roomCode + "/game").update({
-        phase: "reveal", revealStartMs: Date.now(), scored: true,
+        phase: "reveal", revealStartMs: serverNow(), scored: true,
         roundPoints: rp, streaks: _streaks
       });
     }, 150);
     return;
   }
-  db.ref("rooms/" + roomCode + "/game").update({ phase: "reveal", revealStartMs: Date.now(), scored: true });
+  db.ref("rooms/" + roomCode + "/game").update({ phase: "reveal", revealStartMs: serverNow(), scored: true });
 }
 // Single source of truth for bonus stars. The award logic and the ceremony used to
 // keep separate hardcoded lists that had drifted apart, so a star could be shown with
@@ -4983,16 +5007,16 @@ function nextRound(){
     awardEndGameBonusStars();
     db.ref("rooms/" + roomCode + "/game").update({
       phase: "done",
-      ceremonyStartMs: Date.now()
+      ceremonyStartMs: serverNow()
     });
   }
   else {
-    var upd = { round: next, phase: "guess", votes: null, revealStartMs: null, scored: null, phaseStartMs: Date.now() };
+    var upd = { round: next, phase: "guess", votes: null, revealStartMs: null, scored: null, phaseStartMs: serverNow() };
     if(currentGame.type === "knowplayer"){
       // Each round has a new star, so it restarts at the secret-answer step.
       upd.phase = "spotlight_answer";
       upd.spotlightAnswer = null;
-      upd.phaseStartMs = Date.now();
+      upd.phaseStartMs = serverNow();
     } else if(currentGame.type === "twotruths"){
       // A new storyteller each round, so it restarts at the writing step and the
       // previous statements have to go.
@@ -5859,7 +5883,7 @@ function launchWhoPosted(){
       type: "whoposted",
       phase: "guess",
       round: 0,
-      phaseStartMs: Date.now(),
+      phaseStartMs: serverNow(),
       total: rounds.length,
       roundsData: rounds
     }
@@ -6092,7 +6116,7 @@ function renderWhoPosted(g){
     }
     // Safety net: this mode had no timer, so one player putting their phone down
     // stalled the round forever.
-    startLiveCountdown(g.phaseStartMs || Date.now(), WP_GUESS_SEC, function(){
+    startLiveCountdown(g.phaseStartMs || serverNow(), WP_GUESS_SEC, function(){
       if(amHost && currentGame && currentGame.type === "whoposted" && (currentGame.round || 0) === round){
         revealRound();
       }
@@ -6116,7 +6140,7 @@ function renderWhoPosted(g){
             ' <span id="countdownVal">' + WP_GUESS_SEC + 's</span></div></div>';
 
   } else if(g.phase === "reveal"){
-    var revealStart = g.revealStartMs || Date.now();
+    var revealStart = g.revealStartMs || serverNow();
     startLiveCountdown(g.revealStartMs || revealStart, 5, function(){
       if(amHost) nextRound();
     });
@@ -6152,8 +6176,8 @@ function renderMiniGameDoneHTML(){
   // the value from the PREVIOUS game - the show was already "over" before it started,
   // so everyone but the host silently skipped the award animations from game 2 on.
   if(g.ceremonyStartMs) _ceremonyStartMs = g.ceremonyStartMs;
-  else if(!_ceremonyStartMs) _ceremonyStartMs = Date.now();
-  var elapsedSec = Math.max(0, Math.floor((Date.now() - _ceremonyStartMs) / 1000));
+  else if(!_ceremonyStartMs) _ceremonyStartMs = serverNow();
+  var elapsedSec = Math.max(0, Math.floor((serverNow() - _ceremonyStartMs) / 1000));
 
   // Same selection the host used to hand out the points, so the card and the
   // scoreboard can never disagree.
@@ -6465,7 +6489,7 @@ function launchGuessRating(){
       type: "guessrating",
       phase: "guess",
       round: 0,
-      phaseStartMs: Date.now(),
+      phaseStartMs: serverNow(),
       total: Math.min(8, pool.length),
       roundsData: pool.slice(0, 8)
     }
@@ -6498,7 +6522,7 @@ function renderGuessRating(g){
       setTimeout(revealRound, 600);
     }
     // Safety net: one player who puts their phone down can't stall the round forever.
-    startLiveCountdown(g.phaseStartMs || Date.now(), GR_GUESS_SEC, function(){
+    startLiveCountdown(g.phaseStartMs || serverNow(), GR_GUESS_SEC, function(){
       if(amHost && currentGame && currentGame.type === "guessrating" && (currentGame.round || 0) === round){
         revealRound();
       }
@@ -6554,7 +6578,7 @@ function renderGuessRating(g){
     html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' <span id="countdownVal">' + GR_GUESS_SEC + 's</span></div></div>';
 
   } else if(g.phase === "reveal"){
-    var revealStart = g.revealStartMs || Date.now();
+    var revealStart = g.revealStartMs || serverNow();
     startLiveCountdown(g.revealStartMs || revealStart, 5, function(){ if(amHost) nextRound(); });
 
     html += '<div class="groundhdr">La note réellement donnée :</div>';
@@ -7017,7 +7041,7 @@ function launchKnowPlayer(){
       phase: "spotlight_answer",
       round: 0,
       total: rounds.length,
-      phaseStartMs: Date.now(),
+      phaseStartMs: serverNow(),
       roundsData: rounds
     }
   });
@@ -7087,14 +7111,14 @@ function renderKnowPlayer(g){
   if(g.phase === "spotlight_answer"){
     // If the star goes AFK, the host picks for them so the room keeps moving.
     // Re-read live state here: a render snapshot can be a second or two stale.
-    startLiveCountdown(g.phaseStartMs || Date.now(), KP_ANSWER_SEC, function(){
+    startLiveCountdown(g.phaseStartMs || serverNow(), KP_ANSWER_SEC, function(){
       if(!amHost || !options.length) return;
       if(!kpStillOnRound(round)) return;
       if(typeof currentGame.spotlightAnswer === "number") return;
       db.ref("rooms/" + roomCode + "/game").update({
         spotlightAnswer: Math.floor(Math.random() * options.length),
         phase: "guess",
-        phaseStartMs: Date.now()
+        phaseStartMs: serverNow()
       });
     });
 
@@ -7121,7 +7145,7 @@ function renderKnowPlayer(g){
       setTimeout(revealRound, 600);
     }
     // Safety net: a single AFK guesser can't stall the round forever.
-    startLiveCountdown(g.phaseStartMs || Date.now(), KP_GUESS_SEC, function(){
+    startLiveCountdown(g.phaseStartMs || serverNow(), KP_GUESS_SEC, function(){
       if(amHost && kpStillOnRound(round)) revealRound();
     });
 
@@ -7146,7 +7170,7 @@ function renderKnowPlayer(g){
     html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' <span id="countdownVal">' + KP_GUESS_SEC + 's</span></div></div>';
 
   } else if(g.phase === "reveal"){
-    var revealStart = g.revealStartMs || Date.now();
+    var revealStart = g.revealStartMs || serverNow();
     var isLastRound = (round + 1 >= total);
     startLiveCountdown(revealStart, 5, function(){ if(amHost) nextRound(); });
 
@@ -7221,7 +7245,7 @@ function pickSpotlightAnswer(idx){
   db.ref("rooms/" + roomCode + "/game").update({
     spotlightAnswer: idx,
     phase: "guess",
-    phaseStartMs: Date.now()
+    phaseStartMs: serverNow()
   });
 }
 function guessSpotlight(idx){
@@ -7726,7 +7750,7 @@ function launchRoast(){
       phase: "submit",
       round: 0,
       total: rounds.length,
-      phaseStartMs: Date.now(),
+      phaseStartMs: serverNow(),
       roundsData: rounds,
       answers: {},
       votes: {}
@@ -7788,7 +7812,7 @@ function renderRoast(g){
       setTimeout(startRoastVote, 600);
     }
     // Nobody can be left staring at a writing box forever.
-    startLiveCountdown(g.phaseStartMs || Date.now(), ROAST_WRITE_SEC, function(){
+    startLiveCountdown(g.phaseStartMs || serverNow(), ROAST_WRITE_SEC, function(){
       if(amHost && roastStillOn(round, "submit")) startRoastVote();
     });
 
@@ -7842,7 +7866,7 @@ function renderRoast(g){
       _lastAutoRevealKey = advKey2;
       setTimeout(revealRound, 600);
     }
-    startLiveCountdown(g.phaseStartMs || Date.now(), ROAST_VOTE_SEC, function(){
+    startLiveCountdown(g.phaseStartMs || serverNow(), ROAST_VOTE_SEC, function(){
       if(amHost && roastStillOn(round, "vote")) revealRound();
     });
 
@@ -7873,7 +7897,7 @@ function renderRoast(g){
     html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' <span id="countdownVal">' + ROAST_VOTE_SEC + 's</span></div></div>';
 
   } else if(g.phase === "reveal"){
-    var revealStart = g.revealStartMs || Date.now();
+    var revealStart = g.revealStartMs || serverNow();
     var isLast = (round + 1 >= total);
     startLiveCountdown(revealStart, 6, function(){ if(amHost) nextRound(); });
 
@@ -7962,7 +7986,7 @@ function startRoastVote(){
   var count = Object.keys(g.answers || {}).length;
   // Nothing was written, so there is nothing to vote on - go straight to the verdict.
   if(count === 0){ revealRound(); return; }
-  db.ref("rooms/" + roomCode + "/game").update({ phase: "vote", phaseStartMs: Date.now() });
+  db.ref("rooms/" + roomCode + "/game").update({ phase: "vote", phaseStartMs: serverNow() });
 }
 
 function voteRoast(authorId){
@@ -8176,7 +8200,7 @@ function launchTwoTruths(){
       phase: "write",
       round: 0,
       total: rounds.length,
-      phaseStartMs: Date.now(),
+      phaseStartMs: serverNow(),
       roundsData: rounds,
       votes: {}
     }
@@ -8241,7 +8265,7 @@ function ttSubmit(){
     statements: payload,
     lieIndex: _ttLie,
     phase: "guess",
-    phaseStartMs: Date.now()
+    phaseStartMs: serverNow()
   });
   ttResetDraft();
 }
@@ -8254,7 +8278,7 @@ function ttAutoSubmit(round){
     statements: picks.map(function(p){ return { t: p, h: true }; }),
     lieIndex: Math.floor(Math.random() * 3),
     phase: "guess",
-    phaseStartMs: Date.now()
+    phaseStartMs: serverNow()
   });
 }
 
@@ -8320,7 +8344,7 @@ function renderTwoTruths(g){
   }
 
   if(g.phase === "write"){
-    startLiveCountdown(g.phaseStartMs || Date.now(), TT_WRITE_SEC, function(){
+    startLiveCountdown(g.phaseStartMs || serverNow(), TT_WRITE_SEC, function(){
       ttAutoSubmit(round);
     });
 
@@ -8366,7 +8390,7 @@ function renderTwoTruths(g){
       _lastAutoRevealKey = advKey;
       setTimeout(revealRound, 600);
     }
-    startLiveCountdown(g.phaseStartMs || Date.now(), TT_GUESS_SEC, function(){
+    startLiveCountdown(g.phaseStartMs || serverNow(), TT_GUESS_SEC, function(){
       if(amHost && ttStillOn(round, "guess")) revealRound();
     });
 
@@ -8402,7 +8426,7 @@ function renderTwoTruths(g){
     area.dataset.ttKey = "";
     area.dataset.ttRound = "";
     var isLast = (round + 1 >= total);
-    startLiveCountdown(g.revealStartMs || Date.now(), 6, function(){ if(amHost) nextRound(); });
+    startLiveCountdown(g.revealStartMs || serverNow(), 6, function(){ if(amHost) nextRound(); });
 
     var lie = g.lieIndex;
     var fooled = 0, caught = 0;
@@ -8537,6 +8561,7 @@ function enterRoomScreen(status){
 }
 
 function watchConnection(){
+  startClockSync();
   db.ref(".info/connected").on("value", function(snap){
     var connected = (snap.val() === true);
     if(inRoom){ setStatus(connected ? "ok" : "wait", connected ? "Connecté" : "Reconnexion..."); }
