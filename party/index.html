@@ -98,7 +98,12 @@
   #audioControls{
     position:absolute; top:12px; right:14px; z-index:100;
     display:flex; flex-direction:column; align-items:flex-end;
+    /* The container reserves space for the collapsed dropdown; without this it
+       swallows every tap in that box - a dead zone over a fifth of a phone screen. */
+    pointer-events: none;
   }
+  #audioControls > * { pointer-events: auto; }
+  #audioControls .controls-dropdown { pointer-events: none; }
   #controlsMenuToggle {
     width: 38px; height: 38px; border-radius: 50%;
     background: var(--panel); border: 1.5px solid var(--bdr);
@@ -1473,7 +1478,7 @@
 
 <footer>
   <div id="nowPlaying" aria-live="polite"></div>
-  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.38</span> &copy; 2026 Norelo</div>
+  <div><b style="color:#8493b8;">Norelo</b> Party <span style="display:inline-block; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:2px 8px; border-radius:10px; font-weight:800; font-size:0.72rem; color:var(--amber); margin:0 4px;">v1.1.39</span> &copy; 2026 Norelo</div>
 </footer>
 
 <div class="toast" id="toast"></div>
@@ -3660,6 +3665,7 @@ function renderRoundPointsHTML(roundPts){
 
 var _lastAnimatedPointsKey = "";
 var _lastFireworkKey = "";
+var _roastDraft = "";
 function animateCounters(g){
   var sfxKey = (g ? (g.type + "_" + (g.round || 0)) : "") + "_animatePts";
   if(_lastAnimatedPointsKey === sfxKey) return;
@@ -7229,7 +7235,7 @@ function guessSpotlight(idx){
 // =====================================================================
 //  GAME 5: PERSONALIZED ROAST / AUTOBIOGRAPHIES
 // =====================================================================
-var ROAST_WRITE_SEC = 60;   // writing a punchline takes longer than tapping a choice
+var ROAST_WRITE_SEC = 75;   // writing a punchline takes longer than tapping a choice
 var ROAST_VOTE_SEC = 60;
 
 /* [NAME] is substituted at render time, not at launch, so the prompt follows whoever
@@ -7786,21 +7792,49 @@ function renderRoast(g){
       if(amHost && roastStillOn(round, "submit")) startRoastVote();
     });
 
+    // Repaint the shell only when what it should SHOW changes. Everything else that
+    // ticks during this phase (other people's answers landing) updates in place, so
+    // a half-typed punchline survives.
+    var rKey = "roast_w_" + round + "_" + LANG + "_" + (answers[myId] ? "sent" : "write");
+    if(area.dataset.roastKey === rKey){
+      var rProg = document.getElementById("roastProgress");
+      if(rProg) rProg.textContent = answerCount + " / " + players.length + " " + locPhrase("réponses soumises");
+      var rWait = document.getElementById("roastWait");
+      if(rWait && answers[myId]){
+        rWait.innerHTML = locPhrase(answerCount >= players.length
+          ? "Toutes les répliques sont reçues ! Lancement du vote..."
+          : "Réponse envoyée ! En attente des autres") + '<span class="d"></span>';
+      }
+      return;
+    }
+    // a language flip mid-write must not cost the player their sentence
+    var rIn = document.getElementById("roastIn");
+    if(rIn) _roastDraft = rIn.value;
+    if(area.dataset.roastRound !== String(round)) _roastDraft = "";
+    area.dataset.roastKey = rKey;
+    area.dataset.roastRound = String(round);
+
     html += hdr;
     html += targetCardHTML();
     html += '<div class="gprompt">' + escapeHtml(frTypo(prompt)) + '</div>';
 
     if(answers[myId]){
       html += '<div class="post-card" style="text-align:center;font-weight:700;">"' + escapeHtml(answers[myId]) + '"</div>';
-      html += '<div class="waiting">' + (answerCount >= players.length ? "Toutes les répliques sont reçues ! Lancement du vote..." : "Réponse envoyée ! En attente des autres") + '<span class="d"></span></div>';
+      html += '<div class="waiting" id="roastWait">' + (answerCount >= players.length ? "Toutes les répliques sont reçues ! Lancement du vote..." : "Réponse envoyée ! En attente des autres") + '<span class="d"></span></div>';
     } else {
-      html += '<input class="fld" id="roastIn" placeholder="Écris ta réplique drôle..." maxlength="90" style="margin-bottom:14px;">';
+      html += '<input class="fld" id="roastIn" placeholder="Écris ta réplique drôle..." maxlength="90" style="margin-bottom:14px;" oninput="_roastDraft=this.value;" value="' + escapeHtml(_roastDraft) + '">';
       html += '<button class="btn pri" onclick="submitRoastAnswer()">Envoyer ma réplique</button>';
     }
-    html += '<div class="gprogress" style="margin-top:16px;">' + answerCount + ' / ' + players.length + ' réponses soumises</div>';
+    html += '<div class="gprogress" id="roastProgress" style="margin-top:16px;">' + answerCount + ' / ' + players.length + ' réponses soumises</div>';
     html += '<div style="text-align:center;"><div class="timer-badge">' + ICONS.clock + ' <span id="countdownVal">' + ROAST_WRITE_SEC + 's</span></div></div>';
+    area.innerHTML = html;
+    localizeNode(area);
+    var rIn2 = document.getElementById("roastIn");
+    if(rIn2 && _roastDraft) rIn2.value = _roastDraft;
+    return;
 
   } else if(g.phase === "vote"){
+    area.dataset.roastKey = ""; area.dataset.roastRound = "";
     var voters = solo ? players.length : players.filter(function(p){ return !!answers[p.id] || true; }).length;
     var advKey2 = "roast_vote_" + round;
     var everyoneIn = (votedCount >= players.length && players.length > 0);
@@ -7917,6 +7951,7 @@ function submitRoastAnswer(){
     return;
   }
   sfxVote();
+  _roastDraft = "";
   db.ref("rooms/" + roomCode + "/game/answers/" + myId).set(val);
 }
 
@@ -7942,7 +7977,7 @@ function voteRoast(authorId){
 // =====================================================================
 //  GAME 7: TWO TRUTHS AND A LIE (2 Vérités 1 Mensonge)
 // =====================================================================
-var TT_WRITE_SEC = 75;      // writing three statements takes longer than tapping
+var TT_WRITE_SEC = 110;     // three sentences from scratch - 75s was not enough in practice
 var TT_GUESS_SEC = 60;
 
 /* House statements for the "Aide-moi" assist. Deliberately generic so they fit anyone,
