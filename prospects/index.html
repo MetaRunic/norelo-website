@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title>Prospects · Norelo</title>
+<link rel="icon" href="/favicon.png">
 <style>
 :root{
   --dark:#070f2b;
@@ -12,12 +13,16 @@
   --bl:#4fa3e8;
   --bp:#60a5fa;
   --bdr:rgba(79,163,232,0.15);
+  --bdr2:rgba(79,163,232,0.28);
   --gr:#64748b;
+  --gr2:#94a3b8;
   --green:#22c55e;
   --panel:#0c1636;
   --panel2:#0f1c40;
+  --panel3:#132450;
   --red:#ef4444;
   --amber:#f59e0b;
+  --violet:#a78bfa;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{overflow-x:hidden;}
@@ -26,15 +31,38 @@ body{
   color:#e6ebff;
   font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   min-height:100vh;
+  -webkit-text-size-adjust:100%;
 }
+button,input,select,textarea{font-family:inherit;}
 
-/* nav */
+/* ---------- login ---------- */
+.login{
+  position:fixed;inset:0;z-index:500;background:var(--dark);
+  display:flex;align-items:center;justify-content:center;padding:1.5rem;
+}
+.loginbox{
+  width:100%;max-width:360px;background:var(--panel);border:1px solid var(--bdr);
+  border-radius:14px;padding:2rem 1.75rem;
+}
+.loginbox .nl{justify-content:center;margin-bottom:.35rem;font-size:1.5rem;}
+.loginbox .sub{text-align:center;color:var(--gr);font-size:.85rem;margin-bottom:1.5rem;}
+.loginbox label{display:block;font-size:.72rem;color:var(--gr);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.35rem;}
+.loginbox input{
+  width:100%;background:var(--panel2);border:1px solid var(--bdr);border-radius:8px;
+  color:#e6ebff;padding:.7rem .8rem;font-size:.95rem;margin-bottom:1rem;
+}
+.loginbox input:focus{outline:none;border-color:var(--bl);}
+.loginbox button{width:100%;background:var(--blue);color:#fff;border:none;border-radius:8px;padding:.75rem;font-size:.95rem;font-weight:600;cursor:pointer;}
+.loginbox button:disabled{opacity:.5;cursor:default;}
+.lerr{color:var(--red);font-size:.85rem;min-height:1.2em;margin-top:.6rem;text-align:center;}
+
+/* ---------- nav ---------- */
 .nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   background:rgba(8,16,42,.92);
   backdrop-filter:blur(20px);
-  padding:1.1rem 3rem;
-  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 2rem;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
   border-bottom:1px solid var(--bdr);
 }
 .nl{display:flex;align-items:center;gap:0;font-weight:700;font-size:1.3rem;}
@@ -42,457 +70,1759 @@ body{
 .nl span:nth-child(2){color:var(--bl);}
 .nld{width:5px;height:5px;border-radius:50%;background:var(--green);margin-left:5px;align-self:flex-start;margin-top:6px;animation:pu 2s ease-in-out infinite;}
 @keyframes pu{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.4);}}
-.navtag{font-size:.85rem;color:var(--gr);letter-spacing:.02em;}
+.navright{display:flex;align-items:center;gap:.85rem;font-size:.85rem;color:var(--gr);}
+.navme{color:var(--bp);font-weight:600;}
+.navbtn{background:transparent;border:1px solid var(--bdr);color:var(--gr);border-radius:7px;padding:.4rem .75rem;font-size:.8rem;cursor:pointer;}
+.navbtn:hover{color:#fff;border-color:var(--bl);}
 
-main{padding:6.5rem 3rem 4rem;max-width:1400px;margin:0 auto;}
+main{padding:6rem 2rem 5rem;max-width:1500px;margin:0 auto;}
 
-.pagehead{margin-bottom:2rem;}
+.pagehead{margin-bottom:1.5rem;}
 .pagehead h1{font-size:1.8rem;font-weight:700;color:#fff;margin-bottom:.35rem;}
-.pagehead p{color:var(--gr);font-size:.95rem;}
+.pagehead p{color:var(--gr);font-size:.92rem;max-width:70ch;}
 
-/* stats bar */
-.stats{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;
-}
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:.85rem;margin-bottom:1.75rem;}
 .stat{
   background:var(--panel);border:1px solid var(--bdr);border-radius:10px;
-  padding:1rem 1.25rem;
+  padding:.9rem 1.1rem;cursor:pointer;transition:border-color .15s;
 }
-.stat .num{font-size:1.6rem;font-weight:700;color:var(--bl);}
-.stat .lbl{font-size:.8rem;color:var(--gr);margin-top:.2rem;}
+.stat:hover{border-color:var(--bdr2);}
+.stat.on{border-color:var(--bl);background:var(--panel2);}
+.stat .num{font-size:1.5rem;font-weight:700;color:var(--bl);line-height:1.2;}
+.stat.warn .num{color:var(--amber);}
+.stat.bad .num{color:var(--red);}
+.stat.ok .num{color:var(--green);}
+.stat .lbl{font-size:.76rem;color:var(--gr);margin-top:.15rem;}
 
-/* form */
-.formcard{
+/* ---------- cards / form ---------- */
+.card{
   background:var(--panel);border:1px solid var(--bdr);border-radius:12px;
-  padding:1.5rem;margin-bottom:2rem;
+  padding:1.4rem;margin-bottom:1.5rem;
 }
-.formcard h2{font-size:1.05rem;color:#fff;margin-bottom:1rem;font-weight:600;}
-.formgrid{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem;
+.cardhead{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;}
+.cardhead h2{font-size:1.02rem;color:#fff;font-weight:600;}
+.hint{font-size:.78rem;color:var(--gr);}
+kbd{background:var(--panel3);border:1px solid var(--bdr);border-radius:4px;padding:.1rem .35rem;font-size:.72rem;font-family:ui-monospace,Menlo,monospace;color:var(--gr2);}
+
+.paste{
+  display:grid;grid-template-columns:1fr auto;gap:.7rem;margin-bottom:1.1rem;align-items:start;
 }
-.fld{display:flex;flex-direction:column;gap:.35rem;}
-.fld label{font-size:.75rem;color:var(--gr);text-transform:uppercase;letter-spacing:.03em;}
+.paste textarea{
+  width:100%;background:var(--panel2);border:1px dashed var(--bdr2);border-radius:8px;
+  color:#e6ebff;padding:.65rem .8rem;font-size:.88rem;resize:vertical;min-height:74px;
+}
+.paste textarea:focus{outline:none;border-color:var(--bl);border-style:solid;}
+.paste .pbtns{display:flex;flex-direction:column;gap:.5rem;}
+
+.formgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;}
+.fld{display:flex;flex-direction:column;gap:.3rem;min-width:0;}
+.fld label{font-size:.72rem;color:var(--gr);text-transform:uppercase;letter-spacing:.03em;}
 .fld input,.fld select,.fld textarea{
   background:var(--panel2);border:1px solid var(--bdr);border-radius:7px;
-  color:#e6ebff;padding:.55rem .7rem;font-size:.9rem;font-family:inherit;
+  color:#e6ebff;padding:.55rem .7rem;font-size:.9rem;width:100%;
 }
-.fld input:focus,.fld select:focus,.fld textarea:focus{
-  outline:none;border-color:var(--bl);
-}
+.fld textarea{resize:vertical;}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--bl);}
 .fld.span2{grid-column:span 2;}
 .fld.span4{grid-column:span 4;}
-.formactions{display:flex;gap:.75rem;margin-top:1.1rem;}
+.sugg{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.1rem;}
+.sugg button{
+  background:rgba(79,163,232,.1);border:1px solid var(--bdr);color:var(--bp);
+  border-radius:5px;padding:.15rem .45rem;font-size:.74rem;cursor:pointer;
+}
+.sugg button:hover{background:rgba(79,163,232,.2);}
+.formactions{display:flex;gap:.7rem;margin-top:1.1rem;flex-wrap:wrap;align-items:center;}
 .btn{
-  border:none;border-radius:7px;padding:.65rem 1.3rem;font-size:.9rem;font-weight:600;
-  cursor:pointer;font-family:inherit;transition:opacity .15s;
+  border:none;border-radius:7px;padding:.62rem 1.2rem;font-size:.9rem;font-weight:600;
+  cursor:pointer;transition:opacity .15s;white-space:nowrap;
 }
 .btn:hover{opacity:.85;}
+.btn:disabled{opacity:.45;cursor:default;}
 .btn-primary{background:var(--blue);color:#fff;}
-.btn-ghost{background:transparent;border:1px solid var(--bdr);color:var(--gr);}
+.btn-ghost{background:transparent;border:1px solid var(--bdr);color:var(--gr2);}
+.btn-danger{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3);}
+.btn-sm{padding:.42rem .75rem;font-size:.82rem;}
 
-/* controls */
-.controls{
-  display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center;
+/* duplicate warning */
+.dup{
+  border-radius:9px;padding:.85rem 1rem;margin-top:1rem;font-size:.88rem;
+  background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.35);
 }
-.controls input[type=text]{
-  flex:1;min-width:200px;background:var(--panel);border:1px solid var(--bdr);
-  border-radius:7px;color:#e6ebff;padding:.6rem .9rem;font-size:.9rem;font-family:inherit;
+.dup.block{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.4);}
+.dup h4{font-size:.9rem;margin-bottom:.5rem;color:var(--amber);display:flex;align-items:center;gap:.4rem;}
+.dup.block h4{color:var(--red);}
+.dupitem{
+  display:flex;justify-content:space-between;gap:1rem;padding:.45rem 0;
+  border-top:1px solid rgba(255,255,255,.06);flex-wrap:wrap;
 }
-.controls select{
+.dupitem:first-of-type{border-top:none;}
+.dupitem .dn{font-weight:600;color:#fff;}
+.dupitem .dm{color:var(--gr2);font-size:.82rem;}
+
+/* ---------- controls ---------- */
+.controls{display:flex;gap:.6rem;margin-bottom:.9rem;flex-wrap:wrap;align-items:center;}
+.controls input[type=text],.controls select{
   background:var(--panel);border:1px solid var(--bdr);border-radius:7px;
-  color:#e6ebff;padding:.6rem .9rem;font-size:.9rem;font-family:inherit;
+  color:#e6ebff;padding:.55rem .85rem;font-size:.88rem;
 }
+.controls input[type=text]{flex:1;min-width:190px;}
 .controls input:focus,.controls select:focus{outline:none;border-color:var(--bl);}
+.toggle{
+  display:inline-flex;align-items:center;gap:.4rem;font-size:.83rem;color:var(--gr2);
+  background:var(--panel);border:1px solid var(--bdr);border-radius:7px;padding:.5rem .8rem;cursor:pointer;
+}
+.toggle input{accent-color:var(--blue);cursor:pointer;}
+.toggle.on{border-color:var(--bl);color:#fff;}
 
-/* table */
-.tablewrap{
-  background:var(--panel);border:1px solid var(--bdr);border-radius:12px;
-  overflow-x:auto;
+/* ---------- list ---------- */
+.listwrap{background:var(--panel);border:1px solid var(--bdr);border-radius:12px;overflow-x:auto;}
+.lgrid{min-width:1180px;}
+.lrow{
+  display:grid;
+  grid-template-columns:minmax(230px,2.2fr) 158px 96px minmax(170px,1fr) 168px 112px 132px;
+  gap:.9rem;align-items:center;
+  padding:.8rem 1rem;border-bottom:1px solid var(--bdr);
 }
-table{width:100%;border-collapse:collapse;min-width:920px;}
-th{
-  text-align:left;font-size:.75rem;text-transform:uppercase;letter-spacing:.03em;
-  color:var(--gr);padding:.85rem 1rem;border-bottom:1px solid var(--bdr);
-  white-space:nowrap;
+.lhead{
+  font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--gr);
+  position:sticky;top:0;background:var(--panel);z-index:2;
 }
-td{
-  padding:.85rem 1rem;border-bottom:1px solid var(--bdr);font-size:.88rem;
-  vertical-align:top;
-}
-tr:last-child td{border-bottom:none;}
-tr:hover td{background:rgba(79,163,232,0.04);}
-.tname{font-weight:600;color:#fff;}
-.tsub{color:var(--gr);font-size:.78rem;margin-top:.15rem;}
-.badge{
-  display:inline-block;padding:.2rem .55rem;border-radius:5px;font-size:.75rem;font-weight:600;
-}
+.lhead .sortable{cursor:pointer;user-select:none;}
+.lhead .sortable:hover{color:var(--bp);}
+.lrow:last-child{border-bottom:none;}
+.lbody .lrow:hover{background:rgba(79,163,232,0.04);}
+.lrow.dnc{background:rgba(239,68,68,.06);}
+.lrow.dnc:hover{background:rgba(239,68,68,.1);}
+.lrow.arch{opacity:.5;}
+.cellname{min-width:0;cursor:pointer;}
+.tname{font-weight:600;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.tname:hover{color:var(--bp);}
+.tsub{color:var(--gr);font-size:.78rem;margin-top:.12rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.cellsm{font-size:.82rem;color:var(--gr2);min-width:0;}
+.cellsm a{color:var(--bp);text-decoration:none;}
+.cellsm a:hover{text-decoration:underline;}
+.mut{color:var(--gr);}
+
+.badge{display:inline-block;padding:.18rem .5rem;border-radius:5px;font-size:.73rem;font-weight:600;white-space:nowrap;}
 .badge-none{background:rgba(239,68,68,.15);color:var(--red);}
 .badge-bad{background:rgba(245,158,11,.15);color:var(--amber);}
 .badge-good{background:rgba(34,197,94,.15);color:var(--green);}
-.badge-unknown{background:rgba(100,116,139,.15);color:var(--gr);}
-.chk{
-  display:inline-flex;align-items:center;gap:.4rem;cursor:pointer;font-size:.85rem;
+.badge-unknown{background:rgba(100,116,139,.15);color:var(--gr2);}
+
+.statussel{
+  width:100%;background:var(--panel2);border:1px solid var(--bdr);border-radius:6px;
+  color:#e6ebff;padding:.35rem .45rem;font-size:.79rem;cursor:pointer;
 }
-.chk input{width:16px;height:16px;accent-color:var(--blue);cursor:pointer;}
-.rowactions{display:flex;gap:.5rem;}
+.statussel:focus{outline:none;border-color:var(--bl);}
+.statussel[data-s=ne_pas_contacter]{color:var(--red);border-color:rgba(239,68,68,.4);}
+.statussel[data-s=client]{color:var(--green);border-color:rgba(34,197,94,.4);}
+.statussel[data-s=interesse],.statussel[data-s=devis]{color:var(--bp);border-color:var(--bdr2);}
+.statussel[data-s=pas_interesse]{color:var(--gr);}
+
+.cool{font-size:.73rem;margin-top:.15rem;}
+.cool.hot{color:var(--amber);}
+.cool.never{color:var(--gr);}
+.due{color:var(--red);font-weight:600;}
+.soon{color:var(--amber);}
+
+.rowactions{display:flex;gap:.35rem;justify-content:flex-end;}
 .iconbtn{
-  background:transparent;border:1px solid var(--bdr);color:var(--gr);
-  border-radius:6px;padding:.35rem .6rem;font-size:.78rem;cursor:pointer;font-family:inherit;
+  background:transparent;border:1px solid var(--bdr);color:var(--gr2);
+  border-radius:6px;padding:.32rem .5rem;font-size:.78rem;cursor:pointer;line-height:1.1;
 }
 .iconbtn:hover{color:#fff;border-color:var(--bl);}
+.iconbtn.pri{color:var(--bp);border-color:var(--bdr2);}
 .iconbtn.del:hover{color:var(--red);border-color:var(--red);}
-.note{color:var(--gr);font-size:.82rem;max-width:220px;}
-.addedby{font-size:.75rem;color:var(--gr);}
+.empty{padding:3rem 1rem;text-align:center;color:var(--gr);font-size:.9rem;}
+.countline{font-size:.8rem;color:var(--gr);margin:.6rem .2rem 0;}
 
-.empty{padding:3rem;text-align:center;color:var(--gr);}
+/* ---------- drawer ---------- */
+.scrim{
+  position:fixed;inset:0;background:rgba(3,7,20,.7);z-index:300;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.scrim.show{opacity:1;pointer-events:auto;}
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;width:min(560px,100%);z-index:310;
+  background:var(--panel);border-left:1px solid var(--bdr);
+  transform:translateX(100%);transition:transform .25s ease;
+  display:flex;flex-direction:column;
+}
+.drawer.show{transform:translateX(0);}
+.dhead{
+  padding:1.2rem 1.4rem;border-bottom:1px solid var(--bdr);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;
+}
+.dhead h3{font-size:1.15rem;color:#fff;font-weight:700;}
+.dhead .sub{color:var(--gr);font-size:.82rem;margin-top:.2rem;}
+.dbody{padding:1.2rem 1.4rem 2rem;overflow-y:auto;flex:1;}
+.dsect{margin-bottom:1.6rem;}
+.dsect h4{
+  font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;color:var(--gr);
+  margin-bottom:.7rem;padding-bottom:.4rem;border-bottom:1px solid var(--bdr);
+}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;}
+.dgrid .span2{grid-column:span 2;}
+.quickrow{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem;}
+.quickrow a,.quickrow button{
+  display:inline-flex;align-items:center;gap:.35rem;text-decoration:none;
+  background:var(--panel2);border:1px solid var(--bdr);color:#e6ebff;
+  border-radius:7px;padding:.5rem .8rem;font-size:.83rem;cursor:pointer;
+}
+.quickrow a:hover,.quickrow button:hover{border-color:var(--bl);color:#fff;}
+.quickrow .go{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600;}
+
+.tl{position:relative;padding-left:1.1rem;}
+.tl::before{content:'';position:absolute;left:4px;top:6px;bottom:6px;width:1px;background:var(--bdr);}
+.tlitem{position:relative;padding:0 0 1rem;}
+.tlitem::before{
+  content:'';position:absolute;left:-1.1rem;top:.38rem;width:9px;height:9px;border-radius:50%;
+  background:var(--bl);border:2px solid var(--panel);
+}
+.tlitem.stop::before{background:var(--red);}
+.tlitem .tlh{font-size:.86rem;color:#fff;font-weight:600;}
+.tlitem .tlm{font-size:.76rem;color:var(--gr);margin-top:.1rem;}
+.tlitem .tln{font-size:.83rem;color:var(--gr2);margin-top:.3rem;white-space:pre-wrap;}
+.tlitem .tlx{
+  background:none;border:none;color:var(--gr);font-size:.74rem;cursor:pointer;padding:0;margin-top:.25rem;
+}
+.tlitem .tlx:hover{color:var(--red);}
+
+/* ---------- modal ---------- */
+.modal{
+  position:fixed;z-index:320;inset:0;display:none;align-items:center;justify-content:center;padding:1.2rem;
+}
+.modal.show{display:flex;}
+.mbox{
+  width:100%;max-width:480px;background:var(--panel);border:1px solid var(--bdr2);
+  border-radius:14px;padding:1.4rem;max-height:90vh;overflow-y:auto;
+}
+.mbox h3{font-size:1.05rem;color:#fff;margin-bottom:.3rem;}
+.mbox .msub{font-size:.83rem;color:var(--gr);margin-bottom:1.1rem;}
+.warnbox{
+  background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.35);color:#fde68a;
+  border-radius:8px;padding:.7rem .85rem;font-size:.85rem;margin-bottom:1rem;
+}
+.warnbox.stop{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.45);color:#fecaca;}
+.chips{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.9rem;}
+.chip{
+  background:var(--panel2);border:1px solid var(--bdr);color:var(--gr2);
+  border-radius:20px;padding:.42rem .85rem;font-size:.84rem;cursor:pointer;
+}
+.chip.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600;}
+.mactions{display:flex;gap:.6rem;justify-content:flex-end;margin-top:1.2rem;flex-wrap:wrap;}
 
 .toast{
-  position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(100px);
-  background:var(--panel2);border:1px solid var(--bdr);color:#fff;
-  padding:.8rem 1.4rem;border-radius:8px;font-size:.9rem;
-  transition:transform .25s ease;z-index:200;
+  position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(140px);
+  background:var(--panel3);border:1px solid var(--bdr2);color:#fff;
+  padding:.75rem 1.3rem;border-radius:9px;font-size:.89rem;
+  transition:transform .25s ease;z-index:400;max-width:90vw;text-align:center;
 }
 .toast.show{transform:translateX(-50%) translateY(0);}
+.toast.err{border-color:rgba(239,68,68,.5);}
 
-.who{
-  display:flex;align-items:center;gap:.6rem;margin-bottom:2rem;
-}
-.who input{
-  background:var(--panel);border:1px solid var(--bdr);border-radius:7px;
-  color:#e6ebff;padding:.5rem .8rem;font-size:.85rem;font-family:inherit;width:180px;
-}
-.who input:focus{outline:none;border-color:var(--bl);}
-.who span{font-size:.8rem;color:var(--gr);}
+.foot{text-align:center;color:var(--gr);font-size:.75rem;padding:2rem 1rem 1rem;}
 
-@media (max-width:900px){
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  .stats{grid-template-columns:repeat(3,1fr);}
   .formgrid{grid-template-columns:repeat(2,1fr);}
-  .fld.span2{grid-column:span 2;}
-  .stats{grid-template-columns:repeat(2,1fr);}
+  .fld.span4{grid-column:span 2;}
 }
-@media (max-width:700px){
-  .nav{padding:1rem 1.25rem;}
-  main{padding:5.5rem 1.1rem 3rem;}
+@media (max-width:760px){
+  .nav{padding:.9rem 1.1rem;}
+  main{padding:5.2rem 1rem 4rem;}
+  .pagehead h1{font-size:1.45rem;}
+  .stats{grid-template-columns:repeat(2,1fr);}
+  .card{padding:1.1rem;}
+  .paste{grid-template-columns:1fr;}
+  .paste .pbtns{flex-direction:row;}
+  .paste .pbtns button{flex:1;}
   .formgrid{grid-template-columns:1fr;}
   .fld.span2,.fld.span4{grid-column:span 1;}
-  .stats{grid-template-columns:repeat(2,1fr);}
-  table{min-width:760px;}
+  .dgrid{grid-template-columns:1fr;}
+  .dgrid .span2{grid-column:span 1;}
+  .formactions .btn{flex:1;}
+
+  /* la liste devient des cartes */
+  .listwrap{overflow-x:visible;background:transparent;border:none;}
+  .lgrid{min-width:0;}
+  .lrow.lhead{display:none;}
+  .lrow{
+    display:block;background:var(--panel);border:1px solid var(--bdr);
+    border-radius:11px;margin-bottom:.7rem;padding:.9rem 1rem;
+  }
+  .lrow>*{margin-bottom:.55rem;}
+  .lrow>*:last-child{margin-bottom:0;}
+  .cellsm::before{
+    content:attr(data-l);display:block;font-size:.66rem;text-transform:uppercase;
+    letter-spacing:.04em;color:var(--gr);margin-bottom:.12rem;
+  }
+  .rowactions{justify-content:flex-start;flex-wrap:wrap;}
+  .rowactions .iconbtn{flex:1;padding:.5rem;}
+  .drawer{width:100%;}
 }
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="nl">
-    <span>Nore</span><span>lo</span><span class="nld"></span>
+<!-- ============ LOGIN ============ -->
+<div class="login" id="login">
+  <div class="loginbox">
+    <div class="nl"><span>Nore</span><span>lo</span><span class="nld"></span></div>
+    <div class="sub">Suivi de prospection</div>
+    <label for="luser">Utilisateur</label>
+    <input type="text" id="luser" autocomplete="username" autocapitalize="off" spellcheck="false">
+    <label for="lpass">Mot de passe</label>
+    <input type="password" id="lpass" autocomplete="current-password">
+    <button id="lbtn">Se connecter</button>
+    <div class="lerr" id="lerr"></div>
   </div>
-  <div class="navtag">Suivi de prospection</div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app" style="display:none;">
+
+<nav class="nav">
+  <div class="nl"><span>Nore</span><span>lo</span><span class="nld"></span></div>
+  <div class="navright">
+    <span class="navme" id="navMe"></span>
+    <button class="navbtn" id="logoutBtn">Quitter</button>
+  </div>
 </nav>
 
 <main>
   <div class="pagehead">
     <h1>Prospects</h1>
-    <p>Entreprises sans site web ou avec un site à améliorer. Ajoutez-en, on se les partage.</p>
-  </div>
-
-  <div class="who">
-    <span>Ajouté par :</span>
-    <input type="text" id="whoInput" placeholder="Ton nom">
+    <p>Entreprises repérées, qui les a approchées et quand. Vérifiez toujours l'historique avant d'appeler : personne ne doit être dérangé deux fois par deux personnes différentes.</p>
   </div>
 
   <div class="stats" id="stats"></div>
 
-  <div class="formcard">
-    <h2>Ajouter un prospect</h2>
+  <!-- ---- ajout ---- -->
+  <div class="card">
+    <div class="cardhead">
+      <h2>Ajouter un prospect</h2>
+      <span class="hint"><kbd>Ctrl</kbd>+<kbd>Entrée</kbd> pour ajouter · <kbd>/</kbd> pour chercher</span>
+    </div>
+
+    <div class="paste">
+      <textarea id="pasteBox" placeholder="Collage rapide : collez ici la fiche Google Maps (nom, catégorie, adresse, téléphone, site web) et les champs se remplissent tout seuls."></textarea>
+      <div class="pbtns">
+        <button class="btn btn-primary btn-sm" id="parseBtn">Remplir</button>
+        <button class="btn btn-ghost btn-sm" id="pasteClear">Vider</button>
+      </div>
+    </div>
+
     <div class="formgrid">
       <div class="fld span2">
-        <label>Nom de l'entreprise</label>
-        <input type="text" id="fName" placeholder="Ex: Salon Shampoochien">
+        <label for="fName">Nom de l'entreprise *</label>
+        <input type="text" id="fName" placeholder="Ex : Salon Shampoochien" autocomplete="off">
       </div>
       <div class="fld">
-        <label>Catégorie</label>
-        <input type="text" id="fCategory" placeholder="Ex: Toilettage">
+        <label for="fCategory">Catégorie</label>
+        <input type="text" id="fCategory" list="dlCategory" placeholder="Ex : Toilettage" autocomplete="off">
+        <datalist id="dlCategory"></datalist>
       </div>
       <div class="fld">
-        <label>Ville</label>
-        <input type="text" id="fTown" placeholder="Ex: Saint-Eustache">
+        <label for="fTown">Ville</label>
+        <input type="text" id="fTown" list="dlTown" placeholder="Ex : Saint-Eustache" autocomplete="off">
+        <datalist id="dlTown"></datalist>
+      </div>
+      <div class="fld span2">
+        <label for="fWebsite">Site web</label>
+        <input type="text" id="fWebsite" placeholder="exemple.ca" autocomplete="off">
+        <div class="sugg" id="suggEmail"></div>
       </div>
       <div class="fld">
-        <label>Site web</label>
-        <select id="fWebsite">
-          <option value="none">Aucun</option>
-          <option value="bad">Mauvais</option>
-          <option value="good">Bon</option>
-          <option value="unknown">Inconnu</option>
+        <label for="fWebsiteStatus">État du site</label>
+        <select id="fWebsiteStatus">
+          <option value="none">Aucun site</option>
+          <option value="bad">À refaire</option>
+          <option value="good">Bon site</option>
+          <option value="unknown" selected>Inconnu</option>
         </select>
       </div>
       <div class="fld">
-        <label>Courriel</label>
-        <input type="text" id="fEmail" placeholder="nom@exemple.com">
+        <label for="fStatus">Statut</label>
+        <select id="fStatus"></select>
       </div>
       <div class="fld">
-        <label>Téléphone</label>
-        <input type="text" id="fPhone" placeholder="514-000-0000">
+        <label for="fEmail">Courriel</label>
+        <input type="text" id="fEmail" placeholder="nom@exemple.ca" autocomplete="off" autocapitalize="off" spellcheck="false">
       </div>
       <div class="fld">
-        <label>Source</label>
-        <input type="text" id="fSource" placeholder="Ex: Google Maps, Facebook">
+        <label for="fPhone">Téléphone</label>
+        <input type="text" id="fPhone" placeholder="450-555-0123" inputmode="tel" autocomplete="off">
+      </div>
+      <div class="fld">
+        <label for="fContactName">Personne-ressource</label>
+        <input type="text" id="fContactName" placeholder="Ex : Marie, propriétaire" autocomplete="off">
+      </div>
+      <div class="fld">
+        <label for="fSource">Source</label>
+        <input type="text" id="fSource" list="dlSource" placeholder="Ex : Google Maps" autocomplete="off">
+        <datalist id="dlSource"></datalist>
       </div>
       <div class="fld span4">
-        <label>Notes</label>
-        <textarea id="fNotes" rows="2" placeholder="Détails, remarques..."></textarea>
+        <label for="fAddress">Adresse</label>
+        <input type="text" id="fAddress" placeholder="123 rue Saint-Louis, Saint-Eustache, QC" autocomplete="off">
+      </div>
+      <div class="fld span4">
+        <label for="fNotes">Notes</label>
+        <textarea id="fNotes" rows="2" placeholder="Ce qu'on a remarqué, l'angle d'approche, l'heure où appeler..."></textarea>
       </div>
     </div>
+
+    <div id="dupWarn"></div>
+
     <div class="formactions">
       <button class="btn btn-primary" id="addBtn">Ajouter</button>
       <button class="btn btn-ghost" id="clearBtn">Effacer</button>
+      <span style="flex:1"></span>
+      <button class="btn btn-ghost btn-sm" id="importBtn">Importer CSV</button>
+      <button class="btn btn-ghost btn-sm" id="exportBtn">Exporter CSV</button>
+      <input type="file" id="csvFile" accept=".csv,text/csv" style="display:none;">
     </div>
   </div>
 
+  <!-- ---- filtres ---- -->
   <div class="controls">
-    <input type="text" id="searchInput" placeholder="Rechercher un nom, ville, catégorie...">
+    <input type="text" id="searchInput" placeholder="Rechercher : nom, ville, catégorie, téléphone, notes...">
+    <select id="filterStatus"><option value="">Tous les statuts</option></select>
     <select id="filterWebsite">
-      <option value="">Tous les sites web</option>
-      <option value="none">Aucun</option>
-      <option value="bad">Mauvais</option>
-      <option value="good">Bon</option>
+      <option value="">Tous les sites</option>
+      <option value="none">Aucun site</option>
+      <option value="bad">À refaire</option>
+      <option value="good">Bon site</option>
       <option value="unknown">Inconnu</option>
     </select>
-    <select id="filterContacted">
-      <option value="">Tous</option>
-      <option value="yes">Contacté</option>
-      <option value="no">Pas contacté</option>
+    <select id="filterTown"><option value="">Toutes les villes</option></select>
+    <select id="sortSel">
+      <option value="date_desc">Plus récents</option>
+      <option value="date_asc">Plus anciens</option>
+      <option value="name">Nom (A→Z)</option>
+      <option value="contact_old">Contact le plus ancien</option>
+      <option value="followup">Relance la plus proche</option>
     </select>
+    <label class="toggle" id="tgFollow"><input type="checkbox" id="onlyFollowup">À relancer</label>
+    <label class="toggle" id="tgNever"><input type="checkbox" id="onlyNever">Jamais contacté</label>
+    <label class="toggle" id="tgArch"><input type="checkbox" id="showArchived">Archivés</label>
   </div>
 
-  <div class="tablewrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Entreprise</th>
-          <th>Site web</th>
-          <th>Contact</th>
-          <th>Source</th>
-          <th>Notes</th>
-          <th>Contacté</th>
-          <th>Ajouté par</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="tbody"></tbody>
-    </table>
-    <div class="empty" id="emptyState" style="display:none;">Aucun prospect pour l'instant. Ajoutez-en un ci-dessus.</div>
+  <div class="listwrap">
+    <div class="lgrid">
+      <div class="lrow lhead">
+        <div class="sortable" data-sort="name">Entreprise</div>
+        <div>Statut</div>
+        <div>Site</div>
+        <div>Contact</div>
+        <div class="sortable" data-sort="contact_old">Dernière approche</div>
+        <div class="sortable" data-sort="followup">Relance</div>
+        <div></div>
+      </div>
+      <div class="lbody" id="lbody"></div>
+    </div>
+    <div class="empty" id="emptyState" style="display:none;"></div>
   </div>
+  <div class="countline" id="countLine"></div>
+
+  <div class="foot">Norelo · Suivi de prospection · <span id="ver"></span></div>
 </main>
 
-<div class="toast" id="toast"></div>
+<!-- ============ DRAWER ============ -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="dhead">
+    <div style="min-width:0">
+      <h3 id="dName">-</h3>
+      <div class="sub" id="dSub"></div>
+    </div>
+    <button class="iconbtn" id="dClose">Fermer</button>
+  </div>
+  <div class="dbody" id="dBody"></div>
+</aside>
 
-<!-- Supabase -->
+<!-- ============ MODAL CONTACT ============ -->
+<div class="modal" id="logModal">
+  <div class="mbox">
+    <h3>Noter un contact</h3>
+    <div class="msub" id="logSub"></div>
+    <div id="logWarn"></div>
+
+    <div class="fld" style="margin-bottom:.9rem;">
+      <label>Moyen</label>
+      <div class="chips" id="logChannels"></div>
+    </div>
+    <div class="fld" style="margin-bottom:.9rem;">
+      <label>Résultat</label>
+      <div class="chips" id="logOutcomes"></div>
+    </div>
+    <div class="dgrid">
+      <div class="fld">
+        <label for="logDate">Quand</label>
+        <input type="datetime-local" id="logDate">
+      </div>
+      <div class="fld">
+        <label for="logFollow">Relance le</label>
+        <input type="date" id="logFollow">
+      </div>
+      <div class="fld span2">
+        <label for="logNotes">Ce qui s'est dit</label>
+        <textarea id="logNotes" rows="3" placeholder="Ex : parlé à Marie, rappeler après les Fêtes"></textarea>
+      </div>
+    </div>
+    <div class="mactions">
+      <button class="btn btn-ghost" id="logCancel">Annuler</button>
+      <button class="btn btn-primary" id="logSave">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// From Supabase dashboard: Project Settings > API
-const SUPABASE_URL = "https://wbdmwygvwdyinhwtsrwe.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo";
+/* ===================================================================
+   Norelo · Suivi de prospection
+   Une seule page, deux tables Supabase (prospects, prospect_contacts).
+   Les comptes sont ceux de l'horaire : rien n'est visible sans login.
+=================================================================== */
+const APP_VERSION = 'v1.0.0';
+const SB_URL  = 'https://wbdmwygvwdyinhwtsrwe.supabase.co';
+const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
+const EMAIL_DOMAIN = '@norelo-verger.app';
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+/* Combien de jours on laisse une entreprise tranquille entre deux
+   approches. Sous ce seuil, l'app avertit avant de laisser recontacter. */
+const COOLDOWN_DAYS = 14;
 
+const sb = window.supabase.createClient(SB_URL, SB_ANON);
+
+const STATUS = {
+  nouveau:          'Nouveau',
+  a_contacter:      'À contacter',
+  contacte:         'Contacté',
+  relance:          'Relance',
+  interesse:        'Intéressé',
+  devis:            'Soumission',
+  client:           'Client',
+  pas_interesse:    'Pas intéressé',
+  ne_pas_contacter: 'NE PAS CONTACTER'
+};
+const CHANNELS = {
+  appel:'Appel', courriel:'Courriel', sms:'SMS',
+  visite:'Visite', facebook:'Facebook', autre:'Autre'
+};
+const OUTCOMES = {
+  aucune_reponse:    'Aucune réponse',
+  a_rappeler:        'À rappeler',
+  interesse:         'Intéressé',
+  rendez_vous:       'Rendez-vous',
+  pas_interesse:     'Pas intéressé',
+  ne_plus_contacter: 'Ne plus contacter',
+  autre:             'Autre'
+};
+const WEBSITE_LBL = { none:'Aucun', bad:'À refaire', good:'Bon', unknown:'Inconnu' };
+
+let me = { id:null, name:'', username:'', role:'' };
 let prospects = [];
+let contacts  = [];       // toutes les entrées du journal
+let byProspect = {};      // prospect_id -> [contacts] du plus récent au plus vieux
+let ui = { sort:'date_desc', statFilter:'' };
+let drawerId = null;
+let logState = { id:null, channel:'appel', outcome:'aucune_reponse' };
+let dupOverride = false;
 
-function toast(msg){
-  const t = document.getElementById('toast');
+const $ = id => document.getElementById(id);
+
+/* ------------------------------------------------------------------
+   Petits outils
+------------------------------------------------------------------ */
+function toast(msg, ok = true){
+  const t = $('toast');
   t.textContent = msg;
+  t.classList.toggle('err', !ok);
   t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2200);
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => t.classList.remove('show'), 2600);
 }
 
-function websiteLabel(v){
-  return {none:'Aucun', bad:'Mauvais', good:'Bon', unknown:'Inconnu'}[v] || 'Inconnu';
+function esc(str){
+  const d = document.createElement('div');
+  d.textContent = str == null ? '' : String(str);
+  return d.innerHTML;
 }
 
-async function fetchProspects(){
-  const { data, error } = await supabase
-    .from('prospects')
-    .select('*')
-    .order('date_added', { ascending: false });
+/* Nom comparable : sans accents, sans ponctuation, sans les mots qui
+   ne distinguent rien (inc, enr, le, la...). "Salon Éclat inc." et
+   "salon eclat" deviennent la meme chaine. */
+const NOISE = new Set(['inc','enr','ltee','ltd','llc','le','la','les','l','du','de','des','the','and','et','co','cie','senc']);
+function normName(s){
+  if(!s) return '';
+  return String(s)
+    .normalize('NFD').replace(/[̀-ͯ]/g,'')
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g,' ')
+    .split(/\s+/).filter(w => w && !NOISE.has(w))
+    .join(' ')
+    .trim();
+}
 
-  if(error){
-    toast('Erreur de connexion');
+const digits = s => String(s || '').replace(/\D/g,'');
+
+/* 4505550123 -> 450-555-0123 ; garde tel quel si ce n'est pas 10 chiffres */
+function fmtPhone(s){
+  const d = digits(s);
+  const n = d.length === 11 && d[0] === '1' ? d.slice(1) : d;
+  if(n.length !== 10) return String(s || '').trim();
+  return n.slice(0,3) + '-' + n.slice(3,6) + '-' + n.slice(6);
+}
+
+function normUrl(s){
+  let v = String(s || '').trim();
+  if(!v) return '';
+  v = v.replace(/^https?:\/\//i,'').replace(/^www\./i,'').replace(/\/+$/,'');
+  v = v.split('?')[0];
+  return v ? 'https://' + v : '';
+}
+function domainOf(s){
+  const v = normUrl(s);
+  if(!v) return '';
+  return v.replace(/^https:\/\//,'').split('/')[0].toLowerCase();
+}
+function prettyUrl(s){
+  return normUrl(s).replace(/^https:\/\//,'');
+}
+
+const isEmail = s => /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(String(s || '').trim());
+
+function todayISO(){
+  const d = new Date();
+  return new Date(d.getTime() - d.getTimezoneOffset()*60000).toISOString().slice(0,10);
+}
+function addDaysISO(iso, n){
+  const d = new Date(iso + 'T12:00:00');
+  d.setDate(d.getDate() + n);
+  return new Date(d.getTime() - d.getTimezoneOffset()*60000).toISOString().slice(0,10);
+}
+function localInputValue(date){
+  const d = new Date(date);
+  return new Date(d.getTime() - d.getTimezoneOffset()*60000).toISOString().slice(0,16);
+}
+function daysSince(ts){
+  if(!ts) return null;
+  return Math.floor((Date.now() - new Date(ts).getTime()) / 86400000);
+}
+function agoLabel(ts){
+  const d = daysSince(ts);
+  if(d === null) return '';
+  if(d <= 0) return "aujourd'hui";
+  if(d === 1) return 'hier';
+  if(d < 30) return 'il y a ' + d + ' j';
+  if(d < 365) return 'il y a ' + Math.round(d/30) + ' mois';
+  return 'il y a ' + Math.floor(d/365) + ' an' + (d >= 730 ? 's' : '');
+}
+function fmtDateTime(ts){
+  if(!ts) return '';
+  return new Date(ts).toLocaleString('fr-CA', {
+    day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'
+  });
+}
+function fmtDate(iso){
+  if(!iso) return '';
+  return new Date(iso + 'T12:00:00').toLocaleDateString('fr-CA', { day:'numeric', month:'short', year:'numeric' });
+}
+
+/* ------------------------------------------------------------------
+   Connexion (memes comptes que l'horaire)
+------------------------------------------------------------------ */
+async function doLogin(){
+  const u = ($('luser').value || '').trim().toLowerCase();
+  const p = $('lpass').value;
+  if(!u || !p) return;
+  const btn = $('lbtn');
+  btn.disabled = true;
+  $('lerr').textContent = '';
+  const { data, error } = await sb.auth.signInWithPassword({
+    email: u.includes('@') ? u : u + EMAIL_DOMAIN,
+    password: p
+  });
+  btn.disabled = false;
+  if(error || !data.user){ $('lerr').textContent = 'Identifiants invalides.'; return; }
+  await enterApp(data.user);
+}
+
+async function enterApp(user){
+  const { data: prof } = await sb.from('profiles').select('*').eq('id', user.id).maybeSingle();
+  if(!prof){
+    $('lerr').textContent = "Ce compte n'a pas de profil.";
+    await sb.auth.signOut();
     return;
   }
-  prospects = data.map(row=>({
-    id: row.id,
-    name: row.name,
-    category: row.category,
-    town: row.town,
-    website: row.website,
-    email: row.email,
-    phone: row.phone,
-    source: row.source,
-    notes: row.notes,
-    contacted: row.contacted,
-    addedBy: row.added_by,
-    dateAdded: row.date_added
-  }));
-  render();
+  me = { id: prof.id, name: prof.name || prof.username || '', username: prof.username || '', role: prof.role || '' };
+  $('login').style.display = 'none';
+  $('app').style.display = 'block';
+  $('navMe').textContent = me.name;
+  $('ver').textContent = APP_VERSION;
+  fillSelects();
+  bindApp();
+  await loadAll();
+  subscribe();
 }
 
-function listenProspects(){
-  fetchProspects();
-  supabase
-    .channel('prospects-changes')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'prospects' }, ()=>{
-      fetchProspects();
-    })
+async function boot(){
+  $('lbtn').onclick = doLogin;
+  $('luser').addEventListener('keydown', e => { if(e.key === 'Enter') $('lpass').focus(); });
+  $('lpass').addEventListener('keydown', e => { if(e.key === 'Enter') doLogin(); });
+  const { data:{ session } } = await sb.auth.getSession();
+  if(session && session.user) await enterApp(session.user);
+}
+/* ------------------------------------------------------------------
+   Donnees : lecture, ecriture, temps reel
+------------------------------------------------------------------ */
+async function loadAll(){
+  const [pRes, cRes] = await Promise.all([
+    sb.from('prospects').select('*').order('date_added', { ascending:false }),
+    sb.from('prospect_contacts').select('*').order('happened_at', { ascending:false })
+  ]);
+  if(pRes.error){ toast('Lecture impossible : ' + pRes.error.message, false); return; }
+  prospects = pRes.data || [];
+  contacts  = cRes.error ? [] : (cRes.data || []);
+  byProspect = {};
+  contacts.forEach(c => (byProspect[c.prospect_id] = byProspect[c.prospect_id] || []).push(c));
+  render();
+  if(drawerId) openDrawer(drawerId, true);
+}
+
+let reloadTimer = null;
+function scheduleReload(){
+  clearTimeout(reloadTimer);
+  reloadTimer = setTimeout(loadAll, 350);
+}
+function subscribe(){
+  sb.channel('prospects-live')
+    .on('postgres_changes', { event:'*', schema:'public', table:'prospects' }, scheduleReload)
+    .on('postgres_changes', { event:'*', schema:'public', table:'prospect_contacts' }, scheduleReload)
     .subscribe();
 }
 
-function getWho(){
-  const v = document.getElementById('whoInput').value.trim();
-  return v || 'Anonyme';
+const pById = id => prospects.find(p => p.id === id);
+const contactsOf = id => byProspect[id] || [];
+
+/* --- le coeur de l'affaire : reperer qu'on connait deja l'entreprise ---
+   On compare le nom normalise, le telephone, le courriel et le domaine.
+   Un seul match suffit pour avertir. */
+function findDuplicates(cand, ignoreId){
+  const nk = normName(cand.name);
+  const ph = digits(cand.phone);
+  const em = (cand.email || '').trim().toLowerCase();
+  const dm = domainOf(cand.website);
+  if(!nk && !ph && !em && !dm) return [];
+
+  return prospects.filter(p => {
+    if(ignoreId && p.id === ignoreId) return false;
+    if(nk && normName(p.name) === nk) return true;
+    if(ph.length >= 10 && digits(p.phone) === ph) return true;
+    if(em && (p.email || '').trim().toLowerCase() === em) return true;
+    if(dm && domainOf(p.website) === dm) return true;
+    return false;
+  });
 }
-let _whoMem = '';
-document.getElementById('whoInput').value = _whoMem;
-document.getElementById('whoInput').addEventListener('input', e=>{
-  _whoMem = e.target.value;
-});
+
+function readForm(){
+  return {
+    name:           $('fName').value.trim(),
+    category:       $('fCategory').value.trim(),
+    town:           $('fTown').value.trim(),
+    address:        $('fAddress').value.trim(),
+    website:        normUrl($('fWebsite').value),
+    website_status: $('fWebsiteStatus').value,
+    email:          $('fEmail').value.trim(),
+    phone:          fmtPhone($('fPhone').value),
+    contact_name:   $('fContactName').value.trim(),
+    source:         $('fSource').value.trim(),
+    notes:          $('fNotes').value.trim(),
+    status:         $('fStatus').value
+  };
+}
 
 function clearForm(){
-  ['fName','fCategory','fTown','fEmail','fPhone','fSource','fNotes'].forEach(id=>{
-    document.getElementById(id).value = '';
-  });
-  document.getElementById('fWebsite').value = 'none';
+  ['fName','fCategory','fTown','fAddress','fWebsite','fEmail','fPhone','fContactName','fNotes']
+    .forEach(id => { $(id).value = ''; });
+  $('fWebsiteStatus').value = 'unknown';
+  $('fStatus').value = 'nouveau';
+  $('pasteBox').value = '';
+  $('suggEmail').innerHTML = '';
+  dupOverride = false;
+  renderDupWarn();
 }
 
 async function addProspect(){
-  const name = document.getElementById('fName').value.trim();
-  if(!name){ toast('Le nom de l\'entreprise est requis'); return; }
+  const entry = readForm();
+  if(!entry.name){ toast("Le nom de l'entreprise est requis", false); $('fName').focus(); return; }
 
-  const entry = {
-    name,
-    category: document.getElementById('fCategory').value.trim(),
-    town: document.getElementById('fTown').value.trim(),
-    website: document.getElementById('fWebsite').value,
-    email: document.getElementById('fEmail').value.trim(),
-    phone: document.getElementById('fPhone').value.trim(),
-    source: document.getElementById('fSource').value.trim(),
-    notes: document.getElementById('fNotes').value.trim(),
-    contacted: false,
-    added_by: getWho(),
-    date_added: new Date().toISOString()
-  };
-
-  const { error } = await supabase.from('prospects').insert(entry);
-  if(error){
-    toast('Erreur d\'ajout');
+  const dups = findDuplicates(entry);
+  if(dups.length && !dupOverride){
+    dupOverride = true;
+    renderDupWarn();
+    toast('Déjà dans la liste, vérifiez avant d\'ajouter', false);
     return;
   }
+
+  entry.source      = entry.source || 'Google Maps';
+  entry.added_by    = me.name;
+  entry.added_by_id = me.id;
+  entry.date_added  = new Date().toISOString();
+
+  $('addBtn').disabled = true;
+  const { error } = await sb.from('prospects').insert(entry);
+  $('addBtn').disabled = false;
+  if(error){ toast("Erreur d'ajout : " + error.message, false); return; }
+
   clearForm();
+  $('fName').focus();
   toast('Prospect ajouté');
+  loadAll();
 }
 
-async function toggleContacted(id){
-  const p = prospects.find(x=>x.id===id);
+async function patchProspect(id, patch, quiet){
+  const { error } = await sb.from('prospects').update(patch).eq('id', id);
+  if(error){ toast('Erreur : ' + error.message, false); return false; }
+  const p = pById(id);
+  if(p) Object.assign(p, patch);
+  if(!quiet) toast('Enregistré');
+  render();
+  return true;
+}
+
+async function setStatus(id, status){
+  const p = pById(id);
   if(!p) return;
-  const { error } = await supabase
-    .from('prospects')
-    .update({ contacted: !p.contacted })
-    .eq('id', id);
-  if(error) toast('Erreur de mise à jour');
+  if(status === 'ne_pas_contacter' &&
+     !confirm(p.name + " sera marqué NE PAS CONTACTER.\n\nPlus personne ne devra l'approcher. Confirmer ?")){
+    render();
+    return;
+  }
+  await patchProspect(id, { status }, true);
+  if(drawerId === id) openDrawer(id, true);
+}
+
+async function toggleArchive(id){
+  const p = pById(id);
+  if(!p) return;
+  await patchProspect(id, { archived: !p.archived }, true);
+  toast(p.archived ? 'Archivé' : 'Remis dans la liste');
+  if(drawerId === id) closeDrawer();
 }
 
 async function deleteProspect(id){
-  if(!confirm('Supprimer ce prospect ?')) return;
-  const { error } = await supabase.from('prospects').delete().eq('id', id);
-  if(error){
-    toast('Erreur de suppression');
-    return;
+  const p = pById(id);
+  if(!p) return;
+  if(!confirm('Supprimer « ' + p.name + " » et tout son historique de contacts ?\n\nL'archivage est presque toujours préférable : il garde la trace des approches déjà faites.")) return;
+  const { error } = await sb.from('prospects').delete().eq('id', id);
+  if(error){ toast('Suppression refusée : ' + error.message, false); return; }
+  if(drawerId === id) closeDrawer();
+  toast('Supprimé');
+  loadAll();
+}
+/* ------------------------------------------------------------------
+   Collage rapide : on lit une fiche Google Maps / Pages Jaunes collee
+   telle quelle et on devine chaque champ. Rien n'ecrase un champ que
+   vous avez deja rempli a la main.
+------------------------------------------------------------------ */
+const RE_PHONE  = /(?:\+?1[\s.\-]?)?\(?(\d{3})\)?[\s.\-]?(\d{3})[\s.\-]?(\d{4})(?!\d)/;
+const RE_EMAIL  = /[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,}/i;
+const RE_POSTAL = /\b[A-Z]\d[A-Z]\s?\d[A-Z]\d\b/i;
+const RE_URL    = /\b((?:https?:\/\/)?(?:www\.)?[a-z0-9][a-z0-9\-]*(?:\.[a-z0-9\-]+)*\.(?:ca|com|net|org|qc\.ca|info|biz|co|shop|salon|clinic|pro|studio|agency|ca)\b(?:\/\S*)?)/i;
+const RE_RATING = /^\d[.,]\d\s*(\(\s*\d+\s*\))?/;
+/* Lignes de garniture Google Maps (horaires, boutons). Ancre au debut :
+   sans ca, une ville comme « Ste-Marthe » se ferait manger par « mar ». */
+const HOURS_HINT = /^(ouvert|ferm[ée]|24\s*h|lun|mar|mer|jeu|ven|sam|dim)\b|^(itin[ée]raire|enregistrer|appeler|site\s?web|avis|r[ée]servation|partager|revendiquer|commander|menu)\s*$/i;
+
+function parsePasted(text){
+  const out = {};
+  const raw = String(text || '').replace(/ /g,' ');
+  const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+  if(!lines.length) return out;
+
+  const used = new Set();
+
+  lines.forEach((line, i) => {
+    // courriel
+    if(!out.email){
+      const m = line.match(RE_EMAIL);
+      if(m){ out.email = m[0]; used.add(i); }
+    }
+    // telephone
+    if(!out.phone){
+      const m = line.match(RE_PHONE);
+      // on evite de prendre un numero civique ou un code postal pour un tel
+      if(m && !RE_POSTAL.test(line) && digits(line).length <= 12){
+        out.phone = fmtPhone(m[0]); used.add(i);
+      }
+    }
+    // adresse : la ligne qui contient un code postal ou ", QC"
+    if(!out.address && (RE_POSTAL.test(line) || /,\s*(QC|Qu[ée]bec)\b/i.test(line)) && /\d/.test(line)){
+      out.address = line;
+      used.add(i);
+      const parts = line.split(',').map(s => s.trim());
+      if(parts.length >= 2){
+        const idx = parts.findIndex(s => /^(QC|Qu[ée]bec)\b/i.test(s));
+        const townPart = idx > 0 ? parts[idx-1] : parts[1];
+        if(townPart) out.town = townPart.replace(RE_POSTAL,'').replace(/\s+/g,' ').trim();
+      }
+    }
+    // note Google : "4,7(38) · Toilettage pour animaux"
+    if(RE_RATING.test(line)){
+      used.add(i);
+      const after = line.split(/[·•|]/).slice(1).join(' ').trim();
+      if(after && !out.category) out.category = after.replace(/^\W+/,'').trim();
+    }
+    // site web
+    if(!out.website){
+      const m = line.match(RE_URL);
+      if(m && !RE_EMAIL.test(line)){ out.website = normUrl(m[1]); used.add(i); }
+    }
+  });
+
+  // ville seule sur sa ligne : « Saint-Jérôme, QC »
+  if(!out.town){
+    lines.forEach((line, i) => {
+      if(used.has(i) || out.town) return;
+      const m = line.match(/^(.{2,40}),\s*(QC|Qu[ée]bec)\.?$/i);
+      if(m && !/\d/.test(m[1])){ out.town = m[1].trim(); used.add(i); }
+    });
   }
-  toast('Prospect supprimé');
+
+  // le nom : la premiere ligne qui n'a servi a rien d'autre
+  for(let i = 0; i < lines.length; i++){
+    if(used.has(i)) continue;
+    const l = lines[i];
+    if(HOURS_HINT.test(l) && l.length < 40) continue;
+    if(/^\W*$/.test(l)) continue;
+    if(RE_POSTAL.test(l)) continue;
+    out.name = l.replace(/\s*[·•|]\s*.*$/,'').trim();
+    used.add(i);
+    break;
+  }
+  // categorie de repli : la ligne juste apres le nom, courte et sans chiffre
+  if(!out.category){
+    for(let i = 0; i < lines.length; i++){
+      if(used.has(i)) continue;
+      const l = lines[i];
+      if(l.length <= 45 && !/\d/.test(l) && !HOURS_HINT.test(l)){ out.category = l; break; }
+    }
+  }
+  // un site mais pas de nom : on part du domaine
+  if(!out.name && out.website){
+    const d = domainOf(out.website).split('.')[0];
+    out.name = d.replace(/[\-_]+/g,' ').replace(/\b\w/g, c => c.toUpperCase());
+  }
+  return out;
+}
+
+function applyParsed(p, { overwrite = false } = {}){
+  const map = {
+    name:'fName', category:'fCategory', town:'fTown', address:'fAddress',
+    website:'fWebsite', email:'fEmail', phone:'fPhone'
+  };
+  let filled = 0;
+  Object.keys(map).forEach(k => {
+    if(!p[k]) return;
+    const el = $(map[k]);
+    if(el.value.trim() && !overwrite) return;
+    el.value = p[k];
+    filled++;
+  });
+  if(p.website && !$('fSource').value.trim()) $('fSource').value = 'Google Maps';
+  // un site trouve veut dire qu'il en existe un : reste a le juger
+  if(p.website && $('fWebsiteStatus').value === 'unknown') $('fWebsiteStatus').value = 'bad';
+  if(!p.website && $('fWebsiteStatus').value === 'unknown' && p.name) $('fWebsiteStatus').value = 'none';
+  return filled;
+}
+
+function doParse(){
+  const txt = $('pasteBox').value;
+  if(!txt.trim()){ toast('Collez d\'abord une fiche', false); return; }
+  const p = parsePasted(txt);
+  const n = applyParsed(p);
+  if(!n){ toast('Rien de reconnu, remplissez à la main', false); return; }
+  $('pasteBox').value = '';
+  refreshEmailSuggestions();
+  checkDup();
+  toast(n + (n > 1 ? ' champs remplis' : ' champ rempli'));
+}
+
+/* Adresse courriel probable a partir du domaine : un clic pour l'essayer */
+function refreshEmailSuggestions(){
+  const box = $('suggEmail');
+  const dm = domainOf($('fWebsite').value);
+  if(!dm || $('fEmail').value.trim()){ box.innerHTML = ''; return; }
+  box.innerHTML = ['info','contact','bonjour']
+    .map(u => `<button type="button" data-email="${esc(u + '@' + dm)}">${esc(u + '@' + dm)}</button>`)
+    .join('');
+}
+
+/* Les listes deroulantes se remplissent toutes seules avec ce qui a
+   deja ete saisi : moins de fautes de frappe, saisie plus rapide. */
+function refreshDatalists(){
+  const fill = (id, key) => {
+    const vals = [...new Set(prospects.map(p => (p[key] || '').trim()).filter(Boolean))]
+      .sort((a,b) => a.localeCompare(b,'fr'));
+    $(id).innerHTML = vals.map(v => `<option value="${esc(v)}"></option>`).join('');
+    return vals;
+  };
+  fill('dlCategory','category');
+  fill('dlSource','source');
+  const towns = fill('dlTown','town');
+
+  const sel = $('filterTown');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">Toutes les villes</option>' +
+    towns.map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join('');
+  sel.value = cur;
+}
+/* ------------------------------------------------------------------
+   Affichage
+------------------------------------------------------------------ */
+function fillSelects(){
+  const opts = Object.entries(STATUS).map(([k,v]) => `<option value="${k}">${esc(v)}</option>`).join('');
+  $('fStatus').innerHTML = opts;
+  $('fStatus').value = 'nouveau';
+  $('filterStatus').innerHTML = '<option value="">Tous les statuts</option>' + opts;
+  $('logChannels').innerHTML = Object.entries(CHANNELS)
+    .map(([k,v]) => `<button type="button" class="chip" data-ch="${k}">${esc(v)}</button>`).join('');
+  $('logOutcomes').innerHTML = Object.entries(OUTCOMES)
+    .map(([k,v]) => `<button type="button" class="chip" data-oc="${k}">${esc(v)}</button>`).join('');
+}
+
+/* Est-ce qu'on peut approcher cette entreprise maintenant ? */
+function contactGuard(p){
+  if(p.status === 'ne_pas_contacter'){
+    return { level:'stop', msg: p.name + " a demandé de ne plus être contacté" + (p.last_contact_by ? ' (noté par ' + p.last_contact_by + ')' : '') + '.' };
+  }
+  const d = daysSince(p.last_contact_at);
+  if(d !== null && d < COOLDOWN_DAYS){
+    return { level:'warn', msg: 'Déjà approché ' + agoLabel(p.last_contact_at) + ' par ' + (p.last_contact_by || 'quelqu\'un') + '. On laisse ' + COOLDOWN_DAYS + ' jours entre deux approches.' };
+  }
+  return { level:'ok', msg:'' };
 }
 
 function renderStats(){
-  const total = prospects.length;
-  const noWebsite = prospects.filter(p=>p.website==='none').length;
-  const contacted = prospects.filter(p=>p.contacted).length;
-  const withEmail = prospects.filter(p=>p.email).length;
-  document.getElementById('stats').innerHTML = `
-    <div class="stat"><div class="num">${total}</div><div class="lbl">Total prospects</div></div>
-    <div class="stat"><div class="num">${noWebsite}</div><div class="lbl">Sans site web</div></div>
-    <div class="stat"><div class="num">${contacted}</div><div class="lbl">Contactés</div></div>
-    <div class="stat"><div class="num">${withEmail}</div><div class="lbl">Avec courriel</div></div>
-  `;
+  const live = prospects.filter(p => !p.archived);
+  const total    = live.length;
+  const noSite   = live.filter(p => p.website_status === 'none').length;
+  const never    = live.filter(p => !p.last_contact_at && p.status !== 'ne_pas_contacter').length;
+  const due      = live.filter(p => p.next_followup && p.next_followup <= todayISO() && p.status !== 'ne_pas_contacter' && p.status !== 'client').length;
+  const clients  = live.filter(p => p.status === 'client').length;
+
+  const tiles = [
+    { k:'',        n:total,   l:'Prospects actifs',  c:'' },
+    { k:'none',    n:noSite,  l:'Sans site web',     c:'bad' },
+    { k:'never',   n:never,   l:'Jamais approchés',  c:'' },
+    { k:'due',     n:due,     l:'À relancer',        c:'warn' },
+    { k:'client',  n:clients, l:'Devenus clients',   c:'ok' }
+  ];
+  $('stats').innerHTML = tiles.map(t => `
+    <div class="stat ${t.c} ${ui.statFilter === t.k && t.k ? 'on' : ''}" data-stat="${t.k}">
+      <div class="num">${t.n}</div><div class="lbl">${esc(t.l)}</div>
+    </div>`).join('');
+}
+
+function renderDupWarn(){
+  const box = $('dupWarn');
+  const cand = {
+    name:    $('fName').value.trim(),
+    phone:   $('fPhone').value,
+    email:   $('fEmail').value.trim(),
+    website: $('fWebsite').value
+  };
+  if(!cand.name && !cand.phone && !cand.email && !cand.website){ box.innerHTML = ''; return; }
+
+  const dups = findDuplicates(cand);
+  if(!dups.length){ box.innerHTML = ''; return; }
+
+  const rows = dups.slice(0,4).map(p => {
+    const g = contactGuard(p);
+    const last = p.last_contact_at
+      ? 'Approché ' + agoLabel(p.last_contact_at) + ' par ' + esc(p.last_contact_by || '?')
+      : 'Jamais approché';
+    return `<div class="dupitem">
+      <div>
+        <div class="dn">${esc(p.name)}</div>
+        <div class="dm">${esc([p.town, STATUS[p.status]].filter(Boolean).join(' · '))} · ${last}${p.archived ? ' · archivé' : ''}</div>
+      </div>
+      <button class="iconbtn" data-open="${p.id}">Voir la fiche</button>
+    </div>`;
+  }).join('');
+
+  const stop = dups.some(p => p.status === 'ne_pas_contacter');
+  box.innerHTML = `<div class="dup ${stop ? 'block' : ''}">
+    <h4>${stop ? '⛔ Cette entreprise a demandé qu\'on la laisse tranquille' : '⚠ Déjà dans la liste'}</h4>
+    ${rows}
+    ${dups.length > 4 ? `<div class="dm" style="padding-top:.4rem">+ ${dups.length - 4} autre(s)</div>` : ''}
+    <div class="dm" style="margin-top:.6rem">${dupOverride
+      ? 'Cliquez « Ajouter » à nouveau pour créer quand même une deuxième fiche.'
+      : 'Vérifiez avant d\'ajouter : un doublon fait rappeler les mêmes gens deux fois.'}</div>
+  </div>`;
+}
+
+function visibleProspects(){
+  const q  = $('searchInput').value.trim().toLowerCase();
+  const fs = $('filterStatus').value;
+  const fw = $('filterWebsite').value;
+  const ft = $('filterTown').value;
+  const onlyFollow = $('onlyFollowup').checked;
+  const onlyNever  = $('onlyNever').checked;
+  const showArch   = $('showArchived').checked;
+  const today = todayISO();
+
+  let list = prospects.filter(p => {
+    if(!!p.archived !== showArch) return false;
+    if(q){
+      const hay = [p.name,p.category,p.town,p.address,p.email,p.phone,p.contact_name,p.notes,p.source,p.added_by,domainOf(p.website)]
+        .filter(Boolean).join(' ').toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    if(fs && p.status !== fs) return false;
+    if(fw && p.website_status !== fw) return false;
+    if(ft && (p.town || '') !== ft) return false;
+    if(onlyFollow && !(p.next_followup && p.next_followup <= today)) return false;
+    if(onlyNever && p.last_contact_at) return false;
+
+    if(ui.statFilter === 'none'   && p.website_status !== 'none') return false;
+    if(ui.statFilter === 'never'  && (p.last_contact_at || p.status === 'ne_pas_contacter')) return false;
+    if(ui.statFilter === 'due'    && !(p.next_followup && p.next_followup <= today && p.status !== 'ne_pas_contacter' && p.status !== 'client')) return false;
+    if(ui.statFilter === 'client' && p.status !== 'client') return false;
+    return true;
+  });
+
+  const s = ui.sort;
+  list.sort((a,b) => {
+    if(s === 'name') return (a.name || '').localeCompare(b.name || '', 'fr');
+    if(s === 'date_asc')  return new Date(a.date_added) - new Date(b.date_added);
+    if(s === 'contact_old'){
+      const av = a.last_contact_at ? new Date(a.last_contact_at).getTime() : 0;
+      const bv = b.last_contact_at ? new Date(b.last_contact_at).getTime() : 0;
+      return av - bv;
+    }
+    if(s === 'followup'){
+      const av = a.next_followup || '9999-12-31';
+      const bv = b.next_followup || '9999-12-31';
+      return av.localeCompare(bv);
+    }
+    return new Date(b.date_added) - new Date(a.date_added);
+  });
+  return list;
+}
+
+function followupCell(p){
+  if(!p.next_followup) return '<span class="mut">-</span>';
+  const t = todayISO();
+  const cls = p.next_followup < t ? 'due' : p.next_followup === t ? 'due' : (p.next_followup <= addDaysISO(t,3) ? 'soon' : '');
+  const lbl = p.next_followup < t ? 'En retard · ' : p.next_followup === t ? "Aujourd'hui" : fmtDate(p.next_followup);
+  return `<span class="${cls}">${p.next_followup < t ? lbl + fmtDate(p.next_followup) : lbl}</span>`;
 }
 
 function render(){
   renderStats();
+  refreshDatalists();
 
-  const search = document.getElementById('searchInput').value.trim().toLowerCase();
-  const fw = document.getElementById('filterWebsite').value;
-  const fc = document.getElementById('filterContacted').value;
+  const list = visibleProspects();
+  const body = $('lbody');
+  const empty = $('emptyState');
 
-  let list = prospects.filter(p=>{
-    if(search){
-      const hay = `${p.name} ${p.category} ${p.town} ${p.email} ${p.phone}`.toLowerCase();
-      if(!hay.includes(search)) return false;
-    }
-    if(fw && p.website !== fw) return false;
-    if(fc === 'yes' && !p.contacted) return false;
-    if(fc === 'no' && p.contacted) return false;
-    return true;
-  });
-
-  const tbody = document.getElementById('tbody');
-  const empty = document.getElementById('emptyState');
-
-  if(list.length === 0){
-    tbody.innerHTML = '';
+  if(!list.length){
+    body.innerHTML = '';
     empty.style.display = 'block';
+    empty.textContent = prospects.length
+      ? 'Aucun prospect ne correspond à ces filtres.'
+      : 'Aucun prospect pour l\'instant. Collez une fiche Google Maps ci-dessus pour commencer.';
+    $('countLine').textContent = '';
     return;
   }
   empty.style.display = 'none';
 
-  tbody.innerHTML = list.map(p=>`
-    <tr>
-      <td>
-        <div class="tname">${escapeHtml(p.name)}</div>
-        <div class="tsub">${escapeHtml(p.category || '')}${p.category && p.town ? ' · ' : ''}${escapeHtml(p.town || '')}</div>
-      </td>
-      <td><span class="badge badge-${p.website}">${websiteLabel(p.website)}</span></td>
-      <td>
-        ${p.email ? `<div>${escapeHtml(p.email)}</div>` : ''}
-        ${p.phone ? `<div class="tsub">${escapeHtml(p.phone)}</div>` : ''}
-        ${!p.email && !p.phone ? '<span class="tsub">—</span>' : ''}
-      </td>
-      <td>${escapeHtml(p.source || '—')}</td>
-      <td><div class="note">${escapeHtml(p.notes || '—')}</div></td>
-      <td>
-        <label class="chk">
-          <input type="checkbox" ${p.contacted ? 'checked' : ''} onchange="toggleContacted('${p.id}')">
-          ${p.contacted ? 'Oui' : 'Non'}
-        </label>
-      </td>
-      <td><span class="addedby">${escapeHtml(p.addedBy || '—')}</span></td>
-      <td>
-        <div class="rowactions">
-          <button class="iconbtn del" onclick="deleteProspect('${p.id}')">Suppr.</button>
+  body.innerHTML = list.map(p => {
+    const g = contactGuard(p);
+    const n = contactsOf(p.id).length;
+    const lastCell = p.last_contact_at
+      ? `<div>${esc(agoLabel(p.last_contact_at))}</div>
+         <div class="cool ${g.level === 'warn' ? 'hot' : ''}">par ${esc(p.last_contact_by || '?')}${n > 1 ? ' · ' + n + ' fois' : ''}</div>`
+      : `<div class="cool never">Jamais approché</div>`;
+
+    const contactCell = [
+      p.phone ? `<div><a href="tel:${esc(digits(p.phone))}">${esc(p.phone)}</a></div>` : '',
+      p.email ? `<div style="overflow:hidden;text-overflow:ellipsis">${esc(p.email)}</div>` : '',
+      (!p.phone && !p.email) ? '<span class="mut">-</span>' : ''
+    ].join('');
+
+    return `<div class="lrow ${p.status === 'ne_pas_contacter' ? 'dnc' : ''} ${p.archived ? 'arch' : ''}" data-id="${p.id}">
+      <div class="cellname" data-open="${p.id}">
+        <div class="tname">${esc(p.name)}</div>
+        <div class="tsub">${esc([p.category, p.town].filter(Boolean).join(' · ')) || '&nbsp;'}</div>
+      </div>
+      <div class="cellsm" data-l="Statut">
+        <select class="statussel" data-status="${p.id}" data-s="${p.status}">
+          ${Object.entries(STATUS).map(([k,v]) => `<option value="${k}" ${k === p.status ? 'selected' : ''}>${esc(v)}</option>`).join('')}
+        </select>
+      </div>
+      <div class="cellsm" data-l="Site">
+        ${p.website
+          ? `<a href="${esc(normUrl(p.website))}" target="_blank" rel="noopener" class="badge badge-${esc(p.website_status)}">${esc(WEBSITE_LBL[p.website_status] || '?')}</a>`
+          : `<span class="badge badge-${esc(p.website_status)}">${esc(WEBSITE_LBL[p.website_status] || '?')}</span>`}
+      </div>
+      <div class="cellsm" data-l="Contact">${contactCell}</div>
+      <div class="cellsm" data-l="Dernière approche">${lastCell}</div>
+      <div class="cellsm" data-l="Relance">${followupCell(p)}</div>
+      <div class="rowactions">
+        <button class="iconbtn pri" data-log="${p.id}" title="Noter un contact">Contact</button>
+        <button class="iconbtn" data-open="${p.id}" title="Ouvrir la fiche">Fiche</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  const shown = list.length;
+  const tot = prospects.filter(p => !p.archived).length;
+  $('countLine').textContent = shown + ' affiché' + (shown > 1 ? 's' : '') + ' sur ' + tot + ' actifs' +
+    (prospects.length - tot ? ' · ' + (prospects.length - tot) + ' archivé(s)' : '');
+}
+/* ------------------------------------------------------------------
+   Fiche detaillee : modification sur place + historique complet
+------------------------------------------------------------------ */
+const DFIELDS = [
+  ['name','Nom',                'span2'],
+  ['category','Catégorie',      ''],
+  ['town','Ville',              ''],
+  ['address','Adresse',         'span2'],
+  ['website','Site web',        'span2'],
+  ['email','Courriel',          ''],
+  ['phone','Téléphone',         ''],
+  ['contact_name','Personne-ressource',''],
+  ['source','Source',           '']
+];
+
+/* Un courriel deja redige : plus qu'a relire et envoyer. */
+function mailtoFor(p){
+  const who = p.contact_name ? p.contact_name.split(/[ ,]/)[0] : 'Bonjour';
+  const sujet = p.website_status === 'none'
+    ? 'Un site web pour ' + p.name
+    : 'Rafraîchir le site de ' + p.name;
+  const corps =
+`${who},
+
+Je m'appelle ${me.name}, de Norelo${p.town ? ', on est aussi dans le coin de ' + p.town : ''}.
+
+${p.website_status === 'none'
+  ? `En cherchant ${p.category ? 'un service de ' + p.category.toLowerCase() : 'des entreprises'} ${p.town ? 'à ' + p.town : 'dans la région'}, j'ai remarqué que ${p.name} n'a pas encore de site web. Vos clients vous trouvent donc surtout par bouche-à-oreille.`
+  : `J'ai jeté un œil au site de ${p.name} et je pense qu'on pourrait le rendre plus rapide et plus facile à utiliser sur téléphone.`}
+
+On fait des sites simples, rapides et faits sur mesure pour des entreprises d'ici. Je peux vous préparer un aperçu gratuit de ce que ça donnerait, sans engagement.
+
+Est-ce que ça vous intéresse d'y jeter un œil ?
+
+Bonne journée,
+${me.name}
+Norelo`;
+  return 'mailto:' + (p.email || '').trim() +
+    '?subject=' + encodeURIComponent(sujet) +
+    '&body=' + encodeURIComponent(corps);
+}
+
+function mapsUrl(p){
+  return 'https://www.google.com/maps/search/' +
+    encodeURIComponent([p.name, p.address || p.town].filter(Boolean).join(' '));
+}
+
+function openDrawer(id, keepScroll){
+  const p = pById(id);
+  if(!p) return closeDrawer();
+  drawerId = id;
+  const prevScroll = keepScroll ? $('dBody').scrollTop : 0;
+
+  $('dName').textContent = p.name;
+  $('dSub').textContent = [p.category, p.town, 'ajouté par ' + (p.added_by || '?'), fmtDate((p.date_added || '').slice(0,10))]
+    .filter(Boolean).join(' · ');
+
+  const g = contactGuard(p);
+  const hist = contactsOf(p.id);
+
+  const quick = `
+    <div class="quickrow">
+      <button class="go" data-log="${p.id}">＋ Noter un contact</button>
+      ${p.phone ? `<a href="tel:${esc(digits(p.phone))}">📞 ${esc(p.phone)}</a>` : ''}
+      ${p.email ? `<a href="${esc(mailtoFor(p))}">✉ Écrire (modèle prêt)</a>` : ''}
+      ${p.website ? `<a href="${esc(normUrl(p.website))}" target="_blank" rel="noopener">🌐 ${esc(prettyUrl(p.website))}</a>` : ''}
+      <a href="${esc(mapsUrl(p))}" target="_blank" rel="noopener">📍 Google Maps</a>
+    </div>`;
+
+  const guardBox = g.level === 'ok' ? '' :
+    `<div class="warnbox ${g.level === 'stop' ? 'stop' : ''}">${g.level === 'stop' ? '⛔ ' : '⚠ '}${esc(g.msg)}</div>`;
+
+  const fields = DFIELDS.map(([k,label,cls]) => `
+    <div class="fld ${cls}">
+      <label>${esc(label)}</label>
+      <input type="text" data-edit="${k}" value="${esc(p[k] || '')}">
+    </div>`).join('');
+
+  const timeline = hist.length ? `<div class="tl">` + hist.map(c => `
+      <div class="tlitem ${c.outcome === 'ne_plus_contacter' || c.outcome === 'pas_interesse' ? 'stop' : ''}">
+        <div class="tlh">${esc(CHANNELS[c.channel] || c.channel)} · ${esc(OUTCOMES[c.outcome] || c.outcome)}</div>
+        <div class="tlm">${esc(fmtDateTime(c.happened_at))} · ${esc(c.by_name || '?')}</div>
+        ${c.notes ? `<div class="tln">${esc(c.notes)}</div>` : ''}
+        ${(c.by_id === me.id || me.role === 'manager') ? `<button class="tlx" data-delc="${c.id}">Supprimer cette entrée</button>` : ''}
+      </div>`).join('') + `</div>`
+    : `<div class="hint">Personne n'a encore approché cette entreprise.</div>`;
+
+  $('dBody').innerHTML = `
+    ${guardBox}
+    ${quick}
+
+    <div class="dsect">
+      <h4>Suivi</h4>
+      <div class="dgrid">
+        <div class="fld">
+          <label>Statut</label>
+          <select data-edit="status">
+            ${Object.entries(STATUS).map(([k,v]) => `<option value="${k}" ${k === p.status ? 'selected' : ''}>${esc(v)}</option>`).join('')}
+          </select>
         </div>
-      </td>
-    </tr>
-  `).join('');
+        <div class="fld">
+          <label>État du site</label>
+          <select data-edit="website_status">
+            ${Object.entries(WEBSITE_LBL).map(([k,v]) => `<option value="${k}" ${k === p.website_status ? 'selected' : ''}>${esc(v)}</option>`).join('')}
+          </select>
+        </div>
+        <div class="fld span2">
+          <label>Relance prévue</label>
+          <input type="date" data-edit="next_followup" value="${esc(p.next_followup || '')}">
+        </div>
+      </div>
+    </div>
+
+    <div class="dsect">
+      <h4>Coordonnées</h4>
+      <div class="dgrid">${fields}</div>
+    </div>
+
+    <div class="dsect">
+      <h4>Notes</h4>
+      <textarea data-edit="notes" rows="4" style="width:100%;background:var(--panel2);border:1px solid var(--bdr);border-radius:7px;color:#e6ebff;padding:.55rem .7rem;font-size:.9rem;resize:vertical;">${esc(p.notes || '')}</textarea>
+    </div>
+
+    <div class="dsect">
+      <h4>Historique des approches (${hist.length})</h4>
+      ${timeline}
+    </div>
+
+    <div class="formactions">
+      <button class="btn btn-primary" id="dSave">Enregistrer</button>
+      <button class="btn btn-ghost" id="dArchive">${p.archived ? 'Désarchiver' : 'Archiver'}</button>
+      ${me.role === 'manager' ? `<button class="btn btn-danger btn-sm" id="dDelete">Supprimer</button>` : ''}
+    </div>`;
+
+  $('dBody').scrollTop = prevScroll;
+  $('drawer').classList.add('show');
+  $('drawer').setAttribute('aria-hidden','false');
+  $('scrim').classList.add('show');
+
+  $('dSave').onclick = saveDrawer;
+  $('dArchive').onclick = () => toggleArchive(p.id);
+  const del = $('dDelete');
+  if(del) del.onclick = () => deleteProspect(p.id);
 }
 
-function escapeHtml(str){
-  const d = document.createElement('div');
-  d.textContent = str;
-  return d.innerHTML;
+function closeDrawer(){
+  drawerId = null;
+  $('drawer').classList.remove('show');
+  $('drawer').setAttribute('aria-hidden','true');
+  $('scrim').classList.remove('show');
 }
 
-document.getElementById('addBtn').addEventListener('click', addProspect);
-document.getElementById('clearBtn').addEventListener('click', clearForm);
-document.getElementById('searchInput').addEventListener('input', render);
-document.getElementById('filterWebsite').addEventListener('change', render);
-document.getElementById('filterContacted').addEventListener('change', render);
+async function saveDrawer(){
+  if(!drawerId) return;
+  const patch = {};
+  $('dBody').querySelectorAll('[data-edit]').forEach(el => {
+    const k = el.getAttribute('data-edit');
+    let v = el.value;
+    if(typeof v === 'string') v = v.trim();
+    if(k === 'phone')   v = fmtPhone(v);
+    if(k === 'website') v = normUrl(v);
+    patch[k] = v === '' ? null : v;
+  });
+  if(!patch.name){ toast('Le nom ne peut pas être vide', false); return; }
 
-listenProspects();
+  const p = pById(drawerId);
+  if(patch.status === 'ne_pas_contacter' && p.status !== 'ne_pas_contacter' &&
+     !confirm(p.name + " sera marqué NE PAS CONTACTER. Confirmer ?")) return;
+
+  $('dSave').disabled = true;
+  const ok = await patchProspect(drawerId, patch, true);
+  $('dSave').disabled = false;
+  if(ok){ toast('Fiche enregistrée'); openDrawer(drawerId, true); }
+}
+
+async function deleteContact(cid){
+  if(!confirm('Supprimer cette entrée du journal ?')) return;
+  const { error } = await sb.from('prospect_contacts').delete().eq('id', cid);
+  if(error){ toast('Refusé : ' + error.message, false); return; }
+  toast('Entrée supprimée');
+  await loadAll();
+}
+/* ------------------------------------------------------------------
+   Noter un contact. C'est cette fenetre qui alimente l'historique
+   partage : tant qu'un appel n'est pas note, personne ne le sait.
+------------------------------------------------------------------ */
+function openLog(id){
+  const p = pById(id);
+  if(!p) return;
+  const g = contactGuard(p);
+
+  if(g.level === 'stop' && !confirm('⛔ ' + g.msg + '\n\nNoter un contact quand même ?')) return;
+
+  logState = { id, channel:'appel', outcome:'aucune_reponse' };
+  $('logSub').textContent = p.name + (p.town ? ' · ' + p.town : '');
+  $('logWarn').innerHTML = g.level === 'ok' ? '' :
+    `<div class="warnbox ${g.level === 'stop' ? 'stop' : ''}">${g.level === 'stop' ? '⛔ ' : '⚠ '}${esc(g.msg)}</div>`;
+  $('logDate').value = localInputValue(new Date());
+  $('logFollow').value = '';
+  $('logNotes').value = '';
+  syncChips();
+  $('logModal').classList.add('show');
+  setTimeout(() => $('logNotes').focus(), 60);
+}
+
+function syncChips(){
+  $('logChannels').querySelectorAll('.chip').forEach(c =>
+    c.classList.toggle('on', c.getAttribute('data-ch') === logState.channel));
+  $('logOutcomes').querySelectorAll('.chip').forEach(c =>
+    c.classList.toggle('on', c.getAttribute('data-oc') === logState.outcome));
+}
+
+/* Le resultat choisi propose tout seul la suite : c'est ce qui evite
+   d'avoir a penser au statut et a la date de relance a chaque fois. */
+function outcomeDefaults(outcome){
+  switch(outcome){
+    case 'a_rappeler':        return { status:'relance',          follow: addDaysISO(todayISO(), 7) };
+    case 'aucune_reponse':    return { status:'relance',          follow: addDaysISO(todayISO(), 5) };
+    case 'interesse':         return { status:'interesse',        follow: addDaysISO(todayISO(), 3) };
+    case 'rendez_vous':       return { status:'interesse',        follow: addDaysISO(todayISO(), 1) };
+    case 'pas_interesse':     return { status:'pas_interesse',    follow: '' };
+    case 'ne_plus_contacter': return { status:'ne_pas_contacter', follow: '' };
+    default:                  return { status:'contacte',         follow: '' };
+  }
+}
+
+async function saveLog(){
+  const p = pById(logState.id);
+  if(!p) return;
+  const when = $('logDate').value ? new Date($('logDate').value).toISOString() : new Date().toISOString();
+
+  $('logSave').disabled = true;
+  const { error } = await sb.from('prospect_contacts').insert({
+    prospect_id: p.id,
+    happened_at: when,
+    channel:     logState.channel,
+    outcome:     logState.outcome,
+    notes:       $('logNotes').value.trim() || null,
+    by_name:     me.name,
+    by_id:       me.id
+  });
+  if(error){
+    $('logSave').disabled = false;
+    toast("Contact non enregistré : " + error.message, false);
+    return;
+  }
+
+  const def = outcomeDefaults(logState.outcome);
+  const patch = {};
+  const follow = $('logFollow').value || def.follow;
+  if(follow) patch.next_followup = follow;
+  else if(logState.outcome === 'pas_interesse' || logState.outcome === 'ne_plus_contacter') patch.next_followup = null;
+  // on ne retrograde jamais un client ou un refus deja enregistre
+  if(!['client','ne_pas_contacter','pas_interesse'].includes(p.status) || def.status === 'ne_pas_contacter'){
+    patch.status = def.status;
+  }
+  if(Object.keys(patch).length) await sb.from('prospects').update(patch).eq('id', p.id);
+
+  $('logSave').disabled = false;
+  $('logModal').classList.remove('show');
+  toast('Contact noté : ' + (OUTCOMES[logState.outcome] || ''));
+  await loadAll();
+}
+/* ------------------------------------------------------------------
+   CSV : sortir la liste (Excel, partage) et rentrer une liste existante
+------------------------------------------------------------------ */
+const CSV_COLS = [
+  ['name','Nom'], ['category','Catégorie'], ['town','Ville'], ['address','Adresse'],
+  ['website','Site web'], ['website_status','État du site'], ['email','Courriel'],
+  ['phone','Téléphone'], ['contact_name','Personne-ressource'], ['source','Source'],
+  ['status','Statut'], ['next_followup','Relance'], ['notes','Notes'],
+  ['added_by','Ajouté par'], ['date_added','Date d\'ajout'],
+  ['last_contact_at','Dernière approche'], ['last_contact_by','Approché par'],
+  ['nb_contacts','Nombre d\'approches']
+];
+
+function csvCell(v){
+  const s = v == null ? '' : String(v);
+  return /[",;\n]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s;
+}
+
+function exportCsv(){
+  const list = visibleProspects();
+  if(!list.length){ toast('Rien à exporter', false); return; }
+  const head = CSV_COLS.map(c => csvCell(c[1])).join(';');
+  const rows = list.map(p => CSV_COLS.map(([k]) => {
+    if(k === 'nb_contacts')    return contactsOf(p.id).length;
+    if(k === 'status')         return STATUS[p.status] || p.status;
+    if(k === 'website_status') return WEBSITE_LBL[p.website_status] || '';
+    if(k === 'date_added' || k === 'last_contact_at') return p[k] ? fmtDateTime(p[k]) : '';
+    return p[k] || '';
+  }).map(csvCell).join(';')).join('\n');
+
+  const blob = new Blob(['﻿' + head + '\n' + rows], { type:'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'prospects-norelo-' + todayISO() + '.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast(list.length + ' prospect(s) exporté(s)');
+}
+
+/* Petit lecteur CSV maison : gere ; ou , et les guillemets */
+function parseCsv(text){
+  const t = text.replace(/\r\n?/g,'\n');
+  const sep = (t.split('\n')[0].match(/;/g) || []).length >= (t.split('\n')[0].match(/,/g) || []).length ? ';' : ',';
+  const rows = [];
+  let row = [], cell = '', q = false;
+  for(let i = 0; i < t.length; i++){
+    const ch = t[i];
+    if(q){
+      if(ch === '"' && t[i+1] === '"'){ cell += '"'; i++; }
+      else if(ch === '"') q = false;
+      else cell += ch;
+    } else if(ch === '"') q = true;
+    else if(ch === sep){ row.push(cell); cell = ''; }
+    else if(ch === '\n'){ row.push(cell); rows.push(row); row = []; cell = ''; }
+    else cell += ch;
+  }
+  if(cell || row.length){ row.push(cell); rows.push(row); }
+  return rows.filter(r => r.some(c => c.trim()));
+}
+
+const HEADER_MAP = {
+  nom:'name', name:'name', entreprise:'name', 'nom de l\'entreprise':'name', business:'name',
+  categorie:'category', 'catégorie':'category', category:'category', type:'category',
+  ville:'town', town:'town', city:'town', municipalite:'town',
+  adresse:'address', address:'address',
+  'site web':'website', site:'website', website:'website', url:'website', web:'website',
+  courriel:'email', email:'email', mail:'email',
+  telephone:'phone', 'téléphone':'phone', tel:'phone', phone:'phone',
+  'personne-ressource':'contact_name', contact:'contact_name',
+  source:'source', notes:'notes', note:'notes', remarques:'notes'
+};
+
+async function importCsv(text){
+  const rows = parseCsv(text);
+  if(rows.length < 2){ toast('Fichier vide ou illisible', false); return; }
+
+  const head = rows[0].map(h => h.trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''));
+  const idx = {};
+  head.forEach((h,i) => {
+    const key = HEADER_MAP[h] || HEADER_MAP[h.replace(/[̀-ͯ]/g,'')];
+    if(key && idx[key] === undefined) idx[key] = i;
+  });
+  if(idx.name === undefined){
+    toast('Il faut une colonne « Nom »', false);
+    return;
+  }
+
+  const toAdd = [], skipped = [];
+  rows.slice(1).forEach(r => {
+    const get = k => idx[k] === undefined ? '' : (r[idx[k]] || '').trim();
+    const name = get('name');
+    if(!name) return;
+    const cand = {
+      name,
+      category: get('category') || null,
+      town:     get('town') || null,
+      address:  get('address') || null,
+      website:  normUrl(get('website')) || null,
+      email:    get('email') || null,
+      phone:    get('phone') ? fmtPhone(get('phone')) : null,
+      contact_name: get('contact_name') || null,
+      source:   get('source') || 'Import CSV',
+      notes:    get('notes') || null
+    };
+    // doublon contre la base ET contre le reste du fichier
+    if(findDuplicates(cand).length || toAdd.some(a => normName(a.name) === normName(cand.name))){
+      skipped.push(name);
+      return;
+    }
+    cand.website_status = cand.website ? 'bad' : 'none';
+    cand.status = 'nouveau';
+    cand.added_by = me.name;
+    cand.added_by_id = me.id;
+    toAdd.push(cand);
+  });
+
+  if(!toAdd.length){
+    toast(skipped.length ? 'Tout était déjà dans la liste (' + skipped.length + ')' : 'Rien à importer', false);
+    return;
+  }
+  if(!confirm('Importer ' + toAdd.length + ' entreprise(s) ?' +
+      (skipped.length ? '\n\n' + skipped.length + ' ignorée(s), déjà dans la liste :\n· ' + skipped.slice(0,8).join('\n· ') + (skipped.length > 8 ? '\n· …' : '') : ''))) return;
+
+  const { error } = await sb.from('prospects').insert(toAdd);
+  if(error){ toast('Import échoué : ' + error.message, false); return; }
+  toast(toAdd.length + ' ajouté(s)' + (skipped.length ? ' · ' + skipped.length + ' doublon(s) ignoré(s)' : ''));
+  loadAll();
+}
+/* ------------------------------------------------------------------
+   Branchements
+------------------------------------------------------------------ */
+let dupTimer = null;
+function checkDup(){
+  clearTimeout(dupTimer);
+  dupTimer = setTimeout(() => { dupOverride = false; renderDupWarn(); }, 250);
+}
+
+function bindApp(){
+  $('logoutBtn').onclick = async () => { await sb.auth.signOut(); location.reload(); };
+
+  // collage rapide : coller dans la zone remplit tout de suite
+  $('parseBtn').onclick = doParse;
+  $('pasteClear').onclick = () => { $('pasteBox').value = ''; };
+  $('pasteBox').addEventListener('paste', () => setTimeout(doParse, 30));
+
+  // formulaire
+  $('addBtn').onclick = addProspect;
+  $('clearBtn').onclick = () => { clearForm(); toast('Formulaire vidé'); };
+  ['fName','fPhone','fEmail','fWebsite'].forEach(id =>
+    $(id).addEventListener('input', checkDup));
+  $('fPhone').addEventListener('blur', e => { e.target.value = fmtPhone(e.target.value); });
+  $('fWebsite').addEventListener('blur', e => {
+    e.target.value = prettyUrl(e.target.value);
+    if(e.target.value && $('fWebsiteStatus').value === 'unknown') $('fWebsiteStatus').value = 'bad';
+    refreshEmailSuggestions();
+  });
+  $('fEmail').addEventListener('input', refreshEmailSuggestions);
+  $('suggEmail').addEventListener('click', e => {
+    const b = e.target.closest('[data-email]');
+    if(!b) return;
+    $('fEmail').value = b.getAttribute('data-email');
+    refreshEmailSuggestions();
+    checkDup();
+  });
+  // Entrée dans un champ = ajouter
+  document.querySelectorAll('.formgrid input').forEach(el =>
+    el.addEventListener('keydown', e => { if(e.key === 'Enter') addProspect(); }));
+
+  // filtres
+  ['searchInput','filterStatus','filterWebsite','filterTown','onlyFollowup','onlyNever','showArchived']
+    .forEach(id => $(id).addEventListener('input', render));
+  $('sortSel').addEventListener('change', e => { ui.sort = e.target.value; render(); });
+  document.querySelectorAll('.toggle').forEach(t =>
+    t.addEventListener('change', () => t.classList.toggle('on', t.querySelector('input').checked)));
+  document.querySelectorAll('.lhead .sortable').forEach(h =>
+    h.addEventListener('click', () => {
+      const s = h.getAttribute('data-sort');
+      ui.sort = s;
+      $('sortSel').value = s === 'name' ? 'name' : s;
+      render();
+    }));
+
+  // tuiles de statistiques = filtres rapides
+  $('stats').addEventListener('click', e => {
+    const t = e.target.closest('[data-stat]');
+    if(!t) return;
+    const k = t.getAttribute('data-stat');
+    ui.statFilter = (ui.statFilter === k || !k) ? '' : k;
+    render();
+  });
+
+  // liste : un seul écouteur pour toute la grille
+  $('lbody').addEventListener('click', e => {
+    const open = e.target.closest('[data-open]');
+    if(open){ openDrawer(open.getAttribute('data-open')); return; }
+    const log = e.target.closest('[data-log]');
+    if(log){ openLog(log.getAttribute('data-log')); return; }
+  });
+  $('lbody').addEventListener('change', e => {
+    const sel = e.target.closest('[data-status]');
+    if(sel) setStatus(sel.getAttribute('data-status'), sel.value);
+  });
+  $('dupWarn').addEventListener('click', e => {
+    const b = e.target.closest('[data-open]');
+    if(b) openDrawer(b.getAttribute('data-open'));
+  });
+
+  // fiche
+  $('dClose').onclick = closeDrawer;
+  $('scrim').onclick = closeDrawer;
+  $('dBody').addEventListener('click', e => {
+    const log = e.target.closest('[data-log]');
+    if(log){ openLog(log.getAttribute('data-log')); return; }
+    const dc = e.target.closest('[data-delc]');
+    if(dc){ deleteContact(dc.getAttribute('data-delc')); return; }
+  });
+
+  // fenêtre « noter un contact »
+  $('logChannels').addEventListener('click', e => {
+    const c = e.target.closest('[data-ch]');
+    if(!c) return;
+    logState.channel = c.getAttribute('data-ch');
+    syncChips();
+  });
+  $('logOutcomes').addEventListener('click', e => {
+    const c = e.target.closest('[data-oc]');
+    if(!c) return;
+    logState.outcome = c.getAttribute('data-oc');
+    const def = outcomeDefaults(logState.outcome);
+    $('logFollow').value = def.follow || '';
+    syncChips();
+  });
+  $('logCancel').onclick = () => $('logModal').classList.remove('show');
+  $('logSave').onclick = saveLog;
+  $('logModal').addEventListener('click', e => {
+    if(e.target.id === 'logModal') $('logModal').classList.remove('show');
+  });
+
+  // CSV
+  $('exportBtn').onclick = exportCsv;
+  $('importBtn').onclick = () => $('csvFile').click();
+  $('csvFile').addEventListener('change', e => {
+    const f = e.target.files[0];
+    if(!f) return;
+    const r = new FileReader();
+    r.onload = () => importCsv(String(r.result));
+    r.readAsText(f, 'UTF-8');
+    e.target.value = '';
+  });
+
+  // raccourcis clavier
+  document.addEventListener('keydown', e => {
+    const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+    if(e.key === 'Escape'){
+      if($('logModal').classList.contains('show')) $('logModal').classList.remove('show');
+      else if(drawerId) closeDrawer();
+      return;
+    }
+    if(e.key === 'Enter' && (e.ctrlKey || e.metaKey)){
+      if($('logModal').classList.contains('show')) saveLog();
+      else if(drawerId) saveDrawer();
+      else addProspect();
+      e.preventDefault();
+      return;
+    }
+    if(e.key === '/' && !typing){ e.preventDefault(); $('searchInput').focus(); }
+  });
+}
+
+boot();
 </script>
 </body>
 </html>
