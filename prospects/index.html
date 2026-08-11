@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Prospects · Norelo</title>
+<style>
+:root{
+  --dark:#070f2b;
+  --blue:#2563eb;
+  --bl:#4fa3e8;
+  --bp:#60a5fa;
+  --bdr:rgba(79,163,232,0.15);
+  --gr:#64748b;
+  --green:#22c55e;
+  --panel:#0c1636;
+  --panel2:#0f1c40;
+  --red:#ef4444;
+  --amber:#f59e0b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{overflow-x:hidden;}
+body{
+  background:var(--dark);
+  color:#e6ebff;
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  min-height:100vh;
+}
+
+/* nav */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(8,16,42,.92);
+  backdrop-filter:blur(20px);
+  padding:1.1rem 3rem;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--bdr);
+}
+.nl{display:flex;align-items:center;gap:0;font-weight:700;font-size:1.3rem;}
+.nl span:first-child{color:#fff;}
+.nl span:nth-child(2){color:var(--bl);}
+.nld{width:5px;height:5px;border-radius:50%;background:var(--green);margin-left:5px;align-self:flex-start;margin-top:6px;animation:pu 2s ease-in-out infinite;}
+@keyframes pu{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.4);}}
+.navtag{font-size:.85rem;color:var(--gr);letter-spacing:.02em;}
+
+main{padding:6.5rem 3rem 4rem;max-width:1400px;margin:0 auto;}
+
+.pagehead{margin-bottom:2rem;}
+.pagehead h1{font-size:1.8rem;font-weight:700;color:#fff;margin-bottom:.35rem;}
+.pagehead p{color:var(--gr);font-size:.95rem;}
+
+/* stats bar */
+.stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;
+}
+.stat{
+  background:var(--panel);border:1px solid var(--bdr);border-radius:10px;
+  padding:1rem 1.25rem;
+}
+.stat .num{font-size:1.6rem;font-weight:700;color:var(--bl);}
+.stat .lbl{font-size:.8rem;color:var(--gr);margin-top:.2rem;}
+
+/* form */
+.formcard{
+  background:var(--panel);border:1px solid var(--bdr);border-radius:12px;
+  padding:1.5rem;margin-bottom:2rem;
+}
+.formcard h2{font-size:1.05rem;color:#fff;margin-bottom:1rem;font-weight:600;}
+.formgrid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem;
+}
+.fld{display:flex;flex-direction:column;gap:.35rem;}
+.fld label{font-size:.75rem;color:var(--gr);text-transform:uppercase;letter-spacing:.03em;}
+.fld input,.fld select,.fld textarea{
+  background:var(--panel2);border:1px solid var(--bdr);border-radius:7px;
+  color:#e6ebff;padding:.55rem .7rem;font-size:.9rem;font-family:inherit;
+}
+.fld input:focus,.fld select:focus,.fld textarea:focus{
+  outline:none;border-color:var(--bl);
+}
+.fld.span2{grid-column:span 2;}
+.fld.span4{grid-column:span 4;}
+.formactions{display:flex;gap:.75rem;margin-top:1.1rem;}
+.btn{
+  border:none;border-radius:7px;padding:.65rem 1.3rem;font-size:.9rem;font-weight:600;
+  cursor:pointer;font-family:inherit;transition:opacity .15s;
+}
+.btn:hover{opacity:.85;}
+.btn-primary{background:var(--blue);color:#fff;}
+.btn-ghost{background:transparent;border:1px solid var(--bdr);color:var(--gr);}
+
+/* controls */
+.controls{
+  display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center;
+}
+.controls input[type=text]{
+  flex:1;min-width:200px;background:var(--panel);border:1px solid var(--bdr);
+  border-radius:7px;color:#e6ebff;padding:.6rem .9rem;font-size:.9rem;font-family:inherit;
+}
+.controls select{
+  background:var(--panel);border:1px solid var(--bdr);border-radius:7px;
+  color:#e6ebff;padding:.6rem .9rem;font-size:.9rem;font-family:inherit;
+}
+.controls input:focus,.controls select:focus{outline:none;border-color:var(--bl);}
+
+/* table */
+.tablewrap{
+  background:var(--panel);border:1px solid var(--bdr);border-radius:12px;
+  overflow-x:auto;
+}
+table{width:100%;border-collapse:collapse;min-width:920px;}
+th{
+  text-align:left;font-size:.75rem;text-transform:uppercase;letter-spacing:.03em;
+  color:var(--gr);padding:.85rem 1rem;border-bottom:1px solid var(--bdr);
+  white-space:nowrap;
+}
+td{
+  padding:.85rem 1rem;border-bottom:1px solid var(--bdr);font-size:.88rem;
+  vertical-align:top;
+}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(79,163,232,0.04);}
+.tname{font-weight:600;color:#fff;}
+.tsub{color:var(--gr);font-size:.78rem;margin-top:.15rem;}
+.badge{
+  display:inline-block;padding:.2rem .55rem;border-radius:5px;font-size:.75rem;font-weight:600;
+}
+.badge-none{background:rgba(239,68,68,.15);color:var(--red);}
+.badge-bad{background:rgba(245,158,11,.15);color:var(--amber);}
+.badge-good{background:rgba(34,197,94,.15);color:var(--green);}
+.badge-unknown{background:rgba(100,116,139,.15);color:var(--gr);}
+.chk{
+  display:inline-flex;align-items:center;gap:.4rem;cursor:pointer;font-size:.85rem;
+}
+.chk input{width:16px;height:16px;accent-color:var(--blue);cursor:pointer;}
+.rowactions{display:flex;gap:.5rem;}
+.iconbtn{
+  background:transparent;border:1px solid var(--bdr);color:var(--gr);
+  border-radius:6px;padding:.35rem .6rem;font-size:.78rem;cursor:pointer;font-family:inherit;
+}
+.iconbtn:hover{color:#fff;border-color:var(--bl);}
+.iconbtn.del:hover{color:var(--red);border-color:var(--red);}
+.note{color:var(--gr);font-size:.82rem;max-width:220px;}
+.addedby{font-size:.75rem;color:var(--gr);}
+
+.empty{padding:3rem;text-align:center;color:var(--gr);}
+
+.toast{
+  position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(100px);
+  background:var(--panel2);border:1px solid var(--bdr);color:#fff;
+  padding:.8rem 1.4rem;border-radius:8px;font-size:.9rem;
+  transition:transform .25s ease;z-index:200;
+}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+.who{
+  display:flex;align-items:center;gap:.6rem;margin-bottom:2rem;
+}
+.who input{
+  background:var(--panel);border:1px solid var(--bdr);border-radius:7px;
+  color:#e6ebff;padding:.5rem .8rem;font-size:.85rem;font-family:inherit;width:180px;
+}
+.who input:focus{outline:none;border-color:var(--bl);}
+.who span{font-size:.8rem;color:var(--gr);}
+
+@media (max-width:900px){
+  .formgrid{grid-template-columns:repeat(2,1fr);}
+  .fld.span2{grid-column:span 2;}
+  .stats{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:700px){
+  .nav{padding:1rem 1.25rem;}
+  main{padding:5.5rem 1.1rem 3rem;}
+  .formgrid{grid-template-columns:1fr;}
+  .fld.span2,.fld.span4{grid-column:span 1;}
+  .stats{grid-template-columns:repeat(2,1fr);}
+  table{min-width:760px;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nl">
+    <span>Nore</span><span>lo</span><span class="nld"></span>
+  </div>
+  <div class="navtag">Suivi de prospection</div>
+</nav>
+
+<main>
+  <div class="pagehead">
+    <h1>Prospects</h1>
+    <p>Entreprises sans site web ou avec un site à améliorer. Ajoutez-en, on se les partage.</p>
+  </div>
+
+  <div class="who">
+    <span>Ajouté par :</span>
+    <input type="text" id="whoInput" placeholder="Ton nom">
+  </div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="formcard">
+    <h2>Ajouter un prospect</h2>
+    <div class="formgrid">
+      <div class="fld span2">
+        <label>Nom de l'entreprise</label>
+        <input type="text" id="fName" placeholder="Ex: Salon Shampoochien">
+      </div>
+      <div class="fld">
+        <label>Catégorie</label>
+        <input type="text" id="fCategory" placeholder="Ex: Toilettage">
+      </div>
+      <div class="fld">
+        <label>Ville</label>
+        <input type="text" id="fTown" placeholder="Ex: Saint-Eustache">
+      </div>
+      <div class="fld">
+        <label>Site web</label>
+        <select id="fWebsite">
+          <option value="none">Aucun</option>
+          <option value="bad">Mauvais</option>
+          <option value="good">Bon</option>
+          <option value="unknown">Inconnu</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label>Courriel</label>
+        <input type="text" id="fEmail" placeholder="nom@exemple.com">
+      </div>
+      <div class="fld">
+        <label>Téléphone</label>
+        <input type="text" id="fPhone" placeholder="514-000-0000">
+      </div>
+      <div class="fld">
+        <label>Source</label>
+        <input type="text" id="fSource" placeholder="Ex: Google Maps, Facebook">
+      </div>
+      <div class="fld span4">
+        <label>Notes</label>
+        <textarea id="fNotes" rows="2" placeholder="Détails, remarques..."></textarea>
+      </div>
+    </div>
+    <div class="formactions">
+      <button class="btn btn-primary" id="addBtn">Ajouter</button>
+      <button class="btn btn-ghost" id="clearBtn">Effacer</button>
+    </div>
+  </div>
+
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="Rechercher un nom, ville, catégorie...">
+    <select id="filterWebsite">
+      <option value="">Tous les sites web</option>
+      <option value="none">Aucun</option>
+      <option value="bad">Mauvais</option>
+      <option value="good">Bon</option>
+      <option value="unknown">Inconnu</option>
+    </select>
+    <select id="filterContacted">
+      <option value="">Tous</option>
+      <option value="yes">Contacté</option>
+      <option value="no">Pas contacté</option>
+    </select>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Entreprise</th>
+          <th>Site web</th>
+          <th>Contact</th>
+          <th>Source</th>
+          <th>Notes</th>
+          <th>Contacté</th>
+          <th>Ajouté par</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="empty" id="emptyState" style="display:none;">Aucun prospect pour l'instant. Ajoutez-en un ci-dessus.</div>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// From Supabase dashboard: Project Settings > API
+const SUPABASE_URL = "https://wbdmwygvwdyinhwtsrwe.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo";
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let prospects = [];
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+function websiteLabel(v){
+  return {none:'Aucun', bad:'Mauvais', good:'Bon', unknown:'Inconnu'}[v] || 'Inconnu';
+}
+
+async function fetchProspects(){
+  const { data, error } = await supabase
+    .from('prospects')
+    .select('*')
+    .order('date_added', { ascending: false });
+
+  if(error){
+    toast('Erreur de connexion');
+    return;
+  }
+  prospects = data.map(row=>({
+    id: row.id,
+    name: row.name,
+    category: row.category,
+    town: row.town,
+    website: row.website,
+    email: row.email,
+    phone: row.phone,
+    source: row.source,
+    notes: row.notes,
+    contacted: row.contacted,
+    addedBy: row.added_by,
+    dateAdded: row.date_added
+  }));
+  render();
+}
+
+function listenProspects(){
+  fetchProspects();
+  supabase
+    .channel('prospects-changes')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'prospects' }, ()=>{
+      fetchProspects();
+    })
+    .subscribe();
+}
+
+function getWho(){
+  const v = document.getElementById('whoInput').value.trim();
+  return v || 'Anonyme';
+}
+let _whoMem = '';
+document.getElementById('whoInput').value = _whoMem;
+document.getElementById('whoInput').addEventListener('input', e=>{
+  _whoMem = e.target.value;
+});
+
+function clearForm(){
+  ['fName','fCategory','fTown','fEmail','fPhone','fSource','fNotes'].forEach(id=>{
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('fWebsite').value = 'none';
+}
+
+async function addProspect(){
+  const name = document.getElementById('fName').value.trim();
+  if(!name){ toast('Le nom de l\'entreprise est requis'); return; }
+
+  const entry = {
+    name,
+    category: document.getElementById('fCategory').value.trim(),
+    town: document.getElementById('fTown').value.trim(),
+    website: document.getElementById('fWebsite').value,
+    email: document.getElementById('fEmail').value.trim(),
+    phone: document.getElementById('fPhone').value.trim(),
+    source: document.getElementById('fSource').value.trim(),
+    notes: document.getElementById('fNotes').value.trim(),
+    contacted: false,
+    added_by: getWho(),
+    date_added: new Date().toISOString()
+  };
+
+  const { error } = await supabase.from('prospects').insert(entry);
+  if(error){
+    toast('Erreur d\'ajout');
+    return;
+  }
+  clearForm();
+  toast('Prospect ajouté');
+}
+
+async function toggleContacted(id){
+  const p = prospects.find(x=>x.id===id);
+  if(!p) return;
+  const { error } = await supabase
+    .from('prospects')
+    .update({ contacted: !p.contacted })
+    .eq('id', id);
+  if(error) toast('Erreur de mise à jour');
+}
+
+async function deleteProspect(id){
+  if(!confirm('Supprimer ce prospect ?')) return;
+  const { error } = await supabase.from('prospects').delete().eq('id', id);
+  if(error){
+    toast('Erreur de suppression');
+    return;
+  }
+  toast('Prospect supprimé');
+}
+
+function renderStats(){
+  const total = prospects.length;
+  const noWebsite = prospects.filter(p=>p.website==='none').length;
+  const contacted = prospects.filter(p=>p.contacted).length;
+  const withEmail = prospects.filter(p=>p.email).length;
+  document.getElementById('stats').innerHTML = `
+    <div class="stat"><div class="num">${total}</div><div class="lbl">Total prospects</div></div>
+    <div class="stat"><div class="num">${noWebsite}</div><div class="lbl">Sans site web</div></div>
+    <div class="stat"><div class="num">${contacted}</div><div class="lbl">Contactés</div></div>
+    <div class="stat"><div class="num">${withEmail}</div><div class="lbl">Avec courriel</div></div>
+  `;
+}
+
+function render(){
+  renderStats();
+
+  const search = document.getElementById('searchInput').value.trim().toLowerCase();
+  const fw = document.getElementById('filterWebsite').value;
+  const fc = document.getElementById('filterContacted').value;
+
+  let list = prospects.filter(p=>{
+    if(search){
+      const hay = `${p.name} ${p.category} ${p.town} ${p.email} ${p.phone}`.toLowerCase();
+      if(!hay.includes(search)) return false;
+    }
+    if(fw && p.website !== fw) return false;
+    if(fc === 'yes' && !p.contacted) return false;
+    if(fc === 'no' && p.contacted) return false;
+    return true;
+  });
+
+  const tbody = document.getElementById('tbody');
+  const empty = document.getElementById('emptyState');
+
+  if(list.length === 0){
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  tbody.innerHTML = list.map(p=>`
+    <tr>
+      <td>
+        <div class="tname">${escapeHtml(p.name)}</div>
+        <div class="tsub">${escapeHtml(p.category || '')}${p.category && p.town ? ' · ' : ''}${escapeHtml(p.town || '')}</div>
+      </td>
+      <td><span class="badge badge-${p.website}">${websiteLabel(p.website)}</span></td>
+      <td>
+        ${p.email ? `<div>${escapeHtml(p.email)}</div>` : ''}
+        ${p.phone ? `<div class="tsub">${escapeHtml(p.phone)}</div>` : ''}
+        ${!p.email && !p.phone ? '<span class="tsub">—</span>' : ''}
+      </td>
+      <td>${escapeHtml(p.source || '—')}</td>
+      <td><div class="note">${escapeHtml(p.notes || '—')}</div></td>
+      <td>
+        <label class="chk">
+          <input type="checkbox" ${p.contacted ? 'checked' : ''} onchange="toggleContacted('${p.id}')">
+          ${p.contacted ? 'Oui' : 'Non'}
+        </label>
+      </td>
+      <td><span class="addedby">${escapeHtml(p.addedBy || '—')}</span></td>
+      <td>
+        <div class="rowactions">
+          <button class="iconbtn del" onclick="deleteProspect('${p.id}')">Suppr.</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+document.getElementById('addBtn').addEventListener('click', addProspect);
+document.getElementById('clearBtn').addEventListener('click', clearForm);
+document.getElementById('searchInput').addEventListener('input', render);
+document.getElementById('filterWebsite').addEventListener('change', render);
+document.getElementById('filterContacted').addEventListener('change', render);
+
+listenProspects();
+</script>
+</body>
+</html>
