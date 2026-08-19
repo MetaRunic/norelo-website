@@ -2,6 +2,10 @@
 -- Norelo Horaire : saisie groupee des heures, mai a juillet 2026
 -- Norelo Horaire: bulk hours entry, May to July 2026
 --
+-- CORRIGE: shifts.start_time et end_time sont du TEXTE 'HH:MM', pas des
+-- valeurs time. La premiere version comparait du texte a du time, d'ou
+-- l'erreur 42883. Tout passe maintenant par du texte.
+--
 -- 24 dates pour 2 personnes. Les pauses sont DEJA comprises dans les
 -- heures donnees, donc lunch = false partout: aucune demi-heure ne sera
 -- retiree. Aucune journee ne depasse 8 h, donc aucune heure
@@ -15,6 +19,25 @@
 --   e) Section 5: l'ecriture. Par defaut elle N'ECRASE RIEN.
 --   f) Section 7: menage.
 -- =====================================================================
+
+
+-- =====================================================================
+-- SECTION 0 : LES TYPES REELS DES COLONNES / THE ACTUAL COLUMN TYPES
+-- A lancer en premier. Attendu:
+--   work_date date, start_time text, end_time text,
+--   lunch boolean, ot_approved boolean, ot_status text
+-- Si une ligne dit autre chose, envoyez-moi le resultat avant de
+-- continuer. C'est ce qui a cause l'erreur 42883 la premiere fois.
+-- =====================================================================
+select column_name, data_type, is_nullable
+  from information_schema.columns
+ where table_schema = 'public' and table_name = 'shifts'
+ order by ordinal_position;
+
+select column_name, data_type
+  from information_schema.columns
+ where table_schema = 'public' and table_name = 'paid_weeks'
+ order by ordinal_position;
 
 
 -- =====================================================================
@@ -42,30 +65,30 @@ with cfg(dan_user, jas_user) as (
   values ('dan', 'jasmine')            -- <== LES DEUX NOMS D'UTILISATEUR
 ),
 d(work_date, dan_start, dan_end, jas_start, jas_end) as (values
-  (date '2026-05-11', time '11:00', time '16:00', time '11:00', time '16:00'),
-  (date '2026-05-12', time '09:30', time '15:00', time '09:30', time '15:00'),
-  (date '2026-05-20', time '10:00', time '15:00', time '10:00', time '15:00'),
-  (date '2026-05-26', time '10:15', time '15:15', time '10:15', time '15:15'),
-  (date '2026-05-28', time '10:25', time '15:00', time '10:25', time '15:00'),
-  (date '2026-06-01', time '10:20', time '16:35', time '10:20', time '16:35'),
-  (date '2026-06-02', time '10:00', time '14:30', time '10:00', time '14:30'),
-  (date '2026-06-03', time '09:20', time '14:10', time '09:20', time '14:10'),
-  (date '2026-06-05', time '08:15', time '16:00', time '08:15', time '16:00'),
-  (date '2026-06-08', time '09:15', time '15:15', time '09:15', time '15:15'),
-  (date '2026-06-09', time '09:15', time '15:30', time '09:15', time '15:30'),
-  (date '2026-06-11', time '09:15', time '13:45', time '09:15', time '13:45'),
-  (date '2026-06-12', time '09:15', time '14:00', time '09:15', time '14:00'),
-  (date '2026-06-15', time '09:15', time '15:00', time '09:15', time '16:00'),  -- Dan une heure de moins
-  (date '2026-06-16', time '11:30', time '16:15', time '09:15', time '16:15'),  -- Dan arrive a 11:30
-  (date '2026-06-22', time '09:30', time '16:30', time '09:30', time '16:30'),
-  (date '2026-06-25', time '10:00', time '15:30', time '10:00', time '15:30'),
-  (date '2026-06-29', time '10:00', time '16:00', time '10:00', time '16:00'),
-  (date '2026-06-30', time '11:00', time '14:15', time '11:00', time '14:15'),
-  (date '2026-07-06', time '10:30', time '15:00', time '10:30', time '15:00'),
-  (date '2026-07-07', time '10:30', time '16:00', time '10:30', time '16:00'),
-  (date '2026-07-09', time '10:15', time '14:00', time '10:15', time '14:00'),
-  (date '2026-07-10', time '10:45', time '15:15', time '10:45', time '15:15'),
-  (date '2026-07-13', time '10:15', time '16:00', time '10:15', time '16:00')
+  (date '2026-05-11', '11:00', '16:00', '11:00', '16:00'),
+  (date '2026-05-12', '09:30', '15:00', '09:30', '15:00'),
+  (date '2026-05-20', '10:00', '15:00', '10:00', '15:00'),
+  (date '2026-05-26', '10:15', '15:15', '10:15', '15:15'),
+  (date '2026-05-28', '10:25', '15:00', '10:25', '15:00'),
+  (date '2026-06-01', '10:20', '16:35', '10:20', '16:35'),
+  (date '2026-06-02', '10:00', '14:30', '10:00', '14:30'),
+  (date '2026-06-03', '09:20', '14:10', '09:20', '14:10'),
+  (date '2026-06-05', '08:15', '16:00', '08:15', '16:00'),
+  (date '2026-06-08', '09:15', '15:15', '09:15', '15:15'),
+  (date '2026-06-09', '09:15', '15:30', '09:15', '15:30'),
+  (date '2026-06-11', '09:15', '13:45', '09:15', '13:45'),
+  (date '2026-06-12', '09:15', '14:00', '09:15', '14:00'),
+  (date '2026-06-15', '09:15', '15:00', '09:15', '16:00'),  -- Dan une heure de moins
+  (date '2026-06-16', '11:30', '16:15', '09:15', '16:15'),  -- Dan arrive a 11:30
+  (date '2026-06-22', '09:30', '16:30', '09:30', '16:30'),
+  (date '2026-06-25', '10:00', '15:30', '10:00', '15:30'),
+  (date '2026-06-29', '10:00', '16:00', '10:00', '16:00'),
+  (date '2026-06-30', '11:00', '14:15', '11:00', '14:15'),
+  (date '2026-07-06', '10:30', '15:00', '10:30', '15:00'),
+  (date '2026-07-07', '10:30', '16:00', '10:30', '16:00'),
+  (date '2026-07-09', '10:15', '14:00', '10:15', '14:00'),
+  (date '2026-07-10', '10:45', '15:15', '10:45', '15:15'),
+  (date '2026-07-13', '10:15', '16:00', '10:15', '16:00')
 )
 select p.id                as employee_id,
        p.name              as person,
@@ -74,7 +97,7 @@ select p.id                as employee_id,
        d.work_date,
        x.st                as start_time,
        x.en                as end_time,
-       round(extract(epoch from (x.en - x.st)) / 3600.0, 2) as hours
+       round((extract(epoch from (x.en::time - x.st::time)) / 3600.0)::numeric, 2) as hours
   from d
   cross join cfg
   cross join lateral (values
@@ -103,11 +126,12 @@ select person, username, count(*) as lignes,
 select b.person, b.work_date,
        s.start_time as deja_debut, s.end_time as deja_fin,
        b.start_time as propose_debut, b.end_time as propose_fin,
-       case when s.start_time = b.start_time and s.end_time = b.end_time
+       case when left(s.start_time::text, 5) = b.start_time
+             and left(s.end_time::text, 5)   = b.end_time
             then 'identique' else 'DIFFERENT' end as comparaison
   from public.v_hours_batch b
   join public.shifts s
-    on s.employee_id = b.employee_id and s.work_date = b.work_date
+    on s.employee_id = b.employee_id and s.work_date::date = b.work_date
  order by b.work_date, b.person;
 
 
@@ -119,14 +143,14 @@ select b.person, b.work_date, b.start_time, b.end_time, b.hours
   from public.v_hours_batch b
  where not exists (select 1 from public.shifts s
                     where s.employee_id = b.employee_id
-                      and s.work_date  = b.work_date)
+                      and s.work_date::date = b.work_date)
  order by b.work_date, b.person;
 
 select count(*) as lignes_a_ajouter
   from public.v_hours_batch b
  where not exists (select 1 from public.shifts s
                     where s.employee_id = b.employee_id
-                      and s.work_date  = b.work_date);
+                      and s.work_date::date = b.work_date);
 
 
 -- =====================================================================
@@ -143,7 +167,7 @@ select b.employee_id, b.work_date, b.start_time, b.end_time, false, false, 'pend
   from public.v_hours_batch b
  where not exists (select 1 from public.shifts s
                     where s.employee_id = b.employee_id
-                      and s.work_date  = b.work_date);
+                      and s.work_date::date = b.work_date);
 
 commit;
 
@@ -154,14 +178,14 @@ commit;
 -- vous voulez que la nouvelle valeur gagne. Decommentez pour l'utiliser.
 -- ---------------------------------------------------------------------
 -- begin;
--- insert into public.shifts (employee_id, work_date, start_time, end_time, lunch, ot_approved, ot_status)
--- select b.employee_id, b.work_date, b.start_time, b.end_time, false, false, 'pending'
+-- update public.shifts s
+--    set start_time = b.start_time,
+--        end_time   = b.end_time,
+--        lunch      = false,
+--        ot_status  = 'pending'
 --   from public.v_hours_batch b
--- on conflict (employee_id, work_date) do update
---   set start_time = excluded.start_time,
---       end_time   = excluded.end_time,
---       lunch      = false,
---       ot_status  = 'pending';
+--  where s.employee_id = b.employee_id
+--    and s.work_date::date = b.work_date;
 -- commit;
 
 
@@ -170,14 +194,15 @@ commit;
 -- Compare ce qui est en base avec ce qui etait demande.
 -- =====================================================================
 select b.person, b.work_date, b.start_time, b.end_time,
-       case when s.id is null then 'MANQUANTE'
-            when s.start_time = b.start_time and s.end_time = b.end_time and s.lunch = false
-                 then 'ok'
+       case when s.employee_id is null then 'MANQUANTE'
+            when left(s.start_time::text, 5) = b.start_time
+             and left(s.end_time::text, 5)   = b.end_time
+             and s.lunch = false then 'ok'
             else 'a verifier' end as etat,
        s.lunch as pause_30min
   from public.v_hours_batch b
   left join public.shifts s
-    on s.employee_id = b.employee_id and s.work_date = b.work_date
+    on s.employee_id = b.employee_id and s.work_date::date = b.work_date
  order by b.work_date, b.person;
 
 -- Totaux par personne et par semaine de paie
