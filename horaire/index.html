@@ -276,6 +276,12 @@ h2{font-size:20px;font-weight:800;}
 .wkcardnav{display:flex;gap:.5rem;flex-shrink:0;}
 .wkcardnav .wnav{width:46px;height:44px;}
 #tipOut:not(:empty){margin-top:1.1rem;}
+.cardtoggle{display:flex;align-items:center;gap:.7rem;width:100%;background:none;border:none;
+ padding:0;color:inherit;font-family:inherit;text-align:left;}
+.cardtoggle h3{margin-bottom:0;}
+.cardtoggle .calchev{margin-left:auto;color:var(--gr);font-size:12px;}
+.cardtoggle:hover h3{color:var(--accent-l);}
+#tipBody{margin-top:1rem;}
 @media(max-width:760px){.wkcardv{font-size:18px;}.wkcardhd{gap:.7rem;}}
 @media(max-width:600px){.unpaidflag{align-items:flex-start;text-align:left;}.unpaidv{font-size:28px;}.unpaidgo{display:none;}}
 .ecard.off .offbig{grid-column:1/-1;text-align:center;font-weight:900;font-size:19px;letter-spacing:3px;color:var(--gr);padding:.3rem 0;}
@@ -560,14 +566,19 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
           <div class="mtscroll"><table class="mtable" id="mgrTable"></table></div>
         </div>
         <div class="card">
-          <h3 data-i="tipsT">Calculateur de pourboires <span class="tag">beta</span></h3>
-          <div class="tips">
-            <span class="muted" data-i="tipsPool">Cagnotte totale ($)</span>
-            <input type="number" id="tipPool" step="1" placeholder="0"/>
-            <button class="btn sm" id="tipCalc" data-i="tipSplit">Repartir par heures</button>
+          <button type="button" class="cardtoggle" id="tipToggle">
+            <h3><span data-i="tipsT">Calculateur de pourboires</span> <span class="tag">beta</span></h3>
+            <span class="calchev" id="tipChev">&#9662;</span>
+          </button>
+          <div id="tipBody" style="display:none">
+            <div class="tips">
+              <span class="muted" data-i="tipsPool">Cagnotte totale ($)</span>
+              <input type="number" id="tipPool" step="1" placeholder="0"/>
+              <button class="btn sm" id="tipCalc" data-i="tipSplit">Repartir par heures</button>
+            </div>
+            <div class="muted" data-i="tipsHint">Repartit la cagnotte selon les heures travaillees.</div>
+            <div class="mtscroll" id="tipOut"></div>
           </div>
-          <div class="muted" data-i="tipsHint">Repartit la cagnotte selon les heures travaillees.</div>
-          <div class="mtscroll" id="tipOut"></div>
         </div>
       </div>
     </div>
@@ -673,7 +684,7 @@ const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
 const EMAIL_DOMAIN='@norelo-verger.app';
 const OWNERS=['dan','gill','sydney','patron'];
-const APP_VERSION=18; // bump this on each release, then click "Force update"
+const APP_VERSION=19; // bump this on each release, then click "Force update"
 const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const REG_SHIFTS=[['08:00','16:30'],['09:30','18:00']]; // quarts reguliers mis en evidence
@@ -1096,7 +1107,14 @@ function renderUnpaid(){const el=document.getElementById('unpaidPanel');if(!el)r
   +u.weeks.slice().sort((a,b)=>a.k<b.k?1:-1).map(x=>'<button class="unpaidrow'+(x.k===state.current?' on':'')+'" data-uwk="'+x.k+'"><span>'+T[lang].weekOf+' '+fmtLong(x.k)+'</span><span class="unpaidamt">'+money(x.amt)+'</span><span class="unpaidgo">'+t.goWeek+' &rarr;</span></button>').join('')+'</div>';}
  else h+='<div class="unpaidlist"><div class="muted" style="padding:.4rem 0">'+t.unpaidNone+'</div></div>';
  el.innerHTML=h+'</div>';}
-function renderMgr(){const t=T[lang];renderUnpaid();updateMgrBadge();
+let tipsOpen=null;
+function tipsIsOpen(){if(tipsOpen!==null)return tipsOpen;
+ try{const v=localStorage.getItem('noreloTipsOpen');if(v!=null)return (tipsOpen=(v==='1'));}catch(e){}
+ return (tipsOpen=false);}
+function setTipsOpen(v){tipsOpen=!!v;try{localStorage.setItem('noreloTipsOpen',v?'1':'0');}catch(e){}renderTips();}
+function renderTips(){const b=document.getElementById('tipBody'),c=document.getElementById('tipChev');if(!b)return;
+ const o=tipsIsOpen();b.style.display=o?'':'none';if(c)c.innerHTML=o?'&#9652;':'&#9662;';}
+function renderMgr(){const t=T[lang];renderUnpaid();updateMgrBadge();renderTips();
  const _wl=document.getElementById('mgrWeekLabel');
  if(_wl){const st=weekStatus(state.current);
   _wl.innerHTML=esc(t.weekOf+' '+fmtLong(state.current))+' <span class="wpstat '+st+'">'+t['ws_'+st]+'</span>';}
@@ -1276,6 +1294,7 @@ function bindApp(){
    const c=document.getElementById('mgrWeekCard');if(c)c.scrollIntoView({block:'start',behavior:'smooth'});});
   document.getElementById('mgrPrev').onclick=()=>gotoWeek(-1);
   document.getElementById('mgrNext').onclick=()=>gotoWeek(1);
+  document.getElementById('tipToggle').onclick=()=>setTipsOpen(!tipsIsOpen());
   document.getElementById('tipCalc').onclick=calcTips;
   ['fltPerson','fltAction','fltDate','fltDateTo'].forEach(fid=>document.getElementById(fid).addEventListener('change',applyLogFilter));
   document.getElementById('fltClear').onclick=()=>{['fltPerson','fltAction','fltDate','fltDateTo'].forEach(i=>document.getElementById(i).value='');applyLogFilter();};
