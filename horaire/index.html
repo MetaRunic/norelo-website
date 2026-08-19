@@ -191,7 +191,12 @@ h2{font-size:20px;font-weight:800;}
 .stbadge{display:none;background:var(--accent);color:#fff;font-size:11px;font-weight:800;border-radius:20px;padding:1px 7px;margin-left:6px;vertical-align:middle;}
 .otsubtabs .stf.on .stbadge{background:#fff;color:var(--accent);}
 .otdenbar{display:flex;justify-content:flex-end;margin-bottom:.8rem;}
-.bkbtns{display:flex;gap:.5rem;flex-shrink:0;}
+.bkbtns{display:flex;gap:.5rem;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;}
+.exportage{display:flex;gap:.5rem 1rem;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--gr);margin-top:.9rem;padding:9px 13px;border:1px solid var(--bdr);border-radius:9px;}
+.exportage.stale{background:rgba(245,158,11,.09);border-color:rgba(245,158,11,.4);color:#f59e0b;}
+.exportage strong{color:var(--txt);}
+.exportage.stale strong{color:#f59e0b;}
+.exphint{font-weight:700;}
 .bkbtns .btn.del{background:transparent;border:1.5px solid rgba(240,101,90,.5);color:var(--red);}
 .bkbtns .btn.del:hover{background:rgba(240,101,90,.12);}
 .bkhead{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;}
@@ -431,6 +436,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
       </div>
       <div id="mgrContent" style="display:none">
         <h2 data-i="payTitle" style="margin-bottom:1.2rem">Paiements et totaux</h2>
+        <div class="bkhead" style="margin-bottom:1.2rem"><button class="btn ghost sm" id="exportCsvMgr" data-i="exportCsv">Exporter les heures (CSV)</button></div>
         <div id="unpaidPanel"></div>
         <div class="kpis" id="mgrKpis"></div>
         <div class="card">
@@ -465,10 +471,12 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     <div id="backupView" style="display:none">
       <div class="card">
         <h3 data-i="backupsT">Sauvegardes</h3>
+        <p class="muted" data-i="bkExplain" style="margin:-.4rem 0 1rem">Chaque modification est enregistrée immédiatement dans le nuage. Une sauvegarde automatique est créée toutes les 12 h.</p>
         <div class="bkhead">
           <button class="btn sm" id="backupNow" data-i="backupNow">Sauvegarder maintenant</button>
           <button class="btn ghost sm" id="exportCsv" data-i="exportCsv">Exporter les heures (CSV)</button>
         </div>
+        <div id="exportAge" class="exportage"></div>
         <div id="backupList" style="margin-top:1rem"></div>
       </div>
     </div>
@@ -543,7 +551,7 @@ const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
 const EMAIL_DOMAIN='@norelo-verger.app';
 const OWNERS=['dan','gill','sydney','patron'];
-const APP_VERSION=3; // bump this on each release, then click "Force update"
+const APP_VERSION=4; // bump this on each release, then click "Force update"
 const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const LOCK_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
@@ -567,7 +575,7 @@ const T={
    otDen:'refusée',otShowDen:'Voir les refusées',otHideDen:'Masquer les refusées',otDenNone:'Aucune heure supplémentaire refusée.',otDenyC:'Refuser ces heures supplémentaires? Elles ne seront pas payées et quitteront la liste des demandes en attente.',
    exportCsv:'Exporter les heures (CSV)',exportDone:'Fichier CSV téléchargé',exportEmpty:'Aucune heure à exporter.',
    bkDel:'Supprimer',bkDelC:'Supprimer cette sauvegarde définitivement? Cette action est irréversible.',bkDeleted:'Sauvegarde supprimée',
-   csvEmp:'Employé',csvDept:'Département',csvDate:'Date',csvStart:'Début',csvEnd:'Fin',csvWorked:'Heures travaillées',csvOt:'Heures supp.',csvAppr:'Approuvées',csvPay:'Paie',csvYes:'Oui',csvNo:'Non',csvDenied:'Refusées',unpaidT:'Solde impayé, toutes les semaines',unpaidSub:'Total dû à tous les employés, toutes semaines confondues.',unpaidWeeks:'Semaines à payer',unpaidNone:'Tout est payé.',kUnpaidAll:'Solde impayé total',alertT:'Seuil atteint',alertS:'Le solde impayé dépasse ',alertA:' Prévenez Gill.',warnT:'Approche du seuil',warnS:'Le solde impayé approche de ',okT:'Sous le seuil',okS:'Le solde impayé reste sous ',goWeek:'Voir'},
+   csvEmp:'Employé',csvDept:'Département',csvDate:'Date',csvStart:'Début',csvEnd:'Fin',csvWorked:'Heures travaillées',csvOt:'Heures supp.',csvAppr:'Approuvées',csvPay:'Paie',csvYes:'Oui',csvNo:'Non',csvDenied:'Refusées',unpaidT:'Solde impayé, toutes les semaines',unpaidSub:'Total dû à tous les employés, toutes semaines confondues.',unpaidWeeks:'Semaines à payer',unpaidNone:'Tout est payé.',kUnpaidAll:'Solde impayé total',alertT:'Seuil atteint',alertS:'Le solde impayé dépasse ',alertA:' Prévenez Gill.',warnT:'Approche du seuil',warnS:'Le solde impayé approche de ',okT:'Sous le seuil',okS:'Le solde impayé reste sous ',goWeek:'Voir',bkDl:'Télécharger',bkDlDone:'Sauvegarde téléchargée sur cet appareil',bkExplain:'Chaque modification est enregistrée immédiatement dans le nuage. Une sauvegarde automatique est créée toutes les 12 h.',expLast:'Dernier export des heures',expNever:'jamais sur cet appareil',expToday:"aujourd'hui",expAgo:'il y a ',expDay:' jour',expDays:' jours',expHint:'Exportez les heures et gardez le fichier ailleurs que dans Supabase.'},
  en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',tEmp:'Employees',tLog:'Activity',tBak:'Backups',logout:'Log out',
    employees:'Employees and rates',add:'Add',
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
@@ -583,7 +591,7 @@ const T={
    otDen:'denied',otShowDen:'Show denied',otHideDen:'Hide denied',otDenNone:'No denied overtime.',otDenyC:'Deny this overtime? It will not be paid and will leave the pending list.',
    exportCsv:'Export hours (CSV)',exportDone:'CSV file downloaded',exportEmpty:'No hours to export.',
    bkDel:'Delete',bkDelC:'Permanently delete this backup? This cannot be undone.',bkDeleted:'Backup deleted',
-   csvEmp:'Employee',csvDept:'Department',csvDate:'Date',csvStart:'Start',csvEnd:'End',csvWorked:'Worked hours',csvOt:'Overtime',csvAppr:'Approved',csvPay:'Pay',csvYes:'Yes',csvNo:'No',csvDenied:'Denied',unpaidT:'Unpaid balance, all weeks',unpaidSub:'Total owed to every employee across all weeks.',unpaidWeeks:'Weeks to pay',unpaidNone:'Everything is paid.',kUnpaidAll:'Total unpaid',alertT:'Threshold reached',alertS:'The unpaid balance is over ',alertA:' Notify Gill.',warnT:'Approaching the threshold',warnS:'The unpaid balance is nearing ',okT:'Under the threshold',okS:'The unpaid balance stays under ',goWeek:'View'}
+   csvEmp:'Employee',csvDept:'Department',csvDate:'Date',csvStart:'Start',csvEnd:'End',csvWorked:'Worked hours',csvOt:'Overtime',csvAppr:'Approved',csvPay:'Pay',csvYes:'Yes',csvNo:'No',csvDenied:'Denied',unpaidT:'Unpaid balance, all weeks',unpaidSub:'Total owed to every employee across all weeks.',unpaidWeeks:'Weeks to pay',unpaidNone:'Everything is paid.',kUnpaidAll:'Total unpaid',alertT:'Threshold reached',alertS:'The unpaid balance is over ',alertA:' Notify Gill.',warnT:'Approaching the threshold',warnS:'The unpaid balance is nearing ',okT:'Under the threshold',okS:'The unpaid balance stays under ',goWeek:'View',bkDl:'Download',bkDlDone:'Backup downloaded to this device',bkExplain:'Every change is saved to the cloud immediately. An automatic backup is created every 12 h.',expLast:'Last hours export',expNever:'never on this device',expToday:'today',expAgo:'',expDay:' day ago',expDays:' days ago',expHint:'Export the hours and keep the file somewhere other than Supabase.'}
 };
 let state={employees:[],weeks:{},current:null,off:{},offList:[]},lang='fr',selDay=0,mgrUnlocked=false,isEmployee=false,currentEmp=null,teamFilter='all',myId=null,myEmail='';
 
@@ -1057,7 +1065,9 @@ function bindApp(){
   document.getElementById('fltClear').onclick=()=>{document.getElementById('fltPerson').value='';document.getElementById('fltAction').value='';document.getElementById('fltDate').value='';applyLogFilter();};
   document.getElementById('backupNow').onclick=async()=>{const btn=document.getElementById('backupNow');btn.disabled=true;const err=await createBackup('Manuelle');btn.disabled=false;if(err){alert(err.message||'Erreur');return;}logAction('backup','Manuelle');renderBackups();showToast(lang==='fr'?'Sauvegarde créée':'Backup created',true);};
   document.getElementById('exportCsv').onclick=()=>exportHoursCSV('norelo-heures');
+  document.getElementById('exportCsvMgr').onclick=()=>exportHoursCSV('norelo-heures');
   document.getElementById('backupList').addEventListener('click',async e=>{
+   const dl=e.target.closest('[data-dlbk]');if(dl){downloadBackup(dl.getAttribute('data-dlbk'),dl);return;}
    const d=e.target.closest('[data-delbk]');if(d){deleteBackup(d.getAttribute('data-delbk'),d);return;}
    const b=e.target.closest('[data-restore]');if(!b)return;const id=b.getAttribute('data-restore');
    if(!confirm(lang==='fr'?'Restaurer cette sauvegarde? Les heures actuelles seront remplacées (une sauvegarde de sécurité et un fichier CSV des heures actuelles sont créés).':'Restore this backup? Current hours will be replaced (a safety backup and a CSV of the current hours are created).'))return;
@@ -1136,8 +1146,10 @@ async function renderBackups(){const el=document.getElementById('backupList');if
  const t=T[lang];
  el.innerHTML=data.map(b=>{const d=new Date(b.created_at);const when=d.toLocaleString(lang==='fr'?'fr-CA':'en-CA',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
   return '<div class="bkrow"><div><div class="bklabel">'+esc(b.label||'')+'</div><div class="bkmeta">'+esc(when)+' &middot; '+esc(b.created_by||'')+'</div></div>'
-   +'<div class="bkbtns"><button class="btn ghost sm" data-restore="'+b.id+'">'+(lang==='fr'?'Restaurer':'Restore')+'</button>'
-   +'<button class="btn sm del" data-delbk="'+b.id+'">'+t.bkDel+'</button></div></div>';}).join('');}
+   +'<div class="bkbtns"><button class="btn ghost sm" data-dlbk="'+b.id+'">'+t.bkDl+'</button>'
+   +'<button class="btn ghost sm" data-restore="'+b.id+'">'+(lang==='fr'?'Restaurer':'Restore')+'</button>'
+   +'<button class="btn sm del" data-delbk="'+b.id+'">'+t.bkDel+'</button></div></div>';}).join('');
+ renderExportAge();}
 async function deleteBackup(id,btn){const t=T[lang];if(!confirm(t.bkDelC))return;
  const pw=await promptPwd(lang==='fr'?'Entrez VOTRE mot de passe pour confirmer la suppression :':'Enter YOUR password to confirm the deletion:');if(!pw)return;
  const {error:ae}=await sb.auth.signInWithPassword({email:myEmail,password:pw});
@@ -1160,12 +1172,31 @@ function buildHoursCSV(){const t=T[lang];const sep=';';
     const appr=(off||ot<=0)?'':(otApproved(day)?t.csvYes:otDenied(day)?t.csvDenied:t.csvNo);
     lines.push([e.name,teamLabel(empTeam(e)),dISO,off?t.offLbl:(day.start||''),off?t.offLbl:(day.end||''),worked.toFixed(2),ot.toFixed(2),appr,pay.toFixed(2)].map(csvCell).join(sep));n++;});});});
  return n?lines.join('\r\n'):'';}
-function downloadCSV(csv,name){const blob=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);
+function downloadBlob(text,name,mime){const blob=new Blob([text],{type:mime});const url=URL.createObjectURL(blob);
  const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(url),2000);}
+function downloadCSV(csv,name){downloadBlob('﻿'+csv,name,'text/csv;charset=utf-8;');}
 function exportHoursCSV(prefix){const csv=buildHoursCSV();
  if(!csv){showToast(T[lang].exportEmpty,false);return false;}
  downloadCSV(csv,(prefix||'norelo-heures')+'-'+isoLocal(new Date())+'.csv');
- showToast(T[lang].exportDone,true);return true;}
+ try{localStorage.setItem('noreloLastExport',isoLocal(new Date()));}catch(e){}
+ showToast(T[lang].exportDone,true);renderExportAge();return true;}
+function lastExportISO(){try{return localStorage.getItem('noreloLastExport')||null;}catch(e){return null;}}
+/* Rappel : l'export doit finir ailleurs que dans Supabase, sinon ce n'est pas une vraie copie. */
+function renderExportAge(){const el=document.getElementById('exportAge');if(!el)return;const t=T[lang];const last=lastExportISO();
+ let txt,stale=true;
+ if(!last)txt=t.expNever;
+ else{const d=Math.round((new Date(isoLocal(new Date())+'T00:00:00')-new Date(last+'T00:00:00'))/86400000);
+  stale=d>=7;txt=d<=0?t.expToday:t.expAgo+d+(d===1?t.expDay:t.expDays);}
+ el.className='exportage'+(stale?' stale':'');
+ el.innerHTML='<span>'+t.expLast+(lang==='fr'?' : ':': ')+'<strong>'+esc(txt)+'</strong></span>'+(stale?'<span class="exphint">'+t.expHint+'</span>':'');}
+/* Telecharge la sauvegarde complete en JSON, pour avoir une copie hors du nuage. */
+async function downloadBackup(id,btn){const t=T[lang];if(btn)btn.disabled=true;
+ const {data,error}=await sb.from('backups').select('id,created_at,created_by,label,data').eq('id',id).maybeSingle();
+ if(btn)btn.disabled=false;
+ if(error||!data){alert((lang==='fr'?'Téléchargement refusé : ':'Download refused: ')+((error&&error.message)||''));return;}
+ const when=(data.created_at||'').slice(0,10)||isoLocal(new Date());
+ downloadBlob(JSON.stringify(data,null,1),'norelo-sauvegarde-'+when+'.json','application/json');
+ showToast(t.bkDlDone,true);}
 boot();
 </script>
 </body>
