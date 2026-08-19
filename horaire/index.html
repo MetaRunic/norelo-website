@@ -10,10 +10,10 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <title>Norelo - Horaire</title>
 <style>
-:root{--dark:#0e1319;--panel:#161d27;--panel2:#1e2733;--soft:#252f3d;--bdr:rgba(148,163,184,0.16);--txt:#f1f5f9;--gr:#94a3b8;--accent:#e0473b;--accent-d:#bf3a30;--accent-l:#f5786c;--leaf:#34d399;--red:#f0655a;--head:#cbd5e1;--panel-alt:#1b222c;}
+:root{--dark:#0b1016;--panel:#151d28;--panel2:#1d2734;--soft:#232e3d;--bdr:rgba(148,163,184,0.2);--txt:#f1f5f9;--gr:#98a4b5;--accent:#e0473b;--accent-d:#bf3a30;--accent-l:#f5786c;--leaf:#34d399;--red:#f0655a;--head:#d3dbe6;--panel-alt:#1a2230;}
 *{box-sizing:border-box;margin:0;padding:0;}
 html,body{overflow-x:hidden;}
-body{background:var(--dark);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:17px;line-height:1.5;min-height:100vh;-webkit-text-size-adjust:100%;}
+body{background:var(--dark);background-image:linear-gradient(180deg,rgba(148,163,184,.05),transparent 420px);background-attachment:fixed;color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:17px;line-height:1.5;min-height:100vh;-webkit-text-size-adjust:100%;}
 button{font-family:inherit;cursor:pointer;}
 input,select{font-family:inherit;}
 select{color:var(--txt);}
@@ -22,21 +22,23 @@ optgroup{color:var(--gr);font-weight:700;}
 .hide{display:none !important;}
 
 #login{position:fixed;inset:0;background:#080b10;display:flex;align-items:center;justify-content:center;z-index:1000;padding:1.5rem;overflow:hidden;}
-/* Fond de connexion: la grille du calendrier de l'app, carreaux de 46px
-   comme les cases .caday. Elle glisse d'exactement un carreau puis reprend,
-   donc la boucle est invisible. Monochrome, donc aucune teinte sale.
-   Seul transform bouge: compose sur le GPU, ni mise en page ni repeint. */
-#login::before{content:'';position:absolute;inset:-60px;z-index:-2;pointer-events:none;
- background-image:linear-gradient(rgba(148,163,184,.085) 1px,transparent 1px),
-                  linear-gradient(90deg,rgba(148,163,184,.085) 1px,transparent 1px);
- background-size:46px 46px;
- animation:gridslide 26s linear infinite;}
-@keyframes gridslide{from{transform:translate3d(0,0,0);}to{transform:translate3d(46px,46px,0);}}
-/* Vignette fixe: assombrit les bords pour que la carte ressorte. Cout nul. */
+/* Fond de connexion. Une trame de points fins de 22px remplace la grille:
+   plus discrete, elle se lit comme une texture et non comme un quadrillage.
+   Elle est FIXE, donc son cout est nul. */
+#login::before{content:'';position:absolute;inset:0;z-index:-2;pointer-events:none;
+ background-image:radial-gradient(rgba(148,163,184,.11) 1px,transparent 1.4px);
+ background-size:22px 22px;}
+/* Lumiere ambiante plus vignette, dans la meme couche. Le seul mouvement est
+   une respiration tres lente de l'opacite: compose sur le GPU, aucun repeint.
+   L'effet est un eclairage qui varie, pas une forme qui se promene. */
 #login::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
- background:radial-gradient(125% 95% at 50% 48%,transparent 28%,rgba(4,7,11,.55) 66%,rgba(4,7,11,.88) 100%);}
-@media(prefers-reduced-motion:reduce){#login::before{animation:none;}}
-.lbox{position:relative;width:100%;max-width:420px;background:var(--panel);border:1px solid rgba(148,163,184,.22);border-radius:14px;padding:2.6rem 2.2rem;text-align:center;
+ background:radial-gradient(125% 95% at 50% 48%,transparent 26%,rgba(4,7,11,.60) 64%,rgba(4,7,11,.92) 100%),
+            radial-gradient(48% 42% at 50% 38%,rgba(224,71,59,.13),transparent 72%),
+            radial-gradient(42% 36% at 78% 80%,rgba(52,211,153,.06),transparent 74%);
+ animation:loginglow 20s ease-in-out infinite alternate;}
+@keyframes loginglow{from{opacity:.86;}to{opacity:1;}}
+@media(prefers-reduced-motion:reduce){#login::after{animation:none;opacity:1;}}
+.lbox{position:relative;width:100%;max-width:420px;background:linear-gradient(180deg,#1b2331 0%,#141b26 100%);border:1px solid rgba(148,163,184,.22);border-radius:14px;padding:2.6rem 2.2rem;text-align:center;
  box-shadow:0 26px 70px rgba(0,0,0,.62),0 2px 8px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.05);}
 .logo{font-size:32px;font-weight:800;letter-spacing:-1px;}
 .logo .lo{color:var(--accent-l);}
@@ -79,7 +81,7 @@ input:-webkit-autofill:focus,input:-webkit-autofill:active{
 .lt button.on{background:var(--accent);color:#fff;}
 
 #app{display:none;}
-header{position:sticky;top:0;z-index:50;background:rgba(16,22,30,.95);backdrop-filter:blur(18px);border-bottom:1px solid var(--bdr);padding:1rem 1.4rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+header{position:sticky;top:0;z-index:50;background:rgba(11,16,22,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--bdr);padding:1rem 1.4rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
 header .logo{font-size:24px;}
 .spacer{flex:1;}
 .tabs{display:inline-flex;gap:1.6rem;align-items:center;}
@@ -130,7 +132,7 @@ h2{font-size:20px;font-weight:800;}
 .wkhrs.zero{color:var(--gr);}
 
 /* mini calendar */
-.calcard{background:var(--panel);border:1px solid var(--bdr);border-radius:11px;padding:1.1rem 1.2rem;margin-bottom:1.4rem;}
+.calcard{background:linear-gradient(180deg,#1a2230 0%,#141b25 100%);border:1px solid var(--bdr);border-radius:11px;padding:1.1rem 1.2rem;margin-bottom:1.4rem;box-shadow:0 1px 3px rgba(0,0,0,.28);}
 .calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
 .cawd{text-align:center;font-size:11px;font-weight:800;color:var(--gr);text-transform:uppercase;padding-bottom:2px;}
 .caday{min-height:46px;border-radius:7px;background:var(--soft);padding:5px 3px;text-align:center;border:1.5px solid transparent;transition:border-color .12s;}
@@ -306,7 +308,7 @@ h2{font-size:20px;font-weight:800;}
  .wtable tfoot td{font-size:14px;}
 }
 
-.card{background:var(--panel);border:1px solid var(--bdr);border-radius:11px;padding:1.3rem 1.4rem;margin-top:1.4rem;}
+.card{background:linear-gradient(180deg,#1a2230 0%,#141b25 100%);border:1px solid var(--bdr);border-radius:11px;padding:1.3rem 1.4rem;margin-top:1.4rem;box-shadow:0 1px 3px rgba(0,0,0,.28);}
 .card h3{font-size:15px;text-transform:uppercase;letter-spacing:1px;color:var(--head);margin-bottom:1rem;font-weight:800;}
 .frow{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;}
 .frow input,.frow select{padding:13px 14px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:16px;}
@@ -336,7 +338,7 @@ h2{font-size:20px;font-weight:800;}
 .mgrlock{max-width:400px;margin:3.5rem auto;text-align:center;}
 .mgrlock input{width:100%;padding:16px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:18px;margin-bottom:1rem;text-align:center;}
 .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:1.6rem;}
-.kpi{background:var(--panel);border:1px solid var(--bdr);border-radius:11px;padding:1.3rem;}
+.kpi{background:linear-gradient(180deg,#1a2230 0%,#141b25 100%);border:1px solid var(--bdr);border-radius:11px;padding:1.3rem;box-shadow:0 1px 3px rgba(0,0,0,.28);}
 .kpi .v{font-size:28px;font-weight:800;color:var(--accent-l);}
 .kpi .v.g{color:var(--leaf);}.kpi .v.r{color:var(--red);}
 .kpi .k{font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:var(--gr);margin-top:4px;}
@@ -383,7 +385,7 @@ h2{font-size:20px;font-weight:800;}
 footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;border-top:1px solid var(--bdr);}
 
 /* bottom nav (mobile) */
-#bottomNav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:60;background:rgba(16,22,30,.98);backdrop-filter:blur(18px);border-top:1px solid var(--bdr);padding:.35rem .3rem calc(.35rem + env(safe-area-inset-bottom));}
+#bottomNav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:60;background:rgba(11,16,22,.97);backdrop-filter:blur(18px);border-top:1px solid var(--bdr);padding:.35rem .3rem calc(.35rem + env(safe-area-inset-bottom));}
 #bottomNav button{flex:1;min-width:0;background:transparent;border:none;color:var(--gr);font-size:10.5px;font-weight:700;padding:8px 1px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;border-radius:8px;min-height:52px;}
 #bottomNav button span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 #bottomNav button .navic{width:24px;height:24px;}
@@ -617,7 +619,7 @@ const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
 const EMAIL_DOMAIN='@norelo-verger.app';
 const OWNERS=['dan','gill','sydney','patron'];
-const APP_VERSION=13; // bump this on each release, then click "Force update"
+const APP_VERSION=14; // bump this on each release, then click "Force update"
 const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const LOCK_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
