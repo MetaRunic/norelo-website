@@ -114,6 +114,7 @@
       const isCareers = location.hash === "#carrieres";
       const active = isCareers ? careers : home;
       const inactive = isCareers ? home : careers;
+      document.body.classList.toggle("is-careers", isCareers);
       if (inactive) inactive.hidden = true;
       if (active) {
         active.hidden = false;

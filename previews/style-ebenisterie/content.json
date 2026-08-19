@@ -110,7 +110,7 @@
       "temoignages": {
         "eyebrow": "Ce qu'on en dit",
         "title": "La confiance, projet après projet.",
-        "rating": { "score": "4.9", "count": "121", "url": "https://www.google.com/maps/search/?api=1&query=Armoires+Exemple+McMasterville", "cta": "Lire nos avis sur Google" },
+        "rating": { "score": "4.7", "count": "58", "url": "#", "cta": "Lire nos avis sur Google" },
         "items": [
           {
             "quote": "On a parlé à une seule équipe du début à la fin. Aucun stress de coordination, et le résultat dépasse nos attentes.",
@@ -151,8 +151,8 @@
           "note": "Réponse personnelle en moins de 48 h ouvrables."
         },
         "details": [
-          { "label": "Salle de montre", "value": "600, boul. Bernard-Pilon, McMasterville (QC) J3G 1L2", "href": "https://maps.google.com/?q=600+boulevard+Bernard-Pilon+McMasterville+QC+J3G+1L2", "icon": "pin", "sub": "Téléphone : 000 000-0000, poste 1" },
-          { "label": "Usine", "value": "3108, boul. Bernard-Pilon, St-Mathieu-de-Beloeil (QC) J3G 4S5", "href": "https://maps.google.com/?q=3108+boulevard+Bernard-Pilon+Saint-Mathieu-de-Beloeil+QC+J3G+4S5", "icon": "pin", "sub": "Téléphone : 000 000-0000, poste 2" },
+          { "label": "Salle de montre", "value": "000, rue Exemple, Ville-Exemple (QC) X0X 0X0", "href": "#", "icon": "pin", "sub": "Téléphone : 000 000-0000, poste 1" },
+          { "label": "Usine", "value": "000, rue Exemple, Saint-Exemple (QC) X0X 0X0", "href": "#", "icon": "pin", "sub": "Téléphone : 000 000-0000, poste 2" },
           { "label": "Heures d'ouverture", "value": "Lundi au vendredi : 8 h à 17 h", "href": "", "icon": "clock", "sub": "Soir et samedi : sur rendez-vous uniquement" }
         ],
         "assurances": [
@@ -163,7 +163,7 @@
         "host": {
           "name": "Patrick Exemple",
           "role": "propriétaire, deuxième génération",
-          "line": "« Mon père a fondé cet atelier il y a plus de 40 ans. Je poursuis aujourd'hui son métier avec la même passion : chaque projet, je le suis personnellement. C'est une question de fierté et de tradition familiale. »"
+          "line": "« Mon père a parti l’atelier en 1986. Je fais la même job que lui, avec les mêmes mains. Chaque cuisine qui sort d’ici, je l’ai vue passer. »"
         }
       },
 
@@ -184,16 +184,16 @@
             "links": [
               { "label": "000 000-0000", "href": "tel:+10000000000" },
               { "label": "contact@exemple.ca", "href": "mailto:contact@exemple.ca" },
-              { "label": "Salle de montre, McMasterville", "href": "https://maps.google.com/?q=600+boulevard+Bernard-Pilon+McMasterville+QC+J3G+1L2" },
-              { "label": "Usine, St-Mathieu-de-Beloeil", "href": "https://maps.google.com/?q=3108+boulevard+Bernard-Pilon+Saint-Mathieu-de-Beloeil+QC+J3G+4S5" }
+              { "label": "Salle de montre, Ville-Exemple", "href": "#" },
+              { "label": "Usine, Saint-Exemple", "href": "#" }
             ]
           }
         ],
         "socials": [
-          { "label": "Facebook", "href": "https://www.facebook.com/ArmoiresExemple", "icon": "facebook", "brand": "facebook" },
-          { "label": "LinkedIn", "href": "https://ca.linkedin.com/company/armoiresexemple", "icon": "linkedin", "brand": "linkedin" },
-          { "label": "Houzz", "href": "https://www.houzz.com/professionals/kitchen-and-bath-designers/armoires-exemple-pfvwus-pf~2049055562", "icon": "houzz", "brand": "houzz" },
-          { "label": "Indeed", "href": "https://emplois.ca.indeed.com/cmp/Armoires-Exemple", "icon": "indeed", "brand": "indeed" }
+          { "label": "Facebook", "href": "#", "icon": "facebook", "brand": "facebook" },
+          { "label": "LinkedIn", "href": "#", "icon": "linkedin", "brand": "linkedin" },
+          { "label": "Houzz", "href": "#", "icon": "houzz", "brand": "houzz" },
+          { "label": "Indeed", "href": "#", "icon": "indeed", "brand": "indeed" }
         ],
         "legal": "© 2026 Armoires Exemple. Tous droits réservés. RBQ : 0000-0000-00.",
         "credit": "Ébénisterie sur mesure, Québec"

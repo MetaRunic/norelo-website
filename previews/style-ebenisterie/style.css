@@ -1281,7 +1281,7 @@ a.contact__detail-value:hover { color: var(--accent-strong); }
   letter-spacing: 0.06em; text-transform: uppercase;
   color: var(--text-on-dark); margin-bottom: 1.6rem;
 }
-.careers__lead { color: var(--text-on-dark-soft); line-height: 1.75; margin-bottom: 1.1rem; max-width: 70ch; }
+.careers__lead { color: var(--text-soft); line-height: 1.75; margin-bottom: 1.1rem; max-width: 70ch; }
 
 .careers__list { border-top: 1px solid rgba(176, 137, 79, 0.28); }
 .career { border-bottom: 1px solid rgba(176, 137, 79, 0.28); }
@@ -1353,12 +1353,12 @@ a.contact__detail-value:hover { color: var(--accent-strong); }
   text-transform: uppercase; letter-spacing: 0.05em;
   color: var(--text-on-dark); margin-bottom: 1rem;
 }
-.careers__apply-sub { color: var(--text-on-dark-soft); line-height: 1.7; margin-bottom: 2.4rem; }
+.careers__apply-sub { color: var(--text-soft); line-height: 1.7; margin-bottom: 2.4rem; }
 .careers__apply-sub a { color: var(--brass); transition: color 0.3s var(--ease); }
 .careers__apply-sub a:hover { color: var(--text); }
 .apply-form { display: grid; gap: 1.6rem; }
 .apply-field { display: grid; gap: 0.5rem; }
-.apply-field label { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-on-dark-soft); }
+.apply-field label { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-soft); }
 .apply-field label span { color: var(--brass); }
 .apply-field input, .apply-field select {
   background: transparent; border: 0;
@@ -1385,3 +1385,12 @@ a.contact__detail-value:hover { color: var(--accent-strong); }
 @keyframes viewIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 .page-view.is-entering { animation: viewIn 0.45s var(--ease) both; }
 @media (prefers-reduced-motion: reduce) { .page-view.is-entering { animation: none; } }
+
+
+/* Carrieres a un fond clair des le haut de page, alors que l entete est
+   coloree pour le hero sombre et ne s assombrit qu apres 24px de defilement.
+   Sur cette vue, on force tout de suite la version lisible. */
+.is-careers .brand { color: var(--text); }
+.is-careers .nav__list a { color: var(--text-soft); text-shadow: none; }
+.is-careers .nav__list a:hover { color: var(--text); }
+.is-careers .nav-toggle span { background: var(--text); }
