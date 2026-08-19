@@ -438,7 +438,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
       </div>
       <div id="mgrContent" style="display:none">
         <h2 data-i="payTitle" style="margin-bottom:1.2rem">Paiements et totaux</h2>
-        <div class="bkhead" style="margin-bottom:1.2rem"><button class="btn ghost sm" id="exportCsvMgr" data-i="exportCsv">Exporter les heures (CSV)</button></div>
+        <div class="bkhead" style="margin-bottom:1.2rem"><button class="btn ghost sm" id="exportXlsxMgr" data-i="exportXlsx">Exporter les heures (Excel)</button></div>
         <div id="unpaidPanel"></div>
         <div class="kpis" id="mgrKpis"></div>
         <div class="card">
@@ -476,7 +476,8 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
         <p class="muted" data-i="bkExplain" style="margin:-.4rem 0 1rem">Chaque modification est enregistrée immédiatement dans le nuage. Une sauvegarde automatique est créée toutes les 12 h.</p>
         <div class="bkhead">
           <button class="btn sm" id="backupNow" data-i="backupNow">Sauvegarder maintenant</button>
-          <button class="btn ghost sm" id="exportCsv" data-i="exportCsv">Exporter les heures (CSV)</button>
+          <button class="btn sm" id="exportXlsx" data-i="exportXlsx">Exporter les heures (Excel)</button>
+          <button class="btn ghost sm" id="exportCsv" data-i="exportCsvAlt">CSV brut</button>
         </div>
         <div id="exportAge" class="exportage"></div>
         <div id="backupList" style="margin-top:1rem"></div>
@@ -554,7 +555,7 @@ const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
 const EMAIL_DOMAIN='@norelo-verger.app';
 const OWNERS=['dan','gill','sydney','patron'];
-const APP_VERSION=5; // bump this on each release, then click "Force update"
+const APP_VERSION=6; // bump this on each release, then click "Force update"
 const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const LOCK_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
@@ -576,9 +577,9 @@ const T={
    chooseWeek:'Choisir une semaine',ws_past:'Passée',ws_cur:'En cours',ws_up:'À venir',teamAll:'Toutes',teamExt:'Extérieur',teamInt:'Intérieur',roleEmp:'Employé',roleMgr:'Gestionnaire',resetPwd:'MDP',clearF:'Effacer',backupsT:'Sauvegardes',backupNow:'Sauvegarder maintenant',
    locked:'Verrouillé',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouillés.<br><strong>Un jour verrouillé à corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Vérification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit être après l'heure de début.",hoursHi:'Heures de quart régulières en surbrillance',preseasonLbl:'Pré-saison',preseasonNote:"Pré-saison : heures de référence (avant l'ouverture du 17 août).",lunch:'Pause 30 min',otPending:'en attente',otOk:'approuvée',approve:'Approuver',revoke:'Retirer',tApprov:'Approbations',tApprovShort:'Approb.',tOt:'Heures supp.',otTitle:'Approbation des heures supplémentaires',otSub:'Les heures au-delà de 8h par jour sont payées à 16$/h une fois approuvées. Les gestionnaires sont payés à leur taux horaire.',otNone:'Aucune heure supplémentaire.',otAll:'Toutes les dates',tOff:'Congés',offLbl:'CONGÉ',offReq:'Demander un congé',offPending:'Congé demandé',offDenied:'Congé refusé',offPend:'en attente',offOk:'approuvé',offDen:'refusé',deny:'Refuser',offNone:'Aucune demande de congé.',cancel:'Annuler',offBlocked:'Effacez les heures pour demander un congé',
    otDen:'refusée',otShowDen:'Voir les refusées',otHideDen:'Masquer les refusées',otDenNone:'Aucune heure supplémentaire refusée.',otDenyC:'Refuser ces heures supplémentaires? Elles ne seront pas payées et quitteront la liste des demandes en attente.',
-   exportCsv:'Exporter les heures (CSV)',exportDone:'Fichier CSV téléchargé',exportEmpty:'Aucune heure à exporter.',
+   exportDone:'Fichier CSV téléchargé',exportEmpty:'Aucune heure à exporter.',
    bkDel:'Supprimer',bkDelC:'Supprimer cette sauvegarde définitivement? Cette action est irréversible.',bkDeleted:'Sauvegarde supprimée',
-   csvEmp:'Employé',csvDept:'Département',csvDate:'Date',csvStart:'Début',csvEnd:'Fin',csvWorked:'Heures travaillées',csvOt:'Heures supp.',csvAppr:'Approuvées',csvPay:'Paie',csvYes:'Oui',csvNo:'Non',csvDenied:'Refusées',unpaidT:'Solde impayé, toutes les semaines',unpaidSub:'Total dû à tous les employés, toutes semaines confondues.',unpaidWeeks:'Semaines à payer',unpaidNone:'Tout est payé.',kUnpaidAll:'Solde impayé total',alertT:'Seuil atteint',alertS:'Le solde impayé dépasse ',alertA:' Prévenez Gill.',warnT:'Approche du seuil',warnS:'Le solde impayé approche de ',okT:'Sous le seuil',okS:'Le solde impayé reste sous ',goWeek:'Voir',bkDl:'Télécharger',bkDlDone:'Sauvegarde téléchargée sur cet appareil',bkExplain:'Chaque modification est enregistrée immédiatement dans le nuage. Une sauvegarde automatique est créée toutes les 12 h.',expLast:'Dernier export des heures',expNever:'jamais sur cet appareil',expToday:"aujourd'hui",expAgo:'il y a ',expDay:' jour',expDays:' jours',expHint:'Exportez les heures et gardez le fichier ailleurs que dans Supabase.',exportFail:"L'export a échoué.",fltFrom:'Du',fltTo:'Au'},
+   csvEmp:'Employé',csvDept:'Département',csvDate:'Date',csvStart:'Début',csvEnd:'Fin',csvWorked:'Heures travaillées',csvOt:'Heures supp.',csvAppr:'Approuvées',csvPay:'Paie',csvYes:'Oui',csvNo:'Non',csvDenied:'Refusées',unpaidT:'Solde impayé, toutes les semaines',unpaidSub:'Total dû à tous les employés, toutes semaines confondues.',unpaidWeeks:'Semaines à payer',unpaidNone:'Tout est payé.',kUnpaidAll:'Solde impayé total',alertT:'Seuil atteint',alertS:'Le solde impayé dépasse ',alertA:' Prévenez Gill.',warnT:'Approche du seuil',warnS:'Le solde impayé approche de ',okT:'Sous le seuil',okS:'Le solde impayé reste sous ',goWeek:'Voir',bkDl:'Télécharger',bkDlDone:'Sauvegarde téléchargée sur cet appareil',bkExplain:'Chaque modification est enregistrée immédiatement dans le nuage. Une sauvegarde automatique est créée toutes les 12 h.',expLast:'Dernier export des heures',expNever:'jamais sur cet appareil',expToday:"aujourd'hui",expAgo:'il y a ',expDay:' jour',expDays:' jours',expHint:'Exportez les heures et gardez le fichier ailleurs que dans Supabase.',exportFail:"L'export a échoué.",fltFrom:'Du',fltTo:'Au',exportXlsx:'Exporter les heures (Excel)',exportCsvAlt:'CSV brut',csvTotal:'TOTAL',csvSheet:'Heures'},
  en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',tEmp:'Employees',tLog:'Activity',tBak:'Backups',logout:'Log out',
    employees:'Employees and rates',add:'Add',
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
@@ -592,9 +593,9 @@ const T={
    chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',teamExt:'Exterior',teamInt:'Interior',roleEmp:'Employee',roleMgr:'Manager',resetPwd:'PW',clearF:'Clear',backupsT:'Backups',backupNow:'Backup now',
    locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted',preseasonLbl:'Pre-season',preseasonNote:'Pre-season: reference hours (before the Aug 17 opening).',lunch:'30-min lunch',otPending:'pending',otOk:'approved',approve:'Approve',revoke:'Undo',tApprov:'Approvals',tApprovShort:'Approb.',tOt:'Overtime',otTitle:'Overtime approvals',otSub:'Hours beyond 8h per day are paid at $16/h once approved. Managers are paid at their own hourly rate.',otNone:'No overtime.',otAll:'All dates',tOff:'Time off',offLbl:'OFF',offReq:'Request day off',offPending:'Day off requested',offDenied:'Day off denied',offPend:'pending',offOk:'approved',offDen:'denied',deny:'Deny',offNone:'No day-off requests.',cancel:'Cancel',offBlocked:'Clear the hours to request a day off',
    otDen:'denied',otShowDen:'Show denied',otHideDen:'Hide denied',otDenNone:'No denied overtime.',otDenyC:'Deny this overtime? It will not be paid and will leave the pending list.',
-   exportCsv:'Export hours (CSV)',exportDone:'CSV file downloaded',exportEmpty:'No hours to export.',
+   exportDone:'CSV file downloaded',exportEmpty:'No hours to export.',
    bkDel:'Delete',bkDelC:'Permanently delete this backup? This cannot be undone.',bkDeleted:'Backup deleted',
-   csvEmp:'Employee',csvDept:'Department',csvDate:'Date',csvStart:'Start',csvEnd:'End',csvWorked:'Worked hours',csvOt:'Overtime',csvAppr:'Approved',csvPay:'Pay',csvYes:'Yes',csvNo:'No',csvDenied:'Denied',unpaidT:'Unpaid balance, all weeks',unpaidSub:'Total owed to every employee across all weeks.',unpaidWeeks:'Weeks to pay',unpaidNone:'Everything is paid.',kUnpaidAll:'Total unpaid',alertT:'Threshold reached',alertS:'The unpaid balance is over ',alertA:' Notify Gill.',warnT:'Approaching the threshold',warnS:'The unpaid balance is nearing ',okT:'Under the threshold',okS:'The unpaid balance stays under ',goWeek:'View',bkDl:'Download',bkDlDone:'Backup downloaded to this device',bkExplain:'Every change is saved to the cloud immediately. An automatic backup is created every 12 h.',expLast:'Last hours export',expNever:'never on this device',expToday:'today',expAgo:'',expDay:' day ago',expDays:' days ago',expHint:'Export the hours and keep the file somewhere other than Supabase.',exportFail:'The export failed.',fltFrom:'From',fltTo:'To'}
+   csvEmp:'Employee',csvDept:'Department',csvDate:'Date',csvStart:'Start',csvEnd:'End',csvWorked:'Worked hours',csvOt:'Overtime',csvAppr:'Approved',csvPay:'Pay',csvYes:'Yes',csvNo:'No',csvDenied:'Denied',unpaidT:'Unpaid balance, all weeks',unpaidSub:'Total owed to every employee across all weeks.',unpaidWeeks:'Weeks to pay',unpaidNone:'Everything is paid.',kUnpaidAll:'Total unpaid',alertT:'Threshold reached',alertS:'The unpaid balance is over ',alertA:' Notify Gill.',warnT:'Approaching the threshold',warnS:'The unpaid balance is nearing ',okT:'Under the threshold',okS:'The unpaid balance stays under ',goWeek:'View',bkDl:'Download',bkDlDone:'Backup downloaded to this device',bkExplain:'Every change is saved to the cloud immediately. An automatic backup is created every 12 h.',expLast:'Last hours export',expNever:'never on this device',expToday:'today',expAgo:'',expDay:' day ago',expDays:' days ago',expHint:'Export the hours and keep the file somewhere other than Supabase.',exportFail:'The export failed.',fltFrom:'From',fltTo:'To',exportXlsx:'Export hours (Excel)',exportCsvAlt:'Raw CSV',csvTotal:'TOTAL',csvSheet:'Hours'}
 };
 let state={employees:[],weeks:{},current:null,off:{},offList:[]},lang='fr',selDay=0,mgrUnlocked=false,isEmployee=false,currentEmp=null,teamFilter='all',myId=null,myEmail='';
 
@@ -1067,8 +1068,9 @@ function bindApp(){
   ['fltPerson','fltAction','fltDate','fltDateTo'].forEach(fid=>document.getElementById(fid).addEventListener('change',applyLogFilter));
   document.getElementById('fltClear').onclick=()=>{['fltPerson','fltAction','fltDate','fltDateTo'].forEach(i=>document.getElementById(i).value='');applyLogFilter();};
   document.getElementById('backupNow').onclick=async()=>{const btn=document.getElementById('backupNow');btn.disabled=true;const err=await createBackup('Manuelle');btn.disabled=false;if(err){alert(err.message||'Erreur');return;}logAction('backup','Manuelle');renderBackups();showToast(lang==='fr'?'Sauvegarde créée':'Backup created',true);};
-  document.getElementById('exportCsv').onclick=()=>exportHoursCSV('norelo-heures');
-  document.getElementById('exportCsvMgr').onclick=()=>exportHoursCSV('norelo-heures');
+  document.getElementById('exportXlsx').onclick=()=>exportHours('xlsx','norelo-heures');
+  document.getElementById('exportCsv').onclick=()=>exportHours('csv','norelo-heures');
+  document.getElementById('exportXlsxMgr').onclick=()=>exportHours('xlsx','norelo-heures');
   document.getElementById('backupList').addEventListener('click',async e=>{
    const dl=e.target.closest('[data-dlbk]');if(dl){downloadBackup(dl.getAttribute('data-dlbk'),dl);return;}
    const d=e.target.closest('[data-delbk]');if(d){deleteBackup(d.getAttribute('data-delbk'),d);return;}
@@ -1076,7 +1078,7 @@ function bindApp(){
    if(!confirm(lang==='fr'?'Restaurer cette sauvegarde? Les heures actuelles seront remplacées (une sauvegarde de sécurité et un fichier CSV des heures actuelles sont créés).':'Restore this backup? Current hours will be replaced (a safety backup and a CSV of the current hours are created).'))return;
    const pw=await promptPwd(lang==='fr'?'Entrez VOTRE mot de passe pour confirmer la restauration :':'Enter YOUR password to confirm the restore:');if(!pw)return;
    const {error:ae}=await sb.auth.signInWithPassword({email:myEmail,password:pw});if(ae){alert(lang==='fr'?'Mot de passe incorrect.':'Wrong password.');return;}
-   await exportHoursCSV('norelo-heures-avant-restauration');
+   await exportHours('xlsx','norelo-heures-avant-restauration');
    b.disabled=true;const {data,error}=await sb.functions.invoke('quick-api',{body:{action:'restore',id}});
    if(error||!data||!data.ok){b.disabled=false;alert((data&&data.error)||'Erreur');return;}
    logAction('restore_backup','');await loadAll();renderAll();renderBackups();showToast(lang==='fr'?'Restauration terminée':'Restore complete',true);});
@@ -1167,41 +1169,167 @@ async function deleteBackup(id,btn){const t=T[lang];if(!confirm(t.bkDelC))return
 
 /* ---- Hours export: plain-JS CSV, no libraries. Safety net before any edit or restore. ---- */
 function csvCell(v){return '"'+String(v==null?'':v).replace(/"/g,'""')+'"';}
-/* Lit directement la base, pas state.weeks, qui ne couvre que la saison
-   de juin a octobre. L'export doit contenir TOUT l'historique. */
-async function buildHoursCSV(){const t=T[lang];const sep=';';
+/* ============================================================
+   Export des heures. Lit directement la base, pas state.weeks,
+   qui ne couvre que la saison de juin a octobre.
+   Deux formats a partir des memes lignes: Excel (.xlsx) et CSV.
+   ============================================================ */
+async function fetchHoursRows(){const t=T[lang];
  const {data:sh,error}=await sb.from('shifts').select('employee_id,work_date,start_time,end_time,lunch,ot_approved,ot_status');
  if(error)return {err:error.message||''};
  const {data:off}=await sb.from('time_off').select('employee_id,off_date,status');
  const offMap={};(off||[]).forEach(r=>{if(r.status==='pending'||r.status==='approved')offMap[r.employee_id+'|'+r.off_date]=true;});
  const rows=[];
  (sh||[]).forEach(r=>{
-  if(offMap[r.employee_id+'|'+r.work_date])return;               // traite plus bas comme un conge
+  if(offMap[r.employee_id+'|'+r.work_date])return;              // traite plus bas comme un conge
   const e=empById(r.employee_id);
   const day={start:validTime(r.start_time),end:validTime(r.end_time),lunch:r.lunch!==false,ot:!!r.ot_approved,otst:otState(r.ot_status)};
   if(!day.start&&!day.end)return;
   const ot=otHours(day,e);
   rows.push({nm:e?e.name:r.employee_id,tm:e?teamLabel(empTeam(e)):'',d:r.work_date,s:day.start||'',e2:day.end||'',
-   w:hrs(day,e),ot:ot,ap:ot<=0?'':(otApproved(day)?t.csvYes:otDenied(day)?t.csvDenied:t.csvNo),p:dayPay(day,e)});});
+   w:hrs(day,e),ot:ot,ap:ot<=0?'':(otApproved(day)?t.csvYes:otDenied(day)?t.csvDenied:t.csvNo),p:dayPay(day,e),off:false});});
  Object.keys(offMap).forEach(k=>{const i=k.lastIndexOf('|');const id=k.slice(0,i),d=k.slice(i+1);const e=empById(id);
-  rows.push({nm:e?e.name:id,tm:e?teamLabel(empTeam(e)):'',d:d,s:t.offLbl,e2:t.offLbl,w:0,ot:0,ap:'',p:0});});
- if(!rows.length)return {csv:''};
+  rows.push({nm:e?e.name:id,tm:e?teamLabel(empTeam(e)):'',d:d,s:t.offLbl,e2:t.offLbl,w:0,ot:0,ap:'',p:0,off:true});});
  rows.sort((a,b)=>a.nm.localeCompare(b.nm)||(a.d<b.d?-1:a.d>b.d?1:0));
- const head=[t.csvEmp,t.csvDept,t.csvDate,t.csvStart,t.csvEnd,t.csvWorked,t.csvOt,t.csvAppr,t.csvPay];
- const lines=[head.map(csvCell).join(sep)];
+ return {rows:rows};}
+
+function hoursHead(){const t=T[lang];return [t.csvEmp,t.csvDept,t.csvDate,t.csvStart,t.csvEnd,t.csvWorked,t.csvOt,t.csvAppr,t.csvPay];}
+
+/* La ligne sep=; dit a Excel quel separateur utiliser, sinon il met tout
+   dans une seule colonne selon la configuration regionale du poste. */
+function rowsToCSV(rows){const sep=';';
+ const lines=['sep='+sep,hoursHead().map(csvCell).join(sep)];
  rows.forEach(r=>lines.push([r.nm,r.tm,r.d,r.s,r.e2,r.w.toFixed(2),r.ot.toFixed(2),r.ap,r.p.toFixed(2)].map(csvCell).join(sep)));
- return {csv:lines.join('\r\n'),n:rows.length};}
+ return lines.join('\r\n');}
+
+/* ---- Ecriture XLSX en JS pur. Un .xlsx est un ZIP; on ecrit les entrees
+   en mode "stored", sans compression, ce qui evite toute librairie. ---- */
+function _u16(a,o,v){a[o]=v&255;a[o+1]=(v>>>8)&255;}
+function _u32(a,o,v){a[o]=v&255;a[o+1]=(v>>>8)&255;a[o+2]=(v>>>16)&255;a[o+3]=(v>>>24)&255;}
+let _crcT=null;
+function _crc32(b){if(!_crcT){_crcT=new Uint32Array(256);
+  for(let i=0;i<256;i++){let c=i;for(let k=0;k<8;k++)c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1);_crcT[i]=c>>>0;}}
+ let c=0xFFFFFFFF;for(let i=0;i<b.length;i++)c=_crcT[(c^b[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
+function zipStore(files){const enc=new TextEncoder();
+ const parts=files.map(x=>({name:enc.encode(x.name),data:enc.encode(x.data)}));
+ let total=0,cd=0;
+ parts.forEach(p=>{p.crc=_crc32(p.data);total+=30+p.name.length+p.data.length;cd+=46+p.name.length;});
+ const out=new Uint8Array(total+cd+22);let o=0;
+ parts.forEach(p=>{p.off=o;
+  _u32(out,o,0x04034b50);_u16(out,o+4,20);_u16(out,o+6,0x0800);_u16(out,o+8,0);
+  _u16(out,o+10,0);_u16(out,o+12,0);
+  _u32(out,o+14,p.crc);_u32(out,o+18,p.data.length);_u32(out,o+22,p.data.length);
+  _u16(out,o+26,p.name.length);_u16(out,o+28,0);o+=30;
+  out.set(p.name,o);o+=p.name.length;out.set(p.data,o);o+=p.data.length;});
+ const cdStart=o;
+ parts.forEach(p=>{
+  _u32(out,o,0x02014b50);_u16(out,o+4,20);_u16(out,o+6,20);_u16(out,o+8,0x0800);_u16(out,o+10,0);
+  _u16(out,o+12,0);_u16(out,o+14,0);_u32(out,o+16,p.crc);
+  _u32(out,o+20,p.data.length);_u32(out,o+24,p.data.length);
+  _u16(out,o+28,p.name.length);_u16(out,o+30,0);_u16(out,o+32,0);_u16(out,o+34,0);_u16(out,o+36,0);
+  _u32(out,o+38,0);_u32(out,o+42,p.off);o+=46;
+  out.set(p.name,o);o+=p.name.length;});
+ _u32(out,o,0x06054b50);_u16(out,o+4,0);_u16(out,o+6,0);
+ _u16(out,o+8,parts.length);_u16(out,o+10,parts.length);
+ _u32(out,o+12,o-cdStart);_u32(out,o+16,cdStart);_u16(out,o+20,0);
+ return new Blob([out],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});}
+
+function xmlEsc(v){return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));}
+function colRef(i){let n=i+1,r='';while(n>0){const m=(n-1)%26;r=String.fromCharCode(65+m)+r;n=(n-m-1)/26;}return r;}
+function xlDate(iso){const p=String(iso).split('-');const ms=Date.UTC(+p[0],+p[1]-1,+p[2]);
+ if(isNaN(ms))return null;return Math.round((ms-Date.UTC(1899,11,30))/86400000);}
+function cS(ref,v,st){return '<c r="'+ref+'" t="inlineStr"'+(st?' s="'+st+'"':'')+'><is><t xml:space="preserve">'+xmlEsc(v)+'</t></is></c>';}
+function cN(ref,v,st){return '<c r="'+ref+'"'+(st?' s="'+st+'"':'')+'><v>'+v+'</v></c>';}
+
+function rowsToXLSX(rows){const t=T[lang];const head=hoursHead();
+ const W=[24,18,12,9,9,17,14,13,13];
+ let sd='',rn=1;
+ sd+='<row r="1" ht="20" customHeight="1">'+head.map((h,i)=>cS(colRef(i)+'1',h,1)).join('')+'</row>';
+ let tw=0,tot=0,tp=0;
+ rows.forEach(r=>{rn++;const R=String(rn);let c='';
+  c+=cS('A'+R,r.nm);c+=cS('B'+R,r.tm);
+  const ds=xlDate(r.d);c+=ds==null?cS('C'+R,r.d):cN('C'+R,ds,2);
+  c+=cS('D'+R,r.s);c+=cS('E'+R,r.e2);
+  c+=cN('F'+R,r.w,3);c+=cN('G'+R,r.ot,3);c+=cS('H'+R,r.ap);c+=cN('I'+R,r.p,4);
+  tw+=r.w;tot+=r.ot;tp+=r.p;
+  sd+='<row r="'+R+'">'+c+'</row>';});
+ rn++;
+ sd+='<row r="'+rn+'">'+cS('A'+rn,t.csvTotal,5)+cS('B'+rn,'',5)+cS('C'+rn,'',5)+cS('D'+rn,'',5)+cS('E'+rn,'',5)
+   +cN('F'+rn,Math.round(tw*100)/100,6)+cN('G'+rn,Math.round(tot*100)/100,6)+cS('H'+rn,'',5)+cN('I'+rn,Math.round(tp*100)/100,7)+'</row>';
+ const last='I'+rn,lastData='I'+(rn-1);
+ const sheet='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+  +'<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
+  +'<dimension ref="A1:'+last+'"/>'
+  +'<sheetViews><sheetView tabSelected="1" workbookViewId="0">'
+  +'<pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>'
+  +'<sheetFormatPr defaultRowHeight="15"/>'
+  +'<cols>'+W.map((w,i)=>'<col min="'+(i+1)+'" max="'+(i+1)+'" width="'+w+'" customWidth="1"/>').join('')+'</cols>'
+  +'<sheetData>'+sd+'</sheetData>'
+  +'<autoFilter ref="A1:'+lastData+'"/>'
+  +'</worksheet>';
+ const styles='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+  +'<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">'
+  +'<numFmts count="3"><numFmt numFmtId="164" formatCode="0.00"/>'
+  +'<numFmt numFmtId="165" formatCode="#,##0.00\ &quot;$&quot;"/>'
+  +'<numFmt numFmtId="166" formatCode="yyyy\-mm\-dd"/></numFmts>'
+  +'<fonts count="3"><font><sz val="11"/><name val="Calibri"/></font>'
+  +'<font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font>'
+  +'<font><b/><sz val="11"/><name val="Calibri"/></font></fonts>'
+  +'<fills count="3"><fill><patternFill patternType="none"/></fill>'
+  +'<fill><patternFill patternType="gray125"/></fill>'
+  +'<fill><patternFill patternType="solid"><fgColor rgb="FFE0473B"/><bgColor indexed="64"/></patternFill></fill></fills>'
+  +'<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>'
+  +'<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>'
+  +'<cellXfs count="8">'
+  +'<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>'
+  +'<xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1" applyAlignment="1"><alignment vertical="center"/></xf>'
+  +'<xf numFmtId="166" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/>'
+  +'<xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/>'
+  +'<xf numFmtId="165" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/>'
+  +'<xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/>'
+  +'<xf numFmtId="164" fontId="2" fillId="0" borderId="0" xfId="0" applyNumberFormat="1" applyFont="1"/>'
+  +'<xf numFmtId="165" fontId="2" fillId="0" borderId="0" xfId="0" applyNumberFormat="1" applyFont="1"/>'
+  +'</cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
+ return zipStore([
+  {name:'[Content_Types].xml',data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+   +'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
+   +'<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'
+   +'<Default Extension="xml" ContentType="application/xml"/>'
+   +'<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>'
+   +'<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'
+   +'<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>'
+   +'</Types>'},
+  {name:'_rels/.rels',data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+   +'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+   +'<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>'
+   +'</Relationships>'},
+  {name:'xl/workbook.xml',data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+   +'<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" '
+   +'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'
+   +'<sheets><sheet name="'+xmlEsc(t.csvSheet)+'" sheetId="1" r:id="rId1"/></sheets></workbook>'},
+  {name:'xl/_rels/workbook.xml.rels',data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+   +'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+   +'<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>'
+   +'<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>'
+   +'</Relationships>'},
+  {name:'xl/styles.xml',data:styles},
+  {name:'xl/worksheets/sheet1.xml',data:sheet}]);}
 function downloadBlob(text,name,mime){const blob=new Blob([text],{type:mime});const url=URL.createObjectURL(blob);
  const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(url),2000);}
 function downloadCSV(csv,name){downloadBlob('﻿'+csv,name,'text/csv;charset=utf-8;');}
-async function exportHoursCSV(prefix){const t=T[lang];
+function downloadFileBlob(blob,name){const url=URL.createObjectURL(blob);const a=document.createElement('a');
+ a.href=url;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(url),2000);}
+async function exportHours(fmt,prefix){const t=T[lang];
  showToast(lang==='fr'?'Préparation...':'Preparing...',true);
- const r=await buildHoursCSV();
+ const r=await fetchHoursRows();
  if(r.err){showToast(t.exportFail,false);alert(t.exportFail+' '+r.err);return false;}
- if(!r.csv){showToast(t.exportEmpty,false);return false;}
- downloadCSV(r.csv,(prefix||'norelo-heures')+'-'+isoLocal(new Date())+'.csv');
+ if(!r.rows.length){showToast(t.exportEmpty,false);return false;}
+ const name=(prefix||'norelo-heures')+'-'+isoLocal(new Date());
+ if(fmt==='csv')downloadCSV(rowsToCSV(r.rows),name+'.csv');
+ else downloadFileBlob(rowsToXLSX(r.rows),name+'.xlsx');
  try{localStorage.setItem('noreloLastExport',isoLocal(new Date()));}catch(e){}
- showToast(t.exportDone+' ('+r.n+')',true);renderExportAge();return true;}
+ showToast(t.exportDone+' ('+r.rows.length+')',true);renderExportAge();return true;}
+function exportHoursCSV(prefix){return exportHours('xlsx',prefix);}
 function lastExportISO(){try{return localStorage.getItem('noreloLastExport')||null;}catch(e){return null;}}
 /* Rappel : l'export doit finir ailleurs que dans Supabase, sinon ce n'est pas une vraie copie. */
 function renderExportAge(){const el=document.getElementById('exportAge');if(!el)return;const t=T[lang];const last=lastExportISO();
