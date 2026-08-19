@@ -47,6 +47,21 @@ optgroup{color:var(--gr);font-weight:700;}
 .lsub{color:var(--gr);font-size:16px;margin:.5rem 0 1.8rem;}
 #login input{width:100%;padding:16px;background:var(--soft);border:1px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:18px;margin-bottom:1rem;text-align:center;}
 #login input:focus{outline:none;border-color:var(--accent);}
+/* Chrome peint le fond des champs remplis automatiquement en blanc casse et
+   ignore background-color. Le seul levier est une ombre interne opaque, plus
+   -webkit-text-fill-color pour la couleur du texte. La transition tres longue
+   empeche le flash blanc au chargement. */
+input:-webkit-autofill,input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,input:-webkit-autofill:active{
+ -webkit-text-fill-color:var(--txt);
+ -webkit-box-shadow:0 0 0 1000px var(--soft) inset;
+         box-shadow:0 0 0 1000px var(--soft) inset;
+ caret-color:var(--txt);
+ -webkit-transition:background-color 9999s ease-in-out 0s;
+         transition:background-color 9999s ease-in-out 0s;}
+/* Les champs doivent se lire comme des champs meme vides. */
+#login input,.mgrlock input,#pwdInput{border:1.5px solid rgba(148,163,184,.28);}
+#login input::placeholder,.mgrlock input::placeholder,#pwdInput::placeholder{color:var(--gr);opacity:1;}
 .pwrap{position:relative;margin-bottom:1rem;}
 .pwrap input{margin-bottom:0 !important;padding-right:50px !important;}
 #login .pwrap input,.mgrlock .pwrap input{padding-left:50px !important;}
@@ -604,7 +619,7 @@ const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
 const EMAIL_DOMAIN='@norelo-verger.app';
 const OWNERS=['dan','gill','sydney','patron'];
-const APP_VERSION=11; // bump this on each release, then click "Force update"
+const APP_VERSION=12; // bump this on each release, then click "Force update"
 const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const LOCK_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
