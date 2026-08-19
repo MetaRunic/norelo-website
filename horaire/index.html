@@ -172,6 +172,9 @@ h2{font-size:20px;font-weight:800;}
 .oti .otd{font-size:13px;color:var(--gr);margin-top:2px;}
 .otx{display:inline-flex;align-items:center;gap:.7rem;margin-left:auto;flex-wrap:wrap;}
 .tabbadge{display:none;background:var(--accent);color:#fff;font-size:11px;font-weight:800;border-radius:20px;padding:1px 7px;margin-left:6px;vertical-align:middle;}
+.tabbadge.alert,.navbadge.alert{background:var(--red);}
+@keyframes alertpulse{0%,100%{box-shadow:0 0 0 0 rgba(240,101,90,.55);}70%{box-shadow:0 0 0 6px rgba(240,101,90,0);}}
+.tabbadge.alert,.navbadge.alert{animation:alertpulse 2.2s infinite;}
 #bottomNav button{position:relative;}
 .navbadge{display:none;position:absolute;top:1px;right:18%;min-width:16px;background:var(--accent);color:#fff;font-size:10px;font-weight:800;border-radius:20px;padding:0 4px;text-align:center;}
 .otcalwrap{display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1.3rem;}
@@ -385,7 +388,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     <div class="tabs">
       <button id="tabDay" class="on" data-i="tDay">Jour</button>
       <button id="tabWeek" data-i="tWeek">Semaine</button>
-      <button id="tabMgr" data-i="tMgr">Gestion</button>
+      <button id="tabMgr"><span data-i="tMgr">Gestion</span><span class="tabbadge alert" id="mgrBadge"></span></button>
       <button id="tabEmp" data-i="tEmp">Employés</button>
       <button id="tabOt"><span data-i="tApprov">Approbations</span><span class="tabbadge" id="otBadge"></span></button>
       <button id="tabLog" data-i="tLog">Journal</button>
@@ -508,7 +511,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
   <nav id="bottomNav">
     <button data-tab="day"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/><rect x="6.5" y="12.5" width="4.5" height="4.5" rx="1" fill="currentColor" stroke="none"/></svg><span data-i="tDay">Jour</span></button>
     <button data-tab="week"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2.5v4M16 2.5v4M7 13h2M11 13h2M15 13h2M7 17h2M11 17h2"/></svg><span data-i="tWeek">Semaine</span></button>
-    <button data-tab="mgr"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M14.5 9.3c-.4-.9-1.4-1.5-2.6-1.5-1.5 0-2.6.8-2.6 1.9 0 1 .8 1.6 2.6 2 1.9.4 2.7 1 2.7 2.1 0 1.1-1.2 1.9-2.7 1.9-1.3 0-2.4-.6-2.8-1.6"/></svg><span data-i="tMgr">Gestion</span></button>
+    <button data-tab="mgr"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M14.5 9.3c-.4-.9-1.4-1.5-2.6-1.5-1.5 0-2.6.8-2.6 1.9 0 1 .8 1.6 2.6 2 1.9.4 2.7 1 2.7 2.1 0 1.1-1.2 1.9-2.7 1.9-1.3 0-2.4-.6-2.8-1.6"/></svg><span data-i="tMgr">Gestion</span><span class="navbadge alert" id="mgrBadgeNav"></span></button>
     <button data-tab="emp"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16.5 5.3a3 3 0 0 1 0 5.4M18 19a5.5 5.5 0 0 0-3-4.9"/></svg><span data-i="tEmp">Employés</span></button>
     <button data-tab="ot"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 1.6"/></svg><span data-i="tApprovShort">Approb.</span><span class="navbadge" id="otBadgeNav"></span></button>
     <button data-tab="log"><svg class="navic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6M9 8h2"/></svg><span data-i="tLog">Journal</span></button>
@@ -555,7 +558,7 @@ const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
 const EMAIL_DOMAIN='@norelo-verger.app';
 const OWNERS=['dan','gill','sydney','patron'];
-const APP_VERSION=6; // bump this on each release, then click "Force update"
+const APP_VERSION=7; // bump this on each release, then click "Force update"
 const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const LOCK_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
@@ -670,7 +673,7 @@ function empPay(id){return empPayIn(state.current,id);}
 /* Solde impaye sur TOUTES les semaines, pas seulement la semaine affichee. */
 function unpaidTotals(){let unpaid=0,paid=0;const weeks=[];
  wkKeys().forEach(k=>{const w=state.weeks[k];if(!w)return;let wu=0;
-  adminEmps().forEach(e=>{const p=empPayIn(k,e.id);if(!p)return;if(w.paid[e.id])paid+=p;else wu+=p;});
+  sortedEmps().forEach(e=>{const p=empPayIn(k,e.id);if(!p)return;if(w.paid[e.id])paid+=p;else wu+=p;});
   wu=Math.round(wu*100)/100;if(wu>0){weeks.push({k:k,amt:wu});unpaid+=wu;}});
  return {unpaid:Math.round(unpaid*100)/100,paid:Math.round(paid*100)/100,weeks:weeks};}
 function empTotalAllWeeks(id){const e=empById(id);let t=0;Object.values(state.weeks).forEach(w=>{if(w.data[id])DAYS.forEach(d=>t+=hrs(w.data[id][d],e));});return Math.round(t*100)/100;}
@@ -789,10 +792,16 @@ async function setOT(empId,weekKey,dayIdx,status){const w=state.weeks[weekKey];i
  if(err){day.ot=prevO;day.otst=prevS;renderOT();if(weekKey===state.current)rerenderDayViews();showToast(lang==='fr'?'Refusé':'Refused',false);alert((lang==='fr'?'Refusé : ':'Refused: ')+(err.message||''));return;}
  showToast(st==='approved'?(lang==='fr'?'Heures supp. approuvées':'Overtime approved'):st==='denied'?(lang==='fr'?'Heures supp. refusées':'Overtime denied'):(lang==='fr'?'Remis en attente':'Set pending'),true);
  const em=empById(empId);logAction(st==='approved'?'approve_ot':st==='denied'?'deny_ot':'revoke_ot',(em?em.name:'')+' '+addDaysISO(weekKey,dayIdx));}
-function otPendingCount(){let n=0;wkKeys().forEach(wk=>{const w=state.weeks[wk];adminEmps().forEach(e=>DAYS.forEach((dk,i)=>{if(isOff(e.id,addDaysISO(wk,i)))return;const day=w.data[e.id][dk];if(otHours(day,e)>0&&!otApproved(day)&&!otDenied(day))n++;}));});return n;}
-function offPendingCount(){return state.offList.filter(r=>r.status==='pending'&&adminEmps().some(e=>e.id===r.employee_id)).length;}
+/* Les approbations et le solde impaye ne suivent pas le filtre d'equipe:
+   ces ecrans ne l'offrent pas, donc ils couvrent toute l'equipe. */
+function otPendingCount(){let n=0;wkKeys().forEach(wk=>{const w=state.weeks[wk];sortedEmps().forEach(e=>DAYS.forEach((dk,i)=>{if(isOff(e.id,addDaysISO(wk,i)))return;const day=w.data[e.id][dk];if(otHours(day,e)>0&&!otApproved(day)&&!otDenied(day))n++;}));});return n;}
+function offPendingCount(){return state.offList.filter(r=>r.status==='pending'&&sortedEmps().some(e=>e.id===r.employee_id)).length;}
 function setBadge(id,n){const b=document.getElementById(id);if(!b)return;if(n>0){b.textContent=n;b.style.display='inline-block';}else{b.textContent='';b.style.display='none';}}
-function updateOTBadge(){const ot=otPendingCount(),off=offPendingCount();setBadge('otBadge',ot+off);setBadge('otBadgeNav',ot+off);setBadge('otSubBadge',ot);setBadge('offSubBadge',off);}
+function updateOTBadge(){const ot=otPendingCount(),off=offPendingCount();setBadge('otBadge',ot+off);setBadge('otBadgeNav',ot+off);setBadge('otSubBadge',ot);setBadge('offSubBadge',off);updateMgrBadge();}
+/* Alerte solde impaye: un point rouge sur Gestion des que le seuil est franchi. */
+function updateMgrBadge(){const on=unpaidTotals().unpaid>=UNPAID_ALERT;const ttl=T[lang].alertT;
+ ['mgrBadge','mgrBadgeNav'].forEach(id=>{const b=document.getElementById(id);if(!b)return;
+  b.textContent=on?'!':'';b.title=on?ttl:'';b.style.display=on?'inline-block':'none';});}
 async function requestOff(empId,dISO){const {error}=await sb.from('time_off').insert({employee_id:empId,off_date:dISO});if(error){showToast(lang==='fr'?'Non enregistré':'Not saved',false);alert(error.message||'');return;}
  const dd=new Date(dISO+'T00:00:00');const wk=weekKeyForDate(dd),di=(dd.getDay()+6)%7;const w=state.weeks[wk];
  if(w&&w.data[empId]){const day=w.data[empId][DAYS[di]];if(day&&(day.start||day.end)){day.start='';day.end='';day.ot=false;day.otst='pending';await saveShift(empId,wk,di,day);}}
@@ -805,7 +814,7 @@ function offControl(empId,dISO,day){const t=T[lang];const st=offStatus(empId,dIS
  if(st==='denied')return '<span class="offdenied">'+t.offDenied+'</span> <button class="offbtn" data-offc="req" data-date="'+dISO+'">'+t.offReq+'</button>';
  return '<button class="offbtn" data-offc="req" data-date="'+dISO+'">'+t.offReq+'</button>';}
 function renderTimeOff(){const el=document.getElementById('offList');if(!el)return;const t=T[lang];updateOTBadge();
- const rows=state.offList.filter(r=>adminEmps().some(e=>e.id===r.employee_id));
+ const rows=state.offList.filter(r=>sortedEmps().some(e=>e.id===r.employee_id));
  const order={pending:0,approved:1,denied:2};rows.sort((a,b)=>((order[a.status]||0)-(order[b.status]||0))||(a.off_date<b.off_date?1:-1));
  if(!rows.length){el.innerHTML='<div class="muted" style="padding:1rem">'+t.offNone+'</div>';return;}
  el.innerHTML=rows.map(r=>{const em=empById(r.employee_id);const dObj=new Date(r.off_date+'T00:00:00');const dlabel=t.days[(dObj.getDay()+6)%7]+' '+fmtDate(r.off_date,0);
@@ -814,7 +823,7 @@ function renderTimeOff(){const el=document.getElementById('offList');if(!el)retu
   return '<div class="otrow'+(r.status!=='pending'?' done':'')+'"><div class="oti"><div class="otn">'+esc(em?em.name:'?')+'</div><div class="otd">'+dlabel+'</div></div><div class="otx">'+badge+btns+'</div></div>';}).join('');}
 function showOTSub(s){otSubTab=s;document.querySelectorAll('#otView .stf').forEach(b=>b.classList.toggle('on',b.getAttribute('data-otsub')===s));document.getElementById('otPane').style.display=s==='ot'?'block':'none';document.getElementById('offPane').style.display=s==='off'?'block':'none';if(s==='ot')renderOT();else renderTimeOff();}
 let otSelDate=null,otSubTab='ot',otShowDenied=false;
-function otDays(){const rows=[];wkKeys().forEach(wk=>{const w=state.weeks[wk];adminEmps().forEach(e=>{DAYS.forEach((dk,i)=>{const dISO=addDaysISO(wk,i);if(isOff(e.id,dISO))return;const day=w.data[e.id][dk];const ot=otHours(day,e);if(ot>0)rows.push({e,wk,i,day,ot,dISO,appr:otApproved(day),den:otDenied(day)});});});});return rows;}
+function otDays(){const rows=[];wkKeys().forEach(wk=>{const w=state.weeks[wk];sortedEmps().forEach(e=>{DAYS.forEach((dk,i)=>{const dISO=addDaysISO(wk,i);if(isOff(e.id,dISO))return;const day=w.data[e.id][dk];const ot=otHours(day,e);if(ot>0)rows.push({e,wk,i,day,ot,dISO,appr:otApproved(day),den:otDenied(day)});});});});return rows;}
 function renderOTCal(rows){const el=document.getElementById('otCal');if(!el)return;const t=T[lang];
  const byDate={};rows.forEach(r=>{const d=byDate[r.dISO]||(byDate[r.dISO]={pend:0,appr:0});if(r.appr)d.appr++;else d.pend++;});
  const dates=Object.keys(byDate);if(!dates.length){el.innerHTML='';return;}
@@ -901,7 +910,7 @@ function renderUnpaid(){const el=document.getElementById('unpaidPanel');if(!el)r
   +u.weeks.slice().sort((a,b)=>a.k<b.k?1:-1).map(x=>'<button class="unpaidrow" data-uwk="'+x.k+'"><span>'+T[lang].weekOf+' '+fmtLong(x.k)+'</span><span class="unpaidamt">'+money(x.amt)+'</span><span class="unpaidgo">'+t.goWeek+' &rarr;</span></button>').join('')+'</div>';}
  else h+='<div class="unpaidlist"><div class="muted" style="padding:.4rem 0">'+t.unpaidNone+'</div></div>';
  el.innerHTML=h+'</div>';}
-function renderMgr(){const t=T[lang];renderUnpaid();const w=state.weeks[state.current];let th=0,tp=0,paid=0,unpaid=0;const to={ext:0,int:1};
+function renderMgr(){const t=T[lang];renderUnpaid();updateMgrBadge();const w=state.weeks[state.current];let th=0,tp=0,paid=0,unpaid=0;const to={ext:0,int:1};
  const emps=adminEmps();
  emps.forEach(e=>{const p=empPay(e.id);tp+=p;th+=empHours(e.id);if(w.paid[e.id])paid+=p;else unpaid+=p;});
  const ua=unpaidTotals().unpaid;
@@ -1100,8 +1109,11 @@ function tab(which){
  document.getElementById('dayView').style.display=which==='day'?'block':'none';document.getElementById('weekView').style.display=which==='week'?'block':'none';document.getElementById('mgr').style.display=which==='mgr'?'block':'none';
  document.getElementById('empAdminView').style.display=which==='emp'?'block':'none';
  document.getElementById('otView').style.display=which==='ot'?'block':'none';
- /* Une semaine n'a de sens que sur Jour, Semaine et Gestion. */
- document.querySelector('.weeknav').style.display=(which==='day'||which==='week'||which==='mgr')?'':'none';
+ /* Une semaine et une equipe n'ont de sens que sur Jour, Semaine et Gestion.
+    Ailleurs on montre tout le monde, donc pas de filtre affiche ni applique. */
+ const scoped=(which==='day'||which==='week'||which==='mgr');
+ document.querySelector('.weeknav').style.display=scoped?'':'none';
+ document.getElementById('teamBar').style.display=scoped?'':'none';
  document.getElementById('logView').style.display=which==='log'?'block':'none';
  document.getElementById('backupView').style.display=which==='bak'?'block':'none';
  if(which==='mgr'){const ml=document.getElementById('mgrLock');if(ml)ml.style.display='none';document.getElementById('mgrContent').style.display='block';renderMgr();}
