@@ -416,6 +416,30 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
  .ecard{grid-template-columns:1fr;gap:.9rem;padding:1.1rem;}
  .ecalc{text-align:left;}
  .en{font-size:19px;}
+
+ /* Sauvegardes: l'etiquette et les trois boutons ne tiennent pas sur une
+    ligne. On empile, et les boutons se partagent la largeur a egalite. */
+ .bkhead{flex-direction:column;align-items:stretch;}
+ .bkhead .btn{width:100%;}
+ .bkrow{flex-direction:column;align-items:stretch;gap:.65rem;padding:.9rem 0;}
+ .bkbtns{width:100%;flex-wrap:nowrap;justify-content:stretch;}
+ .bkbtns .btn{flex:1 1 0;min-width:0;padding:11px 6px;font-size:13.5px;white-space:nowrap;}
+
+ /* Employes: chaque compte devient une carte, sinon les champs de tout le
+    monde se melangent en une seule bouillie. */
+ #empAdmin .emprow{background:linear-gradient(180deg,#1a2230 0%,#141b25 100%);
+  border:1px solid var(--bdr);border-radius:11px;box-shadow:0 1px 3px rgba(0,0,0,.28);
+  padding:.85rem .85rem .9rem;margin-bottom:.85rem;gap:.55rem;align-items:center;}
+ #empAdmin .emprow input.ename{flex:1 1 100%;width:auto;font-size:16px;font-weight:800;padding:11px 12px;}
+ #empAdmin .emprow input.euser{flex:1 1 100%;width:auto;}
+ #empAdmin .emprow .rolesel,#empAdmin .emprow .teamsel{flex:1 1 calc(50% - .3rem);min-width:0;}
+ #empAdmin .emprow input.rate{flex:0 0 84px;}
+ #empAdmin .emprow .erl{flex:0 0 auto;margin-right:auto;}
+ #empAdmin .emprow .delx{flex:0 0 auto;font-size:24px;padding:2px 10px;}
+
+ /* Le formulaire d'ajout, juste au dessus, souffrait du meme probleme. */
+ .frow input,.frow select{flex:1 1 100%;width:auto !important;min-width:0;}
+ .frow .btn{width:100%;}
 }
 @media(max-width:400px){
  .caday .cahh{display:none;}
@@ -619,9 +643,10 @@ const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
 const EMAIL_DOMAIN='@norelo-verger.app';
 const OWNERS=['dan','gill','sydney','patron'];
-const APP_VERSION=14; // bump this on each release, then click "Force update"
+const APP_VERSION=15; // bump this on each release, then click "Force update"
 const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
+const REG_SHIFTS=[['08:00','16:30'],['09:30','18:00']]; // quarts reguliers mis en evidence
 const LOCK_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
 const EYE_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
 const EYEOFF_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.9 4.24A9.1 9.1 0 0 1 12 4c6.5 0 10 8 10 8a18 18 0 0 1-2.16 3.19M6.6 6.6A17.8 17.8 0 0 0 2 12s3.5 7 10 7a9 9 0 0 0 5.4-1.6"/><path d="M14.12 14.12A3 3 0 1 1 9.9 9.9"/><path d="M2 2l20 20"/></svg>';
@@ -820,7 +845,7 @@ function closeWeekSheet(){document.getElementById('weekSheet').style.display='no
 let timeCtx=null;
 function openTimePicker(ctx){timeCtx=ctx;document.getElementById('timeSheetTitle').textContent=ctx.title;
  let day;if(ctx.mode==='day')day=state.weeks[state.current].data[ctx.id][DAYS[selDay]];else day=state.weeks[state.current].data[currentEmp][DAYS[ctx.dayIdx]];
- const reg=ctx.f==='start'?['08:00','09:00']:['17:00','18:00'];
+ const reg=REG_SHIFTS.map(p=>ctx.f==='start'?p[0]:p[1]);
  let h='<div class="tnote">'+T[lang].hoursHi+'</div><button class="tcell clear" data-t="">--:--</button>';
  for(let m=OPEN_MIN;m<=CLOSE_MIN;m+=STEP){const v=String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');
   const dis=(ctx.f==='end'&&day.start&&tmin(v)<=tmin(day.start))||(ctx.f==='start'&&day.end&&tmin(v)>=tmin(day.end));
