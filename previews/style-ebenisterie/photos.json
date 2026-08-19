@@ -1,0 +1,458 @@
+[
+ {
+  "category": "autres",
+  "styleLabel": "",
+  "styleSlug": "",
+  "title": "Banquette Lunch La Conviviale",
+  "caption": "",
+  "photos": [
+   "Photos/Autres/BanquetteLunchLaConviviale/photo-01.svg",
+   "Photos/Autres/BanquetteLunchLaConviviale/photo-02.svg",
+   "Photos/Autres/BanquetteLunchLaConviviale/photo-03.svg"
+  ]
+ },
+ {
+  "category": "autres",
+  "styleLabel": "",
+  "styleSlug": "",
+  "title": "Banquette Lunch La Somptueuse",
+  "caption": "",
+  "photos": [
+   "Photos/Autres/BanquetteLunchLaSomptueuse/photo-01.svg",
+   "Photos/Autres/BanquetteLunchLaSomptueuse/photo-02.svg",
+   "Photos/Autres/BanquetteLunchLaSomptueuse/photo-03.svg"
+  ]
+ },
+ {
+  "category": "autres",
+  "styleLabel": "",
+  "styleSlug": "",
+  "title": "Bureau La BCBG",
+  "caption": "",
+  "photos": [
+   "Photos/Autres/BureauLaBCBG/photo-01.svg",
+   "Photos/Autres/BureauLaBCBG/photo-02.svg",
+   "Photos/Autres/BureauLaBCBG/photo-03.svg"
+  ]
+ },
+ {
+  "category": "autres",
+  "styleLabel": "",
+  "styleSlug": "",
+  "title": "Bureau La Californienne",
+  "caption": "",
+  "photos": [
+   "Photos/Autres/BureauLaCalifornienne/photo-01.svg",
+   "Photos/Autres/BureauLaCalifornienne/photo-02.svg",
+   "Photos/Autres/BureauLaCalifornienne/photo-03.svg"
+  ]
+ },
+ {
+  "category": "autres",
+  "styleLabel": "",
+  "styleSlug": "",
+  "title": "Bureau La Conviviale",
+  "caption": "",
+  "photos": [
+   "Photos/Autres/BureauLaConviviale/photo-01.svg",
+   "Photos/Autres/BureauLaConviviale/photo-02.svg",
+   "Photos/Autres/BureauLaConviviale/photo-03.svg"
+  ]
+ },
+ {
+  "category": "autres",
+  "styleLabel": "",
+  "styleSlug": "",
+  "title": "Salle De Lavage La Classique",
+  "caption": "",
+  "photos": [
+   "Photos/Autres/SalleDeLavageLaClassique/photo-01.svg",
+   "Photos/Autres/SalleDeLavageLaClassique/photo-02.svg",
+   "Photos/Autres/SalleDeLavageLaClassique/photo-03.svg"
+  ]
+ },
+ {
+  "category": "autres",
+  "styleLabel": "",
+  "styleSlug": "",
+  "title": "Salle De Lavage La Svelte",
+  "caption": "",
+  "photos": [
+   "Photos/Autres/SalleDeLavageLaSvelte/photo-01.svg",
+   "Photos/Autres/SalleDeLavageLaSvelte/photo-02.svg",
+   "Photos/Autres/SalleDeLavageLaSvelte/photo-03.svg"
+  ]
+ },
+ {
+  "category": "autres",
+  "styleLabel": "",
+  "styleSlug": "",
+  "title": "Walk-In",
+  "caption": "",
+  "photos": [
+   "Photos/Autres/Walk-In/photo-01.svg",
+   "Photos/Autres/Walk-In/photo-02.svg",
+   "Photos/Autres/Walk-In/photo-03.svg"
+  ]
+ },
+ {
+  "category": "cuisine",
+  "styleLabel": "Champêtre",
+  "styleSlug": "champetre",
+  "title": "La Noble",
+  "caption": "",
+  "photos": [
+   "Photos/Cuisine/Champetre/LaNoble/photo-01.svg",
+   "Photos/Cuisine/Champetre/LaNoble/photo-02.svg",
+   "Photos/Cuisine/Champetre/LaNoble/photo-03.svg"
+  ]
+ },
+ {
+  "category": "cuisine",
+  "styleLabel": "Classique",
+  "styleSlug": "classique",
+  "title": "La BCBG",
+  "caption": "",
+  "photos": [
+   "Photos/Cuisine/Classique/LaBCBG/photo-01.svg",
+   "Photos/Cuisine/Classique/LaBCBG/photo-02.svg",
+   "Photos/Cuisine/Classique/LaBCBG/photo-03.svg"
+  ]
+ },
+ {
+  "category": "cuisine",
+  "styleLabel": "Classique",
+  "styleSlug": "classique",
+  "title": "La Respledissante",
+  "caption": "",
+  "photos": [
+   "Photos/Cuisine/Classique/LaRespledissante/photo-01.svg",
+   "Photos/Cuisine/Classique/LaRespledissante/photo-02.svg",
+   "Photos/Cuisine/Classique/LaRespledissante/photo-03.svg"
+  ]
+ },
+ {
+  "category": "cuisine",
+  "styleLabel": "Contemporain",
+  "styleSlug": "contemporain",
+  "title": "L'Audacieuse",
+  "caption": "",
+  "photos": [
+   "Photos/Cuisine/Contemporaine/L'Audacieuse/photo-01.svg",
+   "Photos/Cuisine/Contemporaine/L'Audacieuse/photo-02.svg",
+   "Photos/Cuisine/Contemporaine/L'Audacieuse/photo-03.svg"
+  ]
+ },
+ {
+  "category": "cuisine",
+  "styleLabel": "Contemporain",
+  "styleSlug": "contemporain",
+  "title": "L'Intemporelle",
+  "caption": "",
+  "photos": [
+   "Photos/Cuisine/Contemporaine/L'Intemporelle/photo-01.svg",
+   "Photos/Cuisine/Contemporaine/L'Intemporelle/photo-02.svg",
+   "Photos/Cuisine/Contemporaine/L'Intemporelle/photo-03.svg"
+  ]
+ },
+ {
+  "category": "cuisine",
+  "styleLabel": "Contemporain",
+  "styleSlug": "contemporain",
+  "title": "La Distinguee",
+  "caption": "",
+  "photos": [
+   "Photos/Cuisine/Contemporaine/LaDistinguee/photo-01.svg",
+   "Photos/Cuisine/Contemporaine/LaDistinguee/photo-02.svg",
+   "Photos/Cuisine/Contemporaine/LaDistinguee/photo-03.svg"
+  ]
+ },
+ {
+  "category": "cuisine",
+  "styleLabel": "Contemporain",
+  "styleSlug": "contemporain",
+  "title": "La Fonctionnelle",
+  "caption": "",
+  "photos": [
+   "Photos/Cuisine/Contemporaine/LaFonctionnelle/photo-01.svg",
+   "Photos/Cuisine/Contemporaine/LaFonctionnelle/photo-02.svg",
+   "Photos/Cuisine/Contemporaine/LaFonctionnelle/photo-03.svg"
+  ]
+ },
+ {
+  "category": "cuisine",
+  "styleLabel": "Contemporain",
+  "styleSlug": "contemporain",
+  "title": "La Somptueuse",
+  "caption": "",
+  "photos": [
+   "Photos/Cuisine/Contemporaine/LaSomptueuse/photo-01.svg",
+   "Photos/Cuisine/Contemporaine/LaSomptueuse/photo-02.svg",
+   "Photos/Cuisine/Contemporaine/LaSomptueuse/photo-03.svg"
+  ]
+ },
+ {
+  "category": "cuisine",
+  "styleLabel": "Urbain",
+  "styleSlug": "urbain",
+  "title": "L'Etonnante",
+  "caption": "",
+  "photos": [
+   "Photos/Cuisine/Urbain/L'Etonnante/photo-01.svg",
+   "Photos/Cuisine/Urbain/L'Etonnante/photo-02.svg",
+   "Photos/Cuisine/Urbain/L'Etonnante/photo-03.svg"
+  ]
+ },
+ {
+  "category": "cuisine",
+  "styleLabel": "Urbain",
+  "styleSlug": "urbain",
+  "title": "La Californienne",
+  "caption": "",
+  "photos": [
+   "Photos/Cuisine/Urbain/LaCalifornienne/photo-01.svg",
+   "Photos/Cuisine/Urbain/LaCalifornienne/photo-02.svg",
+   "Photos/Cuisine/Urbain/LaCalifornienne/photo-03.svg"
+  ]
+ },
+ {
+  "category": "cuisine",
+  "styleLabel": "Urbain",
+  "styleSlug": "urbain",
+  "title": "La Citadine",
+  "caption": "",
+  "photos": [
+   "Photos/Cuisine/Urbain/LaCitadine/photo-01.svg",
+   "Photos/Cuisine/Urbain/LaCitadine/photo-02.svg",
+   "Photos/Cuisine/Urbain/LaCitadine/photo-03.svg"
+  ]
+ },
+ {
+  "category": "cuisine",
+  "styleLabel": "Urbain",
+  "styleSlug": "urbain",
+  "title": "La Conviviale",
+  "caption": "",
+  "photos": [
+   "Photos/Cuisine/Urbain/LaConviviale/photo-01.svg",
+   "Photos/Cuisine/Urbain/LaConviviale/photo-02.svg",
+   "Photos/Cuisine/Urbain/LaConviviale/photo-03.svg"
+  ]
+ },
+ {
+  "category": "cuisine",
+  "styleLabel": "Urbain",
+  "styleSlug": "urbain",
+  "title": "La Creative",
+  "caption": "",
+  "photos": [
+   "Photos/Cuisine/Urbain/LaCreative/photo-01.svg",
+   "Photos/Cuisine/Urbain/LaCreative/photo-02.svg",
+   "Photos/Cuisine/Urbain/LaCreative/photo-03.svg"
+  ]
+ },
+ {
+  "category": "cuisine",
+  "styleLabel": "Urbain",
+  "styleSlug": "urbain",
+  "title": "La Lumineuse",
+  "caption": "",
+  "photos": [
+   "Photos/Cuisine/Urbain/LaLumineuse/photo-01.svg",
+   "Photos/Cuisine/Urbain/LaLumineuse/photo-02.svg",
+   "Photos/Cuisine/Urbain/LaLumineuse/photo-03.svg"
+  ]
+ },
+ {
+  "category": "cuisine",
+  "styleLabel": "Urbain",
+  "styleSlug": "urbain",
+  "title": "La Pimpante",
+  "caption": "",
+  "photos": [
+   "Photos/Cuisine/Urbain/LaPimpante/photo-01.svg",
+   "Photos/Cuisine/Urbain/LaPimpante/photo-02.svg",
+   "Photos/Cuisine/Urbain/LaPimpante/photo-03.svg"
+  ]
+ },
+ {
+  "category": "cuisine",
+  "styleLabel": "Urbain",
+  "styleSlug": "urbain",
+  "title": "La Seduisante",
+  "caption": "",
+  "photos": [
+   "Photos/Cuisine/Urbain/LaSeduisante/photo-01.svg",
+   "Photos/Cuisine/Urbain/LaSeduisante/photo-02.svg",
+   "Photos/Cuisine/Urbain/LaSeduisante/photo-03.svg"
+  ]
+ },
+ {
+  "category": "salle-de-bain",
+  "styleLabel": "Champêtre",
+  "styleSlug": "champetre",
+  "title": "L'Artisanale",
+  "caption": "",
+  "photos": [
+   "Photos/SalleDeBain/Champetre/L'Artisanale/photo-01.svg",
+   "Photos/SalleDeBain/Champetre/L'Artisanale/photo-02.svg",
+   "Photos/SalleDeBain/Champetre/L'Artisanale/photo-03.svg"
+  ]
+ },
+ {
+  "category": "salle-de-bain",
+  "styleLabel": "Classique",
+  "styleSlug": "classique",
+  "title": "Coiffeuse",
+  "caption": "",
+  "photos": [
+   "Photos/SalleDeBain/Classique/Coiffeuse/photo-01.svg",
+   "Photos/SalleDeBain/Classique/Coiffeuse/photo-02.svg",
+   "Photos/SalleDeBain/Classique/Coiffeuse/photo-03.svg"
+  ]
+ },
+ {
+  "category": "salle-de-bain",
+  "styleLabel": "Classique",
+  "styleSlug": "classique",
+  "title": "La Sereine",
+  "caption": "",
+  "photos": [
+   "Photos/SalleDeBain/Classique/LaSereine/photo-01.svg",
+   "Photos/SalleDeBain/Classique/LaSereine/photo-02.svg",
+   "Photos/SalleDeBain/Classique/LaSereine/photo-03.svg"
+  ]
+ },
+ {
+  "category": "salle-de-bain",
+  "styleLabel": "Classique",
+  "styleSlug": "classique",
+  "title": "La Traditionnelle",
+  "caption": "",
+  "photos": [
+   "Photos/SalleDeBain/Classique/LaTraditionnelle/photo-01.svg",
+   "Photos/SalleDeBain/Classique/LaTraditionnelle/photo-02.svg",
+   "Photos/SalleDeBain/Classique/LaTraditionnelle/photo-03.svg"
+  ]
+ },
+ {
+  "category": "salle-de-bain",
+  "styleLabel": "Contemporain",
+  "styleSlug": "contemporain",
+  "title": "L'Elegante",
+  "caption": "",
+  "photos": [
+   "Photos/SalleDeBain/Contemporaine/L'Elegante/photo-01.svg",
+   "Photos/SalleDeBain/Contemporaine/L'Elegante/photo-02.svg",
+   "Photos/SalleDeBain/Contemporaine/L'Elegante/photo-03.svg"
+  ]
+ },
+ {
+  "category": "salle-de-bain",
+  "styleLabel": "Contemporain",
+  "styleSlug": "contemporain",
+  "title": "L'Epuree",
+  "caption": "",
+  "photos": [
+   "Photos/SalleDeBain/Contemporaine/L'Epuree/photo-01.svg",
+   "Photos/SalleDeBain/Contemporaine/L'Epuree/photo-02.svg",
+   "Photos/SalleDeBain/Contemporaine/L'Epuree/photo-03.svg"
+  ]
+ },
+ {
+  "category": "salle-de-bain",
+  "styleLabel": "Contemporain",
+  "styleSlug": "contemporain",
+  "title": "La Contrastee",
+  "caption": "",
+  "photos": [
+   "Photos/SalleDeBain/Contemporaine/LaContrastee/photo-01.svg",
+   "Photos/SalleDeBain/Contemporaine/LaContrastee/photo-02.svg",
+   "Photos/SalleDeBain/Contemporaine/LaContrastee/photo-03.svg"
+  ]
+ },
+ {
+  "category": "salle-de-bain",
+  "styleLabel": "Contemporain",
+  "styleSlug": "contemporain",
+  "title": "La Coquette",
+  "caption": "",
+  "photos": [
+   "Photos/SalleDeBain/Contemporaine/LaCoquette/photo-01.svg",
+   "Photos/SalleDeBain/Contemporaine/LaCoquette/photo-02.svg",
+   "Photos/SalleDeBain/Contemporaine/LaCoquette/photo-03.svg"
+  ]
+ },
+ {
+  "category": "salle-de-bain",
+  "styleLabel": "Contemporain",
+  "styleSlug": "contemporain",
+  "title": "La Minimaliste",
+  "caption": "",
+  "photos": [
+   "Photos/SalleDeBain/Contemporaine/LaMinimaliste/photo-01.svg",
+   "Photos/SalleDeBain/Contemporaine/LaMinimaliste/photo-02.svg",
+   "Photos/SalleDeBain/Contemporaine/LaMinimaliste/photo-03.svg"
+  ]
+ },
+ {
+  "category": "salle-de-bain",
+  "styleLabel": "Contemporain",
+  "styleSlug": "contemporain",
+  "title": "La Moderne",
+  "caption": "",
+  "photos": [
+   "Photos/SalleDeBain/Contemporaine/LaModerne/photo-01.svg",
+   "Photos/SalleDeBain/Contemporaine/LaModerne/photo-02.svg",
+   "Photos/SalleDeBain/Contemporaine/LaModerne/photo-03.svg"
+  ]
+ },
+ {
+  "category": "salle-de-bain",
+  "styleLabel": "Contemporain",
+  "styleSlug": "contemporain",
+  "title": "La Polyvalente",
+  "caption": "",
+  "photos": [
+   "Photos/SalleDeBain/Contemporaine/LaPolyvalente/photo-01.svg",
+   "Photos/SalleDeBain/Contemporaine/LaPolyvalente/photo-02.svg",
+   "Photos/SalleDeBain/Contemporaine/LaPolyvalente/photo-03.svg"
+  ]
+ },
+ {
+  "category": "salle-de-bain",
+  "styleLabel": "Urbain",
+  "styleSlug": "urbain",
+  "title": "L'Urbaine",
+  "caption": "",
+  "photos": [
+   "Photos/SalleDeBain/Urbain/L'Urbaine/photo-01.svg",
+   "Photos/SalleDeBain/Urbain/L'Urbaine/photo-02.svg",
+   "Photos/SalleDeBain/Urbain/L'Urbaine/photo-03.svg"
+  ]
+ },
+ {
+  "category": "salle-de-bain",
+  "styleLabel": "Urbain",
+  "styleSlug": "urbain",
+  "title": "La Spacieuse",
+  "caption": "",
+  "photos": [
+   "Photos/SalleDeBain/Urbain/LaSpacieuse/photo-01.svg",
+   "Photos/SalleDeBain/Urbain/LaSpacieuse/photo-02.svg",
+   "Photos/SalleDeBain/Urbain/LaSpacieuse/photo-03.svg"
+  ]
+ },
+ {
+  "category": "salle-de-bain",
+  "styleLabel": "Urbain",
+  "styleSlug": "urbain",
+  "title": "La Svelte",
+  "caption": "",
+  "photos": [
+   "Photos/SalleDeBain/Urbain/LaSvelte/photo-01.svg",
+   "Photos/SalleDeBain/Urbain/LaSvelte/photo-02.svg",
+   "Photos/SalleDeBain/Urbain/LaSvelte/photo-03.svg"
+  ]
+ }
+]

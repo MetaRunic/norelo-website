@@ -1,0 +1,203 @@
+{
+  "meta": {
+    "brand": "Armoires Exemple",
+    "defaultLocale": "fr",
+    "locales": ["fr"],
+    "tagline": "Ébénisterie sur mesure, service clé en main",
+    "themeColor": "#f6f2ea"
+  },
+
+  "assets": {
+    "favicon": "assets/img/favicon.svg",
+    "ogImage": "assets/img/og-cover.svg",
+    "heroPoster": "assets/img/hero-poster.svg"
+  },
+
+  "locales": {
+    "fr": {
+      "html": {
+        "lang": "fr-CA",
+        "title": "Armoires Exemple, ébénisterie sur mesure clé en main",
+        "metaDescription": "Armoires Exemple conçoit, fabrique et installe des armoires sur mesure haut de gamme. Un service clé en main, du croquis à la dernière poignée. Nous ne sommes pas un entrepreneur général : nous sommes vos ébénistes."
+      },
+
+      "nav": {
+        "links": [
+          { "label": "Approche", "href": "#approche" },
+          { "label": "Réalisations", "href": "#realisations" },
+          { "label": "Carrières", "href": "#carrieres" },
+          { "label": "Contact", "href": "#contact" }
+        ],
+        "cta": { "label": "Parler à un expert", "href": "tel:+10000000000" }
+      },
+
+      "hero": {
+        "eyebrow": "Ébénisterie haut de gamme, depuis l'atelier",
+        "title": "L'art de la haute menuiserie sur mesure.",
+        "subtitle": "Plus qu'un agencement, une signature architecturale. Nous donnons vie à des cuisines d'exception où la pureté des lignes rencontre la noblesse des matières. Votre projet, entièrement clé en main.",
+        "primaryCta": { "label": "Démarrer mon projet", "href": "#contact" },
+        "secondaryCta": { "label": "Voir nos réalisations", "href": "#realisations" },
+        "scrollHint": "Découvrir",
+        "media": {
+          "video": "assets/video/hero-cuisine.mp4",
+          "poster": "assets/img/hero-poster.svg",
+          "image": "assets/img/hero-fallback.svg",
+          "alt": "Cuisine contemporaine sur mesure réalisée par Armoires Exemple"
+        }
+      },
+
+      "approche": {
+        "eyebrow": "L'expérience clé en main",
+        "title": "Clé en main, vraiment.",
+        "intro": "Nous ne sommes pas un entrepreneur général. Nous sommes des ébénistes. Notre métier, c'est l'armoire sur mesure, et nous l'assumons du début à la fin pour que vous n'ayez à coordonner personne.",
+        "positioning": "Là où un entrepreneur général se contente de coordonner des sous-traitants, nous faisons tout nous-mêmes : conception, fabrication en atelier et installation. Une seule équipe, une seule responsabilité, et une finition que personne ne peut diluer.",
+        "pillars": [
+          {
+            "number": "01",
+            "icon": "design",
+            "title": "Design",
+            "description": "On vous écoute, on relève vos espaces et on dessine tout en 3D. Vous validez chaque ligne avant qu'un seul panneau ne soit coupé.",
+            "points": ["Relevé de mesures à domicile", "Plans 3D et choix des essences", "Devis détaillé, sans surprise"]
+          },
+          {
+            "number": "02",
+            "icon": "fabrication",
+            "title": "Fabrication",
+            "description": "Tout est fabriqué dans notre propre atelier, au Québec. Aucune sous-traitance opaque : vos armoires naissent sous nos mains.",
+            "points": ["Atelier intégré, artisans maison", "Bois nobles et panneaux de qualité", "Contrôle qualité à chaque étape"]
+          },
+          {
+            "number": "03",
+            "icon": "installation",
+            "title": "Installation",
+            "description": "Notre équipe pose, ajuste et finit chez vous. On ne repart que lorsque tout est parfait, et que le chantier est impeccable.",
+            "points": ["Pose par notre propre équipe", "Ajustements et finitions sur place", "Nettoyage et garantie incluse"]
+          }
+        ]
+      },
+
+      "categories": {
+        "eyebrow": "Explorez par style",
+        "title": "Trouvez l'inspiration qui vous ressemble.",
+        "intro": "Parcourez nos créations par type de pièce et par style. Cliquez pour voir les réalisations correspondantes.",
+        "items": [
+          { "name": "Cuisines", "filter": "cuisine", "folder": "Cuisine", "icon": "kitchen", "styles": ["Classique", "Contemporain", "Urbain", "Champêtre"] },
+          { "name": "Salles de bain", "filter": "salle-de-bain", "folder": "SalleDeBain", "icon": "vanity", "styles": ["Classique", "Contemporain", "Urbain", "Champêtre"] },
+          { "name": "Sur-mesure", "filter": "autres", "folder": "Autres", "icon": "closet", "styles": [] }
+        ]
+      },
+
+      "realisations": {
+        "eyebrow": "Réalisations",
+        "title": "Le bois, mis en lumière.",
+        "intro": "Quelques projets récents, conçus et fabriqués dans notre atelier.",
+        "items": [
+          { "type": "image", "src": "assets/portfolio/cuisine-classique.svg", "poster": "", "title": "Cuisine classique en chêne", "caption": "Panneaux à cadre, moulures fines, finition intemporelle.", "tag": "Classique", "category": "cuisine", "style": "Classique" },
+          { "type": "image", "src": "assets/portfolio/cuisine-contemporaine.svg", "poster": "", "title": "Cuisine contemporaine", "caption": "Îlot monobloc en noyer, façades sans poignées, éclairage intégré.", "tag": "Contemporain", "category": "cuisine", "style": "Contemporain" },
+          { "type": "image", "src": "assets/portfolio/cuisine-urbaine.svg", "poster": "", "title": "Cuisine urbaine", "caption": "Esprit loft, lignes industrielles, métal noirci et bois brut.", "tag": "Urbain", "category": "cuisine", "style": "Urbain" },
+          { "type": "image", "src": "assets/portfolio/cuisine-champetre.svg", "poster": "", "title": "Cuisine champêtre", "caption": "Bois patiné, vaisselier ouvert, chaleur d'une cuisine de campagne.", "tag": "Champêtre", "category": "cuisine", "style": "Champêtre" },
+          { "type": "image", "src": "assets/portfolio/sdb-classique.svg", "poster": "", "title": "Salle de bain classique", "caption": "Vanité à panneaux, comptoir pierre, élégance discrète.", "tag": "Classique", "category": "salle-de-bain", "style": "Classique" },
+          { "type": "image", "src": "assets/portfolio/sdb-contemporaine.svg", "poster": "", "title": "Salle de bain contemporaine", "caption": "Double vasque, comptoir pierre, lignes épurées.", "tag": "Contemporain", "category": "salle-de-bain", "style": "Contemporain" },
+          { "type": "image", "src": "assets/portfolio/sdb-urbaine.svg", "poster": "", "title": "Salle de bain urbaine", "caption": "Béton, métal noirci et bois, ambiance loft.", "tag": "Urbain", "category": "salle-de-bain", "style": "Urbain" },
+          { "type": "image", "src": "assets/portfolio/sdb-champetre.svg", "poster": "", "title": "Salle de bain champêtre", "caption": "Bois patiné, vasque à poser, esprit campagne raffiné.", "tag": "Champêtre", "category": "salle-de-bain", "style": "Champêtre" },
+          { "type": "image", "src": "assets/portfolio/walkin-chene.svg", "poster": "", "title": "Walk-in en chêne blanchi", "caption": "Penderie sur mesure, quincaillerie à fermeture douce.", "tag": "Walk-in", "category": "autres", "style": "" },
+          { "type": "image", "src": "assets/portfolio/bibliotheque-foyer.svg", "poster": "", "title": "Bibliothèque & foyer intégré", "caption": "Mur de rangement toute hauteur, niche pour foyer.", "tag": "Mobilier intégré", "category": "autres", "style": "" },
+          { "type": "image", "src": "assets/portfolio/bureau-integre.svg", "poster": "", "title": "Bureau & mobilier intégré", "caption": "Espace de travail sur mesure, rangements dissimulés.", "tag": "Mobilier intégré", "category": "autres", "style": "" },
+          { "type": "video", "src": "assets/portfolio/atelier-finition.mp4", "poster": "assets/portfolio/atelier-finition-poster.svg", "title": "L'atelier, en mouvement", "caption": "La finition à la main, étape par étape.", "tag": "Atelier", "category": "autres", "style": "" }
+        ]
+      },
+
+      "temoignages": {
+        "eyebrow": "Ce qu'on en dit",
+        "title": "La confiance, projet après projet.",
+        "rating": { "score": "4.9", "count": "121", "url": "https://www.google.com/maps/search/?api=1&query=Armoires+Exemple+McMasterville", "cta": "Lire nos avis sur Google" },
+        "items": [
+          {
+            "quote": "On a parlé à une seule équipe du début à la fin. Aucun stress de coordination, et le résultat dépasse nos attentes.",
+            "author": "Marie-Claude L.",
+            "location": "Outremont",
+            "stars": 5
+          },
+          {
+            "quote": "Le souci du détail est partout. On sent l'amour du métier dans chaque assemblage.",
+            "author": "Étienne R.",
+            "location": "Lac-Beauport",
+            "stars": 5
+          },
+          {
+            "quote": "Des artisans, pas des vendeurs. Ils nous ont guidés sans jamais nous presser.",
+            "author": "Sophie & Marc D.",
+            "location": "Boucherville",
+            "stars": 5
+          }
+        ]
+      },
+
+      "contact": {
+        "eyebrow": "Plus de 40 ans de savoir-faire",
+        "title": "Un beau projet commence par un appel.",
+        "intro": "Pas de formulaire à remplir, pas de file d'attente. Décrochez le téléphone : un vrai ébéniste vous répond, vous écoute et vous conseille, sans engagement.",
+        "phone": {
+          "label": "Appelez-nous",
+          "tag": "Ligne directe · Réponse immédiate",
+          "value": "000 000-0000",
+          "href": "tel:+10000000000",
+          "note": "Salle de montre (poste 1) ou usine (poste 2). Du lundi au vendredi, de 8 h à 17 h."
+        },
+        "email": {
+          "label": "Ou écrivez-nous",
+          "value": "contact@exemple.ca",
+          "href": "mailto:contact@exemple.ca?subject=Mon%20projet%20sur%20mesure",
+          "note": "Réponse personnelle en moins de 48 h ouvrables."
+        },
+        "details": [
+          { "label": "Salle de montre", "value": "600, boul. Bernard-Pilon, McMasterville (QC) J3G 1L2", "href": "https://maps.google.com/?q=600+boulevard+Bernard-Pilon+McMasterville+QC+J3G+1L2", "icon": "pin", "sub": "Téléphone : 000 000-0000, poste 1" },
+          { "label": "Usine", "value": "3108, boul. Bernard-Pilon, St-Mathieu-de-Beloeil (QC) J3G 4S5", "href": "https://maps.google.com/?q=3108+boulevard+Bernard-Pilon+Saint-Mathieu-de-Beloeil+QC+J3G+4S5", "icon": "pin", "sub": "Téléphone : 000 000-0000, poste 2" },
+          { "label": "Heures d'ouverture", "value": "Lundi au vendredi : 8 h à 17 h", "href": "", "icon": "clock", "sub": "Soir et samedi : sur rendez-vous uniquement" }
+        ],
+        "assurances": [
+          { "icon": "handshake", "title": "Un seul interlocuteur", "text": "La même équipe vous suit, du premier croquis à la garantie." },
+          { "icon": "clock", "title": "Réponse en 48 h", "text": "Une vraie personne vous rappelle, jamais un robot, jamais un centre d'appel." },
+          { "icon": "heart", "title": "Service attentionné", "text": "On prend le temps de comprendre votre projet avant même de parler de prix." }
+        ],
+        "host": {
+          "name": "Patrick Exemple",
+          "role": "propriétaire, deuxième génération",
+          "line": "« Mon père a fondé cet atelier il y a plus de 40 ans. Je poursuis aujourd'hui son métier avec la même passion : chaque projet, je le suis personnellement. C'est une question de fierté et de tradition familiale. »"
+        }
+      },
+
+      "footer": {
+        "blurb": "Armoires Exemple, ébénistes. La conception, la fabrication et l'installation d'armoires sur mesure, réunies sous un même toit.",
+        "columns": [
+          {
+            "title": "Navigation",
+            "links": [
+              { "label": "Approche", "href": "#approche" },
+              { "label": "Réalisations", "href": "#realisations" },
+              { "label": "Carrières", "href": "#carrieres" },
+              { "label": "Contact", "href": "#contact" }
+            ]
+          },
+          {
+            "title": "Coordonnées",
+            "links": [
+              { "label": "000 000-0000", "href": "tel:+10000000000" },
+              { "label": "contact@exemple.ca", "href": "mailto:contact@exemple.ca" },
+              { "label": "Salle de montre, McMasterville", "href": "https://maps.google.com/?q=600+boulevard+Bernard-Pilon+McMasterville+QC+J3G+1L2" },
+              { "label": "Usine, St-Mathieu-de-Beloeil", "href": "https://maps.google.com/?q=3108+boulevard+Bernard-Pilon+Saint-Mathieu-de-Beloeil+QC+J3G+4S5" }
+            ]
+          }
+        ],
+        "socials": [
+          { "label": "Facebook", "href": "https://www.facebook.com/ArmoiresExemple", "icon": "facebook", "brand": "facebook" },
+          { "label": "LinkedIn", "href": "https://ca.linkedin.com/company/armoiresexemple", "icon": "linkedin", "brand": "linkedin" },
+          { "label": "Houzz", "href": "https://www.houzz.com/professionals/kitchen-and-bath-designers/armoires-exemple-pfvwus-pf~2049055562", "icon": "houzz", "brand": "houzz" },
+          { "label": "Indeed", "href": "https://emplois.ca.indeed.com/cmp/Armoires-Exemple", "icon": "indeed", "brand": "indeed" }
+        ],
+        "legal": "© 2026 Armoires Exemple. Tous droits réservés. RBQ : 0000-0000-00.",
+        "credit": "Ébénisterie sur mesure, Québec"
+      }
+    }
+  }
+}
