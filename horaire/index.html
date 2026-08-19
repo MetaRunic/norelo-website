@@ -289,6 +289,7 @@ h2{font-size:20px;font-weight:800;}
 .wtable th .thsub{display:block;font-size:11px;font-weight:700;color:var(--gr);letter-spacing:0;text-transform:none;margin-top:2px;}
 .wtable th.wkcol{cursor:pointer;}
 .wtable th.wkcol:hover{color:var(--accent-l);}
+.wtable th.curcol{color:var(--accent-l);background:rgba(224,71,59,.16);}
 .wtable th[data-wday]{cursor:pointer;}
 .wtable th[data-wday]:hover{color:var(--accent-l);}
 .wtable td.curwk{background:rgba(224,71,59,.13);font-weight:800;}
@@ -643,7 +644,7 @@ const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
 const EMAIL_DOMAIN='@norelo-verger.app';
 const OWNERS=['dan','gill','sydney','patron'];
-const APP_VERSION=16; // bump this on each release, then click "Force update"
+const APP_VERSION=17; // bump this on each release, then click "Force update"
 const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const REG_SHIFTS=[['08:00','16:30'],['09:30','18:00']]; // quarts reguliers mis en evidence
@@ -661,6 +662,7 @@ const T={
    lhint:'Accès réservé. Vos données restent sur cet appareil.',enter:'Entrer',wrong:'Identifiant ou mot de passe invalide',
    days:['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'],sdays:['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'],
    months:['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'],
+   smonths:['janv','févr','mars','avril','mai','juin','juil','août','sept','oct','nov','déc'],
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Début',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
    paid:'Payé',unpaid:'À payer',share:'Part',week:'Semaine',kHours:'Heures totales',kPay:'Paie brute',kPaid:'Déjà payé',kUnpaid:'Reste à payer',user:"Nom d'utilisateur",
    chooseWeek:'Choisir une semaine',ws_past:'Passée',ws_cur:'En cours',ws_up:'À venir',teamAll:'Toutes',teamExt:'Extérieur',teamInt:'Intérieur',roleEmp:'Employé',roleMgr:'Gestionnaire',resetPwd:'MDP',clearF:'Effacer',backupsT:'Sauvegardes',backupNow:'Sauvegarder maintenant',
@@ -668,7 +670,7 @@ const T={
    otDen:'refusée',otShowDen:'Voir les refusées',otHideDen:'Masquer les refusées',otDenNone:'Aucune heure supplémentaire refusée.',otDenyC:'Refuser ces heures supplémentaires? Elles ne seront pas payées et quitteront la liste des demandes en attente.',
    exportDone:'Fichier CSV téléchargé',exportEmpty:'Aucune heure à exporter.',
    bkDel:'Supprimer',bkDelC:'Supprimer cette sauvegarde définitivement? Cette action est irréversible.',bkDeleted:'Sauvegarde supprimée',
-   csvEmp:'Employé',csvDept:'Département',csvDate:'Date',csvStart:'Début',csvEnd:'Fin',csvWorked:'Heures travaillées',csvOt:'Heures supp.',csvAppr:'Approuvées',csvPay:'Paie',csvYes:'Oui',csvNo:'Non',csvDenied:'Refusées',unpaidT:'Solde impayé, toutes les semaines',unpaidSub:'Total dû à tous les employés, toutes semaines confondues.',unpaidWeeks:'Semaines à payer',unpaidNone:'Tout est payé.',kUnpaidAll:'Solde impayé total',alertT:'Seuil atteint',alertS:'Le solde impayé dépasse ',alertA:' Prévenez Gill.',warnT:'Approche du seuil',warnS:'Le solde impayé approche de ',okT:'Sous le seuil',okS:'Le solde impayé reste sous ',goWeek:'Voir',bkDl:'Télécharger',bkDlDone:'Sauvegarde téléchargée sur cet appareil',bkExplain:'Chaque modification est enregistrée immédiatement dans le nuage. Une sauvegarde automatique est créée toutes les 12 h.',expLast:'Dernier export des heures',expNever:'jamais sur cet appareil',expToday:"aujourd'hui",expAgo:'il y a ',expDay:' jour',expDays:' jours',expHint:'Exportez les heures et gardez le fichier ailleurs que dans Supabase.',exportFail:"L'export a échoué.",fltFrom:'Du',fltTo:'Au',exportXlsx:'Exporter les heures (Excel)',exportCsvAlt:'CSV brut',csvTotal:'TOTAL',csvSheet:'Heures',tMonth:'Mois',monthHint:'Chaque colonne est une semaine de paie complete. Touchez une colonne pour ouvrir cette semaine.',weekHint:'Touchez un jour pour l\'ouvrir dans Jour.',noneWk:'Aucune semaine dans ce mois.'},
+   csvEmp:'Employé',csvDept:'Département',csvDate:'Date',csvStart:'Début',csvEnd:'Fin',csvWorked:'Heures travaillées',csvOt:'Heures supp.',csvAppr:'Approuvées',csvPay:'Paie',csvYes:'Oui',csvNo:'Non',csvDenied:'Refusées',unpaidT:'Solde impayé, toutes les semaines',unpaidSub:'Total dû à tous les employés, toutes semaines confondues.',unpaidWeeks:'Semaines à payer',unpaidNone:'Tout est payé.',kUnpaidAll:'Solde impayé total',alertT:'Seuil atteint',alertS:'Le solde impayé dépasse ',alertA:' Prévenez Gill.',warnT:'Approche du seuil',warnS:'Le solde impayé approche de ',okT:'Sous le seuil',okS:'Le solde impayé reste sous ',goWeek:'Voir',bkDl:'Télécharger',bkDlDone:'Sauvegarde téléchargée sur cet appareil',bkExplain:'Chaque modification est enregistrée immédiatement dans le nuage. Une sauvegarde automatique est créée toutes les 12 h.',expLast:'Dernier export des heures',expNever:'jamais sur cet appareil',expToday:"aujourd'hui",expAgo:'il y a ',expDay:' jour',expDays:' jours',expHint:'Exportez les heures et gardez le fichier ailleurs que dans Supabase.',exportFail:"L'export a échoué.",fltFrom:'Du',fltTo:'Au',exportXlsx:'Exporter les heures (Excel)',exportCsvAlt:'CSV brut',csvTotal:'TOTAL',csvSheet:'Heures',tMonth:'Mois',monthHint:'Chaque colonne est une semaine de paie, du lundi au dimanche. Touchez-en une pour ouvrir cette semaine.',weekHint:'Touchez un jour pour l\'ouvrir dans Jour.',noneWk:'Aucune semaine dans ce mois.'},
  en:{tDay:'Day',tWeek:'Week',tMgr:'Manager',tEmp:'Employees',tLog:'Activity',tBak:'Backups',logout:'Log out',
    employees:'Employees and rates',add:'Add',
    mgrLockT:'Manager login',mgrLockS:'This section requires a separate password.',unlock:'Unlock',
@@ -677,6 +679,7 @@ const T={
    lhint:'Restricted access. Your data stays on this device.',enter:'Enter',wrong:'Invalid username or password',
    days:['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],sdays:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
+   smonths:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
    paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Total hours',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',user:'Username',
    chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',teamExt:'Exterior',teamInt:'Interior',roleEmp:'Employee',roleMgr:'Manager',resetPwd:'PW',clearF:'Clear',backupsT:'Backups',backupNow:'Backup now',
@@ -684,7 +687,7 @@ const T={
    otDen:'denied',otShowDen:'Show denied',otHideDen:'Hide denied',otDenNone:'No denied overtime.',otDenyC:'Deny this overtime? It will not be paid and will leave the pending list.',
    exportDone:'CSV file downloaded',exportEmpty:'No hours to export.',
    bkDel:'Delete',bkDelC:'Permanently delete this backup? This cannot be undone.',bkDeleted:'Backup deleted',
-   csvEmp:'Employee',csvDept:'Department',csvDate:'Date',csvStart:'Start',csvEnd:'End',csvWorked:'Worked hours',csvOt:'Overtime',csvAppr:'Approved',csvPay:'Pay',csvYes:'Yes',csvNo:'No',csvDenied:'Denied',unpaidT:'Unpaid balance, all weeks',unpaidSub:'Total owed to every employee across all weeks.',unpaidWeeks:'Weeks to pay',unpaidNone:'Everything is paid.',kUnpaidAll:'Total unpaid',alertT:'Threshold reached',alertS:'The unpaid balance is over ',alertA:' Notify Gill.',warnT:'Approaching the threshold',warnS:'The unpaid balance is nearing ',okT:'Under the threshold',okS:'The unpaid balance stays under ',goWeek:'View',bkDl:'Download',bkDlDone:'Backup downloaded to this device',bkExplain:'Every change is saved to the cloud immediately. An automatic backup is created every 12 h.',expLast:'Last hours export',expNever:'never on this device',expToday:'today',expAgo:'',expDay:' day ago',expDays:' days ago',expHint:'Export the hours and keep the file somewhere other than Supabase.',exportFail:'The export failed.',fltFrom:'From',fltTo:'To',exportXlsx:'Export hours (Excel)',exportCsvAlt:'Raw CSV',csvTotal:'TOTAL',csvSheet:'Hours',tMonth:'Month',monthHint:'Each column is one full pay week. Tap a column to open that week.',weekHint:'Tap a day to open it in Day.',noneWk:'No weeks in this month.'}
+   csvEmp:'Employee',csvDept:'Department',csvDate:'Date',csvStart:'Start',csvEnd:'End',csvWorked:'Worked hours',csvOt:'Overtime',csvAppr:'Approved',csvPay:'Pay',csvYes:'Yes',csvNo:'No',csvDenied:'Denied',unpaidT:'Unpaid balance, all weeks',unpaidSub:'Total owed to every employee across all weeks.',unpaidWeeks:'Weeks to pay',unpaidNone:'Everything is paid.',kUnpaidAll:'Total unpaid',alertT:'Threshold reached',alertS:'The unpaid balance is over ',alertA:' Notify Gill.',warnT:'Approaching the threshold',warnS:'The unpaid balance is nearing ',okT:'Under the threshold',okS:'The unpaid balance stays under ',goWeek:'View',bkDl:'Download',bkDlDone:'Backup downloaded to this device',bkExplain:'Every change is saved to the cloud immediately. An automatic backup is created every 12 h.',expLast:'Last hours export',expNever:'never on this device',expToday:'today',expAgo:'',expDay:' day ago',expDays:' days ago',expHint:'Export the hours and keep the file somewhere other than Supabase.',exportFail:'The export failed.',fltFrom:'From',fltTo:'To',exportXlsx:'Export hours (Excel)',exportCsvAlt:'Raw CSV',csvTotal:'TOTAL',csvSheet:'Hours',tMonth:'Month',monthHint:'Each column is one pay week, Monday to Sunday. Tap one to open that week.',weekHint:'Tap a day to open it in Day.',noneWk:'No weeks in this month.'}
 };
 let state={employees:[],weeks:{},current:null,off:{},offList:[]},lang='fr',selDay=0,mgrUnlocked=false,isEmployee=false,currentEmp=null,teamFilter='all',myId=null,myEmail='';
 
@@ -1031,7 +1034,15 @@ function renderMonthTable(){
  if(!keys.length){el.innerHTML='<tbody><tr><td class="nm">'+t.noneWk+'</td></tr></tbody>';return;}
  const span=keys.length+2;
  let h='<thead><tr><th class="nmh">'+t.name+'</th>';
- keys.forEach(k=>h+='<th class="wkcol" data-wkjump="'+k+'"><span class="thd">'+fmtDate(k,0)+'</span><span class="thsub">'+fmtDate(k,0).slice(0,2)+'-'+fmtDate(k,6).slice(0,2)+'</span></th>');
+ /* Une colonne = une semaine de paie. Ligne du haut: les jours du mois,
+    ligne du bas: le ou les mois traverses. Une semaine a cheval sur deux
+    mois affiche les deux, sinon on ne sait pas lire 29 - 5. */
+ keys.forEach(k=>{const a=new Date(k+'T00:00:00'),z=new Date(k+'T00:00:00');z.setDate(z.getDate()+6);
+  const one=a.getMonth()===z.getMonth();
+  const days=a.getDate()+' - '+z.getDate();
+  const mons=one?t.smonths[a.getMonth()]:t.smonths[a.getMonth()]+' - '+t.smonths[z.getMonth()];
+  h+='<th class="wkcol'+(k===state.current?' curcol':'')+'" data-wkjump="'+k+'" title="'+esc(t.weekOf+' '+fmtLong(k))+'">'
+   +'<span class="thd">'+days+'</span><span class="thsub">'+mons+'</span></th>';});
  h+='<th class="totc">'+t.tot+'</th></tr></thead><tbody>';
  let lastTeam=null,gt=0;const colT=keys.map(()=>0);
  adminEmps().forEach(e=>{const tm=empTeam(e);if(tm!==lastTeam){h+='<tr class="teamrow"><td colspan="'+span+'">'+teamLabel(tm)+'</td></tr>';lastTeam=tm;}
