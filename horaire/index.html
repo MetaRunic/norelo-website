@@ -276,6 +276,8 @@ h2{font-size:20px;font-weight:800;}
 .wkcardnav{display:flex;gap:.5rem;flex-shrink:0;}
 .wkcardnav .wnav{width:46px;height:44px;}
 #tipOut:not(:empty){margin-top:1.1rem;}
+.zerobar:not(:empty){margin-top:1rem;display:flex;justify-content:center;}
+@media(max-width:760px){.zerobar .btn{width:100%;}}
 .cardtoggle{display:flex;align-items:center;gap:.7rem;width:100%;background:none;border:none;
  padding:0;color:inherit;font-family:inherit;text-align:left;}
 .cardtoggle h3{margin-bottom:0;}
@@ -564,6 +566,7 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
           </div>
           <div class="kpis" id="mgrKpis"></div>
           <div class="mtscroll"><table class="mtable" id="mgrTable"></table></div>
+          <div id="mgrZeroBar" class="zerobar"></div>
         </div>
         <div class="card">
           <button type="button" class="cardtoggle" id="tipToggle">
@@ -684,7 +687,7 @@ const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
 const EMAIL_DOMAIN='@norelo-verger.app';
 const OWNERS=['dan','gill','sydney','patron'];
-const APP_VERSION=20; // bump this on each release, then click "Force update"
+const APP_VERSION=21; // bump this on each release, then click "Force update"
 const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const REG_SHIFTS=[['08:00','16:30'],['09:30','18:00']]; // quarts reguliers mis en evidence
@@ -704,7 +707,7 @@ const T={
    months:['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'],
    smonths:['janv','févr','mars','avril','mai','juin','juil','août','sept','oct','nov','déc'],
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Début',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
-   paid:'Payé',unpaid:'À payer',share:'Part',week:'Semaine',kHours:'Heures de la semaine',kPay:'Paie brute',kPaid:'Déjà payé',kUnpaid:'Reste à payer',mgrWeekK:'Semaine affichée',user:"Nom d'utilisateur",
+   paid:'Payé',unpaid:'À payer',share:'Part',week:'Semaine',kHours:'Heures de la semaine',kPay:'Paie brute',kPaid:'Déjà payé',kUnpaid:'Reste à payer',mgrWeekK:'Semaine affichée',mgrZeroShow:'Afficher les personnes sans heures',mgrZeroHide:'Masquer les personnes sans heures',mgrNoHours:"Personne n'a travaillé cette semaine.",user:"Nom d'utilisateur",
    chooseWeek:'Choisir une semaine',ws_past:'Passée',ws_cur:'En cours',ws_up:'À venir',teamAll:'Toutes',teamExt:'Extérieur',teamInt:'Intérieur',roleEmp:'Employé',roleMgr:'Gestionnaire',resetPwd:'MDP',clearF:'Effacer',backupsT:'Sauvegardes',backupNow:'Sauvegarder maintenant',
    locked:'Verrouillé',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouillés.<br><strong>Un jour verrouillé à corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Vérification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit être après l'heure de début.",hoursHi:'Heures de quart régulières en surbrillance',preseasonLbl:'Pré-saison',preseasonNote:"Pré-saison : heures de référence (avant l'ouverture du 17 août).",lunch:'Pause 30 min',otPending:'en attente',otOk:'approuvée',approve:'Approuver',revoke:'Retirer',tApprov:'Approbations',tApprovShort:'Approb.',tOt:'Heures supp.',otTitle:'Approbation des heures supplémentaires',otSub:'Les heures au-delà de 8h par jour sont payées à 16$/h une fois approuvées. Les gestionnaires sont payés à leur taux horaire.',otNone:'Aucune heure supplémentaire.',otAll:'Toutes les dates',tOff:'Congés',offLbl:'CONGÉ',offReq:'Demander un congé',offPending:'Congé demandé',offDenied:'Congé refusé',offPend:'en attente',offOk:'approuvé',offDen:'refusé',deny:'Refuser',offNone:'Aucune demande de congé.',cancel:'Annuler',offBlocked:'Effacez les heures pour demander un congé',
    otDen:'refusée',otAuto:"approuvée d'office",otShowDen:'Voir les refusées',otHideDen:'Masquer les refusées',otDenNone:'Aucune heure supplémentaire refusée.',otDenyC:'Refuser ces heures supplémentaires? Elles ne seront pas payées et quitteront la liste des demandes en attente.',
@@ -721,7 +724,7 @@ const T={
    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
    smonths:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
-   paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Hours this week',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',mgrWeekK:'Week shown',user:'Username',
+   paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Hours this week',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',mgrWeekK:'Week shown',mgrZeroShow:'Show people with no hours',mgrZeroHide:'Hide people with no hours',mgrNoHours:'Nobody worked this week.',user:'Username',
    chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',teamExt:'Exterior',teamInt:'Interior',roleEmp:'Employee',roleMgr:'Manager',resetPwd:'PW',clearF:'Clear',backupsT:'Backups',backupNow:'Backup now',
    locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted',preseasonLbl:'Pre-season',preseasonNote:'Pre-season: reference hours (before the Aug 17 opening).',lunch:'30-min lunch',otPending:'pending',otOk:'approved',approve:'Approve',revoke:'Undo',tApprov:'Approvals',tApprovShort:'Approb.',tOt:'Overtime',otTitle:'Overtime approvals',otSub:'Hours beyond 8h per day are paid at $16/h once approved. Managers are paid at their own hourly rate.',otNone:'No overtime.',otAll:'All dates',tOff:'Time off',offLbl:'OFF',offReq:'Request day off',offPending:'Day off requested',offDenied:'Day off denied',offPend:'pending',offOk:'approved',offDen:'denied',deny:'Deny',offNone:'No day-off requests.',cancel:'Cancel',offBlocked:'Clear the hours to request a day off',
    otDen:'denied',otAuto:'auto-approved',otShowDen:'Show denied',otHideDen:'Hide denied',otDenNone:'No denied overtime.',otDenyC:'Deny this overtime? It will not be paid and will leave the pending list.',
@@ -1113,6 +1116,11 @@ function renderUnpaid(){const el=document.getElementById('unpaidPanel');if(!el)r
   +u.weeks.slice().sort((a,b)=>a.k<b.k?1:-1).map(x=>'<button class="unpaidrow'+(x.k===state.current?' on':'')+'" data-uwk="'+x.k+'"><span>'+T[lang].weekOf+' '+fmtLong(x.k)+'</span><span class="unpaidamt">'+money(x.amt)+'</span><span class="unpaidgo">'+t.goWeek+' &rarr;</span></button>').join('')+'</div>';}
  else h+='<div class="unpaidlist"><div class="muted" style="padding:.4rem 0">'+t.unpaidNone+'</div></div>';
  el.innerHTML=h+'</div>';}
+let mgrZero=null;
+function mgrShowZero(){if(mgrZero!==null)return mgrZero;
+ try{const v=localStorage.getItem('noreloMgrZero');if(v!=null)return (mgrZero=(v==='1'));}catch(e){}
+ return (mgrZero=false);}
+function setMgrShowZero(v){mgrZero=!!v;try{localStorage.setItem('noreloMgrZero',v?'1':'0');}catch(e){}renderMgr();}
 let tipsOpen=null;
 function tipsIsOpen(){if(tipsOpen!==null)return tipsOpen;
  try{const v=localStorage.getItem('noreloTipsOpen');if(v!=null)return (tipsOpen=(v==='1'));}catch(e){}
@@ -1128,12 +1136,21 @@ function renderMgr(){const t=T[lang];renderUnpaid();updateMgrBadge();renderTips(
  if(_kp&&_kn){const ks=wkKeys(),i=ks.indexOf(state.current);_kp.disabled=i<=0;_kn.disabled=i>=ks.length-1;}const w=state.weeks[state.current];let th=0,tp=0,paid=0,unpaid=0;const to={ext:0,int:1};
  const emps=adminEmps();
  emps.forEach(e=>{const p=empPay(e.id);tp+=p;th+=empHours(e.id);if(w.paid[e.id])paid+=p;else unpaid+=p;});
+ /* Les totaux ci-dessus comptent tout le monde. Le tableau, lui, ne montre
+    que les personnes qui ont travaille, sauf si on demande le reste. */
+ const worked=e=>empHours(e.id)>0||empPay(e.id)>0;
+ const zeroN=emps.filter(e=>!worked(e)).length;
+ const shown=mgrShowZero()?emps:emps.filter(worked);
  document.getElementById('mgrKpis').innerHTML=kpi(th.toFixed(1)+'h',t.kHours,'')+kpi(money(tp),t.kPay,'')+kpi(money(paid),t.kPaid,'g')+kpi(money(unpaid),t.kUnpaid,'r');
  let rows='<tr><th>'+t.name+'</th><th>'+t.rate+'</th><th style="text-align:right">'+t.hours+'</th><th style="text-align:right">'+t.pay+'</th><th style="text-align:right">'+t.paid+'</th></tr>';
  let lastTeam=null;
- [...emps].sort((a,b)=>(to[empTeam(a)]-to[empTeam(b)])||empPay(b.id)-empPay(a.id)).forEach(e=>{const tm=empTeam(e);if(tm!==lastTeam){rows+='<tr class="teamrow"><td colspan="5">'+teamLabel(tm)+'</td></tr>';lastTeam=tm;}const yes=!!w.paid[e.id];
+ [...shown].sort((a,b)=>(to[empTeam(a)]-to[empTeam(b)])||empPay(b.id)-empPay(a.id)).forEach(e=>{const tm=empTeam(e);if(tm!==lastTeam){rows+='<tr class="teamrow"><td colspan="5">'+teamLabel(tm)+'</td></tr>';lastTeam=tm;}const yes=!!w.paid[e.id];
   const pend=empPending(e.id);rows+='<tr><td>'+esc(e.name)+'</td><td>'+money(e.rate)+'/h</td><td class="num">'+empHours(e.id).toFixed(2)+'h'+(pend>0?' <span class="otpend">+'+pend.toFixed(2)+'</span>':'')+'</td><td class="num">'+money(empPay(e.id))+'</td><td style="text-align:right"><button class="paidbtn '+(yes?'yes':'')+'" data-paid="'+e.id+'">'+(yes?t.paid:t.unpaid)+'</button></td></tr>';});
+ if(!shown.length)rows+='<tr><td colspan="5" class="muted" style="padding:1.1rem">'+t.mgrNoHours+'</td></tr>';
  document.getElementById('mgrTable').innerHTML=rows;
+ const zb=document.getElementById('mgrZeroBar');
+ if(zb)zb.innerHTML=zeroN?'<button type="button" class="btn ghost sm" id="mgrZeroToggle">'
+  +(mgrShowZero()?t.mgrZeroHide:t.mgrZeroShow)+' ('+zeroN+')</button>':'';
 }
 function renderEmpAdmin(){const t=T[lang];document.getElementById('empAdmin').innerHTML=sortedEmps().map(e=>{const mgr=e.prole==='manager';
  return '<div class="emprow" data-id="'+e.id+'">'
@@ -1298,6 +1315,8 @@ function bindApp(){
   document.getElementById('unpaidPanel').addEventListener('click',e=>{const b=e.target.closest('[data-uwk]');if(!b)return;
    state.current=b.getAttribute('data-uwk');renderAll();
    const c=document.getElementById('mgrWeekCard');if(c)c.scrollIntoView({block:'start',behavior:'smooth'});});
+  document.getElementById('mgrZeroBar').addEventListener('click',e=>{
+   if(e.target.closest('#mgrZeroToggle'))setMgrShowZero(!mgrShowZero());});
   document.getElementById('mgrPrev').onclick=()=>gotoWeek(-1);
   document.getElementById('mgrNext').onclick=()=>gotoWeek(1);
   document.getElementById('tipToggle').onclick=()=>setTipsOpen(!tipsIsOpen());
