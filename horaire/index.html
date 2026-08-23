@@ -684,7 +684,7 @@ const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
 const EMAIL_DOMAIN='@norelo-verger.app';
 const OWNERS=['dan','gill','sydney','patron'];
-const APP_VERSION=19; // bump this on each release, then click "Force update"
+const APP_VERSION=20; // bump this on each release, then click "Force update"
 const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const REG_SHIFTS=[['08:00','16:30'],['09:30','18:00']]; // quarts reguliers mis en evidence
@@ -707,7 +707,7 @@ const T={
    paid:'Payé',unpaid:'À payer',share:'Part',week:'Semaine',kHours:'Heures de la semaine',kPay:'Paie brute',kPaid:'Déjà payé',kUnpaid:'Reste à payer',mgrWeekK:'Semaine affichée',user:"Nom d'utilisateur",
    chooseWeek:'Choisir une semaine',ws_past:'Passée',ws_cur:'En cours',ws_up:'À venir',teamAll:'Toutes',teamExt:'Extérieur',teamInt:'Intérieur',roleEmp:'Employé',roleMgr:'Gestionnaire',resetPwd:'MDP',clearF:'Effacer',backupsT:'Sauvegardes',backupNow:'Sauvegarder maintenant',
    locked:'Verrouillé',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouillés.<br><strong>Un jour verrouillé à corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Vérification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit être après l'heure de début.",hoursHi:'Heures de quart régulières en surbrillance',preseasonLbl:'Pré-saison',preseasonNote:"Pré-saison : heures de référence (avant l'ouverture du 17 août).",lunch:'Pause 30 min',otPending:'en attente',otOk:'approuvée',approve:'Approuver',revoke:'Retirer',tApprov:'Approbations',tApprovShort:'Approb.',tOt:'Heures supp.',otTitle:'Approbation des heures supplémentaires',otSub:'Les heures au-delà de 8h par jour sont payées à 16$/h une fois approuvées. Les gestionnaires sont payés à leur taux horaire.',otNone:'Aucune heure supplémentaire.',otAll:'Toutes les dates',tOff:'Congés',offLbl:'CONGÉ',offReq:'Demander un congé',offPending:'Congé demandé',offDenied:'Congé refusé',offPend:'en attente',offOk:'approuvé',offDen:'refusé',deny:'Refuser',offNone:'Aucune demande de congé.',cancel:'Annuler',offBlocked:'Effacez les heures pour demander un congé',
-   otDen:'refusée',otShowDen:'Voir les refusées',otHideDen:'Masquer les refusées',otDenNone:'Aucune heure supplémentaire refusée.',otDenyC:'Refuser ces heures supplémentaires? Elles ne seront pas payées et quitteront la liste des demandes en attente.',
+   otDen:'refusée',otAuto:"approuvée d'office",otShowDen:'Voir les refusées',otHideDen:'Masquer les refusées',otDenNone:'Aucune heure supplémentaire refusée.',otDenyC:'Refuser ces heures supplémentaires? Elles ne seront pas payées et quitteront la liste des demandes en attente.',
    exportDone:'Fichier CSV téléchargé',exportEmpty:'Aucune heure à exporter.',
    bkDel:'Supprimer',bkDelC:'Supprimer cette sauvegarde définitivement? Cette action est irréversible.',bkDeleted:'Sauvegarde supprimée',
    csvEmp:'Employé',csvDept:'Département',csvDate:'Date',csvStart:'Début',csvEnd:'Fin',csvWorked:'Heures travaillées',csvOt:'Heures supp.',csvAppr:'Approuvées',csvPay:'Paie',csvYes:'Oui',csvNo:'Non',csvDenied:'Refusées',unpaidT:'Solde impayé, toutes les semaines',unpaidSub:'Total dû à tous les employés, toutes semaines confondues.',unpaidWeeks:'Semaines à payer',unpaidNone:'Tout est payé.',alertT:'Seuil atteint',alertS:'Le solde impayé dépasse ',alertA:' Prévenez Gill.',warnT:'Approche du seuil',warnS:'Le solde impayé approche de ',okT:'Sous le seuil',okS:'Le solde impayé reste sous ',goWeek:'Voir',bkDl:'Télécharger',bkDlDone:'Sauvegarde téléchargée sur cet appareil',bkExplain:'Chaque modification est enregistrée immédiatement dans le nuage. Une sauvegarde automatique est créée toutes les 12 h.',expLast:'Dernier export des heures',expNever:'jamais sur cet appareil',expToday:"aujourd'hui",expAgo:'il y a ',expDay:' jour',expDays:' jours',expHint:'Exportez les heures et gardez le fichier ailleurs que dans Supabase.',exportFail:"L'export a échoué.",fltFrom:'Du',fltTo:'Au',exportXlsx:'Exporter les heures (Excel)',exportCsvAlt:'CSV brut',csvTotal:'TOTAL',csvSheet:'Heures',tMonth:'Mois',monthHint:'Chaque colonne est une semaine de paie, du lundi au dimanche. Touchez-en une pour ouvrir cette semaine.',weekHint:'Touchez un jour pour l\'ouvrir dans Jour.',noneWk:'Aucune semaine dans ce mois.'},
@@ -724,7 +724,7 @@ const T={
    paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Hours this week',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',mgrWeekK:'Week shown',user:'Username',
    chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',teamExt:'Exterior',teamInt:'Interior',roleEmp:'Employee',roleMgr:'Manager',resetPwd:'PW',clearF:'Clear',backupsT:'Backups',backupNow:'Backup now',
    locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted',preseasonLbl:'Pre-season',preseasonNote:'Pre-season: reference hours (before the Aug 17 opening).',lunch:'30-min lunch',otPending:'pending',otOk:'approved',approve:'Approve',revoke:'Undo',tApprov:'Approvals',tApprovShort:'Approb.',tOt:'Overtime',otTitle:'Overtime approvals',otSub:'Hours beyond 8h per day are paid at $16/h once approved. Managers are paid at their own hourly rate.',otNone:'No overtime.',otAll:'All dates',tOff:'Time off',offLbl:'OFF',offReq:'Request day off',offPending:'Day off requested',offDenied:'Day off denied',offPend:'pending',offOk:'approved',offDen:'denied',deny:'Deny',offNone:'No day-off requests.',cancel:'Cancel',offBlocked:'Clear the hours to request a day off',
-   otDen:'denied',otShowDen:'Show denied',otHideDen:'Hide denied',otDenNone:'No denied overtime.',otDenyC:'Deny this overtime? It will not be paid and will leave the pending list.',
+   otDen:'denied',otAuto:'auto-approved',otShowDen:'Show denied',otHideDen:'Hide denied',otDenNone:'No denied overtime.',otDenyC:'Deny this overtime? It will not be paid and will leave the pending list.',
    exportDone:'CSV file downloaded',exportEmpty:'No hours to export.',
    bkDel:'Delete',bkDelC:'Permanently delete this backup? This cannot be undone.',bkDeleted:'Backup deleted',
    csvEmp:'Employee',csvDept:'Department',csvDate:'Date',csvStart:'Start',csvEnd:'End',csvWorked:'Worked hours',csvOt:'Overtime',csvAppr:'Approved',csvPay:'Pay',csvYes:'Yes',csvNo:'No',csvDenied:'Denied',unpaidT:'Unpaid balance, all weeks',unpaidSub:'Total owed to every employee across all weeks.',unpaidWeeks:'Weeks to pay',unpaidNone:'Everything is paid.',alertT:'Threshold reached',alertS:'The unpaid balance is over ',alertA:' Notify Gill.',warnT:'Approaching the threshold',warnS:'The unpaid balance is nearing ',okT:'Under the threshold',okS:'The unpaid balance stays under ',goWeek:'View',bkDl:'Download',bkDlDone:'Backup downloaded to this device',bkExplain:'Every change is saved to the cloud immediately. An automatic backup is created every 12 h.',expLast:'Last hours export',expNever:'never on this device',expToday:'today',expAgo:'',expDay:' day ago',expDays:' days ago',expHint:'Export the hours and keep the file somewhere other than Supabase.',exportFail:'The export failed.',fltFrom:'From',fltTo:'To',exportXlsx:'Export hours (Excel)',exportCsvAlt:'Raw CSV',csvTotal:'TOTAL',csvSheet:'Hours',tMonth:'Month',monthHint:'Each column is one pay week, Monday to Sunday. Tap one to open that week.',weekHint:'Tap a day to open it in Day.',noneWk:'No weeks in this month.'}
@@ -758,7 +758,9 @@ async function reloadOff(){const {data:off}=await sb.from('time_off').select('id
  (off||[]).forEach(r=>{(state.off[r.employee_id]||(state.off[r.employee_id]={}))[r.off_date]=r.status;});}
 function offStatus(empId,dISO){return (state.off[empId]&&state.off[empId][dISO])||null;}
 function isOff(empId,dISO){const s=offStatus(empId,dISO);return s==='pending'||s==='approved';}
-async function saveShift(empId,weekKey,dayIdx,day){const work_date=addDaysISO(weekKey,dayIdx);const st=otState(day.otst);const {error}=await sb.from('shifts').upsert({employee_id:empId,work_date,start_time:day.start||null,end_time:day.end||null,lunch:day.lunch!==false,ot_approved:st==='approved',ot_status:st},{onConflict:'employee_id,work_date'});return error;}
+async function saveShift(empId,weekKey,dayIdx,day){const work_date=addDaysISO(weekKey,dayIdx);
+ /* Le statut d'un gestionnaire est toujours approuve, quoi qu'il arrive. */
+ const st=otAuto(empById(empId))?'approved':otState(day.otst);const {error}=await sb.from('shifts').upsert({employee_id:empId,work_date,start_time:day.start||null,end_time:day.end||null,lunch:day.lunch!==false,ot_approved:st==='approved',ot_status:st},{onConflict:'employee_id,work_date'});return error;}
 function subscribeRealtime(){
  sb.channel('rt-horaire')
   .on('postgres_changes',{event:'*',schema:'public',table:'shifts'},p=>{const r=p.new||p.old;if(!r)return;const dd=new Date(r.work_date+'T00:00:00');const wk=weekKeyForDate(dd);const w=state.weeks[wk];if(!w||!w.data[r.employee_id])return;const di=(dd.getDay()+6)%7;
@@ -786,16 +788,19 @@ function lunchOn(day,emp){return !!(day&&day.lunch!==false&&!isMgrEmp(emp));}
 function hrs(day,emp){let m=rawMin(day);if(lunchOn(day,emp))m-=30;return m<=0?0:Math.round(m/60*100)/100;}
 function regHours(day,emp){return Math.min(hrs(day,emp),OT_THRESH);}
 function otHours(day,emp){return Math.max(0,Math.round((hrs(day,emp)-OT_THRESH)*100)/100);}
-function otApproved(day){return !!(day&&day.ot);}
-function otDenied(day){return !!(day&&otState(day.otst)==='denied');}
-function paidHours(day,emp){return Math.round((regHours(day,emp)+(otApproved(day)?otHours(day,emp):0))*100)/100;}
+/* Un gestionnaire n'a pas a approuver ses propres heures supplementaires:
+   elles sont approuvees d'office et ne peuvent pas etre refusees. */
+function otAuto(emp){return isMgrEmp(emp);}
+function otApproved(day,emp){return otAuto(emp)||!!(day&&day.ot);}
+function otDenied(day,emp){return !otAuto(emp)&&!!(day&&otState(day.otst)==='denied');}
+function paidHours(day,emp){return Math.round((regHours(day,emp)+(otApproved(day,emp)?otHours(day,emp):0))*100)/100;}
 /* Les gestionnaires touchent leurs heures supp. a leur propre taux horaire.
    Les employes gardent le taux fixe de 16 $/h. */
 function otRate(emp){return isMgrEmp(emp)?(emp?emp.rate:0):OT_RATE;}
-function dayPay(day,emp){const r=emp?emp.rate:0;return Math.round((regHours(day,emp)*r+(otApproved(day)?otHours(day,emp)*otRate(emp):0))*100)/100;}
+function dayPay(day,emp){const r=emp?emp.rate:0;return Math.round((regHours(day,emp)*r+(otApproved(day,emp)?otHours(day,emp)*otRate(emp):0))*100)/100;}
 function empHoursIn(wk,id){const w=state.weeks[wk];if(!w||!w.data[id])return 0;const e=empById(id);let t=0;DAYS.forEach((d,i)=>{if(isOff(id,addDaysISO(wk,i)))return;t+=paidHours(w.data[id][d],e);});return Math.round(t*100)/100;}
 function empHours(id){return empHoursIn(state.current,id);}
-function empPending(id){const w=state.weeks[state.current];const e=empById(id);let t=0;DAYS.forEach((d,i)=>{if(isOff(id,addDaysISO(state.current,i)))return;const day=w.data[id][d];if(!otApproved(day))t+=otHours(day,e);});return Math.round(t*100)/100;}
+function empPending(id){const w=state.weeks[state.current];const e=empById(id);let t=0;DAYS.forEach((d,i)=>{if(isOff(id,addDaysISO(state.current,i)))return;const day=w.data[id][d];if(!otApproved(day,e))t+=otHours(day,e);});return Math.round(t*100)/100;}
 function empPayIn(wk,id){const w=state.weeks[wk];if(!w||!w.data[id])return 0;const e=empById(id);let p=0;DAYS.forEach((d,i)=>{if(isOff(id,addDaysISO(wk,i)))return;p+=dayPay(w.data[id][d],e);});return Math.round(p*100)/100;}
 function empPay(id){return empPayIn(state.current,id);}
 
@@ -916,13 +921,14 @@ function gotoWeek(delta){const keys=wkKeys();let i=keys.indexOf(state.current);i
 function renderDayPick(){const w=state.weeks[state.current];const t=T[lang];const tISO=realTodayISO();
  document.getElementById('daypick').innerHTML=t.sdays.map((d,i)=>{const isT=addDaysISO(w.start,i)===tISO;return '<button class="daybtn'+(i===selDay?' on':'')+(isT?' today':'')+(isPreseason(addDaysISO(w.start,i))?' pre':'')+'" data-day="'+i+'"><div class="dn">'+d+'</div><div class="dd">'+fmtDate(w.start,i)+'</div></button>';}).join('');}
 function otBadgeHTML(day,emp){const t=T[lang];const ot=otHours(day,emp);if(ot<=0)return '';
- if(otApproved(day))return '<span class="otinfo ok">+'+ot.toFixed(2)+'h '+t.otOk+'</span>';
- if(otDenied(day))return '<span class="otinfo den">+'+ot.toFixed(2)+'h '+t.otDen+'</span>';
+  if(otAuto(emp))return '<span class="otinfo ok">+'+ot.toFixed(2)+'h '+t.otAuto+'</span>';
+ if(otApproved(day,emp))return '<span class="otinfo ok">+'+ot.toFixed(2)+'h '+t.otOk+'</span>';
+ if(otDenied(day,emp))return '<span class="otinfo den">+'+ot.toFixed(2)+'h '+t.otDen+'</span>';
  return '<span class="otinfo pend">+'+ot.toFixed(2)+'h '+t.otPending+'</span>';}
 function exRow(day,emp,dayIdx,editable,canApprove){const t=T[lang];const ot=otHours(day,emp);
  let left=isMgrEmp(emp)?'':'<label class="lunchbox"><input type="checkbox" class="lchk" data-day="'+dayIdx+'"'+(day.lunch!==false?' checked':'')+(editable?'':' disabled')+'/> '+t.lunch+'</label>';
  let right=otBadgeHTML(day,emp);
- if(ot>0&&canApprove)right+=(otApproved(day)||otDenied(day))?'<button class="otbtn undo" data-otd="'+dayIdx+'" data-otv="pending">'+t.revoke+'</button>':'<button class="otbtn" data-otd="'+dayIdx+'" data-otv="approved">'+t.approve+'</button><button class="otbtn undo" data-otd="'+dayIdx+'" data-otv="denied">'+t.deny+'</button>';
+ if(ot>0&&canApprove&&!otAuto(emp))right+=(otApproved(day,emp)||otDenied(day,emp))?'<button class="otbtn undo" data-otd="'+dayIdx+'" data-otv="pending">'+t.revoke+'</button>':'<button class="otbtn" data-otd="'+dayIdx+'" data-otv="approved">'+t.approve+'</button><button class="otbtn undo" data-otd="'+dayIdx+'" data-otv="denied">'+t.deny+'</button>';
  if(!left&&!right)return '';
  return '<div class="exrow"><div class="exl">'+left+'</div><div class="exr">'+right+'</div></div>';}
 function rerenderDayViews(){if(isEmployee){renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);}else{renderDayList();renderCalendar(document.getElementById('calAdmin'),null);if(mgrUnlocked)renderMgr();}renderWeekBar();}
@@ -943,7 +949,7 @@ async function setOT(empId,weekKey,dayIdx,status){const w=state.weeks[weekKey];i
  const em=empById(empId);logAction(st==='approved'?'approve_ot':st==='denied'?'deny_ot':'revoke_ot',(em?em.name:'')+' '+addDaysISO(weekKey,dayIdx));}
 /* Les approbations et le solde impaye ne suivent pas le filtre d'equipe:
    ces ecrans ne l'offrent pas, donc ils couvrent toute l'equipe. */
-function otPendingCount(){let n=0;wkKeys().forEach(wk=>{const w=state.weeks[wk];sortedEmps().forEach(e=>DAYS.forEach((dk,i)=>{if(isOff(e.id,addDaysISO(wk,i)))return;const day=w.data[e.id][dk];if(otHours(day,e)>0&&!otApproved(day)&&!otDenied(day))n++;}));});return n;}
+function otPendingCount(){let n=0;wkKeys().forEach(wk=>{const w=state.weeks[wk];sortedEmps().forEach(e=>{if(otAuto(e))return;DAYS.forEach((dk,i)=>{if(isOff(e.id,addDaysISO(wk,i)))return;const day=w.data[e.id][dk];if(otHours(day,e)>0&&!otApproved(day,e)&&!otDenied(day,e))n++;});});});return n;}
 function offPendingCount(){return state.offList.filter(r=>r.status==='pending'&&sortedEmps().some(e=>e.id===r.employee_id)).length;}
 function setBadge(id,n){const b=document.getElementById(id);if(!b)return;if(n>0){b.textContent=n;b.style.display='inline-block';}else{b.textContent='';b.style.display='none';}}
 function updateOTBadge(){const ot=otPendingCount(),off=offPendingCount();setBadge('otBadge',ot+off);setBadge('otBadgeNav',ot+off);setBadge('otSubBadge',ot);setBadge('offSubBadge',off);updateMgrBadge();}
@@ -972,7 +978,7 @@ function renderTimeOff(){const el=document.getElementById('offList');if(!el)retu
   return '<div class="otrow'+(r.status!=='pending'?' done':'')+'"><div class="oti"><div class="otn">'+esc(em?em.name:'?')+'</div><div class="otd">'+dlabel+'</div></div><div class="otx">'+badge+btns+'</div></div>';}).join('');}
 function showOTSub(s){otSubTab=s;document.querySelectorAll('#otView .stf').forEach(b=>b.classList.toggle('on',b.getAttribute('data-otsub')===s));document.getElementById('otPane').style.display=s==='ot'?'block':'none';document.getElementById('offPane').style.display=s==='off'?'block':'none';if(s==='ot')renderOT();else renderTimeOff();}
 let otSelDate=null,otSubTab='ot',otShowDenied=false;
-function otDays(){const rows=[];wkKeys().forEach(wk=>{const w=state.weeks[wk];sortedEmps().forEach(e=>{DAYS.forEach((dk,i)=>{const dISO=addDaysISO(wk,i);if(isOff(e.id,dISO))return;const day=w.data[e.id][dk];const ot=otHours(day,e);if(ot>0)rows.push({e,wk,i,day,ot,dISO,appr:otApproved(day),den:otDenied(day)});});});});return rows;}
+function otDays(){const rows=[];wkKeys().forEach(wk=>{const w=state.weeks[wk];sortedEmps().forEach(e=>{if(otAuto(e))return;DAYS.forEach((dk,i)=>{const dISO=addDaysISO(wk,i);if(isOff(e.id,dISO))return;const day=w.data[e.id][dk];const ot=otHours(day,e);if(ot>0)rows.push({e,wk,i,day,ot,dISO,appr:otApproved(day,e),den:otDenied(day,e)});});});});return rows;}
 function renderOTCal(rows){const el=document.getElementById('otCal');if(!el)return;const t=T[lang];
  const byDate={};rows.forEach(r=>{const d=byDate[r.dISO]||(byDate[r.dISO]={pend:0,appr:0});if(r.appr)d.appr++;else d.pend++;});
  const dates=Object.keys(byDate);if(!dates.length){el.innerHTML='';return;}
@@ -1421,7 +1427,7 @@ async function fetchHoursRows(){const t=T[lang];
   if(!day.start&&!day.end)return;
   const ot=otHours(day,e);
   rows.push({nm:e?e.name:r.employee_id,tm:e?teamLabel(empTeam(e)):'',d:r.work_date,s:day.start||'',e2:day.end||'',
-   w:hrs(day,e),ot:ot,ap:ot<=0?'':(otApproved(day)?t.csvYes:otDenied(day)?t.csvDenied:t.csvNo),p:dayPay(day,e),off:false});});
+   w:hrs(day,e),ot:ot,ap:ot<=0?'':(otApproved(day,e)?t.csvYes:otDenied(day,e)?t.csvDenied:t.csvNo),p:dayPay(day,e),off:false});});
  Object.keys(offMap).forEach(k=>{const i=k.lastIndexOf('|');const id=k.slice(0,i),d=k.slice(i+1);const e=empById(id);
   rows.push({nm:e?e.name:id,tm:e?teamLabel(empTeam(e)):'',d:d,s:t.offLbl,e2:t.offLbl,w:0,ot:0,ap:'',p:0,off:true});});
  rows.sort((a,b)=>a.nm.localeCompare(b.nm)||(a.d<b.d?-1:a.d>b.d?1:0));
