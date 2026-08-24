@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Norelo</title>
+<title>Norelo, sites web et soutien informatique dans les Laurentides</title>
 <meta name="description" content="Création de sites web, soutien informatique et consultation technologique pour les entreprises des Laurentides."/>
 <link rel="canonical" href="https://norelo.ca/"/>
 
@@ -30,9 +30,20 @@
 <meta name="twitter:image" content="https://norelo.ca/img/og-norelo.png"/>
 <meta name="twitter:image:alt" content="Norelo"/>
 
+<link rel="icon" type="image/png" sizes="192x192" href="/img/icon-192.png"/>
+<link rel="icon" type="image/png" sizes="512x512" href="/img/icon-512.png"/>
 <link rel="icon" type="image/png" href="/favicon.png"/>
-<link rel="icon" type="image/png" sizes="192x192" href="/favicon.png"/>
-<link rel="apple-touch-icon" href="/favicon.png"/>
+
+<!-- Ecran d'accueil. iOS ne gere pas la transparence ici et la remplace par
+     du noir, donc cette icone est opaque et deja a la bonne taille. -->
+<link rel="apple-touch-icon" sizes="180x180" href="/img/icon-180.png"/>
+<meta name="apple-mobile-web-app-title" content="Norelo"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="application-name" content="Norelo"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<meta name="theme-color" content="#0b1533"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{--blue:#2563eb;--bl:#4fa3e8;--bp:#60a5fa;--dark:#070f2b;--d3:#0d1b3e;--bdr:#e2e8f0;--gr:#64748b;}
@@ -342,6 +353,27 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
   .hbtn{display:flex;}
 }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Norelo",
+  "url": "https://norelo.ca/",
+  "image": "https://norelo.ca/img/og-norelo.png",
+  "logo": "https://norelo.ca/img/icon-512.png",
+  "description": "Création de sites web, soutien informatique et consultation technologique pour les entreprises des Laurentides.",
+  "email": "norelo.danielb@gmail.com",
+  "priceRange": "$$",
+  "inLanguage": ["fr-CA", "en-CA"],
+  "address": { "@type": "PostalAddress", "addressLocality": "Saint-Joseph-du-Lac", "addressRegion": "QC", "addressCountry": "CA" },
+  "areaServed": ["Laurentides", "Laval", "Grand Montréal"],
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+    "opens": "09:00", "closes": "18:00"
+  }]
+}
+</script>
 </head>
 <body>
 <div id="cur"></div>

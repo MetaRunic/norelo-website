@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# L'app d'horaire est privee et deja en noindex, on evite qu'elle soit exploree.
+Disallow: /horaire/
+
+Sitemap: https://norelo.ca/sitemap.xml
