@@ -447,7 +447,8 @@ h2{font-size:20px;font-weight:800;}
 .docmeta{font-size:12px;color:var(--gr);font-weight:700;}
 .docacts{display:flex;align-items:center;gap:.5rem;flex-shrink:0;}
 .docread{font-size:12px;font-weight:800;color:var(--gr);white-space:nowrap;}
-.docread.ok{color:var(--leaf);background:rgba(52,211,153,.13);border:1.5px solid rgba(52,211,153,.34);border-radius:9px;padding:9px 15px;}
+.docread.ok{color:var(--leaf);background:rgba(52,211,153,.13);border-color:rgba(52,211,153,.34);}
+.docrow .docread{border:1.5px solid transparent;border-radius:9px;padding:9px 15px;min-width:78px;text-align:center;}
 .btn.ghost.docdel{color:var(--red);border-color:rgba(240,101,90,.45);}
 .docup{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;}
 .docup input[type=text]{flex:1;min-width:150px;}
@@ -818,7 +819,7 @@ const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
 const EMAIL_DOMAIN='@norelo-verger.app';
 const OWNERS=['dan','gill','sydney','patron'];
-const APP_VERSION=27; // bump this on each release, then click "Force update"
+const APP_VERSION=28; // bump this on each release, then click "Force update"
 const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const REG_SHIFTS=[['08:00','16:30'],['09:30','18:00']]; // quarts reguliers mis en evidence
@@ -838,7 +839,7 @@ const T={
    months:['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'],
    smonths:['janv','févr','mars','avril','mai','juin','juil','août','sept','oct','nov','déc'],
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Début',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
-   paid:'Payé',unpaid:'À payer',share:'Part',week:'Semaine',kHours:'Heures de la semaine',kPay:'Paie brute',kPaid:'Déjà payé',kUnpaid:'Reste à payer',mgrWeekK:'Semaine affichée',empEntry:'Mes heures',tDocs:'Documents',docsAdd:'Ajouter un document',docsUpload:'Téléverser',docsNone:'Aucun document pour le moment.',docsLoading:'Chargement...',docsOpen:'Ouvrir',docsAck:'Marquer comme lu',docsReadOk:'Lu',docsReadN:'ont lu',docsDel:'Supprimer',docsSection:'section',docsSections:'sections',docsNoParent:'Aucun parent (fichier maître)',docsErrOpen:"Impossible d'ouvrir ce document.",docsErrRead:'Impossible de marquer comme lu.',docsPickFile:'Choisissez un fichier PDF.',docsPickTitle:'Donnez un titre.',docsTooBig:'Fichier trop volumineux. Maximum 50 Mo.',docsUploading:'Téléversement en cours...',docsErrUp:'Échec du téléversement:',docsUpOk:'Document ajouté',docsDelOne:'Supprimer ce document: {t}?',docsDelKids:'Ce fichier maître contient {n} section(s). Tout supprimer?',docsErrDel:'Suppression refusée.',docsDelOk:'Document supprimé',empRelev:'Mon relevé',empRest:'Voir le reste de la semaine',empRestHide:'Masquer le reste de la semaine',stHours:'Heures totales',stDay:'journée',stDays:'journées',stAll:'Toutes vos semaines',stNone:'Aucune heure enregistrée pour le moment.',settleTip:'Marquer ce supplément comme payé',overTip:'Montant versé supérieur aux heures actuelles',settled:'Supplément réglé',mgrZeroShow:'Afficher les personnes sans heures',mgrZeroHide:'Masquer les personnes sans heures',mgrNoHours:"Personne n'a travaillé cette semaine.",user:"Nom d'utilisateur",
+   paid:'Payé',unpaid:'À payer',share:'Part',week:'Semaine',kHours:'Heures de la semaine',kPay:'Paie brute',kPaid:'Déjà payé',kUnpaid:'Reste à payer',mgrWeekK:'Semaine affichée',empEntry:'Mes heures',tDocs:'Documents',docsAdd:'Ajouter un document',docsUpload:'Téléverser',docsNone:'Aucun document pour le moment.',docsLoading:'Chargement...',docsOpen:'Ouvrir',docsReadOk:'Lu',docsUnread:'Non lu',docsReadN:'ont lu',docsDel:'Supprimer',docsSection:'section',docsSections:'sections',docsNoParent:'Aucun parent (fichier maître)',docsErrOpen:"Impossible d'ouvrir ce document.",docsPickFile:'Choisissez un fichier PDF.',docsPickTitle:'Donnez un titre.',docsTooBig:'Fichier trop volumineux. Maximum 50 Mo.',docsUploading:'Téléversement en cours...',docsErrUp:'Échec du téléversement:',docsUpOk:'Document ajouté',docsDelOne:'Supprimer ce document: {t}?',docsDelKids:'Ce fichier maître contient {n} section(s). Tout supprimer?',docsErrDel:'Suppression refusée.',docsDelOk:'Document supprimé',empRelev:'Mon relevé',empRest:'Voir le reste de la semaine',empRestHide:'Masquer le reste de la semaine',stHours:'Heures totales',stDay:'journée',stDays:'journées',stAll:'Toutes vos semaines',stNone:'Aucune heure enregistrée pour le moment.',settleTip:'Marquer ce supplément comme payé',overTip:'Montant versé supérieur aux heures actuelles',settled:'Supplément réglé',mgrZeroShow:'Afficher les personnes sans heures',mgrZeroHide:'Masquer les personnes sans heures',mgrNoHours:"Personne n'a travaillé cette semaine.",user:"Nom d'utilisateur",
    chooseWeek:'Choisir une semaine',ws_past:'Passée',ws_cur:'En cours',ws_up:'À venir',teamAll:'Toutes',teamExt:'Extérieur',teamInt:'Intérieur',roleEmp:'Employé',roleMgr:'Gestionnaire',resetPwd:'MDP',clearF:'Effacer',backupsT:'Sauvegardes',backupNow:'Sauvegarder maintenant',
    locked:'Verrouillé',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouillés.<br><strong>Un jour verrouillé à corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Vérification de l\'heure...',todayLbl:"Aujourd'hui",yestLbl:'Hier',badTime:"L'heure de fin doit être après l'heure de début.",hoursHi:'Heures de quart régulières en surbrillance',preseasonLbl:'Pré-saison',preseasonNote:"Pré-saison : heures de référence (avant l'ouverture du 17 août).",lunch:'Pause 30 min',otPending:'en attente',otOk:'approuvée',approve:'Approuver',revoke:'Retirer',tApprov:'Approbations',tApprovShort:'Approb.',tOt:'Heures supp.',otTitle:'Approbation des heures supplémentaires',otSub:'Les heures au-delà de 8h par jour sont payées à 16$/h une fois approuvées. Les gestionnaires sont payés à leur taux horaire.',otNone:'Aucune heure supplémentaire.',otAll:'Toutes les dates',tOff:'Congés',offLbl:'CONGÉ',offReq:'Demander un congé',offPending:'Congé demandé',offDenied:'Congé refusé',offPend:'en attente',offOk:'approuvé',offDen:'refusé',deny:'Refuser',offNone:'Aucune demande de congé.',cancel:'Annuler',offBlocked:'Effacez les heures pour demander un congé',
    otDen:'refusée',otAuto:"approuvée d'office",otShowDen:'Voir les refusées',otHideDen:'Masquer les refusées',otDenNone:'Aucune heure supplémentaire refusée.',otDenyC:'Refuser ces heures supplémentaires? Elles ne seront pas payées et quitteront la liste des demandes en attente.',
@@ -855,7 +856,7 @@ const T={
    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
    smonths:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
-   paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Hours this week',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',mgrWeekK:'Week shown',empEntry:'My hours',tDocs:'Documents',docsAdd:'Add a document',docsUpload:'Upload',docsNone:'No documents yet.',docsLoading:'Loading...',docsOpen:'Open',docsAck:'Mark as read',docsReadOk:'Read',docsReadN:'have read',docsDel:'Delete',docsSection:'section',docsSections:'sections',docsNoParent:'No parent (master file)',docsErrOpen:'Could not open this document.',docsErrRead:'Could not mark as read.',docsPickFile:'Choose a PDF file.',docsPickTitle:'Enter a title.',docsTooBig:'File too large. 50 MB maximum.',docsUploading:'Uploading...',docsErrUp:'Upload failed:',docsUpOk:'Document added',docsDelOne:'Delete this document: {t}?',docsDelKids:'This master file has {n} section(s). Delete all of it?',docsErrDel:'Delete refused.',docsDelOk:'Document deleted',empRelev:'My statement',empRest:'Show the rest of the week',empRestHide:'Hide the rest of the week',stHours:'Total hours',stDay:'day',stDays:'days',stAll:'All your weeks',stNone:'No hours recorded yet.',settleTip:'Mark this extra as paid',overTip:'Amount paid is higher than the current hours',settled:'Extra settled',mgrZeroShow:'Show people with no hours',mgrZeroHide:'Hide people with no hours',mgrNoHours:'Nobody worked this week.',user:'Username',
+   paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Hours this week',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',mgrWeekK:'Week shown',empEntry:'My hours',tDocs:'Documents',docsAdd:'Add a document',docsUpload:'Upload',docsNone:'No documents yet.',docsLoading:'Loading...',docsOpen:'Open',docsReadOk:'Read',docsUnread:'Unread',docsReadN:'have read',docsDel:'Delete',docsSection:'section',docsSections:'sections',docsNoParent:'No parent (master file)',docsErrOpen:'Could not open this document.',docsPickFile:'Choose a PDF file.',docsPickTitle:'Enter a title.',docsTooBig:'File too large. 50 MB maximum.',docsUploading:'Uploading...',docsErrUp:'Upload failed:',docsUpOk:'Document added',docsDelOne:'Delete this document: {t}?',docsDelKids:'This master file has {n} section(s). Delete all of it?',docsErrDel:'Delete refused.',docsDelOk:'Document deleted',empRelev:'My statement',empRest:'Show the rest of the week',empRestHide:'Hide the rest of the week',stHours:'Total hours',stDay:'day',stDays:'days',stAll:'All your weeks',stNone:'No hours recorded yet.',settleTip:'Mark this extra as paid',overTip:'Amount paid is higher than the current hours',settled:'Extra settled',mgrZeroShow:'Show people with no hours',mgrZeroHide:'Hide people with no hours',mgrNoHours:'Nobody worked this week.',user:'Username',
    chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',teamExt:'Exterior',teamInt:'Interior',roleEmp:'Employee',roleMgr:'Manager',resetPwd:'PW',clearF:'Clear',backupsT:'Backups',backupNow:'Backup now',
    locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',yestLbl:'Yesterday',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted',preseasonLbl:'Pre-season',preseasonNote:'Pre-season: reference hours (before the Aug 17 opening).',lunch:'30-min lunch',otPending:'pending',otOk:'approved',approve:'Approve',revoke:'Undo',tApprov:'Approvals',tApprovShort:'Approb.',tOt:'Overtime',otTitle:'Overtime approvals',otSub:'Hours beyond 8h per day are paid at $16/h once approved. Managers are paid at their own hourly rate.',otNone:'No overtime.',otAll:'All dates',tOff:'Time off',offLbl:'OFF',offReq:'Request day off',offPending:'Day off requested',offDenied:'Day off denied',offPend:'pending',offOk:'approved',offDen:'denied',deny:'Deny',offNone:'No day-off requests.',cancel:'Cancel',offBlocked:'Clear the hours to request a day off',
    otDen:'denied',otAuto:'auto-approved',otShowDen:'Show denied',otHideDen:'Hide denied',otDenNone:'No denied overtime.',otDenyC:'Deny this overtime? It will not be paid and will leave the pending list.',
@@ -1482,8 +1483,8 @@ function docRow(d,isMaster){
  const meta=[docSize(d.size_bytes)];
  if(isMaster){const k=docKids(d.id).length;if(k)meta.push(k+' '+(k===1?t.docsSection:t.docsSections));}
  let acts='<button class="btn sm" data-docopen="'+d.id+'">'+t.docsOpen+'</button>';
- if(isEmployee){acts+=mine?'<span class="docread ok">'+t.docsReadOk+'</span>'
-   :'<button class="btn ghost sm" data-docread="'+d.id+'">'+t.docsAck+'</button>';}
+ if(isEmployee){acts+='<span class="docread'+(mine?' ok':'')+'">'
+   +(mine?t.docsReadOk:t.docsUnread)+'</span>';}
  else{acts+='<span class="docread">'+cnt+' '+t.docsReadN+'</span>'
    +'<button class="btn ghost sm docdel" data-docdel="'+d.id+'">'+t.docsDel+'</button>';}
  return '<div class="docrow'+(isMaster?' master':'')+'">'
@@ -1521,15 +1522,17 @@ async function openDoc(id){
  const d=docs.find(x=>x.id===id);if(!d)return;
  const {data,error}=await sb.storage.from('documents').createSignedUrl(d.storage_path,3600);
  if(error||!data){alert(T[lang].docsErrOpen);return;}
- window.open(data.signedUrl,'_blank');}
+ window.open(data.signedUrl,'_blank');
+ markDocRead(d.id);}   // se note tout seul: on ne peut pas se declarer lecteur sans ouvrir
 
 async function markDocRead(id){
+ if(docReads.some(r=>r.document_id===id&&r.employee_id===myId))return;   // deja note
  // ignoreDuplicates: un simple INSERT, donc la politique d'insertion suffit
  const {error}=await sb.from('document_reads')
   .upsert({document_id:id,employee_id:myId},{onConflict:'document_id,employee_id',ignoreDuplicates:true});
- if(error){alert(T[lang].docsErrRead);return;}
- if(!docReads.some(r=>r.document_id===id&&r.employee_id===myId))docReads.push({document_id:id,employee_id:myId});
- renderDocs();showToast(T[lang].docsReadOk,true);}
+ if(error)return;   // silencieux: le document est ouvert, on ne derange pas pour ca
+ docReads.push({document_id:id,employee_id:myId});
+ renderDocs();}
 
 async function uploadDoc(){
  const t=T[lang];
@@ -1753,7 +1756,6 @@ function bindApp(){
   ['docsList','empDocsPane'].forEach(id=>{const el=document.getElementById(id);if(!el)return;
    el.addEventListener('click',e=>{
     const o=e.target.closest('[data-docopen]');if(o){openDoc(o.getAttribute('data-docopen'));return;}
-    const r=e.target.closest('[data-docread]');if(r){markDocRead(r.getAttribute('data-docread'));return;}
     const d=e.target.closest('[data-docdel]');if(d){deleteDoc(d.getAttribute('data-docdel'));}});});
   document.getElementById('docUp').addEventListener('click',uploadDoc);
   document.getElementById('empTotalsPane').addEventListener('click',e=>{
