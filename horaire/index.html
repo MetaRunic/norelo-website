@@ -725,7 +725,7 @@ const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
 const EMAIL_DOMAIN='@norelo-verger.app';
 const OWNERS=['dan','gill','sydney','patron'];
-const APP_VERSION=24; // bump this on each release, then click "Force update"
+const APP_VERSION=25; // bump this on each release, then click "Force update"
 const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const REG_SHIFTS=[['08:00','16:30'],['09:30','18:00']]; // quarts reguliers mis en evidence
@@ -1231,6 +1231,14 @@ function empTab(which){
  if(which==='totals')renderEmpTotals();
  window.scrollTo(0,0);
 }
+let weekMode='week';
+/* L'onglet Semaine sert a consulter, pas a saisir. Deux echelles:
+   la semaine jour par jour, et le mois semaine par semaine. */
+function monthWeekKeys(){const base=new Date((state.current||wkKeys()[0])+'T00:00:00');
+ const y=base.getFullYear(),m=base.getMonth();
+ const a=new Date(y,m,1),b=new Date(y,m+1,0);
+ return wkKeys().filter(k=>{const ws=new Date(k+'T00:00:00');const we=new Date(ws);we.setDate(we.getDate()+6);
+  return we>=a&&ws<=b;});}
 function renderWeek(){
  document.querySelectorAll('#wkModes .stf').forEach(b=>b.classList.toggle('on',b.getAttribute('data-wmode')===weekMode));
  const hint=document.getElementById('wkHint');
