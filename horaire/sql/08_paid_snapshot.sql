@@ -4,6 +4,11 @@
 --
 -- RUN ORDER : apres 01. Idempotent, relancable sans risque.
 --
+-- CORRIGE: la requete de la section 2 avait ete ecrite sans clause FROM.
+-- Comme l editeur Supabase execute tout le script dans une transaction,
+-- cette erreur annulait aussi le ALTER TABLE de la section 1. Rien n a
+-- donc ete applique la premiere fois. Relancez ce fichier en entier.
+--
 -- LE PROBLEME
 --   paid_weeks ne retenait qu'un oui ou non. Si une semaine est marquee
 --   payee le samedi et que la personne travaille le dimanche, la semaine
@@ -42,7 +47,8 @@ alter table public.paid_weeks
 -- ---------------------------------------------------------------------
 select count(*) filter (where paid)                              as semaines_payees,
        count(*) filter (where paid and paid_amount is null)       as sans_montant_ancien,
-       count(*) filter (where paid and paid_amount is not null)   as avec_montant;
+       count(*) filter (where paid and paid_amount is not null)   as avec_montant
+  from public.paid_weeks;
 
 
 -- ---------------------------------------------------------------------
