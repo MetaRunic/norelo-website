@@ -113,10 +113,12 @@ svg.ric{flex:0 0 22px;width:22px;height:22px;margin:0 14px;}
  padding:0 4px;margin:0;border-radius:20px;font-size:10px;line-height:16px;text-align:center;}
 .rail:hover .tabs .tabbadge{top:50%;left:auto;right:16px;transform:translateY(-50%);}
 /* Un seul rail pour tout le monde: on montre les boutons du role en cours. */
-.emponly{display:none;}
-body.isemp .mgronly{display:none;}
-body.isemp .tabs .emponly{display:flex;}
-body.isemp #bottomNav .emponly{display:flex;}
+/* Specificite: .tabs button vaut (0,1,1) et #bottomNav button (1,0,1), donc
+   un simple .emponly (0,1,0) perdait et les onglets employe restaient visibles
+   pour les gestionnaires. Chaque regle porte maintenant son contexte. */
+.tabs button.emponly,#bottomNav button.emponly{display:none;}
+body.isemp .tabs button.emponly,body.isemp #bottomNav button.emponly{display:flex;}
+body.isemp .tabs button.mgronly,body.isemp #bottomNav button.mgronly{display:none;}
 @media(min-width:761px){body{padding-left:66px;}.rail{display:flex;}header .logo{display:none;}}
 .hlt{display:inline-flex;border:1.5px solid var(--bdr);border-radius:8px;overflow:hidden;}
 .hlt button{background:transparent;color:var(--gr);border:none;padding:9px 15px;font-size:14px;font-weight:700;}
@@ -822,7 +824,7 @@ const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
 const EMAIL_DOMAIN='@norelo-verger.app';
 const OWNERS=['dan','gill','sydney','patron'];
-const APP_VERSION=29; // bump this on each release, then click "Force update"
+const APP_VERSION=30; // bump this on each release, then click "Force update"
 const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const REG_SHIFTS=[['08:00','16:30'],['09:30','18:00']]; // quarts reguliers mis en evidence
@@ -1321,6 +1323,7 @@ function renderEmpTotals(){
  el.innerHTML=h;
 }
 function empTab(which){
+ if(!isEmployee)return;   // le rail du gestionnaire ne passe jamais par ici
  document.querySelectorAll('.tabs button.emponly,#bottomNav button.emponly')
   .forEach(b=>b.classList.toggle('on',b.getAttribute('data-etab')===which));
  document.getElementById('empEntryPane').style.display=which==='entry'?'block':'none';
