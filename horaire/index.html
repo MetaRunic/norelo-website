@@ -385,7 +385,20 @@ h2{font-size:20px;font-weight:800;}
 .stbadge{display:inline-block;font-size:12px;font-weight:800;padding:4px 11px;border-radius:20px;white-space:nowrap;}
 .stbadge.ok{background:rgba(52,211,153,.16);color:var(--leaf);}
 .stbadge.due{background:rgba(240,101,90,.16);color:var(--red);}
-#empNav{margin-bottom:1.2rem;}
+/* La bascule Mes heures / Mon releve. C'est le seul chemin de l'employe vers
+   son releve, alors elle prend toute la largeur au lieu de se cacher dans un coin. */
+#empNav{display:grid;grid-template-columns:1fr 1fr;gap:6px;width:100%;
+ background:var(--panel2);border:1px solid var(--bdr);border-radius:14px;padding:6px;margin-bottom:1.4rem;}
+#empNav .tf{display:flex;align-items:center;justify-content:center;gap:.55rem;
+ padding:14px 10px;font-size:15px;font-weight:800;line-height:1;border:none;border-radius:10px;
+ background:transparent;color:var(--head);cursor:pointer;
+ transition:background .16s,color .16s,box-shadow .16s;}
+#empNav .tf svg{width:17px;height:17px;flex-shrink:0;opacity:.85;}
+#empNav .tf:hover:not(.on){background:var(--soft);color:var(--txt);}
+#empNav .tf.on{background:var(--accent);color:#fff;box-shadow:0 3px 12px rgba(224,71,59,.34);}
+#empNav .tf.on svg{opacity:1;}
+@media(max-width:480px){#empNav .tf{font-size:14px;padding:13px 4px;gap:.4rem;}
+ #empNav .tf svg{width:16px;height:16px;}}
 /* Calendrier du releve: un mois, code par couleur selon ce qui est paye. */
 .stcal .calgrid{margin-top:.2rem;}
 .stcalhd{display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;}
@@ -560,9 +573,9 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     </div>
 
     <div id="empView" style="display:none">
-      <div class="teambar" id="empNav">
-        <button class="tf on" data-etab="entry" data-i="empEntry">Mes heures</button>
-        <button class="tf" data-etab="totals" data-i="empRelev">Mon relevé</button>
+      <div id="empNav">
+        <button class="tf on" data-etab="entry"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span data-i="empEntry">Mes heures</span></button>
+        <button class="tf" data-etab="totals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7z"/><path d="M14 3v4h4"/><path d="M9 13h6M9 17h4"/></svg><span data-i="empRelev">Mon relevé</span></button>
       </div>
       <div id="empEntryPane">
         <div class="calcard" id="calEmp"></div>
@@ -725,7 +738,7 @@ const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
 const EMAIL_DOMAIN='@norelo-verger.app';
 const OWNERS=['dan','gill','sydney','patron'];
-const APP_VERSION=25; // bump this on each release, then click "Force update"
+const APP_VERSION=26; // bump this on each release, then click "Force update"
 const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const REG_SHIFTS=[['08:00','16:30'],['09:30','18:00']]; // quarts reguliers mis en evidence
