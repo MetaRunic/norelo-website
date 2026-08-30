@@ -375,6 +375,17 @@ h2{font-size:20px;font-weight:800;}
 .mtable td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;}
 .paidbtn{border:1.5px solid var(--bdr);background:var(--soft);color:var(--gr);border-radius:22px;padding:9px 18px;font-size:14px;font-weight:800;min-height:44px;white-space:nowrap;}
 .paidbtn.yes{background:rgba(52,211,153,.16);border-color:var(--leaf);color:var(--leaf);}
+/* Une semaine payee qui a gagne des heures depuis: le supplement se voit. */
+.paidbtn.extra{background:rgba(245,158,11,.16);border-color:#f59e0b;color:#f59e0b;margin-left:.4rem;}
+.paidbtn.extra:hover{background:rgba(245,158,11,.28);}
+.mtable tr.rowextra td{background:rgba(245,158,11,.07);}
+.overpaid{margin-left:.5rem;font-size:12px;font-weight:800;color:var(--gr);white-space:nowrap;}
+.restbar{display:flex;justify-content:center;margin:.2rem 0 1rem;}
+@media(max-width:760px){.restbar .btn{width:100%;}}
+.stbadge{display:inline-block;font-size:12px;font-weight:800;padding:4px 11px;border-radius:20px;white-space:nowrap;}
+.stbadge.ok{background:rgba(52,211,153,.16);color:var(--leaf);}
+.stbadge.due{background:rgba(240,101,90,.16);color:var(--red);}
+#empNav{margin-bottom:1.2rem;}
 .tips{display:flex;gap:.7rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem;}
 .tips input{width:150px;padding:13px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:17px;}
 .tag{font-size:11px;padding:3px 9px;border-radius:20px;background:rgba(224,71,59,.16);color:var(--accent-l);margin-left:.5rem;vertical-align:middle;font-weight:700;}
@@ -529,8 +540,15 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     </div>
 
     <div id="empView" style="display:none">
-      <div class="calcard" id="calEmp"></div>
-      <div id="empSheet"></div>
+      <div class="teambar" id="empNav">
+        <button class="tf on" data-etab="entry" data-i="empEntry">Mes heures</button>
+        <button class="tf" data-etab="totals" data-i="empRelev">Mon relevé</button>
+      </div>
+      <div id="empEntryPane">
+        <div class="calcard" id="calEmp"></div>
+        <div id="empSheet"></div>
+      </div>
+      <div id="empTotalsPane" style="display:none"></div>
     </div>
 
     <div id="weekView" style="display:none">
@@ -687,7 +705,7 @@ const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
 const EMAIL_DOMAIN='@norelo-verger.app';
 const OWNERS=['dan','gill','sydney','patron'];
-const APP_VERSION=21; // bump this on each release, then click "Force update"
+const APP_VERSION=22; // bump this on each release, then click "Force update"
 const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const REG_SHIFTS=[['08:00','16:30'],['09:30','18:00']]; // quarts reguliers mis en evidence
@@ -707,7 +725,7 @@ const T={
    months:['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'],
    smonths:['janv','févr','mars','avril','mai','juin','juil','août','sept','oct','nov','déc'],
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Début',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
-   paid:'Payé',unpaid:'À payer',share:'Part',week:'Semaine',kHours:'Heures de la semaine',kPay:'Paie brute',kPaid:'Déjà payé',kUnpaid:'Reste à payer',mgrWeekK:'Semaine affichée',mgrZeroShow:'Afficher les personnes sans heures',mgrZeroHide:'Masquer les personnes sans heures',mgrNoHours:"Personne n'a travaillé cette semaine.",user:"Nom d'utilisateur",
+   paid:'Payé',unpaid:'À payer',share:'Part',week:'Semaine',kHours:'Heures de la semaine',kPay:'Paie brute',kPaid:'Déjà payé',kUnpaid:'Reste à payer',mgrWeekK:'Semaine affichée',empEntry:'Mes heures',empRelev:'Mon relevé',empRest:'Voir le reste de la semaine',empRestHide:'Masquer le reste de la semaine',stHours:'Heures totales',stAll:'Toutes vos semaines',stNone:'Aucune heure enregistrée pour le moment.',settleTip:'Marquer ce supplément comme payé',overTip:'Montant versé supérieur aux heures actuelles',settled:'Supplément réglé',mgrZeroShow:'Afficher les personnes sans heures',mgrZeroHide:'Masquer les personnes sans heures',mgrNoHours:"Personne n'a travaillé cette semaine.",user:"Nom d'utilisateur",
    chooseWeek:'Choisir une semaine',ws_past:'Passée',ws_cur:'En cours',ws_up:'À venir',teamAll:'Toutes',teamExt:'Extérieur',teamInt:'Intérieur',roleEmp:'Employé',roleMgr:'Gestionnaire',resetPwd:'MDP',clearF:'Effacer',backupsT:'Sauvegardes',backupNow:'Sauvegarder maintenant',
    locked:'Verrouillé',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouillés.<br><strong>Un jour verrouillé à corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Vérification de l\'heure...',todayLbl:"Aujourd'hui",badTime:"L'heure de fin doit être après l'heure de début.",hoursHi:'Heures de quart régulières en surbrillance',preseasonLbl:'Pré-saison',preseasonNote:"Pré-saison : heures de référence (avant l'ouverture du 17 août).",lunch:'Pause 30 min',otPending:'en attente',otOk:'approuvée',approve:'Approuver',revoke:'Retirer',tApprov:'Approbations',tApprovShort:'Approb.',tOt:'Heures supp.',otTitle:'Approbation des heures supplémentaires',otSub:'Les heures au-delà de 8h par jour sont payées à 16$/h une fois approuvées. Les gestionnaires sont payés à leur taux horaire.',otNone:'Aucune heure supplémentaire.',otAll:'Toutes les dates',tOff:'Congés',offLbl:'CONGÉ',offReq:'Demander un congé',offPending:'Congé demandé',offDenied:'Congé refusé',offPend:'en attente',offOk:'approuvé',offDen:'refusé',deny:'Refuser',offNone:'Aucune demande de congé.',cancel:'Annuler',offBlocked:'Effacez les heures pour demander un congé',
    otDen:'refusée',otAuto:"approuvée d'office",otShowDen:'Voir les refusées',otHideDen:'Masquer les refusées',otDenNone:'Aucune heure supplémentaire refusée.',otDenyC:'Refuser ces heures supplémentaires? Elles ne seront pas payées et quitteront la liste des demandes en attente.',
@@ -724,7 +742,7 @@ const T={
    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
    smonths:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
-   paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Hours this week',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',mgrWeekK:'Week shown',mgrZeroShow:'Show people with no hours',mgrZeroHide:'Hide people with no hours',mgrNoHours:'Nobody worked this week.',user:'Username',
+   paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Hours this week',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',mgrWeekK:'Week shown',empEntry:'My hours',empRelev:'My statement',empRest:'Show the rest of the week',empRestHide:'Hide the rest of the week',stHours:'Total hours',stAll:'All your weeks',stNone:'No hours recorded yet.',settleTip:'Mark this extra as paid',overTip:'Amount paid is higher than the current hours',settled:'Extra settled',mgrZeroShow:'Show people with no hours',mgrZeroHide:'Hide people with no hours',mgrNoHours:'Nobody worked this week.',user:'Username',
    chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',teamExt:'Exterior',teamInt:'Interior',roleEmp:'Employee',roleMgr:'Manager',resetPwd:'PW',clearF:'Clear',backupsT:'Backups',backupNow:'Backup now',
    locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted',preseasonLbl:'Pre-season',preseasonNote:'Pre-season: reference hours (before the Aug 17 opening).',lunch:'30-min lunch',otPending:'pending',otOk:'approved',approve:'Approve',revoke:'Undo',tApprov:'Approvals',tApprovShort:'Approb.',tOt:'Overtime',otTitle:'Overtime approvals',otSub:'Hours beyond 8h per day are paid at $16/h once approved. Managers are paid at their own hourly rate.',otNone:'No overtime.',otAll:'All dates',tOff:'Time off',offLbl:'OFF',offReq:'Request day off',offPending:'Day off requested',offDenied:'Day off denied',offPend:'pending',offOk:'approved',offDen:'denied',deny:'Deny',offNone:'No day-off requests.',cancel:'Cancel',offBlocked:'Clear the hours to request a day off',
    otDen:'denied',otAuto:'auto-approved',otShowDen:'Show denied',otHideDen:'Hide denied',otDenNone:'No denied overtime.',otDenyC:'Deny this overtime? It will not be paid and will leave the pending list.',
@@ -753,8 +771,12 @@ async function loadAll(){
  const startKey=keys[0],endKey=addDaysISO(keys[keys.length-1],6);
  const {data:shifts}=await sb.from('shifts').select('employee_id,work_date,start_time,end_time,lunch,ot_approved,ot_status').gte('work_date',startKey).lte('work_date',endKey);
  (shifts||[]).forEach(r=>{const dd=new Date(r.work_date+'T00:00:00');const wk=weekKeyForDate(dd);const di=(dd.getDay()+6)%7;const w=state.weeks[wk];if(w&&w.data[r.employee_id])w.data[r.employee_id][DAYS[di]]={start:validTime(r.start_time),end:validTime(r.end_time),lunch:r.lunch!==false,ot:!!r.ot_approved,otst:otState(r.ot_status)};});
- const {data:paid}=await sb.from('paid_weeks').select('employee_id,week_start,paid').gte('week_start',startKey).lte('week_start',keys[keys.length-1]);
- (paid||[]).forEach(r=>{const w=state.weeks[r.week_start];if(w&&r.paid)w.paid[r.employee_id]=true;});
+ const {data:paid}=await sb.from('paid_weeks').select('employee_id,week_start,paid,paid_amount').gte('week_start',startKey).lte('week_start',keys[keys.length-1]);
+ (paid||[]).forEach(r=>{const w=state.weeks[r.week_start];if(!w||!r.paid)return;
+  w.paid[r.employee_id]=true;
+  /* Montant reellement verse. Null sur les lignes anterieures a la
+     migration 08: on les traite comme entierement reglees. */
+  if(r.paid_amount!=null){(w.paidAmt||(w.paidAmt={}))[r.employee_id]=+r.paid_amount;}});
  await reloadOff();
 }
 async function reloadOff(){const {data:off}=await sb.from('time_off').select('id,employee_id,off_date,status');state.off={};state.offList=off||[];
@@ -770,7 +792,10 @@ function subscribeRealtime(){
     if(p.eventType==='DELETE')w.data[r.employee_id][DAYS[di]]=blankDay();else w.data[r.employee_id][DAYS[di]]={start:validTime(p.new.start_time),end:validTime(p.new.end_time),lunch:p.new.lunch!==false,ot:!!p.new.ot_approved,otst:otState(p.new.ot_status)};
     if(wk===state.current){if(isEmployee){renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);}else{renderDayList();renderWeek();renderCalendar(document.getElementById('calAdmin'),null);if(mgrUnlocked)renderMgr();}renderWeekBar();}
     if(!isEmployee){const ov=document.getElementById('otView');if(ov&&ov.style.display!=='none'&&otSubTab==='ot')renderOT();else updateOTBadge();}})
-  .on('postgres_changes',{event:'*',schema:'public',table:'paid_weeks'},p=>{const r=p.new||p.old;if(!r)return;const w=state.weeks[r.week_start];if(!w)return;if(p.eventType==='DELETE')delete w.paid[r.employee_id];else w.paid[r.employee_id]=!!p.new.paid;if(!isEmployee&&r.week_start===state.current)renderMgr();})
+  .on('postgres_changes',{event:'*',schema:'public',table:'paid_weeks'},p=>{const r=p.new||p.old;if(!r)return;const w=state.weeks[r.week_start];if(!w)return;
+   if(p.eventType!=='DELETE'&&p.new){if(p.new.paid_amount!=null)(w.paidAmt||(w.paidAmt={}))[r.employee_id]=+p.new.paid_amount;else if(w.paidAmt)delete w.paidAmt[r.employee_id];}
+   else if(w.paidAmt)delete w.paidAmt[r.employee_id];
+   if(p.eventType==='DELETE')delete w.paid[r.employee_id];else w.paid[r.employee_id]=!!p.new.paid;if(!isEmployee&&r.week_start===state.current)renderMgr();})
   .on('postgres_changes',{event:'*',schema:'public',table:'time_off'},async p=>{await reloadOff();if(isEmployee){renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);}else{renderDayList();renderWeek();renderCalendar(document.getElementById('calAdmin'),null);if(mgrUnlocked)renderMgr();const ov=document.getElementById('otView');if(ov&&ov.style.display!=='none')showOTSub(otSubTab);}renderWeekBar();updateOTBadge();})
   .subscribe();
 }
@@ -808,9 +833,26 @@ function empPayIn(wk,id){const w=state.weeks[wk];if(!w||!w.data[id])return 0;con
 function empPay(id){return empPayIn(state.current,id);}
 
 /* Solde impaye sur TOUTES les semaines, pas seulement la semaine affichee. */
+/* Combien a deja ete verse pour cette semaine. undefined si on ne sait pas,
+   ce qui est le cas des lignes ecrites avant la migration 08. */
+function weekPaidAmt(wk,id){const w=state.weeks[wk];if(!w||!w.paid[id])return 0;
+ const a=w.paidAmt&&w.paidAmt[id];
+ return a==null?null:a;}                 // null = paye, montant inconnu
+/* Ce qui reste du. Une semaine marquee payee puis retravaillee doit faire
+   apparaitre la difference, sinon les heures ajoutees disparaissent. */
+function weekOwed(wk,id){const cur=empPayIn(wk,id);const w=state.weeks[wk];
+ if(!w||!w.paid[id])return cur;          // pas payee: tout est du
+ const a=weekPaidAmt(wk,id);
+ if(a===null)return 0;                   // ancienne ligne: consideree reglee
+ return Math.max(0,Math.round((cur-a)*100)/100);}
+/* Trop-percu, quand les heures baissent apres le paiement. */
+function weekOver(wk,id){const w=state.weeks[wk];if(!w||!w.paid[id])return 0;
+ const a=weekPaidAmt(wk,id);if(a===null)return 0;
+ return Math.max(0,Math.round((a-empPayIn(wk,id))*100)/100);}
 function unpaidTotals(){let unpaid=0,paid=0;const weeks=[];
  wkKeys().forEach(k=>{const w=state.weeks[k];if(!w)return;let wu=0;
-  sortedEmps().forEach(e=>{const p=empPayIn(k,e.id);if(!p)return;if(w.paid[e.id])paid+=p;else wu+=p;});
+  sortedEmps().forEach(e=>{const p=empPayIn(k,e.id);if(!p)return;
+   const owed=weekOwed(k,e.id);wu+=owed;paid+=Math.max(0,p-owed);});
   wu=Math.round(wu*100)/100;if(wu>0){weeks.push({k:k,amt:wu});unpaid+=wu;}});
  return {unpaid:Math.round(unpaid*100)/100,paid:Math.round(paid*100)/100,weeks:weeks};}
 function empTotalAllWeeks(id){const e=empById(id);let t=0;Object.values(state.weeks).forEach(w=>{if(w.data[id])DAYS.forEach(d=>t+=hrs(w.data[id][d],e));});return Math.round(t*100)/100;}
@@ -1028,32 +1070,83 @@ function renderDayList(){
    +'</div>';});
  document.getElementById('dayList').innerHTML=h;
 }
+let empWeekOpen=false;
+function empDayCard(emp,w,i,t){
+ const dISO=addDaysISO(w.start,i);const isT=dISO===realTodayISO();
+ const lbl=t.days[i]+' <span class="muted" style="font-weight:600">'+fmtDate(w.start,i)+'</span>'
+  +(isT?' <span class="todaytag">'+t.todayLbl+'</span>':'');
+ if(isOff(emp.id,dISO)){const st=offStatus(emp.id,dISO);
+  return '<div class="ecard off'+(isT?' today':'')+'" data-day="'+i+'"><div class="en">'+lbl+'</div>'
+   +'<div class="offbig'+(st==='pending'?' pend':'')+'">'+(st==='approved'?t.offLbl:t.offPending)+'</div>'
+   +(st==='pending'?'<div class="offrow"><button class="offbtn cancel" data-offc="cancel" data-date="'+dISO+'">'+t.cancel+'</button></div>':'')
+   +'</div>';}
+ const day=w.data[emp.id][DAYS[i]];const ph=paidHours(day,emp);const ed=dayEditable(dISO);
+ return '<div class="ecard'+(ed?'':' locked')+(isT?' today':'')+'" data-day="'+i+'"><div class="en">'+lbl
+  +(isPreseason(dISO)?' <span class="pretag">'+t.preseasonLbl+'</span>':'')
+  +(ed?'':' <span class="lockbadge">'+LOCK_SVG+' '+t.locked+'</span>')+'</div>'
+  +'<div class="etime"><div class="tfield"><label>'+t.start+'</label>'+timeInput('start',day.start,!ed)+'</div>'
+  +'<div class="tfield"><label>'+t.end+'</label>'+timeInput('end',day.end,!ed)+'</div></div>'
+  +'<div class="ecalc"><div class="eh">'+ph.toFixed(2)+'h</div></div>'
+  +exRow(day,emp,i,ed,false)
+  +'<div class="offrow">'+offControl(emp.id,dISO,day)+'</div>'
+  +'</div>';}
 function renderEmp(){
  const w=state.weeks[state.current];const emp=state.employees.find(e=>e.id===currentEmp);const t=T[lang];
  document.getElementById('viewTitle').textContent=t.hi+(emp?emp.name:'');
  if(!emp){document.getElementById('empSheet').innerHTML='';return;}
- let h='<div class="hintbar">'+(trustedBaseMs==null?t.timeChecking:t.editHint)+'</div>',tot=0;
- DAYS.forEach((dk,i)=>{const dISO=addDaysISO(w.start,i);const isT=dISO===realTodayISO();
-  if(isOff(emp.id,dISO)){const st=offStatus(emp.id,dISO);h+='<div class="ecard off'+(isT?' today':'')+'" data-day="'+i+'"><div class="en">'+t.days[i]+' <span class="muted" style="font-weight:600">'+fmtDate(w.start,i)+'</span>'+(isT?' <span class="todaytag">'+t.todayLbl+'</span>':'')+'</div><div class="offbig'+(st==='pending'?' pend':'')+'">'+(st==='approved'?t.offLbl:t.offPending)+'</div>'+(st==='pending'?'<div class="offrow"><button class="offbtn cancel" data-offc="cancel" data-date="'+dISO+'">'+t.cancel+'</button></div>':'')+'</div>';return;}
-  const day=w.data[emp.id][dk];const ph=paidHours(day,emp);tot+=ph;const ed=dayEditable(dISO);
-  h+='<div class="ecard'+(ed?'':' locked')+(isT?' today':'')+'" data-day="'+i+'"><div class="en">'+t.days[i]+' <span class="muted" style="font-weight:600">'+fmtDate(w.start,i)+'</span>'+(isT?' <span class="todaytag">'+t.todayLbl+'</span>':'')+(isPreseason(dISO)?' <span class="pretag">'+t.preseasonLbl+'</span>':'')+(ed?'':' <span class="lockbadge">'+LOCK_SVG+' '+t.locked+'</span>')+'</div>'
-   +'<div class="etime"><div class="tfield"><label>'+t.start+'</label>'+timeInput('start',day.start,!ed)+'</div>'
-   +'<div class="tfield"><label>'+t.end+'</label>'+timeInput('end',day.end,!ed)+'</div></div>'
-   +'<div class="ecalc"><div class="eh">'+ph.toFixed(2)+'h</div></div>'
-   +exRow(day,emp,i,ed,false)
-   +'<div class="offrow">'+offControl(emp.id,dISO,day)+'</div>'
-   +'</div>';});
+ const todayI=realTodayISO(),yestI=addDaysISO(todayI,-1);
+ const focus=[],rest=[];
+ DAYS.forEach((dk,i)=>{const d=addDaysISO(w.start,i);
+  if(d===todayI)focus[0]=i; else if(d===yestI)focus[1]=i; else rest.push(i);});
+ const foc=focus.filter(x=>x!=null);
+ let tot=0;DAYS.forEach((dk,i)=>{const d=addDaysISO(w.start,i);
+  if(!isOff(emp.id,d))tot+=paidHours(w.data[emp.id][DAYS[i]],emp);});
+ let h='<div class="hintbar">'+(trustedBaseMs==null?t.timeChecking:t.editHint)+'</div>';
+ if(!foc.length){
+  /* Semaine passee ou future: aucun jour modifiable, on montre tout. */
+  DAYS.forEach((dk,i)=>h+=empDayCard(emp,w,i,t));
+ }else{
+  foc.forEach(i=>h+=empDayCard(emp,w,i,t));
+  h+='<div class="restbar"><button type="button" class="btn ghost sm" id="empWeekToggle">'
+   +(empWeekOpen?t.empRestHide:t.empRest)+'</button></div>';
+  if(empWeekOpen)rest.forEach(i=>h+=empDayCard(emp,w,i,t));
+ }
  h+='<div class="card" style="display:flex;justify-content:space-between;align-items:center"><span style="font-weight:800;font-size:18px">'+t.tot+'</span><span style="font-weight:800;font-size:24px;color:var(--accent-l)">'+tot.toFixed(2)+'h</span></div>';
  document.getElementById('empSheet').innerHTML=h;
 }
-let weekMode='week';
-/* L'onglet Semaine sert a consulter, pas a saisir. Deux echelles:
-   la semaine jour par jour, et le mois semaine par semaine. */
-function monthWeekKeys(){const base=new Date((state.current||wkKeys()[0])+'T00:00:00');
- const y=base.getFullYear(),m=base.getMonth();
- const a=new Date(y,m,1),b=new Date(y,m+1,0);
- return wkKeys().filter(k=>{const ws=new Date(k+'T00:00:00');const we=new Date(ws);we.setDate(we.getDate()+6);
-  return we>=a&&ws<=b;});}
+/* Le releve: toutes les semaines travaillees, ce qui est paye et ce qui
+   reste du. L'employe n'a pas acces a Gestion, c'est sa seule vue d'ensemble. */
+function renderEmpTotals(){
+ const el=document.getElementById('empTotalsPane');if(!el)return;const t=T[lang];
+ const id=currentEmp,emp=empById(id);
+ if(!emp){el.innerHTML='';return;}
+ const rows=[];let th=0,tp=0,towed=0;
+ wkKeys().forEach(k=>{const hh=empHoursIn(k,id);if(hh<=0)return;
+  const p=empPayIn(k,id),owed=weekOwed(k,id);
+  th+=hh;tp+=p;towed+=owed;rows.push({k:k,h:hh,p:p,owed:owed});});
+ th=Math.round(th*100)/100;tp=Math.round(tp*100)/100;towed=Math.round(towed*100)/100;
+ let h='<div class="kpis">'+kpi(th.toFixed(1)+'h',t.stHours,'')
+  +kpi(money(Math.max(0,tp-towed)),t.paid,'g')+kpi(money(towed),t.unpaid,towed>0?'r':'')+'</div>';
+ if(!rows.length){el.innerHTML=h+'<div class="card"><div class="muted">'+t.stNone+'</div></div>';return;}
+ h+='<div class="card"><h3>'+t.stAll+'</h3><div class="mtscroll"><table class="mtable">'
+  +'<tr><th>'+t.week+'</th><th style="text-align:right">'+t.hours+'</th><th style="text-align:right">'+t.pay+'</th><th style="text-align:right">'+t.paid+'</th></tr>';
+ rows.sort((a,b)=>a.k<b.k?1:-1).forEach(r=>{
+  const full=r.owed<=0;
+  h+='<tr><td>'+esc(t.weekOf+' '+fmtLong(r.k))+'</td><td class="num">'+r.h.toFixed(2)+'h</td>'
+   +'<td class="num">'+money(r.p)+'</td>'
+   +'<td style="text-align:right"><span class="stbadge '+(full?'ok':'due')+'">'
+   +(full?t.paid:money(r.owed))+'</span></td></tr>';});
+ h+='</table></div></div>';
+ el.innerHTML=h;
+}
+function empTab(which){
+ document.querySelectorAll('#empNav .tf').forEach(b=>b.classList.toggle('on',b.getAttribute('data-etab')===which));
+ document.getElementById('empEntryPane').style.display=which==='entry'?'block':'none';
+ document.getElementById('empTotalsPane').style.display=which==='totals'?'block':'none';
+ document.querySelector('.weeknav').style.display=which==='entry'?'':'none';
+ if(which==='totals')renderEmpTotals();
+ window.scrollTo(0,0);
+}
 function renderWeek(){
  document.querySelectorAll('#wkModes .stf').forEach(b=>b.classList.toggle('on',b.getAttribute('data-wmode')===weekMode));
  const hint=document.getElementById('wkHint');
@@ -1135,7 +1228,8 @@ function renderMgr(){const t=T[lang];renderUnpaid();updateMgrBadge();renderTips(
  const _kp=document.getElementById('mgrPrev'),_kn=document.getElementById('mgrNext');
  if(_kp&&_kn){const ks=wkKeys(),i=ks.indexOf(state.current);_kp.disabled=i<=0;_kn.disabled=i>=ks.length-1;}const w=state.weeks[state.current];let th=0,tp=0,paid=0,unpaid=0;const to={ext:0,int:1};
  const emps=adminEmps();
- emps.forEach(e=>{const p=empPay(e.id);tp+=p;th+=empHours(e.id);if(w.paid[e.id])paid+=p;else unpaid+=p;});
+ emps.forEach(e=>{const p=empPay(e.id);tp+=p;th+=empHours(e.id);
+  const owed=weekOwed(state.current,e.id);unpaid+=owed;paid+=Math.max(0,p-owed);});
  /* Les totaux ci-dessus comptent tout le monde. Le tableau, lui, ne montre
     que les personnes qui ont travaille, sauf si on demande le reste. */
  const worked=e=>empHours(e.id)>0||empPay(e.id)>0;
@@ -1145,7 +1239,8 @@ function renderMgr(){const t=T[lang];renderUnpaid();updateMgrBadge();renderTips(
  let rows='<tr><th>'+t.name+'</th><th>'+t.rate+'</th><th style="text-align:right">'+t.hours+'</th><th style="text-align:right">'+t.pay+'</th><th style="text-align:right">'+t.paid+'</th></tr>';
  let lastTeam=null;
  [...shown].sort((a,b)=>(to[empTeam(a)]-to[empTeam(b)])||empPay(b.id)-empPay(a.id)).forEach(e=>{const tm=empTeam(e);if(tm!==lastTeam){rows+='<tr class="teamrow"><td colspan="5">'+teamLabel(tm)+'</td></tr>';lastTeam=tm;}const yes=!!w.paid[e.id];
-  const pend=empPending(e.id);rows+='<tr><td>'+esc(e.name)+'</td><td>'+money(e.rate)+'/h</td><td class="num">'+empHours(e.id).toFixed(2)+'h'+(pend>0?' <span class="otpend">+'+pend.toFixed(2)+'</span>':'')+'</td><td class="num">'+money(empPay(e.id))+'</td><td style="text-align:right"><button class="paidbtn '+(yes?'yes':'')+'" data-paid="'+e.id+'">'+(yes?t.paid:t.unpaid)+'</button></td></tr>';});
+  const pend=empPending(e.id);const owed=weekOwed(state.current,e.id),over=weekOver(state.current,e.id);
+  rows+='<tr'+(owed>0&&yes?' class="rowextra"':'')+'><td>'+esc(e.name)+'</td><td>'+money(e.rate)+'/h</td><td class="num">'+empHours(e.id).toFixed(2)+'h'+(pend>0?' <span class="otpend">+'+pend.toFixed(2)+'</span>':'')+'</td><td class="num">'+money(empPay(e.id))+'</td><td style="text-align:right"><button class="paidbtn '+(yes?'yes':'')+'" data-paid="'+e.id+'">'+(yes?t.paid:t.unpaid)+'</button>'+(owed>0&&yes?'<button class="paidbtn extra" data-settle="'+e.id+'" title="'+esc(t.settleTip)+'">+'+money(owed)+'</button>':'')+(over>0?'<span class="overpaid" title="'+esc(t.overTip)+'">-'+money(over)+'</span>':'')+'</td></tr>';});
  if(!shown.length)rows+='<tr><td colspan="5" class="muted" style="padding:1.1rem">'+t.mgrNoHours+'</td></tr>';
  document.getElementById('mgrTable').innerHTML=rows;
  const zb=document.getElementById('mgrZeroBar');
@@ -1172,7 +1267,8 @@ function applyLang(){document.querySelectorAll('[data-i]').forEach(el=>{const k=
   const otv=document.getElementById('otView');if(otv&&otv.style.display!=='none')showOTSub(otSubTab);
   const lv=document.getElementById('logView');if(lv&&lv.style.display!=='none')renderLog();
   const bv=document.getElementById('backupView');if(bv&&bv.style.display!=='none')renderBackups();}}
-function renderAll(){renderWeekBar();if(isEmployee){renderCalendar(document.getElementById('calEmp'),currentEmp);renderEmp();}else{renderCalendar(document.getElementById('calAdmin'),null);renderDayPick();renderDayList();renderWeek();setTitle();updateOTBadge();if(mgrUnlocked){renderMgr();renderEmpAdmin();}}}
+function renderAll(){renderWeekBar();if(isEmployee){renderCalendar(document.getElementById('calEmp'),currentEmp);renderEmp();
+ const tp=document.getElementById('empTotalsPane');if(tp&&tp.style.display!=='none')renderEmpTotals();}else{renderCalendar(document.getElementById('calAdmin'),null);renderDayPick();renderDayList();renderWeek();setTitle();updateOTBadge();if(mgrUnlocked){renderMgr();renderEmpAdmin();}}}
 function setTitle(){if(isEmployee)return;const t=T[lang];const cur=document.querySelector('.tabs button.on').id;
  document.getElementById('viewTitle').textContent=cur==='tabDay'?t.days[selDay]:cur==='tabWeek'?(weekMode==='month'?cap(t.months[new Date((state.current||'')+'T00:00:00').getMonth()]):t.week):cur==='tabEmp'?t.employees:cur==='tabOt'?t.tOt:cur==='tabLog'?t.tLog:cur==='tabBak'?t.backupsT:t.payTitle;}
 
@@ -1309,9 +1405,17 @@ function bindApp(){
    const {data,error}=await sb.functions.invoke('quick-api',{body:{action:'delete',id}});
    if(error||!data||!data.ok){e.target.disabled=false;alert((data&&data.error)||(error&&error.message)||'Erreur');return;}
    logAction('delete_account',emp?emp.name:'');await loadAll();renderAll();showToast(lang==='fr'?'Compte supprimé':'Account deleted',true);});
-  document.getElementById('mgrTable').addEventListener('click',async e=>{if(!e.target.dataset.paid)return;const id=e.target.dataset.paid;const w=state.weeks[state.current];const nv=!w.paid[id];w.paid[id]=nv;renderMgr();
-   const {error}=await sb.from('paid_weeks').upsert({employee_id:id,week_start:state.current,paid:nv},{onConflict:'employee_id,week_start'});
-   if(error){w.paid[id]=!nv;renderMgr();alert(lang==='fr'?'Action refusée.':'Action refused.');}else{const em=state.employees.find(x=>x.id===id);logAction(nv?'mark_paid':'mark_unpaid',(em?em.name:'')+' ('+state.current+')');showToast(nv?(lang==='fr'?'Marqué payé':'Marked paid'):(lang==='fr'?'Marqué non payé':'Marked unpaid'),true);}});
+  document.getElementById('mgrTable').addEventListener('click',async e=>{
+   const st=e.target.dataset&&e.target.dataset.settle;
+   if(st){await markPaid(st,true,true);return;}
+   if(!e.target.dataset.paid)return;const id=e.target.dataset.paid;const w=state.weeks[state.current];const nv=!w.paid[id];w.paid[id]=nv;
+   /* On retient ce qu'on verse, sinon des heures ajoutees plus tard
+      passeraient pour deja payees. */
+   const amt=nv?empPay(id):null,hrsNow=nv?empHours(id):null;
+   if(nv){(w.paidAmt||(w.paidAmt={}))[id]=amt;}else if(w.paidAmt)delete w.paidAmt[id];
+   renderMgr();
+   const {error}=await sb.from('paid_weeks').upsert({employee_id:id,week_start:state.current,paid:nv,paid_amount:amt,paid_hours:hrsNow,paid_at:nv?new Date().toISOString():null},{onConflict:'employee_id,week_start'});
+   if(error){w.paid[id]=!nv;if(w.paidAmt)delete w.paidAmt[id];renderMgr();alert(lang==='fr'?'Action refusée.':'Action refused.');}else{const em=state.employees.find(x=>x.id===id);logAction(nv?'mark_paid':'mark_unpaid',(em?em.name:'')+' ('+state.current+')');showToast(nv?(lang==='fr'?'Marqué payé':'Marked paid'):(lang==='fr'?'Marqué non payé':'Marked unpaid'),true);}});
   document.getElementById('unpaidPanel').addEventListener('click',e=>{const b=e.target.closest('[data-uwk]');if(!b)return;
    state.current=b.getAttribute('data-uwk');renderAll();
    const c=document.getElementById('mgrWeekCard');if(c)c.scrollIntoView({block:'start',behavior:'smooth'});});
@@ -1344,6 +1448,8 @@ function bindApp(){
    const f=b.getAttribute('data-f');openTimePicker({mode:'emp',dayIdx:di,f:f,cur:b.getAttribute('data-val'),title:f==='start'?T[lang].start:T[lang].end});});
   document.getElementById('empSheet').addEventListener('change',e=>{if(!e.target.classList.contains('lchk'))return;toggleLunch(currentEmp,+e.target.getAttribute('data-day'),e.target.checked);});
   document.getElementById('empSheet').addEventListener('click',e=>{const b=e.target.closest('.offbtn');if(!b)return;const d=b.getAttribute('data-date');if(b.getAttribute('data-offc')==='cancel')cancelOff(currentEmp,d);else requestOff(currentEmp,d);});
+  document.getElementById('empSheet').addEventListener('click',e=>{if(e.target.closest('#empWeekToggle')){empWeekOpen=!empWeekOpen;renderEmp();}});
+  document.getElementById('empNav').addEventListener('click',e=>{const b=e.target.closest('[data-etab]');if(b)empTab(b.getAttribute('data-etab'));});
  }
 }
 function tab(which){
@@ -1370,6 +1476,21 @@ function tab(which){
  if(which==='bak')renderBackups();
  setTitle();window.scrollTo(0,0);
 }
+/* Met a jour le montant verse pour la semaine affichee. Sert au bouton
+   ambre quand une semaine payee a gagne des heures depuis. */
+async function markPaid(id,paid,settle){
+ const w=state.weeks[state.current];if(!w)return;
+ const amt=paid?empPay(id):null,hrsNow=paid?empHours(id):null;
+ const prev=w.paidAmt?w.paidAmt[id]:undefined;
+ w.paid[id]=paid;
+ if(paid)(w.paidAmt||(w.paidAmt={}))[id]=amt;else if(w.paidAmt)delete w.paidAmt[id];
+ renderMgr();
+ const {error}=await sb.from('paid_weeks').upsert({employee_id:id,week_start:state.current,paid:paid,paid_amount:amt,paid_hours:hrsNow,paid_at:paid?new Date().toISOString():null},{onConflict:'employee_id,week_start'});
+ if(error){if(prev===undefined){if(w.paidAmt)delete w.paidAmt[id];}else w.paidAmt[id]=prev;
+  renderMgr();alert(lang==='fr'?'Action refusée.':'Action refused.');return;}
+ const em=empById(id);
+ logAction('mark_paid',(em?em.name:'')+' ('+state.current+')'+(settle?' +'+money(amt-(prev||0)):''));
+ showToast(settle?T[lang].settled:(lang==='fr'?'Marqué payé':'Marked paid'),true);}
 function calcTips(){const pool=+document.getElementById('tipPool').value||0;const t=T[lang];const sh=adminEmps().map(e=>({e,h:empHours(e.id)}));const tot=sh.reduce((s,x)=>s+x.h,0);
  let rows='<tr><th>'+t.name+'</th><th style="text-align:right">'+t.hours+'</th><th style="text-align:right">'+t.share+'</th></tr>';
  sh.filter(x=>x.h>0).sort((a,b)=>b.h-a.h).forEach(x=>{rows+='<tr><td>'+esc(x.e.name)+'</td><td class="num">'+x.h.toFixed(2)+'h</td><td class="num">'+money(tot>0?pool*x.h/tot:0)+'</td></tr>';});
