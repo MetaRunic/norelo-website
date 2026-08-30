@@ -852,7 +852,7 @@ const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
 const EMAIL_DOMAIN='@norelo-verger.app';
 const OWNERS=['dan','gill','sydney','patron'];
-const APP_VERSION=31; // bump this on each release, then click "Force update"
+const APP_VERSION=32; // bump this on each release, then click "Force update"
 const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const REG_SHIFTS=[['08:00','16:30'],['09:30','18:00']]; // quarts reguliers mis en evidence
@@ -1675,6 +1675,32 @@ async function enterApp(user){
  if(!asEmp){(async()=>{const {data:last}=await sb.from('backups').select('created_at').order('created_at',{ascending:false}).limit(1);if(!last||!last.length||(Date.now()-new Date(last[0].created_at).getTime())>12*3600*1000)createBackup('Automatique');})();}
 }
 function bindApp(){
+ /* Les documents servent aux deux roles: on cable avant de separer. */
+ ['railNav','bottomNav'].forEach(id=>{const el=document.getElementById(id);if(!el)return;
+  el.addEventListener('click',e=>{const b=e.target.closest('[data-etab]');if(b)empTab(b.getAttribute('data-etab'));});});
+ ['docsList','empDocsPane'].forEach(id=>{const el=document.getElementById(id);if(!el)return;
+  el.addEventListener('click',e=>{
+   const o=e.target.closest('[data-docopen]');if(o){openDoc(o.getAttribute('data-docopen'));return;}
+   const w=e.target.closest('[data-docwho]');
+   if(w){const k=w.getAttribute('data-docwho');docWhoOpen[k]=!docWhoOpen[k];renderDocs();return;}
+   const d=e.target.closest('[data-docdel]');if(d){deleteDoc(d.getAttribute('data-docdel'));}});});
+ document.getElementById('docUp').addEventListener('click',uploadDoc);
+ (function(){
+  const dz=document.getElementById('docDrop'),fi=document.getElementById('docFile');
+  const dv=document.getElementById('docsView');
+  if(!dz||!fi)return;
+  document.getElementById('docPick').onclick=()=>fi.click();
+  fi.addEventListener('change',()=>{const n=fi.files?fi.files.length:0;
+   document.getElementById('docStaged').textContent=
+    !n?'':(n===1?fi.files[0].name:n+' '+T[lang].docsFilesReady);});
+  // sans ca, un PDF lache a cote de la zone fait quitter l'application
+  ['dragover','drop'].forEach(ev=>dv.addEventListener(ev,e=>e.preventDefault()));
+  ['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('over');}));
+  dz.addEventListener('dragleave',e=>{if(!dz.contains(e.relatedTarget))dz.classList.remove('over');});
+  dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('over');
+   const fl=e.dataTransfer&&e.dataTransfer.files;
+   if(fl&&fl.length)uploadFiles(fl);});   // lache = televerse tout de suite
+ })();
  document.getElementById('logout').onclick=async()=>{await sb.auth.signOut();location.reload();};
  document.getElementById('wprev').onclick=()=>gotoWeek(-1);
  document.getElementById('wnext').onclick=()=>gotoWeek(1);
@@ -1809,31 +1835,6 @@ function bindApp(){
   document.getElementById('empSheet').addEventListener('change',e=>{if(!e.target.classList.contains('lchk'))return;toggleLunch(currentEmp,+e.target.getAttribute('data-day'),e.target.checked);});
   document.getElementById('empSheet').addEventListener('click',e=>{const b=e.target.closest('.offbtn');if(!b)return;const d=b.getAttribute('data-date');if(b.getAttribute('data-offc')==='cancel')cancelOff(currentEmp,d);else requestOff(currentEmp,d);});
   document.getElementById('empSheet').addEventListener('click',e=>{if(e.target.closest('#empWeekToggle')){empWeekOpen=!empWeekOpen;renderEmp();}});
-  ['railNav','bottomNav'].forEach(id=>{const el=document.getElementById(id);if(!el)return;
-   el.addEventListener('click',e=>{const b=e.target.closest('[data-etab]');if(b)empTab(b.getAttribute('data-etab'));});});
-  ['docsList','empDocsPane'].forEach(id=>{const el=document.getElementById(id);if(!el)return;
-   el.addEventListener('click',e=>{
-    const o=e.target.closest('[data-docopen]');if(o){openDoc(o.getAttribute('data-docopen'));return;}
-    const w=e.target.closest('[data-docwho]');
-    if(w){const k=w.getAttribute('data-docwho');docWhoOpen[k]=!docWhoOpen[k];renderDocs();return;}
-    const d=e.target.closest('[data-docdel]');if(d){deleteDoc(d.getAttribute('data-docdel'));}});});
-  document.getElementById('docUp').addEventListener('click',uploadDoc);
-  (function(){
-   const dz=document.getElementById('docDrop'),fi=document.getElementById('docFile');
-   const dv=document.getElementById('docsView');
-   if(!dz||!fi)return;
-   document.getElementById('docPick').onclick=()=>fi.click();
-   fi.addEventListener('change',()=>{const n=fi.files?fi.files.length:0;
-    document.getElementById('docStaged').textContent=
-     !n?'':(n===1?fi.files[0].name:n+' '+T[lang].docsFilesReady);});
-   // sans ca, un PDF lache a cote de la zone fait quitter l'application
-   ['dragover','drop'].forEach(ev=>dv.addEventListener(ev,e=>e.preventDefault()));
-   ['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('over');}));
-   dz.addEventListener('dragleave',e=>{if(!dz.contains(e.relatedTarget))dz.classList.remove('over');});
-   dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('over');
-    const fl=e.dataTransfer&&e.dataTransfer.files;
-    if(fl&&fl.length)uploadFiles(fl);});   // lache = televerse tout de suite
-  })();
   document.getElementById('empTotalsPane').addEventListener('click',e=>{
    if(e.target.closest('#stPrev'))stShift(-1);else if(e.target.closest('#stNext'))stShift(1);});
  }
