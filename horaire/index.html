@@ -454,7 +454,29 @@ h2{font-size:20px;font-weight:800;}
 .docread.ok{color:var(--leaf);background:rgba(52,211,153,.13);border-color:rgba(52,211,153,.34);}
 .docrow .docread{border:1.5px solid transparent;border-radius:9px;padding:9px 15px;min-width:78px;text-align:center;}
 .btn.ghost.docdel{color:var(--red);border-color:rgba(240,101,90,.45);}
+/* La zone de depot. Lacher un PDF le televerse aussitot. */
+.dropzone{display:flex;flex-direction:column;align-items:center;gap:.7rem;
+ padding:1.7rem 1rem;margin-bottom:1rem;border:2px dashed var(--bdr);border-radius:13px;
+ color:var(--gr);text-align:center;transition:border-color .15s,background .15s,color .15s;}
+.dropzone svg{width:30px;height:30px;opacity:.8;}
+.dropzone .dzt{font-size:14.5px;font-weight:800;color:var(--head);}
+.dropzone .dzs{font-size:12.5px;font-weight:700;color:var(--accent-l);min-height:1em;}
+.dropzone.over{border-color:var(--accent);background:rgba(224,71,59,.09);color:var(--txt);}
+.dropzone.over svg{opacity:1;color:var(--accent-l);}
+/* Qui a ouvert le document, et qui ne l'a pas encore fait. */
+.docread.who{cursor:pointer;background:transparent;border:1.5px solid var(--bdr);}
+.docread.who:hover{border-color:var(--accent);color:var(--accent-l);}
+.docreaders{padding:0 1.15rem 1.1rem;display:flex;flex-direction:column;gap:.75rem;}
+.docsub .docreaders{padding-left:1.7rem;}
+.drgrp{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;}
+.drh{font-size:11.5px;font-weight:800;color:var(--gr);letter-spacing:.4px;text-transform:uppercase;margin-right:.3rem;}
+.drname{font-size:12.5px;font-weight:700;padding:5px 10px;border-radius:7px;
+ background:rgba(52,211,153,.13);color:var(--leaf);}
+.drname i{font-style:normal;opacity:.75;font-weight:600;margin-left:.25rem;}
+.drname.none{background:rgba(148,163,184,.14);color:var(--gr);}
+.drnone{font-size:12.5px;font-weight:700;color:var(--gr);}
 .docup{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;}
+.docup select,.docup input{padding:10px 12px;background:var(--soft);border:1.5px solid var(--bdr);border-radius:8px;color:var(--txt);font-size:14px;color-scheme:dark;}
 .docup input[type=text]{flex:1;min-width:150px;}
 .docup select{min-width:180px;}
 @media(max-width:600px){
@@ -601,14 +623,14 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
       <span class="rfull">Nore<span class="lo">lo</span><span class="dot"></span></span>
     </div>
     <div class="tabs">
-      <button id="tabDay" class="mgronly on"><svg class="ric" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/><rect x="6.5" y="12.5" width="4.5" height="4.5" rx="1" fill="currentColor" stroke="none"/></svg><span class="rlbl" data-i="tDay">Jour</span></button>
-      <button id="tabWeek" class="mgronly"><svg class="ric" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2.5v4M16 2.5v4M7 13h2M11 13h2M15 13h2M7 17h2M11 17h2"/></svg><span class="rlbl" data-i="tWeek">Semaine</span></button>
-      <button id="tabMgr" class="mgronly"><svg class="ric" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M14.5 9.3c-.4-.9-1.4-1.5-2.6-1.5-1.5 0-2.6.8-2.6 1.9 0 1 .8 1.6 2.6 2 1.9.4 2.7 1 2.7 2.1 0 1.1-1.2 1.9-2.7 1.9-1.3 0-2.4-.6-2.8-1.6"/></svg><span class="rlbl" data-i="tMgr">Gestion</span><span class="tabbadge alert" id="mgrBadge"></span></button>
-      <button id="tabEmp" class="mgronly"><svg class="ric" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16.5 5.3a3 3 0 0 1 0 5.4M18 19a5.5 5.5 0 0 0-3-4.9"/></svg><span class="rlbl" data-i="tEmp">Employés</span></button>
-      <button id="tabOt" class="mgronly"><svg class="ric" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 1.6"/></svg><span class="rlbl" data-i="tApprov">Approbations</span><span class="tabbadge" id="otBadge"></span></button>
-      <button id="tabDocs" class="mgronly"><svg class="ric" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span class="rlbl" data-i="tDocs">Documents</span></button>
-      <button id="tabLog" class="mgronly"><svg class="ric" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1.3" fill="currentColor" stroke="none"/><circle cx="3.5" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="3.5" cy="18" r="1.3" fill="currentColor" stroke="none"/></svg><span class="rlbl" data-i="tLog">Journal</span></button>
-      <button id="tabBak" class="mgronly"><svg class="ric" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6M4 11.5v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg><span class="rlbl" data-i="tBak">Sauvegardes</span></button>
+      <button id="tabDay" data-tab="day" class="mgronly on"><svg class="ric" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/><rect x="6.5" y="12.5" width="4.5" height="4.5" rx="1" fill="currentColor" stroke="none"/></svg><span class="rlbl" data-i="tDay">Jour</span></button>
+      <button id="tabWeek" data-tab="week" class="mgronly"><svg class="ric" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2.5v4M16 2.5v4M7 13h2M11 13h2M15 13h2M7 17h2M11 17h2"/></svg><span class="rlbl" data-i="tWeek">Semaine</span></button>
+      <button id="tabMgr" data-tab="mgr" class="mgronly"><svg class="ric" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10"/><path d="M14.5 9.3c-.4-.9-1.4-1.5-2.6-1.5-1.5 0-2.6.8-2.6 1.9 0 1 .8 1.6 2.6 2 1.9.4 2.7 1 2.7 2.1 0 1.1-1.2 1.9-2.7 1.9-1.3 0-2.4-.6-2.8-1.6"/></svg><span class="rlbl" data-i="tMgr">Gestion</span><span class="tabbadge alert" id="mgrBadge"></span></button>
+      <button id="tabEmp" data-tab="emp" class="mgronly"><svg class="ric" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><path d="M16.5 5.3a3 3 0 0 1 0 5.4M18 19a5.5 5.5 0 0 0-3-4.9"/></svg><span class="rlbl" data-i="tEmp">Employés</span></button>
+      <button id="tabOt" data-tab="ot" class="mgronly"><svg class="ric" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2.5 1.6"/></svg><span class="rlbl" data-i="tApprov">Approbations</span><span class="tabbadge" id="otBadge"></span></button>
+      <button id="tabDocs" data-tab="docs" class="mgronly"><svg class="ric" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span class="rlbl" data-i="tDocs">Documents</span></button>
+      <button id="tabLog" data-tab="log" class="mgronly"><svg class="ric" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1.3" fill="currentColor" stroke="none"/><circle cx="3.5" cy="12" r="1.3" fill="currentColor" stroke="none"/><circle cx="3.5" cy="18" r="1.3" fill="currentColor" stroke="none"/></svg><span class="rlbl" data-i="tLog">Journal</span></button>
+      <button id="tabBak" data-tab="bak" class="mgronly"><svg class="ric" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6M4 11.5v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg><span class="rlbl" data-i="tBak">Sauvegardes</span></button>
       <button class="emponly on" data-etab="entry"><svg class="ric" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="rlbl" data-i="empEntry">Mes heures</span></button>
       <button class="emponly" data-etab="docs"><svg class="ric" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h6M9 16h6"/></svg><span class="rlbl" data-i="tDocs">Documents</span></button>
       <button class="emponly" data-etab="totals"><svg class="ric" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="11" width="3" height="7"/><rect x="12" y="7" width="3" height="11"/><rect x="17" y="13" width="3" height="5"/></svg><span class="rlbl" data-i="empRelev">Mon relevé</span></button>
@@ -748,10 +770,16 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
     <div id="docsView" style="display:none">
       <div class="card" id="docsUpCard">
         <h3><span data-i="docsAdd">Ajouter un document</span></h3>
+        <div class="dropzone" id="docDrop">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M8 8l4-4 4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+          <div class="dzt" data-i="docsDrop">Glissez vos PDF ici</div>
+          <button type="button" class="btn ghost sm" id="docPick" data-i="docsPick">Choisir des fichiers</button>
+          <div class="dzs" id="docStaged"></div>
+          <input type="file" id="docFile" accept="application/pdf,.pdf" multiple style="display:none"/>
+        </div>
         <div class="docup">
           <input type="text" id="docTitle" placeholder="Titre"/>
           <select id="docParent"></select>
-          <input type="file" id="docFile" accept="application/pdf,.pdf"/>
           <button class="btn" id="docUp" data-i="docsUpload">Téléverser</button>
         </div>
         <div class="muted" id="docUpMsg" style="margin-top:.7rem"></div>
@@ -824,7 +852,7 @@ const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
 const EMAIL_DOMAIN='@norelo-verger.app';
 const OWNERS=['dan','gill','sydney','patron'];
-const APP_VERSION=30; // bump this on each release, then click "Force update"
+const APP_VERSION=31; // bump this on each release, then click "Force update"
 const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const REG_SHIFTS=[['08:00','16:30'],['09:30','18:00']]; // quarts reguliers mis en evidence
@@ -844,7 +872,7 @@ const T={
    months:['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'],
    smonths:['janv','févr','mars','avril','mai','juin','juil','août','sept','oct','nov','déc'],
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Début',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
-   paid:'Payé',unpaid:'À payer',share:'Part',week:'Semaine',kHours:'Heures de la semaine',kPay:'Paie brute',kPaid:'Déjà payé',kUnpaid:'Reste à payer',mgrWeekK:'Semaine affichée',empEntry:'Mes heures',tDocs:'Documents',docsAdd:'Ajouter un document',docsUpload:'Téléverser',docsNone:'Aucun document pour le moment.',docsErrLoad:'Documents indisponibles:',docsLoading:'Chargement...',docsOpen:'Ouvrir',docsReadOk:'Lu',docsUnread:'Non lu',docsReadN:'ont lu',docsDel:'Supprimer',docsSection:'section',docsSections:'sections',docsNoParent:'Aucun parent (fichier maître)',docsErrOpen:"Impossible d'ouvrir ce document.",docsPickFile:'Choisissez un fichier PDF.',docsPickTitle:'Donnez un titre.',docsTooBig:'Fichier trop volumineux. Maximum 50 Mo.',docsUploading:'Téléversement en cours...',docsErrUp:'Échec du téléversement:',docsUpOk:'Document ajouté',docsDelOne:'Supprimer ce document: {t}?',docsDelKids:'Ce fichier maître contient {n} section(s). Tout supprimer?',docsErrDel:'Suppression refusée.',docsDelOk:'Document supprimé',empRelev:'Mon relevé',empRest:'Voir le reste de la semaine',empRestHide:'Masquer le reste de la semaine',stHours:'Heures totales',stDay:'journée',stDays:'journées',stAll:'Toutes vos semaines',stNone:'Aucune heure enregistrée pour le moment.',settleTip:'Marquer ce supplément comme payé',overTip:'Montant versé supérieur aux heures actuelles',settled:'Supplément réglé',mgrZeroShow:'Afficher les personnes sans heures',mgrZeroHide:'Masquer les personnes sans heures',mgrNoHours:"Personne n'a travaillé cette semaine.",user:"Nom d'utilisateur",
+   paid:'Payé',unpaid:'À payer',share:'Part',week:'Semaine',kHours:'Heures de la semaine',kPay:'Paie brute',kPaid:'Déjà payé',kUnpaid:'Reste à payer',mgrWeekK:'Semaine affichée',empEntry:'Mes heures',tDocs:'Documents',docsAdd:'Ajouter un document',docsDrop:'Glissez vos PDF ici',docsPick:'Choisir des fichiers',docsFilesReady:'fichiers prêts',docsUpOkN:'documents ajoutés',docsWhoYes:'Ont ouvert',docsWhoNo:'Pas encore',docsWhoNobody:'Personne pour le moment',docsWhoAll:'Tout le monde',docsUpload:'Téléverser',docsNone:'Aucun document pour le moment.',docsErrLoad:'Documents indisponibles:',docsLoading:'Chargement...',docsOpen:'Ouvrir',docsReadOk:'Lu',docsUnread:'Non lu',docsReadN:'ont lu',docsDel:'Supprimer',docsSection:'section',docsSections:'sections',docsNoParent:'Aucun parent (fichier maître)',docsErrOpen:"Impossible d'ouvrir ce document.",docsPickFile:'Choisissez un fichier PDF.',docsTooBig:'Fichier trop volumineux. Maximum 50 Mo.',docsUploading:'Téléversement en cours...',docsErrUp:'Échec du téléversement:',docsUpOk:'Document ajouté',docsDelOne:'Supprimer ce document: {t}?',docsDelKids:'Ce fichier maître contient {n} section(s). Tout supprimer?',docsErrDel:'Suppression refusée.',docsDelOk:'Document supprimé',empRelev:'Mon relevé',empRest:'Voir le reste de la semaine',empRestHide:'Masquer le reste de la semaine',stHours:'Heures totales',stDay:'journée',stDays:'journées',stAll:'Toutes vos semaines',stNone:'Aucune heure enregistrée pour le moment.',settleTip:'Marquer ce supplément comme payé',overTip:'Montant versé supérieur aux heures actuelles',settled:'Supplément réglé',mgrZeroShow:'Afficher les personnes sans heures',mgrZeroHide:'Masquer les personnes sans heures',mgrNoHours:"Personne n'a travaillé cette semaine.",user:"Nom d'utilisateur",
    chooseWeek:'Choisir une semaine',ws_past:'Passée',ws_cur:'En cours',ws_up:'À venir',teamAll:'Toutes',teamExt:'Extérieur',teamInt:'Intérieur',roleEmp:'Employé',roleMgr:'Gestionnaire',resetPwd:'MDP',clearF:'Effacer',backupsT:'Sauvegardes',backupNow:'Sauvegarder maintenant',
    locked:'Verrouillé',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouillés.<br><strong>Un jour verrouillé à corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Vérification de l\'heure...',todayLbl:"Aujourd'hui",yestLbl:'Hier',badTime:"L'heure de fin doit être après l'heure de début.",hoursHi:'Heures de quart régulières en surbrillance',preseasonLbl:'Pré-saison',preseasonNote:"Pré-saison : heures de référence (avant l'ouverture du 17 août).",lunch:'Pause 30 min',otPending:'en attente',otOk:'approuvée',approve:'Approuver',revoke:'Retirer',tApprov:'Approbations',tApprovShort:'Approb.',tOt:'Heures supp.',otTitle:'Approbation des heures supplémentaires',otSub:'Les heures au-delà de 8h par jour sont payées à 16$/h une fois approuvées. Les gestionnaires sont payés à leur taux horaire.',otNone:'Aucune heure supplémentaire.',otAll:'Toutes les dates',tOff:'Congés',offLbl:'CONGÉ',offReq:'Demander un congé',offPending:'Congé demandé',offDenied:'Congé refusé',offPend:'en attente',offOk:'approuvé',offDen:'refusé',deny:'Refuser',offNone:'Aucune demande de congé.',cancel:'Annuler',offBlocked:'Effacez les heures pour demander un congé',
    otDen:'refusée',otAuto:"approuvée d'office",otShowDen:'Voir les refusées',otHideDen:'Masquer les refusées',otDenNone:'Aucune heure supplémentaire refusée.',otDenyC:'Refuser ces heures supplémentaires? Elles ne seront pas payées et quitteront la liste des demandes en attente.',
@@ -861,7 +889,7 @@ const T={
    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
    smonths:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
-   paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Hours this week',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',mgrWeekK:'Week shown',empEntry:'My hours',tDocs:'Documents',docsAdd:'Add a document',docsUpload:'Upload',docsNone:'No documents yet.',docsErrLoad:'Documents unavailable:',docsLoading:'Loading...',docsOpen:'Open',docsReadOk:'Read',docsUnread:'Unread',docsReadN:'have read',docsDel:'Delete',docsSection:'section',docsSections:'sections',docsNoParent:'No parent (master file)',docsErrOpen:'Could not open this document.',docsPickFile:'Choose a PDF file.',docsPickTitle:'Enter a title.',docsTooBig:'File too large. 50 MB maximum.',docsUploading:'Uploading...',docsErrUp:'Upload failed:',docsUpOk:'Document added',docsDelOne:'Delete this document: {t}?',docsDelKids:'This master file has {n} section(s). Delete all of it?',docsErrDel:'Delete refused.',docsDelOk:'Document deleted',empRelev:'My statement',empRest:'Show the rest of the week',empRestHide:'Hide the rest of the week',stHours:'Total hours',stDay:'day',stDays:'days',stAll:'All your weeks',stNone:'No hours recorded yet.',settleTip:'Mark this extra as paid',overTip:'Amount paid is higher than the current hours',settled:'Extra settled',mgrZeroShow:'Show people with no hours',mgrZeroHide:'Hide people with no hours',mgrNoHours:'Nobody worked this week.',user:'Username',
+   paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Hours this week',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',mgrWeekK:'Week shown',empEntry:'My hours',tDocs:'Documents',docsAdd:'Add a document',docsDrop:'Drop your PDFs here',docsPick:'Choose files',docsFilesReady:'files ready',docsUpOkN:'documents added',docsWhoYes:'Opened',docsWhoNo:'Not yet',docsWhoNobody:'Nobody yet',docsWhoAll:'Everyone',docsUpload:'Upload',docsNone:'No documents yet.',docsErrLoad:'Documents unavailable:',docsLoading:'Loading...',docsOpen:'Open',docsReadOk:'Read',docsUnread:'Unread',docsReadN:'have read',docsDel:'Delete',docsSection:'section',docsSections:'sections',docsNoParent:'No parent (master file)',docsErrOpen:'Could not open this document.',docsPickFile:'Choose a PDF file.',docsTooBig:'File too large. 50 MB maximum.',docsUploading:'Uploading...',docsErrUp:'Upload failed:',docsUpOk:'Document added',docsDelOne:'Delete this document: {t}?',docsDelKids:'This master file has {n} section(s). Delete all of it?',docsErrDel:'Delete refused.',docsDelOk:'Document deleted',empRelev:'My statement',empRest:'Show the rest of the week',empRestHide:'Hide the rest of the week',stHours:'Total hours',stDay:'day',stDays:'days',stAll:'All your weeks',stNone:'No hours recorded yet.',settleTip:'Mark this extra as paid',overTip:'Amount paid is higher than the current hours',settled:'Extra settled',mgrZeroShow:'Show people with no hours',mgrZeroHide:'Hide people with no hours',mgrNoHours:'Nobody worked this week.',user:'Username',
    chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',teamExt:'Exterior',teamInt:'Interior',roleEmp:'Employee',roleMgr:'Manager',resetPwd:'PW',clearF:'Clear',backupsT:'Backups',backupNow:'Backup now',
    locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',yestLbl:'Yesterday',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted',preseasonLbl:'Pre-season',preseasonNote:'Pre-season: reference hours (before the Aug 17 opening).',lunch:'30-min lunch',otPending:'pending',otOk:'approved',approve:'Approve',revoke:'Undo',tApprov:'Approvals',tApprovShort:'Approb.',tOt:'Overtime',otTitle:'Overtime approvals',otSub:'Hours beyond 8h per day are paid at $16/h once approved. Managers are paid at their own hourly rate.',otNone:'No overtime.',otAll:'All dates',tOff:'Time off',offLbl:'OFF',offReq:'Request day off',offPending:'Day off requested',offDenied:'Day off denied',offPend:'pending',offOk:'approved',offDen:'denied',deny:'Deny',offNone:'No day-off requests.',cancel:'Cancel',offBlocked:'Clear the hours to request a day off',
    otDen:'denied',otAuto:'auto-approved',otShowDen:'Show denied',otHideDen:'Hide denied',otDenNone:'No denied overtime.',otDenyC:'Deny this overtime? It will not be paid and will leave the pending list.',
@@ -1469,7 +1497,7 @@ function applyLang(){document.querySelectorAll('[data-i]').forEach(el=>{const k=
 
    Un document sans parent est un fichier maitre, affiche comme un
    dossier. Ses sections pointent vers lui par parent_id. */
-let docs=[],docReads=[],docsLoaded=false,docsErr=null;
+let docs=[],docReads=[],docsLoaded=false,docsErr=null,docWhoOpen={};
 const PDF_IC='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/></svg>';
 
 function docSize(n){if(!n&&n!==0)return '';
@@ -1481,7 +1509,7 @@ async function loadDocs(){
  if(e1){docsErr=e1.message;docs=[];docReads=[];docsLoaded=true;return;}
  docsErr=null;docs=d||[];
  // RLS: un employe ne recoit que ses propres lectures, un gestionnaire les voit toutes
- const {data:r}=await sb.from('document_reads').select('document_id,employee_id');
+ const {data:r}=await sb.from('document_reads').select('document_id,employee_id,read_at');
  docReads=r||[];docsLoaded=true;}
 
 function docRow(d,isMaster){
@@ -1493,13 +1521,31 @@ function docRow(d,isMaster){
  let acts='<button class="btn sm" data-docopen="'+d.id+'">'+t.docsOpen+'</button>';
  if(isEmployee){acts+='<span class="docread'+(mine?' ok':'')+'">'
    +(mine?t.docsReadOk:t.docsUnread)+'</span>';}
- else{acts+='<span class="docread">'+cnt+' '+t.docsReadN+'</span>'
+ else{acts+='<button class="docread who" data-docwho="'+d.id+'">'+cnt+' '+t.docsReadN+'</button>'
    +'<button class="btn ghost sm docdel" data-docdel="'+d.id+'">'+t.docsDel+'</button>';}
  return '<div class="docrow'+(isMaster?' master':'')+'">'
   +'<span class="docic">'+PDF_IC+'</span>'
   +'<span class="docmain"><span class="docttl">'+esc(d.title)+'</span>'
   +'<span class="docmeta">'+esc(meta.filter(Boolean).join(' · '))+'</span></span>'
-  +'<span class="docacts">'+acts+'</span></div>';}
+  +'<span class="docacts">'+acts+'</span></div>'
+  +(!isEmployee&&docWhoOpen[d.id]?readerPanel(d.id):'');}
+
+/* Qui a ouvert le document, et surtout qui ne l'a pas encore fait. */
+function readerPanel(id){
+ const t=T[lang];
+ const when={};docReads.filter(r=>r.document_id===id).forEach(r=>{when[r.employee_id]=r.read_at;});
+ const yes=[],no=[];
+ sortedEmps().forEach(e=>{(when[e.id]!==undefined?yes:no).push(e);});
+ const chip=(e,done)=>'<span class="drname'+(done?'':' none')+'">'+esc(e.name)
+  +(done&&when[e.id]?' <i>'+fmtShort(when[e.id])+'</i>':'')+'</span>';
+ let h='<div class="docreaders">';
+ h+='<div class="drgrp"><span class="drh">'+t.docsWhoYes+' ('+yes.length+')</span>'
+  +(yes.length?yes.map(e=>chip(e,true)).join(''):'<span class="drnone">'+t.docsWhoNobody+'</span>')+'</div>';
+ h+='<div class="drgrp"><span class="drh">'+t.docsWhoNo+' ('+no.length+')</span>'
+  +(no.length?no.map(e=>chip(e,false)).join(''):'<span class="drnone">'+t.docsWhoAll+'</span>')+'</div>';
+ return h+'</div>';}
+function fmtShort(iso){if(!iso)return '';const d=new Date(iso);
+ return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');}
 
 function docsHTML(){
  const t=T[lang];
@@ -1543,28 +1589,36 @@ async function markDocRead(id){
  docReads.push({document_id:id,employee_id:myId});
  renderDocs();}
 
-async function uploadDoc(){
+function uploadDoc(){const fi=document.getElementById('docFile');
+ return uploadFiles(fi.files);}
+async function uploadFiles(list){
  const t=T[lang];
- const fi=document.getElementById('docFile'),ti=document.getElementById('docTitle');
+ const ti=document.getElementById('docTitle');
  const msg=document.getElementById('docUpMsg'),btn=document.getElementById('docUp');
- const file=fi.files&&fi.files[0];
- if(!file){msg.textContent=t.docsPickFile;return;}
- const title=(ti.value||file.name.replace(/\.pdf$/i,'')).trim();
- if(!title){msg.textContent=t.docsPickTitle;return;}
- if(file.size>52428800){msg.textContent=t.docsTooBig;return;}
- btn.disabled=true;msg.textContent=t.docsUploading;
- const safe=file.name.toLowerCase().replace(/[^a-z0-9.\-]+/g,'-').replace(/^-+|-+$/g,'');
- const path=String(Date.now())+'-'+safe;
- const {error:se}=await sb.storage.from('documents').upload(path,file,{contentType:'application/pdf'});
- if(se){btn.disabled=false;msg.textContent=t.docsErrUp+' '+se.message;return;}
+ const all=[...(list||[])].filter(x=>/\.pdf$/i.test(x.name)||x.type==='application/pdf');
+ if(!all.length){msg.textContent=t.docsPickFile;return;}
  const parent=document.getElementById('docParent').value||null;
- const {error:de}=await sb.from('documents').insert({title:title,storage_path:path,
-  size_bytes:file.size,parent_id:parent,created_by:myId,sort_order:docs.length});
- if(de){await sb.storage.from('documents').remove([path]);  // pas de fichier orphelin
-  btn.disabled=false;msg.textContent=t.docsErrUp+' '+de.message;return;}
- logAction('doc_upload',title);
- ti.value='';fi.value='';msg.textContent='';btn.disabled=false;
- await loadDocs();renderDocs();showToast(t.docsUpOk,true);}
+ btn.disabled=true;
+ const fails=[];let ok=0;
+ for(let i=0;i<all.length;i++){
+  const file=all[i];
+  msg.textContent=all.length>1?t.docsUploading+' '+(i+1)+'/'+all.length:t.docsUploading;
+  if(file.size>52428800){fails.push(file.name+': '+t.docsTooBig);continue;}
+  // le titre saisi ne s'applique qu'a un depot unique, sinon on prend le nom du fichier
+  const title=((all.length===1&&ti.value.trim())||file.name.replace(/\.pdf$/i,'')).trim();
+  const safe=file.name.toLowerCase().replace(/[^a-z0-9.\-]+/g,'-').replace(/^-+|-+$/g,'');
+  const path=String(Date.now())+'-'+i+'-'+safe;
+  const {error:se}=await sb.storage.from('documents').upload(path,file,{contentType:'application/pdf'});
+  if(se){fails.push(file.name+': '+se.message);continue;}
+  const {error:de}=await sb.from('documents').insert({title:title,storage_path:path,
+   size_bytes:file.size,parent_id:parent,created_by:myId,sort_order:docs.length+i});
+  if(de){await sb.storage.from('documents').remove([path]);   // pas de fichier orphelin
+   fails.push(file.name+': '+de.message);continue;}
+  logAction('doc_upload',title);ok++;}
+ ti.value='';document.getElementById('docFile').value='';btn.disabled=false;
+ msg.textContent=fails.length?t.docsErrUp+' '+fails.join(' | '):'';
+ await loadDocs();renderDocs();
+ if(ok)showToast(ok>1?ok+' '+t.docsUpOkN:t.docsUpOk,true);}
 
 async function deleteDoc(id){
  const d=docs.find(x=>x.id===id);if(!d)return;
@@ -1633,13 +1687,12 @@ function bindApp(){
   const c=e.target.closest('.caday');if(!c||c.classList.contains('empty'))return;
   const iso=c.getAttribute('data-date');const dd=new Date(iso+'T00:00:00');const key=weekKeyForDate(dd);if(!state.weeks[key])return;
   state.current=key;if(!isEmployee)selDay=(dd.getDay()+6)%7;renderAll();});});
- document.getElementById('bottomNav').addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b)return;tab(b.getAttribute('data-tab'));});
+ ['railNav','bottomNav'].forEach(id=>{const el=document.getElementById(id);if(!el)return;
+  el.addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(b)tab(b.getAttribute('data-tab'));});});
  document.getElementById('timeClose').onclick=closeTimePicker;
  document.getElementById('timeSheet').addEventListener('click',e=>{if(e.target.id==='timeSheet')closeTimePicker();});
  document.getElementById('timeGrid').addEventListener('click',e=>{const b=e.target.closest('.tcell');if(!b)return;applyTime(b.getAttribute('data-t'));});
  if(!isEmployee){
-  document.getElementById('tabDay').onclick=()=>tab('day');
-  document.getElementById('tabWeek').onclick=()=>tab('week');
   document.getElementById('wkModes').addEventListener('click',e=>{const b=e.target.closest('[data-wmode]');if(!b)return;
    weekMode=b.getAttribute('data-wmode');renderWeek();setTitle();});
   document.getElementById('wtable').addEventListener('click',e=>{
@@ -1647,13 +1700,8 @@ function bindApp(){
    if(wk){state.current=wk.getAttribute('data-wkjump');weekMode='week';renderAll();return;}
    const wd=e.target.closest('[data-wday]');
    if(wd){selDay=+wd.getAttribute('data-wday');tab('day');}});
-  document.getElementById('tabMgr').onclick=()=>tab('mgr');
-  document.getElementById('tabEmp').onclick=()=>tab('emp');
-  document.getElementById('tabLog').onclick=()=>tab('log');
-  document.getElementById('tabBak').onclick=()=>tab('bak');
   document.getElementById('daypick').addEventListener('click',e=>{const b=e.target.closest('[data-day]');if(!b)return;selDay=+b.getAttribute('data-day');renderDayPick();renderDayList();setTitle();});
   document.getElementById('dayList').addEventListener('change',e=>{if(!e.target.classList.contains('lchk'))return;const c=e.target.closest('.ecard');toggleLunch(c.getAttribute('data-id'),+e.target.getAttribute('data-day'),e.target.checked);});
-  document.getElementById('tabOt').onclick=()=>tab('ot');
   document.getElementById('otCal').addEventListener('click',e=>{const c=e.target.closest('[data-otdate]');if(!c)return;const d=c.getAttribute('data-otdate');otSelDate=(otSelDate===d)?null:d;renderOT();});
   document.getElementById('otList').addEventListener('click',e=>{if(e.target.id==='otClear'){otSelDate=null;renderOT();return;}
    if(e.target.id==='otDenToggle'){otShowDenied=!otShowDenied;otSelDate=null;renderOT();return;}
@@ -1766,8 +1814,26 @@ function bindApp(){
   ['docsList','empDocsPane'].forEach(id=>{const el=document.getElementById(id);if(!el)return;
    el.addEventListener('click',e=>{
     const o=e.target.closest('[data-docopen]');if(o){openDoc(o.getAttribute('data-docopen'));return;}
+    const w=e.target.closest('[data-docwho]');
+    if(w){const k=w.getAttribute('data-docwho');docWhoOpen[k]=!docWhoOpen[k];renderDocs();return;}
     const d=e.target.closest('[data-docdel]');if(d){deleteDoc(d.getAttribute('data-docdel'));}});});
   document.getElementById('docUp').addEventListener('click',uploadDoc);
+  (function(){
+   const dz=document.getElementById('docDrop'),fi=document.getElementById('docFile');
+   const dv=document.getElementById('docsView');
+   if(!dz||!fi)return;
+   document.getElementById('docPick').onclick=()=>fi.click();
+   fi.addEventListener('change',()=>{const n=fi.files?fi.files.length:0;
+    document.getElementById('docStaged').textContent=
+     !n?'':(n===1?fi.files[0].name:n+' '+T[lang].docsFilesReady);});
+   // sans ca, un PDF lache a cote de la zone fait quitter l'application
+   ['dragover','drop'].forEach(ev=>dv.addEventListener(ev,e=>e.preventDefault()));
+   ['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('over');}));
+   dz.addEventListener('dragleave',e=>{if(!dz.contains(e.relatedTarget))dz.classList.remove('over');});
+   dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('over');
+    const fl=e.dataTransfer&&e.dataTransfer.files;
+    if(fl&&fl.length)uploadFiles(fl);});   // lache = televerse tout de suite
+  })();
   document.getElementById('empTotalsPane').addEventListener('click',e=>{
    if(e.target.closest('#stPrev'))stShift(-1);else if(e.target.closest('#stNext'))stShift(1);});
  }
