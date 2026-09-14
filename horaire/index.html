@@ -412,6 +412,46 @@ h2{font-size:20px;font-weight:800;}
 .paidbtn.extra:hover{background:rgba(245,158,11,.28);}
 .mtable tr.rowextra td{background:rgba(245,158,11,.07);}
 .overpaid{margin-left:.5rem;font-size:12px;font-weight:800;color:var(--gr);white-space:nowrap;}
+/* Le bouton Preparer: la paie est comptee et mise en sac, pas encore remise. */
+.prepbtn{border:1.5px solid var(--bdr);background:var(--soft);color:var(--gr);border-radius:22px;padding:9px 16px;font-size:14px;font-weight:800;min-height:44px;white-space:nowrap;}
+.prepbtn.yes{background:rgba(96,165,250,.16);border-color:#60a5fa;color:#60a5fa;}
+.paidbtn,.prepbtn{touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
+.paidbtn.yes::before,.prepbtn.yes::before{content:'\2713  ';}
+/* Les boutons d'une ligne vivent dans une seule boite, pour se ranger en
+   colonne sur un petit ecran. Pendant l'enregistrement ils respirent. */
+.payacts{display:inline-flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:nowrap;}
+.payacts .paidbtn.extra,.payacts .overpaid{margin-left:0;}
+.payacts.saving .paidbtn,.payacts.saving .prepbtn{animation:paysave 1s ease-in-out infinite;cursor:progress;}
+@keyframes paysave{0%,100%{opacity:1;}50%{opacity:.45;}}
+.mtable td.payc{text-align:right;}
+/* La colonne des noms reste visible quand on fait defiler vers les boutons,
+   pour toujours savoir qui on marque. */
+.mtable td.nmc,.mtable th.nmc{position:sticky;left:0;z-index:2;background:var(--panel);}
+.mtable tr.rowextra td.nmc{background-color:var(--panel);background-image:linear-gradient(rgba(245,158,11,.07),rgba(245,158,11,.07));}
+.mtscroll.scrolled .nmc{box-shadow:8px 0 12px -6px rgba(0,0,0,.65);}
+.teamlbl{display:inline-block;position:sticky;left:12px;}
+.nmrate{display:none;font-size:12px;color:var(--gr);font-weight:700;margin-top:1px;}
+.nmsub{display:none;font-size:13.5px;font-weight:700;color:var(--txt);margin-top:3px;font-variant-numeric:tabular-nums;}
+.prepnote{font-size:12.5px;margin-top:.7rem;}
+.prepnote:empty{display:none;}
+@media(max-width:760px){
+ #mgrTable{min-width:0;}
+ #mgrTable th,#mgrTable td{padding:10px 8px;font-size:15px;}
+ #mgrTable .ratec{display:none;}
+ #mgrTable .nmrate{display:block;}
+ #mgrTable td.nmc{font-weight:700;line-height:1.25;}
+ .paidbtn,.prepbtn{padding:8px 13px;font-size:13.5px;min-height:42px;}
+}
+/* Telephone en portrait: deux colonnes. Le nom porte les heures et la paie,
+   les boutons s'empilent a droite. Rien ne defile a l'horizontale. */
+@media(max-width:600px){
+ #mgrWeekCard{padding-left:1rem;padding-right:1rem;}
+ #mgrTable .hrsc,#mgrTable .payv{display:none;}
+ #mgrTable .nmsub{display:block;}
+ #mgrTable td.nmc{padding-right:4px;}
+ .payacts{display:flex;flex-direction:column;align-items:stretch;gap:5px;min-width:104px;}
+ .payacts .overpaid{text-align:center;}
+}
 .restbar{display:flex;justify-content:center;margin:.2rem 0 1rem;}
 @media(max-width:760px){.restbar .btn{width:100%;}}
 .stbadge{display:inline-block;font-size:12px;font-weight:800;padding:4px 11px;border-radius:20px;white-space:nowrap;}
@@ -709,8 +749,9 @@ footer{text-align:center;color:var(--gr);font-size:13px;padding:2.4rem 1rem;bord
             </div>
           </div>
           <div class="kpis" id="mgrKpis"></div>
-          <div class="mtscroll"><table class="mtable" id="mgrTable"></table></div>
+          <div class="mtscroll" id="mgrScroll"><table class="mtable" id="mgrTable"></table></div>
           <div id="mgrZeroBar" class="zerobar"></div>
+          <div id="mgrNote" class="prepnote muted"></div>
         </div>
         <div class="card">
           <button type="button" class="cardtoggle" id="tipToggle">
@@ -856,7 +897,7 @@ const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
 const EMAIL_DOMAIN='@norelo-verger.app';
 const OWNERS=['dan','gill','sydney','patron'];
-const APP_VERSION=34; // bump this on each release, then click "Force update"
+const APP_VERSION=35; // bump this on each release, then click "Force update"
 const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const REG_SHIFTS=[['08:00','16:30'],['09:30','18:00']]; // quarts reguliers mis en evidence
@@ -876,7 +917,7 @@ const T={
    months:['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'],
    smonths:['janv','févr','mars','avril','mai','juin','juil','août','sept','oct','nov','déc'],
    weekOf:'Semaine du',hi:'Bonjour, ',start:'Début',end:'Fin',name:'Nom',hours:'Heures',pay:'Paie',rate:'Taux',tot:'Total',
-   paid:'Payé',unpaid:'À payer',share:'Part',week:'Semaine',kHours:'Heures de la semaine',kPay:'Paie brute',kPaid:'Déjà payé',kUnpaid:'Reste à payer',mgrWeekK:'Semaine affichée',empEntry:'Mes heures',tDocs:'Documents',docsAdd:'Ajouter un document',docsDrop:'Glissez vos PDF ici',docsPick:'Choisir des fichiers',docsFilesReady:'fichiers prêts',docsUpOkN:'documents ajoutés',docsWhoYes:'Ont ouvert',docsWhoNo:'Pas encore',docsWhoNobody:'Personne pour le moment',docsWhoAll:'Tout le monde',docsUpload:'Téléverser',docsNone:'Aucun document pour le moment.',docsErrLoad:'Documents indisponibles:',docsLoading:'Chargement...',docsOpen:'Ouvrir',docsReadOk:'Lu',docsUnread:'Non lu',docsReadN:'ont lu',docsDel:'Supprimer',docsSection:'section',docsSections:'sections',docsNoParent:'Aucun parent (fichier maître)',docsErrOpen:"Impossible d'ouvrir ce document.",docsPickFile:'Choisissez un fichier PDF.',docsTooBig:'Fichier trop volumineux. Maximum 50 Mo.',docsUploading:'Téléversement en cours...',docsErrUp:'Échec du téléversement:',docsUpOk:'Document ajouté',docsDelOne:'Supprimer ce document: {t}?',docsDelKids:'Ce fichier maître contient {n} section(s). Tout supprimer?',docsErrDel:'Suppression refusée.',docsDelOk:'Document supprimé',empRelev:'Mon relevé',empRest:'Voir le reste de la semaine',empRestHide:'Masquer le reste de la semaine',stHours:'Heures totales',stDay:'journée',stDays:'journées',stAll:'Toutes vos semaines',stNone:'Aucune heure enregistrée pour le moment.',settleTip:'Marquer ce supplément comme payé',overTip:'Montant versé supérieur aux heures actuelles',settled:'Supplément réglé',mgrZeroShow:'Afficher les personnes sans heures',mgrZeroHide:'Masquer les personnes sans heures',mgrNoHours:"Personne n'a travaillé cette semaine.",user:"Nom d'utilisateur",
+   paid:'Payé',unpaid:'À payer',share:'Part',week:'Semaine',kHours:'Heures de la semaine',kPay:'Paie brute',kPaid:'Déjà payé',kUnpaid:'Reste à payer',mgrWeekK:'Semaine affichée',empEntry:'Mes heures',tDocs:'Documents',docsAdd:'Ajouter un document',docsDrop:'Glissez vos PDF ici',docsPick:'Choisir des fichiers',docsFilesReady:'fichiers prêts',docsUpOkN:'documents ajoutés',docsWhoYes:'Ont ouvert',docsWhoNo:'Pas encore',docsWhoNobody:'Personne pour le moment',docsWhoAll:'Tout le monde',docsUpload:'Téléverser',docsNone:'Aucun document pour le moment.',docsErrLoad:'Documents indisponibles:',docsLoading:'Chargement...',docsOpen:'Ouvrir',docsReadOk:'Lu',docsUnread:'Non lu',docsReadN:'ont lu',docsDel:'Supprimer',docsSection:'section',docsSections:'sections',docsNoParent:'Aucun parent (fichier maître)',docsErrOpen:"Impossible d'ouvrir ce document.",docsPickFile:'Choisissez un fichier PDF.',docsTooBig:'Fichier trop volumineux. Maximum 50 Mo.',docsUploading:'Téléversement en cours...',docsErrUp:'Échec du téléversement:',docsUpOk:'Document ajouté',docsDelOne:'Supprimer ce document: {t}?',docsDelKids:'Ce fichier maître contient {n} section(s). Tout supprimer?',docsErrDel:'Suppression refusée.',docsDelOk:'Document supprimé',empRelev:'Mon relevé',empRest:'Voir le reste de la semaine',empRestHide:'Masquer le reste de la semaine',stHours:'Heures totales',stDay:'journée',stDays:'journées',stAll:'Toutes vos semaines',stNone:'Aucune heure enregistrée pour le moment.',settleTip:'Marquer ce supplément comme payé',overTip:'Montant versé supérieur aux heures actuelles',settled:'Supplément réglé',payStatus:'Paiement',prep:'Préparer',prepOk:'Préparé',prepTip:'Paie comptée et mise en sac, pas encore remise',prepOnMsg:'Marqué préparé',prepOffMsg:'Marqué non préparé',prepNeedsSql:'Bouton Préparer indisponible: exécutez la migration 12 dans Supabase, puis rechargez.',mgrZeroShow:'Afficher les personnes sans heures',mgrZeroHide:'Masquer les personnes sans heures',mgrNoHours:"Personne n'a travaillé cette semaine.",user:"Nom d'utilisateur",
    chooseWeek:'Choisir une semaine',ws_past:'Passée',ws_cur:'En cours',ws_up:'À venir',teamAll:'Toutes',teamExt:'Extérieur',teamInt:'Intérieur',roleEmp:'Employé',roleMgr:'Gestionnaire',resetPwd:'MDP',clearF:'Effacer',backupsT:'Sauvegardes',backupNow:'Sauvegarder maintenant',
    locked:'Verrouillé',editHint:"Vous pouvez modifier aujourd'hui et hier seulement. Les autres jours sont verrouillés.<br><strong>Un jour verrouillé à corriger? Contactez votre gestionnaire, qui peut faire la modification pour vous.</strong>",timeChecking:'Vérification de l\'heure...',todayLbl:"Aujourd'hui",yestLbl:'Hier',badTime:"L'heure de fin doit être après l'heure de début.",hoursHi:'Heures de quart régulières en surbrillance',preseasonLbl:'Pré-saison',preseasonNote:"Pré-saison : heures de référence (avant l'ouverture du 17 août).",lunch:'Pause 30 min',otPending:'en attente',otOk:'approuvée',approve:'Approuver',revoke:'Retirer',tApprov:'Approbations',tApprovShort:'Approb.',tOt:'Heures supp.',otTitle:'Approbation des heures supplémentaires',otSub:'Les heures au-delà de 8h par jour sont payées à {ot}$/h une fois approuvées. Les gestionnaires sont payés à leur taux horaire.',otNone:'Aucune heure supplémentaire.',otAll:'Toutes les dates',tOff:'Congés',offLbl:'CONGÉ',offReq:'Demander un congé',offPending:'Congé demandé',offDenied:'Congé refusé',offPend:'en attente',offOk:'approuvé',offDen:'refusé',deny:'Refuser',offNone:'Aucune demande de congé.',cancel:'Annuler',offBlocked:'Effacez les heures pour demander un congé',
    otDen:'refusée',otAuto:"approuvée d'office",otShowDen:'Voir les refusées',otHideDen:'Masquer les refusées',otDenNone:'Aucune heure supplémentaire refusée.',otDenyC:'Refuser ces heures supplémentaires? Elles ne seront pas payées et quitteront la liste des demandes en attente.',
@@ -893,7 +934,7 @@ const T={
    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
    smonths:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
    weekOf:'Week of',hi:'Hi, ',start:'Start',end:'End',name:'Name',hours:'Hours',pay:'Pay',rate:'Rate',tot:'Total',
-   paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Hours this week',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',mgrWeekK:'Week shown',empEntry:'My hours',tDocs:'Documents',docsAdd:'Add a document',docsDrop:'Drop your PDFs here',docsPick:'Choose files',docsFilesReady:'files ready',docsUpOkN:'documents added',docsWhoYes:'Opened',docsWhoNo:'Not yet',docsWhoNobody:'Nobody yet',docsWhoAll:'Everyone',docsUpload:'Upload',docsNone:'No documents yet.',docsErrLoad:'Documents unavailable:',docsLoading:'Loading...',docsOpen:'Open',docsReadOk:'Read',docsUnread:'Unread',docsReadN:'have read',docsDel:'Delete',docsSection:'section',docsSections:'sections',docsNoParent:'No parent (master file)',docsErrOpen:'Could not open this document.',docsPickFile:'Choose a PDF file.',docsTooBig:'File too large. 50 MB maximum.',docsUploading:'Uploading...',docsErrUp:'Upload failed:',docsUpOk:'Document added',docsDelOne:'Delete this document: {t}?',docsDelKids:'This master file has {n} section(s). Delete all of it?',docsErrDel:'Delete refused.',docsDelOk:'Document deleted',empRelev:'My statement',empRest:'Show the rest of the week',empRestHide:'Hide the rest of the week',stHours:'Total hours',stDay:'day',stDays:'days',stAll:'All your weeks',stNone:'No hours recorded yet.',settleTip:'Mark this extra as paid',overTip:'Amount paid is higher than the current hours',settled:'Extra settled',mgrZeroShow:'Show people with no hours',mgrZeroHide:'Hide people with no hours',mgrNoHours:'Nobody worked this week.',user:'Username',
+   paid:'Paid',unpaid:'To pay',share:'Share',week:'Week',kHours:'Hours this week',kPay:'Gross pay',kPaid:'Already paid',kUnpaid:'Still owed',mgrWeekK:'Week shown',empEntry:'My hours',tDocs:'Documents',docsAdd:'Add a document',docsDrop:'Drop your PDFs here',docsPick:'Choose files',docsFilesReady:'files ready',docsUpOkN:'documents added',docsWhoYes:'Opened',docsWhoNo:'Not yet',docsWhoNobody:'Nobody yet',docsWhoAll:'Everyone',docsUpload:'Upload',docsNone:'No documents yet.',docsErrLoad:'Documents unavailable:',docsLoading:'Loading...',docsOpen:'Open',docsReadOk:'Read',docsUnread:'Unread',docsReadN:'have read',docsDel:'Delete',docsSection:'section',docsSections:'sections',docsNoParent:'No parent (master file)',docsErrOpen:'Could not open this document.',docsPickFile:'Choose a PDF file.',docsTooBig:'File too large. 50 MB maximum.',docsUploading:'Uploading...',docsErrUp:'Upload failed:',docsUpOk:'Document added',docsDelOne:'Delete this document: {t}?',docsDelKids:'This master file has {n} section(s). Delete all of it?',docsErrDel:'Delete refused.',docsDelOk:'Document deleted',empRelev:'My statement',empRest:'Show the rest of the week',empRestHide:'Hide the rest of the week',stHours:'Total hours',stDay:'day',stDays:'days',stAll:'All your weeks',stNone:'No hours recorded yet.',settleTip:'Mark this extra as paid',overTip:'Amount paid is higher than the current hours',settled:'Extra settled',payStatus:'Payment',prep:'Prepare',prepOk:'Prepared',prepTip:'Pay counted and bagged, not handed out yet',prepOnMsg:'Marked prepared',prepOffMsg:'Marked not prepared',prepNeedsSql:'Prepare button unavailable: run migration 12 in Supabase, then reload.',mgrZeroShow:'Show people with no hours',mgrZeroHide:'Hide people with no hours',mgrNoHours:'Nobody worked this week.',user:'Username',
    chooseWeek:'Choose a week',ws_past:'Past',ws_cur:'Current',ws_up:'Upcoming',teamAll:'All',teamExt:'Exterior',teamInt:'Interior',roleEmp:'Employee',roleMgr:'Manager',resetPwd:'PW',clearF:'Clear',backupsT:'Backups',backupNow:'Backup now',
    locked:'Locked',editHint:'You can edit today and yesterday only. Other days are locked.<br><strong>Need to fix a locked day? Contact your manager, who can make the change for you.</strong>',timeChecking:'Checking time...',todayLbl:'Today',yestLbl:'Yesterday',badTime:'End time must be after start time.',hoursHi:'Regular shift hours highlighted',preseasonLbl:'Pre-season',preseasonNote:'Pre-season: reference hours (before the Aug 17 opening).',lunch:'30-min lunch',otPending:'pending',otOk:'approved',approve:'Approve',revoke:'Undo',tApprov:'Approvals',tApprovShort:'Approb.',tOt:'Overtime',otTitle:'Overtime approvals',otSub:'Hours beyond 8h per day are paid at ${ot}/h once approved. Managers are paid at their own hourly rate.',otNone:'No overtime.',otAll:'All dates',tOff:'Time off',offLbl:'OFF',offReq:'Request day off',offPending:'Day off requested',offDenied:'Day off denied',offPend:'pending',offOk:'approved',offDen:'denied',deny:'Deny',offNone:'No day-off requests.',cancel:'Cancel',offBlocked:'Clear the hours to request a day off',
    otDen:'denied',otAuto:'auto-approved',otShowDen:'Show denied',otHideDen:'Hide denied',otDenNone:'No denied overtime.',otDenyC:'Deny this overtime? It will not be paid and will leave the pending list.',
@@ -905,7 +946,7 @@ let state={employees:[],weeks:{},current:null,off:{},offList:[]},lang='fr',selDa
 
 function isoLocal(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function todayIdx(){return (new Date().getDay()+6)%7;}
-function seasonWeeks(emps){const year=new Date().getFullYear();let d=new Date(year,4,1);  /* la saison commence en mai, des heures y sont saisies */const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);const end=new Date(year,9,31);const weeks={};while(d<=end){const k=isoLocal(d);weeks[k]={start:k,data:blankWeekFor(emps),paid:{}};d.setDate(d.getDate()+7);}return weeks;}
+function seasonWeeks(emps){const year=new Date().getFullYear();let d=new Date(year,4,1);  /* la saison commence en mai, des heures y sont saisies */const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);const end=new Date(year,9,31);const weeks={};while(d<=end){const k=isoLocal(d);weeks[k]={start:k,data:blankWeekFor(emps),paid:{},prep:{}};d.setDate(d.getDate()+7);}return weeks;}
 function seasonOpenISO(){return isoLocal(new Date(new Date().getFullYear(),7,17));}
 function isPreseason(iso){return iso<seasonOpenISO();}
 function fmtDate(iso,off){const d=new Date(iso+'T00:00:00');d.setDate(d.getDate()+off);return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0');}
@@ -914,23 +955,32 @@ function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
 function blankDay(){return {start:'',end:'',lunch:true,ot:false,otst:'pending'};}
 function otState(v){return v==='approved'||v==='denied'?v:'pending';}
 function blankWeekFor(emps){const o={};emps.forEach(e=>{o[e.id]={};DAYS.forEach(d=>o[e.id][d]=blankDay());});return o;}
+/* Tout est charge dans des objets neufs, puis installe d'un coup. Si une
+   requete echoue (reseau mobile), l'etat en place reste tel quel au lieu
+   de se vider. Renvoie false dans ce cas. */
 async function loadAll(){
- const {data:profs}=await sb.from('profiles').select('id,username,name,role,team,rate');
- state.employees=(profs||[]).map(p=>({id:p.id,name:p.name,team:p.team||'ext',rate:+p.rate||0,username:p.username,prole:p.role}));
- state.weeks=seasonWeeks(state.employees);
- const keys=Object.keys(state.weeks).sort();if(!keys.length)return;
+ const {data:profs,error:e1}=await sb.from('profiles').select('id,username,name,role,team,rate');
+ if(e1)return false;
+ const emps=(profs||[]).map(p=>({id:p.id,name:p.name,team:p.team||'ext',rate:+p.rate||0,username:p.username,prole:p.role}));
+ const weeks=seasonWeeks(emps);
+ const keys=Object.keys(weeks).sort();
+ if(!keys.length){state.employees=emps;state.weeks=weeks;return true;}
  const startKey=keys[0],endKey=addDaysISO(keys[keys.length-1],6);
- const {data:shifts}=await sb.from('shifts').select('employee_id,work_date,start_time,end_time,lunch,ot_approved,ot_status').gte('work_date',startKey).lte('work_date',endKey);
- (shifts||[]).forEach(r=>{const dd=new Date(r.work_date+'T00:00:00');const wk=weekKeyForDate(dd);const di=(dd.getDay()+6)%7;const w=state.weeks[wk];if(w&&w.data[r.employee_id])w.data[r.employee_id][DAYS[di]]={start:validTime(r.start_time),end:validTime(r.end_time),lunch:r.lunch!==false,ot:!!r.ot_approved,otst:otState(r.ot_status)};});
- const {data:paid}=await sb.from('paid_weeks').select('employee_id,week_start,paid,paid_amount').gte('week_start',startKey).lte('week_start',keys[keys.length-1]);
- (paid||[]).forEach(r=>{const w=state.weeks[r.week_start];if(!w||!r.paid)return;
-  w.paid[r.employee_id]=true;
-  /* Montant reellement verse. Null sur les lignes anterieures a la
-     migration 08: on les traite comme entierement reglees. */
-  if(r.paid_amount!=null){(w.paidAmt||(w.paidAmt={}))[r.employee_id]=+r.paid_amount;}});
+ const {data:shifts,error:e2}=await sb.from('shifts').select('employee_id,work_date,start_time,end_time,lunch,ot_approved,ot_status').gte('work_date',startKey).lte('work_date',endKey);
+ if(e2)return false;
+ (shifts||[]).forEach(r=>{const dd=new Date(r.work_date+'T00:00:00');const wk=weekKeyForDate(dd);const di=(dd.getDay()+6)%7;const w=weeks[wk];if(w&&w.data[r.employee_id])w.data[r.employee_id][DAYS[di]]={start:validTime(r.start_time),end:validTime(r.end_time),lunch:r.lunch!==false,ot:!!r.ot_approved,otst:otState(r.ot_status)};});
+ const readPaid=()=>sb.from('paid_weeks').select(paidCols()).gte('week_start',startKey).lte('week_start',keys[keys.length-1]);
+ let pr=await readPaid();
+ /* Migration 12 pas encore passee: on relit sans la colonne prepared et
+    le bouton Preparer reste cache. Le bouton Paye, lui, fonctionne. */
+ if(pr.error&&prepOn&&noPrepCol(pr.error)){prepOn=false;pr=await readPaid();}
+ if(pr.error)return false;
+ (pr.data||[]).forEach(r=>{const w=weeks[r.week_start];if(w)applyPaidRow(w,r.employee_id,r);});
+ state.employees=emps;state.weeks=weeks;
  await reloadOff();
+ return true;
 }
-async function reloadOff(){const {data:off}=await sb.from('time_off').select('id,employee_id,off_date,status');state.off={};state.offList=off||[];
+async function reloadOff(){const {data:off,error}=await sb.from('time_off').select('id,employee_id,off_date,status');if(error)return;state.off={};state.offList=off||[];
  (off||[]).forEach(r=>{(state.off[r.employee_id]||(state.off[r.employee_id]={}))[r.off_date]=r.status;});}
 function offStatus(empId,dISO){return (state.off[empId]&&state.off[empId][dISO])||null;}
 function isOff(empId,dISO){const s=offStatus(empId,dISO);return s==='pending'||s==='approved';}
@@ -943,10 +993,10 @@ function subscribeRealtime(){
     if(p.eventType==='DELETE')w.data[r.employee_id][DAYS[di]]=blankDay();else w.data[r.employee_id][DAYS[di]]={start:validTime(p.new.start_time),end:validTime(p.new.end_time),lunch:p.new.lunch!==false,ot:!!p.new.ot_approved,otst:otState(p.new.ot_status)};
     if(wk===state.current){if(isEmployee){renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);}else{renderDayList();renderWeek();renderCalendar(document.getElementById('calAdmin'),null);if(mgrUnlocked)renderMgr();}renderWeekBar();}
     if(!isEmployee){const ov=document.getElementById('otView');if(ov&&ov.style.display!=='none'&&otSubTab==='ot')renderOT();else updateOTBadge();}})
-  .on('postgres_changes',{event:'*',schema:'public',table:'paid_weeks'},p=>{const r=p.new||p.old;if(!r)return;const w=state.weeks[r.week_start];if(!w)return;
-   if(p.eventType!=='DELETE'&&p.new){if(p.new.paid_amount!=null)(w.paidAmt||(w.paidAmt={}))[r.employee_id]=+p.new.paid_amount;else if(w.paidAmt)delete w.paidAmt[r.employee_id];}
-   else if(w.paidAmt)delete w.paidAmt[r.employee_id];
-   if(p.eventType==='DELETE')delete w.paid[r.employee_id];else w.paid[r.employee_id]=!!p.new.paid;if(!isEmployee&&r.week_start===state.current)renderMgr();})
+  /* L'evenement ne sert que de signal: on relit la ligne, parce que les
+     echos peuvent arriver dans le desordre et defaire un clic plus recent. */
+  .on('postgres_changes',{event:'*',schema:'public',table:'paid_weeks'},p=>{const r=p.new||p.old;
+   if(r&&r.employee_id&&r.week_start)syncPaidRow(r.employee_id,r.week_start);else syncPaidWeek(state.current);})
   .on('postgres_changes',{event:'*',schema:'public',table:'time_off'},async p=>{await reloadOff();if(isEmployee){renderEmp();renderCalendar(document.getElementById('calEmp'),currentEmp);}else{renderDayList();renderWeek();renderCalendar(document.getElementById('calAdmin'),null);if(mgrUnlocked)renderMgr();const ov=document.getElementById('otView');if(ov&&ov.style.display!=='none')showOTSub(otSubTab);}renderWeekBar();updateOTBadge();})
   .subscribe();
 }
@@ -984,6 +1034,113 @@ function empHours(id){return empHoursIn(state.current,id);}
 function empPending(id){const w=state.weeks[state.current];const e=empById(id);let t=0;DAYS.forEach((d,i)=>{if(isOff(id,addDaysISO(state.current,i)))return;const day=w.data[id][d];if(!otApproved(day,e))t+=otHours(day,e);});return Math.round(t*100)/100;}
 function empPayIn(wk,id){const w=state.weeks[wk];if(!w||!w.data[id])return 0;const e=empById(id);let p=0;DAYS.forEach((d,i)=>{const dISO=addDaysISO(wk,i);if(isOff(id,dISO))return;p+=dayPay(w.data[id][d],e,dISO);});return Math.round(p*100)/100;}
 function empPay(id){return empPayIn(state.current,id);}
+
+/* ======================= ETAT DE PAIEMENT =========================
+   Chaque (employe, semaine) a deux drapeaux dans paid_weeks: prepared
+   (comptee et mise en sac) et paid (remise). Regles qui rendent les
+   boutons fiables, surtout sur telephone:
+   1. Le clic change l'ecran tout de suite, puis ecrit.
+   2. Une seule ecriture a la fois par cle. Un clic pendant l'ecriture
+      n'est pas perdu: on retient le dernier etat voulu et on l'envoie
+      quand la ligne est libre. Le dernier clic gagne toujours.
+   3. La reponse du serveur fait foi. L'echo temps reel d'une cle en
+      cours d'ecriture est ignore, les autres echos relisent la ligne.
+   4. On ne reconstruit jamais tout le tableau sous un doigt.
+   ================================================================== */
+let prepOn=true;   // passe a false si la colonne prepared manque (migration 12)
+function paidCols(){return 'employee_id,week_start,paid,paid_amount'+(prepOn?',prepared':'');}
+function noPrepCol(err){return !!err&&(err.code==='42703'||/prepared/i.test(err.message||''));}
+/* Installe une ligne paid_weeks (ou son absence: r=null) dans la semaine. */
+function applyPaidRow(w,id,r){if(!w)return;if(!w.prep)w.prep={};
+ if(r&&r.paid){w.paid[id]=true;
+  /* Montant reellement verse. Null sur les lignes anterieures a la
+     migration 08: on les traite comme entierement reglees. */
+  if(r.paid_amount!=null)(w.paidAmt||(w.paidAmt={}))[id]=+r.paid_amount;else if(w.paidAmt)delete w.paidAmt[id];}
+ else{delete w.paid[id];if(w.paidAmt)delete w.paidAmt[id];}
+ if(r&&r.prepared)w.prep[id]=true;else delete w.prep[id];}
+function payFrom(w,id){return {paid:!!w.paid[id],amt:w.paidAmt?w.paidAmt[id]:undefined,prep:!!(w.prep&&w.prep[id])};}
+function payKey(id,wk){return id+'|'+wk;}
+const payQ={},paySeq={};
+function payBusy(id,wk){return !!payQ[payKey(id,wk)];}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+async function fetchPaidRow(id,wk){const r=await sb.from('paid_weeks').select(paidCols()).eq('employee_id',id).eq('week_start',wk).maybeSingle();
+ return r.error?{ok:false}:{ok:true,row:r.data||null};}
+/* Ce qui doit se redessiner quand une ligne de paiement change. */
+function payRefresh(id,wk){
+ if(isEmployee){const tp=document.getElementById('empTotalsPane');if(tp&&tp.style.display!=='none')renderEmpTotals();return;}
+ if(!mgrUnlocked)return;if(wk===state.current)renderPayCell(id);renderMgrTotals();
+ const rv=document.getElementById('relevView');if(rv&&rv.style.display!=='none'&&id===myId)renderStatement(myId,'relevView');}
+async function syncPaidRow(id,wk){const k=payKey(id,wk);if(!state.weeks[wk]||payQ[k])return;
+ const n=(paySeq[k]=(paySeq[k]||0)+1);
+ const srv=await fetchPaidRow(id,wk);
+ if(!srv.ok||paySeq[k]!==n||payQ[k]||!state.weeks[wk])return;   // reponse depassee, ou une ecriture a commence
+ applyPaidRow(state.weeks[wk],id,srv.row);payRefresh(id,wk);}
+async function syncPaidWeek(wk){if(!wk||!state.weeks[wk])return;
+ const r=await sb.from('paid_weeks').select(paidCols()).eq('week_start',wk);
+ const w=state.weeks[wk];if(r.error||!w)return;const seen={};
+ (r.data||[]).forEach(x=>{seen[x.employee_id]=1;if(!payQ[payKey(x.employee_id,wk)])applyPaidRow(w,x.employee_id,x);});
+ state.employees.forEach(e=>{if(!seen[e.id]&&!payQ[payKey(e.id,wk)])applyPaidRow(w,e.id,null);});
+ if(isEmployee){const tp=document.getElementById('empTotalsPane');if(tp&&tp.style.display!=='none')renderEmpTotals();}
+ else if(mgrUnlocked){if(wk===state.current)renderMgr();else renderMgrTotals();}}
+function togglePaid(id,paid,settle){const wk=state.current,w=state.weeks[wk];if(!w)return;
+ const from=payFrom(w,id);
+ /* On retient ce qu'on verse, sinon des heures ajoutees plus tard
+    passeraient pour deja payees. */
+ const amt=paid?empPay(id):null,hrsNow=paid?empHours(id):null;
+ if(paid){w.paid[id]=true;(w.paidAmt||(w.paidAmt={}))[id]=amt;}else{delete w.paid[id];if(w.paidAmt)delete w.paidAmt[id];}
+ renderPayCell(id);renderMgrTotals();
+ savePay(id,wk,{paid:paid,paid_amount:amt,paid_hours:hrsNow,paid_at:paid?new Date().toISOString():null},from,settle);}
+function togglePrep(id){const wk=state.current,w=state.weeks[wk];if(!w||!prepOn)return;
+ const from=payFrom(w,id);const nv=!from.prep;
+ if(!w.prep)w.prep={};if(nv)w.prep[id]=true;else delete w.prep[id];
+ renderPayCell(id);
+ savePay(id,wk,{prepared:nv,prepared_at:nv?new Date().toISOString():null},from,false);}
+async function savePay(id,wk,patch,from,settle){
+ const k=payKey(id,wk);
+ if(payQ[k]){const q=payQ[k];q.next=Object.assign(q.next||{},patch);q.settle=q.settle||!!settle;return;}
+ const q=payQ[k]={next:null,from:from,settle:!!settle};
+ if(wk===state.current&&!isEmployee)renderPayCell(id);
+ let p=patch,row=null,err=null;
+ while(p){
+  const body=Object.assign({employee_id:id,week_start:wk},p);
+  const send=()=>sb.from('paid_weeks').upsert(body,{onConflict:'employee_id,week_start'}).select(paidCols()).maybeSingle();
+  let r=await send();
+  if(r.error){await sleep(700);r=await send();}   // une seconde chance, le reseau mobile hoquete
+  if(r.error){err=r.error;break;}
+  if(r.data)row=r.data;
+  p=q.next;q.next=null;
+ }
+ delete payQ[k];
+ const w=state.weeks[wk];
+ if(err){
+  /* On revient a ce que le serveur sait, ou a l'etat d'avant si on est hors ligne. */
+  const srv=await fetchPaidRow(id,wk);
+  if(srv.ok&&state.weeks[wk])applyPaidRow(state.weeks[wk],id,srv.row);
+  else if(w){if(from.paid){w.paid[id]=true;if(from.amt!=null)(w.paidAmt||(w.paidAmt={}))[id]=from.amt;else if(w.paidAmt)delete w.paidAmt[id];}
+   else{delete w.paid[id];if(w.paidAmt)delete w.paidAmt[id];}
+   if(!w.prep)w.prep={};if(from.prep)w.prep[id]=true;else delete w.prep[id];}
+  payRefresh(id,wk);
+  showToast(lang==='fr'?'Non enregistré':'Not saved',false);
+  alert((lang==='fr'?'Action refusée : ':'Action refused: ')+(err.message||''));return;}
+ if(row&&w)applyPaidRow(w,id,row);
+ payRefresh(id,wk);
+ if(!w)return;
+ /* Journal et confirmation selon le changement net, pas selon chaque tap. */
+ const now=payFrom(w,id),em=empById(id),nm=(em?em.name:'')+' ('+wk+')',t=T[lang];
+ if(now.paid!==from.paid)logAction(now.paid?'mark_paid':'mark_unpaid',nm);
+ else if(q.settle&&now.paid)logAction('mark_paid',nm+' +'+money((now.amt||0)-(from.amt||0)));
+ if(now.prep!==from.prep)logAction(now.prep?'mark_prepared':'mark_unprepared',nm);
+ showToast(now.paid!==from.paid?(now.paid?(lang==='fr'?'Marqué payé':'Marked paid'):(lang==='fr'?'Marqué non payé':'Marked unpaid'))
+  :q.settle?t.settled:now.prep!==from.prep?(now.prep?t.prepOnMsg:t.prepOffMsg):(lang==='fr'?'Enregistré':'Saved'),true);}
+/* Retour au premier plan. Apres une longue absence le socket temps reel a
+   pu rater des evenements: on recharge tout. Sinon on rafraichit au moins
+   les paiements de la semaine affichee. */
+function bindResume(){let hiddenAt=0;
+ document.addEventListener('visibilitychange',async()=>{
+  if(document.visibilityState!=='visible'){hiddenAt=Date.now();return;}
+  const away=hiddenAt?Date.now()-hiddenAt:0;hiddenAt=0;
+  if(away>60*1000){if(await loadAll())renderAll();}
+  else if(!isEmployee&&mgrUnlocked)syncPaidWeek(state.current);});}
 
 /* Solde impaye sur TOUTES les semaines, pas seulement la semaine affichee. */
 /* Combien a deja ete verse pour cette semaine. undefined si on ne sait pas,
@@ -1463,31 +1620,63 @@ function tipsIsOpen(){if(tipsOpen!==null)return tipsOpen;
 function setTipsOpen(v){tipsOpen=!!v;try{localStorage.setItem('noreloTipsOpen',v?'1':'0');}catch(e){}renderTips();}
 function renderTips(){const b=document.getElementById('tipBody'),c=document.getElementById('tipChev');if(!b)return;
  const o=tipsIsOpen();b.style.display=o?'':'none';if(c)c.innerHTML=o?'&#9652;':'&#9662;';}
-function renderMgr(){const t=T[lang];renderUnpaid();updateMgrBadge();renderTips();
+function mgrTotals(){let th=0,tp=0,paid=0,unpaid=0;
+ adminEmps().forEach(e=>{const p=empPay(e.id);tp+=p;th+=empHours(e.id);
+  const owed=weekOwed(state.current,e.id);unpaid+=owed;paid+=Math.max(0,p-owed);});
+ return {th:th,tp:tp,paid:paid,unpaid:unpaid};}
+/* Les cartes du haut et le solde impaye, sans toucher au tableau. */
+function renderMgrTotals(){const t=T[lang],x=mgrTotals();const el=document.getElementById('mgrKpis');
+ if(el)el.innerHTML=kpi(x.th.toFixed(1)+'h',t.kHours,'')+kpi(money(x.tp),t.kPay,'')+kpi(money(x.paid),t.kPaid,'g')+kpi(money(x.unpaid),t.kUnpaid,'r');
+ renderUnpaid();updateMgrBadge();}
+/* La cellule des boutons d'une personne. Preparer disparait une fois paye:
+   il n'y a plus rien a preparer. */
+function payCellHTML(e){const t=T[lang],w=state.weeks[state.current],id=e.id;
+ const yes=!!w.paid[id],prep=!!(w.prep&&w.prep[id]);
+ const owed=weekOwed(state.current,id),over=weekOver(state.current,id);
+ let h='<div class="payacts'+(payBusy(id,state.current)?' saving':'')+'">';
+ if(!yes&&prepOn)h+='<button type="button" class="prepbtn'+(prep?' yes':'')+'" data-prep="'+id+'" title="'+esc(t.prepTip)+'">'+(prep?t.prepOk:t.prep)+'</button>';
+ h+='<button type="button" class="paidbtn'+(yes?' yes':'')+'" data-paid="'+id+'">'+(yes?t.paid:t.unpaid)+'</button>';
+ if(owed>0&&yes)h+='<button type="button" class="paidbtn extra" data-settle="'+id+'" title="'+esc(t.settleTip)+'">+'+money(owed)+'</button>';
+ if(over>0)h+='<span class="overpaid" title="'+esc(t.overTip)+'">-'+money(over)+'</span>';
+ return h+'</div>';}
+/* Ne remplace que la cellule de la personne: le reste du tableau, et
+   surtout un bouton que le doigt touche ailleurs, reste en place. */
+function renderPayCell(id){const w=state.weeks[state.current];if(!w)return;
+ const tr=document.querySelector('#mgrTable tr[data-payrow="'+id+'"]');const e=empById(id);if(!tr||!e)return;
+ const c=tr.querySelector('td.payc');if(c)c.innerHTML=payCellHTML(e);
+ tr.classList.toggle('rowextra',!!w.paid[id]&&weekOwed(state.current,id)>0);}
+let mgrTouchUntil=0,mgrDeferT=null;
+function renderMgr(){const t=T[lang];
+ /* Un doigt est sur le tableau: on attend qu'il se leve. Reconstruire le
+    tableau sous un tap fait perdre le clic sur telephone. */
+ if(Date.now()<mgrTouchUntil){clearTimeout(mgrDeferT);mgrDeferT=setTimeout(renderMgr,150);return;}
+ renderTips();
  const _wl=document.getElementById('mgrWeekLabel');
  if(_wl){const st=weekStatus(state.current);
   _wl.innerHTML=esc(t.weekOf+' '+fmtLong(state.current))+' <span class="wpstat '+st+'">'+t['ws_'+st]+'</span>';}
  const _kp=document.getElementById('mgrPrev'),_kn=document.getElementById('mgrNext');
- if(_kp&&_kn){const ks=wkKeys(),i=ks.indexOf(state.current);_kp.disabled=i<=0;_kn.disabled=i>=ks.length-1;}const w=state.weeks[state.current];let th=0,tp=0,paid=0,unpaid=0;const to={ext:0,int:1};
+ if(_kp&&_kn){const ks=wkKeys(),i=ks.indexOf(state.current);_kp.disabled=i<=0;_kn.disabled=i>=ks.length-1;}const w=state.weeks[state.current];const to={ext:0,int:1};
  const emps=adminEmps();
- emps.forEach(e=>{const p=empPay(e.id);tp+=p;th+=empHours(e.id);
-  const owed=weekOwed(state.current,e.id);unpaid+=owed;paid+=Math.max(0,p-owed);});
- /* Les totaux ci-dessus comptent tout le monde. Le tableau, lui, ne montre
+ /* Les totaux comptent tout le monde. Le tableau, lui, ne montre
     que les personnes qui ont travaille, sauf si on demande le reste. */
  const worked=e=>empHours(e.id)>0||empPay(e.id)>0;
  const zeroN=emps.filter(e=>!worked(e)).length;
  const shown=mgrShowZero()?emps:emps.filter(worked);
- document.getElementById('mgrKpis').innerHTML=kpi(th.toFixed(1)+'h',t.kHours,'')+kpi(money(tp),t.kPay,'')+kpi(money(paid),t.kPaid,'g')+kpi(money(unpaid),t.kUnpaid,'r');
- let rows='<tr><th>'+t.name+'</th><th>'+t.rate+'</th><th style="text-align:right">'+t.hours+'</th><th style="text-align:right">'+t.pay+'</th><th style="text-align:right">'+t.paid+'</th></tr>';
+ renderMgrTotals();
+ let rows='<tr><th class="nmc">'+t.name+'</th><th class="ratec">'+t.rate+'</th><th class="hrsc" style="text-align:right">'+t.hours+'</th><th class="payv" style="text-align:right">'+t.pay+'</th><th style="text-align:right">'+t.payStatus+'</th></tr>';
  let lastTeam=null;
- [...shown].sort((a,b)=>(to[empTeam(a)]-to[empTeam(b)])||empPay(b.id)-empPay(a.id)).forEach(e=>{const tm=empTeam(e);if(tm!==lastTeam){rows+='<tr class="teamrow"><td colspan="5">'+teamLabel(tm)+'</td></tr>';lastTeam=tm;}const yes=!!w.paid[e.id];
-  const pend=empPending(e.id);const owed=weekOwed(state.current,e.id),over=weekOver(state.current,e.id);
-  rows+='<tr'+(owed>0&&yes?' class="rowextra"':'')+'><td>'+esc(e.name)+'</td><td>'+money(e.rate)+'/h</td><td class="num">'+empHours(e.id).toFixed(2)+'h'+(pend>0?' <span class="otpend">+'+pend.toFixed(2)+'</span>':'')+'</td><td class="num">'+money(empPay(e.id))+'</td><td style="text-align:right"><button class="paidbtn '+(yes?'yes':'')+'" data-paid="'+e.id+'">'+(yes?t.paid:t.unpaid)+'</button>'+(owed>0&&yes?'<button class="paidbtn extra" data-settle="'+e.id+'" title="'+esc(t.settleTip)+'">+'+money(owed)+'</button>':'')+(over>0?'<span class="overpaid" title="'+esc(t.overTip)+'">-'+money(over)+'</span>':'')+'</td></tr>';});
+ [...shown].sort((a,b)=>(to[empTeam(a)]-to[empTeam(b)])||empPay(b.id)-empPay(a.id)).forEach(e=>{const tm=empTeam(e);if(tm!==lastTeam){rows+='<tr class="teamrow"><td colspan="5"><span class="teamlbl">'+teamLabel(tm)+'</span></td></tr>';lastTeam=tm;}
+  const pend=empPending(e.id);const extra=!!w.paid[e.id]&&weekOwed(state.current,e.id)>0;
+  const hrsTxt=empHours(e.id).toFixed(2)+'h'+(pend>0?' <span class="otpend">+'+pend.toFixed(2)+'</span>':''),payTxt=money(empPay(e.id));
+  /* Sur telephone les colonnes Heures et Paie se cachent: leur contenu est
+     repete sous le nom (nmsub), pour que tout tienne sans defiler. */
+  rows+='<tr'+(extra?' class="rowextra"':'')+' data-payrow="'+e.id+'"><td class="nmc">'+esc(e.name)+'<span class="nmsub">'+hrsTxt+' &middot; '+payTxt+'</span><span class="nmrate">'+money(e.rate)+'/h</span></td><td class="ratec">'+money(e.rate)+'/h</td><td class="num hrsc">'+hrsTxt+'</td><td class="num payv">'+payTxt+'</td><td class="payc">'+payCellHTML(e)+'</td></tr>';});
  if(!shown.length)rows+='<tr><td colspan="5" class="muted" style="padding:1.1rem">'+t.mgrNoHours+'</td></tr>';
  document.getElementById('mgrTable').innerHTML=rows;
  const zb=document.getElementById('mgrZeroBar');
  if(zb)zb.innerHTML=zeroN?'<button type="button" class="btn ghost sm" id="mgrZeroToggle">'
   +(mgrShowZero()?t.mgrZeroHide:t.mgrZeroShow)+' ('+zeroN+')</button>':'';
+ const nt=document.getElementById('mgrNote');if(nt)nt.textContent=prepOn?'':t.prepNeedsSql;
 }
 function renderEmpAdmin(){const t=T[lang];document.getElementById('empAdmin').innerHTML=sortedEmps().map(e=>{const mgr=e.prole==='manager';
  return '<div class="emprow" data-id="'+e.id+'">'
@@ -1693,7 +1882,7 @@ async function enterApp(user){
  document.getElementById('weekView').style.display='none';document.getElementById('mgr').style.display='none';
  await fetchTrustedTime();
  const dw=pickDefaultWeek();if(dw)state.current=dw;
- bindApp();renderAll();subscribeRealtime();
+ bindApp();renderAll();subscribeRealtime();bindResume();
  const fv=document.getElementById('footVer');if(fv)fv.textContent='Version '+APP_VERSION;
  checkVersion();setInterval(checkVersion,5*60*1000);window.addEventListener('focus',checkVersion);
  if(!asEmp){(async()=>{const {data:last}=await sb.from('backups').select('created_at').order('created_at',{ascending:false}).limit(1);if(!last||!last.length||(Date.now()-new Date(last[0].created_at).getTime())>12*3600*1000)createBackup('Automatique');})();}
@@ -1815,17 +2004,19 @@ function bindApp(){
    const {data,error}=await sb.functions.invoke('quick-api',{body:{action:'delete',id}});
    if(error||!data||!data.ok){e.target.disabled=false;alert((data&&data.error)||(error&&error.message)||'Erreur');return;}
    logAction('delete_account',emp?emp.name:'');await loadAll();renderAll();showToast(lang==='fr'?'Compte supprimé':'Account deleted',true);});
-  document.getElementById('mgrTable').addEventListener('click',async e=>{
-   const st=e.target.dataset&&e.target.dataset.settle;
-   if(st){await markPaid(st,true,true);return;}
-   if(!e.target.dataset.paid)return;const id=e.target.dataset.paid;const w=state.weeks[state.current];const nv=!w.paid[id];w.paid[id]=nv;
-   /* On retient ce qu'on verse, sinon des heures ajoutees plus tard
-      passeraient pour deja payees. */
-   const amt=nv?empPay(id):null,hrsNow=nv?empHours(id):null;
-   if(nv){(w.paidAmt||(w.paidAmt={}))[id]=amt;}else if(w.paidAmt)delete w.paidAmt[id];
-   renderMgr();
-   const {error}=await sb.from('paid_weeks').upsert({employee_id:id,week_start:state.current,paid:nv,paid_amount:amt,paid_hours:hrsNow,paid_at:nv?new Date().toISOString():null},{onConflict:'employee_id,week_start'});
-   if(error){w.paid[id]=!nv;if(w.paidAmt)delete w.paidAmt[id];renderMgr();alert(lang==='fr'?'Action refusée.':'Action refused.');}else{const em=state.employees.find(x=>x.id===id);logAction(nv?'mark_paid':'mark_unpaid',(em?em.name:'')+' ('+state.current+')');showToast(nv?(lang==='fr'?'Marqué payé':'Marked paid'):(lang==='fr'?'Marqué non payé':'Marked unpaid'),true);}});
+  document.getElementById('mgrTable').addEventListener('click',e=>{
+   const b=e.target.closest('[data-paid],[data-prep],[data-settle]');if(!b)return;
+   const w=state.weeks[state.current];if(!w)return;
+   if(b.hasAttribute('data-settle')){togglePaid(b.getAttribute('data-settle'),true,true);return;}
+   if(b.hasAttribute('data-prep')){togglePrep(b.getAttribute('data-prep'));return;}
+   const id=b.getAttribute('data-paid');togglePaid(id,!w.paid[id],false);});
+  /* Le tableau defile a l'horizontale sur telephone. Tant qu'un doigt y est
+     pose ou qu'il defile, on ne le reconstruit pas; et la colonne des noms
+     prend une ombre des qu'elle recouvre le reste. */
+  (function(){const ms=document.getElementById('mgrScroll');if(!ms)return;
+   ms.addEventListener('pointerdown',()=>{mgrTouchUntil=Date.now()+1500;},{passive:true});
+   ['pointerup','pointercancel'].forEach(ev=>ms.addEventListener(ev,()=>{mgrTouchUntil=Date.now()+400;},{passive:true}));
+   ms.addEventListener('scroll',()=>{mgrTouchUntil=Math.max(mgrTouchUntil,Date.now()+250);ms.classList.toggle('scrolled',ms.scrollLeft>0);},{passive:true});})();
   document.getElementById('unpaidPanel').addEventListener('click',e=>{const b=e.target.closest('[data-uwk]');if(!b)return;
    state.current=b.getAttribute('data-uwk');renderAll();
    const c=document.getElementById('mgrWeekCard');if(c)c.scrollIntoView({block:'start',behavior:'smooth'});});
@@ -1895,28 +2086,13 @@ function tab(which){
  if(which==='bak')renderBackups();
  setTitle();window.scrollTo(0,0);
 }
-/* Met a jour le montant verse pour la semaine affichee. Sert au bouton
-   ambre quand une semaine payee a gagne des heures depuis. */
-async function markPaid(id,paid,settle){
- const w=state.weeks[state.current];if(!w)return;
- const amt=paid?empPay(id):null,hrsNow=paid?empHours(id):null;
- const prev=w.paidAmt?w.paidAmt[id]:undefined;
- w.paid[id]=paid;
- if(paid)(w.paidAmt||(w.paidAmt={}))[id]=amt;else if(w.paidAmt)delete w.paidAmt[id];
- renderMgr();
- const {error}=await sb.from('paid_weeks').upsert({employee_id:id,week_start:state.current,paid:paid,paid_amount:amt,paid_hours:hrsNow,paid_at:paid?new Date().toISOString():null},{onConflict:'employee_id,week_start'});
- if(error){if(prev===undefined){if(w.paidAmt)delete w.paidAmt[id];}else w.paidAmt[id]=prev;
-  renderMgr();alert(lang==='fr'?'Action refusée.':'Action refused.');return;}
- const em=empById(id);
- logAction('mark_paid',(em?em.name:'')+' ('+state.current+')'+(settle?' +'+money(amt-(prev||0)):''));
- showToast(settle?T[lang].settled:(lang==='fr'?'Marqué payé':'Marked paid'),true);}
 function calcTips(){const pool=+document.getElementById('tipPool').value||0;const t=T[lang];const sh=adminEmps().map(e=>({e,h:empHours(e.id)}));const tot=sh.reduce((s,x)=>s+x.h,0);
  let rows='<tr><th>'+t.name+'</th><th style="text-align:right">'+t.hours+'</th><th style="text-align:right">'+t.share+'</th></tr>';
  sh.filter(x=>x.h>0).sort((a,b)=>b.h-a.h).forEach(x=>{rows+='<tr><td>'+esc(x.e.name)+'</td><td class="num">'+x.h.toFixed(2)+'h</td><td class="num">'+money(tot>0?pool*x.h/tot:0)+'</td></tr>';});
  document.getElementById('tipOut').innerHTML='<table class="mtable">'+rows+'</table>';}
 
 function logAction(action,detail){const me=state.employees.find(x=>x.id===myId);sb.from('audit_log').insert({actor_id:myId,actor_name:me?me.name:'',action:action,detail:detail||null}).then(()=>{});}
-function actLabel(a){const M={fr:{create_account:'Compte créé',delete_account:'Compte supprimé',reset_password:'Mot de passe réinitialisé',rename_user:'Utilisateur renommé',change_name:'Nom modifié',change_role:'Rôle modifié',change_team:'Équipe modifiée',change_rate:'Taux modifié',mark_paid:'Marqué payé',mark_unpaid:'Marqué non payé',edit_hours:'Heures modifiées',approve_ot:'Heures supp. approuvées',revoke_ot:'Heures supp. remises en attente',deny_ot:'Heures supp. refusées',approve_off:'Congé approuvé',deny_off:'Congé refusé',reset_off:'Congé remis en attente',backup:'Sauvegarde créée',restore_backup:'Restauration',delete_backup:'Sauvegarde supprimée',force_update:'Mise à jour forcée'},en:{create_account:'Account created',delete_account:'Account deleted',reset_password:'Password reset',rename_user:'Username changed',change_name:'Name changed',change_role:'Role changed',change_team:'Team changed',change_rate:'Rate changed',mark_paid:'Marked paid',mark_unpaid:'Marked unpaid',edit_hours:'Hours changed',approve_ot:'Overtime approved',revoke_ot:'Overtime set pending',deny_ot:'Overtime denied',approve_off:'Day off approved',deny_off:'Day off denied',reset_off:'Day off set pending',backup:'Backup created',restore_backup:'Restore',delete_backup:'Backup deleted',force_update:'Forced update'}};return (M[lang]&&M[lang][a])||a;}
+function actLabel(a){const M={fr:{create_account:'Compte créé',delete_account:'Compte supprimé',reset_password:'Mot de passe réinitialisé',rename_user:'Utilisateur renommé',change_name:'Nom modifié',change_role:'Rôle modifié',change_team:'Équipe modifiée',change_rate:'Taux modifié',mark_paid:'Marqué payé',mark_unpaid:'Marqué non payé',mark_prepared:'Marqué préparé',mark_unprepared:'Marqué non préparé',edit_hours:'Heures modifiées',approve_ot:'Heures supp. approuvées',revoke_ot:'Heures supp. remises en attente',deny_ot:'Heures supp. refusées',approve_off:'Congé approuvé',deny_off:'Congé refusé',reset_off:'Congé remis en attente',backup:'Sauvegarde créée',restore_backup:'Restauration',delete_backup:'Sauvegarde supprimée',force_update:'Mise à jour forcée'},en:{create_account:'Account created',delete_account:'Account deleted',reset_password:'Password reset',rename_user:'Username changed',change_name:'Name changed',change_role:'Role changed',change_team:'Team changed',change_rate:'Rate changed',mark_paid:'Marked paid',mark_unpaid:'Marked unpaid',mark_prepared:'Marked prepared',mark_unprepared:'Marked not prepared',edit_hours:'Hours changed',approve_ot:'Overtime approved',revoke_ot:'Overtime set pending',deny_ot:'Overtime denied',approve_off:'Day off approved',deny_off:'Day off denied',reset_off:'Day off set pending',backup:'Backup created',restore_backup:'Restore',delete_backup:'Backup deleted',force_update:'Forced update'}};return (M[lang]&&M[lang][a])||a;}
 let logCache=[];
 async function renderLog(){const el=document.getElementById('logList');if(!el)return;el.innerHTML='<div class="muted" style="padding:1rem">...</div>';
  const {data,error}=await sb.from('audit_log').select('*').order('created_at',{ascending:false}).limit(500);
