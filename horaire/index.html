@@ -897,7 +897,7 @@ const SB_URL='https://wbdmwygvwdyinhwtsrwe.supabase.co';
 const SB_ANON='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndiZG13eWd2d2R5aW5od3RzcndlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUzMjk2NjgsImV4cCI6MjEwMDkwNTY2OH0.BZtE_H9df-H3pSbomfDwdAjfcalw16N_HeCykGelhMo';
 const EMAIL_DOMAIN='@norelo-verger.app';
 const OWNERS=['dan','gill','sydney','patron'];
-const APP_VERSION=35; // bump this on each release, then click "Force update"
+const APP_VERSION=36; // bump this on each release, then click "Force update"
 const sb=supabase.createClient(SB_URL,SB_ANON);
 const OPEN_MIN=7*60, CLOSE_MIN=19*60, STEP=15;
 const REG_SHIFTS=[['08:00','16:30'],['09:30','18:00']]; // quarts reguliers mis en evidence
@@ -976,6 +976,11 @@ async function loadAll(){
  if(pr.error&&prepOn&&noPrepCol(pr.error)){prepOn=false;pr=await readPaid();}
  if(pr.error)return false;
  (pr.data||[]).forEach(r=>{const w=weeks[r.week_start];if(w)applyPaidRow(w,r.employee_id,r);});
+ /* Une ligne en cours d'ecriture garde ce que l'ecran montre: la lecture
+    ci-dessus a pu partir avant que le clic soit enregistre. La reponse de
+    l'ecriture remettra la verite du serveur. */
+ Object.keys(payQ).forEach(k=>{const i=k.indexOf('|'),id=k.slice(0,i),wk=k.slice(i+1);const ow=state.weeks[wk],nw=weeks[wk];
+  if(ow&&nw)applyPaidRow(nw,id,{paid:!!ow.paid[id],paid_amount:ow.paidAmt&&ow.paidAmt[id]!=null?ow.paidAmt[id]:null,prepared:!!(ow.prep&&ow.prep[id])});});
  state.employees=emps;state.weeks=weeks;
  await reloadOff();
  return true;
@@ -1060,7 +1065,7 @@ function applyPaidRow(w,id,r){if(!w)return;if(!w.prep)w.prep={};
  if(r&&r.prepared)w.prep[id]=true;else delete w.prep[id];}
 function payFrom(w,id){return {paid:!!w.paid[id],amt:w.paidAmt?w.paidAmt[id]:undefined,prep:!!(w.prep&&w.prep[id])};}
 function payKey(id,wk){return id+'|'+wk;}
-const payQ={},paySeq={};
+const payQ={},paySeq={};let payWrites=0;   // compte les ecritures terminees
 function payBusy(id,wk){return !!payQ[payKey(id,wk)];}
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 async function fetchPaidRow(id,wk){const r=await sb.from('paid_weeks').select(paidCols()).eq('employee_id',id).eq('week_start',wk).maybeSingle();
@@ -1100,19 +1105,25 @@ async function savePay(id,wk,patch,from,settle){
  if(payQ[k]){const q=payQ[k];q.next=Object.assign(q.next||{},patch);q.settle=q.settle||!!settle;return;}
  const q=payQ[k]={next:null,from:from,settle:!!settle};
  if(wk===state.current&&!isEmployee)renderPayCell(id);
- let p=patch,row=null,err=null;
+ let p=patch,row=null,err=null,last=null;
  while(p){
   const body=Object.assign({employee_id:id,week_start:wk},p);
   const send=()=>sb.from('paid_weeks').upsert(body,{onConflict:'employee_id,week_start'}).select(paidCols()).maybeSingle();
   let r=await send();
-  if(r.error){await sleep(700);r=await send();}   // une seconde chance, le reseau mobile hoquete
+  /* Une seconde chance: le reseau mobile hoquete, et une session expiree
+     pendant que le telephone dormait se renouvelle en passant par getSession. */
+  if(r.error){await sleep(700);try{await sb.auth.getSession();}catch(e){}r=await send();}
   if(r.error){err=r.error;break;}
-  if(r.data)row=r.data;
+  if(r.data)row=r.data;last=body;
   p=q.next;q.next=null;
  }
- delete payQ[k];
+ delete payQ[k];payWrites++;
  const w=state.weeks[wk];
+ const em0=empById(id),nm0=(em0?em0.name:'')+' ('+wk+')';
  if(err){
+  /* Le refus va au journal: le proprietaire voit depuis le PC ce que le
+     telephone a recu, sans avoir a le demander. */
+  logAction('pay_refused',nm0+' : '+(err.message||err.code||'?'));
   /* On revient a ce que le serveur sait, ou a l'etat d'avant si on est hors ligne. */
   const srv=await fetchPaidRow(id,wk);
   if(srv.ok&&state.weeks[wk])applyPaidRow(state.weeks[wk],id,srv.row);
@@ -1121,10 +1132,17 @@ async function savePay(id,wk,patch,from,settle){
    if(!w.prep)w.prep={};if(from.prep)w.prep[id]=true;else delete w.prep[id];}
   payRefresh(id,wk);
   showToast(lang==='fr'?'Non enregistré':'Not saved',false);
-  alert((lang==='fr'?'Action refusée : ':'Action refused: ')+(err.message||''));return;}
+  const auth=/jwt|token|401|session/i.test(err.message||'');
+  alert((lang==='fr'?'Action refusée : ':'Action refused: ')+(err.message||'')+(auth?(lang==='fr'?'\n\nSession expirée. Quittez puis reconnectez-vous.':'\n\nSession expired. Log out and sign in again.'):''));return;}
  if(row&&w)applyPaidRow(w,id,row);
  payRefresh(id,wk);
  if(!w)return;
+ /* Le serveur a repondu sans erreur mais n'a pas garde ce qu'on a demande:
+    une regle cote serveur a annule le changement. Ce n'est pas un succes. */
+ if(row&&last&&(('paid' in last&&!!row.paid!==!!last.paid)||('prepared' in last&&!!row.prepared!==!!last.prepared))){
+  logAction('pay_refused',nm0+' : '+(lang==='fr'?'le serveur a gardé':'server kept')+' paid='+!!row.paid+(prepOn?' prepared='+!!row.prepared:''));
+  showToast(lang==='fr'?'Non enregistré':'Not saved',false);
+  alert(lang==='fr'?'Le serveur a annulé ce changement. Une règle de sécurité (politique RLS ou déclencheur) bloque cette écriture pour ce compte. Voir le Journal.':'The server cancelled this change. A security rule (RLS policy or trigger) blocks this write for this account. See the Journal.');return;}
  /* Journal et confirmation selon le changement net, pas selon chaque tap. */
  const now=payFrom(w,id),em=empById(id),nm=(em?em.name:'')+' ('+wk+')',t=T[lang];
  if(now.paid!==from.paid)logAction(now.paid?'mark_paid':'mark_unpaid',nm);
@@ -1139,7 +1157,10 @@ function bindResume(){let hiddenAt=0;
  document.addEventListener('visibilitychange',async()=>{
   if(document.visibilityState!=='visible'){hiddenAt=Date.now();return;}
   const away=hiddenAt?Date.now()-hiddenAt:0;hiddenAt=0;
-  if(away>60*1000){if(await loadAll())renderAll();}
+  if(away>60*1000){const n0=payWrites;if(await loadAll()){renderAll();
+   /* Un clic pendant le rechargement: la lecture peut etre plus vieille
+      que l'ecriture, on relit les paiements de la semaine. */
+   if(payWrites!==n0||Object.keys(payQ).length)syncPaidWeek(state.current);}}
   else if(!isEmployee&&mgrUnlocked)syncPaidWeek(state.current);});}
 
 /* Solde impaye sur TOUTES les semaines, pas seulement la semaine affichee. */
@@ -2092,7 +2113,7 @@ function calcTips(){const pool=+document.getElementById('tipPool').value||0;cons
  document.getElementById('tipOut').innerHTML='<table class="mtable">'+rows+'</table>';}
 
 function logAction(action,detail){const me=state.employees.find(x=>x.id===myId);sb.from('audit_log').insert({actor_id:myId,actor_name:me?me.name:'',action:action,detail:detail||null}).then(()=>{});}
-function actLabel(a){const M={fr:{create_account:'Compte créé',delete_account:'Compte supprimé',reset_password:'Mot de passe réinitialisé',rename_user:'Utilisateur renommé',change_name:'Nom modifié',change_role:'Rôle modifié',change_team:'Équipe modifiée',change_rate:'Taux modifié',mark_paid:'Marqué payé',mark_unpaid:'Marqué non payé',mark_prepared:'Marqué préparé',mark_unprepared:'Marqué non préparé',edit_hours:'Heures modifiées',approve_ot:'Heures supp. approuvées',revoke_ot:'Heures supp. remises en attente',deny_ot:'Heures supp. refusées',approve_off:'Congé approuvé',deny_off:'Congé refusé',reset_off:'Congé remis en attente',backup:'Sauvegarde créée',restore_backup:'Restauration',delete_backup:'Sauvegarde supprimée',force_update:'Mise à jour forcée'},en:{create_account:'Account created',delete_account:'Account deleted',reset_password:'Password reset',rename_user:'Username changed',change_name:'Name changed',change_role:'Role changed',change_team:'Team changed',change_rate:'Rate changed',mark_paid:'Marked paid',mark_unpaid:'Marked unpaid',mark_prepared:'Marked prepared',mark_unprepared:'Marked not prepared',edit_hours:'Hours changed',approve_ot:'Overtime approved',revoke_ot:'Overtime set pending',deny_ot:'Overtime denied',approve_off:'Day off approved',deny_off:'Day off denied',reset_off:'Day off set pending',backup:'Backup created',restore_backup:'Restore',delete_backup:'Backup deleted',force_update:'Forced update'}};return (M[lang]&&M[lang][a])||a;}
+function actLabel(a){const M={fr:{create_account:'Compte créé',delete_account:'Compte supprimé',reset_password:'Mot de passe réinitialisé',rename_user:'Utilisateur renommé',change_name:'Nom modifié',change_role:'Rôle modifié',change_team:'Équipe modifiée',change_rate:'Taux modifié',mark_paid:'Marqué payé',mark_unpaid:'Marqué non payé',mark_prepared:'Marqué préparé',mark_unprepared:'Marqué non préparé',pay_refused:'Paiement refusé',edit_hours:'Heures modifiées',approve_ot:'Heures supp. approuvées',revoke_ot:'Heures supp. remises en attente',deny_ot:'Heures supp. refusées',approve_off:'Congé approuvé',deny_off:'Congé refusé',reset_off:'Congé remis en attente',backup:'Sauvegarde créée',restore_backup:'Restauration',delete_backup:'Sauvegarde supprimée',force_update:'Mise à jour forcée'},en:{create_account:'Account created',delete_account:'Account deleted',reset_password:'Password reset',rename_user:'Username changed',change_name:'Name changed',change_role:'Role changed',change_team:'Team changed',change_rate:'Rate changed',mark_paid:'Marked paid',mark_unpaid:'Marked unpaid',mark_prepared:'Marked prepared',mark_unprepared:'Marked not prepared',pay_refused:'Payment refused',edit_hours:'Hours changed',approve_ot:'Overtime approved',revoke_ot:'Overtime set pending',deny_ot:'Overtime denied',approve_off:'Day off approved',deny_off:'Day off denied',reset_off:'Day off set pending',backup:'Backup created',restore_backup:'Restore',delete_backup:'Backup deleted',force_update:'Forced update'}};return (M[lang]&&M[lang][a])||a;}
 let logCache=[];
 async function renderLog(){const el=document.getElementById('logList');if(!el)return;el.innerHTML='<div class="muted" style="padding:1rem">...</div>';
  const {data,error}=await sb.from('audit_log').select('*').order('created_at',{ascending:false}).limit(500);
