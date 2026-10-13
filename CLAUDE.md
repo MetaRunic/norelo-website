@@ -64,6 +64,8 @@ the owner confirms a deploy landed.
 - Confirm the FR and EN dictionaries have identical key sets, and that no key is referenced
   in code but missing from the dictionaries.
 - Give the owner manual test steps for anything user-facing.
+- Do not send rendered screenshots or page previews of your changes. The owner checks
+  the live site directly.
 
 ## Git
 
