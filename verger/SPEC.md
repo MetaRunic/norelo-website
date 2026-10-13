@@ -23,8 +23,10 @@ migrer vers le domaine du verger plus tard.
 | Hebergement | `norelo-website`, chemin `/verger/`. Migration future vers le domaine du verger, preservee par une redirection permanente depuis norelo.ca. |
 | Unite de carte | Arbres individuels, en points. Pas de zones comme unite de catalogue. |
 | Base de donnees | Projet Supabase **separe**. Aucun lien avec le projet horaire, qui contient la paie. |
-| Fond de carte | Photo aerienne fournie par le proprietaire, **georeferencee**. Pas de tuiles externes, donc aucune librairie de cartographie. |
-| Depart sans photo | La carte est d'abord **schematique**, construite sur la grille du releve existant, 11 rangees par 77 positions. Aucune photo n'est requise pour commencer. La photo devient un fond pose sous la grille, les positions sont ancrees ensuite. |
+| Fond de carte | **Carte dessinee, jamais une photo.** Herbe, allees et contour sont dessines. Les arbres sont des donnees affichees par dessus, pas des pixels. |
+| Pourquoi pas une photo | Un verger change tous les ans, des arbres meurent et sont replantes. Une photo fige les arbres dans l'image et devient fausse des le lendemain. Une carte dessinee se met a jour en supprimant une ligne de base de donnees. En prime, aucune question de licence, et quelques kilo-octets au lieu de plusieurs mega-octets, ce qui compte avec une barre de reseau dans un champ. |
+| Orthophoto | Utilisee **une seule fois comme calque de calque**, pour relever le contour, les allees et la position des sections. Jamais publiee. L'orthophoto du Quebec est sous licence CC-BY, qui autorise explicitement le travail derive. Prise au printemps, sans feuilles, elle montre justement le sol et les allees. |
+| Georeferencement | Quelques points d'ancrage releves sur place au telephone, aux coins de chaque section. Aucune imagerie necessaire. Suffisant pour un point de position et une distance en metres. |
 | Sections | P1 a P4, **fixes**, ne changeront jamais. |
 | Coordonnees | Stockees en fractions de l'image, 0 a 1. Resistantes au remplacement de la photo. Converties en latitude et longitude par une transformation affine. |
 | Commentaires publics | Moderes. Invisibles jusqu'a approbation par un gestionnaire. |
@@ -99,10 +101,10 @@ Le releve porte aussi une taille d'arbre, petit, moyen ou standard. Conservee.
 - `varieties`: nom, description, gout, conservation, utilisations recommandees,
   lien vers le calendrier du verger, texte FR et EN, **couleur d'affichage**,
   **ouverte a la cueillette** oui ou non.
-- `trees`: rangee et position dans la grille, position x et y en fraction d'image,
-  variete, numero dans la variete, taille, section, etat de cueillette,
-  date de mise a jour de l'etat, qui l'a mise a jour, **variete confirmee ou supposee**,
-  **signalement d'erreur en attente**.
+- `trees`: rangee et position dans la grille, variete, numero dans la variete, taille,
+  section, etat de cueillette, date de mise a jour de l'etat, qui l'a mise a jour,
+  **variete confirmee ou supposee**, **signalement d'erreur en attente**,
+  **statut de vie** vivant ou arrache, **annee de plantation**, **date d'arrachage**.
 - `zones`: polygone en fractions d'image, statut, nom, date de modification.
 - `comments`: arbre vise, texte, auteur, interne ou public, statut de moderation,
   lu ou non lu.
@@ -141,6 +143,18 @@ Un arbre est disponible si les trois conditions sont remplies: sa zone est ouver
 sa variete est ouverte a la cueillette, et il n'est pas vide.
 Les arbres pleins passent avant ceux en hauteur seulement.
 
+## 6bis. Le verger change tous les ans
+
+Des arbres meurent, sont arraches, replantes dans une autre variete. C'est la raison
+principale du choix d'une carte dessinee plutot qu'une photo.
+
+Un arbre arrache n'est jamais supprime de la base, il change de statut. L'historique
+est conserve, ce qui transforme discretement l'application en **registre du verger**:
+cet emplacement portait un Cortland mort en 2024, replante en Honeycrisp en 2025.
+Presque gratuit a construire, et utile au proprietaire bien au dela des visiteurs.
+
+Le visiteur ne voit que les arbres vivants.
+
 ## 7. Hors perimetre
 
 Retire volontairement, et pourquoi.
@@ -151,6 +165,7 @@ Retire volontairement, et pourquoi.
   besoin d'etre cartographies.
 - **Reseau d'allees.** Meme raison.
 - **Boussole.** Le cap du telephone est peu fiable. La carte suffit pour s'orienter.
+- **Fond photographique.** Remplace par une carte dessinee, voir section 6bis.
 - **Precision a l'arbre pres.** Le GPS d'un telephone a une erreur de 3 a 10 metres,
   davantage sous le feuillage, ce qui depasse l'espacement entre deux arbres.
   L'application vise le bloc, pas l'arbre exact.
@@ -169,10 +184,8 @@ Retire volontairement, et pourquoi.
 
 ## 9. Questions ouvertes
 
-1. Source de la photo aerienne. Une capture de Google Satellite pose un probleme
-   de licence sur un site commercial. Les orthophotos ouvertes du Quebec ou une
-   photo de drone prise sur place evitent la question et sont souvent de meilleure
-   resolution.
+1. Le contour du verger, la position des quatre sections et le trace des allees,
+   a relever une fois sur l'orthophoto des Laurentides, 20 cm, donneesquebec.ca.
 2. Les fiches de varietes sont-elles redigees, ou a ecrire?
 3. Quelle est l'adresse du calendrier de maturite, pour y pointer?
 4. Existe-t-il un releve equivalent pour P1, P3 et P4, ou seulement pour P2?
