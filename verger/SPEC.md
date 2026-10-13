@@ -32,7 +32,9 @@ migrer vers le domaine du verger plus tard.
 | Zonage | Polygones traces par un gestionnaire, statut ouvert ou restreint, change quotidiennement. |
 | Appartenance a une zone | Calculee par geometrie, jamais stockee en dur, pour rester juste quand une zone est redessinee. |
 | GPS | Position du visiteur, arbre le plus proche d'une variete, ligne droite, distance en metres. **Aucun calcul d'itineraire.** |
-| Maturite | Aucune donnee operationnelle. Le calendrier du site du verger sert de reference approximative. L'ouverture d'une zone est la vraie decision. |
+| Contenu des zones | Une zone contient **plusieurs varietes melangees**. Une zone sert donc au controle d'acces, jamais a identifier une variete. |
+| Maturite | Interrupteur par variete, ouverte ou non a la cueillette, bascule par un gestionnaire quand la variete rentre. Le calendrier du site du verger reste une reference approximative affichee au visiteur. |
+| Fiabilite des donnees | Le verger est irregulier et les erreurs d'identification sont attendues. L'application doit les rendre visibles et faciles a corriger. |
 | Langues | Francais et anglais, francais par defaut. |
 | Demo | Aucune. Les visiteurs sont anonymes, l'application publique est sa propre demo. |
 
@@ -56,9 +58,11 @@ Tout cela passe par Row Level Security. Aucune fonction edge.
 ## 4. Modele de donnees, esquisse
 
 - `varieties`: nom, description, gout, conservation, utilisations recommandees,
-  lien vers le calendrier du verger, texte FR et EN.
+  lien vers le calendrier du verger, texte FR et EN, **couleur d'affichage**,
+  **ouverte a la cueillette** oui ou non.
 - `trees`: position x et y en fraction d'image, variete, section, etat de cueillette,
-  date de mise a jour de l'etat, qui l'a mise a jour.
+  date de mise a jour de l'etat, qui l'a mise a jour, **variete confirmee ou supposee**,
+  **signalement d'erreur en attente**.
 - `zones`: polygone en fractions d'image, statut, nom, date de modification.
 - `comments`: arbre vise, texte, auteur, interne ou public, statut de moderation,
   lu ou non lu.
@@ -74,6 +78,9 @@ Utilisable et presentable seule, sans aucun GPS.
 - Arbres places par outil de rangee, de grille, et import CSV
 - Fiches de varietes, FR et EN
 - Trois etats de cueillette, avec edition en lot au lasso
+- Arbres colores par variete sur la carte, pour que les erreurs sautent aux yeux
+- Signalement d'erreur de variete par un employe, confirmation par un gestionnaire
+- Interrupteur par variete, ouverte ou non a la cueillette
 - Zones tracees par gestionnaire, affichage de ce qui est ouvert aujourd'hui
 - Commentaires publics moderes, commentaires internes, marquage lu et non lu
 - FAQ
@@ -90,7 +97,8 @@ Utilisable et presentable seule, sans aucun GPS.
 - Ligne droite et distance en metres
 - Les zones restreintes ne fournissent jamais de candidat
 
-Un arbre est disponible s'il est dans une zone ouverte et qu'il n'est pas vide.
+Un arbre est disponible si les trois conditions sont remplies: sa zone est ouverte,
+sa variete est ouverte a la cueillette, et il n'est pas vide.
 Les arbres pleins passent avant ceux en hauteur seulement.
 
 ## 7. Hors perimetre
@@ -121,18 +129,29 @@ Retire volontairement, et pourquoi.
 
 ## 9. Questions ouvertes
 
-1. Une zone contient-elle une seule variete, ou plusieurs melangees? Si melangees,
-   il faudra un interrupteur par variete en plus du statut de zone.
-2. La photo aerienne existe-t-elle, et a quelle resolution?
-3. Les fiches de varietes sont-elles redigees, ou a ecrire?
-4. Quelle est l'adresse du calendrier de maturite, pour y pointer?
-5. Les sections P1 a P4 sont-elles fixes, ou y en aura-t-il d'autres?
-6. Format attendu pour l'import et l'export CSV.
+1. La photo aerienne existe-t-elle, et a quelle resolution?
+2. Les fiches de varietes sont-elles redigees, ou a ecrire?
+3. Quelle est l'adresse du calendrier de maturite, pour y pointer?
+4. Les sections P1 a P4 sont-elles fixes, ou y en aura-t-il d'autres?
+5. Format attendu pour l'import et l'export CSV.
+6. Combien de varietes environ, pour dimensionner la palette de couleurs?
 
 ## 10. Risque principal
 
-L'etat des arbres n'a de valeur que s'il est a jour. Une carte qui annonce des arbres
+Deux risques, pas un.
+
+**La fraicheur.** L'etat des arbres n'a de valeur que s'il est a jour. Une carte qui annonce des arbres
 pleins dans une section cueillie hier est pire que pas de carte, parce qu'elle envoie
 les gens marcher pour rien. L'edition en lot doit etre construite en premier, avant
 meme le selecteur a trois etats, pour qu'un employe puisse corriger une section
 entiere en quelques secondes.
+
+**L'exactitude.** Le verger est irregulier et le personnel lui-meme confond des
+varietes. Une carte qui se trompe de variete envoie le visiteur cueillir autre chose
+que ce qu'il voulait, et il ne le decouvre qu'une fois rentre a la maison. C'est
+pour cela que la couleur par variete, le signalement par les employes et la
+distinction entre variete confirmee et supposee ne sont pas optionnels.
+
+C'est aussi la justification du projet. Un verger bien range se reglerait avec
+quatre pancartes. Celui-ci ne peut pas, et c'est exactement ce que l'application
+apporte.
