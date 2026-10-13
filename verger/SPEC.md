@@ -24,6 +24,8 @@ migrer vers le domaine du verger plus tard.
 | Unite de carte | Arbres individuels, en points. Pas de zones comme unite de catalogue. |
 | Base de donnees | Projet Supabase **separe**. Aucun lien avec le projet horaire, qui contient la paie. |
 | Fond de carte | Photo aerienne fournie par le proprietaire, **georeferencee**. Pas de tuiles externes, donc aucune librairie de cartographie. |
+| Depart sans photo | La carte est d'abord **schematique**, construite sur la grille du releve existant, 11 rangees par 77 positions. Aucune photo n'est requise pour commencer. La photo devient un fond pose sous la grille, les positions sont ancrees ensuite. |
+| Sections | P1 a P4, **fixes**, ne changeront jamais. |
 | Coordonnees | Stockees en fractions de l'image, 0 a 1. Resistantes au remplacement de la photo. Converties en latitude et longitude par une transformation affine. |
 | Commentaires publics | Moderes. Invisibles jusqu'a approbation par un gestionnaire. |
 | Commentaires internes | Visibles par le personnel seulement. |
@@ -55,12 +57,50 @@ migrer vers le domaine du verger plus tard.
 
 Tout cela passe par Row Level Security. Aucune fonction edge.
 
+## 3bis. Ce que le releve existant nous apprend
+
+Le fichier `Orchard_Map.xlsx` couvre la section P2 et contient 563 arbres sur une
+grille de 11 rangees par 77 positions. Extrait dans `verger/data/p2.json`.
+
+| Variete | Arbres |
+| --- | --- |
+| Honeycrisp | 99 |
+| **Non identifie** | **92** |
+| Cortland | 85 |
+| Macintosh | 83 |
+| Empire | 77 |
+| Lobo | 47 |
+| Paulared | 38 |
+| Spartan | 27 |
+| Sunrise | 5 |
+| Rose Pointillee | 4 |
+| Laufane, Golden Russet, Ginger Gold | 2 chacune |
+
+Trois constats importants.
+
+**Le non identifie est la deuxieme categorie du verger**, 92 arbres sur 563, soit
+16 pour cent. Ce n'est donc pas une erreur a corriger, c'est un etat normal qui doit
+exister dans le modele. Un arbre non identifie ne doit jamais etre propose a un
+visiteur qui cherche une variete.
+
+**Le doute est deja note dans le releve.** Dix-sept cellules portent un `???`.
+Cela confirme le besoin du marqueur variete confirmee ou supposee, et nous donne
+la valeur de depart gratuitement.
+
+**Les rangees ne se ressemblent pas.** Les rangees 1, 2 et 6 sont pures, Honeycrisp,
+Honeycrisp et Cortland. Les rangees 7 a 11 sont des melanges de quatre a six varietes.
+C'est exactement l'irregularite decrite par le proprietaire, et c'est ce qui rend
+l'application utile plutot que decorative.
+
+Le releve porte aussi une taille d'arbre, petit, moyen ou standard. Conservee.
+
 ## 4. Modele de donnees, esquisse
 
 - `varieties`: nom, description, gout, conservation, utilisations recommandees,
   lien vers le calendrier du verger, texte FR et EN, **couleur d'affichage**,
   **ouverte a la cueillette** oui ou non.
-- `trees`: position x et y en fraction d'image, variete, section, etat de cueillette,
+- `trees`: rangee et position dans la grille, position x et y en fraction d'image,
+  variete, numero dans la variete, taille, section, etat de cueillette,
   date de mise a jour de l'etat, qui l'a mise a jour, **variete confirmee ou supposee**,
   **signalement d'erreur en attente**.
 - `zones`: polygone en fractions d'image, statut, nom, date de modification.
@@ -129,12 +169,15 @@ Retire volontairement, et pourquoi.
 
 ## 9. Questions ouvertes
 
-1. La photo aerienne existe-t-elle, et a quelle resolution?
+1. Source de la photo aerienne. Une capture de Google Satellite pose un probleme
+   de licence sur un site commercial. Les orthophotos ouvertes du Quebec ou une
+   photo de drone prise sur place evitent la question et sont souvent de meilleure
+   resolution.
 2. Les fiches de varietes sont-elles redigees, ou a ecrire?
 3. Quelle est l'adresse du calendrier de maturite, pour y pointer?
-4. Les sections P1 a P4 sont-elles fixes, ou y en aura-t-il d'autres?
+4. Existe-t-il un releve equivalent pour P1, P3 et P4, ou seulement pour P2?
 5. Format attendu pour l'import et l'export CSV.
-6. Combien de varietes environ, pour dimensionner la palette de couleurs?
+6. La taille d'arbre doit-elle etre montree au visiteur, ou rester interne?
 
 ## 10. Risque principal
 

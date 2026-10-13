@@ -1,0 +1,5129 @@
+{
+"section": "P2",
+"rows": 11,
+"depth": 77,
+"count": 563,
+"varieties": [
+{
+"name": "Honeycrisp",
+"count": 99
+},
+{
+"name": "NoID",
+"count": 92
+},
+{
+"name": "Cortland",
+"count": 85
+},
+{
+"name": "Macintosh",
+"count": 83
+},
+{
+"name": "Empire",
+"count": 77
+},
+{
+"name": "Lobo",
+"count": 47
+},
+{
+"name": "Paulared",
+"count": 38
+},
+{
+"name": "Spartan",
+"count": 27
+},
+{
+"name": "Sunrise",
+"count": 5
+},
+{
+"name": "Rose Pointille",
+"count": 4
+},
+{
+"name": "Laufane",
+"count": 2
+},
+{
+"name": "Golden Russet",
+"count": 2
+},
+{
+"name": "Ginger Gold",
+"count": 2
+}
+],
+"trees": [
+{
+"row": 7,
+"pos": 1,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 8,
+"pos": 1,
+"variety": "Laufane",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Laufane"
+},
+{
+"row": 9,
+"pos": 1,
+"variety": "NoID",
+"num": null,
+"size": "moyen",
+"uncertain": false,
+"raw": "NoID 3 moyen"
+},
+{
+"row": 10,
+"pos": 1,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID 2"
+},
+{
+"row": 11,
+"pos": 1,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID 1"
+},
+{
+"row": 6,
+"pos": 2,
+"variety": "Cortland",
+"num": 76,
+"size": null,
+"uncertain": true,
+"raw": "Cortland 76 ???"
+},
+{
+"row": 6,
+"pos": 3,
+"variety": "Cortland",
+"num": 75,
+"size": null,
+"uncertain": true,
+"raw": "Cortland 75 ???"
+},
+{
+"row": 6,
+"pos": 4,
+"variety": "Cortland",
+"num": 74,
+"size": null,
+"uncertain": true,
+"raw": "Cortland 74 ???"
+},
+{
+"row": 6,
+"pos": 5,
+"variety": "Cortland",
+"num": 73,
+"size": null,
+"uncertain": true,
+"raw": "Cortland 73 ???"
+},
+{
+"row": 6,
+"pos": 6,
+"variety": "Cortland",
+"num": 72,
+"size": null,
+"uncertain": true,
+"raw": "Cortland 72 ???"
+},
+{
+"row": 6,
+"pos": 7,
+"variety": "Cortland",
+"num": 71,
+"size": null,
+"uncertain": true,
+"raw": "Cortland 71 ???"
+},
+{
+"row": 6,
+"pos": 8,
+"variety": "Cortland",
+"num": 70,
+"size": null,
+"uncertain": true,
+"raw": "Cortland 70 ???"
+},
+{
+"row": 6,
+"pos": 9,
+"variety": "Cortland",
+"num": 69,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 69"
+},
+{
+"row": 6,
+"pos": 10,
+"variety": "Cortland",
+"num": 68,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 68"
+},
+{
+"row": 6,
+"pos": 11,
+"variety": "Cortland",
+"num": 67,
+"size": null,
+"uncertain": true,
+"raw": "Cortland 67 ???"
+},
+{
+"row": 5,
+"pos": 12,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 12,
+"variety": "Cortland",
+"num": 66,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 66"
+},
+{
+"row": 5,
+"pos": 13,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 13,
+"variety": "Cortland",
+"num": 65,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 65"
+},
+{
+"row": 5,
+"pos": 14,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 6,
+"pos": 14,
+"variety": "Cortland",
+"num": 64,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 64"
+},
+{
+"row": 5,
+"pos": 15,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 15,
+"variety": "Cortland",
+"num": 63,
+"size": null,
+"uncertain": true,
+"raw": "Cortland 63 ???"
+},
+{
+"row": 5,
+"pos": 16,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 16,
+"variety": "Cortland",
+"num": 62,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 62"
+},
+{
+"row": 5,
+"pos": 17,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 6,
+"pos": 17,
+"variety": "Cortland",
+"num": 61,
+"size": "moyen",
+"uncertain": true,
+"raw": "Cortland 61 moyen ???"
+},
+{
+"row": 5,
+"pos": 18,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 18,
+"variety": "Cortland",
+"num": 60,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 60"
+},
+{
+"row": 5,
+"pos": 19,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 19,
+"variety": "Cortland",
+"num": 59,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 59"
+},
+{
+"row": 5,
+"pos": 20,
+"variety": "Golden Russet",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Golden Russet"
+},
+{
+"row": 6,
+"pos": 20,
+"variety": "Cortland",
+"num": 58,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 58"
+},
+{
+"row": 5,
+"pos": 21,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 21,
+"variety": "Cortland",
+"num": 57,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 57"
+},
+{
+"row": 5,
+"pos": 22,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 6,
+"pos": 22,
+"variety": "Cortland",
+"num": 56,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 56"
+},
+{
+"row": 5,
+"pos": 23,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 23,
+"variety": "Cortland",
+"num": 55,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 55"
+},
+{
+"row": 5,
+"pos": 24,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 24,
+"variety": "Cortland",
+"num": 54,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 54"
+},
+{
+"row": 5,
+"pos": 25,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 25,
+"variety": "Cortland",
+"num": 53,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 53"
+},
+{
+"row": 5,
+"pos": 26,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 26,
+"variety": "Cortland",
+"num": 52,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 52"
+},
+{
+"row": 5,
+"pos": 27,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 27,
+"variety": "Cortland",
+"num": 51,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 51"
+},
+{
+"row": 10,
+"pos": 27,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 5,
+"pos": 28,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 28,
+"variety": "Cortland",
+"num": 50,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 50"
+},
+{
+"row": 10,
+"pos": 28,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 1,
+"pos": 29,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 29,
+"variety": "Honeycrisp",
+"num": 49,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 49"
+},
+{
+"row": 4,
+"pos": 29,
+"variety": "Cortland",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Cortland"
+},
+{
+"row": 5,
+"pos": 29,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 29,
+"variety": "Cortland",
+"num": 49,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 49"
+},
+{
+"row": 10,
+"pos": 29,
+"variety": "Empire",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "Empire Small"
+},
+{
+"row": 11,
+"pos": 29,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 1,
+"pos": 30,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 30,
+"variety": "Honeycrisp",
+"num": 48,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 48"
+},
+{
+"row": 4,
+"pos": 30,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 30,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 30,
+"variety": "Cortland",
+"num": 48,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 48"
+},
+{
+"row": 10,
+"pos": 30,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 11,
+"pos": 30,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 1,
+"pos": 31,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 31,
+"variety": "Honeycrisp",
+"num": 47,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 47"
+},
+{
+"row": 4,
+"pos": 31,
+"variety": "Cortland",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Cortland"
+},
+{
+"row": 5,
+"pos": 31,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 6,
+"pos": 31,
+"variety": "Cortland",
+"num": 47,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 47"
+},
+{
+"row": 10,
+"pos": 31,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 11,
+"pos": 31,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 1,
+"pos": 32,
+"variety": "Honeycrisp",
+"num": 46,
+"size": "petit",
+"uncertain": false,
+"raw": "Honeycrisp 46 Small"
+},
+{
+"row": 2,
+"pos": 32,
+"variety": "Honeycrisp",
+"num": 46,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 46"
+},
+{
+"row": 3,
+"pos": 32,
+"variety": "Lobo",
+"num": 46,
+"size": null,
+"uncertain": false,
+"raw": "Lobo 46"
+},
+{
+"row": 4,
+"pos": 32,
+"variety": "Cortland",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Cortland"
+},
+{
+"row": 5,
+"pos": 32,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 32,
+"variety": "Cortland",
+"num": 46,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 46"
+},
+{
+"row": 10,
+"pos": 32,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 32,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 1,
+"pos": 33,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 33,
+"variety": "Honeycrisp",
+"num": 45,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 45"
+},
+{
+"row": 3,
+"pos": 33,
+"variety": "Lobo",
+"num": 45,
+"size": null,
+"uncertain": false,
+"raw": "Lobo 45"
+},
+{
+"row": 4,
+"pos": 33,
+"variety": "Cortland",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Cortland"
+},
+{
+"row": 5,
+"pos": 33,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 33,
+"variety": "Cortland",
+"num": 45,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 45"
+},
+{
+"row": 7,
+"pos": 33,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 8,
+"pos": 33,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 10,
+"pos": 33,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 11,
+"pos": 33,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 1,
+"pos": 34,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 34,
+"variety": "Honeycrisp",
+"num": 44,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 44"
+},
+{
+"row": 3,
+"pos": 34,
+"variety": "Lobo",
+"num": 44,
+"size": null,
+"uncertain": false,
+"raw": "Lobo 44"
+},
+{
+"row": 4,
+"pos": 34,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 34,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 34,
+"variety": "Cortland",
+"num": 44,
+"size": "moyen",
+"uncertain": false,
+"raw": "Cortland 44 moyen"
+},
+{
+"row": 7,
+"pos": 34,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 8,
+"pos": 34,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 10,
+"pos": 34,
+"variety": "Empire",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "Empire Small"
+},
+{
+"row": 11,
+"pos": 34,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 1,
+"pos": 35,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 35,
+"variety": "Honeycrisp",
+"num": 43,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 43"
+},
+{
+"row": 3,
+"pos": 35,
+"variety": "Lobo",
+"num": 43,
+"size": null,
+"uncertain": false,
+"raw": "Lobo 43"
+},
+{
+"row": 4,
+"pos": 35,
+"variety": "Cortland",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Cortland"
+},
+{
+"row": 5,
+"pos": 35,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 6,
+"pos": 35,
+"variety": "Cortland",
+"num": 43,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 43"
+},
+{
+"row": 7,
+"pos": 35,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 8,
+"pos": 35,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 10,
+"pos": 35,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 35,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 1,
+"pos": 36,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 36,
+"variety": "Honeycrisp",
+"num": 42,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 42"
+},
+{
+"row": 3,
+"pos": 36,
+"variety": "Lobo",
+"num": 42,
+"size": null,
+"uncertain": false,
+"raw": "Lobo 42"
+},
+{
+"row": 4,
+"pos": 36,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 36,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 36,
+"variety": "Cortland",
+"num": 42,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 42"
+},
+{
+"row": 7,
+"pos": 36,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 8,
+"pos": 36,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 10,
+"pos": 36,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 36,
+"variety": "Empire",
+"num": null,
+"size": "moyen",
+"uncertain": false,
+"raw": "Empire moyen"
+},
+{
+"row": 1,
+"pos": 37,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 37,
+"variety": "Honeycrisp",
+"num": 41,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 41"
+},
+{
+"row": 3,
+"pos": 37,
+"variety": "Lobo",
+"num": 41,
+"size": null,
+"uncertain": false,
+"raw": "Lobo 41"
+},
+{
+"row": 4,
+"pos": 37,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 5,
+"pos": 37,
+"variety": "Golden Russet",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Golden Russet"
+},
+{
+"row": 6,
+"pos": 37,
+"variety": "Cortland",
+"num": 41,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 41"
+},
+{
+"row": 7,
+"pos": 37,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 8,
+"pos": 37,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 10,
+"pos": 37,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 37,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 1,
+"pos": 38,
+"variety": "Honeycrisp",
+"num": 40,
+"size": "petit",
+"uncertain": false,
+"raw": "Honeycrisp 40 Small"
+},
+{
+"row": 2,
+"pos": 38,
+"variety": "Honeycrisp",
+"num": 40,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 40"
+},
+{
+"row": 3,
+"pos": 38,
+"variety": "Lobo",
+"num": 40,
+"size": null,
+"uncertain": false,
+"raw": "Lobo 40"
+},
+{
+"row": 4,
+"pos": 38,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 38,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 38,
+"variety": "Cortland",
+"num": 40,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 40"
+},
+{
+"row": 7,
+"pos": 38,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 8,
+"pos": 38,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 10,
+"pos": 38,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 38,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 1,
+"pos": 39,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 39,
+"variety": "Honeycrisp",
+"num": 39,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 39"
+},
+{
+"row": 3,
+"pos": 39,
+"variety": "Lobo",
+"num": 39,
+"size": null,
+"uncertain": false,
+"raw": "Lobo 39"
+},
+{
+"row": 4,
+"pos": 39,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 39,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 39,
+"variety": "Cortland",
+"num": 39,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 39"
+},
+{
+"row": 7,
+"pos": 39,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 8,
+"pos": 39,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 10,
+"pos": 39,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 11,
+"pos": 39,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 1,
+"pos": 40,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 40,
+"variety": "Honeycrisp",
+"num": 38,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 38"
+},
+{
+"row": 3,
+"pos": 40,
+"variety": "Paulared",
+"num": 38,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 38"
+},
+{
+"row": 4,
+"pos": 40,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 5,
+"pos": 40,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 40,
+"variety": "Cortland",
+"num": 38,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 38"
+},
+{
+"row": 7,
+"pos": 40,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 8,
+"pos": 40,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 10,
+"pos": 40,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 11,
+"pos": 40,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 1,
+"pos": 41,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 41,
+"variety": "Honeycrisp",
+"num": 37,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 37"
+},
+{
+"row": 3,
+"pos": 41,
+"variety": "Paulared",
+"num": 37,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 37"
+},
+{
+"row": 4,
+"pos": 41,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 41,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 41,
+"variety": "Cortland",
+"num": 37,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 37"
+},
+{
+"row": 7,
+"pos": 41,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 8,
+"pos": 41,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 10,
+"pos": 41,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 11,
+"pos": 41,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 1,
+"pos": 42,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 42,
+"variety": "Honeycrisp",
+"num": 36,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 36"
+},
+{
+"row": 3,
+"pos": 42,
+"variety": "Paulared",
+"num": 36,
+"size": "moyen",
+"uncertain": false,
+"raw": "Paulared 36  moyen"
+},
+{
+"row": 4,
+"pos": 42,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 5,
+"pos": 42,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 42,
+"variety": "Cortland",
+"num": 36,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 36"
+},
+{
+"row": 7,
+"pos": 42,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 8,
+"pos": 42,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 10,
+"pos": 42,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 42,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 1,
+"pos": 43,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 43,
+"variety": "Honeycrisp",
+"num": 35,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 35"
+},
+{
+"row": 3,
+"pos": 43,
+"variety": "Paulared",
+"num": 35,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 35"
+},
+{
+"row": 4,
+"pos": 43,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 43,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 43,
+"variety": "Cortland",
+"num": 35,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 35"
+},
+{
+"row": 7,
+"pos": 43,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 8,
+"pos": 43,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 10,
+"pos": 43,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 43,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 1,
+"pos": 44,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 44,
+"variety": "Honeycrisp",
+"num": 34,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 34"
+},
+{
+"row": 3,
+"pos": 44,
+"variety": "Paulared",
+"num": 34,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 34"
+},
+{
+"row": 4,
+"pos": 44,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 5,
+"pos": 44,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 44,
+"variety": "Cortland",
+"num": 34,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 34"
+},
+{
+"row": 7,
+"pos": 44,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 8,
+"pos": 44,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 10,
+"pos": 44,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 11,
+"pos": 44,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 1,
+"pos": 45,
+"variety": "Honeycrisp",
+"num": 33,
+"size": "moyen",
+"uncertain": false,
+"raw": "Honeycrisp 33 moyen"
+},
+{
+"row": 2,
+"pos": 45,
+"variety": "Honeycrisp",
+"num": 33,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 33"
+},
+{
+"row": 3,
+"pos": 45,
+"variety": "Paulared",
+"num": 33,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 33"
+},
+{
+"row": 4,
+"pos": 45,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 45,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 45,
+"variety": "Cortland",
+"num": 33,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 33"
+},
+{
+"row": 7,
+"pos": 45,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 8,
+"pos": 45,
+"variety": "Rose Pointille",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Rose Pointillé"
+},
+{
+"row": 9,
+"pos": 45,
+"variety": "Laufane",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Laufane"
+},
+{
+"row": 10,
+"pos": 45,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 45,
+"variety": "Sunrise",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Sunrise"
+},
+{
+"row": 1,
+"pos": 46,
+"variety": "Honeycrisp",
+"num": 32,
+"size": "moyen",
+"uncertain": false,
+"raw": "Honeycrisp 32 moyen"
+},
+{
+"row": 2,
+"pos": 46,
+"variety": "Honeycrisp",
+"num": 32,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 32"
+},
+{
+"row": 3,
+"pos": 46,
+"variety": "Paulared",
+"num": 32,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 32"
+},
+{
+"row": 4,
+"pos": 46,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 5,
+"pos": 46,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 46,
+"variety": "Cortland",
+"num": 32,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 32"
+},
+{
+"row": 7,
+"pos": 46,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 8,
+"pos": 46,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": true,
+"raw": "??? NoID"
+},
+{
+"row": 9,
+"pos": 46,
+"variety": "Honeycrisp",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "Honeycrisp Small"
+},
+{
+"row": 10,
+"pos": 46,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 46,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 1,
+"pos": 47,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 47,
+"variety": "Honeycrisp",
+"num": 31,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 31"
+},
+{
+"row": 3,
+"pos": 47,
+"variety": "Paulared",
+"num": 31,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 31"
+},
+{
+"row": 4,
+"pos": 47,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 5,
+"pos": 47,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 47,
+"variety": "Cortland",
+"num": 31,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 31"
+},
+{
+"row": 7,
+"pos": 47,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 8,
+"pos": 47,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 9,
+"pos": 47,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 47,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 47,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 1,
+"pos": 48,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 48,
+"variety": "Honeycrisp",
+"num": 30,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 30"
+},
+{
+"row": 3,
+"pos": 48,
+"variety": "Paulared",
+"num": 30,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 30"
+},
+{
+"row": 4,
+"pos": 48,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 5,
+"pos": 48,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 6,
+"pos": 48,
+"variety": "Cortland",
+"num": 30,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 30"
+},
+{
+"row": 7,
+"pos": 48,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 8,
+"pos": 48,
+"variety": "Rose Pointille",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "Rose Pointillé Small"
+},
+{
+"row": 9,
+"pos": 48,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 48,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 48,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 1,
+"pos": 49,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 49,
+"variety": "Honeycrisp",
+"num": 29,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 29"
+},
+{
+"row": 3,
+"pos": 49,
+"variety": "Paulared",
+"num": 29,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 29"
+},
+{
+"row": 4,
+"pos": 49,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 5,
+"pos": 49,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 6,
+"pos": 49,
+"variety": "Cortland",
+"num": 29,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 29"
+},
+{
+"row": 7,
+"pos": 49,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 8,
+"pos": 49,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 9,
+"pos": 49,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 49,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 49,
+"variety": "Sunrise",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Sunrise"
+},
+{
+"row": 1,
+"pos": 50,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 50,
+"variety": "Honeycrisp",
+"num": 28,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 28"
+},
+{
+"row": 3,
+"pos": 50,
+"variety": "Paulared",
+"num": 28,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 28"
+},
+{
+"row": 4,
+"pos": 50,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 5,
+"pos": 50,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 50,
+"variety": "Cortland",
+"num": 28,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 28"
+},
+{
+"row": 7,
+"pos": 50,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 8,
+"pos": 50,
+"variety": "Rose Pointille",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Rose Pointillé"
+},
+{
+"row": 9,
+"pos": 50,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 50,
+"variety": "Empire",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "Empire Small"
+},
+{
+"row": 11,
+"pos": 50,
+"variety": "Empire",
+"num": null,
+"size": "moyen",
+"uncertain": false,
+"raw": "Empire moyen"
+},
+{
+"row": 1,
+"pos": 51,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 51,
+"variety": "Honeycrisp",
+"num": 27,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 27"
+},
+{
+"row": 3,
+"pos": 51,
+"variety": "Paulared",
+"num": 27,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 27"
+},
+{
+"row": 4,
+"pos": 51,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 51,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 51,
+"variety": "Cortland",
+"num": 27,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 27"
+},
+{
+"row": 7,
+"pos": 51,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 8,
+"pos": 51,
+"variety": "Rose Pointille",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Rose Pointillé"
+},
+{
+"row": 9,
+"pos": 51,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 51,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 11,
+"pos": 51,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 1,
+"pos": 52,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 52,
+"variety": "Honeycrisp",
+"num": 26,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 26"
+},
+{
+"row": 3,
+"pos": 52,
+"variety": "Paulared",
+"num": 26,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 26"
+},
+{
+"row": 4,
+"pos": 52,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 52,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 52,
+"variety": "Cortland",
+"num": 26,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 26"
+},
+{
+"row": 7,
+"pos": 52,
+"variety": "Sunrise",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Sunrise"
+},
+{
+"row": 8,
+"pos": 52,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 9,
+"pos": 52,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 52,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 11,
+"pos": 52,
+"variety": "NoID",
+"num": null,
+"size": "moyen",
+"uncertain": false,
+"raw": "NoID moyen"
+},
+{
+"row": 1,
+"pos": 53,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 53,
+"variety": "Honeycrisp",
+"num": 25,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 25"
+},
+{
+"row": 3,
+"pos": 53,
+"variety": "Paulared",
+"num": 25,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 25"
+},
+{
+"row": 4,
+"pos": 53,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 53,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 6,
+"pos": 53,
+"variety": "Cortland",
+"num": 25,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 25"
+},
+{
+"row": 7,
+"pos": 53,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 8,
+"pos": 53,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 9,
+"pos": 53,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 53,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 11,
+"pos": 53,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 1,
+"pos": 54,
+"variety": "Honeycrisp",
+"num": 24,
+"size": "petit",
+"uncertain": false,
+"raw": "Honeycrisp 24 Small"
+},
+{
+"row": 2,
+"pos": 54,
+"variety": "Honeycrisp",
+"num": 24,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 24"
+},
+{
+"row": 3,
+"pos": 54,
+"variety": "Paulared",
+"num": 24,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 24"
+},
+{
+"row": 4,
+"pos": 54,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 54,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 54,
+"variety": "Cortland",
+"num": 24,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 24"
+},
+{
+"row": 7,
+"pos": 54,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 8,
+"pos": 54,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 9,
+"pos": 54,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 54,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 11,
+"pos": 54,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 1,
+"pos": 55,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 55,
+"variety": "Honeycrisp",
+"num": 23,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 23"
+},
+{
+"row": 3,
+"pos": 55,
+"variety": "Paulared",
+"num": 23,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 23"
+},
+{
+"row": 4,
+"pos": 55,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 5,
+"pos": 55,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 55,
+"variety": "Cortland",
+"num": 23,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 23"
+},
+{
+"row": 7,
+"pos": 55,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 8,
+"pos": 55,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 9,
+"pos": 55,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 55,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 55,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 1,
+"pos": 56,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 56,
+"variety": "Honeycrisp",
+"num": 22,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 22"
+},
+{
+"row": 3,
+"pos": 56,
+"variety": "Paulared",
+"num": 22,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 22"
+},
+{
+"row": 4,
+"pos": 56,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": true,
+"raw": "??? Small"
+},
+{
+"row": 5,
+"pos": 56,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 56,
+"variety": "Cortland",
+"num": 22,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 22"
+},
+{
+"row": 7,
+"pos": 56,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 8,
+"pos": 56,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 9,
+"pos": 56,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 56,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 11,
+"pos": 56,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 1,
+"pos": 57,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 57,
+"variety": "Honeycrisp",
+"num": 21,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 21"
+},
+{
+"row": 3,
+"pos": 57,
+"variety": "Paulared",
+"num": 21,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 21"
+},
+{
+"row": 4,
+"pos": 57,
+"variety": "Cortland",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Cortland"
+},
+{
+"row": 5,
+"pos": 57,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 57,
+"variety": "Cortland",
+"num": 21,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 21"
+},
+{
+"row": 7,
+"pos": 57,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": true,
+"raw": "??? Small"
+},
+{
+"row": 8,
+"pos": 57,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": true,
+"raw": "??? Small"
+},
+{
+"row": 9,
+"pos": 57,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 57,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 57,
+"variety": "Ginger Gold",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Ginger Gold"
+},
+{
+"row": 1,
+"pos": 58,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 58,
+"variety": "Honeycrisp",
+"num": 20,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 20"
+},
+{
+"row": 3,
+"pos": 58,
+"variety": "Paulared",
+"num": 20,
+"size": "petit",
+"uncertain": false,
+"raw": "Paulared 20 Small"
+},
+{
+"row": 4,
+"pos": 58,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 58,
+"variety": "Cortland",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Cortland"
+},
+{
+"row": 6,
+"pos": 58,
+"variety": "Cortland",
+"num": 20,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 20"
+},
+{
+"row": 7,
+"pos": 58,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": true,
+"raw": "??? Small"
+},
+{
+"row": 8,
+"pos": 58,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 9,
+"pos": 58,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 58,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 58,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 1,
+"pos": 59,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 59,
+"variety": "Honeycrisp",
+"num": 19,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 19"
+},
+{
+"row": 3,
+"pos": 59,
+"variety": "Paulared",
+"num": 19,
+"size": "petit",
+"uncertain": false,
+"raw": "Paulared 19 Small"
+},
+{
+"row": 4,
+"pos": 59,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 59,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 59,
+"variety": "Cortland",
+"num": 19,
+"size": "moyen",
+"uncertain": false,
+"raw": "Cortland 19 moyen"
+},
+{
+"row": 7,
+"pos": 59,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 8,
+"pos": 59,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 9,
+"pos": 59,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 10,
+"pos": 59,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 59,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 1,
+"pos": 60,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 60,
+"variety": "Honeycrisp",
+"num": 18,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 18"
+},
+{
+"row": 3,
+"pos": 60,
+"variety": "Paulared",
+"num": 18,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 18"
+},
+{
+"row": 4,
+"pos": 60,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 60,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 60,
+"variety": "Cortland",
+"num": 18,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 18"
+},
+{
+"row": 7,
+"pos": 60,
+"variety": "Sunrise",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Sunrise"
+},
+{
+"row": 8,
+"pos": 60,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 9,
+"pos": 60,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 60,
+"variety": "Empire",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "Empire Smalll"
+},
+{
+"row": 11,
+"pos": 60,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 1,
+"pos": 61,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 61,
+"variety": "Honeycrisp",
+"num": 17,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 17"
+},
+{
+"row": 3,
+"pos": 61,
+"variety": "Paulared",
+"num": 17,
+"size": "petit",
+"uncertain": false,
+"raw": "Paulared 17 Small"
+},
+{
+"row": 4,
+"pos": 61,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 61,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 61,
+"variety": "Cortland",
+"num": 17,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 17"
+},
+{
+"row": 7,
+"pos": 61,
+"variety": "Sunrise",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Sunrise"
+},
+{
+"row": 8,
+"pos": 61,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 9,
+"pos": 61,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 61,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 11,
+"pos": 61,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 1,
+"pos": 62,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 62,
+"variety": "Honeycrisp",
+"num": 16,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 16"
+},
+{
+"row": 3,
+"pos": 62,
+"variety": "Paulared",
+"num": 16,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 16"
+},
+{
+"row": 4,
+"pos": 62,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 5,
+"pos": 62,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 62,
+"variety": "Cortland",
+"num": 16,
+"size": "moyen",
+"uncertain": false,
+"raw": "Cortland 16 moyen"
+},
+{
+"row": 7,
+"pos": 62,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 8,
+"pos": 62,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 9,
+"pos": 62,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 10,
+"pos": 62,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 11,
+"pos": 62,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 1,
+"pos": 63,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 63,
+"variety": "Honeycrisp",
+"num": 15,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 15"
+},
+{
+"row": 3,
+"pos": 63,
+"variety": "Paulared",
+"num": 15,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 15"
+},
+{
+"row": 4,
+"pos": 63,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 5,
+"pos": 63,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 63,
+"variety": "Cortland",
+"num": 15,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 15"
+},
+{
+"row": 7,
+"pos": 63,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 8,
+"pos": 63,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 9,
+"pos": 63,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 63,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 63,
+"variety": "Empire",
+"num": null,
+"size": "moyen",
+"uncertain": false,
+"raw": "Empire moyen"
+},
+{
+"row": 1,
+"pos": 64,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 64,
+"variety": "Honeycrisp",
+"num": 14,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 14"
+},
+{
+"row": 3,
+"pos": 64,
+"variety": "Paulared",
+"num": 14,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 14"
+},
+{
+"row": 4,
+"pos": 64,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 5,
+"pos": 64,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 64,
+"variety": "Cortland",
+"num": 14,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 14"
+},
+{
+"row": 7,
+"pos": 64,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 8,
+"pos": 64,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 9,
+"pos": 64,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 10,
+"pos": 64,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 11,
+"pos": 64,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 1,
+"pos": 65,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 65,
+"variety": "Honeycrisp",
+"num": 13,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 13"
+},
+{
+"row": 3,
+"pos": 65,
+"variety": "Paulared",
+"num": 13,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 13"
+},
+{
+"row": 4,
+"pos": 65,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 65,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 65,
+"variety": "Cortland",
+"num": 13,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 13"
+},
+{
+"row": 7,
+"pos": 65,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 8,
+"pos": 65,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 9,
+"pos": 65,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 65,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 11,
+"pos": 65,
+"variety": "Empire",
+"num": null,
+"size": "moyen",
+"uncertain": false,
+"raw": "Empire moyen"
+},
+{
+"row": 1,
+"pos": 66,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 66,
+"variety": "Honeycrisp",
+"num": 12,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 12"
+},
+{
+"row": 3,
+"pos": 66,
+"variety": "Paulared",
+"num": 12,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 12"
+},
+{
+"row": 4,
+"pos": 66,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 66,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 66,
+"variety": "Cortland",
+"num": 12,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 12"
+},
+{
+"row": 7,
+"pos": 66,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 8,
+"pos": 66,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 9,
+"pos": 66,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 66,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 66,
+"variety": "Empire",
+"num": null,
+"size": "moyen",
+"uncertain": false,
+"raw": "Empire moyen"
+},
+{
+"row": 1,
+"pos": 67,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 67,
+"variety": "Honeycrisp",
+"num": 11,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 11"
+},
+{
+"row": 3,
+"pos": 67,
+"variety": "Paulared",
+"num": 11,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 11"
+},
+{
+"row": 4,
+"pos": 67,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 67,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 67,
+"variety": "Cortland",
+"num": 11,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 11"
+},
+{
+"row": 7,
+"pos": 67,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 8,
+"pos": 67,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 9,
+"pos": 67,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 67,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 67,
+"variety": "Empire",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "Empire Small"
+},
+{
+"row": 1,
+"pos": 68,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 68,
+"variety": "Honeycrisp",
+"num": 10,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 10"
+},
+{
+"row": 3,
+"pos": 68,
+"variety": "Paulared",
+"num": 10,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 10"
+},
+{
+"row": 4,
+"pos": 68,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 68,
+"variety": "Cortland",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Cortland"
+},
+{
+"row": 6,
+"pos": 68,
+"variety": "Cortland",
+"num": 10,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 10"
+},
+{
+"row": 7,
+"pos": 68,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 8,
+"pos": 68,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 9,
+"pos": 68,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 68,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 68,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 1,
+"pos": 69,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 69,
+"variety": "Honeycrisp",
+"num": 9,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 9"
+},
+{
+"row": 3,
+"pos": 69,
+"variety": "Paulared",
+"num": 9,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 9"
+},
+{
+"row": 4,
+"pos": 69,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 69,
+"variety": "Cortland",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Cortland"
+},
+{
+"row": 6,
+"pos": 69,
+"variety": "Cortland",
+"num": 9,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 9"
+},
+{
+"row": 7,
+"pos": 69,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 8,
+"pos": 69,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 9,
+"pos": 69,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 69,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 69,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 1,
+"pos": 70,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 70,
+"variety": "Honeycrisp",
+"num": 8,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 8"
+},
+{
+"row": 3,
+"pos": 70,
+"variety": "Paulared",
+"num": 8,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 8"
+},
+{
+"row": 4,
+"pos": 70,
+"variety": "Lobo",
+"num": 8,
+"size": null,
+"uncertain": false,
+"raw": "Lobo 8"
+},
+{
+"row": 5,
+"pos": 70,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 6,
+"pos": 70,
+"variety": "Cortland",
+"num": 8,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 8"
+},
+{
+"row": 7,
+"pos": 70,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 8,
+"pos": 70,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 9,
+"pos": 70,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 70,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 11,
+"pos": 70,
+"variety": "Empire",
+"num": null,
+"size": "moyen",
+"uncertain": false,
+"raw": "Empire moyen"
+},
+{
+"row": 1,
+"pos": 71,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 71,
+"variety": "Honeycrisp",
+"num": 7,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 7"
+},
+{
+"row": 3,
+"pos": 71,
+"variety": "Paulared",
+"num": 7,
+"size": "petit",
+"uncertain": false,
+"raw": "Paulared 7 Small"
+},
+{
+"row": 4,
+"pos": 71,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 71,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 71,
+"variety": "Cortland",
+"num": 7,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 7"
+},
+{
+"row": 7,
+"pos": 71,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 8,
+"pos": 71,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 9,
+"pos": 71,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 71,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 11,
+"pos": 71,
+"variety": "Empire",
+"num": null,
+"size": "moyen",
+"uncertain": false,
+"raw": "Empire moyen"
+},
+{
+"row": 1,
+"pos": 72,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 72,
+"variety": "Honeycrisp",
+"num": 6,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 6"
+},
+{
+"row": 3,
+"pos": 72,
+"variety": "Paulared",
+"num": 6,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 6"
+},
+{
+"row": 4,
+"pos": 72,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 5,
+"pos": 72,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 72,
+"variety": "Cortland",
+"num": 6,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 6"
+},
+{
+"row": 7,
+"pos": 72,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 8,
+"pos": 72,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 9,
+"pos": 72,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 72,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 11,
+"pos": 72,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 1,
+"pos": 73,
+"variety": "Honeycrisp",
+"num": 5,
+"size": "petit",
+"uncertain": false,
+"raw": "Honeycrisp 5 Small"
+},
+{
+"row": 2,
+"pos": 73,
+"variety": "Honeycrisp",
+"num": 5,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 5"
+},
+{
+"row": 3,
+"pos": 73,
+"variety": "Paulared",
+"num": 5,
+"size": "petit",
+"uncertain": false,
+"raw": "Paulared 5 Small"
+},
+{
+"row": 4,
+"pos": 73,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 5,
+"pos": 73,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 73,
+"variety": "Cortland",
+"num": 5,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 5"
+},
+{
+"row": 7,
+"pos": 73,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 8,
+"pos": 73,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 9,
+"pos": 73,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 10,
+"pos": 73,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 11,
+"pos": 73,
+"variety": "Empire",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Empire"
+},
+{
+"row": 1,
+"pos": 74,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 74,
+"variety": "Honeycrisp",
+"num": 4,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 4"
+},
+{
+"row": 3,
+"pos": 74,
+"variety": "Paulared",
+"num": 4,
+"size": "petit",
+"uncertain": false,
+"raw": "Paulared 4 Small"
+},
+{
+"row": 4,
+"pos": 74,
+"variety": "Lobo",
+"num": 4,
+"size": null,
+"uncertain": false,
+"raw": "Lobo 4"
+},
+{
+"row": 5,
+"pos": 74,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 6,
+"pos": 74,
+"variety": "Cortland",
+"num": 4,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 4"
+},
+{
+"row": 7,
+"pos": 74,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 8,
+"pos": 74,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 9,
+"pos": 74,
+"variety": "Ginger Gold",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "Ginger Gold Small"
+},
+{
+"row": 10,
+"pos": 74,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 11,
+"pos": 74,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 1,
+"pos": 75,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 75,
+"variety": "Honeycrisp",
+"num": 3,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 3"
+},
+{
+"row": 3,
+"pos": 75,
+"variety": "Paulared",
+"num": 3,
+"size": "petit",
+"uncertain": false,
+"raw": "Paulared 3 Small"
+},
+{
+"row": 4,
+"pos": 75,
+"variety": "NoID",
+"num": null,
+"size": "petit",
+"uncertain": false,
+"raw": "NoID Small"
+},
+{
+"row": 5,
+"pos": 75,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 75,
+"variety": "Cortland",
+"num": 3,
+"size": null,
+"uncertain": false,
+"raw": "Cortland 3"
+},
+{
+"row": 7,
+"pos": 75,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 8,
+"pos": 75,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 9,
+"pos": 75,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 10,
+"pos": 75,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 11,
+"pos": 75,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 1,
+"pos": 76,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 76,
+"variety": "Honeycrisp",
+"num": 2,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 2"
+},
+{
+"row": 3,
+"pos": 76,
+"variety": "Paulared",
+"num": 2,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 2"
+},
+{
+"row": 4,
+"pos": 76,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 76,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 76,
+"variety": "Cortland",
+"num": 2,
+"size": null,
+"uncertain": true,
+"raw": "Cortland 2 ???"
+},
+{
+"row": 7,
+"pos": 76,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 8,
+"pos": 76,
+"variety": "NoID",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "NoID"
+},
+{
+"row": 9,
+"pos": 76,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 76,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 11,
+"pos": 76,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 1,
+"pos": 77,
+"variety": "Honeycrisp",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp"
+},
+{
+"row": 2,
+"pos": 77,
+"variety": "Honeycrisp",
+"num": 1,
+"size": null,
+"uncertain": false,
+"raw": "Honeycrisp 1"
+},
+{
+"row": 3,
+"pos": 77,
+"variety": "Paulared",
+"num": 1,
+"size": null,
+"uncertain": false,
+"raw": "Paulared 1"
+},
+{
+"row": 4,
+"pos": 77,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 5,
+"pos": 77,
+"variety": "Spartan",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Spartan"
+},
+{
+"row": 6,
+"pos": 77,
+"variety": "Cortland",
+"num": 1,
+"size": null,
+"uncertain": true,
+"raw": "Cortland 1 ???"
+},
+{
+"row": 7,
+"pos": 77,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 8,
+"pos": 77,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 9,
+"pos": 77,
+"variety": "Lobo",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Lobo"
+},
+{
+"row": 10,
+"pos": 77,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+},
+{
+"row": 11,
+"pos": 77,
+"variety": "Macintosh",
+"num": null,
+"size": null,
+"uncertain": false,
+"raw": "Macintosh"
+}
+]
+}
