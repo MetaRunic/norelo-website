@@ -1,0 +1,2016 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Arsenal, interface de jeu interactive | Norelo</title>
+<meta name="description" content="Demonstration d'interface: ecran d'arsenal et de personnalisation d'armes, entierement interactif, en HTML, CSS et JavaScript."/>
+<meta name="robots" content="noindex"/>
+<link rel="icon" type="image/png" href="/favicon.png"/>
+
+<style>
+:root{
+  --bg:#05080c; --bg2:#070c12;
+  --panel:#0b1118; --panel2:#0e151d; --panel3:#121b24;
+  --line:#1b2834; --line2:#243442; --line3:#32475a;
+  --txt:#c3d0dc; --txt2:#8ea0b0; --mut:#5f7384; --mut2:#44555f;
+  --am:#e3b73f; --am2:#9a7d2c; --amf:rgba(227,183,63,.10);
+  --gr:#56a86f; --rd:#c75a43; --bl:#4d86b4; --pu:#8d6fb8;
+  --t1:#6f8696; --t2:#4d86b4; --t3:#8d6fb8; --t4:#c08a3e;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--bg); color:var(--txt);
+  font:13px/1.45 "Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  overflow:hidden; -webkit-font-smoothing:antialiased;
+}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+#stars{position:fixed;inset:0;z-index:0;opacity:.55}
+#vig{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(130% 95% at 50% 42%,rgba(0,0,0,0) 38%,rgba(0,0,0,.72) 100%)}
+.lbl{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- top HUD ---------- */
+#hud{position:fixed;top:0;left:0;right:0;z-index:40;display:flex;align-items:center;gap:7px;
+  padding:7px 10px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;
+  background:linear-gradient(180deg,rgba(5,9,13,.97),rgba(5,9,13,.80) 72%,transparent)}
+#hud::-webkit-scrollbar{display:none}
+#hud>*{flex:none}
+.hgrp{display:flex;align-items:center;gap:4px}
+.hbtn{width:30px;height:30px;border:1px solid var(--line);border-radius:7px;background:var(--panel);
+  display:grid;place-items:center;transition:.14s}
+.hbtn:hover{border-color:var(--line3);background:var(--panel3)}
+.hbtn.on{border-color:var(--am2);background:var(--amf)}
+.hbtn svg{width:15px;height:15px;stroke:var(--txt2);fill:none;stroke-width:1.5}
+.hbtn.on svg{stroke:var(--am)}
+.res{display:flex;align-items:center;gap:6px;padding:3px 9px 3px 4px;border:1px solid var(--line);
+  border-radius:8px;background:var(--panel);transition:.14s;cursor:default}
+.res:hover{border-color:var(--line3)}
+.res .ic{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;background:var(--panel3)}
+.res .ic svg{width:13px;height:13px;fill:none;stroke-width:1.6}
+.res b{font-size:14px;font-weight:600;letter-spacing:.01em;line-height:1.05}
+.res i{font-style:normal;font-size:9.5px;color:var(--gr);display:block;line-height:1.1}
+.res i.dn{color:var(--rd)}
+#inf{display:flex;align-items:stretch;gap:0;border:1px solid #4a2320;border-radius:9px;
+  background:linear-gradient(180deg,rgba(90,30,26,.22),rgba(60,18,16,.10));overflow:hidden}
+#inf .c{padding:3px 12px;border-right:1px solid #3a1e1c;text-align:center}
+#inf .c:last-child{border-right:none}
+#inf .c b{display:block;font-size:14px;font-weight:600;color:#e4c0b4}
+#inf .c .lbl{color:#a9736a}
+#doc{padding:4px 12px;border:1px solid var(--am2);border-radius:9px;background:var(--amf);text-align:center}
+#doc .lbl{color:var(--am2)}
+#doc b{display:block;font-size:13px;color:var(--am)}
+#date{text-align:right;line-height:1.2}
+#date b{font-size:13px;font-weight:600}
+#date .s{font-size:9.5px;color:var(--mut)}
+#date .s em{font-style:normal;color:var(--am2)}
+#clock{font-size:15px;font-weight:600;letter-spacing:.02em;color:#dfe8f0;min-width:52px;text-align:right}
+#clock .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--am);margin-right:5px;
+  vertical-align:middle}
+#clock.pz .dot{background:var(--mut2)}
+.sbtn{min-width:30px;height:28px;padding:0 7px;border:1px solid var(--line);border-radius:6px;background:var(--panel);
+  font-size:11px;color:var(--txt2);transition:.14s}
+.sbtn:hover{border-color:var(--line3);color:var(--txt)}
+.sbtn.on{border-color:var(--am2);background:var(--amf);color:var(--am)}
+.lang{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.lang button{padding:4px 8px;font-size:10.5px;letter-spacing:.06em;color:var(--mut)}
+.lang button.on{background:var(--amf);color:var(--am)}
+#fac{position:fixed;top:60px;left:12px;z-index:22;display:flex;align-items:center;gap:7px;
+  padding:5px 12px 5px 8px;border:1px solid var(--line2);border-radius:999px;background:rgba(11,17,24,.9)}
+#fac .sq{width:13px;height:13px;border:1px solid var(--line3);border-radius:3px;background:var(--panel3)}
+#fac span{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--txt2)}
+#fac b{font-size:11px;color:var(--am)}
+
+/* ---------- outliner ---------- */
+#out{position:fixed;top:58px;right:10px;width:300px;z-index:20;border:1px solid var(--line);
+  border-radius:10px;background:rgba(9,14,20,.88);overflow:hidden}
+#out .hd{display:flex;align-items:center;justify-content:space-between;padding:7px 11px;
+  border-bottom:1px solid var(--line)}
+#out .hd b{font-size:12px;font-weight:600}
+#out .hd button{font-size:10px;color:var(--mut)}
+#out .hd button:hover{color:var(--am)}
+#out .sub{padding:6px 11px 3px;display:flex;gap:7px;align-items:baseline}
+#out .sub .n{font-size:10px;color:var(--mut2)}
+#outl{max-height:52vh;overflow:auto;padding:2px 6px 7px}
+#out.cl #outl,#out.cl .sub{display:none}
+.oi{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5px 7px;border-radius:5px;
+  cursor:pointer;transition:.12s;border:1px solid transparent}
+.oi:hover{background:var(--panel2);border-color:var(--line)}
+.oi.on{background:var(--amf);border-color:var(--am2)}
+.oi .nm{font-size:11.5px;color:var(--txt2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.oi.on .nm{color:var(--am)}
+.oi .rt{font-size:10.5px;color:var(--mut);white-space:nowrap}
+.oi .bar{height:2px;border-radius:2px;background:var(--line2);margin-top:3px;overflow:hidden}
+.oi .bar i{display:block;height:100%;background:var(--am2)}
+.oi .l{flex:1;min-width:0}
+
+/* ---------- arsenal shell ---------- */
+#shell{position:fixed;inset:0;z-index:25;display:grid;place-items:center;padding:52px 46px 10px}
+#shell.hide{display:none}
+#ars{width:min(1640px,100%);height:min(920px,calc(100vh - 66px));display:flex;flex-direction:column;
+  border:1px solid var(--line3);border-radius:4px;background:linear-gradient(180deg,#0a1016,#080d13);
+  box-shadow:0 0 0 1px rgba(0,0,0,.6),0 30px 90px rgba(0,0,0,.75);overflow:hidden}
+.nav{position:fixed;top:50%;z-index:26;width:34px;height:52px;display:grid;place-items:center;color:var(--mut);
+  transition:.15s;background:none}
+.nav:hover{color:var(--am)}
+.nav.l{left:8px}.nav.r{right:8px}
+.nav svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.6}
+#reopen{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);z-index:24;padding:10px 22px;
+  border:1px solid var(--am2);border-radius:6px;background:rgba(227,183,63,.08);color:var(--am);
+  letter-spacing:.1em;text-transform:uppercase;font-size:11px;display:none}
+#reopen.show{display:block}
+#reopen:hover{background:rgba(227,183,63,.16)}
+
+/* header */
+.ahd{display:flex;align-items:center;gap:20px;padding:13px 18px 11px;border-bottom:1px solid var(--line)}
+.dia{width:11px;height:11px;background:var(--am);transform:rotate(45deg);flex:none}
+.ahd .ti .lbl{letter-spacing:.2em}
+.ahd .ti h1{font-size:21px;font-weight:600;letter-spacing:.005em;color:#e8eef4;line-height:1.25}
+.tabs{display:flex;gap:4px;margin-left:8px}
+.tab{padding:5px 14px 9px;font-size:13.5px;color:var(--mut);border-bottom:2px solid transparent;transition:.14s}
+.tab:hover{color:var(--txt2)}
+.tab.on{color:var(--am);border-color:var(--am)}
+.ahd .sp{flex:1}
+.ahd .ao{font-size:11px;color:var(--mut);padding:4px 8px;border-radius:5px}
+.ahd .ao:hover{color:var(--txt);background:var(--panel2)}
+.xb{width:28px;height:28px;display:grid;place-items:center;border-radius:5px;color:var(--mut2);font-size:17px}
+.xb:hover{color:var(--rd);background:var(--panel2)}
+
+/* stock strip */
+.stock{display:flex;align-items:center;gap:8px;padding:8px 18px;border-bottom:1px solid var(--line);
+  overflow-x:auto;scrollbar-width:thin}
+.stock::-webkit-scrollbar{height:5px}
+.stock::-webkit-scrollbar-thumb{background:var(--line2);border-radius:3px}
+.cs{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--txt2);white-space:nowrap}
+.cs .lbl{letter-spacing:.12em}
+.cs b{color:#dfe8f0;font-weight:600}
+.cs .gl{width:9px;height:9px;border:1px solid var(--mut);border-radius:2px}
+.cs .gl.d{transform:rotate(45deg);border-color:var(--bl);background:rgba(77,134,180,.3);border-radius:1px}
+.sdiv{width:1px;height:20px;background:var(--line2);flex:none;margin:0 4px}
+.wc{display:flex;align-items:baseline;gap:8px;padding:4px 11px;border:1px solid var(--line);border-radius:4px;
+  background:var(--panel);white-space:nowrap;font-size:11px;color:var(--mut);transition:.14s;flex:none}
+.wc:hover{border-color:var(--line3)}
+.wc.on{border-color:var(--am2);background:var(--amf)}
+.wc b{font-size:12px;font-weight:600;color:var(--txt)}
+.wc.on b{color:var(--am)}
+
+/* body grid */
+.abd{flex:1;display:grid;grid-template-columns:272px 1fr 320px;min-height:0}
+.col{min-height:0;display:flex;flex-direction:column}
+.cl{border-right:1px solid var(--line)}
+.cr{border-left:1px solid var(--line)}
+
+/* filters */
+.filt{padding:11px 12px 9px;border-bottom:1px solid var(--line)}
+.frow{display:flex;flex-wrap:wrap;gap:4px}
+.frow+.frow{margin-top:7px;padding-top:8px;border-top:1px dashed var(--line)}
+.fb{padding:3px 8px;font-size:10.5px;color:var(--mut);border:1px solid var(--line);border-radius:3px;
+  background:var(--panel);transition:.13s}
+.fb:hover{border-color:var(--line3);color:var(--txt2)}
+.fb.on{border-color:var(--am2);background:var(--amf);color:var(--am)}
+.lsthd{padding:9px 12px 6px;display:flex;justify-content:space-between;align-items:baseline}
+#wlist{flex:1;overflow:auto;padding:0 10px 12px;display:grid;grid-template-columns:1fr 1fr;gap:8px;
+  align-content:start;scrollbar-width:thin}
+#wlist::-webkit-scrollbar{width:6px}
+#wlist::-webkit-scrollbar-thumb{background:var(--line2);border-radius:3px}
+.card{border:1px solid var(--line);border-radius:4px;background:var(--panel);padding:7px;transition:.14s;
+  text-align:left;overflow:hidden}
+.card:hover{border-color:var(--line3);background:var(--panel2)}
+.card.on{border-color:var(--am);background:rgba(227,183,63,.07)}
+.card .th{height:46px;border:1px solid var(--line);border-radius:3px;background:#0a0f15;margin-bottom:6px;
+  display:grid;place-items:center;overflow:hidden}
+.card.on .th{border-color:var(--am2)}
+.card .th svg{width:100%;height:100%}
+.card .nm{font-size:11.5px;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis}
+.card.on .nm{color:var(--am)}
+.card .sk{font-size:9.5px;color:var(--mut2);margin-top:1px}
+.card .tg{display:flex;gap:3px;margin-top:5px}
+.tier{font-size:8.5px;padding:1px 4px;border-radius:2px;letter-spacing:.05em;border:1px solid}
+.t1{color:var(--t1);border-color:#2b3a45}
+.t2{color:var(--t2);border-color:#24435c}
+.t3{color:var(--t3);border-color:#3c3152}
+.t4{color:var(--t4);border-color:#4d3a1c}
+.mod{font-size:8.5px;padding:1px 4px;border-radius:2px;color:var(--mut);border:1px solid var(--line2)}
+
+/* preview */
+.cc{padding:11px 14px 0}
+.stage{position:relative;flex:1;min-height:0;border:1px solid var(--line);border-radius:3px;
+  background:radial-gradient(70% 70% at 50% 46%,#0b1218 0%,#05080c 72%);overflow:hidden}
+.stage .hint{position:absolute;top:7px;left:10px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--mut2);pointer-events:none}
+.stage .rt{position:absolute;top:6px;right:9px;font-size:9.5px;color:var(--mut2);border:1px solid var(--line);
+  padding:1px 6px;border-radius:3px;pointer-events:none;background:rgba(5,8,12,.6)}
+.stg{position:absolute;inset:0;cursor:grab}
+.stg.drag{cursor:grabbing}
+#lead{position:absolute;inset:0;pointer-events:none}
+#lead line{stroke:#2f4354;stroke-width:1}
+#lead line.on{stroke:var(--am2)}
+#wbox{position:absolute;left:5%;top:24%;width:90%;height:50%}
+#wsvg{width:100%;height:100%;display:block;
+  transform-style:preserve-3d;transition:transform .05s linear;will-change:transform}
+.pin{position:absolute;width:74px;transform:translateX(-50%);text-align:center;cursor:pointer}
+.pin .bx{height:46px;border:1px solid var(--line2);border-radius:2px;background:rgba(10,16,22,.9);
+  display:grid;place-items:center;transition:.14s;overflow:hidden}
+.pin:hover .bx{border-color:var(--line3)}
+.pin.on .bx{border-color:var(--am);background:rgba(227,183,63,.08)}
+.pin.lk .bx{border-color:#4a2320;background:rgba(80,26,22,.14)}
+.pin .bx svg{width:100%;height:100%}
+.pin .cap{font-size:9px;margin-top:3px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pin.on .cap{color:var(--am)}
+.pin.lk .cap{color:#9c5a4e}
+.pin .slb{position:absolute;left:0;right:0;font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mut2)}
+.pin.up .slb{top:-13px}.pin.dn .slb{bottom:-13px}
+.pin.on .slb{color:var(--am2)}
+.info{margin:10px 14px 12px;display:flex;align-items:center;gap:12px;padding:9px 12px;border:1px solid var(--line);
+  border-radius:3px;background:var(--panel)}
+.info .dia{width:9px;height:9px;background:none;border:1px solid var(--am2)}
+.info .ib{min-width:0}
+.info .ib .lbl{letter-spacing:.16em}
+.info .ib .tx{font-size:12px;color:var(--txt2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* right column */
+.rhd{padding:11px 13px 9px;border-bottom:1px solid var(--line)}
+.rhd .r1{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.allb{padding:2px 8px;font-size:10px;color:var(--mut);border:1px solid var(--line);border-radius:3px}
+.allb:hover{border-color:var(--line3);color:var(--txt2)}
+.allb.on{border-color:var(--am2);color:var(--am);background:var(--amf)}
+.rhd h2{font-size:17px;font-weight:600;color:#e8eef4}
+.rhd .op{font-size:10px;color:var(--mut2)}
+#plist{flex:1;overflow:auto;padding:9px 11px 14px;scrollbar-width:thin}
+#plist::-webkit-scrollbar{width:6px}
+#plist::-webkit-scrollbar-thumb{background:var(--line2);border-radius:3px}
+.grph{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut2);margin:10px 2px 5px}
+.grph:first-child{margin-top:0}
+.pt{display:flex;gap:9px;padding:9px;border:1px solid var(--line);border-radius:3px;background:var(--panel);
+  margin-bottom:7px;text-align:left;width:100%;transition:.14s;align-items:flex-start}
+.pt:hover{border-color:var(--line3);background:var(--panel2)}
+.pt.on{border-color:var(--am);background:rgba(227,183,63,.07)}
+.pt.off{opacity:.5}
+.pt .th{width:40px;height:44px;flex:none;border:1px solid var(--line2);border-radius:2px;background:#0a0f15;
+  display:grid;place-items:center}
+.pt.on .th{border-color:var(--am2)}
+.pt .bd{flex:1;min-width:0}
+.pt .r1{display:flex;align-items:center;gap:6px}
+.pt .nm{font-size:12.5px;font-weight:600;color:#dfe8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pt.on .nm{color:var(--am)}
+.pt .tc{margin-left:auto;font-size:9.5px;color:var(--mut2);white-space:nowrap}
+.pt .mods{font-size:10px;color:var(--txt2);margin-top:3px;line-height:1.5}
+.pt .mods .up{color:var(--gr)}.pt .mods .dn{color:var(--rd)}
+.pt .r2{display:flex;align-items:center;gap:7px;margin-top:6px;flex-wrap:wrap}
+.pt .sx{font-size:9.5px;color:var(--mut2)}
+.pt .req{font-size:9px;padding:1px 6px;border-radius:2px;border:1px solid #4a2320;color:#b06a5c;
+  background:rgba(90,30,26,.14)}
+.pt .req.ok{border-color:#27432f;color:var(--gr);background:rgba(45,90,56,.12)}
+.cbtn{margin-left:auto;padding:2px 9px;font-size:10px;border:1px solid var(--am2);border-radius:2px;
+  background:var(--amf);color:var(--am);white-space:nowrap}
+.cbtn:hover{background:rgba(227,183,63,.2)}
+.cbtn.g{border-color:var(--line2);background:var(--panel3);color:var(--mut)}
+
+/* stat strip */
+.strip{display:flex;align-items:stretch;gap:7px;padding:11px 14px;border-top:1px solid var(--line);
+  background:linear-gradient(180deg,#0a1016,#070c11)}
+.strip .lead{width:112px;flex:none;align-self:center}
+.strip .lead .k{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--bl)}
+.strip .lead .v{font-size:9.5px;color:var(--mut2);line-height:1.3}
+.st{flex:1;min-width:0;border:1px solid var(--line);border-radius:3px;background:var(--panel);padding:7px 9px 8px;
+  position:relative;overflow:hidden}
+.st.hi{border-color:#27455e;background:rgba(77,134,180,.07)}
+.st .k{font-size:9px;letter-spacing:.07em;color:var(--mut);white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis}
+.st .v{font-size:17px;font-weight:600;color:#e8eef4;line-height:1.25;margin-top:1px}
+.st .d{font-size:10px;color:var(--mut2);height:14px}
+.st .d.up{color:var(--gr)}.st .d.dn{color:var(--rd)}
+.st .bar{position:absolute;left:0;right:0;bottom:0;height:2px;background:#131d26}
+.st .bar i{display:block;height:100%;transition:width .18s}
+.st .bar i.g{background:var(--gr)}.st .bar i.r{background:var(--rd)}.st .bar i.n{background:var(--line3)}
+
+/* footer */
+.aft{display:flex;align-items:center;gap:12px;padding:10px 16px;border-top:1px solid var(--line)}
+.aft .tip{font-size:10.5px;color:var(--mut2);flex:1;min-width:0;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis}
+.bt{padding:7px 17px;font-size:12px;border:1px solid var(--line2);border-radius:3px;background:var(--panel2);
+  color:var(--txt2);transition:.14s}
+.bt:hover{border-color:var(--line3);color:var(--txt)}
+.bt:disabled{opacity:.42;cursor:not-allowed}
+.bt.pri{border-color:var(--am);background:var(--am);color:#1a1405;font-weight:600}
+.bt.pri:hover{background:#eec455}
+.bt.pri:disabled{background:var(--panel2);color:var(--mut2);border-color:var(--line2);font-weight:400}
+
+/* gear + paint */
+.gwrap{padding:14px;overflow:auto;flex:1;scrollbar-width:thin}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(188px,1fr));gap:9px}
+.gslot{border:1px solid var(--line);border-radius:3px;background:var(--panel);padding:9px}
+.gslot .gh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
+.gi{display:flex;gap:8px;align-items:center;padding:6px;border:1px solid transparent;border-radius:3px;
+  width:100%;text-align:left;transition:.13s}
+.gi:hover{background:var(--panel2);border-color:var(--line)}
+.gi.on{background:rgba(227,183,63,.07);border-color:var(--am2)}
+.gi .th{width:30px;height:30px;flex:none;border:1px solid var(--line2);border-radius:2px;background:#0a0f15;
+  display:grid;place-items:center}
+.gi .nm{font-size:11.5px;color:var(--txt2)}
+.gi.on .nm{color:var(--am)}
+.gi .mm{font-size:9.5px;color:var(--mut2)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.pw{border:1px solid var(--line);border-radius:3px;background:var(--panel);padding:8px;transition:.14s}
+.pw:hover{border-color:var(--line3)}
+.pw.on{border-color:var(--am);background:rgba(227,183,63,.07)}
+.pw .sw{height:58px;border:1px solid var(--line2);border-radius:2px;margin-bottom:7px;position:relative;
+  overflow:hidden}
+.pw .nm{font-size:11.5px;color:var(--txt2);display:flex;justify-content:space-between;align-items:baseline}
+.pw.on .nm{color:var(--am)}
+
+/* music */
+#mus{position:fixed;right:12px;bottom:12px;z-index:30;display:flex;align-items:center;gap:9px;padding:7px 10px;
+  border:1px solid var(--am2);border-radius:5px;background:rgba(9,14,20,.94)}
+#eq{display:flex;align-items:flex-end;gap:2px;height:15px;width:17px}
+#eq i{flex:1;background:var(--am2);height:25%;border-radius:1px}
+#mus.pl #eq i{animation:eqb .85s ease-in-out infinite}
+#mus.pl #eq i:nth-child(2){animation-delay:.22s}
+#mus.pl #eq i:nth-child(3){animation-delay:.44s}
+@keyframes eqb{0%,100%{height:22%}50%{height:100%}}
+#mus .tt{font-size:11.5px;color:var(--txt2);min-width:92px}
+.mb{width:22px;height:22px;display:grid;place-items:center;color:var(--mut);border-radius:3px}
+.mb:hover{color:var(--am);background:var(--panel2)}
+.mb svg{width:12px;height:12px;fill:currentColor}
+#rep{font-size:10.5px;color:var(--mut);padding:3px 7px;border-radius:3px}
+#rep:hover{color:var(--txt2)}
+#rep.on{color:var(--am)}
+#pls{font-size:10.5px;color:var(--txt2);background:var(--panel2);border:1px solid var(--line2);border-radius:3px;
+  padding:3px 6px;outline:none}
+#hlp{position:fixed;right:12px;bottom:12px;z-index:29}
+.toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%) translateY(14px);z-index:60;padding:9px 20px;
+  border:1px solid var(--am2);border-radius:4px;background:rgba(16,22,13,.95);color:var(--am);font-size:12px;
+  opacity:0;transition:.26s;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.bad{border-color:#5a2a22;color:#dd8e7c;background:rgba(32,14,11,.95)}
+
+@media(max-width:1500px){
+  .abd{grid-template-columns:238px 1fr 292px}
+  #out{display:none}
+}
+@media(max-width:1180px){
+  #inf,#doc{display:none}
+  #shell{padding:56px 10px 10px}
+  .abd{grid-template-columns:1fr 300px}
+  .cl{display:none}
+  .strip .lead{display:none}
+}
+@media(max-width:900px){
+  .abd{grid-template-columns:1fr}
+  .cr{display:none}
+  #mus,#fac{display:none}
+  .strip{overflow-x:auto}
+  .st{min-width:92px;flex:none}
+}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div id="vig"></div>
+
+<!-- ============ top HUD ============ -->
+<div id="hud">
+  <div class="hgrp">
+    <button class="hbtn on" id="nav-pop" title="Population"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-5.4 6-5.4s6 2.1 6 5.4"/><path d="M16 6.2a3 3 0 010 5.6M17.5 20c0-2.6-1-4.2-2.6-5.1"/></svg></button>
+    <button class="hbtn" id="nav-sup" title="Depot"><svg viewBox="0 0 24 24"><path d="M4 9h16v11H4z"/><path d="M4 9l2-5h12l2 5M12 4v5M9 13h6"/></svg></button>
+    <button class="hbtn" id="nav-res" title="Recherche"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg></button>
+    <button class="hbtn" id="nav-def" title="Defense"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.4-3 7.8-7 9-4-1.2-7-4.6-7-9V6z"/><path d="M9.3 12l1.9 2 3.5-3.8"/></svg></button>
+    <button class="hbtn" id="nav-set" title="Options"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2.8"/><path d="M19.4 14.5a1.6 1.6 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.6 1.6 0 00-2.7 1.1v.3a2 2 0 11-4 0v-.1a1.6 1.6 0 00-2.8-1.1l-.1.1a2 2 0 11-2.8-2.8l.1-.1A1.6 1.6 0 003.5 14h-.3a2 2 0 110-4h.1a1.6 1.6 0 001.1-2.8l-.1-.1a2 2 0 112.8-2.8l.1.1A1.6 1.6 0 0010 3.5v-.3a2 2 0 114 0v.1a1.6 1.6 0 002.8 1.1l.1-.1a2 2 0 112.8 2.8l-.1.1a1.6 1.6 0 001.1 2.7h.3a2 2 0 110 4h-.1a1.6 1.6 0 00-1.5 1.1z"/></svg></button>
+  </div>
+  <div class="sdiv"></div>
+  <div id="resbar" class="hgrp"></div>
+  <div id="inf">
+    <div class="c" style="text-align:left">
+      <div class="lbl" data-i="infRem">Infection restante</div>
+      <b class="num" id="infv">1.335B</b>
+    </div>
+    <div class="c"><div class="lbl" data-i="infPur">Purges</div><b class="num" id="purv">247</b></div>
+    <div class="c"><div class="lbl" data-i="infLat">Latents dans nos avant-postes</div><b class="num" id="latv">4,217</b></div>
+  </div>
+  <button id="doc" title="Doctrine"><div class="lbl" data-i="doct">Doctrine</div><b><span class="num" id="docv">0</span></b></button>
+  <div class="sp" style="flex:1"></div>
+  <div id="date">
+    <b class="num" id="dv">Y2029 · M3 · D3</b>
+    <div class="s"><em>&#9679;</em> <span id="seav">Printemps</span> <span class="num" id="ddv">D+2</span></div>
+  </div>
+  <div id="clock" class="num"><span class="dot"></span><span id="cv">13:23</span></div>
+  <div class="hgrp">
+    <button class="sbtn" id="sp-0" title="Pause">&#10073;&#10073;</button>
+    <button class="sbtn on" id="sp-1">1&times;</button>
+    <button class="sbtn" id="sp-2">2&times;</button>
+    <button class="sbtn" id="sp-4">4&times;</button>
+  </div>
+  <div class="lang">
+    <button id="lfr" class="on" onclick="setLang('fr')">FR</button>
+    <button id="len" onclick="setLang('en')">EN</button>
+  </div>
+</div>
+
+<div id="fac"><div class="sq"></div><span data-i="fac">Humain</span><b class="num">3</b></div>
+
+<!-- ============ outliner ============ -->
+<div id="out">
+  <div class="hd">
+    <b data-i="outl">Sommaire</b>
+    <button id="outc" data-i="coll">Replier</button>
+  </div>
+  <div class="sub"><span class="lbl" data-i="upc">A venir</span><span class="n num" id="outn">21</span></div>
+  <div id="outl"></div>
+</div>
+
+<!-- ============ arsenal ============ -->
+<button class="nav l" id="prevw" title="Precedent"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+<button class="nav r" id="nextw" title="Suivant"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+
+<div id="shell">
+<div id="ars">
+  <div class="ahd">
+    <div class="dia"></div>
+    <div class="ti">
+      <div class="lbl" data-i="arsenal">Arsenal</div>
+      <h1><span data-i="title">Armes possedees</span> <span style="color:var(--mut2)">&middot;</span> <span data-i="load">Equipement</span></h1>
+    </div>
+    <div class="tabs">
+      <button class="tab on" data-tab="wpn" data-i="tabW">Armes</button>
+      <button class="tab" data-tab="gear" data-i="tabG">Equipement</button>
+      <button class="tab" data-tab="paint" data-i="tabP">Peinture</button>
+    </div>
+    <div class="sp"></div>
+    <button class="ao" id="aob" data-i="allOut">Tous les avant-postes</button>
+    <button class="xb" id="closeb">&times;</button>
+  </div>
+
+  <div class="stock" id="stockbar"></div>
+
+  <div class="abd" id="abody">
+    <!-- left -->
+    <div class="col cl" id="colL">
+      <div class="filt">
+        <div class="frow" id="fcty"></div>
+        <div class="frow" id="ftyp"></div>
+      </div>
+      <div class="lsthd">
+        <span class="lbl" data-i="inStock">En stock &middot; equipement modifiable</span>
+      </div>
+      <div id="wlist"></div>
+    </div>
+
+    <!-- center -->
+    <div class="col cc" id="colC">
+      <div class="stage">
+        <div class="hint" data-i="prevHint">Apercu de l'arme, glissez pour tourner, cliquez une broche pour ses pieces</div>
+        <div class="rt num" id="rtinfo">RT 240&times;135 &middot;3 POINT</div>
+        <div class="stg" id="stg">
+          <svg id="lead" viewBox="0 0 1000 620" preserveAspectRatio="none"></svg>
+          <div id="wbox"><svg id="wsvg" viewBox="0 0 840 300" preserveAspectRatio="xMidYMid meet"></svg></div>
+          <div id="pins"></div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="dia" style="transform:rotate(45deg)"></div>
+        <div class="ib">
+          <div class="lbl"><span data-i="info">Info</span> <span style="color:var(--mut2)">&middot;</span> <span id="infoName">M4A1</span></div>
+          <div class="tx" id="infoTx"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- right -->
+    <div class="col cr" id="colR">
+      <div class="rhd">
+        <div class="r1">
+          <button class="allb" id="allb">&#8249; <span data-i="all">Tout</span></button>
+          <span class="lbl" id="slotKind">&#9635; Emplacement</span>
+        </div>
+        <h2 id="slotName">Chargeur</h2>
+        <div class="op num" id="slotOpt">4 options</div>
+      </div>
+      <div id="plist"></div>
+    </div>
+  </div>
+
+  <div class="strip" id="strip"></div>
+
+  <div class="aft">
+    <div class="tip" id="tip"></div>
+    <button class="bt" id="revertb" data-i="revert">Annuler</button>
+    <button class="bt pri" id="saveb">Enregistrer</button>
+    <button class="bt" id="closeb2" data-i="close">Fermer</button>
+  </div>
+</div>
+</div>
+
+<button id="reopen" data-i="reopen">Ouvrir l'arsenal</button>
+
+<!-- ============ music ============ -->
+<div id="mus" class="pl">
+  <div id="eq"><i></i><i></i><i></i></div>
+  <div class="tt" id="trk">Hold the Line</div>
+  <button class="mb" id="mprev" title="Precedent"><svg viewBox="0 0 24 24"><path d="M7 5h2v14H7zM19 5v14l-9-7z"/></svg></button>
+  <button class="mb" id="mplay" title="Pause"><svg viewBox="0 0 24 24"><path d="M7 5h3v14H7zM14 5h3v14h-3z"/></svg></button>
+  <button class="mb" id="mnext" title="Suivant"><svg viewBox="0 0 24 24"><path d="M15 5h2v14h-2zM5 5l9 7-9 7z"/></svg></button>
+  <button id="rep" data-i="repOff">Repetition off</button>
+  <select id="pls"></select>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================================
+   Arsenal, interactive loadout screen.
+   Plain HTML, CSS and vanilla JS. No framework, no build step, no network.
+   ========================================================================= */
+
+/* ---------- 1. bilingual dictionaries, FR and EN ---------- */
+const T = {
+  fr:{
+    arsenal:'Arsenal', title:'Armes possedees', load:'Equipement',
+    tabW:'Armes', tabG:'Equipement', tabP:'Peinture',
+    allOut:'Tous les avant-postes', close:'Fermer', revert:'Annuler', save:'Enregistrer',
+    craft:'fabriquer', inStock:'En stock &middot; equipement modifiable',
+    prevHint:"Apercu de l'arme, glissez pour tourner, cliquez une broche pour ses pieces",
+    info:'Info', all:'Tout', slot:'Emplacement', options:'options',
+    cstock:'Stock de fabrication', parts:'Pieces', ammo:'Munitions',
+    stock:'Stock', issued:'Sorties', fac:'Humain',
+    outl:'Sommaire', coll:'Replier', expd:'Deplier', upc:'A venir', build:'Chantier',
+    doct:'Doctrine', infRem:'Infection restante', infPur:'Purges',
+    infLat:'Latents dans nos avant-postes',
+    reopen:"Ouvrir l'arsenal",
+    toCraft:'A fabriquer', clickFit:'Clic = monter', clickFitC:'Clic = monter (fabrique a la sauvegarde)',
+    clickOff:'Clic pour retirer', requires:'Requiert', locked:'Verrouille', empty:'Vide',
+    none:'Aucune', slotsFilled:'emplacements remplis', dragRot:'glissez pour tourner',
+    hoverPart:'survolez une piece pour le detail et les stats projetees',
+    pinTip:'cliquez une broche pour les pieces de cet emplacement, Enregistrer met a jour le preset du type d arme',
+    effective:'Effectif', baseline:'Reference: brouillon courant',
+    noChange:'Aucun changement a enregistrer', saved:'Equipement enregistre',
+    reverted:'Brouillon annule', noParts:'Pas assez de pieces',
+    slotLocked:"Cet emplacement est verrouille sur cette arme",
+    notComp:'Non compatible avec cette arme', reqMissing:'Piece requise manquante',
+    seasons:['Hiver','Printemps','Ete','Automne'],
+    sSight:'Optique', sCant:'Optique inclinee', sRail:'Rail lateral', sMuz:'Bouche',
+    sMag:'Chargeur', sUnd:'Sous-canon', sGrip:'Poignee avant', sBip:'Bipied',
+    stPower:"Puissance d'arret", stRof:'Cadence de tir', stRange:'Portee', stSpread:'Dispersion',
+    stMag:'Chargeur', stReload:'Rechargement', stWeight:'Poids', stAggro:'Attraction de horde',
+    gHelm:'Casque', gVest:'Gilet', gPack:'Sac', gBoot:'Bottes',
+    gArmor:'Blindage', gCarry:'Charge', gStealth:'Discretion', gWarm:'Isolation',
+    gNoise:'Bruit', gMob:'Mobilite',
+    paintHd:'Motifs disponibles', applied:'Motif applique', cost:'Cout',
+    repOff:'Repetition off', repOne:'Repetition 1', repAll:'Repetition all',
+    plCombat:'Combat', plAmb:'Ambiance', plBase:'Base',
+    fAll:'Tout', fMod:'Modulaire', fAR:'AR', fSMG:'SMG', fPre:'Precision', fSup:'Appui', fPis:'Pistolet'
+  },
+  en:{
+    arsenal:'Arsenal', title:'Owned weapons', load:'Loadout',
+    tabW:'Weapons', tabG:'Gear', tabP:'Paint',
+    allOut:'All outposts', close:'Close', revert:'Revert', save:'Save',
+    craft:'craft', inStock:'In stock &middot; loadout editable',
+    prevHint:'Weapon preview, drag to rotate, click a slot pin for its parts',
+    info:'Info', all:'All', slot:'Slot', options:'options',
+    cstock:'Crafting stock', parts:'Parts', ammo:'Ammo',
+    stock:'Stock', issued:'Issued', fac:'Human',
+    outl:'Outliner', coll:'Collapse', expd:'Expand', upc:'Upcoming', build:'Build',
+    doct:'Doctrine', infRem:'Remaining infection', infPur:'Purged',
+    infLat:'Latent in our outposts',
+    reopen:'Open the arsenal',
+    toCraft:'To craft', clickFit:'Click = fit', clickFitC:'Click = fit (crafted on save)',
+    clickOff:'Click to unequip', requires:'Requires', locked:'Locked', empty:'Empty',
+    none:'None', slotsFilled:'slots filled', dragRot:'drag to rotate',
+    hoverPart:'hover a part for details and projected stats',
+    pinTip:'click a pin for that slot parts, Save updates the weapon type preset',
+    effective:'Effective', baseline:'Baseline: current draft',
+    noChange:'Nothing to save', saved:'Loadout saved',
+    reverted:'Draft reverted', noParts:'Not enough parts',
+    slotLocked:'That slot is locked on this weapon',
+    notComp:'Not compatible with this weapon', reqMissing:'Required part missing',
+    seasons:['Winter','Spring','Summer','Fall'],
+    sSight:'Sight', sCant:'Canted Sight', sRail:'Side Rail', sMuz:'Muzzle',
+    sMag:'Magazine', sUnd:'Underbarrel', sGrip:'Foregrip', sBip:'Bipod',
+    stPower:'Stopping Power', stRof:'Rate of Fire', stRange:'Range', stSpread:'Spread',
+    stMag:'Magazine', stReload:'Reload', stWeight:'Weight', stAggro:'Horde Aggro',
+    gHelm:'Helmet', gVest:'Vest', gPack:'Backpack', gBoot:'Boots',
+    gArmor:'Armor', gCarry:'Carry', gStealth:'Stealth', gWarm:'Insulation',
+    gNoise:'Noise', gMob:'Mobility',
+    paintHd:'Available patterns', applied:'Pattern applied', cost:'Cost',
+    repOff:'Repeat off', repOne:'Repeat one', repAll:'Repeat all',
+    plCombat:'Combat', plAmb:'Ambient', plBase:'Base',
+    fAll:'All', fMod:'Modular', fAR:'AR', fSMG:'SMG', fPre:'Precision', fSup:'Support', fPis:'Pistol'
+  }
+};
+let lang = 'fr';
+const t = k => (T[lang][k] !== undefined ? T[lang][k] : k);
+const nm = o => (lang === 'fr' ? o.fr : o.en);
+
+/* ---------- 2. data ---------- */
+
+const COUNTRIES = [
+  {id:'kr', fr:'Coree',   en:'Korea'},
+  {id:'jp', fr:'Japon',   en:'Japan'},
+  {id:'us', fr:'USA',     en:'USA'},
+  {id:'de', fr:'Allemagne',en:'Germany'},
+  {id:'uk', fr:'R.-U.',   en:'UK'},
+  {id:'fr', fr:'France',  en:'France'},
+  {id:'be', fr:'Belgique',en:'Belgium'},
+  {id:'at', fr:'Autriche',en:'Austria'},
+  {id:'it', fr:'Italie',  en:'Italy'},
+  {id:'ch', fr:'Suisse',  en:'Switzerland'},
+  {id:'cz', fr:'Tchequie',en:'Czechia'},
+  {id:'ru', fr:'Russie',  en:'Russia'},
+  {id:'sv', fr:'Survivant',en:'Survivor'}
+];
+
+const SLOTS = [
+  {id:'sight',  k:'sSight', pos:[42, 14], side:'up'},
+  {id:'canted', k:'sCant',  pos:[30, 14], side:'up'},
+  {id:'rail',   k:'sRail',  pos:[56, 14], side:'up'},
+  {id:'muzzle', k:'sMuz',   pos:[84, 14], side:'up'},
+  {id:'mag',    k:'sMag',   pos:[38, 76], side:'dn'},
+  {id:'under',  k:'sUnd',   pos:[50, 76], side:'dn'},
+  {id:'grip',   k:'sGrip',  pos:[62, 76], side:'dn'},
+  {id:'bipod',  k:'sBip',   pos:[74, 76], side:'dn'}
+];
+const SLOT_ORDER = SLOTS.map(s => s.id);
+const slotLabel = id => t(SLOTS.find(s => s.id === id).k);
+
+/* stats. lo true means a lower value is the better value. */
+const STATS = [
+  {id:'power',  k:'stPower', dec:0, suf:'',    max:70,  lo:false},
+  {id:'rof',    k:'stRof',   dec:1, suf:'/s',  max:14,  lo:false},
+  {id:'range',  k:'stRange', dec:0, suf:'',    max:120, lo:false},
+  {id:'spread', k:'stSpread',dec:1, suf:'°', max:6, lo:true},
+  {id:'mag',    k:'stMag',   dec:0, suf:'',    max:120, lo:false},
+  {id:'reload', k:'stReload',dec:1, suf:'s',   max:9,   lo:true},
+  {id:'weight', k:'stWeight',dec:1, suf:' kg', max:15,  lo:true},
+  {id:'aggro',  k:'stAggro', dec:2, pre:'×', max:2, lo:true}
+];
+
+/* archetype geometry, drawn in the 840 x 300 weapon viewBox */
+const GEO = {
+  ar:    {a:40, b:178, c:400, d:596, e:752, top:116, bot:160, bY:130, bH:13, gx:252, mx:320, mw:58, st:'tube'},
+  smg:   {a:62, b:186, c:378, d:520, e:628, top:120, bot:162, bY:134, bH:11, gx:248, mx:312, mw:52, st:'fold'},
+  dmr:   {a:30, b:172, c:420, d:640, e:800, top:112, bot:158, bY:128, bH:14, gx:258, mx:332, mw:56, st:'fixed'},
+  lmg:   {a:28, b:166, c:412, d:618, e:784, top:110, bot:166, bY:126, bH:16, gx:246, mx:336, mw:88, st:'fixed'},
+  pistol:{a:262,b:300, c:436, d:470, e:524, top:124, bot:154, bY:132, bH:10, gx:322, mx:318, mw:40, st:'none'}
+};
+
+const MOD_SLOTS  = ['sight','canted','rail','muzzle','mag','under','grip','bipod'];
+const BASIC_SLOTS= ['sight','mag'];
+
+function W(id, fr, en, cty, arch, type, tier, modular, base, slots, stock, issued){
+  return {id, fr, en, cty, arch, type, tier, modular, base, slots, stock, issued};
+}
+const WEAPONS = [
+  W('m4a1','M4A1','M4A1','us','ar','ar',2,true,
+    {power:25,rof:8.0,range:50,spread:3.0,mag:30,reload:3.6,weight:3.5,aggro:1.00},MOD_SLOTS,10,55),
+  W('colt9','Colt SMG 9mm','Colt 9mm SMG','us','smg','smg',1,true,
+    {power:18,rof:10.5,range:32,spread:3.6,mag:32,reload:3.0,weight:2.9,aggro:0.95},MOD_SLOTS,5,30),
+  W('m110','M110','M110','us','dmr','pre',3,true,
+    {power:42,rof:3.4,range:85,spread:1.4,mag:20,reload:4.2,weight:6.9,aggro:1.15},MOD_SLOTS,10,0),
+  W('m240b','M240B','M240B','us','lmg','sup',4,false,
+    {power:38,rof:12.0,range:70,spread:4.2,mag:100,reload:7.5,weight:12.5,aggro:1.60},BASIC_SLOTS,10,0),
+  W('l96','L96A1','L96A1','uk','dmr','pre',3,true,
+    {power:60,rof:1.1,range:110,spread:0.8,mag:10,reload:4.8,weight:6.5,aggro:1.05},
+    ['sight','canted','rail','muzzle','mag','bipod'],39,70),
+  W('k2c1','K2C1','K2C1','kr','ar','ar',2,true,
+    {power:26,rof:7.5,range:54,spread:2.8,mag:30,reload:3.5,weight:3.7,aggro:1.00},MOD_SLOTS,8,0),
+  W('k1a','K1A','K1A','kr','smg','smg',1,true,
+    {power:21,rof:9.0,range:38,spread:3.2,mag:30,reload:3.2,weight:2.9,aggro:0.95},MOD_SLOTS,4,12),
+  W('t89','Type 89','Type 89','jp','ar','ar',2,true,
+    {power:25,rof:7.8,range:52,spread:2.9,mag:30,reload:3.6,weight:3.5,aggro:1.00},MOD_SLOTS,6,8),
+  W('g36c','G36C','G36C','de','ar','ar',2,true,
+    {power:24,rof:8.3,range:46,spread:3.1,mag:30,reload:3.4,weight:3.1,aggro:1.00},MOD_SLOTS,7,18),
+  W('mp5','MP5A5','MP5A5','de','smg','smg',2,true,
+    {power:19,rof:11.0,range:34,spread:3.0,mag:30,reload:3.1,weight:3.0,aggro:0.92},MOD_SLOTS,9,24),
+  W('famas','FAMAS F1','FAMAS F1','fr','ar','ar',2,true,
+    {power:24,rof:9.5,range:48,spread:3.3,mag:25,reload:3.8,weight:3.6,aggro:1.05},MOD_SLOTS,5,6),
+  W('scar','FN SCAR-L','FN SCAR-L','be','ar','ar',3,true,
+    {power:28,rof:7.2,range:58,spread:2.6,mag:30,reload:3.5,weight:3.9,aggro:1.00},MOD_SLOTS,4,2),
+  W('aug','Steyr AUG A3','Steyr AUG A3','at','ar','ar',3,true,
+    {power:27,rof:7.8,range:56,spread:2.7,mag:30,reload:3.7,weight:3.8,aggro:1.00},MOD_SLOTS,3,0),
+  W('arx','Beretta ARX160','Beretta ARX160','it','ar','ar',2,true,
+    {power:25,rof:8.2,range:50,spread:3.0,mag:30,reload:3.5,weight:3.4,aggro:1.00},MOD_SLOTS,4,0),
+  W('sig550','SIG 550','SIG 550','ch','ar','ar',3,true,
+    {power:27,rof:7.0,range:62,spread:2.4,mag:30,reload:3.9,weight:4.1,aggro:1.00},MOD_SLOTS,6,4),
+  W('bren2','CZ BREN 2','CZ BREN 2','cz','ar','ar',2,true,
+    {power:26,rof:8.0,range:52,spread:2.8,mag:30,reload:3.4,weight:3.3,aggro:1.00},MOD_SLOTS,5,0),
+  W('ak12','AK-12','AK-12','ru','ar','ar',2,true,
+    {power:30,rof:7.6,range:48,spread:3.4,mag:30,reload:3.7,weight:3.9,aggro:1.10},MOD_SLOTS,12,40),
+  W('pkm','PKM','PKM','ru','lmg','sup',3,false,
+    {power:40,rof:10.5,range:72,spread:4.5,mag:100,reload:7.8,weight:11.8,aggro:1.55},BASIC_SLOTS,7,14),
+  W('l85','L85A3','L85A3','uk','ar','ar',2,true,
+    {power:26,rof:7.6,range:55,spread:2.7,mag:30,reload:3.8,weight:3.8,aggro:1.00},MOD_SLOTS,8,16),
+  W('m1911','M1911A1','M1911A1','us','pistol','pis',1,true,
+    {power:30,rof:4.0,range:22,spread:4.0,mag:7,reload:2.4,weight:1.1,aggro:0.80},
+    ['sight','rail','muzzle','mag'],22,90),
+  W('g17','Glock 17','Glock 17','at','pistol','pis',1,true,
+    {power:24,rof:5.0,range:24,spread:3.8,mag:17,reload:2.2,weight:0.9,aggro:0.78},
+    ['sight','rail','muzzle','mag'],18,64),
+  W('pipe','Carabine de tuyau','Pipe Carbine','sv','ar','ar',1,false,
+    {power:22,rof:2.0,range:30,spread:5.2,mag:5,reload:5.0,weight:4.2,aggro:1.25},BASIC_SLOTS,31,110),
+  W('nailer','SMG a clous','Nailer SMG','sv','smg','smg',1,false,
+    {power:12,rof:9.5,range:18,spread:5.6,mag:40,reload:4.4,weight:3.4,aggro:1.30},BASIC_SLOTS,16,52)
+];
+
+/* parts. mods: p is a proportional change, a is an absolute change. */
+function P(id, slot, fr, en, tier, cost, stock, mods, req, arch){
+  return {id, slot, fr, en, tier, cost, stock, mods, req:req||null, arch:arch||null};
+}
+const PARTS = [
+  /* sights */
+  P('rd1','sight','Point rouge R1','Red Dot R1',1,6,4,{spread:{p:-.14},range:{p:.06},weight:{a:.12}}),
+  P('holo','sight','Holographique H3','Holo H3',2,11,2,{spread:{p:-.22},range:{p:.10},reload:{p:.02},weight:{a:.21}},'rd1'),
+  P('s12','sight','Lunette S12','Scope S12',2,14,1,{spread:{p:-.38},range:{p:.15},rof:{p:-.03},weight:{a:.34}},'rd1'),
+  P('th9','sight','Thermique T9','Thermal T9',3,28,0,{spread:{p:-.44},range:{p:.26},rof:{p:-.06},weight:{a:.52},aggro:{p:-.08}},'s12'),
+  /* canted sights */
+  P('cir','canted','Fer incline','Canted Iron',1,4,3,{spread:{p:-.05},weight:{a:.06}}),
+  P('cmd','canted','Mini point incline','Canted Mini Dot',2,9,0,{spread:{p:-.09},rof:{p:.03},weight:{a:.11}},'cir'),
+  /* side rail */
+  P('tl1','rail','Lampe tactique','Tactical Light',1,5,6,{spread:{p:-.04},aggro:{p:.12},weight:{a:.10}}),
+  P('irl','rail','Laser IR','IR Laser',2,12,1,{spread:{p:-.16},reload:{p:-.03},weight:{a:.09}},'tl1'),
+  P('rgf','rail','Telemetre','Rangefinder',3,22,0,{range:{p:.14},spread:{p:-.08},weight:{a:.18}},'irl'),
+  /* muzzle */
+  P('fh1','muzzle','Cache-flamme','Flash Hider',1,5,5,{spread:{p:-.06},aggro:{p:-.05},weight:{a:.08}}),
+  P('cmp','muzzle','Compensateur','Compensator',2,10,2,{spread:{p:-.18},rof:{p:.04},weight:{a:.14}},'fh1'),
+  P('sup','muzzle','Silencieux','Suppressor',3,26,0,{aggro:{p:-.42},power:{p:-.06},range:{p:-.05},weight:{a:.44}},'cmp'),
+  /* magazines */
+  P('mstd','mag','Chargeur standard','Standard Magazine',1,3,0,{reload:{p:-.05}}),
+  P('mext','mag','Chargeur etendu','Extended Magazine',2,12,0,{mag:{p:.70},reload:{p:.15},weight:{a:.25}},'mstd'),
+  P('mqd','mag','Chargeur rapide','Quickdraw Magazine',2,9,0,{reload:{p:-.07},weight:{a:.05}},'mstd'),
+  P('mdd','mag','Double tambour','Double Drum Magazine',3,24,0,{mag:{p:1.40},reload:{p:.50},weight:{a:.90}},'mext'),
+  /* underbarrel */
+  P('gl1','under','Lance-grenades','Grenade Launcher',3,30,0,{power:{p:.05},weight:{a:1.30},aggro:{p:.25},reload:{p:.06}},null,['ar']),
+  P('sb1','under','Fusil breche','Shotgun Breacher',3,26,0,{power:{p:.04},weight:{a:1.05},aggro:{p:.18}},null,['ar','dmr']),
+  /* foregrip */
+  P('fg1','grip','Poignee avant G1','Foregrip G1',1,6,3,{spread:{p:-.12},rof:{p:.02},weight:{a:.16}}),
+  P('fga','grip','Poignee inclinee','Angled Grip',2,10,1,{spread:{p:-.17},reload:{p:-.04},weight:{a:.18}},'fg1'),
+  P('fgs','grip','Poignee courte','Stubby Grip',2,8,2,{spread:{p:-.09},reload:{p:-.08},weight:{a:.09}},'fg1'),
+  /* bipod */
+  P('bp1','bipod','Bipied leger','Light Bipod',2,11,1,{spread:{p:-.26},weight:{a:.46},rof:{p:-.02}}),
+  P('bp2','bipod','Bipied lourd','Heavy Bipod',3,19,0,{spread:{p:-.38},weight:{a:.95},rof:{p:-.05}},'bp1')
+];
+const part = id => PARTS.find(p => p.id === id) || null;
+const partsFor = slot => PARTS.filter(p => p.slot === slot);
+
+/* gear */
+const GEAR = [
+  {slot:'helm', k:'gHelm', items:[
+    {id:'h1',fr:'Casque de chantier',en:'Hard Hat',tier:1,cost:4,mods:{armor:4,stealth:-2,warm:3}},
+    {id:'h2',fr:'Casque PASGT',en:'PASGT Helmet',tier:2,cost:12,mods:{armor:14,stealth:-6,warm:5}},
+    {id:'h3',fr:'Casque balistique MICH',en:'MICH Ballistic',tier:3,cost:24,mods:{armor:22,stealth:-4,warm:6}}
+  ]},
+  {slot:'vest', k:'gVest', items:[
+    {id:'v1',fr:'Gilet improvise',en:'Scrap Vest',tier:1,cost:6,mods:{armor:8,carry:4,stealth:-4}},
+    {id:'v2',fr:'Porte-plaques IIIA',en:'IIIA Plate Carrier',tier:2,cost:18,mods:{armor:26,carry:8,stealth:-10,warm:4}},
+    {id:'v3',fr:'Plaques ceramiques IV',en:'Level IV Plates',tier:3,cost:34,mods:{armor:40,carry:6,stealth:-16,warm:5}}
+  ]},
+  {slot:'pack', k:'gPack', items:[
+    {id:'p1',fr:'Sac a dos',en:'Day Pack',tier:1,cost:3,mods:{carry:12,stealth:-2}},
+    {id:'p2',fr:'Sac de patrouille',en:'Patrol Pack',tier:2,cost:11,mods:{carry:26,stealth:-6}},
+    {id:'p3',fr:'Sac cadre long rayon',en:'Long Range Frame',tier:3,cost:21,mods:{carry:44,stealth:-12,warm:2}}
+  ]},
+  {slot:'boot', k:'gBoot', items:[
+    {id:'b1',fr:'Bottes de travail',en:'Work Boots',tier:1,cost:3,mods:{armor:2,warm:6,stealth:-3}},
+    {id:'b2',fr:'Bottes de marche',en:'Trail Boots',tier:2,cost:9,mods:{armor:3,warm:9,stealth:4,carry:3}},
+    {id:'b3',fr:'Bottes hiver isolees',en:'Insulated Winter',tier:3,cost:17,mods:{armor:5,warm:20,stealth:-2}}
+  ]}
+];
+const GSTATS = [
+  {id:'armor', k:'gArmor', max:90, suf:''},
+  {id:'carry', k:'gCarry', max:90, suf:' kg'},
+  {id:'stealth',k:'gStealth',max:60, suf:''},
+  {id:'warm',  k:'gWarm',  max:50, suf:''},
+  {id:'noise', k:'gNoise', max:60, suf:'', lo:true},
+  {id:'mob',   k:'gMob',   max:100,suf:'%'}
+];
+
+/* paint */
+const PAINTS = [
+  {id:'none', fr:'Usine',en:'Factory',   cost:0, a:'#6b7076', b:'#45494e', c:'#2e3135'},
+  {id:'wood', fr:'Boise',en:'Woodland',  cost:6, a:'#5c6b4e', b:'#3f4a36', c:'#2a3124'},
+  {id:'des',  fr:'Desert',en:'Desert',   cost:6, a:'#9d8559', b:'#7a6742', c:'#564a30'},
+  {id:'urb',  fr:'Urbain',en:'Urban',    cost:8, a:'#6f757c', b:'#4b5158', c:'#30343a'},
+  {id:'win',  fr:'Hiver',en:'Winter',    cost:8, a:'#b6bcc2', b:'#8d949b', c:'#656b71'},
+  {id:'blk',  fr:'Noir mat',en:'Matte Black',cost:5, a:'#3a3d41', b:'#26292c', c:'#17191b'},
+  {id:'rust', fr:'Rouille',en:'Rust',    cost:4, a:'#7e5137', b:'#5c3a28', c:'#3d2619'},
+  {id:'tig',  fr:'Rayures tigre',en:'Tiger Stripe',cost:12, a:'#55614a', b:'#333b2c', c:'#1d2219'}
+];
+
+/* resources */
+const RES = [
+  {id:'food',  fr:'Vivres',en:'Food',      v:7520, d:175, ic:'wheat',  col:'#8fae5c'},
+  {id:'med',   fr:'Medical',en:'Medical',  v:3090, d:0,   ic:'cross',  col:'#c75a43'},
+  {id:'parts', fr:'Pieces',en:'Parts',     v:5550, d:80,  ic:'cog',    col:'#7d93a6'},
+  {id:'ammo',  fr:'Munitions',en:'Ammo',   v:4700, d:80,  ic:'ammo',   col:'#c0953e'},
+  {id:'fuel',  fr:'Carburant',en:'Fuel',   v:6210, d:75,  ic:'fuel',   col:'#8d6fb8'},
+  {id:'power', fr:'Energie',en:'Power',    v:422,  d:36,  ic:'bolt',   col:'#4d86b4'},
+  {id:'pop',   fr:'Population',en:'Population',v:20195,d:71,ic:'ppl',  col:'#56a86f'},
+  {id:'spec',  fr:'Specialistes',en:'Specialists',v:142,d:7,ic:'star', col:'#e3b73f'}
+];
+const RICON = {
+  wheat:'<path d="M12 21V9M12 9c-3 0-4-2-4-4 3 0 4 2 4 4zm0 0c3 0 4-2 4-4-3 0-4 2-4 4zM12 15c-3 0-4-2-4-4 3 0 4 2 4 4zm0 0c3 0 4-2 4-4-3 0-4 2-4 4z"/>',
+  cross:'<path d="M5 5h14v14H5z"/><path d="M12 8v8M8 12h8"/>',
+  cog:'<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>',
+  ammo:'<path d="M9 21h6V9l-3-6-3 6z"/><path d="M9 13h6"/>',
+  fuel:'<path d="M6 21V5a2 2 0 012-2h5a2 2 0 012 2v16z"/><path d="M15 9h2a2 2 0 012 2v6a1.5 1.5 0 003 0v-6"/><path d="M7 9h7"/>',
+  bolt:'<path d="M13 2L5 13h6l-1 9 8-11h-6z"/>',
+  ppl:'<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.2 2.7-5.3 6-5.3s6 2.1 6 5.3"/><path d="M16 6a3 3 0 010 5.4M17.4 20c0-2.5-1-4-2.6-5"/>',
+  star:'<path d="M12 3l2.6 5.6 6 .7-4.4 4.2 1.2 6-5.4-3-5.4 3 1.2-6L3.4 9.3l6-.7z"/>'
+};
+
+/* outliner build queue */
+const QUEUE = [
+  {fr:'Camp Pendleton',en:'Camp Pendleton',d:1},
+  {fr:'Hopital de Reykjavik',en:'Reykjavik Geothermal',d:1},
+  {fr:'Base Andersen',en:'Andersen AFB',d:1},
+  {fr:'Port de Pearl',en:'Pearl Harbor Docks',d:1},
+  {fr:'Serre de Thule',en:'Thule Greenhouse',d:1},
+  {fr:'Raffinerie de Bergen',en:'Bergen Refinery',d:1},
+  {fr:'Relais de Darwin',en:'Darwin Relay',d:1},
+  {fr:'Fonderie de Sudbury',en:'Sudbury Foundry',d:2},
+  {fr:"Barrage d'Itaipu",en:'Itaipu Dam',d:2},
+  {fr:'Silo de Minot',en:'Minot Silo',d:2},
+  {fr:'Atelier de Gdansk',en:'Gdansk Yard',d:2},
+  {fr:'Laboratoire de Busan',en:'Busan Lab',d:3},
+  {fr:'Depot de Perth',en:'Perth Depot',d:3},
+  {fr:'Ferme de Mendoza',en:'Mendoza Farm',d:3},
+  {fr:'Antenne de Svalbard',en:'Svalbard Antenna',d:4},
+  {fr:'Clinique de Nairobi',en:'Nairobi Clinic',d:4},
+  {fr:'Pont de Chongqing',en:'Chongqing Bridge',d:5},
+  {fr:'Mine de Kiruna',en:'Kiruna Mine',d:5},
+  {fr:'Usine de Toyota',en:'Toyota Works',d:6},
+  {fr:'Tour de Dubai',en:'Dubai Spire',d:7},
+  {fr:'Station de McMurdo',en:'McMurdo Station',d:9}
+];
+
+/* music */
+const TRACKS = {
+  combat:['Hold the Line','Last Convoy','Breach and Clear','Ash Winter'],
+  amb:['Quiet Sector','Long Dark Road','Snowfall Over Oslo'],
+  base:['Rebuild','Night Shift','Hearth and Wire']
+};
+
+/* ---------- 3. state ---------- */
+const state = {
+  tab:'wpn',
+  sel:'m4a1',
+  slot:'mag',
+  allSlots:false,
+  fc:'all',
+  ft:'all',
+  rot:{y:0, x:0},
+  saved:{},      /* weaponId -> {slot: partId} committed */
+  draft:{},      /* weaponId -> {slot: partId} in progress */
+  owned:{},      /* partId  -> count in stock */
+  paintSaved:{}, /* weaponId -> paintId */
+  paintDraft:{},
+  gearSaved:{helm:'h1', vest:'v1', pack:'p1', boot:'b1'},
+  gearDraft:{},
+  speed:1,
+  mins:803,      /* 13:23 */
+  day:3, month:3, year:2029,
+  mus:{on:true, pl:'combat', i:0, rep:0},
+  hover:null
+};
+
+PARTS.forEach(p => { state.owned[p.id] = p.stock; });
+WEAPONS.forEach(w => {
+  state.saved[w.id] = {};
+  state.paintSaved[w.id] = 'none';
+});
+/* a believable starting loadout on the M4A1, matching the reference screen */
+state.saved.m4a1 = {sight:'s12', canted:'cir', rail:'tl1', grip:'fg1', mag:'mstd'};
+state.saved.l96  = {sight:'s12', bipod:'bp1'};
+state.saved.mp5  = {sight:'rd1', rail:'tl1'};
+state.draft.m4a1 = Object.assign({}, state.saved.m4a1, {mag:'mext'});
+
+const draftOf = id => (state.draft[id] || (state.draft[id] = Object.assign({}, state.saved[id])));
+const paintDraftOf = id => (state.paintDraft[id] !== undefined
+  ? state.paintDraft[id] : (state.paintDraft[id] = state.paintSaved[id]));
+const gearDraft = () => {
+  for (const g of GEAR) if (state.gearDraft[g.slot] === undefined) state.gearDraft[g.slot] = state.gearSaved[g.slot];
+  return state.gearDraft;
+};
+const weapon = id => WEAPONS.find(w => w.id === id);
+const cur = () => weapon(state.sel);
+
+/* ---------- 4. small helpers ---------- */
+const $ = s => document.querySelector(s);
+const el = (tag, cls, html) => {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (html !== undefined) n.innerHTML = html;
+  return n;
+};
+const fmt = n => n.toLocaleString(lang === 'fr' ? 'fr-CA' : 'en-CA');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pct = v => (v > 0 ? '+' : '') + Math.round(v * 100) + '%';
+const tierCls = n => 't' + n;
+
+let toastT = null;
+function toast(msg, bad){
+  const n = $('#toast');
+  n.textContent = msg;
+  n.className = 'toast show' + (bad ? ' bad' : '');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => { n.className = 'toast' + (bad ? ' bad' : ''); }, 1900);
+}
+
+/* a part is available when it has stock or its prerequisite is owned */
+function reqMet(p){
+  if (!p.req) return true;
+  const r = part(p.req);
+  return state.owned[r.id] > 0 || isEquippedAnywhere(r.id);
+}
+function isEquippedAnywhere(pid){
+  for (const wid in state.saved) if (Object.values(state.saved[wid]).indexOf(pid) >= 0) return true;
+  return false;
+}
+function compat(p, w, slot){
+  if (!p) return false;
+  if (slot && p.slot !== slot) return false;
+  if (p.arch && p.arch.indexOf(w.arch) < 0) return false;
+  return w.slots.indexOf(p.slot) >= 0;
+}
+
+/* ---------- 5. stat maths ---------- */
+function computeStats(w, eq){
+  const mulv = {}, addv = {};
+  for (const slot in eq){
+    const p = part(eq[slot]);
+    if (!compat(p, w, slot)) continue;
+    for (const k in p.mods){
+      const m = p.mods[k];
+      if (m.p !== undefined) mulv[k] = (mulv[k] || 0) + m.p;
+      if (m.a !== undefined) addv[k] = (addv[k] || 0) + m.a;
+    }
+  }
+  const out = {};
+  for (const s of STATS){
+    const base = w.base[s.id];
+    out[s.id] = base * (1 + (mulv[s.id] || 0)) + (addv[s.id] || 0);
+    if (out[s.id] < 0) out[s.id] = 0;
+  }
+  return out;
+}
+function statText(s, v){
+  const p = s.pre || '';
+  return p + v.toFixed(s.dec) + (s.suf || '');
+}
+/* parts that will have to be crafted when the draft is saved */
+function craftList(){
+  const d = draftOf(state.sel), sv = state.saved[state.sel], out = [];
+  for (const slot in d){
+    const pid = d[slot];
+    if (!pid || sv[slot] === pid) continue;
+    if (state.owned[pid] > 0) continue;
+    out.push(part(pid));
+  }
+  const pd = paintDraftOf(state.sel);
+  if (pd !== state.paintSaved[state.sel]){
+    const pa = PAINTS.find(x => x.id === pd);
+    if (pa && pa.cost) out.push({id:'paint:' + pa.id, cost:pa.cost, fr:nm(pa), en:nm(pa)});
+  }
+  return out;
+}
+const craftCost = () => craftList().reduce((a, p) => a + p.cost, 0);
+function dirty(){
+  const d = draftOf(state.sel), sv = state.saved[state.sel];
+  const keys = new Set(Object.keys(d).concat(Object.keys(sv)));
+  for (const k of keys) if ((d[k] || null) !== (sv[k] || null)) return true;
+  return paintDraftOf(state.sel) !== state.paintSaved[state.sel];
+}
+function gearDirty(){
+  const d = gearDraft();
+  for (const g of GEAR) if (d[g.slot] !== state.gearSaved[g.slot]) return true;
+  return false;
+}
+
+/* ---------- 6. weapon drawing ---------- */
+function paintOf(wid){
+  const id = state.tab === 'paint' ? paintDraftOf(wid) : (state.paintDraft[wid] !== undefined
+    ? state.paintDraft[wid] : state.paintSaved[wid]);
+  return PAINTS.find(p => p.id === id) || PAINTS[0];
+}
+/* returns {svg, anchors} where anchors are points in the 840x300 box */
+function buildWeapon(w, eq, pal, mini){
+  const g = GEO[w.arch];
+  const A = pal.a, B = pal.b, C = pal.c;
+  const S = [];
+  const rect = (x, y, wd, h, f, r) =>
+    S.push('<rect x="' + x + '" y="' + y + '" width="' + wd + '" height="' + h +
+      '" rx="' + (r || 0) + '" fill="' + f + '"/>');
+  const poly = (pts, f) => S.push('<polygon points="' + pts + '" fill="' + f + '"/>');
+  const mid = (g.top + g.bot) / 2;
+
+  /* stock */
+  if (g.st === 'tube'){
+    poly(g.a + ',' + (g.top + 6) + ' ' + (g.a + 86) + ',' + (g.top + 2) + ' ' + (g.b) + ',' + (g.top + 4) +
+         ' ' + g.b + ',' + (g.bot + 4) + ' ' + (g.a + 54) + ',' + (g.bot + 10) + ' ' + g.a + ',' + (g.bot - 2), B);
+    rect(g.a + 4, g.top + 10, 46, 22, C, 2);
+  } else if (g.st === 'fold'){
+    rect(g.a, mid - 7, g.b - g.a, 13, B, 2);
+    rect(g.a, g.top + 2, 15, 40, C, 2);
+  } else if (g.st === 'fixed'){
+    poly(g.a + ',' + (g.top + 10) + ' ' + g.b + ',' + (g.top + 2) + ' ' + g.b + ',' + (g.bot + 6) +
+         ' ' + (g.a + 30) + ',' + (g.bot + 18) + ' ' + g.a + ',' + (g.bot + 4), B);
+    rect(g.a + 6, g.top + 16, 40, 18, C, 2);
+  }
+  /* receiver */
+  rect(g.b, g.top, g.c - g.b, g.bot - g.top, A, 3);
+  rect(g.b + 10, g.top + 6, (g.c - g.b) - 26, 7, C, 2);
+  rect(g.c - 40, g.top + 4, 26, 10, C, 2);
+  /* ejection port */
+  rect(g.b + (g.c - g.b) * .52, g.top + 14, 34, 13, C, 2);
+
+  /* grip and trigger guard */
+  if (w.arch !== 'pistol'){
+    poly(g.gx + ',' + g.bot + ' ' + (g.gx + 34) + ',' + g.bot + ' ' + (g.gx + 20) + ',' + (g.bot + 64) +
+         ' ' + (g.gx - 10) + ',' + (g.bot + 62), C);
+    S.push('<path d="M' + (g.gx + 36) + ' ' + (g.bot + 2) + ' q20 26 40 0" stroke="' + C +
+      '" stroke-width="5" fill="none"/>');
+    rect(g.gx + 44, g.bot + 4, 7, 16, B, 1);
+  } else {
+    poly(g.gx + ',' + g.bot + ' ' + (g.gx + 44) + ',' + g.bot + ' ' + (g.gx + 26) + ',' + (g.bot + 76) +
+         ' ' + (g.gx - 14) + ',' + (g.bot + 74), B);
+    S.push('<path d="M' + (g.gx + 46) + ' ' + g.bot + ' q20 24 40 0" stroke="' + B +
+      '" stroke-width="5" fill="none"/>');
+  }
+  /* handguard with rail slots */
+  rect(g.c, g.top + 4, g.d - g.c, (g.bot - g.top) - 10, A, 3);
+  for (let x = g.c + 14; x < g.d - 16; x += 26) rect(x, g.top + 14, 13, 14, C, 2);
+  rect(g.c, g.top - 2, g.d - g.c, 7, B, 2);
+  /* barrel */
+  rect(g.d, g.bY, g.e - g.d, g.bH, B, 2);
+  if (w.arch === 'lmg'){
+    for (let x = g.d + 10; x < g.e - 20; x += 22) rect(x, g.bY - 4, 7, g.bH + 8, C, 1);
+  }
+
+  /* ---- attachments ---- */
+  const an = {};
+  an.sight  = [g.c - 46, g.top - 26];
+  an.canted = [g.b + 30, g.top - 8];
+  an.rail   = [g.c + 60, g.bot + 4];
+  an.muzzle = [g.e + 8, g.bY + g.bH / 2];
+  an.mag    = [g.mx + g.mw / 2, g.bot + 42];
+  an.under  = [g.c + 44, g.bot + 22];
+  an.grip   = [g.c + 118, g.bot + 30];
+  an.bipod  = [g.d + 40, g.bot + 46];
+
+  const has = s => eq[s] && w.slots.indexOf(s) >= 0 && compat(part(eq[s]), w, s);
+
+  /* magazine */
+  if (has('mag')){
+    const id = eq.mag;
+    let h = 44, curv = 0;
+    if (id === 'mext'){ h = 70; curv = 8; }
+    else if (id === 'mqd'){ h = 42; }
+    else if (id === 'mdd'){ h = 56; }
+    if (id === 'mdd'){
+      S.push('<circle cx="' + (g.mx + g.mw / 2 - 16) + '" cy="' + (g.bot + 44) + '" r="34" fill="' + B + '"/>');
+      S.push('<circle cx="' + (g.mx + g.mw / 2 + 18) + '" cy="' + (g.bot + 44) + '" r="34" fill="' + B + '"/>');
+      S.push('<circle cx="' + (g.mx + g.mw / 2 - 16) + '" cy="' + (g.bot + 44) + '" r="13" fill="' + C + '"/>');
+      S.push('<circle cx="' + (g.mx + g.mw / 2 + 18) + '" cy="' + (g.bot + 44) + '" r="13" fill="' + C + '"/>');
+      rect(g.mx + 8, g.bot - 2, g.mw - 16, 18, A, 2);
+    } else {
+      rect(g.mx - 4, g.bot - 4, g.mw + 8, 12, A, 2);
+      poly(g.mx + ',' + (g.bot + 6) + ' ' + (g.mx + g.mw) + ',' + (g.bot + 6) + ' ' +
+           (g.mx + g.mw + curv) + ',' + (g.bot + h) + ' ' + (g.mx + curv) + ',' + (g.bot + h), B);
+      rect(g.mx + 5, g.bot + h - 11, g.mw - 10, 8, C, 1);
+      if (id === 'mqd') rect(g.mx - 6, g.bot + 10, g.mw + 12, 9, C, 2);
+    }
+    an.mag = [g.mx + g.mw / 2, g.bot + (id === 'mdd' ? 70 : h)];
+  } else if (w.arch === 'lmg'){
+    rect(g.mx, g.bot - 4, g.mw, 50, B, 3);
+    rect(g.mx + 10, g.bot + 8, g.mw - 20, 22, C, 2);
+    an.mag = [g.mx + g.mw / 2, g.bot + 46];
+  }
+
+  /* sight */
+  if (has('sight')){
+    const id = eq.sight, bx = g.c - 86;
+    if (id === 'rd1'){
+      rect(bx + 30, g.top - 26, 42, 26, B, 2);
+      rect(bx + 36, g.top - 20, 30, 14, '#101820', 1);
+    } else if (id === 'holo'){
+      rect(bx + 20, g.top - 30, 62, 30, B, 2);
+      rect(bx + 26, g.top - 24, 48, 17, '#0e1a22', 1);
+      rect(bx + 26, g.top - 24, 48, 5, '#1d3b4a', 1);
+    } else if (id === 's12'){
+      rect(bx + 6, g.top - 34, 108, 30, B, 4);
+      rect(bx - 6, g.top - 38, 26, 38, C, 3);
+      rect(bx + 104, g.top - 36, 22, 34, C, 3);
+      rect(bx + 24, g.top - 28, 76, 7, '#16222c', 1);
+    } else if (id === 'th9'){
+      rect(bx + 2, g.top - 38, 120, 34, C, 4);
+      rect(bx + 110, g.top - 42, 26, 42, B, 3);
+      rect(bx + 14, g.top - 32, 90, 9, '#2a1d2e', 1);
+      rect(bx + 16, g.top - 20, 54, 5, '#3c2a42', 1);
+    }
+    an.sight = [bx + 50, g.top - 30];
+  } else {
+    rect(g.b + 26, g.top - 12, 10, 12, C, 1);
+    rect(g.d - 30, g.top - 12, 10, 12, C, 1);
+  }
+
+  /* canted sight */
+  if (has('canted')){
+    const x = g.c - 118;
+    poly((x) + ',' + (g.top - 2) + ' ' + (x + 20) + ',' + (g.top - 2) + ' ' + (x + 26) + ',' + (g.top - 22) +
+         ' ' + (x + 10) + ',' + (g.top - 22), C);
+    if (eq.canted === 'cmd') rect(x + 8, g.top - 32, 20, 12, B, 2);
+    an.canted = [x + 14, g.top - 24];
+  }
+
+  /* side rail device */
+  if (has('rail')){
+    const x = g.c + 40, ry = g.bot - 8;
+    rect(x, ry, 56, 20, C, 2);
+    if (eq.rail === 'tl1') S.push('<circle cx="' + (x + 58) + '" cy="' + (ry + 10) + '" r="8" fill="#d8cf9a"/>');
+    if (eq.rail === 'irl') S.push('<circle cx="' + (x + 58) + '" cy="' + (ry + 10) + '" r="6" fill="#b4463a"/>');
+    if (eq.rail === 'rgf'){ rect(x + 50, ry - 4, 18, 26, B, 2);
+      S.push('<circle cx="' + (x + 59) + '" cy="' + (ry + 9) + '" r="5" fill="#4d86b4"/>'); }
+    an.rail = [x + 28, ry + 20];
+  }
+
+  /* underbarrel */
+  if (has('under')){
+    const x = g.c + 18;
+    if (eq.under === 'gl1'){
+      rect(x, g.bot + 2, 150, 26, B, 5);
+      rect(x + 12, g.bot + 8, 34, 14, C, 2);
+      S.push('<circle cx="' + (x + 150) + '" cy="' + (g.bot + 15) + '" r="13" fill="' + C + '"/>');
+    } else {
+      rect(x + 6, g.bot + 4, 132, 22, B, 3);
+      rect(x + 20, g.bot + 9, 90, 10, C, 2);
+    }
+    an.under = [x + 70, g.bot + 28];
+  }
+
+  /* foregrip */
+  if (has('grip')){
+    const x = g.c + 108;
+    if (eq.grip === 'fga'){
+      poly(x + ',' + (g.bot - 6) + ' ' + (x + 34) + ',' + (g.bot - 6) + ' ' + (x + 56) + ',' + (g.bot + 36) +
+           ' ' + (x + 26) + ',' + (g.bot + 38), B);
+    } else {
+      const h = eq.grip === 'fgs' ? 30 : 48;
+      rect(x, g.bot - 6, 26, h, B, 5);
+      rect(x + 4, g.bot + h - 14, 18, 7, C, 2);
+    }
+    an.grip = [x + 16, g.bot + (eq.grip === 'fgs' ? 26 : 44)];
+  }
+
+  /* bipod */
+  if (has('bipod')){
+    const x = g.d + 26, th = eq.bipod === 'bp2' ? 7 : 5, len = eq.bipod === 'bp2' ? 60 : 50;
+    S.push('<path d="M' + x + ' ' + (g.bY + g.bH) + ' l-30 ' + len + ' M' + x + ' ' + (g.bY + g.bH) +
+      ' l30 ' + len + '" stroke="' + C + '" stroke-width="' + th + '" fill="none"/>');
+    rect(x - 10, g.bY + g.bH - 4, 20, 12, B, 2);
+    an.bipod = [x, g.bY + g.bH + len];
+  }
+
+  /* muzzle */
+  if (has('muzzle')){
+    const id = eq.muzzle;
+    if (id === 'sup'){ rect(g.e - 16, g.bY - 9, 96, g.bH + 18, C, 5);
+      for (let x = g.e; x < g.e + 66; x += 16) rect(x, g.bY - 9, 4, g.bH + 18, B, 1);
+      an.muzzle = [g.e + 40, g.bY + g.bH / 2 - 12];
+    } else if (id === 'cmp'){ rect(g.e - 6, g.bY - 6, 44, g.bH + 12, C, 3);
+      rect(g.e + 4, g.bY - 10, 6, g.bH + 20, B, 1); rect(g.e + 20, g.bY - 10, 6, g.bH + 20, B, 1);
+      an.muzzle = [g.e + 18, g.bY - 8];
+    } else { rect(g.e - 4, g.bY - 5, 36, g.bH + 10, C, 3);
+      poly((g.e + 32) + ',' + (g.bY - 5) + ' ' + (g.e + 42) + ',' + (g.bY + g.bH / 2) + ' ' +
+           (g.e + 32) + ',' + (g.bY + g.bH + 5), C);
+      an.muzzle = [g.e + 16, g.bY - 6];
+    }
+  } else {
+    an.muzzle = [g.e - 4, g.bY - 4];
+  }
+
+  return {svg:'<g shape-rendering="crispEdges">' + S.join('') + '</g>', anchors:an};
+}
+
+/* a small icon for a part, used in pins and in the part list */
+function partIcon(p, size){
+  const h = size || 44, w = Math.round(h * .9);
+  const A = '#7f8c97', B = '#596773', D = '#10181f';
+  let body = '';
+  switch (p.slot){
+    case 'sight':
+      body = '<rect x="4" y="12" width="32" height="14" rx="3" fill="' + A + '"/>' +
+             '<rect x="1" y="9" width="7" height="20" rx="2" fill="' + B + '"/>' +
+             '<rect x="32" y="10" width="7" height="18" rx="2" fill="' + B + '"/>' +
+             '<rect x="10" y="16" width="20" height="4" fill="' + D + '"/>'; break;
+    case 'canted':
+      body = '<polygon points="10,34 20,34 28,10 18,10" fill="' + A + '"/>' +
+             '<rect x="16" y="6" width="12" height="6" rx="2" fill="' + B + '"/>'; break;
+    case 'rail':
+      body = '<rect x="5" y="15" width="26" height="12" rx="2" fill="' + A + '"/>' +
+             '<circle cx="34" cy="21" r="5" fill="#d8cf9a"/>'; break;
+    case 'muzzle':
+      body = '<rect x="6" y="14" width="28" height="14" rx="3" fill="' + A + '"/>' +
+             '<rect x="12" y="11" width="4" height="20" fill="' + B + '"/>' +
+             '<rect x="22" y="11" width="4" height="20" fill="' + B + '"/>'; break;
+    case 'mag':
+      if (p.id === 'mdd'){
+        body = '<circle cx="14" cy="24" r="11" fill="' + A + '"/><circle cx="26" cy="24" r="11" fill="' + A + '"/>' +
+               '<circle cx="14" cy="24" r="4" fill="' + D + '"/><circle cx="26" cy="24" r="4" fill="' + D + '"/>' +
+               '<rect x="14" y="6" width="12" height="8" fill="' + B + '"/>';
+      } else {
+        const hh = p.id === 'mext' ? 30 : 20, cv = p.id === 'mext' ? 4 : 0;
+        body = '<polygon points="13,6 27,6 ' + (27 + cv) + ',' + (6 + hh) + ' ' + (13 + cv) + ',' + (6 + hh) +
+               '" fill="' + A + '"/><rect x="15" y="' + (hh - 1) + '" width="10" height="4" fill="' + D + '"/>';
+        if (p.id === 'mqd') body += '<rect x="9" y="10" width="22" height="5" rx="2" fill="' + B + '"/>';
+      }
+      break;
+    case 'under':
+      body = '<rect x="4" y="16" width="30" height="11" rx="4" fill="' + A + '"/>' +
+             '<circle cx="34" cy="21" r="6" fill="' + B + '"/>'; break;
+    case 'grip':
+      body = p.id === 'fga'
+        ? '<polygon points="12,8 24,8 32,34 20,36" fill="' + A + '"/>'
+        : '<rect x="14" y="6" width="12" height="' + (p.id === 'fgs' ? 18 : 28) + '" rx="5" fill="' + A + '"/>';
+      break;
+    case 'bipod':
+      body = '<path d="M20 10 L8 34 M20 10 L32 34" stroke="' + A + '" stroke-width="4" fill="none"/>' +
+             '<rect x="14" y="6" width="12" height="7" rx="2" fill="' + B + '"/>'; break;
+  }
+  return '<svg viewBox="0 0 40 40" width="' + w + '" height="' + h + '">' + body + '</svg>';
+}
+
+/* ---------- 7. render: header strip ---------- */
+function renderRes(){
+  const bar = $('#resbar');
+  bar.innerHTML = '';
+  for (const r of RES){
+    const n = el('div', 'res');
+    n.innerHTML =
+      '<div class="ic"><svg viewBox="0 0 24 24" stroke="' + r.col + '" fill="none">' + RICON[r.ic] + '</svg></div>' +
+      '<div><b class="num">' + fmt(Math.round(r.v)) + '</b>' +
+      (r.d ? '<i class="num">+' + r.d + '/' + (lang === 'fr' ? 'j' : 'day') + '</i>' : '<i>&nbsp;</i>') + '</div>';
+    n.title = nm(r);
+    bar.appendChild(n);
+  }
+}
+function renderStock(){
+  const bar = $('#stockbar');
+  bar.innerHTML = '';
+  const mk = (glCls, label, val) => {
+    const n = el('div', 'cs');
+    n.innerHTML = '<span class="gl ' + glCls + '"></span><span class="lbl">' + label +
+      '</span><b class="num">' + fmt(val) + '</b>';
+    return n;
+  };
+  const head = el('div', 'cs');
+  head.innerHTML = '<span class="lbl">' + t('cstock') + '</span>';
+  bar.appendChild(head);
+  bar.appendChild(mk('', t('parts'), Math.round(RES[2].v)));
+  bar.appendChild(mk('d', t('ammo'), Math.round(RES[3].v)));
+  bar.appendChild(el('div', 'sdiv'));
+  for (const w of visibleWeapons()){
+    const b = el('button', 'wc' + (w.id === state.sel ? ' on' : ''));
+    b.innerHTML = '<b>' + esc(nm(w)) + '</b><span>' + t('stock') + ' <span class="num">' + w.stock +
+      '</span></span><span style="color:var(--mut2)">&middot;</span><span>' + t('issued') +
+      ' <span class="num">' + w.issued + '</span></span>';
+    b.onclick = () => selectWeapon(w.id);
+    bar.appendChild(b);
+  }
+}
+
+/* ---------- 8. render: filters and weapon list ---------- */
+function visibleWeapons(){
+  return WEAPONS.filter(w => {
+    if (state.fc !== 'all' && w.cty !== state.fc) return false;
+    if (state.ft === 'all') return true;
+    if (state.ft === 'mod') return w.modular;
+    return w.type === state.ft;
+  });
+}
+function renderFilters(){
+  const c = $('#fcty');
+  if (!c) return;
+  c.innerHTML = '';
+  const mkc = (id, label) => {
+    const b = el('button', 'fb' + (state.fc === id ? ' on' : ''), esc(label));
+    b.onclick = () => { state.fc = id; renderAll(); };
+    return b;
+  };
+  c.appendChild(mkc('all', t('fAll')));
+  for (const x of COUNTRIES) c.appendChild(mkc(x.id, nm(x)));
+
+  const y = $('#ftyp'); y.innerHTML = '';
+  const types = [['all','fAll'],['mod','fMod'],['ar','fAR'],['smg','fSMG'],
+                 ['pre','fPre'],['sup','fSup'],['pis','fPis']];
+  for (const [id, k] of types){
+    const b = el('button', 'fb' + (state.ft === id ? ' on' : ''), t(k));
+    b.onclick = () => { state.ft = id; renderAll(); };
+    y.appendChild(b);
+  }
+}
+function renderList(){
+  const box = $('#wlist');
+  if (!box) return;          /* the gear and paint tabs replace the whole body */
+  box.innerHTML = '';
+  const list = visibleWeapons();
+  for (const w of list){
+    const b = el('button', 'card' + (w.id === state.sel ? ' on' : ''));
+    const eq = state.draft[w.id] || state.saved[w.id];
+    const draw = buildWeapon(w, eq, paintOf(w.id), true);
+    b.innerHTML =
+      '<div class="th"><svg viewBox="24 62 798 186" preserveAspectRatio="xMidYMid meet">' + draw.svg + '</svg></div>' +
+      '<div class="nm">' + esc(nm(w)) + '</div>' +
+      '<div class="sk num">' + t('stock') + ' ' + w.stock + ' &middot; ' + t('issued') + ' ' + w.issued + '</div>' +
+      '<div class="tg"><span class="tier ' + tierCls(w.tier) + '">T' + w.tier + '</span>' +
+      '<span class="mod">' + (w.modular ? t('fMod') : (lang === 'fr' ? 'Fixe' : 'Fixed')) + '</span></div>';
+    b.onclick = () => selectWeapon(w.id);
+    box.appendChild(b);
+  }
+  if (!list.length){
+    box.appendChild(el('div', 'lbl', lang === 'fr' ? 'Aucune arme pour ce filtre' : 'No weapon for this filter'));
+  }
+}
+
+/* ---------- 9. render: preview, pins, leader lines ---------- */
+function renderPreview(){
+  if (!$('#wsvg') || !$('#pins')) return;
+  const w = cur(), eq = draftOf(w.id);
+  const draw = buildWeapon(w, eq, paintOf(w.id), false);
+  const svg = $('#wsvg');
+  svg.innerHTML = draw.svg;
+  svg.style.transform = 'perspective(1500px) rotateX(' + state.rot.x + 'deg) rotateY(' + state.rot.y + 'deg)';
+  $('#rtinfo').textContent = 'RT 240×135 ·3 POINT · ' +
+    Math.round(state.rot.y) + '° / ' + Math.round(state.rot.x) + '°';
+
+  /* pins */
+  const pins = $('#pins');
+  pins.innerHTML = '';
+  const lead = $('#lead');
+  lead.innerHTML = '';
+
+  /* map a point of the 840x300 weapon viewBox to a percentage of the stage.
+     The weapon box keeps its ratio, so it is letterboxed inside its own frame
+     and the offsets have to be measured rather than assumed. */
+  const stgR = $('#stg').getBoundingClientRect();
+  const boxR = $('#wbox').getBoundingClientRect();
+  let toStage;
+  if (stgR.width < 2 || stgR.height < 2 || boxR.width < 2 || boxR.height < 2){
+    /* the stage has not been laid out yet, fall back on the nominal placement */
+    toStage = a => [5 + (a[0] / 840) * 90, 24 + (a[1] / 300) * 50];
+  } else {
+    const sc = Math.min(boxR.width / 840, boxR.height / 300);
+    const ox = (boxR.left - stgR.left) + (boxR.width - 840 * sc) / 2;
+    const oy = (boxR.top - stgR.top) + (boxR.height - 300 * sc) / 2;
+    toStage = a => [((ox + a[0] * sc) / stgR.width) * 100, ((oy + a[1] * sc) / stgR.height) * 100];
+  }
+
+  for (const s of SLOTS){
+    const allowed = w.slots.indexOf(s.id) >= 0;
+    const pid = eq[s.id];
+    const p = pid ? part(pid) : null;
+    const node = el('div', 'pin ' + (s.side === 'up' ? 'up' : 'dn') +
+      (state.slot === s.id && !state.allSlots ? ' on' : '') + (allowed ? '' : ' lk'));
+    node.style.left = s.pos[0] + '%';
+    if (s.side === 'up') node.style.top = s.pos[1] + '%'; else node.style.top = s.pos[1] + '%';
+    const label = !allowed ? t('locked') : (p ? nm(p) : t('empty'));
+    node.innerHTML =
+      '<div class="slb">' + slotLabel(s.id) + '</div>' +
+      '<div class="bx">' + (allowed && p ? partIcon(p, 38) :
+        '<span style="color:var(--mut2);font-size:16px">' + (allowed ? '&#9633;' : '&#9632;') + '</span>') + '</div>' +
+      '<div class="cap">' + esc(label) + '</div>';
+    node.onclick = () => {
+      if (!allowed){ toast(t('slotLocked'), true); return; }
+      state.allSlots = false; state.slot = s.id; renderRight(); renderPreview();
+    };
+    node.onmouseenter = () => { state.hover = {kind:'slot', id:s.id}; renderInfo(); };
+    node.onmouseleave = () => { state.hover = null; renderInfo(); };
+    pins.appendChild(node);
+
+    /* leader line from the pin tile to the anchor on the weapon */
+    const [ax, ay] = toStage(draw.anchors[s.id]);
+    const boxH = stgR.height > 2 ? (46 / stgR.height) * 100 : 11;
+    const x1 = s.pos[0] * 10;
+    const y1 = (s.side === 'up' ? s.pos[1] + boxH : s.pos[1] - 1.5) * 6.2;
+    const ln = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    ln.setAttribute('x1', x1);
+    ln.setAttribute('y1', y1);
+    ln.setAttribute('x2', ax * 10);
+    ln.setAttribute('y2', ay * 6.2);
+    if (state.slot === s.id && !state.allSlots) ln.setAttribute('class', 'on');
+    if (allowed) lead.appendChild(ln);
+  }
+  renderInfo();
+}
+
+function renderInfo(){
+  const w = cur(), eq = draftOf(w.id);
+  $('#infoName').textContent = nm(w);
+  const filled = w.slots.filter(s => eq[s]).length;
+  let txt = filled + '/' + w.slots.length + ' ' + t('slotsFilled') + ', ' + t('dragRot') + ', ' + t('hoverPart');
+  if (state.hover){
+    if (state.hover.kind === 'slot'){
+      const pid = eq[state.hover.id];
+      const p = pid ? part(pid) : null;
+      txt = slotLabel(state.hover.id) + ': ' + (p ? nm(p) + ', ' + modText(p, true) : t('none'));
+    } else {
+      const p = part(state.hover.id);
+      txt = nm(p) + ', ' + modText(p, true) + ', ' + t('cost') + ' ' + p.cost;
+    }
+  }
+  $('#infoTx').textContent = txt;
+}
+function modText(p, plain){
+  const out = [];
+  for (const s of STATS){
+    const m = p.mods[s.id];
+    if (!m) continue;
+    let v, good;
+    if (m.p !== undefined){ v = pct(m.p); good = s.lo ? m.p < 0 : m.p > 0; }
+    else { v = (m.a > 0 ? '+' : '') + m.a.toFixed(2).replace(/0$/, '') + (s.suf || ''); good = s.lo ? m.a < 0 : m.a > 0; }
+    const label = t(s.k);
+    out.push(plain ? label + ' ' + v
+      : '<span class="' + (good ? 'up' : 'dn') + '">' + label + ' ' + v + '</span>');
+  }
+  return out.join(plain ? ' · ' : ' <span style="color:var(--mut2)">&middot;</span> ');
+}
+
+/* ---------- 10. render: right column part list ---------- */
+function renderRight(){
+  if (state.tab !== 'wpn' || !$('#plist')) return;
+  const w = cur(), eq = draftOf(w.id);
+  const list = state.allSlots ? SLOT_ORDER.filter(s => w.slots.indexOf(s) >= 0) : [state.slot];
+  $('#allb').classList.toggle('on', state.allSlots);
+  $('#slotKind').innerHTML = '&#9635; ' + (state.allSlots ? t('all') : t('slot'));
+  $('#slotName').textContent = state.allSlots ? t('load') : slotLabel(state.slot);
+  const count = list.reduce((a, s) => a + partsFor(s).filter(p => compat(p, w)).length, 0);
+  $('#slotOpt').textContent = count + ' ' + t('options');
+
+  const box = $('#plist');
+  box.innerHTML = '';
+  for (const slot of list){
+    if (state.allSlots) box.appendChild(el('div', 'grph', slotLabel(slot)));
+    const avail = partsFor(slot).filter(p => compat(p, w));
+    if (!avail.length){
+      box.appendChild(el('div', 'lbl', lang === 'fr' ? 'Aucune piece compatible' : 'No compatible part'));
+      continue;
+    }
+    for (const p of avail) box.appendChild(partRow(p, w, eq));
+  }
+}
+function partRow(p, w, eq){
+  const on = eq[p.slot] === p.id;
+  const stock = state.owned[p.id];
+  const ok = reqMet(p);
+  const n = el('button', 'pt' + (on ? ' on' : '') + (ok ? '' : ' off'));
+  const req = p.req ? '<span class="req' + (ok ? ' ok' : '') + '">' + t('requires') + ': ' +
+    esc(nm(part(p.req))) + '</span>' : '';
+  const action = on
+    ? '<span class="sx">' + t('clickOff') + '</span>'
+    : (stock > 0 ? '<span class="sx">' + t('clickFit') + '</span>'
+                 : '<span class="sx">' + t('clickFitC') + '</span>');
+  const cb = on
+    ? '<span class="cbtn g">' + t('clickOff') + '</span>'
+    : (stock > 0 ? '<span class="cbtn g">&#9633;' + p.cost + '</span>'
+                 : '<span class="cbtn">&#9633;' + t('craft') + ' ' + p.cost + '</span>');
+  n.innerHTML =
+    '<div class="th">' + partIcon(p, 36) + '</div>' +
+    '<div class="bd">' +
+      '<div class="r1"><span class="tier ' + tierCls(p.tier) + '">T' + p.tier + '</span>' +
+        '<span class="nm">' + esc(nm(p)) + '</span>' +
+        '<span class="tc">' + (on ? '' : t('toCraft')) + '</span></div>' +
+      '<div class="mods">' + modText(p, false) + '</div>' +
+      '<div class="r2"><span class="sx">' + t('stock') + ' <span class="num">' + stock + '</span></span>' +
+        action + req + cb + '</div>' +
+    '</div>';
+  n.onclick = () => togglePart(p);
+  n.onmouseenter = () => { state.hover = {kind:'part', id:p.id}; renderInfo(); previewWith(p); };
+  n.onmouseleave = () => { state.hover = null; renderInfo(); renderStrip(); };
+  return n;
+}
+
+function togglePart(p){
+  const w = cur(), eq = draftOf(w.id);
+  if (!compat(p, w)){ toast(t('notComp'), true); return; }
+  if (eq[p.slot] === p.id){
+    delete eq[p.slot];
+  } else {
+    if (!reqMet(p)){ toast(t('reqMissing') + ': ' + nm(part(p.req)), true); return; }
+    eq[p.slot] = p.id;
+  }
+  renderPreview(); renderRight(); renderStrip(); renderFooter(); renderList();
+}
+
+/* ---------- 11. render: the effective stat strip ---------- */
+function renderStrip(ghost){
+  const strip = $('#strip');
+  strip.innerHTML = '';
+  const lead = el('div', 'lead');
+
+  if (state.tab === 'gear'){
+    lead.innerHTML = '<div class="k">' + t('tabG') + '</div><div class="v">' + t('baseline') + '</div>';
+    strip.appendChild(lead);
+    const now = gearTotals(gearDraft()), was = gearTotals(state.gearSaved);
+    for (const s of GSTATS) strip.appendChild(statTile(s, now[s.id], was[s.id], false));
+    return;
+  }
+  if (state.tab === 'paint'){
+    lead.innerHTML = '<div class="k">' + t('tabP') + '</div><div class="v">' + t('baseline') + '</div>';
+    strip.appendChild(lead);
+    const w = cur();
+    const now = computeStats(w, draftOf(w.id));
+    for (const s of STATS) strip.appendChild(statTile(s, now[s.id], now[s.id], false));
+    return;
+  }
+
+  const w = cur();
+  const eq = ghost || draftOf(w.id);
+  const now = computeStats(w, eq);
+  const was = computeStats(w, state.saved[w.id]);
+  lead.innerHTML = '<div class="k">' + t('effective') + '</div><div class="v">' + t('baseline') + '</div>';
+  strip.appendChild(lead);
+  for (const s of STATS) strip.appendChild(statTile(s, now[s.id], was[s.id], s.id === 'aggro'));
+}
+function statTile(s, v, base, hi){
+  const n = el('div', 'st' + (hi ? ' hi' : ''));
+  const d = base ? (v - base) / base : 0;
+  const good = s.lo ? d < 0 : d > 0;
+  const same = Math.abs(d) < 0.001;
+  const dTxt = same ? '· ±0' : (d > 0 ? '▲ ' : '▼ ') + pct(d);
+  const norm = Math.max(.04, Math.min(1, s.lo ? 1 - v / s.max : v / s.max));
+  const cls = same ? 'n' : (good ? 'g' : 'r');
+  const txt = s.dec !== undefined ? statText(s, v) : (s.pre || '') + v.toFixed(0) + (s.suf || '');
+  n.innerHTML =
+    '<div class="k">' + t(s.k) + '</div>' +
+    '<div class="v num">' + txt + '</div>' +
+    '<div class="d num ' + (same ? '' : (good ? 'up' : 'dn')) + '">' + dTxt + '</div>' +
+    '<div class="bar"><i class="' + cls + '" style="width:' + (norm * 100) + '%"></i></div>';
+  return n;
+}
+/* hovering a part shows what it would do without committing it */
+function previewWith(p){
+  const w = cur();
+  if (!compat(p, w)) return;
+  const eq = Object.assign({}, draftOf(w.id));
+  if (eq[p.slot] === p.id) delete eq[p.slot]; else eq[p.slot] = p.id;
+  renderStrip(eq);
+}
+
+/* ---------- 12. gear and paint tabs ---------- */
+function gearTotals(sel){
+  const tot = {armor:0, carry:20, stealth:30, warm:0, noise:0, mob:100};
+  for (const g of GEAR){
+    const it = g.items.find(i => i.id === sel[g.slot]);
+    if (!it) continue;
+    for (const k in it.mods) tot[k] = (tot[k] || 0) + it.mods[k];
+  }
+  tot.noise = Math.max(0, 40 - tot.stealth + Math.round(tot.armor / 4));
+  tot.mob = Math.max(20, 100 - Math.round(tot.armor * .5) - Math.round(tot.carry * .22));
+  return tot;
+}
+function renderGear(){
+  const box = $('#abody');
+  box.innerHTML = '';
+  const wrap = el('div', 'gwrap');
+  const grid = el('div', 'ggrid');
+  const sel = gearDraft();
+  for (const g of GEAR){
+    const card = el('div', 'gslot');
+    const h = el('div', 'gh');
+    h.innerHTML = '<span class="lbl">' + t(g.k) + '</span><span class="lbl num">' + g.items.length + '</span>';
+    card.appendChild(h);
+    for (const it of g.items){
+      const b = el('button', 'gi' + (sel[g.slot] === it.id ? ' on' : ''));
+      const mods = Object.keys(it.mods)
+        .map(k => t(GSTATS.find(s => s.id === k).k) + ' ' + (it.mods[k] > 0 ? '+' : '') + it.mods[k])
+        .join(' · ');
+      b.innerHTML =
+        '<div class="th"><span class="tier ' + tierCls(it.tier) + '" style="border:none">T' + it.tier + '</span></div>' +
+        '<div><div class="nm">' + esc(nm(it)) + '</div><div class="mm">' + esc(mods) + '</div></div>' +
+        '<div style="margin-left:auto" class="mm num">&#9633;' + it.cost + '</div>';
+      b.onclick = () => {
+        sel[g.slot] = sel[g.slot] === it.id ? null : it.id;
+        renderGear(); renderStrip(); renderFooter();
+      };
+      card.appendChild(b);
+    }
+    grid.appendChild(card);
+  }
+  wrap.appendChild(grid);
+  box.appendChild(wrap);
+  box.style.display = 'block';
+}
+function renderPaint(){
+  const box = $('#abody');
+  box.innerHTML = '';
+  const wrap = el('div', 'gwrap');
+  wrap.appendChild(el('div', 'grph', t('paintHd') + ' · ' + nm(cur())));
+
+  const prev = el('div', 'stage');
+  prev.style.height = '240px';
+  prev.style.marginBottom = '14px';
+  const w = cur();
+  const draw = buildWeapon(w, draftOf(w.id), paintOf(w.id), false);
+  prev.innerHTML = '<svg viewBox="0 0 840 300" preserveAspectRatio="xMidYMid meet" ' +
+    'style="position:absolute;left:4%;top:8%;width:92%;height:84%">' + draw.svg + '</svg>';
+  wrap.appendChild(prev);
+
+  const grid = el('div', 'pgrid');
+  const sel = paintDraftOf(w.id);
+  for (const p of PAINTS){
+    const b = el('button', 'pw' + (sel === p.id ? ' on' : ''));
+    b.innerHTML =
+      '<div class="sw" style="background:linear-gradient(135deg,' + p.a + ' 0 28%,' + p.b + ' 28% 62%,' +
+        p.c + ' 62% 100%)"></div>' +
+      '<div class="nm"><span>' + esc(nm(p)) + '</span><span class="num">' +
+        (p.cost ? '&#9633;' + p.cost : '&middot;') + '</span></div>';
+    b.onclick = () => {
+      state.paintDraft[w.id] = p.id;
+      toast(t('applied') + ': ' + nm(p));
+      renderPaint(); renderFooter(); renderList();
+    };
+    grid.appendChild(b);
+  }
+  wrap.appendChild(grid);
+  box.appendChild(wrap);
+  box.style.display = 'block';
+}
+function restoreBody(){
+  const box = $('#abody');
+  box.style.display = '';
+  box.innerHTML =
+    '<div class="col cl" id="colL">' +
+      '<div class="filt"><div class="frow" id="fcty"></div><div class="frow" id="ftyp"></div></div>' +
+      '<div class="lsthd"><span class="lbl">' + t('inStock') + '</span></div>' +
+      '<div id="wlist"></div>' +
+    '</div>' +
+    '<div class="col cc" id="colC">' +
+      '<div class="stage">' +
+        '<div class="hint">' + t('prevHint') + '</div>' +
+        '<div class="rt num" id="rtinfo"></div>' +
+        '<div class="stg" id="stg">' +
+          '<svg id="lead" viewBox="0 0 1000 620" preserveAspectRatio="none"></svg>' +
+          '<div id="wbox"><svg id="wsvg" viewBox="0 0 840 300" ' +
+            'preserveAspectRatio="xMidYMid meet"></svg></div>' +
+          '<div id="pins"></div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="info"><div class="dia" style="transform:rotate(45deg)"></div>' +
+        '<div class="ib"><div class="lbl">' + t('info') +
+        ' <span style="color:var(--mut2)">&middot;</span> <span id="infoName"></span></div>' +
+        '<div class="tx" id="infoTx"></div></div></div>' +
+    '</div>' +
+    '<div class="col cr" id="colR">' +
+      '<div class="rhd"><div class="r1"><button class="allb" id="allb">&#8249; ' + t('all') + '</button>' +
+        '<span class="lbl" id="slotKind"></span></div>' +
+        '<h2 id="slotName"></h2><div class="op num" id="slotOpt"></div></div>' +
+      '<div id="plist"></div>' +
+    '</div>';
+  $('#allb').onclick = () => { state.allSlots = !state.allSlots; renderRight(); renderPreview(); };
+  bindDrag();
+}
+
+/* ---------- 13. footer ---------- */
+function renderFooter(){
+  const sb = $('#saveb'), rb = $('#revertb');
+  if (state.tab === 'gear'){
+    const d = gearDirty();
+    const cost = GEAR.reduce((a, g) => {
+      const id = gearDraft()[g.slot];
+      if (!id || id === state.gearSaved[g.slot]) return a;
+      const it = g.items.find(i => i.id === id);
+      return a + (it ? it.cost : 0);
+    }, 0);
+    sb.innerHTML = t('save') + (cost ? ' <span style="opacity:.7">&middot;</span> ' + t('craft') +
+      ' &#9633;' + cost : '');
+    sb.disabled = !d; rb.disabled = !d;
+    $('#tip').textContent = lang === 'fr'
+      ? "Cliquez une piece pour l'equiper, cliquez a nouveau pour la retirer"
+      : 'Click an item to equip it, click again to remove it';
+    return;
+  }
+  const cost = craftCost();
+  const d = state.tab === 'paint' ? (paintDraftOf(state.sel) !== state.paintSaved[state.sel]) : dirty();
+  sb.innerHTML = t('save') + (cost ? ' <span style="opacity:.7">&middot;</span> ' + t('craft') +
+    ' &#9633;' + cost : '');
+  sb.disabled = !d; rb.disabled = !d;
+  const w = cur(), eq = draftOf(w.id);
+  const filled = w.slots.filter(s => eq[s]).length;
+  $('#tip').textContent = filled + '/' + w.slots.length + ' ' + t('slotsFilled') + ', ' + t('pinTip');
+}
+
+/* ---------- 14. actions ---------- */
+function selectWeapon(id){
+  state.sel = id;
+  const w = weapon(id);
+  if (w.slots.indexOf(state.slot) < 0) state.slot = w.slots[0];
+  state.rot = {y:0, x:0};
+  renderAll();
+}
+function cycleWeapon(dir){
+  const list = visibleWeapons();
+  if (!list.length) return;
+  let i = list.findIndex(w => w.id === state.sel);
+  if (i < 0) i = 0;
+  i = (i + dir + list.length) % list.length;
+  selectWeapon(list[i].id);
+}
+function doSave(){
+  if (state.tab === 'gear'){
+    if (!gearDirty()) { toast(t('noChange')); return; }
+    let cost = 0;
+    for (const g of GEAR){
+      const id = gearDraft()[g.slot];
+      if (id && id !== state.gearSaved[g.slot]){
+        const it = g.items.find(i => i.id === id);
+        if (it) cost += it.cost;
+      }
+    }
+    if (cost > RES[2].v){ toast(t('noParts'), true); return; }
+    RES[2].v -= cost;
+    for (const g of GEAR) state.gearSaved[g.slot] = gearDraft()[g.slot];
+    toast(t('saved'));
+    renderRes(); renderStock(); renderGear(); renderStrip(); renderFooter();
+    return;
+  }
+  if (!dirty()){ toast(t('noChange')); return; }
+  const cost = craftCost();
+  if (cost > RES[2].v){ toast(t('noParts'), true); return; }
+  RES[2].v -= cost;
+  const w = cur(), d = draftOf(w.id), sv = state.saved[w.id];
+  /* return the parts that leave the weapon, consume the ones that arrive */
+  for (const slot of w.slots){
+    const before = sv[slot], after = d[slot];
+    if (before === after) continue;
+    if (before) state.owned[before] = (state.owned[before] || 0) + 1;
+    if (after){
+      if (state.owned[after] > 0) state.owned[after]--;
+      /* when stock was zero the part was just crafted, so it goes straight on the weapon */
+    }
+  }
+  state.saved[w.id] = Object.assign({}, d);
+  state.paintSaved[w.id] = paintDraftOf(w.id);
+  toast(t('saved'));
+  renderAll();
+}
+function doRevert(){
+  if (state.tab === 'gear'){
+    for (const g of GEAR) state.gearDraft[g.slot] = state.gearSaved[g.slot];
+    toast(t('reverted'));
+    renderGear(); renderStrip(); renderFooter();
+    return;
+  }
+  state.draft[state.sel] = Object.assign({}, state.saved[state.sel]);
+  state.paintDraft[state.sel] = state.paintSaved[state.sel];
+  toast(t('reverted'));
+  renderAll();
+}
+function setTab(tab){
+  state.tab = tab;
+  document.querySelectorAll('.tab').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
+  if (tab === 'wpn'){ restoreBody(); renderFilters(); renderList(); renderPreview(); renderRight(); }
+  else if (tab === 'gear') renderGear();
+  else renderPaint();
+  renderStrip(); renderFooter();
+}
+
+/* ---------- 15. drag to rotate ---------- */
+function bindDrag(){
+  const stg = $('#stg');
+  if (!stg) return;
+  let down = false, px = 0, py = 0;
+  const start = e => {
+    if (e.target.closest('.pin')) return;
+    down = true; stg.classList.add('drag');
+    const p = e.touches ? e.touches[0] : e;
+    px = p.clientX; py = p.clientY;
+  };
+  const move = e => {
+    if (!down) return;
+    const p = e.touches ? e.touches[0] : e;
+    state.rot.y += (p.clientX - px) * .45;
+    state.rot.x = Math.max(-42, Math.min(42, state.rot.x - (p.clientY - py) * .32));
+    px = p.clientX; py = p.clientY;
+    const svg = $('#wsvg');
+    svg.style.transform = 'perspective(1500px) rotateX(' + state.rot.x + 'deg) rotateY(' + state.rot.y + 'deg)';
+    const rt = $('#rtinfo');
+    if (rt) rt.textContent = 'RT 240×135 ·3 POINT · ' +
+      Math.round(state.rot.y) + '° / ' + Math.round(state.rot.x) + '°';
+    if (e.cancelable) e.preventDefault();
+  };
+  const end = () => { down = false; stg.classList.remove('drag'); };
+  stg.addEventListener('mousedown', start);
+  window.addEventListener('mousemove', move);
+  window.addEventListener('mouseup', end);
+  stg.addEventListener('touchstart', start, {passive:true});
+  window.addEventListener('touchmove', move, {passive:false});
+  window.addEventListener('touchend', end);
+  stg.addEventListener('dblclick', () => { state.rot = {y:0, x:0}; renderPreview(); });
+}
+
+/* ---------- 16. outliner ---------- */
+let outSel = -1;
+function renderOut(){
+  const box = $('#outl');
+  box.innerHTML = '';
+  QUEUE.forEach((q, i) => {
+    const n = el('div', 'oi' + (i === outSel ? ' on' : ''));
+    n.innerHTML = '<div class="l"><div class="nm">' + esc(nm(q)) + '</div>' +
+      '<div class="bar"><i style="width:' + Math.max(6, 100 - q.d * 11) + '%"></i></div></div>' +
+      '<div class="rt num">' + t('build') + ' ' + q.d + (lang === 'fr' ? 'j' : 'd') + '</div>';
+    n.onclick = () => { outSel = (outSel === i ? -1 : i); renderOut(); };
+    box.appendChild(n);
+  });
+  $('#outn').textContent = QUEUE.length;
+}
+
+/* ---------- 17. clock and world tick ---------- */
+function renderClock(){
+  const h = String(Math.floor(state.mins / 60) % 24).padStart(2, '0');
+  const m = String(state.mins % 60).padStart(2, '0');
+  $('#cv').textContent = h + ':' + m;
+  $('#clock').classList.toggle('pz', state.speed === 0);
+  $('#dv').textContent = 'Y' + state.year + ' · M' + state.month + ' · D' + state.day;
+  $('#seav').textContent = t('seasons')[Math.floor(((state.month - 1) % 12) / 3)];
+  $('#ddv').textContent = 'D+' + ((state.day - 1) % 7);
+}
+let acc = 0;
+setInterval(() => {
+  if (state.speed === 0) return;
+  state.mins += 2 * state.speed;
+  acc += 2 * state.speed;
+  if (state.mins >= 1440){
+    state.mins -= 1440;
+    state.day++;
+    if (state.day > 30){ state.day = 1; state.month++; }
+    if (state.month > 12){ state.month = 1; state.year++; }
+    QUEUE.forEach(q => { q.d = Math.max(1, q.d - 1); });
+    renderOut();
+  }
+  if (acc >= 60){
+    const days = acc / 1440;
+    acc = 0;
+    for (const r of RES) r.v += r.d * (60 / 1440);
+    const inf = $('#infv');
+    const latv = $('#latv');
+    latv.textContent = fmt(4217 + Math.round(Math.sin(state.mins / 90) * 180));
+    inf.textContent = (1.335 - (state.day - 3) * 0.002).toFixed(3) + 'B';
+    renderRes();
+    if (state.tab === 'wpn') renderStock();
+  }
+  renderClock();
+}, 900);
+
+/* ---------- 18. music ---------- */
+function renderMus(){
+  const m = state.mus;
+  const list = TRACKS[m.pl];
+  $('#trk').textContent = list[m.i % list.length];
+  $('#mus').classList.toggle('pl', m.on);
+  $('#mplay').innerHTML = m.on
+    ? '<svg viewBox="0 0 24 24"><path d="M7 5h3v14H7zM14 5h3v14h-3z"/></svg>'
+    : '<svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>';
+  $('#rep').textContent = [t('repOff'), t('repOne'), t('repAll')][m.rep];
+  $('#rep').classList.toggle('on', m.rep > 0);
+  const sel = $('#pls');
+  if (sel.options.length !== 3 || sel.dataset.l !== lang){
+    sel.innerHTML = '<option value="combat">' + t('plCombat') + '</option>' +
+      '<option value="amb">' + t('plAmb') + '</option><option value="base">' + t('plBase') + '</option>';
+    sel.dataset.l = lang;
+  }
+  sel.value = m.pl;
+}
+
+/* ---------- 19. starfield ---------- */
+(function stars(){
+  const c = $('#stars'), x = c.getContext('2d');
+  function draw(){
+    c.width = innerWidth; c.height = innerHeight;
+    x.clearRect(0, 0, c.width, c.height);
+    for (let i = 0; i < 260; i++){
+      const px = Math.random() * c.width, py = Math.random() * c.height;
+      const r = Math.random() * 1.1, a = .12 + Math.random() * .5;
+      x.fillStyle = 'rgba(190,210,230,' + a + ')';
+      x.fillRect(px, py, r, r);
+    }
+    x.fillStyle = 'rgba(40,70,110,.07)';
+    for (let i = 0; i < 7; i++){
+      const px = Math.random() * c.width, py = Math.random() * c.height;
+      x.beginPath(); x.arc(px, py, 90 + Math.random() * 160, 0, 6.3); x.fill();
+    }
+  }
+  draw();
+  let rt;
+  addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(draw, 180); });
+})();
+
+/* ---------- 20. language ---------- */
+function setLang(l){
+  lang = l;
+  document.documentElement.lang = l;
+  $('#lfr').classList.toggle('on', l === 'fr');
+  $('#len').classList.toggle('on', l === 'en');
+  document.querySelectorAll('[data-i]').forEach(n => { n.innerHTML = t(n.dataset.i); });
+  $('#outc').textContent = $('#out').classList.contains('cl') ? t('expd') : t('coll');
+  renderAll();
+  renderMus();
+  renderOut();
+  renderClock();
+}
+
+/* ---------- 21. render everything ---------- */
+function renderAll(){
+  renderRes();
+  renderStock();
+  if (state.tab === 'wpn'){
+    if (!$('#wlist')) restoreBody();
+    renderFilters(); renderList(); renderPreview(); renderRight();
+  } else if (state.tab === 'gear') renderGear();
+  else renderPaint();
+  renderStrip();
+  renderFooter();
+}
+
+/* ---------- 22. wiring ---------- */
+document.querySelectorAll('.tab').forEach(b => { b.onclick = () => setTab(b.dataset.tab); });
+$('#allb').onclick = () => { state.allSlots = !state.allSlots; renderRight(); renderPreview(); };
+$('#saveb').onclick = doSave;
+$('#revertb').onclick = doRevert;
+$('#closeb').onclick = $('#closeb2').onclick = () => {
+  $('#shell').classList.add('hide');
+  $('#reopen').classList.add('show');
+  $('#prevw').style.display = $('#nextw').style.display = 'none';
+};
+$('#reopen').onclick = () => {
+  $('#shell').classList.remove('hide');
+  $('#reopen').classList.remove('show');
+  $('#prevw').style.display = $('#nextw').style.display = '';
+  if (state.tab === 'wpn') renderPreview();
+};
+/* the leader lines are measured from the layout, so they are redrawn on resize */
+let rsT = null;
+addEventListener('resize', () => {
+  clearTimeout(rsT);
+  rsT = setTimeout(() => { if (state.tab === 'wpn' && $('#wbox')) renderPreview(); }, 160);
+});
+$('#prevw').onclick = () => cycleWeapon(-1);
+$('#nextw').onclick = () => cycleWeapon(1);
+$('#aob').onclick = () => toast(lang === 'fr'
+  ? 'Stock regroupe sur les 7 avant-postes' : 'Stock pooled across all 7 outposts');
+$('#outc').onclick = () => {
+  const o = $('#out');
+  o.classList.toggle('cl');
+  $('#outc').textContent = o.classList.contains('cl') ? t('expd') : t('coll');
+};
+$('#doc').onclick = () => {
+  const n = $('#docv');
+  n.textContent = (+n.textContent + 1);
+  toast(lang === 'fr' ? 'Point de doctrine attribue' : 'Doctrine point assigned');
+};
+[0, 1, 2, 4].forEach(s => {
+  $('#sp-' + s).onclick = () => {
+    state.speed = s;
+    [0, 1, 2, 4].forEach(k => $('#sp-' + k).classList.toggle('on', k === s));
+    renderClock();
+  };
+});
+document.querySelectorAll('.hbtn').forEach(b => {
+  b.onclick = () => {
+    document.querySelectorAll('.hbtn').forEach(o => o.classList.remove('on'));
+    b.classList.add('on');
+  };
+});
+$('#mplay').onclick = () => { state.mus.on = !state.mus.on; renderMus(); };
+$('#mnext').onclick = () => { state.mus.i++; renderMus(); };
+$('#mprev').onclick = () => {
+  const n = TRACKS[state.mus.pl].length;
+  state.mus.i = (state.mus.i - 1 + n) % n;
+  renderMus();
+};
+$('#rep').onclick = () => { state.mus.rep = (state.mus.rep + 1) % 3; renderMus(); };
+$('#pls').onchange = e => { state.mus.pl = e.target.value; state.mus.i = 0; renderMus(); };
+
+addEventListener('keydown', e => {
+  if (e.key === 'Escape'){ $('#closeb').click(); return; }
+  if (e.key === 'ArrowLeft'){ cycleWeapon(-1); return; }
+  if (e.key === 'ArrowRight'){ cycleWeapon(1); return; }
+  if (e.key === ' '){ e.preventDefault(); $('#sp-' + (state.speed === 0 ? 1 : 0)).click(); return; }
+  const n = parseInt(e.key, 10);
+  if (n >= 1 && n <= 8 && state.tab === 'wpn'){
+    const s = SLOT_ORDER[n - 1];
+    if (cur().slots.indexOf(s) >= 0){ state.allSlots = false; state.slot = s; renderRight(); renderPreview(); }
+  }
+});
+
+/* ---------- 23. boot ---------- */
+bindDrag();
+renderOut();
+renderClock();
+renderMus();
+setLang('fr');
+/* the leader lines are measured, so they are redrawn once the layout has settled */
+requestAnimationFrame(() => { if (state.tab === 'wpn') renderPreview(); });
+</script>
+</body>
+</html>
