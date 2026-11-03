@@ -487,6 +487,7 @@ footer{text-align:center;color:var(--dim);font-size:11px;padding:0 0 28px;
         <span class="sp" id="wkfill"></span></div>
       <div class="nut" id="wknut"></div>
       <div class="row" style="margin-top:11px">
+        <button class="btn gr grow" onclick="openPlans()" data-i="plans"></button>
         <button class="btn am grow" onclick="surpriseWeek()" data-i="surprise"></button>
         <button class="btn grow" onclick="go('j')" data-i="pickgame"></button>
       </div>
@@ -503,9 +504,9 @@ footer{text-align:center;color:var(--dim);font-size:11px;padding:0 0 28px;
     </div>
     <div class="filters" id="dfilters"></div>
     <div class="pan" id="seedpan" style="display:none">
-      <div class="ttl" data-i="seedttl"></div>
-      <p class="dim" data-i="seedsub"></p>
-      <button class="btn gr" onclick="seedLib()" data-i="seedgo"></button>
+      <div class="ttl" id="sdT"></div>
+      <p class="dim" id="sdS"></p>
+      <button class="btn gr" onclick="seedLib()" id="sdB"></button>
     </div>
     <div class="dishes" id="dishes"></div>
   </section>
@@ -722,6 +723,14 @@ fr:{
  cfgwarn:'<b>Synchronisation pas encore branchée.</b> Collez l\'adresse du projet Supabase et la clé anon dans <code>SB_URL</code> et <code>SB_ANON</code> au haut de <code>food/index.html</code>, puis roulez <code>food/sql/01_init.sql</code> dans l\'éditeur SQL. En attendant, le mode local fonctionne, mais chaque appareil garde sa propre copie.',
  saved:'Enregistré', removed:'Retiré', confirmdel:'Supprimer ce plat pour de bon?',
  needname:'Il faut un nom.', badlogin:'Nom ou mot de passe incorrect.',
+ plans:'Plans tout faits', planok:'{n} repas placés',
+ planssub:'Huit semaines déjà montées, avec les restes placés aux bons jours. Les chiffres sont par jour, à votre portion.',
+ replaceweek:'Remplacer les repas déjà au plan cette semaine?',
+ planmissing:'{n} manquants', seednone:'Tout y est déjà.',
+ seedmore:'{n} nouveaux plats', seedadded:'{n} plats ajoutés',
+ seedmoresub:'La bibliothèque Norelo s\'est agrandie. Vos plats et vos modifications ne sont pas touchés, seuls les manquants sont ajoutés.',
+ seedmorego:'Ajouter les {n} manquants',
+ avoidwarn:'Contient ce que la maison n\'aime pas:',
  noclient:'Le client Supabase n\'a pas pu se charger, probablement le réseau. Rechargez la page. Rien n\'est écrit en attendant, pour ne pas créer une copie qui ne se synchroniserait jamais.',
  retry:'Recharger',
  notmember:'Ce compte existe, mais il n\'est pas encore dans la liste blanche de la maison. Il faut l\'ajouter à la table members dans Supabase.',
@@ -739,7 +748,8 @@ fr:{
  dice_veg:['Brocoli','Courge','Épinards','Poivrons','Chou','Carottes'],
  t_quick:'Rapide', t_highprot:'Riche en protéines', t_light:'Moins de 500',
  t_veg:'Beaucoup de légumes', t_vegetarian:'Végétarien', t_airfryer:'Friteuse à air',
- t_prep:'Préparé d\'avance', t_slow:'Mijoteuse', t_bbq:'BBQ', t_comfort:'Réconfort'
+ t_prep:'Préparé d\'avance', t_slow:'Mijoteuse', t_bbq:'BBQ', t_comfort:'Réconfort',
+ t_fish:'Poisson'
 },
 en:{
  appname:'Food',
@@ -822,6 +832,14 @@ en:{
  cfgwarn:'<b>Sync is not wired up yet.</b> Paste the Supabase project URL and anon key into <code>SB_URL</code> and <code>SB_ANON</code> at the top of <code>food/index.html</code>, then run <code>food/sql/01_init.sql</code> in the SQL editor. Local mode works meanwhile, but each device keeps its own copy.',
  saved:'Saved', removed:'Removed', confirmdel:'Delete this dish for good?',
  needname:'A name is needed.', badlogin:'Wrong name or password.',
+ plans:'Ready made plans', planok:'{n} meals placed',
+ planssub:'Eight weeks already built, with the leftovers placed on the right days. The numbers are per day, at your portion.',
+ replaceweek:'Replace the meals already planned this week?',
+ planmissing:'{n} missing', seednone:'They are all here already.',
+ seedmore:'{n} new dishes', seedadded:'{n} dishes added',
+ seedmoresub:'The Norelo library has grown. Your own dishes and edits are untouched, only the missing ones are added.',
+ seedmorego:'Add the {n} missing',
+ avoidwarn:'Contains what the house does not like:',
  noclient:'The Supabase client could not load, most likely the network. Reload the page. Nothing is written meanwhile, so no copy is made that would never sync.',
  retry:'Reload',
  notmember:'This account exists, but it is not on the house allowlist yet. Add it to the members table in Supabase.',
@@ -839,7 +857,8 @@ en:{
  dice_veg:['Broccoli','Squash','Spinach','Peppers','Cabbage','Carrots'],
  t_quick:'Quick', t_highprot:'High protein', t_light:'Under 500',
  t_veg:'Veg forward', t_vegetarian:'Vegetarian', t_airfryer:'Air fryer',
- t_prep:'Make ahead', t_slow:'Slow cooker', t_bbq:'BBQ', t_comfort:'Comfort'
+ t_prep:'Make ahead', t_slow:'Slow cooker', t_bbq:'BBQ', t_comfort:'Comfort',
+ t_fish:'Fish'
 }};
 
 let L = 'fr';
@@ -851,7 +870,7 @@ const STORES = ['Costco','IGA','Maxi','Super C','Metro','Provigo','st_market','s
 function storeName(s){ return (s === 'st_market' || s === 'st_dep') ? t(s) : s; }
 
 const TAGS = ['t_quick','t_highprot','t_light','t_veg','t_vegetarian',
-              't_airfryer','t_prep','t_slow','t_bbq','t_comfort'];
+              't_airfryer','t_prep','t_slow','t_bbq','t_comfort','t_fish'];
 
 /* de saison dans les Laurentides, douze mois, statique */
 const SEASON = [
@@ -868,6 +887,64 @@ const SEASON = [
  {fr:'courges, poireaux, légumes racines, choux, pommes', en:'squash, leeks, root vegetables, cabbage, apples'},
  {fr:'courges, légumes racines, choux, canneberges', en:'squash, root vegetables, cabbage, cranberries'}
 ];
+
+/* ---------------------------------------------------------------------
+   Ce que la maison ne mange pas. La bibliothèque livrée respecte déjà
+   cette liste; elle sert à marquer un plat ajouté plus tard qui
+   contiendrait un de ces articles. Elle prévient, elle n'interdit rien.
+   --------------------------------------------------------------------- */
+const AVOID = [
+ {fr:'champignon', en:'mushroom', who:'Catou'},
+ {fr:'citron', en:'lemon', who:'Catou'},
+ {fr:'olives', en:'olives', who:'Catou, Dan'},
+ {fr:'poivron', en:'bell pepper', who:'Catou, Dan'},
+ {fr:'crevette', en:'shrimp', who:'Catou'},
+ {fr:'pétoncle', en:'scallop', who:'Catou'},
+ {fr:'moule', en:'mussel', who:'Catou'},
+ {fr:'crabe', en:'crab', who:'Catou'},
+ {fr:'homard', en:'lobster', who:'Catou'},
+ {fr:'algue', en:'seaweed', who:'Catou'},
+ {fr:'nori', en:'nori', who:'Catou'},
+ {fr:'tomates en dés', en:'diced tomatoes', who:'Catou'},
+ {fr:'cornichon', en:'pickle', who:'Catou, Dan'},
+ {fr:'fromage suisse', en:'swiss cheese', who:'Catou'},
+ {fr:'ananas', en:'pineapple', who:'Catou, allergie'},
+ {fr:'pamplemousse', en:'grapefruit', who:'Catou'},
+ {fr:'asperge', en:'asparagus', who:'Catou, Dan'},
+ {fr:'fromage bleu', en:'blue cheese', who:'Dan'},
+ {fr:'cheddar fort', en:'sharp cheddar', who:'Dan'},
+ {fr:'piment fort', en:'hot pepper', who:'Dan'},
+ {fr:'anchois', en:'anchovy', who:'Dan'},
+ {fr:'café', en:'coffee', who:'Dan, allergie'},
+ {fr:'chocolat', en:'chocolate', who:'Dan, allergie'},
+ {fr:'eau de coco', en:'coconut water', who:'Dan'},
+ {fr:'spaghetti', en:'spaghetti', who:'Catou'},
+ {fr:'choux de Bruxelles', en:'brussels sprout', who:'Catou', soft:1},
+ {fr:'germes de soya', en:'bean sprout', who:'Catou', soft:1},
+ {fr:'radis', en:'radish', who:'Catou', soft:1},
+ {fr:'mangue', en:'mango', who:'Catou', soft:1},
+ {fr:'mûre', en:'blackberry', who:'Catou', soft:1},
+ {fr:'moutarde', en:'mustard', who:'Catou', soft:1},
+ {fr:'cerise', en:'cherry', who:'Catou', soft:1}
+];
+/* Deux pièges de mots: l'huile d'olive n'est pas une olive, et une tomate
+   cerise n'est pas une cerise. Les deux sortent du texte avant la recherche. */
+const AVOID_SAFE = ['huile d\'olive','olive oil','tomates cerises','tomate cerise',
+                    'cherry tomatoes','cherry tomato'];
+function avoidHits(d){
+  if (!d) return [];
+  var hay = norm((d.name_fr || '') + ' ' + (d.name_en || ''));
+  var ings = DB.ings.filter(function(x){ return x.dish_id === d.id; });
+  for (var i = 0; i < ings.length; i++)
+    hay += ' ' + norm(ings[i].item_fr || '') + ' ' + norm(ings[i].item_en || '');
+  for (var k = 0; k < AVOID_SAFE.length; k++) hay = hay.split(norm(AVOID_SAFE[k])).join(' ');
+  var out = [];
+  for (var j = 0; j < AVOID.length; j++){
+    var a = AVOID[j];
+    if (hay.indexOf(norm(a.fr)) >= 0 || hay.indexOf(norm(a.en)) >= 0) out.push(a);
+  }
+  return out;
+}
 
 /* Les points récompensent des gestes. Rien n'en retire, voir SPEC section 5. */
 const PTS = { plan:50, home:10, prot:5, veg:5, newdish:15, rated:5, budget:40, nolist:20 };
@@ -902,27 +979,27 @@ const SEED = [
        ['Huile d\'olive','Olive oil',2,'c. à s.','Costco',7,0],
        ['Paprika fumé','Smoked paprika',1,'c. à t.','Maxi',7,0]]},
 
- {fr:'Saumon à l\'érable, quinoa et asperges', en:'Maple salmon, quinoa and asparagus',
-  tags:['t_highprot','t_veg'], prep:30, serv:2, kcal:545, prot:42, fibre:7, veg:2, cost:19,
+ {fr:'Saumon à l\'érable, quinoa et haricots verts', en:'Maple salmon, quinoa and green beans',
+  tags:['t_highprot','t_veg','t_fish'], prep:30, serv:2, kcal:545, prot:42, fibre:7, veg:2, cost:19,
   lighten:{fr:'Une cuillerée de sirop suffit pour deux filets.', en:'One spoon of syrup is enough for two fillets.'},
-  steps:{fr:'Four à 200. Saumon badigeonné d\'érable et de moutarde, 14 min. Quinoa 15 min. Asperges au four 10 min.',
-         en:'Oven at 200. Brush the salmon with maple and mustard, 14 min. Quinoa 15 min. Asparagus in the oven 10 min.'},
+  steps:{fr:'Four à 200. Saumon badigeonné d\'érable, 14 min. Quinoa 15 min. Haricots verts vapeur 6 min.',
+         en:'Oven at 200. Brush the salmon with maple, 14 min. Quinoa 15 min. Steam the green beans 6 min.'},
   ing:[['Filets de saumon','Salmon fillets',350,'g','Costco',3,800],
        ['Quinoa','Quinoa',150,'g','Maxi',5,0],
-       ['Asperges','Asparagus',1,'botte','IGA',0,0],
+       ['Haricots verts','Green beans',300,'g','Maxi',0,0],
        ['Sirop d\'érable','Maple syrup',1,'c. à s.','st_market',7,0],
-       ['Moutarde de Dijon','Dijon mustard',1,'c. à t.','Maxi',7,0]]},
+       ['Ail','Garlic',2,'gousses','Maxi',0,0]]},
 
  {fr:'Chili de dinde', en:'Turkey chili',
   tags:['t_highprot','t_veg','t_prep','t_slow','t_comfort'], prep:45, serv:4, kcal:430, prot:38, fibre:14, veg:3, cost:16,
   lighten:{fr:'Déjà léger. Yogourt grec au lieu de crème sure pour garnir.', en:'Already light. Greek yogurt instead of sour cream on top.'},
-  steps:{fr:'Dinde revenue, puis oignon, poivrons, ail. Tomates, haricots, épices. Mijoter 30 min.',
-         en:'Brown the turkey, then onion, peppers, garlic. Tomatoes, beans, spices. Simmer 30 min.'},
+  steps:{fr:'Dinde revenue, puis oignon, carotte, ail. Tomates broyées, haricots, courgette, épices. Mijoter 30 min.',
+         en:'Brown the turkey, then onion, carrot, garlic. Crushed tomatoes, beans, zucchini, spices. Simmer 30 min.'},
   ing:[['Dinde hachée','Ground turkey',700,'g','Costco',2,1000],
-       ['Tomates en dés','Diced tomatoes',2,'boîtes','Maxi',5,0],
+       ['Tomates broyées','Crushed tomatoes',2,'boîtes','Maxi',5,0],
        ['Haricots rouges','Red kidney beans',2,'boîtes','Maxi',5,0],
-       ['Poivrons','Bell peppers',2,'','Costco',0,6],
-       ['Oignon','Onion',1,'','Maxi',0,0],
+       ['Carottes','Carrots',2,'','Maxi',0,0],
+       ['Courgette','Zucchini',1,'','Maxi',0,0],
        ['Assaisonnement à chili','Chili seasoning',2,'c. à s.','Maxi',7,0]]},
 
  {fr:'Pâté chinois allégé', en:'Lighter shepherd\'s pie',
@@ -939,26 +1016,26 @@ const SEED = [
  {fr:'Bol burrito au poulet', en:'Chicken burrito bowl',
   tags:['t_quick','t_highprot','t_veg','t_prep'], prep:30, serv:2, kcal:540, prot:44, fibre:12, veg:2.5, cost:13,
   lighten:{fr:'Le riz à la moitié, les haricots au double. Même assiette, plus de fibres.', en:'Half the rice, double the beans. Same plate, more fibre.'},
-  steps:{fr:'Poulet en dés assaisonné à la poêle. Riz, haricots noirs, maïs, laitue, salsa, yogourt grec.',
-         en:'Season and pan fry diced chicken. Rice, black beans, corn, lettuce, salsa, Greek yogurt.'},
+  steps:{fr:'Poulet en dés assaisonné à la poêle. Riz, haricots noirs, maïs, laitue, tomates cerises, lime, yogourt grec.',
+         en:'Season and pan fry diced chicken. Rice, black beans, corn, lettuce, cherry tomatoes, lime, Greek yogurt.'},
   ing:[['Poitrines de poulet','Chicken breasts',400,'g','Costco',2,1000],
        ['Riz brun','Brown rice',150,'g','Maxi',5,0],
        ['Haricots noirs','Black beans',1,'boîte','Maxi',5,0],
        ['Laitue romaine','Romaine lettuce',1,'','Costco',0,3],
-       ['Salsa','Salsa',200,'ml','Maxi',7,0],
+       ['Tomates cerises','Cherry tomatoes',200,'g','Costco',0,0],
        ['Yogourt grec','Greek yogurt',150,'g','Costco',4,750]]},
 
  {fr:'Soupe poulet et orzo', en:'Chicken and orzo soup',
   tags:['t_quick','t_light','t_veg','t_prep','t_comfort'], prep:30, serv:4, kcal:320, prot:28, fibre:6, veg:2.5, cost:11,
   lighten:{fr:'Déjà sous 400. Doublez le céleri et la carotte sans rien changer d\'autre.', en:'Already under 400. Double the celery and carrot and change nothing else.'},
-  steps:{fr:'Oignon, carotte, céleri. Bouillon, poulet, orzo 9 min. Citron à la fin.',
-         en:'Onion, carrot, celery. Broth, chicken, orzo 9 min. Lemon at the end.'},
+  steps:{fr:'Oignon, carotte, céleri. Bouillon, poulet, orzo 9 min. Lime et persil à la fin.',
+         en:'Onion, carrot, celery. Broth, chicken, orzo 9 min. Lime and parsley at the end.'},
   ing:[['Poitrines de poulet','Chicken breasts',400,'g','Costco',2,1000],
        ['Orzo','Orzo',150,'g','IGA',5,0],
        ['Carottes','Carrots',3,'','Maxi',0,0],
        ['Céleri','Celery',3,'branches','Maxi',0,0],
        ['Bouillon de poulet','Chicken broth',1.5,'L','Costco',5,0],
-       ['Citron','Lemon',1,'','Maxi',0,0]]},
+       ['Lime','Lime',1,'','Maxi',0,0]]},
 
  {fr:'Tofu général Tao au four', en:'Baked General Tao tofu',
   tags:['t_vegetarian','t_airfryer','t_veg'], prep:35, serv:2, kcal:450, prot:26, fibre:8, veg:2, cost:10,
@@ -972,49 +1049,38 @@ const SEED = [
        ['Riz brun','Brown rice',150,'g','Maxi',5,0],
        ['Gingembre','Ginger',1,'morceau','IGA',0,0]]},
 
- {fr:'Crevettes à l\'ail et courgettes', en:'Garlic shrimp and zucchini',
-  tags:['t_quick','t_highprot','t_light','t_veg'], prep:20, serv:2, kcal:360, prot:38, fibre:6, veg:3, cost:17,
-  lighten:{fr:'Les courgettes remplacent les pâtes. 20 minutes, 360 calories.', en:'Zucchini stands in for the pasta. 20 minutes, 360 calories.'},
-  steps:{fr:'Courgettes en rubans, 3 min à la poêle. Crevettes, ail, piment, citron, 4 min. Mélanger.',
-         en:'Ribbon the zucchini, 3 min in the pan. Shrimp, garlic, chili, lemon, 4 min. Toss together.'},
-  ing:[['Crevettes','Shrimp',400,'g','Costco',6,700],
-       ['Courgettes','Zucchini',3,'','Maxi',0,0],
-       ['Ail','Garlic',4,'gousses','Maxi',0,0],
-       ['Citron','Lemon',1,'','Maxi',0,0],
-       ['Tomates cerises','Cherry tomatoes',200,'g','Costco',0,0]]},
-
  {fr:'Boeuf et légumes à l\'asiatique', en:'Asian beef and vegetables',
   tags:['t_quick','t_highprot','t_veg'], prep:25, serv:2, kcal:490, prot:40, fibre:7, veg:3, cost:16,
   lighten:{fr:'Boeuf haché maigre, et sauce soya réduite en sel.', en:'Lean ground beef, and low sodium soy sauce.'},
-  steps:{fr:'Boeuf à feu vif. Poivrons, pois mange-tout, carotte, 5 min. Soya, gingembre, ail. Riz à part.',
-         en:'Beef on high heat. Peppers, snow peas, carrot, 5 min. Soy, ginger, garlic. Rice on the side.'},
+  steps:{fr:'Boeuf à feu vif. Pois mange-tout, carotte, brocoli, 5 min. Soya, gingembre, ail. Riz à part.',
+         en:'Beef on high heat. Snow peas, carrot, broccoli, 5 min. Soy, ginger, garlic. Rice on the side.'},
   ing:[['Boeuf haché maigre','Lean ground beef',500,'g','Costco',2,1000],
        ['Pois mange-tout','Snow peas',250,'g','IGA',0,0],
-       ['Poivrons','Bell peppers',2,'','Costco',0,6],
+       ['Brocoli','Broccoli',1,'','Maxi',0,0],
        ['Sauce soya','Soy sauce',3,'c. à s.','Maxi',7,0],
        ['Riz brun','Brown rice',150,'g','Maxi',5,0]]},
 
- {fr:'Omelette aux légumes et feta', en:'Vegetable and feta omelette',
+ {fr:'Omelette aux épinards et feta', en:'Spinach and feta omelette',
   tags:['t_quick','t_vegetarian','t_light','t_veg'], prep:15, serv:2, kcal:340, prot:26, fibre:4, veg:2, cost:8,
   lighten:{fr:'Quatre oeufs entiers et deux blancs, au lieu de six entiers.', en:'Four whole eggs and two whites, instead of six whole.'},
-  steps:{fr:'Épinards, champignons, tomates à la poêle. Oeufs battus dessus, feta, couvercle 5 min.',
-         en:'Spinach, mushrooms, tomatoes in the pan. Beaten eggs over, feta, lid on 5 min.'},
+  steps:{fr:'Épinards et tomates cerises à la poêle. Oeufs battus dessus, feta, couvercle 5 min.',
+         en:'Spinach and cherry tomatoes in the pan. Beaten eggs over, feta, lid on 5 min.'},
   ing:[['Oeufs','Eggs',6,'','Costco',4,24],
        ['Épinards','Spinach',150,'g','Costco',0,0],
-       ['Champignons','Mushrooms',200,'g','Maxi',0,0],
+       ['Tomates cerises','Cherry tomatoes',200,'g','Costco',0,0],
        ['Feta','Feta',80,'g','IGA',4,0],
-       ['Tomates cerises','Cherry tomatoes',150,'g','Costco',0,0]]},
+       ['Ciboulette','Chives',1,'botte','IGA',0,0]]},
 
  {fr:'Salade césar au poulet, vinaigrette au yogourt', en:'Chicken caesar with yogurt dressing',
   tags:['t_quick','t_highprot','t_veg'], prep:20, serv:2, kcal:420, prot:42, fibre:5, veg:3, cost:12,
   lighten:{fr:'La vinaigrette au yogourt grec remplace la mayonnaise. C\'est ce seul échange qui fait le plat.', en:'Greek yogurt dressing instead of mayonnaise. That one swap is the whole dish.'},
-  steps:{fr:'Poulet grillé tranché. Romaine, parmesan. Vinaigrette: yogourt grec, ail, citron, anchois, moutarde.',
-         en:'Sliced grilled chicken. Romaine, parmesan. Dressing: Greek yogurt, garlic, lemon, anchovy, mustard.'},
+  steps:{fr:'Poulet grillé tranché. Romaine, parmesan. Vinaigrette: yogourt grec, ail, lime, un trait de vinaigre.',
+         en:'Sliced grilled chicken. Romaine, parmesan. Dressing: Greek yogurt, garlic, lime, a splash of vinegar.'},
   ing:[['Poitrines de poulet','Chicken breasts',400,'g','Costco',2,1000],
        ['Laitue romaine','Romaine lettuce',2,'','Costco',0,3],
        ['Yogourt grec','Greek yogurt',150,'g','Costco',4,750],
        ['Parmesan','Parmesan',40,'g','Costco',4,0],
-       ['Citron','Lemon',1,'','Maxi',0,0]]},
+       ['Lime','Lime',1,'','Maxi',0,0]]},
 
  {fr:'Porc effiloché et salade de chou', en:'Pulled pork and slaw',
   tags:['t_highprot','t_slow','t_prep','t_comfort'], prep:240, serv:6, kcal:510, prot:40, fibre:6, veg:2, cost:18,
@@ -1030,13 +1096,13 @@ const SEED = [
  {fr:'Pizza pita aux légumes', en:'Veggie pita pizza',
   tags:['t_quick','t_vegetarian','t_light','t_veg'], prep:18, serv:2, kcal:390, prot:22, fibre:7, veg:2.5, cost:7,
   lighten:{fr:'Le pita de blé entier tient la portion à sa place, contrairement à une croûte.', en:'A whole wheat pita keeps the portion in check in a way a crust never does.'},
-  steps:{fr:'Pita, sauce tomate, légumes, mozzarella partiellement écrémée. Four à 220, 10 min.',
-         en:'Pita, tomato sauce, vegetables, part skim mozzarella. Oven at 220, 10 min.'},
+  steps:{fr:'Pita, sauce tomate, courgette, tomates cerises, mozzarella partiellement écrémée. Four à 220, 10 min. Roquette à la sortie.',
+         en:'Pita, tomato sauce, zucchini, cherry tomatoes, part skim mozzarella. Oven at 220, 10 min. Arugula on the way out.'},
   ing:[['Pitas de blé entier','Whole wheat pitas',4,'','Maxi',1,0],
        ['Sauce tomate','Tomato sauce',200,'ml','Maxi',5,0],
        ['Mozzarella partiellement écrémée','Part skim mozzarella',150,'g','Costco',4,0],
-       ['Poivrons','Bell peppers',1,'','Costco',0,6],
-       ['Champignons','Mushrooms',150,'g','Maxi',0,0],
+       ['Courgette','Zucchini',1,'','Maxi',0,0],
+       ['Tomates cerises','Cherry tomatoes',150,'g','Costco',0,0],
        ['Roquette','Arugula',60,'g','IGA',0,0]]},
 
  {fr:'Mijoteuse, boeuf et légumes racines', en:'Slow cooker beef and root vegetables',
@@ -1051,28 +1117,438 @@ const SEED = [
        ['Bouillon de boeuf','Beef broth',1,'L','Costco',5,0],
        ['Thym','Thyme',1,'c. à t.','Maxi',7,0]]},
 
- {fr:'Poisson blanc au four et patates grelots', en:'Oven white fish and baby potatoes',
-  tags:['t_quick','t_highprot','t_light'], prep:30, serv:2, kcal:410, prot:36, fibre:5, veg:1.5, cost:15,
-  lighten:{fr:'Pané à la chapelure panko et cuit au four, jamais à la poêle.', en:'Panko crumbs and baked, never pan fried.'},
-  steps:{fr:'Patates grelots au four 25 min. Poisson en chapelure panko et citron, 14 min. Haricots verts vapeur.',
-         en:'Baby potatoes in the oven 25 min. Fish in panko and lemon, 14 min. Steam the green beans.'},
-  ing:[['Filets de tilapia','Tilapia fillets',400,'g','Maxi',3,0],
-       ['Patates grelots','Baby potatoes',600,'g','Costco',0,0],
-       ['Chapelure panko','Panko crumbs',80,'g','IGA',5,0],
-       ['Haricots verts','Green beans',250,'g','Maxi',0,0],
-       ['Citron','Lemon',1,'','Maxi',0,0]]},
-
  {fr:'Dahl de lentilles', en:'Lentil dahl',
   tags:['t_vegetarian','t_veg','t_prep','t_comfort'], prep:40, serv:4, kcal:380, prot:20, fibre:16, veg:2.5, cost:8,
   lighten:{fr:'Lait de coco léger, ou moitié lait de coco et moitié bouillon.', en:'Light coconut milk, or half coconut milk and half broth.'},
-  steps:{fr:'Oignon, ail, gingembre, épices. Lentilles rouges, tomates, lait de coco. 25 min. Épinards à la fin.',
-         en:'Onion, garlic, ginger, spices. Red lentils, tomatoes, coconut milk. 25 min. Spinach at the end.'},
+  steps:{fr:'Oignon, ail, gingembre, épices. Lentilles rouges, tomates broyées, lait de coco. 25 min. Épinards à la fin.',
+         en:'Onion, garlic, ginger, spices. Red lentils, crushed tomatoes, coconut milk. 25 min. Spinach at the end.'},
   ing:[['Lentilles rouges','Red lentils',300,'g','Maxi',5,0],
        ['Lait de coco léger','Light coconut milk',1,'boîte','Maxi',5,0],
-       ['Tomates en dés','Diced tomatoes',1,'boîte','Maxi',5,0],
+       ['Tomates broyées','Crushed tomatoes',1,'boîte','Maxi',5,0],
        ['Épinards','Spinach',200,'g','Costco',0,0],
        ['Gingembre','Ginger',1,'morceau','IGA',0,0],
-       ['Cari','Curry powder',2,'c. à s.','Maxi',7,0]]}
+       ['Cari','Curry powder',2,'c. à s.','Maxi',7,0]]},
+
+ {fr:'Poulet à la lime et origan, patates grecques', en:'Lime oregano chicken with Greek potatoes',
+  tags:['t_highprot','t_veg'], prep:50, serv:4, kcal:530, prot:45, fibre:6, veg:2, cost:15,
+  lighten:{fr:'Les patates au bouillon et à la lime plutôt qu\'à l\'huile, le goût reste, le gras part.', en:'Potatoes in broth and lime rather than oil, the flavour stays, the fat goes.'},
+  steps:{fr:'Four à 200. Patates en quartiers avec bouillon, lime, origan, 40 min. Poulet par dessus les 25 dernières minutes.',
+         en:'Oven at 200. Quarter the potatoes with broth, lime and oregano, 40 min. Chicken on top for the last 25.'},
+  ing:[['Hauts de cuisse de poulet','Chicken thighs',800,'g','Costco',2,1000],
+       ['Pommes de terre','Potatoes',6,'','Maxi',0,0],
+       ['Lime','Lime',2,'','Maxi',0,0],
+       ['Origan séché','Dried oregano',2,'c. à s.','Maxi',7,0],
+       ['Bouillon de poulet','Chicken broth',250,'ml','Costco',5,0]]},
+
+ {fr:'Poulet teriyaki, riz et brocoli', en:'Teriyaki chicken, rice and broccoli',
+  tags:['t_quick','t_highprot','t_veg'], prep:28, serv:2, kcal:520, prot:42, fibre:6, veg:2.5, cost:12,
+  lighten:{fr:'Sauce maison, soya et un peu de miel, au lieu de la bouteille qui est surtout du sucre.', en:'Make the sauce from soy and a little honey instead of the bottle, which is mostly sugar.'},
+  steps:{fr:'Poulet en lanières à la poêle. Soya, miel, ail, gingembre, réduire 3 min. Brocoli vapeur, riz à part.',
+         en:'Strip the chicken and pan fry. Soy, honey, garlic, ginger, reduce 3 min. Steam the broccoli, rice on the side.'},
+  ing:[['Poitrines de poulet','Chicken breasts',400,'g','Costco',2,1000],
+       ['Brocoli','Broccoli',1,'','Maxi',0,0],
+       ['Riz brun','Brown rice',150,'g','Maxi',5,0],
+       ['Sauce soya','Soy sauce',3,'c. à s.','Maxi',7,0],
+       ['Miel','Honey',1,'c. à s.','st_market',7,0]]},
+
+ {fr:'Cuisses de poulet rôties, courge et carottes', en:'Roast chicken thighs, squash and carrots',
+  tags:['t_highprot','t_veg','t_comfort'], prep:55, serv:4, kcal:540, prot:40, fibre:8, veg:3, cost:16,
+  lighten:{fr:'Retirer la peau après la cuisson, elle garde la chair tendre puis s\'en va.', en:'Pull the skin off after cooking, it keeps the meat moist then leaves.'},
+  steps:{fr:'Four à 210. Courge et carottes en plaque, 35 min. Cuisses sur la même plaque, 40 min.',
+         en:'Oven at 210. Squash and carrots on a sheet, 35 min. Thighs on the same sheet, 40 min.'},
+  ing:[['Cuisses de poulet','Chicken thighs',8,'','Costco',2,0],
+       ['Courge musquée','Butternut squash',1,'','IGA',0,0],
+       ['Carottes','Carrots',6,'','Maxi',0,0],
+       ['Huile d\'olive','Olive oil',2,'c. à s.','Costco',7,0],
+       ['Ail','Garlic',4,'gousses','Maxi',0,0]]},
+
+ {fr:'Poulet au beurre allégé', en:'Lighter butter chicken',
+  tags:['t_highprot','t_comfort','t_prep'], prep:40, serv:4, kcal:520, prot:40, fibre:5, veg:1.5, cost:15,
+  lighten:{fr:'Yogourt grec et lait évaporé à la place de la crème 35. On garde la sauce, pas les 300 calories.', en:'Greek yogurt and evaporated milk instead of heavy cream. The sauce stays, the 300 calories do not.'},
+  steps:{fr:'Poulet mariné au yogourt et épices 20 min. Saisir. Tomates broyées, lait évaporé, garam masala, mijoter 20 min. Riz à part.',
+         en:'Marinate the chicken in yogurt and spices 20 min. Sear. Crushed tomatoes, evaporated milk, garam masala, simmer 20 min. Rice on the side.'},
+  ing:[['Poitrines de poulet','Chicken breasts',700,'g','Costco',2,1000],
+       ['Yogourt grec','Greek yogurt',200,'g','Costco',4,750],
+       ['Tomates broyées','Crushed tomatoes',1,'boîte','Maxi',5,0],
+       ['Lait évaporé','Evaporated milk',1,'boîte','Maxi',5,0],
+       ['Garam masala','Garam masala',2,'c. à s.','Maxi',7,0],
+       ['Riz basmati','Basmati rice',200,'g','Maxi',5,0]]},
+
+ {fr:'Soupe tortilla au poulet', en:'Chicken tortilla soup',
+  tags:['t_light','t_veg','t_prep','t_comfort'], prep:35, serv:4, kcal:360, prot:30, fibre:9, veg:2.5, cost:12,
+  lighten:{fr:'Les tortillas grillées au four plutôt que des croustilles, et beaucoup de lime.', en:'Toast the tortilla strips in the oven instead of using chips, and plenty of lime.'},
+  steps:{fr:'Oignon, ail, épices. Bouillon, tomates broyées, haricots noirs, maïs, poulet. 20 min. Lanières de tortilla grillées sur le dessus.',
+         en:'Onion, garlic, spices. Broth, crushed tomatoes, black beans, corn, chicken. 20 min. Toasted tortilla strips on top.'},
+  ing:[['Poitrines de poulet','Chicken breasts',400,'g','Costco',2,1000],
+       ['Tomates broyées','Crushed tomatoes',1,'boîte','Maxi',5,0],
+       ['Haricots noirs','Black beans',1,'boîte','Maxi',5,0],
+       ['Maïs en grains','Corn kernels',1,'boîte','Maxi',5,0],
+       ['Bouillon de poulet','Chicken broth',1.5,'L','Costco',5,0],
+       ['Lime','Lime',2,'','Maxi',0,0]]},
+
+ {fr:'Pain de viande à la dinde', en:'Turkey meatloaf',
+  tags:['t_highprot','t_prep','t_comfort'], prep:60, serv:5, kcal:430, prot:38, fibre:5, veg:2, cost:13,
+  lighten:{fr:'Carotte et courgette râpées dans le mélange: ça garde le pain juteux sans ajouter de gras.', en:'Grated carrot and zucchini in the mix keeps the loaf moist without any added fat.'},
+  steps:{fr:'Dinde, avoine, oeuf, carotte et courgette râpées, oignon. Four à 190, 45 min. Glaçage tomate les 10 dernières minutes.',
+         en:'Turkey, oats, egg, grated carrot and zucchini, onion. Oven at 190, 45 min. Tomato glaze for the last 10.'},
+  ing:[['Dinde hachée','Ground turkey',900,'g','Costco',2,1000],
+       ['Flocons d\'avoine','Rolled oats',80,'g','Costco',5,0],
+       ['Carottes','Carrots',2,'','Maxi',0,0],
+       ['Courgette','Zucchini',1,'','Maxi',0,0],
+       ['Oeufs','Eggs',2,'','Costco',4,24],
+       ['Pâte de tomate','Tomato paste',3,'c. à s.','Maxi',5,0]]},
+
+ {fr:'Boulettes suédoises et purée de chou-fleur', en:'Swedish meatballs with cauliflower mash',
+  tags:['t_highprot','t_comfort'], prep:45, serv:4, kcal:450, prot:36, fibre:6, veg:2.5, cost:15,
+  lighten:{fr:'Purée moitié chou-fleur moitié pomme de terre. Personne ne s\'en aperçoit, et c\'est 150 calories de moins.', en:'Mash half cauliflower half potato. Nobody notices, and it is 150 calories less.'},
+  steps:{fr:'Boulettes boeuf et porc au four 20 min. Sauce au bouillon et yogourt. Chou-fleur et patates bouillis puis pilés.',
+         en:'Beef and pork meatballs in the oven 20 min. Sauce from broth and yogurt. Boil the cauliflower and potato, then mash.'},
+  ing:[['Boeuf haché maigre','Lean ground beef',500,'g','Costco',2,1000],
+       ['Chou-fleur','Cauliflower',1,'','Maxi',0,0],
+       ['Pommes de terre','Potatoes',3,'','Maxi',0,0],
+       ['Bouillon de boeuf','Beef broth',400,'ml','Costco',5,0],
+       ['Yogourt grec','Greek yogurt',100,'g','Costco',4,750]]},
+
+ {fr:'Sauté de boeuf et brocoli', en:'Beef and broccoli stir fry',
+  tags:['t_quick','t_highprot','t_veg'], prep:22, serv:2, kcal:470, prot:40, fibre:6, veg:3, cost:16,
+  lighten:{fr:'Bavette tranchée fin contre le grain, on en met moins et ça paraît plus.', en:'Flank steak sliced thin against the grain, less meat that reads as more.'},
+  steps:{fr:'Boeuf tranché fin, feu très vif 2 min, réserver. Brocoli et ail 4 min. Remettre le boeuf, soya et gingembre.',
+         en:'Thin sliced beef, very high heat 2 min, set aside. Broccoli and garlic 4 min. Beef back in, soy and ginger.'},
+  ing:[['Bavette de boeuf','Flank steak',350,'g','Costco',2,0],
+       ['Brocoli','Broccoli',2,'','Maxi',0,0],
+       ['Sauce soya','Soy sauce',3,'c. à s.','Maxi',7,0],
+       ['Gingembre','Ginger',1,'morceau','IGA',0,0],
+       ['Riz brun','Brown rice',150,'g','Maxi',5,0]]},
+
+ {fr:'Côtelettes de porc, pommes et chou braisé', en:'Pork chops with apples and braised cabbage',
+  tags:['t_highprot','t_veg'], prep:35, serv:2, kcal:490, prot:41, fibre:7, veg:3, cost:13,
+  lighten:{fr:'Côtelettes dans la longe, pas dans l\'épaule, et le chou braisé au cidre plutôt qu\'au beurre.', en:'Loin chops rather than shoulder, and braise the cabbage in cider instead of butter.'},
+  steps:{fr:'Côtelettes saisies 4 min par côté. Chou et pommes au même poêlon avec cidre, couvert 15 min.',
+         en:'Sear the chops 4 min a side. Cabbage and apples in the same pan with cider, covered 15 min.'},
+  ing:[['Côtelettes de porc','Pork chops',2,'','Maxi',2,0],
+       ['Chou','Cabbage',1,'','Maxi',0,0],
+       ['Pommes','Apples',2,'','st_market',0,0],
+       ['Vinaigre de cidre','Cider vinegar',60,'ml','Maxi',7,0],
+       ['Thym','Thyme',1,'c. à t.','Maxi',7,0]]},
+
+ {fr:'Truite au four, riz sauvage et haricots verts', en:'Oven trout, wild rice and green beans',
+  tags:['t_quick','t_highprot','t_light','t_fish'], prep:30, serv:2, kcal:480, prot:38, fibre:6, veg:2, cost:17,
+  lighten:{fr:'La truite est déjà grasse comme il faut, donc rien d\'ajouté sauf de la lime.', en:'Trout already carries the right kind of fat, so nothing is added but lime.'},
+  steps:{fr:'Riz sauvage 35 min. Truite au four à 200, 14 min, lime et aneth. Haricots verts vapeur.',
+         en:'Wild rice 35 min. Trout in the oven at 200, 14 min, lime and dill. Steam the green beans.'},
+  ing:[['Filets de truite','Trout fillets',350,'g','Maxi',3,0],
+       ['Riz sauvage','Wild rice',150,'g','IGA',5,0],
+       ['Haricots verts','Green beans',250,'g','Maxi',0,0],
+       ['Lime','Lime',1,'','Maxi',0,0],
+       ['Aneth','Dill',1,'botte','IGA',0,0]]},
+
+ {fr:'Tacos de poisson et salade de chou', en:'Fish tacos with slaw',
+  tags:['t_quick','t_highprot','t_veg','t_fish'], prep:28, serv:4, kcal:440, prot:34, fibre:7, veg:2.5, cost:15,
+  lighten:{fr:'Poisson au four, jamais pané frit, et la sauce au yogourt grec avec de la lime.', en:'Baked fish, never battered and fried, and the sauce is Greek yogurt with lime.'},
+  steps:{fr:'Tilapia épicé au four 12 min. Chou râpé, lime, coriandre. Sauce yogourt et lime. Tortillas chaudes.',
+         en:'Spiced tilapia in the oven 12 min. Shredded cabbage, lime, cilantro. Yogurt lime sauce. Warm tortillas.'},
+  ing:[['Filets de tilapia','Tilapia fillets',500,'g','Maxi',3,0],
+       ['Tortillas de maïs','Corn tortillas',8,'','Maxi',1,0],
+       ['Chou','Cabbage',1,'','Maxi',0,0],
+       ['Lime','Lime',2,'','Maxi',0,0],
+       ['Yogourt grec','Greek yogurt',150,'g','Costco',4,750],
+       ['Coriandre','Cilantro',1,'botte','IGA',0,0]]},
+
+ {fr:'Bol de thon à la japonaise', en:'Japanese tuna bowl',
+  tags:['t_quick','t_highprot','t_veg','t_prep','t_fish'], prep:18, serv:2, kcal:450, prot:38, fibre:6, veg:2.5, cost:11,
+  lighten:{fr:'Thon dans l\'eau, pas dans l\'huile, et le riz mesuré avant de cuire.', en:'Tuna in water, not oil, and measure the rice before cooking.'},
+  steps:{fr:'Riz, thon émietté, concombre, edamames, carotte râpée. Soya, vinaigre de riz, sésame.',
+         en:'Rice, flaked tuna, cucumber, edamame, grated carrot. Soy, rice vinegar, sesame.'},
+  ing:[['Thon en conserve','Canned tuna',3,'boîtes','Costco',5,0],
+       ['Riz brun','Brown rice',150,'g','Maxi',5,0],
+       ['Edamames','Edamame',200,'g','Costco',6,0],
+       ['Concombre','Cucumber',1,'','Maxi',0,0],
+       ['Graines de sésame','Sesame seeds',1,'c. à s.','Maxi',7,0]]},
+
+ {fr:'Chili végé aux haricots noirs', en:'Black bean veggie chili',
+  tags:['t_vegetarian','t_veg','t_prep','t_slow','t_comfort'], prep:40, serv:4, kcal:390, prot:18, fibre:18, veg:3.5, cost:9,
+  lighten:{fr:'Déjà sous 400 avec 18 g de fibres. Une cuillère de yogourt grec remplace la crème sure.', en:'Already under 400 with 18 g of fibre. A spoon of Greek yogurt replaces the sour cream.'},
+  steps:{fr:'Oignon, carotte, ail, épices. Haricots noirs, tomates broyées, maïs, patate douce en cubes. Mijoter 30 min.',
+         en:'Onion, carrot, garlic, spices. Black beans, crushed tomatoes, corn, cubed sweet potato. Simmer 30 min.'},
+  ing:[['Haricots noirs','Black beans',2,'boîtes','Maxi',5,0],
+       ['Tomates broyées','Crushed tomatoes',1,'boîte','Maxi',5,0],
+       ['Patate douce','Sweet potato',1,'','IGA',0,0],
+       ['Carottes','Carrots',2,'','Maxi',0,0],
+       ['Maïs en grains','Corn kernels',1,'boîte','Maxi',5,0],
+       ['Assaisonnement à chili','Chili seasoning',2,'c. à s.','Maxi',7,0]]},
+
+ {fr:'Curry de pois chiches et épinards', en:'Chickpea and spinach curry',
+  tags:['t_vegetarian','t_veg','t_prep','t_quick'], prep:30, serv:4, kcal:420, prot:18, fibre:14, veg:3, cost:9,
+  lighten:{fr:'Lait de coco léger, et les épinards ajoutés hors du feu pour qu\'ils restent verts.', en:'Light coconut milk, and the spinach goes in off the heat so it stays green.'},
+  steps:{fr:'Oignon, ail, gingembre, cari. Pois chiches, tomates broyées, lait de coco, 20 min. Épinards à la fin. Riz.',
+         en:'Onion, garlic, ginger, curry. Chickpeas, crushed tomatoes, coconut milk, 20 min. Spinach at the end. Rice.'},
+  ing:[['Pois chiches','Chickpeas',2,'boîtes','Maxi',5,0],
+       ['Lait de coco léger','Light coconut milk',1,'boîte','Maxi',5,0],
+       ['Épinards','Spinach',250,'g','Costco',0,0],
+       ['Tomates broyées','Crushed tomatoes',1,'boîte','Maxi',5,0],
+       ['Cari','Curry powder',2,'c. à s.','Maxi',7,0],
+       ['Riz basmati','Basmati rice',200,'g','Maxi',5,0]]},
+
+ {fr:'Bol bouddha au quinoa et légumes rôtis', en:'Quinoa buddha bowl with roasted vegetables',
+  tags:['t_vegetarian','t_veg','t_prep'], prep:40, serv:2, kcal:460, prot:17, fibre:13, veg:4, cost:10,
+  lighten:{fr:'La vinaigrette au tahini allongée à l\'eau et à la lime, une cuillère suffit pour deux bols.', en:'Thin the tahini dressing with water and lime, one spoon covers two bowls.'},
+  steps:{fr:'Four à 210. Courge, brocoli, pois chiches en plaque, 30 min. Quinoa. Vinaigrette tahini, lime, ail.',
+         en:'Oven at 210. Squash, broccoli, chickpeas on a sheet, 30 min. Quinoa. Tahini, lime and garlic dressing.'},
+  ing:[['Quinoa','Quinoa',150,'g','Maxi',5,0],
+       ['Courge musquée','Butternut squash',1,'','IGA',0,0],
+       ['Brocoli','Broccoli',1,'','Maxi',0,0],
+       ['Pois chiches','Chickpeas',1,'boîte','Maxi',5,0],
+       ['Tahini','Tahini',2,'c. à s.','IGA',7,0],
+       ['Lime','Lime',1,'','Maxi',0,0]]},
+
+ {fr:'Soupe aux lentilles et légumes', en:'Lentil and vegetable soup',
+  tags:['t_vegetarian','t_light','t_veg','t_prep','t_comfort'], prep:35, serv:5, kcal:310, prot:17, fibre:15, veg:3.5, cost:7,
+  lighten:{fr:'Rien à alléger. Trois cents calories, quinze grammes de fibres, sept dollars pour cinq portions.', en:'Nothing to lighten. Three hundred calories, fifteen grams of fibre, seven dollars for five servings.'},
+  steps:{fr:'Oignon, carotte, céleri, ail. Lentilles vertes, tomates broyées, bouillon, thym. 30 min. Épinards à la fin.',
+         en:'Onion, carrot, celery, garlic. Green lentils, crushed tomatoes, broth, thyme. 30 min. Spinach at the end.'},
+  ing:[['Lentilles vertes','Green lentils',300,'g','Maxi',5,0],
+       ['Carottes','Carrots',3,'','Maxi',0,0],
+       ['Céleri','Celery',3,'branches','Maxi',0,0],
+       ['Tomates broyées','Crushed tomatoes',1,'boîte','Maxi',5,0],
+       ['Bouillon de légumes','Vegetable broth',2,'L','Costco',5,0],
+       ['Épinards','Spinach',150,'g','Costco',0,0]]},
+
+ {fr:'Lasagne aux légumes et ricotta', en:'Vegetable and ricotta lasagna',
+  tags:['t_vegetarian','t_veg','t_prep','t_comfort'], prep:70, serv:6, kcal:470, prot:24, fibre:8, veg:3, cost:14,
+  lighten:{fr:'Des tranches de courgette remplacent la moitié des pâtes, et la ricotta est partiellement écrémée.', en:'Zucchini slices replace half the pasta, and the ricotta is part skim.'},
+  steps:{fr:'Sauce tomate aux légumes. Monter pâtes, courgettes, ricotta, épinards. Four à 190, 45 min, repos 10 min.',
+         en:'Vegetable tomato sauce. Layer pasta, zucchini, ricotta, spinach. Oven at 190, 45 min, rest 10.'},
+  ing:[['Pâtes à lasagne','Lasagna sheets',12,'','Maxi',5,0],
+       ['Ricotta partiellement écrémée','Part skim ricotta',475,'g','Costco',4,0],
+       ['Courgettes','Zucchini',3,'','Maxi',0,0],
+       ['Épinards','Spinach',300,'g','Costco',0,0],
+       ['Sauce tomate','Tomato sauce',700,'ml','Maxi',5,0],
+       ['Mozzarella partiellement écrémée','Part skim mozzarella',200,'g','Costco',4,0]]},
+
+ {fr:'Tacos aux haricots noirs et patate douce', en:'Black bean and sweet potato tacos',
+  tags:['t_vegetarian','t_veg','t_quick'], prep:30, serv:4, kcal:410, prot:15, fibre:13, veg:3, cost:8,
+  lighten:{fr:'Patate douce rôtie plutôt que frite, et la crème remplacée par du yogourt à la lime.', en:'Roast the sweet potato instead of frying, and swap the cream for lime yogurt.'},
+  steps:{fr:'Patates douces en cubes au four 25 min avec cumin. Haricots noirs réchauffés. Tortillas, avocat, lime.',
+         en:'Cube the sweet potatoes, oven 25 min with cumin. Warm the black beans. Tortillas, avocado, lime.'},
+  ing:[['Patates douces','Sweet potatoes',3,'','IGA',0,0],
+       ['Haricots noirs','Black beans',2,'boîtes','Maxi',5,0],
+       ['Tortillas de maïs','Corn tortillas',8,'','Maxi',1,0],
+       ['Avocat','Avocado',2,'','Costco',0,0],
+       ['Lime','Lime',2,'','Maxi',0,0],
+       ['Cumin','Cumin',1,'c. à s.','Maxi',7,0]]},
+
+ {fr:'Pad thaï au tofu', en:'Tofu pad thai',
+  tags:['t_vegetarian','t_quick','t_veg'], prep:30, serv:3, kcal:480, prot:22, fibre:7, veg:2.5, cost:11,
+  lighten:{fr:'Moitié nouilles, moitié chou et carotte râpés. Le bol reste plein, l\'assiette s\'allège.', en:'Half noodles, half shredded cabbage and carrot. The bowl stays full, the plate gets lighter.'},
+  steps:{fr:'Nouilles de riz trempées. Tofu doré, oeuf, chou et carotte râpés. Sauce tamarin, soya, lime. Arachides.',
+         en:'Soak the rice noodles. Brown the tofu, egg, shredded cabbage and carrot. Tamarind, soy and lime sauce. Peanuts.'},
+  ing:[['Tofu ferme','Firm tofu',450,'g','Maxi',4,0],
+       ['Nouilles de riz','Rice noodles',200,'g','Maxi',5,0],
+       ['Chou','Cabbage',1,'','Maxi',0,0],
+       ['Arachides','Peanuts',60,'g','Costco',5,0],
+       ['Lime','Lime',2,'','Maxi',0,0],
+       ['Sauce soya','Soy sauce',3,'c. à s.','Maxi',7,0]]},
+
+ {fr:'Frittata aux patates et épinards', en:'Potato and spinach frittata',
+  tags:['t_vegetarian','t_quick','t_prep'], prep:30, serv:4, kcal:360, prot:22, fibre:4, veg:2, cost:8,
+  lighten:{fr:'Six oeufs entiers et quatre blancs pour quatre portions, le reste c\'est du légume.', en:'Six whole eggs and four whites for four servings, the rest is vegetables.'},
+  steps:{fr:'Patates en rondelles dorées, épinards, oignon. Oeufs battus dessus, 5 min sur le feu puis 10 min au four.',
+         en:'Brown the sliced potatoes, spinach, onion. Beaten eggs over, 5 min on the hob then 10 in the oven.'},
+  ing:[['Oeufs','Eggs',8,'','Costco',4,24],
+       ['Pommes de terre','Potatoes',3,'','Maxi',0,0],
+       ['Épinards','Spinach',200,'g','Costco',0,0],
+       ['Oignon','Onion',1,'','Maxi',0,0],
+       ['Parmesan','Parmesan',40,'g','Costco',4,0]]},
+
+ {fr:'Shakshuka aux tomates et épinards', en:'Tomato and spinach shakshuka',
+  tags:['t_vegetarian','t_quick','t_light','t_veg'], prep:25, serv:2, kcal:340, prot:20, fibre:7, veg:3, cost:7,
+  lighten:{fr:'Du pain de blé entier pour saucer, une tranche chacun, et la poêle fait le reste.', en:'Whole wheat bread to mop, one slice each, and the pan does the rest.'},
+  steps:{fr:'Oignon, ail, cumin, paprika. Tomates broyées et courgette 10 min. Épinards. Creuser des nids, casser les oeufs, couvrir 7 min.',
+         en:'Onion, garlic, cumin, paprika. Crushed tomatoes and zucchini 10 min. Spinach. Make wells, crack the eggs in, cover 7 min.'},
+  ing:[['Oeufs','Eggs',4,'','Costco',4,24],
+       ['Tomates broyées','Crushed tomatoes',1,'boîte','Maxi',5,0],
+       ['Courgette','Zucchini',1,'','Maxi',0,0],
+       ['Épinards','Spinach',150,'g','Costco',0,0],
+       ['Paprika fumé','Smoked paprika',1,'c. à t.','Maxi',7,0],
+       ['Pain de blé entier','Whole wheat bread',2,'tranches','Maxi',1,0]]},
+
+ {fr:'Pâtes primavera au poulet', en:'Chicken pasta primavera',
+  tags:['t_quick','t_highprot','t_veg'], prep:30, serv:4, kcal:530, prot:40, fibre:8, veg:3, cost:14,
+  lighten:{fr:'La sauce est du bouillon, de la lime et un peu de parmesan, pas de la crème.', en:'The sauce is broth, lime and a little parmesan, not cream.'},
+  steps:{fr:'Pâtes de blé entier. Poulet doré, courgette, pois, brocoli 6 min. Bouillon, lime, parmesan.',
+         en:'Whole wheat pasta. Brown the chicken, zucchini, peas, broccoli 6 min. Broth, lime, parmesan.'},
+  ing:[['Poitrines de poulet','Chicken breasts',500,'g','Costco',2,1000],
+       ['Penne de blé entier','Whole wheat penne',350,'g','Maxi',5,0],
+       ['Courgettes','Zucchini',2,'','Maxi',0,0],
+       ['Petits pois surgelés','Frozen peas',200,'g','Costco',6,0],
+       ['Parmesan','Parmesan',60,'g','Costco',4,0],
+       ['Bouillon de poulet','Chicken broth',250,'ml','Costco',5,0]]},
+
+ {fr:'Macaroni au fromage et chou-fleur', en:'Cauliflower mac and cheese',
+  tags:['t_vegetarian','t_comfort','t_prep'], prep:40, serv:4, kcal:480, prot:24, fibre:7, veg:2, cost:11,
+  lighten:{fr:'La moitié de la sauce est du chou-fleur en purée. Même onctuosité, deux fois moins de fromage.', en:'Half the sauce is pureed cauliflower. Same silkiness, half the cheese.'},
+  steps:{fr:'Chou-fleur bouilli puis réduit en purée avec le lait. Mélanger au fromage et aux pâtes. Four 15 min.',
+         en:'Boil then puree the cauliflower with the milk. Fold into the cheese and pasta. Oven 15 min.'},
+  ing:[['Macaroni de blé entier','Whole wheat macaroni',350,'g','Maxi',5,0],
+       ['Chou-fleur','Cauliflower',1,'','Maxi',0,0],
+       ['Cheddar mi-fort','Medium cheddar',150,'g','Costco',4,0],
+       ['Lait','Milk',300,'ml','Maxi',4,0],
+       ['Muscade','Nutmeg',1,'pincée','Maxi',7,0]]},
+
+ {fr:'Minestrone', en:'Minestrone',
+  tags:['t_vegetarian','t_light','t_veg','t_prep','t_comfort'], prep:40, serv:5, kcal:300, prot:14, fibre:12, veg:4, cost:8,
+  lighten:{fr:'Déjà à trois cents calories. Doublez les légumes plutôt que les pâtes si vous voulez plus de volume.', en:'Already at three hundred calories. Double the vegetables rather than the pasta if you want more volume.'},
+  steps:{fr:'Oignon, carotte, céleri, courgette, haricots blancs, tomates broyées, bouillon. 25 min. Petites pâtes 8 min.',
+         en:'Onion, carrot, celery, zucchini, white beans, crushed tomatoes, broth. 25 min. Small pasta for 8.'},
+  ing:[['Haricots blancs','White beans',2,'boîtes','Maxi',5,0],
+       ['Tomates broyées','Crushed tomatoes',1,'boîte','Maxi',5,0],
+       ['Courgettes','Zucchini',2,'','Maxi',0,0],
+       ['Carottes','Carrots',3,'','Maxi',0,0],
+       ['Petites pâtes','Small pasta',150,'g','Maxi',5,0],
+       ['Bouillon de légumes','Vegetable broth',2,'L','Costco',5,0]]},
+
+ {fr:'Mijoteuse, chili con carne', en:'Slow cooker chili con carne',
+  tags:['t_highprot','t_slow','t_prep','t_veg','t_comfort'], prep:300, serv:6, kcal:450, prot:38, fibre:15, veg:3, cost:15,
+  lighten:{fr:'Boeuf maigre égoutté après la saisie, et deux boîtes de haricots pour une de viande.', en:'Drain the lean beef after searing, and two tins of beans for every one of meat.'},
+  steps:{fr:'Boeuf saisi et égoutté. Mijoteuse avec haricots, tomates broyées, carottes, épices. 7 h à basse température.',
+         en:'Sear and drain the beef. Slow cooker with beans, crushed tomatoes, carrots, spices. 7 h on low.'},
+  ing:[['Boeuf haché maigre','Lean ground beef',700,'g','Costco',2,1000],
+       ['Haricots rouges','Red kidney beans',2,'boîtes','Maxi',5,0],
+       ['Tomates broyées','Crushed tomatoes',2,'boîtes','Maxi',5,0],
+       ['Carottes','Carrots',3,'','Maxi',0,0],
+       ['Assaisonnement à chili','Chili seasoning',3,'c. à s.','Maxi',7,0]]},
+
+ {fr:'Salade de pois chiches et feta', en:'Chickpea and feta salad',
+  tags:['t_vegetarian','t_quick','t_light','t_veg','t_prep'], prep:15, serv:2, kcal:400, prot:18, fibre:12, veg:3.5, cost:8,
+  lighten:{fr:'La feta est salée, donc quarante grammes suffisent pour parfumer tout le bol.', en:'Feta is salty, so forty grams is enough to carry the whole bowl.'},
+  steps:{fr:'Pois chiches, concombre, tomates, persil, feta. Lime, huile, origan. Repose 10 min.',
+         en:'Chickpeas, cucumber, tomatoes, parsley, feta. Lime, oil, oregano. Rest 10 min.'},
+  ing:[['Pois chiches','Chickpeas',2,'boîtes','Maxi',5,0],
+       ['Concombre','Cucumber',1,'','Maxi',0,0],
+       ['Tomates','Tomatoes',3,'','Maxi',0,0],
+       ['Feta','Feta',80,'g','IGA',4,0],
+       ['Persil','Parsley',1,'botte','IGA',0,0],
+       ['Lime','Lime',1,'','Maxi',0,0]]},
+
+ {fr:'Salade taco au boeuf', en:'Beef taco salad',
+  tags:['t_quick','t_highprot','t_veg'], prep:25, serv:3, kcal:460, prot:35, fibre:10, veg:3.5, cost:13,
+  lighten:{fr:'Pas de bol en tortilla frite. La laitue est le bol, et le yogourt grec est la crème.', en:'No fried tortilla bowl. The lettuce is the bowl and Greek yogurt is the cream.'},
+  steps:{fr:'Boeuf aux épices à tacos, égoutté. Laitue, tomates, maïs, haricots noirs, avocat. Yogourt et lime.',
+         en:'Beef with taco spices, drained. Lettuce, tomatoes, corn, black beans, avocado. Yogurt and lime.'},
+  ing:[['Boeuf haché maigre','Lean ground beef',450,'g','Costco',2,1000],
+       ['Laitue romaine','Romaine lettuce',2,'','Costco',0,3],
+       ['Haricots noirs','Black beans',1,'boîte','Maxi',5,0],
+       ['Maïs en grains','Corn kernels',1,'boîte','Maxi',5,0],
+       ['Avocat','Avocado',1,'','Costco',0,0],
+       ['Yogourt grec','Greek yogurt',100,'g','Costco',4,750]]},
+
+ {fr:'Salade de poulet à la grecque', en:'Greek chicken salad',
+  tags:['t_quick','t_highprot','t_light','t_veg'], prep:20, serv:2, kcal:430, prot:40, fibre:6, veg:4, cost:13,
+  lighten:{fr:'Vinaigrette lime et origan, une cuillère d\'huile pour deux, le reste c\'est du jus.', en:'Lime and oregano dressing, one spoon of oil for two plates, the rest is juice.'},
+  steps:{fr:'Poulet grillé tranché. Concombre, tomates, feta, persil. Lime, origan, une cuillère d\'huile.',
+         en:'Sliced grilled chicken. Cucumber, tomatoes, feta, parsley. Lime, oregano, one spoon of oil.'},
+  ing:[['Poitrines de poulet','Chicken breasts',400,'g','Costco',2,1000],
+       ['Concombre','Cucumber',1,'','Maxi',0,0],
+       ['Tomates','Tomatoes',3,'','Maxi',0,0],
+       ['Feta','Feta',60,'g','IGA',4,0],
+       ['Persil','Parsley',1,'botte','IGA',0,0],
+       ['Origan séché','Dried oregano',1,'c. à t.','Maxi',7,0]]}
+];
+
+/* ---------------------------------------------------------------------
+   Semaines toutes faites. Chaque jour porte [souper, dîner], et un dîner
+   à '=' veut dire les restes du souper de la veille, ce qui n'ajoute
+   rien à l'épicerie. Les plats sont nommés, pas numérotés, pour que la
+   liste reste lisible et survive à un ajout au milieu de SEED.
+   --------------------------------------------------------------------- */
+const PLANS = [
+ {fr:'Semaine équilibrée', en:'Balanced week', ic:'⚖',
+  dfr:'Un peu de tout. Viande, légumineuses, trois soirs de restes.',
+  den:'A bit of everything. Meat, pulses, three nights of leftovers.',
+  d:[['Chili de dinde','Salade de pois chiches et feta'],
+     ['Poulet grillé, patate douce et brocoli','='],
+     ['Pâtes primavera au poulet','Salade de poulet à la grecque'],
+     ['Pizza pita aux légumes','='],
+     ['Cuisses de poulet rôties, courge et carottes','Shakshuka aux tomates et épinards'],
+     ['Côtelettes de porc, pommes et chou braisé','='],
+     ['Soupe aux lentilles et légumes','Salade césar au poulet, vinaigrette au yogourt']]},
+
+ {fr:'Semaine haute protéine', en:'High protein week', ic:'\u{1F357}',
+  dfr:'Trente-cinq grammes de protéines et plus à chaque assiette.',
+  den:'Thirty-five grams of protein or more on every plate.',
+  d:[['Pain de viande à la dinde','Salade de poulet à la grecque'],
+     ['Sauté de boeuf et brocoli','='],
+     ['Poulet teriyaki, riz et brocoli','Salade césar au poulet, vinaigrette au yogourt'],
+     ['Mijoteuse, chili con carne','Salade taco au boeuf'],
+     ['Poulet grillé, patate douce et brocoli','='],
+     ['Boeuf et légumes à l\'asiatique','Bol burrito au poulet'],
+     ['Cuisses de poulet rôties, courge et carottes','Salade de pois chiches et feta']]},
+
+ {fr:'Semaine légère', en:'Light week', ic:'\u{1F33F}',
+  dfr:'Tout sous 460 calories la portion, sans avoir faim à 21 h.',
+  den:'Everything under 460 calories a serving, without being hungry at nine.',
+  d:[['Soupe poulet et orzo','Salade de pois chiches et feta'],
+     ['Shakshuka aux tomates et épinards','='],
+     ['Minestrone','Salade de poulet à la grecque'],
+     ['Omelette aux épinards et feta','='],
+     ['Soupe aux lentilles et légumes','Bol bouddha au quinoa et légumes rôtis'],
+     ['Pizza pita aux légumes','='],
+     ['Salade de poulet à la grecque','Frittata aux patates et épinards']]},
+
+ {fr:'Semaine express', en:'Express week', ic:'⚡',
+  dfr:'Aucun souper au-dessus de 30 minutes. Pour les semaines déjà pleines.',
+  den:'No supper over 30 minutes. For the weeks that are already full.',
+  d:[['Curry de pois chiches et épinards','Salade de pois chiches et feta'],
+     ['Sauté de boeuf et brocoli','='],
+     ['Tacos aux haricots noirs et patate douce','Salade de poulet à la grecque'],
+     ['Poulet teriyaki, riz et brocoli','='],
+     ['Pâtes primavera au poulet','Shakshuka aux tomates et épinards'],
+     ['Pizza pita aux légumes','='],
+     ['Omelette aux épinards et feta','Salade taco au boeuf']]},
+
+ {fr:'Semaine mijoteuse', en:'Slow cooker week', ic:'\u{1F372}',
+  dfr:'Six soirs sur sept, le dîner du lendemain est déjà fait. Le moins de vaisselle de tous les plans.',
+  den:'Six nights out of seven, tomorrow\'s lunch is already made. The least washing up of any plan.',
+  d:[['Mijoteuse, chili con carne','Salade de pois chiches et feta'],
+     ['Porc effiloché et salade de chou','='],
+     ['Soupe aux lentilles et légumes','='],
+     ['Mijoteuse, boeuf et légumes racines','='],
+     ['Lasagne aux légumes et ricotta','='],
+     ['Chili végé aux haricots noirs','='],
+     ['Pâté chinois allégé','=']]},
+
+ {fr:'Semaine végé', en:'Vegetarian week', ic:'\u{1F966}',
+  dfr:'Aucune viande, et assez de légumineuses pour que personne ne le remarque.',
+  den:'No meat, and enough pulses that nobody notices.',
+  d:[['Dahl de lentilles','Salade de pois chiches et feta'],
+     ['Chili végé aux haricots noirs','='],
+     ['Curry de pois chiches et épinards','='],
+     ['Lasagne aux légumes et ricotta','='],
+     ['Pad thaï au tofu','='],
+     ['Macaroni au fromage et chou-fleur','Shakshuka aux tomates et épinards'],
+     ['Tofu général Tao au four','=']]},
+
+ {fr:'Semaine économique', en:'Thrifty week', ic:'\u{1F4B0}',
+  dfr:'Les plats les moins chers de la bibliothèque, et six dîners de restes.',
+  den:'The cheapest dishes in the library, and six lunches of leftovers.',
+  d:[['Soupe aux lentilles et légumes','Shakshuka aux tomates et épinards'],
+     ['Tacos aux haricots noirs et patate douce','='],
+     ['Dahl de lentilles','='],
+     ['Frittata aux patates et épinards','='],
+     ['Minestrone','='],
+     ['Chili végé aux haricots noirs','='],
+     ['Macaroni au fromage et chou-fleur','=']]},
+
+ {fr:'Semaine réconfort', en:'Comfort week', ic:'\u{1F3E0}',
+  dfr:'Les classiques d\'hiver, allégés là où ça ne se goûte pas.',
+  den:'Winter classics, lightened where it does not show.',
+  d:[['Pâté chinois allégé','Salade de pois chiches et feta'],
+     ['Boulettes suédoises et purée de chou-fleur','='],
+     ['Mijoteuse, boeuf et légumes racines','='],
+     ['Macaroni au fromage et chou-fleur','='],
+     ['Poulet au beurre allégé','='],
+     ['Lasagne aux légumes et ricotta','='],
+     ['Soupe tortilla au poulet','=']]}
 ];
 
 /* =====================================================================
@@ -1248,6 +1724,14 @@ function dname(d){
 function esc(s){
   return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;')
          .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function dishByName(n){
+  var k = norm(n);
+  for (var i = 0; i < DB.dishes.length; i++){
+    var d = DB.dishes[i];
+    if (norm(d.name_fr) === k || norm(d.name_en) === k) return d;
+  }
+  return null;
 }
 function dishById(id){
   for (var i = 0; i < DB.dishes.length; i++) if (DB.dishes[i].id === id) return DB.dishes[i];
@@ -1652,7 +2136,13 @@ function weeksSince(dayIso){
 }
 
 function renderDishes(){
-  document.getElementById('seedpan').style.display = DB.dishes.length ? 'none' : 'block';
+  var missS = missingSeeds().length, empty = !DB.dishes.length;
+  document.getElementById('seedpan').style.display = missS ? 'block' : 'none';
+  if (missS){
+    document.getElementById('sdT').textContent = empty ? t('seedttl') : tf('seedmore', { n:missS });
+    document.getElementById('sdS').textContent = empty ? t('seedsub') : t('seedmoresub');
+    document.getElementById('sdB').textContent = empty ? t('seedgo') : tf('seedmorego', { n:missS });
+  }
   var q = (document.getElementById('dq').value || '').toLowerCase().trim();
   var ds = DB.dishes.filter(function(d){
     if (DFILTER && (d.tags || []).indexOf(DFILTER) < 0) return false;
@@ -1676,7 +2166,10 @@ function renderDishes(){
       '<div class="nu">' + (num(d.kcal) ? num(d.kcal) + ' ' + esc(t('u_kcal')) + ' &middot; ' : '') +
       (num(d.protein_g) ? num(d.protein_g) + ' ' + esc(t('u_prot')) + ' &middot; ' : '') +
       num(d.prep_min) + ' ' + esc(t('u_min')) + '</div>' +
-      '<div class="stars">' + st + (sc.n ? '' : '') + '</div></div></button>';
+      '<div class="stars">' + st + '</div>' +
+      (avoidHits(d).length ? '<div class="mt"><span class="pill r">&#9888; ' +
+        esc(t('avoidwarn').replace(':', '')) + '</span></div>' : '') +
+      '</div></button>';
   }).join('');
 }
 
@@ -1711,6 +2204,13 @@ function openDish(id){
   if (dtext(d, 'lighten'))
     h += '<div class="warn" style="margin-top:11px"><b>' + esc(t('f_lighten')) + '.</b> ' +
       esc(dtext(d, 'lighten')) + '</div>';
+
+  var av = avoidHits(d);
+  if (av.length)
+    h += '<div class="warn" style="margin-top:11px;border-color:var(--berry);color:#ffc7d6">' +
+      '<b>' + esc(t('avoidwarn')) + '</b> ' +
+      esc(av.map(function(a){ return (L === 'fr' ? a.fr : a.en) + ' (' + a.who + ')'; }).join(', ')) +
+      '</div>';
 
   if (ings.length){
     h += '<div class="ttl" style="margin-top:13px">' + esc(t('f_ing')) + '</div><ul class="ingl">' +
@@ -1907,9 +2407,18 @@ async function saveDish(id){
   renderAll();
 }
 
+/* Ne réinsère jamais un plat déjà présent: la bibliothèque grandit avec
+   les versions, et l'ajouter deux fois salirait la vraie base. */
+function missingSeeds(){
+  var out = [];
+  for (var i = 0; i < SEED.length; i++) if (!dishByName(SEED[i].fr)) out.push(SEED[i]);
+  return out;
+}
 async function seedLib(){
-  for (var i = 0; i < SEED.length; i++){
-    var s = SEED[i];
+  var todo = missingSeeds();
+  if (!todo.length){ toast(t('seednone')); return; }
+  for (var i = 0; i < todo.length; i++){
+    var s = todo[i];
     var d = await ins('dishes', {
       name_fr:s.fr, name_en:s.en, tags:s.tags, prep_min:s.prep, servings:s.serv,
       kcal:s.kcal, protein_g:s.prot, fibre_g:s.fibre, veg_serv:s.veg, cost_est:s.cost,
@@ -1922,7 +2431,7 @@ async function seedLib(){
                           unit:g[3] || null, store:g[4], aisle:g[5], bulk_min:g[6] || null });
     }
   }
-  toast(t('saved'));
+  toast(tf('seedadded', { n:todo.length }));
   renderAll();
 }
 
@@ -2334,6 +2843,72 @@ function spin(){
   }, 4700);
 }
 function spinInto(day, slot){ openRoulette({ day:day, slot:slot }); }
+
+/* ---- semaines toutes faites ---- */
+function planStats(p){
+  var kc = 0, pr = 0, cost = 0, miss = 0, prev = null, i;
+  for (i = 0; i < 7; i++){
+    var sn = p.d[i][0], ln = p.d[i][1];
+    var sd = sn ? dishByName(sn) : null;
+    if (sn && !sd) miss++;
+    if (sd){ kc += num(sd.kcal); pr += num(sd.protein_g); cost += num(sd.cost_est); }
+    var ld = null;
+    if (ln === '=') ld = prev;                 /* restes, rien à acheter */
+    else if (ln){ ld = dishByName(ln); if (!ld) miss++; else cost += num(ld.cost_est); }
+    if (ld){ kc += num(ld.kcal); pr += num(ld.protein_g); }
+    prev = sd;
+  }
+  var m = myMult();
+  return { kcal:kc / 7 * m, prot:pr / 7 * m, cost:cost, miss:miss };
+}
+function openPlans(){
+  var h = '<div class="sh"><h2>' + esc(t('plans')) + '</h2>' +
+    '<button class="x" onclick="closeSheet()">&#10005;</button></div>' +
+    '<p class="dim" style="margin-bottom:13px">' + esc(t('planssub')) + '</p>';
+  h += PLANS.map(function(p, i){
+    var st = planStats(p);
+    return '<button class="card" style="margin-bottom:9px" onclick="applyPlan(' + i + ')">' +
+      '<div class="tile lg s' + (i % 4) + '" style="' + tileStyle(p.fr) + '"><span>' + p.ic + '</span></div>' +
+      '<div class="mi"><div class="nm">' + esc(p[L] || p.fr) + '</div>' +
+      '<div class="nu">' + esc(L === 'fr' ? p.dfr : p.den) + '</div>' +
+      '<div class="mt">' +
+      '<span class="pill">' + Math.round(st.kcal) + ' ' + esc(t('u_kcal')) + '</span>' +
+      '<span class="pill a">' + Math.round(st.prot) + ' g</span>' +
+      '<span class="pill g">' + Math.round(st.cost) + ' $</span>' +
+      (st.miss ? '<span class="pill r">' + tf('planmissing', { n:st.miss }) + '</span>' : '') +
+      '</div></div></button>';
+  }).join('');
+  openSheet(h);
+}
+async function applyPlan(idx){
+  var p = PLANS[idx], days = weekDays(), i, any = false;
+  for (i = 0; i < 7; i++)
+    if (planFor(days[i], 'lunch') || planFor(days[i], 'supper')) any = true;
+  if (any && !confirm(t('replaceweek'))) return;
+  closeSheet();
+  BULK = true;
+  var placed = 0, miss = 0, prev = null;
+  for (i = 0; i < 7; i++){
+    var sn = p.d[i][0], ln = p.d[i][1];
+    var sd = sn ? dishByName(sn) : null;
+    var ld = (ln === '=') ? prev : (ln ? dishByName(ln) : null);
+    if (ln){
+      if (ld){ await setPlan(days[i], 'lunch', { dish_id:ld.id,
+               kind:(ln === '=' ? 'leftovers' : 'cook') }); placed++; }
+      else miss++;
+    }
+    if (sn){
+      if (sd){ await setPlan(days[i], 'supper', { dish_id:sd.id, kind:'cook' }); placed++; }
+      else miss++;
+    }
+    prev = sd;
+  }
+  BULK = false;
+  await scoreWeek();
+  burst(70);
+  renderAll();
+  toast(tf('planok', { n:placed }), miss ? tf('planmissing', { n:miss }) : '');
+}
 
 /* ---- duel ---- */
 let DUEL = [], DNEXT = [], DROUND = 1, DTOT = 1;

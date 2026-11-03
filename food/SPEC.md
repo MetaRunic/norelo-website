@@ -20,6 +20,10 @@ un appui concret a une perte de poids. L'application doit aider, jamais sermonne
 | Base de donnees | Projet Supabase **separe**. Aucun lien avec le projet horaire, qui contient la paie. |
 | Comptes | Deux comptes nommes, **sans courriel**. On entre un prenom et un mot de passe. Supabase exige une adresse, alors l'application la fabrique a partir du prenom, `marc@bouffe.local`, qui ne sort jamais de l'application et qu'aucune boite ne recoit. Inscription fermee dans Supabase. Table `members` en liste blanche, la RLS verifie l'appartenance. Un compte hors liste est renvoye a la porte avec une explication, plutot que de tomber dans une maison vide. |
 | Creneaux | **Diner et souper**, sept jours. Le dejeuner est hors perimetre, il ne varie pas. |
+| Gouts de la maison | Liste des aliments que Catou et Dan ne mangent pas, tenue dans `AVOID` au haut du fichier. La bibliotheque livree la respecte en entier. Un plat ajoute plus tard qui contient un de ces articles est **marque**, jamais bloque. Deux pieges de mots sont neutralises: l'huile d'olive n'est pas une olive, une tomate cerise n'est pas une cerise. |
+| Bibliotheque | 42 plats livres, dont 4 au poisson marques `t_fish` et tenus hors des plans tout faits. |
+| Plans tout faits | Huit semaines deja montees, dans `PLANS`: equilibree, haute proteine, legere, express, mijoteuse, vege, economique, reconfort. Chaque jour porte un souper et un diner, et un diner a `=` veut dire les restes du souper de la veille, ce qui n'ajoute rien a l'epicerie. |
+| Semis | Le bouton n'ajoute que les plats absents, jamais un doublon. Les plats du menage et les modifications ne sont jamais touches. |
 | Images | **Tuiles generees**, jamais de photo ni d'image externe. Chaque plat tire un degrade deterministe de son nom et un glyphe de ses etiquettes. La colonne `photo_url` existe au schema pour qu'une photo devienne un simple ajout plus tard, sans migration. |
 | Magasins | Costco, IGA, Maxi, Super C, Metro, Provigo, marche, depanneur. Saint-Jerome. |
 | Circulaires | Hors perimetre. Aucune lecture de circulaire, aucun scraping. L'application rappelle seulement que les circulaires changent le jeudi. |
@@ -44,6 +48,7 @@ La liste d'epicerie. Le reste est agreable, la liste est la raison d'etre.
 
 Le choix est le point de friction reel du couple. Donc quatre facons, pas une.
 
+0. **Plan tout fait.** On applique une des huit semaines montees d'avance.
 1. **Manuel.** On choisit dans la bibliotheque de plats.
 2. **Roulette.** Ponderee vers les plats non manges depuis trois semaines ou plus,
    pour ressortir les favoris oublies au lieu de proposer le meme poulet.
