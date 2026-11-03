@@ -18,7 +18,7 @@ un appui concret a une perte de poids. L'application doit aider, jamais sermonne
 | Chemin | `/food/`, un seul `index.html` autonome. |
 | Confidentialite | `noindex`, `Disallow: /food/` dans robots.txt, absent du sitemap, jamais lie depuis la navigation du site vitrine. |
 | Base de donnees | Projet Supabase **separe**. Aucun lien avec le projet horaire, qui contient la paie. |
-| Comptes | Deux comptes nommes. Inscription fermee dans Supabase. Table `members` en liste blanche, la RLS verifie l'appartenance. |
+| Comptes | Deux comptes nommes, **sans courriel**. On entre un prenom et un mot de passe. Supabase exige une adresse, alors l'application la fabrique a partir du prenom, `marc@bouffe.local`, qui ne sort jamais de l'application et qu'aucune boite ne recoit. Inscription fermee dans Supabase. Table `members` en liste blanche, la RLS verifie l'appartenance. Un compte hors liste est renvoye a la porte avec une explication, plutot que de tomber dans une maison vide. |
 | Creneaux | **Diner et souper**, sept jours. Le dejeuner est hors perimetre, il ne varie pas. |
 | Images | **Tuiles generees**, jamais de photo ni d'image externe. Chaque plat tire un degrade deterministe de son nom et un glyphe de ses etiquettes. La colonne `photo_url` existe au schema pour qu'une photo devienne un simple ajout plus tard, sans migration. |
 | Magasins | Costco, IGA, Maxi, Super C, Metro, Provigo, marche, depanneur. Saint-Jerome. |

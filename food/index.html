@@ -430,11 +430,12 @@ footer{text-align:center;color:var(--dim);font-size:11px;padding:0 0 28px;
   <p data-i="gatesub"></p>
   <div class="warn" id="cfgwarn" style="display:none"></div>
   <div id="loginbox">
-    <div class="fld"><label data-i="email"></label>
-      <input id="gmail" type="email" autocomplete="username" inputmode="email"/></div>
+    <div class="fld"><label data-i="uname"></label>
+      <input id="gmail" type="text" autocomplete="username" autocapitalize="none" spellcheck="false"/></div>
     <div class="fld"><label data-i="pass"></label>
       <input id="gpass" type="password" autocomplete="current-password"/></div>
     <button class="btn pri" style="width:100%" id="gbtn" onclick="doLogin()" data-i="enter"></button>
+    <p class="dim" style="margin-top:9px;text-align:center" data-i="unamehint"></p>
     <div class="err" id="gerr"></div>
   </div>
   <div style="text-align:center;margin-top:16px">
@@ -635,7 +636,8 @@ const T = {
 fr:{
  appname:'Bouffe',
  gatesub:'Planificateur de repas de la maison. Dîners et soupers, liste d\'épicerie par magasin, et un jeu pour décider quoi manger.',
- email:'Courriel', pass:'Mot de passe', enter:'Entrer',
+ uname:'Nom', pass:'Mot de passe', enter:'Entrer',
+ unamehint:'Le prénom choisi à la création du compte, pas un courriel.',
  trylocal:'Essayer sur cet appareil seulement',
  tabweek:'Semaine', tabdish:'Plats', tabshop:'Épicerie', tabgame:'Jeu', tabstats:'Bilan',
  seastitle:'De saison ce mois-ci:',
@@ -719,6 +721,8 @@ fr:{
  thursday:'<b>Jeudi.</b> Les circulaires changent aujourd\'hui. L\'application ne les lit pas, mais ça vaut un coup d\'oeil avant de partir.',
  cfgwarn:'<b>Synchronisation pas encore branchée.</b> Collez l\'adresse du projet Supabase et la clé anon dans <code>SB_URL</code> et <code>SB_ANON</code> au haut de <code>food/index.html</code>, puis roulez <code>food/sql/01_init.sql</code> dans l\'éditeur SQL. En attendant, le mode local fonctionne, mais chaque appareil garde sa propre copie.',
  saved:'Enregistré', removed:'Retiré', confirmdel:'Supprimer ce plat pour de bon?',
+ needname:'Il faut un nom.', badlogin:'Nom ou mot de passe incorrect.',
+ notmember:'Ce compte existe, mais il n\'est pas encore dans la liste blanche de la maison. Il faut l\'ajouter à la table members dans Supabase.',
  newdish:'Nouveau plat',
  alltags:'Tout',
  st_market:'Marché', st_dep:'Dépanneur',
@@ -738,7 +742,8 @@ fr:{
 en:{
  appname:'Food',
  gatesub:'The household meal planner. Lunches and suppers, a grocery list by store, and a game for deciding what to eat.',
- email:'Email', pass:'Password', enter:'Enter',
+ uname:'Name', pass:'Password', enter:'Enter',
+ unamehint:'The first name set when the account was created, not an email.',
  trylocal:'Try on this device only',
  tabweek:'Week', tabdish:'Dishes', tabshop:'Grocery', tabgame:'Game', tabstats:'Review',
  seastitle:'In season this month:',
@@ -814,6 +819,8 @@ en:{
  thursday:'<b>Thursday.</b> Flyers change today. The app does not read them, but it is worth a look before you leave.',
  cfgwarn:'<b>Sync is not wired up yet.</b> Paste the Supabase project URL and anon key into <code>SB_URL</code> and <code>SB_ANON</code> at the top of <code>food/index.html</code>, then run <code>food/sql/01_init.sql</code> in the SQL editor. Local mode works meanwhile, but each device keeps its own copy.',
  saved:'Saved', removed:'Removed', confirmdel:'Delete this dish for good?',
+ needname:'A name is needed.', badlogin:'Wrong name or password.',
+ notmember:'This account exists, but it is not on the house allowlist yet. Add it to the members table in Supabase.',
  newdish:'New dish',
  alltags:'All',
  st_market:'Market', st_dep:'Corner store',
@@ -1248,19 +1255,28 @@ function num(v, d){ var n = parseFloat(v); return isNaN(n) ? (d === undefined ? 
    Authentification
    ===================================================================== */
 
+/* On entre un prénom, pas un courriel. Supabase veut une adresse, alors on
+   en fabrique une qui ne sort jamais d'ici et qu'aucune boîte ne reçoit.
+   Le compte est créé à la main dans Supabase avec cette même adresse. */
+const AUTH_DOMAIN = 'bouffe.local';
+function addrOf(name){ return norm(name).split(' ').join('') + '@' + AUTH_DOMAIN; }
+
 async function doLogin(){
   var e = document.getElementById('gmail').value.trim();
   var p = document.getElementById('gpass').value;
   var box = document.getElementById('gerr');
   box.textContent = '';
   if (!CONFIGURED || !sb){ box.textContent = t('cfgwarn').replace(/<[^>]+>/g, ''); return; }
+  var addr = addrOf(e);
+  if (addr.charAt(0) === '@'){ box.textContent = t('needname'); return; }
   document.getElementById('gbtn').disabled = true;
   try {
-    var r = await sb.auth.signInWithPassword({ email:e, password:p });
+    var r = await sb.auth.signInWithPassword({ email:addr, password:p });
     if (r.error) throw r.error;
     await afterLogin();
   } catch(err){
-    box.textContent = (err && err.message) || 'Erreur';
+    var m = (err && err.message) || '';
+    box.textContent = /invalid login/i.test(m) ? t('badlogin') : (m || t('badlogin'));
     document.getElementById('gbtn').disabled = false;
   }
 }
@@ -1270,7 +1286,15 @@ async function afterLogin(){
   var u = (await sb.auth.getUser()).data.user;
   ME = null;
   for (var i = 0; i < DB.members.length; i++) if (DB.members[i].id === u.id) ME = DB.members[i];
-  if (!ME) ME = { id:u.id, display_name:(u.email || '').split('@')[0], portion_mult:1 };
+  /* Un compte hors de la liste blanche ne voit rien, la RLS s'en charge.
+     Mieux vaut le dire à la porte que de laisser entrer dans une maison
+     vide sans expliquer pourquoi. */
+  if (!ME){
+    await sb.auth.signOut();
+    showGate();
+    document.getElementById('gerr').textContent = t('notmember');
+    return;
+  }
   startApp();
 }
 function useLocal(){
