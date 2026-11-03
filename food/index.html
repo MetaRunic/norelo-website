@@ -64,7 +64,7 @@ h1 span:first-child{display:inline-block;font-size:22px;animation:wig 3.6s ease-
 .who:active{transform:scale(.94);}
 
 /* la pastille de niveau: c'est un jeu, donc elle brille un peu */
-.lvl{display:flex;align-items:center;gap:8px;padding:0 13px 10px;}
+.lvl{display:flex;align-items:center;gap:9px;margin-bottom:11px;}
 .lvlbadge{display:flex;align-items:center;gap:5px;
  background:linear-gradient(135deg,var(--butter),var(--peach));
  border:0;border-radius:999px;padding:6px 12px;font:900 11.5px/1 system-ui;
@@ -81,23 +81,36 @@ h1 span:first-child{display:inline-block;font-size:22px;animation:wig 3.6s ease-
  box-shadow:0 0 12px rgba(255,216,77,.5);}
 .xptxt{font:800 11px/1 system-ui;color:var(--dim);flex:none;}
 
-/* ---------- onglets, en pastilles ---------- */
-nav{display:flex;gap:6px;overflow-x:auto;padding:0 11px 11px;scrollbar-width:none;}
-nav::-webkit-scrollbar{display:none;}
-nav button{background:var(--pan);border:2px solid rgba(255,255,255,.1);
- border-radius:999px;color:var(--dim);font:800 12.5px/1 system-ui;padding:10px 14px;
- cursor:pointer;flex:none;display:flex;align-items:center;gap:6px;
- transition:transform .16s cubic-bezier(.34,1.56,.64,1),background .16s,color .16s;}
-nav button:active{transform:scale(.92);}
-nav button.on{color:#2a0f1e;border-color:transparent;
- background:linear-gradient(135deg,var(--pink),var(--peach));
- box-shadow:0 3px 0 #c23c71;transform:translateY(-1px);}
-nav .cnt{background:var(--berry);color:#fff;border-radius:999px;
- font:900 10px/1 system-ui;padding:3px 5px;min-width:17px;text-align:center;
- box-shadow:0 0 0 2px rgba(255,255,255,.18);}
-nav button.on .cnt{background:#2a0f1e;}
+/* ---------- onglets, en bas, la ou se trouve le pouce ----------
+   Cinq cibles pleine hauteur plutot qu'une rangee de pastilles qui
+   defilait hors de l'ecran. Rien a viser du bout du doigt en haut. */
+nav{position:fixed;left:0;right:0;bottom:0;z-index:35;display:flex;
+ background:rgba(18,10,38,.97);backdrop-filter:blur(12px);
+ border-top:2px solid rgba(180,139,255,.25);
+ padding:7px 4px calc(7px + env(safe-area-inset-bottom));}
+nav button{flex:1;background:none;border:0;cursor:pointer;color:var(--dim);
+ display:flex;flex-direction:column;align-items:center;gap:3px;
+ padding:7px 2px;border-radius:14px;font:800 10px/1.1 system-ui;
+ position:relative;transition:color .15s,background .15s;}
+nav button .ic{font-size:21px;line-height:1;display:block;
+ transition:transform .22s cubic-bezier(.34,1.56,.64,1);}
+nav button:active .ic{transform:scale(.84);}
+nav button.on{color:var(--pink);background:rgba(255,111,174,.12);}
+nav button.on .ic{transform:translateY(-2px) scale(1.13);}
+nav .cnt{position:absolute;top:2px;right:50%;margin-right:-24px;
+ background:var(--berry);color:#fff;border-radius:999px;
+ font:900 9.5px/1 system-ui;padding:3px 5px;min-width:16px;text-align:center;
+ box-shadow:0 0 0 2px var(--dark);}
+nav .cnt:empty{display:none;}
 
-main{padding:13px 11px 96px;max-width:1120px;margin:0 auto;}
+/* la pastille de niveau vit dans l'en-tete, le reste du jeu dans son onglet */
+.lvlchip{display:flex;align-items:center;gap:4px;flex:none;cursor:pointer;
+ background:linear-gradient(135deg,var(--butter),var(--peach));border:0;
+ border-radius:999px;padding:6px 11px;font:900 12px/1 system-ui;color:#44210a;
+ box-shadow:0 3px 0 #b9741f;}
+.lvlchip:active{transform:translateY(3px);box-shadow:none;}
+
+main{padding:13px 11px 108px;max-width:1120px;margin:0 auto;}
 section{display:none;}
 section.on{display:block;animation:pop .3s cubic-bezier(.34,1.56,.64,1);}
 @keyframes pop{from{opacity:0;transform:translateY(9px) scale(.99);}}
@@ -382,9 +395,46 @@ label{display:block;font:800 11px/1 system-ui;color:var(--dim);margin:0 0 5px;
 .rate button:active{transform:scale(1.32) rotate(-11deg);}
 .rate button.f{color:var(--butter);filter:drop-shadow(0 0 7px rgba(255,216,77,.65));}
 
+/* ---------- etapes et mode cuisson ---------- */
+.stepl{margin:0;padding:0 0 0 2px;list-style:none;counter-reset:st;}
+.stepl li{counter-increment:st;position:relative;padding:11px 0 11px 40px;
+ font:600 12.5px/1.6 system-ui;border-bottom:1px dashed rgba(255,255,255,.08);}
+.stepl li:last-child{border-bottom:0;}
+.stepl li::before{content:counter(st);position:absolute;left:0;top:10px;
+ width:27px;height:27px;border-radius:50%;display:flex;align-items:center;
+ justify-content:center;font:900 12px/1 system-ui;color:#2a0f1e;
+ background:linear-gradient(135deg,var(--butter),var(--peach));
+ box-shadow:0 2px 0 #b9741f;}
+
+/* Plein ecran, gros texte, une etape a la fois: le telephone est appuye
+   sur la bouilloire et on le lit a un metre, les mains pleines. */
+.cook{position:fixed;inset:0;z-index:80;background:var(--dark);
+ display:none;flex-direction:column;}
+.cook.up{display:flex;}
+.ckhd{display:flex;align-items:center;gap:10px;padding:14px 14px 10px;
+ border-bottom:2px solid rgba(255,255,255,.08);}
+.ckhd .ct{flex:1;font:900 14px/1.25 system-ui;overflow:hidden;
+ text-overflow:ellipsis;white-space:nowrap;}
+.ckbar{height:6px;background:rgba(255,255,255,.08);}
+.ckbar div{height:100%;width:0;border-radius:0 999px 999px 0;
+ background:linear-gradient(90deg,var(--mint),var(--butter));transition:width .3s;}
+.ckbody{flex:1;overflow-y:auto;padding:26px 20px;display:flex;
+ flex-direction:column;justify-content:center;}
+.ckn{font:900 12px/1 system-ui;color:var(--lilac);letter-spacing:1.2px;
+ text-transform:uppercase;margin-bottom:16px;text-align:center;}
+.cktx{font:700 25px/1.45 system-ui;text-align:center;letter-spacing:-.3px;
+ max-width:600px;margin:0 auto;}
+@media(min-width:700px){.cktx{font-size:31px;}}
+.cknav{display:flex;gap:10px;padding:12px 14px calc(16px + env(safe-area-inset-bottom));
+ border-top:2px solid rgba(255,255,255,.08);}
+.cknav .btn{padding:17px 13px;font-size:14px;}
+.ckl{max-width:600px;margin:22px auto 0;width:100%;}
+
 /* ---------- confettis et avis ---------- */
 #cv{position:fixed;inset:0;z-index:90;pointer-events:none;}
-.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,150%);
+/* au-dessus de la barre du bas, et au-dessus de celle du mode cuisson */
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));
+ transform:translate(-50%,260%);
  z-index:95;background:linear-gradient(135deg,var(--butter),var(--peach));
  border:0;border-radius:var(--r);padding:13px 17px;
  font:900 13.5px/1.3 system-ui;color:#44210a;
@@ -449,24 +499,13 @@ footer{text-align:center;color:var(--dim);font-size:11px;padding:0 0 28px;
 <header>
   <div class="bar">
     <h1><span>&#127858;</span> <b data-i="appname"></b></h1>
+    <button class="lvlchip" onclick="go('j')"><span>&#9733;</span><span id="lvn"></span></button>
     <button class="who" id="whob" onclick="openMe()"></button>
     <div class="lang">
       <button id="lfr" onclick="setLang('fr')">FR</button>
       <button id="len" onclick="setLang('en')">EN</button>
     </div>
   </div>
-  <div class="lvl">
-    <div class="lvlbadge"><span>&#9733;</span><span id="lvn"></span></div>
-    <div class="xpwrap"><div class="xpbar" id="xpb"></div></div>
-    <div class="xptxt" id="xpt"></div>
-  </div>
-  <nav>
-    <button id="nw" class="on" onclick="go('w')" data-i="tabweek"></button>
-    <button id="nd" onclick="go('d')" data-i="tabdish"></button>
-    <button id="ng" onclick="go('g')"><span data-i="tabshop"></span><span class="cnt" id="gcnt"></span></button>
-    <button id="nj" onclick="go('j')" data-i="tabgame"></button>
-    <button id="ns" onclick="go('s')" data-i="tabstats"></button>
-  </nav>
 </header>
 
 <main>
@@ -479,6 +518,7 @@ footer{text-align:center;color:var(--dim);font-size:11px;padding:0 0 28px;
     <div class="wknav">
       <button class="btn sm" onclick="shiftWeek(-1)">&#8249;</button>
       <div class="lbl"><span id="wklbl"></span><span id="wksub"></span></div>
+      <button class="btn sm am" id="todayb" onclick="goToday()" style="display:none"></button>
       <button class="btn sm" onclick="shiftWeek(1)">&#8250;</button>
     </div>
 
@@ -529,6 +569,23 @@ footer{text-align:center;color:var(--dim);font-size:11px;padding:0 0 28px;
     <div class="warn" id="thuwarn" style="display:none"></div>
     <div id="shoplist"></div>
 
+    <div class="pan" id="expan">
+      <div class="ttl" data-i="extrattl"></div>
+      <p class="dim" data-i="extrasub"></p>
+      <div class="row" style="margin-top:10px">
+        <input class="grow" id="exi" data-ip="extraadd"/>
+        <select id="exs" style="flex:0 0 118px"></select>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <label style="display:flex;align-items:center;gap:8px;margin:0;flex:1;font-size:11.5px">
+          <input type="checkbox" id="exw" style="width:auto;flex:none"/><span data-i="everyweek"></span>
+        </label>
+        <button class="btn pri" onclick="addExtra()" data-i="add"></button>
+      </div>
+      <div class="filters" id="exsug" style="margin-top:11px;padding-bottom:4px"></div>
+      <div id="exlist"></div>
+    </div>
+
     <div class="pan">
       <div class="ttl" data-i="pantryttl"></div>
       <p class="dim" data-i="pantrysub"></p>
@@ -571,6 +628,11 @@ footer{text-align:center;color:var(--dim);font-size:11px;padding:0 0 28px;
     </div>
 
     <div class="pan">
+      <div class="lvl">
+        <div class="lvlbadge"><span>&#9733;</span><span id="lvn2"></span></div>
+        <div class="xpwrap"><div class="xpbar" id="xpb"></div></div>
+        <div class="xptxt" id="xpt"></div>
+      </div>
       <div class="ttl"><span data-i="scorettl"></span><span class="sp" id="wkpts"></span></div>
       <p class="dim" data-i="scoresub"></p>
       <div id="scorelog" style="margin-top:9px"></div>
@@ -607,6 +669,32 @@ footer{text-align:center;color:var(--dim);font-size:11px;padding:0 0 28px;
 </main>
 
 <footer><span data-i="foot"></span> &middot; v<span id="ver"></span></footer>
+
+<nav>
+  <button id="nw" class="on" onclick="go('w')"><span class="ic">&#128197;</span><span data-i="tabweek"></span></button>
+  <button id="nd" onclick="go('d')"><span class="ic">&#127858;</span><span data-i="tabdish"></span></button>
+  <button id="ng" onclick="go('g')"><span class="ic">&#128722;</span><span data-i="tabshop"></span><span class="cnt" id="gcnt"></span></button>
+  <button id="nj" onclick="go('j')"><span class="ic">&#127922;</span><span data-i="tabgame"></span></button>
+  <button id="ns" onclick="go('s')"><span class="ic">&#128202;</span><span data-i="tabstats"></span></button>
+</nav>
+</div>
+
+<div class="cook" id="cook">
+  <div class="ckhd">
+    <button class="x" onclick="closeCook()" style="background:var(--deep);border:2px solid rgba(255,255,255,.13);border-radius:12px;color:var(--dim);font:800 15px/1 system-ui;padding:9px 12px;cursor:pointer">&#10005;</button>
+    <span class="ct" id="ckT"></span>
+    <button class="btn sm" id="ckI" onclick="toggleCkIng()"></button>
+  </div>
+  <div class="ckbar"><div id="ckP"></div></div>
+  <div class="ckbody">
+    <div class="ckn" id="ckN"></div>
+    <div class="cktx" id="ckX"></div>
+    <ul class="ingl ckl" id="ckL" style="display:none"></ul>
+  </div>
+  <div class="cknav">
+    <button class="btn grow" id="ckB" onclick="ckStep(-1)"></button>
+    <button class="btn pri grow" id="ckF" onclick="ckStep(1)"></button>
+  </div>
 </div>
 
 <div class="scrim" id="scrim" onclick="closeSheet()"></div>
@@ -737,6 +825,14 @@ fr:{
  seedmorego:'Ajouter les {n} manquants',
  avoidwarn:'Contient ce que la maison n\'aime pas:',
  migttl:'{n} anciens plats à remplacer', miggo:'Refaire la bibliothèque',
+ cookmode:'Mode cuisson', stepof:'Étape {n} sur {t}', today:'Aujourd\'hui',
+ extrattl:'Collations, gâteries et extras',
+ extrasub:'Tout ce qui ne vient pas d\'une recette. Ça se range par magasin dans la liste, comme le reste.',
+ extraadd:'Ajouter un article', everyweek:'Toutes les semaines',
+ extranone:'Rien pour le moment. Touchez une suggestion ou écrivez un article.',
+ extraoff:'La table des extras n\'existe pas encore. Roulez food/sql/04_extras.sql dans l\'éditeur SQL de Supabase, puis rechargez.',
+ ckprev:'Précédent', cknext:'Suivant', ckdone:'C\'est prêt',
+ f_stephint:'Une étape par ligne. Si tout est sur une ligne, l\'application coupe aux phrases.',
  migsub:'Ces plats viennent de la première version et contiennent des choses que vous ne mangez pas. Ils sont retirés et remplacés par la version corrigée, et les créneaux du plan qui les utilisaient se vident. Vos propres plats ne sont pas touchés.',
  migask:'Retirer les {n} anciens plats et remettre la bibliothèque à neuf?',
  migdone:'Bibliothèque refaite, {n} plats',
@@ -756,7 +852,7 @@ fr:{
  dice_prot:['Poulet','Boeuf','Poisson','Porc','Tofu','Légumineuses'],
  dice_veg:['Brocoli','Courge','Épinards','Poivrons','Chou','Carottes'],
  t_quick:'Rapide', t_highprot:'Riche en protéines', t_light:'Moins de 500',
- t_veg:'Beaucoup de légumes', t_vegetarian:'Végétarien', t_airfryer:'Friteuse à air',
+ t_veg:'Beaucoup de légumes', t_vegetarian:'Végétarien',
  t_prep:'Préparé d\'avance', t_slow:'Mijoteuse', t_bbq:'BBQ', t_comfort:'Réconfort',
  t_fish:'Poisson'
 },
@@ -850,6 +946,14 @@ en:{
  seedmorego:'Add the {n} missing',
  avoidwarn:'Contains what the house does not like:',
  migttl:'{n} old dishes to replace', miggo:'Rebuild the library',
+ cookmode:'Cook mode', stepof:'Step {n} of {t}', today:'Today',
+ extrattl:'Snacks, treats and extras',
+ extrasub:'Anything that does not come from a recipe. It sorts by store in the list like everything else.',
+ extraadd:'Add an item', everyweek:'Every week',
+ extranone:'Nothing yet. Tap a suggestion or type an item.',
+ extraoff:'The extras table does not exist yet. Run food/sql/04_extras.sql in the Supabase SQL editor, then reload.',
+ ckprev:'Back', cknext:'Next', ckdone:'It is ready',
+ f_stephint:'One step per line. If it is all on one line, the app splits it at the sentences.',
  migsub:'These come from the first version and contain things you do not eat. They are removed and replaced by the corrected version, and any plan slots using them are emptied. Your own dishes are untouched.',
  migask:'Remove the {n} old dishes and rebuild the library?',
  migdone:'Library rebuilt, {n} dishes',
@@ -869,7 +973,7 @@ en:{
  dice_prot:['Chicken','Beef','Fish','Pork','Tofu','Legumes'],
  dice_veg:['Broccoli','Squash','Spinach','Peppers','Cabbage','Carrots'],
  t_quick:'Quick', t_highprot:'High protein', t_light:'Under 500',
- t_veg:'Veg forward', t_vegetarian:'Vegetarian', t_airfryer:'Air fryer',
+ t_veg:'Veg forward', t_vegetarian:'Vegetarian',
  t_prep:'Make ahead', t_slow:'Slow cooker', t_bbq:'BBQ', t_comfort:'Comfort',
  t_fish:'Fish'
 }};
@@ -883,7 +987,7 @@ const STORES = ['Costco','IGA','Maxi','Super C','Metro','Provigo','st_market','s
 function storeName(s){ return (s === 'st_market' || s === 'st_dep') ? t(s) : s; }
 
 const TAGS = ['t_quick','t_highprot','t_light','t_veg','t_vegetarian',
-              't_airfryer','t_prep','t_slow','t_bbq','t_comfort','t_fish'];
+              't_prep','t_slow','t_bbq','t_comfort','t_fish'];
 
 /* de saison dans les Laurentides, douze mois, statique */
 const SEASON = [
@@ -974,6 +1078,27 @@ function avoidHits(d){
   }
   return out;
 }
+
+/* Collations proposees. Toutes passees par la liste des gouts: ni
+   chocolat ni cafe, aucun colorant orange, aucune croustille grasse. */
+const SNACKS = [
+ ['Maïs soufflé','Popcorn','Maxi',5],
+ ['Craquelins de blé entier','Whole wheat crackers','Maxi',5],
+ ['Fromage en grains','Cheese curds','IGA',4],
+ ['Fromage ficelle','String cheese','Costco',4],
+ ['Yogourt grec','Greek yogurt','Costco',4],
+ ['Barres tendres','Granola bars','Costco',5],
+ ['Noix mélangées','Mixed nuts','Costco',5],
+ ['Bretzels','Pretzels','Maxi',5],
+ ['Houmous','Hummus','Costco',4],
+ ['Galettes de riz','Rice cakes','Maxi',5],
+ ['Raisins','Grapes','Costco',0],
+ ['Clémentines','Clementines','Costco',0],
+ ['Edamames','Edamame','Costco',6],
+ ['Crème glacée à la vanille','Vanilla ice cream','Maxi',6],
+ ['Biscuits à l\'avoine','Oatmeal cookies','Maxi',1],
+ ['Compote de pommes','Applesauce','Maxi',5]
+];
 
 /* Les points récompensent des gestes. Rien n'en retire, voir SPEC section 5. */
 const PTS = { plan:50, home:10, prot:5, veg:5, newdish:15, rated:5, budget:40, nolist:20 };
@@ -1067,10 +1192,10 @@ const SEED = [
        ['Lime','Lime',1,'','Maxi',0,0]]},
 
  {fr:'Tofu général Tao au four', en:'Baked General Tao tofu',
-  tags:['t_vegetarian','t_airfryer','t_veg'], prep:35, serv:2, kcal:450, prot:26, fibre:8, veg:2, cost:10,
-  lighten:{fr:'Au four ou à la friteuse à air, jamais frit. C\'est tout le gain.', en:'Oven or air fryer, never deep fried. That is the whole gain.'},
-  steps:{fr:'Tofu pressé en cubes, fécule, friteuse à air 15 min à 200. Sauce réduite à part, mélanger à la fin.',
-         en:'Press and cube the tofu, dust with starch, air fryer 15 min at 200. Reduce the sauce separately, toss at the end.'},
+  tags:['t_vegetarian','t_veg'], prep:40, serv:2, kcal:450, prot:26, fibre:8, veg:2, cost:10,
+  lighten:{fr:'Au four, jamais frit. C\'est tout le gain.', en:'Baked, never deep fried. That is the whole gain.'},
+  steps:{fr:'Presser le tofu 15 min sous un poids, puis le couper en cubes. Enrober de fécule de maïs. Four à 220, 22 min, en retournant les cubes à mi-cuisson. Réduire la sauce à part, soya, ail, gingembre, un peu de miel. Mélanger le tofu à la sauce juste avant de servir, sinon il ramollit.',
+         en:'Press the tofu 15 min under a weight, then cube it. Coat in cornstarch. Oven at 220, 22 min, turning the cubes halfway. Reduce the sauce separately, soy, garlic, ginger, a little honey. Toss the tofu in the sauce just before serving, or it goes soft.'},
   ing:[['Tofu ferme','Firm tofu',450,'g','Maxi',4,0],
        ['Fécule de maïs','Cornstarch',3,'c. à s.','Maxi',5,0],
        ['Sauce soya','Soy sauce',3,'c. à s.','Maxi',7,0],
@@ -1588,10 +1713,11 @@ const PLANS = [
 
 const TBL = { dishes:'dishes', ings:'ingredients', plan:'plan', ratings:'ratings',
               pantry:'pantry', list:'list_state', shops:'shops', score:'score',
-              members:'members' };
+              members:'members', extras:'extras' };
+let EXTRAS_OK = true;   /* faux tant que 04_extras.sql n'a pas ete roule */
 
 const DB = { dishes:[], ings:[], plan:[], ratings:[], pantry:[], list:[],
-             shops:[], score:[], members:[] };
+             shops:[], score:[], members:[], extras:[] };
 let LID = 1;
 
 function saveLocal(){
@@ -1667,6 +1793,14 @@ async function loadAll(){
     DB[names[i]] = res[i].data || [];
   }
   MEMBERS = DB.members;
+  /* Les extras sont arrives plus tard que le reste. Si la table n'existe
+     pas encore, l'application tourne sans, elle ne casse pas. */
+  try {
+    var ex = await sb.from(TBL.extras).select('*');
+    if (ex.error) throw ex.error;
+    DB.extras = ex.data || [];
+    EXTRAS_OK = true;
+  } catch(e){ DB.extras = []; EXTRAS_OK = false; }
 }
 
 /* =====================================================================
@@ -1761,6 +1895,22 @@ function dishByName(n){
     if (norm(d.name_fr) === k || norm(d.name_en) === k) return d;
   }
   return null;
+}
+/* Une etape par ligne quand le plat en porte, sinon on coupe aux phrases.
+   Les plats livres sont ecrits d'un bloc et se coupent proprement, et un
+   plat tape a la main se coupe aux retours de ligne. Les deux marchent
+   sans toucher a la base. */
+function stepList(txt){
+  if (!txt) return [];
+  var raw = (txt.indexOf('\n') >= 0) ? txt.split('\n') : txt.split(/\.\s+/);
+  var out = [];
+  for (var i = 0; i < raw.length; i++){
+    var x = raw[i].trim();
+    if (!x) continue;
+    if (!/[.!?]$/.test(x)) x += '.';
+    out.push(x);
+  }
+  return out;
 }
 function dishById(id){
   for (var i = 0; i < DB.dishes.length; i++) if (DB.dishes[i].id === id) return DB.dishes[i];
@@ -1957,6 +2107,10 @@ function renderWeek(){
     first.getDate() + ' ' + t('mon')[first.getMonth()] + ' ' +
     '- ' + last.getDate() + ' ' + t('mon')[last.getMonth()];
   document.getElementById('wksub').textContent = first.getFullYear();
+  var tb = document.getElementById('todayb');
+  var here = iso(WK) === iso(mondayOf(new Date()));
+  tb.style.display = here ? 'none' : 'block';
+  tb.textContent = t('today');
 
   var n = weekNut();
   document.getElementById('wkfill').textContent = tf('wkfilln', { n:n.planned });
@@ -2008,6 +2162,7 @@ function renderWeek(){
   document.getElementById('days').innerHTML = h;
 }
 function shiftWeek(n){ WK = addDays(WK, n * 7); renderAll(); }
+function goToday(){ WK = mondayOf(new Date()); renderAll(); }
 
 /* ---- feuille de choix d'un créneau ---- */
 function openSlot(dayIso, slot){
@@ -2256,9 +2411,13 @@ function openDish(id){
           '</span><span class="s">' + esc(storeName(g.store || '')) + '</span></li>';
       }).join('') + '</ul>';
   }
-  if (dtext(d, 'steps'))
-    h += '<div class="ttl" style="margin-top:13px">' + esc(t('f_steps')) + '</div>' +
-      '<div class="steps">' + esc(dtext(d, 'steps')) + '</div>';
+  var sl = stepList(dtext(d, 'steps'));
+  if (sl.length){
+    h += '<div class="ttl" style="margin-top:13px">' + esc(t('f_steps')) +
+      '<button class="btn sm am" style="margin-left:auto" onclick="cookMode(' + id + ',0)">' +
+      esc(t('cookmode')) + '</button></div><ol class="stepl">' +
+      sl.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ol>';
+  }
 
   h += '<div class="ttl" style="margin-top:15px">' + esc(t('rateit')) + '</div><div class="rate">';
   for (var i = 1; i <= 5; i++)
@@ -2384,9 +2543,12 @@ function editDish(id){
     '<textarea id="flge" rows="2">' + esc(d ? (d.lighten_en || '') : '') + '</textarea></div></div>' +
     '<div class="half">' +
     '<div class="fld"><label>' + esc(t('f_steps')) + ' FR</label>' +
-    '<textarea id="fstf" rows="4">' + esc(d ? (d.steps_fr || '') : '') + '</textarea></div>' +
+    '<textarea id="fstf" rows="5" placeholder="' + esc(t('f_stephint')) + '">' +
+    esc(d ? (d.steps_fr || '') : '') + '</textarea></div>' +
     '<div class="fld"><label>' + esc(t('f_steps')) + ' EN</label>' +
-    '<textarea id="fste" rows="4">' + esc(d ? (d.steps_en || '') : '') + '</textarea></div></div>';
+    '<textarea id="fste" rows="5" placeholder="' + esc(t('f_stephint')) + '">' +
+    esc(d ? (d.steps_en || '') : '') + '</textarea></div></div>' +
+    '<p class="dim" style="margin:-4px 0 10px">' + esc(t('f_stephint')) + '</p>';
 
   h += '<div class="ttl" style="margin-top:6px">' + esc(t('f_ing')) + '</div><div id="frows"></div>' +
     '<button class="btn sm" onclick="addRow()">' + esc(t('f_addrow')) + '</button>';
@@ -2551,7 +2713,21 @@ function buildList(){
   }
   var out = [];
   for (var k in agg) out.push(agg[k]);
+  /* Les collations et les extras ne viennent d'aucune recette, ils
+     s'ajoutent tels quels et se rangent par magasin comme le reste. */
+  var ex = weekExtras();
+  for (var e = 0; e < ex.length; e++){
+    var x = ex[e];
+    if (pan[norm(x.item_fr)]) continue;
+    out.push({ key:'x' + x.id, item_fr:x.item_fr, item_en:x.item_en,
+               unit:x.unit || '', store:x.store || 'Maxi', aisle:num(x.aisle),
+               qty:num(x.qty), bulk_min:0, extra:true });
+  }
   return out;
+}
+function weekExtras(){
+  var w = wkISO();
+  return DB.extras.filter(function(x){ return x.every_week || x.week_start === w; });
 }
 let HIDEPACKED = false;
 function togglePacked(){
@@ -2586,6 +2762,7 @@ function renderShop(){
   document.getElementById('gcnt').textContent = left ? left : '';
   document.getElementById('packb').textContent = t(HIDEPACKED ? 'showchecked' : 'hidechecked');
 
+  renderExtras();
   renderPantry();
   renderSpend();
 
@@ -2626,6 +2803,75 @@ function renderShop(){
     h += '</div>';
   }
   document.getElementById('shoplist').innerHTML = h;
+}
+
+function renderExtras(){
+  var pan = document.getElementById('expan');
+  if (!EXTRAS_OK){
+    pan.innerHTML = '<div class="ttl">' + esc(t('extrattl')) + '</div>' +
+      '<div class="warn">' + esc(t('extraoff')) + '</div>';
+    return;
+  }
+  var sel = document.getElementById('exs');
+  if (sel){
+    var keep = sel.value;
+    sel.innerHTML = STORES.map(function(st){
+      return '<option value="' + esc(st) + '"' + (keep === st ? ' selected' : '') + '>' +
+        esc(storeName(st)) + '</option>';
+    }).join('');
+  }
+  document.getElementById('exsug').innerHTML = SNACKS.map(function(sn, i){
+    return '<button class="chip" onclick="addSnack(' + i + ')">+ ' +
+      esc(L === 'fr' ? sn[0] : sn[1]) + '</button>';
+  }).join('');
+
+  var ex = DB.extras.slice().sort(function(a, b){
+    if (a.every_week !== b.every_week) return a.every_week ? -1 : 1;
+    return String(a.item_fr).localeCompare(String(b.item_fr));
+  });
+  document.getElementById('exlist').innerHTML = ex.length
+    ? ex.map(function(x){
+        var mine = x.every_week || x.week_start === wkISO();
+        return '<div class="li" style="opacity:' + (mine ? 1 : .45) + '">' +
+          '<div class="it">' + esc(L === 'fr' ? x.item_fr : (x.item_en || x.item_fr)) +
+          '<div class="bulk" style="color:var(--lilac)">' + esc(storeName(x.store || '')) +
+          (x.every_week ? ' &middot; ' + esc(t('everyweek')) : '') + '</div></div>' +
+          '<button class="btn sm" onclick="toggleExtraWeekly(' + x.id + ')">' +
+          (x.every_week ? '&#8635;' : '&#128197;') + '</button>' +
+          '<button class="btn sm wn" onclick="rmExtra(' + x.id + ')">&#10005;</button></div>';
+      }).join('')
+    : '<p class="dim">' + esc(t('extranone')) + '</p>';
+}
+async function saveExtra(fr, en, store, aisle, weekly){
+  await ins('extras', { item_fr:fr, item_en:en || fr, qty:null, unit:null,
+    store:store, aisle:num(aisle), every_week:!!weekly,
+    week_start: weekly ? null : wkISO() });
+  var fake = { name_fr:fr, name_en:en || fr, id:-1 };
+  var hits = avoidHits(fake);
+  if (hits.length)
+    toast(t('avoidwarn'), hits.map(function(a){ return (L === 'fr' ? a.fr : a.en) + ' (' + a.who + ')'; }).join(', '));
+  renderAll();
+}
+async function addExtra(){
+  var v = document.getElementById('exi').value.trim();
+  if (!v) return;
+  var st = document.getElementById('exs').value;
+  var wk = document.getElementById('exw').checked;
+  document.getElementById('exi').value = '';
+  await saveExtra(v, v, st, 8, wk);
+}
+async function addSnack(i){
+  var sn = SNACKS[i];
+  await saveExtra(sn[0], sn[1], sn[2], sn[3], document.getElementById('exw').checked);
+}
+async function rmExtra(id){ await del('extras', id); renderAll(); }
+async function toggleExtraWeekly(id){
+  var x = null;
+  for (var i = 0; i < DB.extras.length; i++) if (DB.extras[i].id === id) x = DB.extras[i];
+  if (!x) return;
+  var on = !x.every_week;
+  await upd('extras', id, { every_week:on, week_start: on ? null : wkISO() });
+  renderAll();
 }
 
 function renderPantry(){
@@ -2793,7 +3039,9 @@ function statsOf(){
 function renderBadge(){
   var pts = totalPts(), lv = levelOf(pts);
   var lo = LVL[lv] || 0, hi = LVL[lv + 1] || (lo + 1000);
-  document.getElementById('lvn').textContent = tf('lvlup', { n:lv });
+  document.getElementById('lvn').textContent = lv;
+  var l2 = document.getElementById('lvn2');
+  if (l2) l2.textContent = tf('lvlup', { n:lv });
   document.getElementById('xpb').style.width =
     Math.max(3, Math.round((pts - lo) / (hi - lo) * 100)) + '%';
   document.getElementById('xpt').textContent = tf('lvlpts', { a:pts, b:hi });
@@ -3130,6 +3378,64 @@ function renderStats(){
           '</div></div></button>';
       }).join('')
     : '<p class="dim">' + esc(t('nofaded')) + '</p>';
+}
+
+/* =====================================================================
+   Mode cuisson. Une etape a la fois, en gros, et l'ecran reste allume
+   tant qu'on cuisine.
+   ===================================================================== */
+let CK = { id:null, i:0, steps:[], lock:null };
+
+async function cookMode(dishId, i){
+  var d = dishById(dishId);
+  if (!d) return;
+  CK.id = dishId;
+  CK.steps = stepList(dtext(d, 'steps'));
+  if (!CK.steps.length) return;
+  CK.i = i || 0;
+  closeSheet();
+  document.getElementById('ckT').textContent = dname(d);
+  var ings = DB.ings.filter(function(x){ return x.dish_id === dishId; });
+  document.getElementById('ckL').innerHTML = ings.map(function(g){
+    return '<li><span class="q">' + (num(g.qty) ? num(g.qty) + ' ' + esc(g.unit || '') : '') +
+      '</span><span>' + esc(L === 'fr' ? (g.item_fr || g.item_en) : (g.item_en || g.item_fr)) +
+      '</span></li>';
+  }).join('');
+  document.getElementById('ckL').style.display = 'none';
+  document.getElementById('ckI').textContent = t('f_ing');
+  document.getElementById('cook').classList.add('up');
+  drawCk();
+  try { if (navigator.wakeLock) CK.lock = await navigator.wakeLock.request('screen'); } catch(e){}
+}
+function drawCk(){
+  var n = CK.steps.length;
+  document.getElementById('ckN').textContent = tf('stepof', { n:CK.i + 1, t:n });
+  document.getElementById('ckX').textContent = CK.steps[CK.i];
+  document.getElementById('ckP').style.width = Math.round((CK.i + 1) / n * 100) + '%';
+  document.getElementById('ckB').textContent = t('ckprev');
+  document.getElementById('ckB').disabled = CK.i === 0;
+  document.getElementById('ckF').textContent = (CK.i === n - 1) ? t('ckdone') : t('cknext');
+}
+function ckStep(d){
+  var n = CK.steps.length;
+  if (d > 0 && CK.i === n - 1){ finishCook(); return; }
+  CK.i = Math.max(0, Math.min(n - 1, CK.i + d));
+  drawCk();
+  document.querySelector('.ckbody').scrollTop = 0;
+}
+function toggleCkIng(){
+  var el = document.getElementById('ckL');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+async function closeCook(){
+  document.getElementById('cook').classList.remove('up');
+  try { if (CK.lock){ await CK.lock.release(); CK.lock = null; } } catch(e){}
+}
+async function finishCook(){
+  var id = CK.id;
+  await closeCook();
+  burst(50);
+  openDish(id);
 }
 
 /* =====================================================================
