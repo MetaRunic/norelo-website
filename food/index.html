@@ -503,6 +503,11 @@ footer{text-align:center;color:var(--dim);font-size:11px;padding:0 0 28px;
       <button class="btn pri" onclick="editDish(null)" data-i="adddish"></button>
     </div>
     <div class="filters" id="dfilters"></div>
+    <div class="pan" id="migpan" style="display:none">
+      <div class="ttl" id="mgT"></div>
+      <p class="dim" id="mgS"></p>
+      <button class="btn wn" onclick="refreshLibrary()" id="mgB"></button>
+    </div>
     <div class="pan" id="seedpan" style="display:none">
       <div class="ttl" id="sdT"></div>
       <p class="dim" id="sdS"></p>
@@ -731,6 +736,10 @@ fr:{
  seedmoresub:'La bibliothèque Norelo s\'est agrandie. Vos plats et vos modifications ne sont pas touchés, seuls les manquants sont ajoutés.',
  seedmorego:'Ajouter les {n} manquants',
  avoidwarn:'Contient ce que la maison n\'aime pas:',
+ migttl:'{n} anciens plats à remplacer', miggo:'Refaire la bibliothèque',
+ migsub:'Ces plats viennent de la première version et contiennent des choses que vous ne mangez pas. Ils sont retirés et remplacés par la version corrigée, et les créneaux du plan qui les utilisaient se vident. Vos propres plats ne sont pas touchés.',
+ migask:'Retirer les {n} anciens plats et remettre la bibliothèque à neuf?',
+ migdone:'Bibliothèque refaite, {n} plats',
  noclient:'Le client Supabase n\'a pas pu se charger, probablement le réseau. Rechargez la page. Rien n\'est écrit en attendant, pour ne pas créer une copie qui ne se synchroniserait jamais.',
  retry:'Recharger',
  notmember:'Ce compte existe, mais il n\'est pas encore dans la liste blanche de la maison. Il faut l\'ajouter à la table members dans Supabase.',
@@ -840,6 +849,10 @@ en:{
  seedmoresub:'The Norelo library has grown. Your own dishes and edits are untouched, only the missing ones are added.',
  seedmorego:'Add the {n} missing',
  avoidwarn:'Contains what the house does not like:',
+ migttl:'{n} old dishes to replace', miggo:'Rebuild the library',
+ migsub:'These come from the first version and contain things you do not eat. They are removed and replaced by the corrected version, and any plan slots using them are emptied. Your own dishes are untouched.',
+ migask:'Remove the {n} old dishes and rebuild the library?',
+ migdone:'Library rebuilt, {n} dishes',
  noclient:'The Supabase client could not load, most likely the network. Reload the page. Nothing is written meanwhile, so no copy is made that would never sync.',
  retry:'Reload',
  notmember:'This account exists, but it is not on the house allowlist yet. Add it to the members table in Supabase.',
@@ -886,6 +899,22 @@ const SEASON = [
  {fr:'pommes, courges, poireaux, choux de Bruxelles', en:'apples, squash, leeks, Brussels sprouts'},
  {fr:'courges, poireaux, légumes racines, choux, pommes', en:'squash, leeks, root vegetables, cabbage, apples'},
  {fr:'courges, légumes racines, choux, canneberges', en:'squash, root vegetables, cabbage, cranberries'}
+];
+
+/* ---------------------------------------------------------------------
+   Les seize plats de la toute premiere version. Plusieurs gardaient leur
+   nom alors que leur contenu etait mauvais, donc le semis, qui n'ajoute
+   que les absents, ne les corrigerait jamais. Le bouton de refonte les
+   retire pour que la bonne version reprenne leur place.
+   --------------------------------------------------------------------- */
+const LEGACY = [
+ 'Poulet grillé, patate douce et brocoli','Saumon à l\'érable, quinoa et asperges',
+ 'Chili de dinde','Pâté chinois allégé','Bol burrito au poulet','Soupe poulet et orzo',
+ 'Tofu général Tao au four','Crevettes à l\'ail et courgettes',
+ 'Boeuf et légumes à l\'asiatique','Omelette aux légumes et feta',
+ 'Salade césar au poulet, vinaigrette au yogourt','Porc effiloché et salade de chou',
+ 'Pizza pita aux légumes','Mijoteuse, boeuf et légumes racines',
+ 'Poisson blanc au four et patates grelots','Dahl de lentilles'
 ];
 
 /* ---------------------------------------------------------------------
@@ -2136,6 +2165,13 @@ function weeksSince(dayIso){
 }
 
 function renderDishes(){
+  var oldN = legacyPresent().length;
+  document.getElementById('migpan').style.display = oldN ? 'block' : 'none';
+  if (oldN){
+    document.getElementById('mgT').textContent = tf('migttl', { n:oldN });
+    document.getElementById('mgS').textContent = t('migsub');
+    document.getElementById('mgB').textContent = t('miggo');
+  }
   var missS = missingSeeds().length, empty = !DB.dishes.length;
   document.getElementById('seedpan').style.display = missS ? 'block' : 'none';
   if (missS){
@@ -2253,15 +2289,53 @@ function planThis(id){
   openSheet(h);
 }
 
-async function delDish(id){
-  if (!confirm(t('confirmdel'))) return;
-  closeSheet();
+async function removeDish(id){
   var ings = DB.ings.filter(function(x){ return x.dish_id === id; });
   for (var i = 0; i < ings.length; i++) await del('ings', ings[i].id);
   var ps = DB.plan.filter(function(p){ return p.dish_id === id; });
   for (var j = 0; j < ps.length; j++) await del('plan', ps[j].id);
+  /* les notes partent en cascade côté base, ici on nettoie la copie locale */
+  DB.ratings = DB.ratings.filter(function(r){ return r.dish_id !== id; });
   await del('dishes', id);
+}
+async function delDish(id){
+  if (!confirm(t('confirmdel'))) return;
+  closeSheet();
+  await removeDish(id);
   toast(t('removed'));
+  renderAll();
+}
+
+/* Refonte de la bibliotheque livree, en une touche, sans passer par SQL. */
+function seedByName(n){
+  var k = norm(n);
+  for (var i = 0; i < SEED.length; i++)
+    if (norm(SEED[i].fr) === k || norm(SEED[i].en) === k) return SEED[i];
+  return null;
+}
+/* Onze des seize anciens noms existent aussi dans la nouvelle bibliotheque,
+   donc le nom seul ne distingue pas la vieille version de la bonne. Est
+   perime un plat de la premiere fournee qui a ete retire de la
+   bibliotheque, ou qui contient encore quelque chose de la liste. */
+function legacyPresent(){
+  var out = [];
+  for (var i = 0; i < LEGACY.length; i++){
+    var d = dishByName(LEGACY[i]);
+    if (!d) continue;
+    if (!seedByName(LEGACY[i]) || avoidHits(d).length) out.push(d);
+  }
+  return out;
+}
+async function refreshLibrary(){
+  var old = legacyPresent();
+  if (!old.length){ toast(t('seednone')); return; }
+  if (!confirm(tf('migask', { n:old.length }))) return;
+  for (var i = 0; i < old.length; i++) await removeDish(old[i].id);
+  var todo = missingSeeds();
+  for (var j = 0; j < todo.length; j++) await seedOne(todo[j]);
+  await scoreWeek();
+  burst(70);
+  toast(tf('migdone', { n:DB.dishes.length }));
   renderAll();
 }
 
@@ -2414,23 +2488,24 @@ function missingSeeds(){
   for (var i = 0; i < SEED.length; i++) if (!dishByName(SEED[i].fr)) out.push(SEED[i]);
   return out;
 }
+async function seedOne(s){
+  var d = await ins('dishes', {
+    name_fr:s.fr, name_en:s.en, tags:s.tags, prep_min:s.prep, servings:s.serv,
+    kcal:s.kcal, protein_g:s.prot, fibre_g:s.fibre, veg_serv:s.veg, cost_est:s.cost,
+    steps_fr:s.steps.fr, steps_en:s.steps.en,
+    lighten_fr:s.lighten.fr, lighten_en:s.lighten.en
+  });
+  for (var j = 0; j < s.ing.length; j++){
+    var g = s.ing[j];
+    await ins('ings', { dish_id:d.id, item_fr:g[0], item_en:g[1], qty:g[2],
+                        unit:g[3] || null, store:g[4], aisle:g[5], bulk_min:g[6] || null });
+  }
+  return d;
+}
 async function seedLib(){
   var todo = missingSeeds();
   if (!todo.length){ toast(t('seednone')); return; }
-  for (var i = 0; i < todo.length; i++){
-    var s = todo[i];
-    var d = await ins('dishes', {
-      name_fr:s.fr, name_en:s.en, tags:s.tags, prep_min:s.prep, servings:s.serv,
-      kcal:s.kcal, protein_g:s.prot, fibre_g:s.fibre, veg_serv:s.veg, cost_est:s.cost,
-      steps_fr:s.steps.fr, steps_en:s.steps.en,
-      lighten_fr:s.lighten.fr, lighten_en:s.lighten.en
-    });
-    for (var j = 0; j < s.ing.length; j++){
-      var g = s.ing[j];
-      await ins('ings', { dish_id:d.id, item_fr:g[0], item_en:g[1], qty:g[2],
-                          unit:g[3] || null, store:g[4], aisle:g[5], bulk_min:g[6] || null });
-    }
-  }
+  for (var i = 0; i < todo.length; i++) await seedOne(todo[i]);
   toast(tf('seedadded', { n:todo.length }));
   renderAll();
 }

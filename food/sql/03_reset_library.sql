@@ -1,4 +1,11 @@
 -- Bouffe, remise a neuf de la bibliotheque livree
+--
+-- *** NORMALEMENT VOUS N'AVEZ PAS BESOIN DE CE FICHIER. ***
+-- L'application fait la meme chose en une touche: onglet Plats, bouton
+-- "Refaire la bibliotheque". Il ne propose que les plats reellement
+-- perimes et laisse vos propres plats tranquilles.
+-- Ce fichier reste comme filet, si jamais le bouton ne suffisait pas.
+--
 -- Rouler apres 01_init.sql et 02_members.sql, une seule fois.
 --
 -- POURQUOI: les seize plats semes la premiere journee contenaient des
