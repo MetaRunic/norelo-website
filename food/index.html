@@ -623,7 +623,7 @@ const APP_VERSION = 1;
    en mode local sur l'appareil, sans synchronisation.
    --------------------------------------------------------------------- */
 const SB_URL  = 'https://crmbsyjdicpvytqhfczp.supabase.co';
-const SB_ANON = 'REMPLIR_CLE_ANON';
+const SB_ANON = 'sb_publishable_O_QWKA-9acTdCNDiKjamPQ_DmyZ2JZ_';
 
 const CONFIGURED = SB_URL.indexOf('REMPLIR') < 0 && SB_ANON.indexOf('REMPLIR') < 0;
 let sb = null, LOCAL = false, ME = null, MEMBERS = [];
@@ -722,6 +722,8 @@ fr:{
  cfgwarn:'<b>Synchronisation pas encore branchée.</b> Collez l\'adresse du projet Supabase et la clé anon dans <code>SB_URL</code> et <code>SB_ANON</code> au haut de <code>food/index.html</code>, puis roulez <code>food/sql/01_init.sql</code> dans l\'éditeur SQL. En attendant, le mode local fonctionne, mais chaque appareil garde sa propre copie.',
  saved:'Enregistré', removed:'Retiré', confirmdel:'Supprimer ce plat pour de bon?',
  needname:'Il faut un nom.', badlogin:'Nom ou mot de passe incorrect.',
+ noclient:'Le client Supabase n\'a pas pu se charger, probablement le réseau. Rechargez la page. Rien n\'est écrit en attendant, pour ne pas créer une copie qui ne se synchroniserait jamais.',
+ retry:'Recharger',
  notmember:'Ce compte existe, mais il n\'est pas encore dans la liste blanche de la maison. Il faut l\'ajouter à la table members dans Supabase.',
  newdish:'Nouveau plat',
  alltags:'Tout',
@@ -820,6 +822,8 @@ en:{
  cfgwarn:'<b>Sync is not wired up yet.</b> Paste the Supabase project URL and anon key into <code>SB_URL</code> and <code>SB_ANON</code> at the top of <code>food/index.html</code>, then run <code>food/sql/01_init.sql</code> in the SQL editor. Local mode works meanwhile, but each device keeps its own copy.',
  saved:'Saved', removed:'Removed', confirmdel:'Delete this dish for good?',
  needname:'A name is needed.', badlogin:'Wrong name or password.',
+ noclient:'The Supabase client could not load, most likely the network. Reload the page. Nothing is written meanwhile, so no copy is made that would never sync.',
+ retry:'Reload',
  notmember:'This account exists, but it is not on the house allowlist yet. Add it to the members table in Supabase.',
  newdish:'New dish',
  alltags:'All',
@@ -2610,6 +2614,8 @@ function startApp(){
 function showGate(){
   document.getElementById('gate').style.display = 'block';
   document.getElementById('app').style.display = 'none';
+  var lb = document.querySelector('button[data-i="trylocal"]');
+  if (lb) lb.parentNode.style.display = CONFIGURED ? 'none' : 'block';
   if (!CONFIGURED){
     var w = document.getElementById('cfgwarn');
     w.style.display = 'block';
@@ -2629,6 +2635,12 @@ function showGate(){
       if (s.data && s.data.session){ await afterLogin(); return; }
     } catch(e){}
     showGate();
+  } else if (CONFIGURED){
+    showGate();
+    var g = document.getElementById('gerr');
+    g.textContent = t('noclient');
+    g.innerHTML += '<div style="margin-top:10px"><button class="btn sm" onclick="location.reload()">' +
+      t('retry') + '</button></div>';
   } else {
     var had = false;
     try { had = !!localStorage.getItem('bouffe_db'); } catch(e){}
