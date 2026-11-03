@@ -827,6 +827,7 @@ fr:{
  avoidwarn:'Contient ce que la maison n\'aime pas:',
  migttl:'{n} anciens plats à remplacer', miggo:'Refaire la bibliothèque',
  cookmode:'Mode cuisson', stepof:'Étape {n} sur {t}', today:'Aujourd\'hui',
+ seerecipe:'Voir la recette', stepsn:'étapes',
  extrattl:'Collations, gâteries et extras',
  extrasub:'Tout ce qui ne vient pas d\'une recette. Ça se range par magasin dans la liste, comme le reste.',
  extraadd:'Ajouter un article', everyweek:'Toutes les semaines',
@@ -948,6 +949,7 @@ en:{
  avoidwarn:'Contains what the house does not like:',
  migttl:'{n} old dishes to replace', miggo:'Rebuild the library',
  cookmode:'Cook mode', stepof:'Step {n} of {t}', today:'Today',
+ seerecipe:'See the recipe', stepsn:'steps',
  extrattl:'Snacks, treats and extras',
  extrasub:'Anything that does not come from a recipe. It sorts by store in the list like everything else.',
  extraadd:'Add an item', everyweek:'Every week',
@@ -2175,14 +2177,17 @@ function openSlot(dayIso, slot){
 
   if (cur){
     var cd = dishById(cur.dish_id);
+    var hasSteps = cd && stepList(dtext(cd, 'steps')).length;
     h += '<div class="pan" style="margin-bottom:12px"><div class="row">' +
       tile(cd, 'lg') + '<div class="grow"><div style="font:700 13px system-ui">' +
       esc(cd ? dname(cd) : t('k_' + cur.kind)) + '</div>' +
       '<div class="dim">' + esc(t('k_' + cur.kind)) + '</div></div></div>' +
-      '<div class="row" style="margin-top:9px">' +
-      (cd ? '<button class="btn sm grow" onclick="openDish(' + cur.dish_id + ')">' + esc(t('edit')) + '</button>' : '') +
+      (hasSteps ? '<button class="btn am" style="width:100%;margin-top:10px;padding:15px" ' +
+        'onclick="cookMode(' + cur.dish_id + ',0)">&#128293; ' + esc(t('cookmode')) + '</button>' : '') +
+      '<div class="row" style="margin-top:8px">' +
+      (cd ? '<button class="btn sm grow" onclick="openDish(' + cur.dish_id + ')">' + esc(t('seerecipe')) + '</button>' : '') +
       '<button class="btn sm grow" onclick="askCooks(\'' + dayIso + '\',\'' + slot + '\')">' + esc(t('cooks')) + '</button>' +
-      '<button class="btn sm wn grow" onclick="clearSlot(\'' + dayIso + '\',\'' + slot + '\')">' + esc(t('clearslot')) + '</button>' +
+      '<button class="btn sm wn" onclick="clearSlot(\'' + dayIso + '\',\'' + slot + '\')">' + esc(t('clearslot')) + '</button>' +
       '</div></div>';
   }
 
@@ -2375,6 +2380,13 @@ function openDish(id){
   var h = '<div class="sh">' + tile(d, 'xl') + '<h2>' + esc(dname(d)) + '</h2>' +
     '<button class="x" onclick="closeSheet()">&#10005;</button></div>';
 
+  /* Le bouton de cuisson est la premiere chose sous le titre. Avant il
+     vivait dans l'entete des etapes, tout en bas, et personne ne le
+     trouvait sans scroller la fiche au complet. */
+  if (stepList(dtext(d, 'steps')).length)
+    h += '<button class="btn am" style="width:100%;margin-bottom:11px;padding:15px" ' +
+      'onclick="cookMode(' + id + ',0)">&#128293; ' + esc(t('cookmode')) + '</button>';
+
   h += '<div class="mt" style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:11px">' +
     (d.tags || []).map(function(k){ return '<span class="pill v">' + esc(t(k)) + '</span>'; }).join('') +
     '</div>';
@@ -2415,8 +2427,7 @@ function openDish(id){
   var sl = stepList(dtext(d, 'steps'));
   if (sl.length){
     h += '<div class="ttl" style="margin-top:13px">' + esc(t('f_steps')) +
-      '<button class="btn sm am" style="margin-left:auto" onclick="cookMode(' + id + ',0)">' +
-      esc(t('cookmode')) + '</button></div><ol class="stepl">' +
+      '<span class="sp">' + sl.length + ' ' + esc(t('stepsn')) + '</span></div><ol class="stepl">' +
       sl.map(function(x){ return '<li>' + esc(x) + '</li>'; }).join('') + '</ol>';
   }
 
