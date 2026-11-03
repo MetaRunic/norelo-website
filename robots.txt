@@ -4,4 +4,7 @@ Allow: /
 # L'app d'horaire est privee et deja en noindex, on evite qu'elle soit exploree.
 Disallow: /horaire/
 
+# Le planificateur de repas est prive lui aussi, et deja en noindex.
+Disallow: /food/
+
 Sitemap: https://norelo.ca/sitemap.xml
