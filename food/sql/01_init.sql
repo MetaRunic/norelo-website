@@ -4,10 +4,18 @@
 --
 -- Avant de rouler:
 --   1. Creer un nouveau projet Supabase.
---   2. Authentication, Providers, Email: activer. Confirm email: au choix.
---   3. Authentication, Sign up: DESACTIVER apres avoir cree les deux comptes.
---   4. Creer les deux comptes a la main dans Authentication, Users.
+--   2. Authentication, Providers, Email: activer, et Confirm email: DESACTIVER.
+--   3. Creer les deux comptes a la main dans Authentication, Users, avec
+--      "Auto Confirm User" coche.
+--   4. Authentication, Sign up: DESACTIVER une fois les deux comptes crees.
 -- Apres avoir roule: voir la derniere section, inserer les deux membres.
+--
+-- PAS DE COURRIEL. On se connecte avec un prenom et un mot de passe.
+-- Supabase exige quand meme une adresse, alors l'application en fabrique
+-- une a partir du prenom: "Marc" devient marc@bouffe.local. Cette adresse
+-- ne sort jamais de l'application et aucune boite ne la recoit, c'est un
+-- identifiant, rien d'autre. Donc a l'etape 3, creer les comptes avec
+-- exactement ces adresses la, en minuscules, sans accent ni espace.
 
 -- ============ liste blanche ============
 
@@ -173,15 +181,17 @@ create policy members_self on members
   for update to authenticated using (id = auth.uid()) with check (id = auth.uid());
 
 -- ============ a faire a la main, une fois ============
--- Remplacer les deux courriels, puis rouler ce bloc.
+-- Remplacer les prenoms et les cibles, puis rouler ce bloc.
+-- L'adresse est toujours le prenom en minuscules suivi de @bouffe.local,
+-- la meme que celle utilisee pour creer le compte a l'etape 3.
 --
 -- insert into members (id, display_name, kcal_target, protein_target, portion_mult, budget_week)
--- select id, 'Prenom A', 2200, 140, 1.2, 200 from auth.users where email = 'a@exemple.com'
+-- select id, 'Marc', 2200, 140, 1.2, 200 from auth.users where email = 'marc@bouffe.local'
 -- on conflict (id) do nothing;
 --
 -- insert into members (id, display_name, kcal_target, protein_target, portion_mult, budget_week)
--- select id, 'Prenom B', 1600, 110, 0.85, 200 from auth.users where email = 'b@exemple.com'
+-- select id, 'Julie', 1600, 110, 0.85, 200 from auth.users where email = 'julie@bouffe.local'
 -- on conflict (id) do nothing;
 --
--- Verification:
+-- Verification, doit retourner exactement deux lignes:
 -- select m.display_name, u.email from members m join auth.users u on u.id = m.id;
