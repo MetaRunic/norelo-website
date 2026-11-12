@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Soutien informatique dans les Laurentides | Norelo</title>
+<meta name="description" content="Réparation et mise à niveau d'ordinateurs, suppression de virus, configuration Wi-Fi et assistance technique à domicile ou en entreprise. 50$ à 100$ de l'heure, déplacement disponible. Mirabel, Saint-Eustache et les Laurentides."/>
+<link rel="canonical" href="https://norelo.ca/soutien-informatique/"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="Norelo"/>
+<meta property="og:url" content="https://norelo.ca/soutien-informatique/"/>
+<meta property="og:title" content="Soutien informatique dans les Laurentides"/>
+<meta property="og:description" content="Réparation et mise à niveau d'ordinateurs, suppression de virus, configuration Wi-Fi et assistance technique à domicile ou en entreprise. 50$ à 100$ de l'heure, déplacement disponible. Mirabel, Saint-Eustache et les Laurentides."/>
+<meta property="og:image" content="https://norelo.ca/img/og-norelo.png"/>
+<meta property="og:locale" content="fr_CA"/>
+<meta property="og:locale:alternate" content="en_CA"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<link rel="icon" type="image/png" href="/favicon.png"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/img/icon-180.png"/>
+<meta name="theme-color" content="#0b1533"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--blue:#2563eb;--bl:#4fa3e8;--bp:#60a5fa;--dark:#070f2b;--d3:#0d1b3e;--bdr:#e2e8f0;--gr:#64748b;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1a1a2e;background:#fff;overflow-x:hidden;cursor:none;animation:fi .5s ease;}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+*{cursor:none;}
+#cur{position:fixed;width:10px;height:10px;background:var(--bl);border-radius:50%;pointer-events:none;z-index:9999;left:-20px;top:-20px;transform:translate(-50%,-50%);transition:width .18s,height .18s,border-radius .18s,opacity .2s;}
+#cur-r{position:fixed;width:36px;height:36px;border:1.5px solid rgba(79,163,232,.45);border-radius:50%;pointer-events:none;z-index:9998;left:-20px;top:-20px;transform:translate(-50%,-50%);transition:width .25s,height .25s,border-radius .25s;}
+body.ct #cur{width:2px;height:22px;border-radius:2px;}
+body.ct #cur-r{width:3px;height:32px;border-radius:2px;border:none;background:rgba(79,163,232,.15);}
+body.cc #cur{width:18px;height:18px;opacity:.5;}
+body.cc #cur-r{width:50px;height:50px;}
+@media(max-width:700px){#cur,#cur-r{display:none;}body,*{cursor:auto;}}
+#prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(to right,var(--blue),var(--bl));z-index:9997;width:0;}
+#fcta{position:fixed;bottom:2rem;right:2rem;background:var(--blue);color:#fff;border:none;border-radius:50px;padding:12px 22px;font-size:14px;font-weight:600;z-index:300;display:flex;align-items:center;gap:8px;box-shadow:0 8px 30px rgba(37,99,235,.4);transform:translateY(120px);opacity:0;transition:all .4s cubic-bezier(.34,1.56,.64,1);text-decoration:none;font-family:inherit;}
+#fcta.show{transform:translateY(0);opacity:1;}
+#fcta:hover{background:#1d4ed8;transform:translateY(-2px);}
+.fd{width:7px;height:7px;background:#22c55e;border-radius:50%;animation:pu 2s infinite;flex-shrink:0;}
+@keyframes pu{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.1rem 3rem;background:rgba(8,16,42,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);transition:padding .3s;}
+nav.sc{padding:.7rem 3rem;}
+.nl{font-size:22px;font-weight:800;color:#fff;text-decoration:none;letter-spacing:-.5px;display:flex;align-items:center;gap:0;}
+.nl span{color:var(--bl);}
+.nld{width:5px;height:5px;background:#22c55e;border-radius:50%;margin-bottom:12px;margin-left:5px;animation:pu 2s infinite;}
+.nr{display:flex;align-items:center;gap:2rem;}
+.nls{display:flex;gap:2rem;}
+.nls a{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none;transition:color .2s;position:relative;padding-bottom:2px;}
+.nls a::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:1.5px;background:var(--bl);transform:scaleX(0);transform-origin:left;transition:transform .25s;}
+.nls a:hover{color:#fff;}
+.nls a:hover::after{transform:scaleX(1);}
+.nlidees::after{display:none!important;}.nlidees:hover{color:var(--bl)!important;background:rgba(79,163,232,0.22)!important;}
+.lt{display:flex;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:20px;overflow:hidden;}
+.lt button{font-size:13px;padding:5px 14px;background:transparent;color:rgba(255,255,255,.45);border:none;transition:all .2s;font-family:inherit;font-weight:500;}
+.lt button.on{background:var(--blue);color:#fff;border-radius:20px;}
+.hero{min-height:100vh;background:var(--dark);display:flex;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 5rem;position:relative;overflow:hidden;}
+#ptc{position:absolute;inset:0;z-index:0;}
+.hbg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=80') center/cover no-repeat;opacity:.07;}
+.hgr{position:absolute;inset:0;background-image:linear-gradient(rgba(79,163,232,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(79,163,232,.04) 1px,transparent 1px);background-size:60px 60px;}
+.hgl{position:absolute;top:10%;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(37,99,235,.18) 0%,transparent 70%);pointer-events:none;}
+.hc{position:relative;z-index:2;max-width:840px;}
+.hbdg{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--bp);border:1px solid rgba(96,165,250,.25);border-radius:20px;padding:6px 18px;margin-bottom:2rem;background:rgba(96,165,250,.06);}
+.hbdgd{width:6px;height:6px;background:#22c55e;border-radius:50%;animation:pu 2s infinite;flex-shrink:0;}
+.hero h1{font-size:clamp(40px,6.5vw,76px);font-weight:800;color:#fff;line-height:1.05;letter-spacing:-3px;margin-bottom:1.5rem;}
+.hero h1 span{color:var(--bl);}
+.hero h1 em{font-style:normal;color:rgba(255,255,255,.35);}
+#tw{border-right:3px solid var(--bl);padding-right:3px;animation:bl .8s infinite;}
+@keyframes bl{0%,100%{border-color:var(--bl)}50%{border-color:transparent}}
+.hd{font-size:18px;color:rgba(255,255,255,.58);line-height:1.8;max-width:600px;margin:0 auto 2.5rem;}
+.bg{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.bb{background:var(--blue);color:#fff;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:600;text-decoration:none;border:none;transition:all .25s;display:inline-flex;align-items:center;gap:8px;font-family:inherit;box-shadow:0 4px 20px rgba(37,99,235,.35);}
+.bb:hover{background:#1d4ed8;transform:translateY(-2px);}
+.bo{background:transparent;color:#fff;padding:14px 32px;border-radius:8px;font-size:15px;font-weight:500;text-decoration:none;border:1px solid rgba(255,255,255,.22);transition:all .25s;}
+.bo:hover{background:rgba(255,255,255,.07);transform:translateY(-2px);}
+.hsc{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,.25);font-size:10px;letter-spacing:3px;text-transform:uppercase;}
+.hscl{width:1px;height:44px;background:linear-gradient(to bottom,rgba(255,255,255,.3),transparent);animation:sl 2s ease-in-out infinite;}
+@keyframes sl{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.sb{background:#eff6ff;border-bottom:1px solid #dbeafe;padding:2rem 3rem;display:flex;justify-content:center;gap:4rem;flex-wrap:wrap;}
+.st{text-align:center;}
+.stn{font-size:28px;font-weight:800;color:var(--blue);}
+.stl{font-size:13px;color:var(--gr);margin-top:3px;}
+.rv{opacity:0;transform:translateY(36px);transition:opacity .75s,transform .75s;}
+.rv.on{opacity:1;transform:none;}
+.rvl{opacity:0;transform:translateX(-36px);transition:opacity .75s,transform .75s;}
+.rvl.on{opacity:1;transform:none;}
+.rvr{opacity:0;transform:translateX(36px);transition:opacity .75s,transform .75s;}
+.rvr.on{opacity:1;transform:none;}
+.rvs{opacity:0;transform:scale(.93);transition:opacity .75s,transform .75s;}
+.rvs.on{opacity:1;transform:none;}
+.d1{transition-delay:.08s;}.d2{transition-delay:.16s;}.d3{transition-delay:.24s;}.d4{transition-delay:.32s;}
+.sec{padding:6rem 2rem;}
+.si{max-width:1100px;margin:0 auto;}
+.stag{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:8px;}
+.stag::before{content:'';display:inline-block;width:20px;height:1.5px;background:var(--blue);}
+.sti{font-size:clamp(26px,4vw,46px);font-weight:800;color:#0f172a;line-height:1.1;letter-spacing:-1.5px;margin-bottom:1rem;}
+.ssu{font-size:16px;color:var(--gr);max-width:540px;line-height:1.8;margin-bottom:3rem;}
+.svg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.5rem;}
+.svc{border:1px solid var(--bdr);border-radius:18px;padding:2rem;transition:all .3s;background:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column;}
+.svc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(37,99,235,.05),transparent);opacity:0;transition:opacity .3s;}
+.svc::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--blue),var(--bl));transform:scaleX(0);transform-origin:left;transition:transform .3s;}
+.svc:hover{border-color:#bfdbfe;box-shadow:0 16px 50px rgba(37,99,235,.1);transform:translateY(-5px);}
+.svc:hover::before{opacity:1;}
+.svc:hover::after{transform:scaleX(1);}
+.svic{width:52px;height:52px;background:#eff6ff;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:1.25rem;transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
+.svc:hover .svic{transform:scale(1.15) rotate(-5deg);}
+.svc h3{font-size:17px;font-weight:700;color:#0f172a;margin-bottom:.6rem;}
+.svc p{font-size:14px;color:var(--gr);line-height:1.65;}
+.svp{margin-top:auto;padding-top:1rem;border-top:1px solid #f1f5f9;display:flex;flex-wrap:wrap;gap:6px;}
+.svptag{display:inline-flex;align-items:center;background:#eff6ff;color:var(--blue);font-size:11px;font-weight:700;padding:4px 11px;border-radius:20px;border:1px solid #bfdbfe;white-space:nowrap;}
+.svptag.gr{background:#f0fdf4;color:#166534;border-color:#bbf7d0;}
+.pbg{background:#f8fafc;}
+.ps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));position:relative;}
+.ps::before{content:'';position:absolute;top:52px;left:12%;right:12%;height:1px;background:linear-gradient(to right,transparent,#bfdbfe 20%,#bfdbfe 80%,transparent);}
+.pst{text-align:center;padding:1.5rem 1rem;position:relative;z-index:1;}
+.psn{width:56px;height:56px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;margin:0 auto 1.25rem;box-shadow:0 6px 24px rgba(37,99,235,.35);transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
+.pst:hover .psn{transform:scale(1.15);}
+.pst{display:flex;flex-direction:column;}
+.pst p{margin-bottom:1.15rem;}
+.pdemo{position:relative;width:100%;max-width:172px;aspect-ratio:1/1;margin:auto auto 0;
+ border-radius:14px;overflow:hidden;background:#070f2b;border:1px solid #17255a;
+ box-shadow:inset 0 0 30px rgba(0,0,0,.55),0 10px 26px rgba(7,15,43,.16);}
+.pgrid{position:absolute;inset:0;
+ background-image:linear-gradient(rgba(96,165,250,.075) 1px,transparent 1px),
+                  linear-gradient(90deg,rgba(96,165,250,.075) 1px,transparent 1px);
+ background-size:15px 15px;}
+.pdemo svg{position:absolute;inset:0;width:100%;height:100%;}
+.pscan{position:absolute;left:0;right:0;top:-14%;height:26px;
+ background:linear-gradient(180deg,rgba(96,165,250,.20),transparent);
+ border-top:1px solid rgba(96,165,250,.5);opacity:0;animation:pscan 4s linear infinite;}
+@keyframes pscan{0%{top:-14%;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
+
+/* En pause jusqu'a ce que l'etape entre dans l'ecran. */
+.pdemo .anim{animation-play-state:paused;}
+.pst.on .pdemo .anim{animation-play-state:running;}
+
+.c1a{animation:c1a 4.6s ease-in-out infinite;transform-origin:30px 44px;}
+@keyframes c1a{0%,4%{opacity:0;transform:scale(.82)}14%,86%{opacity:1;transform:scale(1)}96%,100%{opacity:0;transform:scale(.82)}}
+.c1b{animation:c1b 4.6s ease-in-out infinite;transform-origin:92px 78px;}
+@keyframes c1b{0%,30%{opacity:0;transform:scale(.82)}42%,86%{opacity:1;transform:scale(1)}96%,100%{opacity:0;transform:scale(.82)}}
+
+.c2a,.c2b,.c2c,.c2d{opacity:0;transform-origin:60px 60px;}
+.c2a{animation:c2in 4.6s ease-out infinite;}
+.c2b{animation:c2in 4.6s ease-out infinite .35s;}
+.c2c{animation:c2in 4.6s ease-out infinite .7s;}
+.c2d{animation:c2in 4.6s ease-out infinite 1.05s;}
+@keyframes c2in{0%{opacity:0;transform:translateY(9px) scale(.94)}16%,82%{opacity:1;transform:none}96%,100%{opacity:0;transform:translateY(9px) scale(.94)}}
+
+.c3cur{animation:c3cur 4.6s ease-in-out infinite;}
+@keyframes c3cur{0%{transform:translate(30px,72px);opacity:0}10%{opacity:1}
+ 38%{transform:translate(66px,42px)}58%{transform:translate(66px,42px)}
+ 78%{transform:translate(40px,74px);opacity:1}100%{transform:translate(30px,72px);opacity:0}}
+.c3ring{animation:c3ring 4.6s ease-out infinite;opacity:0;transform-origin:74px 49px;}
+@keyframes c3ring{0%,38%{opacity:0;transform:scale(.4)}46%{opacity:.95;transform:scale(1)}66%{opacity:0;transform:scale(1.7)}100%{opacity:0}}
+.c3chk{animation:c3chk 4.6s ease-out infinite;}
+@keyframes c3chk{0%,60%{stroke-dashoffset:100}78%,92%{stroke-dashoffset:0}100%{stroke-dashoffset:100}}
+
+.c4bar{animation:c4bar 4.6s ease-in-out infinite;}
+@keyframes c4bar{0%,6%{stroke-dashoffset:100}52%,80%{stroke-dashoffset:0}94%,100%{stroke-dashoffset:100}}
+.c4dot{animation:c4dot 4.6s ease-out infinite;opacity:0;}
+@keyframes c4dot{0%,54%{opacity:0}62%,86%{opacity:1}96%,100%{opacity:0}}
+.c4wave{animation:c4wave 4.6s ease-out infinite;opacity:0;transform-origin:60px 92px;}
+@keyframes c4wave{0%,58%{opacity:0;transform:scale(.5)}72%{opacity:1;transform:scale(1)}88%{opacity:0;transform:scale(1.25)}100%{opacity:0}}
+
+@media(prefers-reduced-motion:reduce){
+ .pdemo .anim{animation:none!important;opacity:1!important;transform:none!important;stroke-dashoffset:0!important;}
+ .pscan{display:none;}
+}
+@media(max-width:700px){.pdemo{max-width:150px;}}
+.pst h3{font-size:15px;font-weight:700;color:#0f172a;margin-bottom:.5rem;}
+.pst p{font-size:13px;color:var(--gr);line-height:1.65;}
+.wbg{background:var(--dark);}
+.wbg .sti{color:#fff;}
+.wbg .ssu{color:rgba(255,255,255,.45);}
+.wbg .stag{color:var(--bp);}
+.wbg .stag::before{background:var(--bp);}
+.wg{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.wc{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:1.5rem;display:flex;gap:1rem;align-items:flex-start;transition:all .3s;}
+.wc:hover{background:rgba(255,255,255,.06);border-color:rgba(96,165,250,.25);transform:translateY(-2px);}
+.wci{width:40px;height:40px;background:rgba(96,165,250,.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
+.wc:hover .wci{transform:scale(1.15) rotate(-5deg);}
+.wc h3{font-size:15px;font-weight:700;color:#fff;margin-bottom:.4rem;}
+.wc p{font-size:13px;color:rgba(255,255,255,.5);line-height:1.65;}
+.pobg{background:var(--d3);}
+.pobg .sti{color:#fff;}
+.pobg .ssu{color:rgba(255,255,255,.45);}
+.pobg .stag{color:var(--bp);}
+.pobg .stag::before{background:var(--bp);}
+.poc{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);border-radius:22px;overflow:hidden;display:grid;grid-template-columns:1fr 1.25fr;transition:all .35s;}
+.poc:hover{transform:translateY(-5px);box-shadow:0 24px 60px rgba(0,0,0,.3);}
+.poi{background:linear-gradient(135deg,#1e3a8a,#1d4ed8);min-height:320px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.poi::before{content:'';position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.35;transition:opacity .4s;}
+.poc:hover .poi::before{opacity:.5;}
+.poi.orchard{background:linear-gradient(135deg,#14532d,#166534);}
+.poi.orchard::before{background-image:url('/img/orchard.svg');}
+.poi.app{background:linear-gradient(135deg,#122a63,#1d4ed8);}
+.poi.app::before{background-image:url('/img/schedule.svg');}
+.poe{font-size:72px;position:relative;z-index:1;transition:transform .4s cubic-bezier(.34,1.56,.64,1);}
+.poc:hover .poe{transform:scale(1.15);}
+.plogo{background:rgba(255,255,255,.93);border-radius:20px;padding:20px 24px;position:relative;z-index:1;box-shadow:0 12px 34px rgba(0,0,0,.3);transition:transform .4s cubic-bezier(.34,1.56,.64,1);}
+.poc:hover .plogo{transform:scale(1.06);}
+.plogo img{display:block;width:180px;max-width:60vw;}
+.poico{width:94px;height:94px;color:#fff;position:relative;z-index:1;transition:transform .4s cubic-bezier(.34,1.56,.64,1);}
+.poc:hover .poico{transform:scale(1.12);}
+.pol{position:absolute;bottom:1.25rem;font-size:11px;color:rgba(255,255,255,.4);letter-spacing:1.5px;z-index:1;}
+.pob{padding:2.5rem;display:flex;flex-direction:column;justify-content:center;}
+.pob h3{font-size:24px;font-weight:800;color:#fff;margin-bottom:.75rem;letter-spacing:-.5px;}
+.pob p{font-size:14px;color:rgba(255,255,255,.55);line-height:1.8;margin-bottom:1.25rem;}
+.potg{display:flex;flex-wrap:wrap;gap:6px;}
+.pot{font-size:12px;background:rgba(96,165,250,.1);color:var(--bp);border:1px solid rgba(96,165,250,.22);border-radius:20px;padding:4px 12px;transition:all .2s;}
+.pot:hover{background:rgba(96,165,250,.2);}
+.polk{display:inline-flex;align-items:center;gap:6px;margin-top:1.5rem;font-size:14px;color:var(--bp);text-decoration:none;font-weight:600;transition:all .2s;}
+.polk:hover{gap:12px;color:#fff;}
+.te{margin-top:2rem;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);border-radius:18px;padding:2rem 2.5rem;position:relative;overflow:hidden;}
+.te::before{content:'\201C';position:absolute;top:-16px;left:1.5rem;font-size:100px;color:rgba(96,165,250,.12);font-family:Georgia,serif;line-height:1;pointer-events:none;}
+.teq{font-size:16px;color:rgba(255,255,255,.72);line-height:1.85;font-style:italic;margin-bottom:1rem;padding-top:.5rem;}
+.tea{font-size:13px;color:rgba(255,255,255,.35);display:flex;align-items:center;gap:8px;}
+.tea::before{content:'';display:inline-block;width:24px;height:1px;background:rgba(255,255,255,.25);}
+.prg{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.5rem;}
+.prc{border:1px solid var(--bdr);border-radius:22px;padding:2rem;background:#fff;position:relative;transition:all .3s;}
+.prc:hover{transform:translateY(-5px);box-shadow:0 16px 50px rgba(37,99,235,.1);}
+.prc.fe{border:2px solid var(--blue);background:linear-gradient(to bottom,#f0f7ff,#fff);}
+.prc.pr{border:2px solid #e11d48;background:linear-gradient(to bottom,#fff1f4,#fff);}
+.prc.pr:hover{box-shadow:0 16px 50px rgba(225,29,72,.12);}
+.bab{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;font-size:11px;font-weight:700;padding:5px 18px;border-radius:20px;white-space:nowrap;box-shadow:0 4px 16px rgba(37,99,235,.35);}
+.bar{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#e11d48,#f43f5e);color:#fff;font-size:11px;font-weight:700;padding:5px 18px;border-radius:20px;white-space:nowrap;box-shadow:0 4px 16px rgba(225,29,72,.4);}
+.prn{font-size:12px;font-weight:700;color:var(--gr);letter-spacing:2px;text-transform:uppercase;margin-bottom:.75rem;}
+.prp{font-size:40px;font-weight:800;color:#0f172a;letter-spacing:-1.5px;}
+.prp sup{font-size:20px;vertical-align:top;margin-top:10px;display:inline-block;font-weight:600;}
+.prp sub{font-size:14px;color:#94a3b8;font-weight:400;letter-spacing:0;}
+.prs{text-decoration:line-through;color:#94a3b8;font-size:22px;font-weight:400;}
+.prpp{color:#e11d48;font-size:40px;font-weight:800;letter-spacing:-1.5px;}
+.prpp sup{font-size:20px;vertical-align:top;margin-top:10px;display:inline-block;}
+.prsv{display:inline-block;background:#fff1f4;color:#e11d48;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #fda4af;margin-top:4px;}
+.prd{font-size:14px;color:var(--gr);margin:.75rem 0 1.5rem;line-height:1.65;}
+.prf{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:2rem;}
+.prf li{font-size:14px;color:#475569;display:flex;align-items:center;gap:10px;}
+.prck{width:18px;height:18px;background:#eff6ff;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;color:var(--blue);font-weight:700;}
+.prck.r{background:#fff1f4;color:#e11d48;}
+.ctbg{background:#f8fafc;}
+.ctg{display:grid;grid-template-columns:1fr 1.4fr;gap:4rem;}
+.cti h2{font-size:clamp(24px,3vw,38px);font-weight:800;color:#0f172a;letter-spacing:-1.5px;margin-bottom:1rem;}
+.cti>p{font-size:15px;color:var(--gr);line-height:1.9;}
+.cti a{color:var(--blue);text-decoration:none;}
+.ctd{display:flex;align-items:flex-start;gap:14px;margin-top:1.5rem;font-size:14px;color:#475569;line-height:1.65;}
+.ctdi{width:40px;height:40px;background:#eff6ff;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
+.ctd:hover .ctdi{transform:scale(1.12) rotate(-5deg);}
+.ctf{display:flex;flex-direction:column;gap:14px;background:#fff;padding:2rem;border-radius:22px;border:1px solid var(--bdr);box-shadow:0 8px 40px rgba(0,0,0,.06);}
+.ctf label{font-size:11px;font-weight:700;color:#475569;letter-spacing:1px;text-transform:uppercase;margin-bottom:-6px;}
+.ctf input,.ctf textarea{padding:12px 16px;border:1.5px solid var(--bdr);border-radius:10px;font-size:14px;background:#f8fafc;color:#0f172a;font-family:inherit;outline:none;transition:all .2s;width:100%;}
+.ctf input:focus,.ctf textarea:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(37,99,235,.08);}
+.ctf textarea{min-height:130px;resize:vertical;}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.scg{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.sch{display:flex;align-items:center;gap:8px;border:1.5px solid var(--bdr);border-radius:10px;padding:10px 14px;background:#f8fafc;transition:all .2s;user-select:none;}
+.sch:hover{border-color:#93c5fd;background:#eff6ff;}
+.sch.sel{border-color:var(--blue);background:#eff6ff;box-shadow:0 0 0 3px rgba(37,99,235,.08);}
+.schic{font-size:18px;flex-shrink:0;}
+.scht{font-size:13px;font-weight:600;color:#0f172a;line-height:1.3;}
+.schs{font-size:11px;color:var(--gr);font-weight:400;}
+.eb{background:linear-gradient(135deg,#eff6ff,#f0f7ff);border:1.5px solid #bfdbfe;border-radius:14px;padding:1.25rem 1.5rem;display:none;}
+.eb.show{display:block;}
+.ett{font-size:12px;font-weight:700;color:var(--blue);letter-spacing:1px;text-transform:uppercase;margin-bottom:.75rem;}
+.ers{display:flex;flex-direction:column;gap:6px;}
+.er{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#475569;}
+.er span:last-child{font-weight:600;color:#0f172a;}
+.edv{height:1px;background:#dbeafe;margin:8px 0;}
+.etot{display:flex;justify-content:space-between;align-items:center;font-size:15px;font-weight:800;color:#0f172a;}
+.en{font-size:11px;color:var(--gr);margin-top:6px;}
+.tb{background:#f8fafc;border:1px solid var(--bdr);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--gr);line-height:1.7;}
+.tb strong{color:#475569;font-weight:600;}
+.fn{font-size:12px;color:#94a3b8;text-align:center;}
+.fok{font-size:14px;color:#166534;background:#dcfce7;padding:14px 16px;border-radius:10px;display:none;text-align:center;font-weight:500;}
+.zobg{background:#fff;}
+.zog{display:grid;grid-template-columns:1fr 1.6fr;gap:4rem;align-items:start;}
+.zomap{background:#eff6ff;border:1px solid #bfdbfe;border-radius:22px;padding:2rem;position:relative;overflow:hidden;}
+.zomap::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(37,99,235,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(37,99,235,.05) 1px,transparent 1px);background-size:24px 24px;}
+.zopin{font-size:3rem;display:block;text-align:center;position:relative;z-index:1;animation:pnb 1.8s ease-in-out infinite;}
+@keyframes pnb{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.zobase{text-align:center;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);font-weight:700;margin-top:.5rem;position:relative;z-index:1;}
+.zozones{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.25rem;position:relative;z-index:1;}
+.zotag{font-size:12px;background:#fff;color:var(--blue);border:1px solid #bfdbfe;border-radius:20px;padding:4px 12px;font-weight:600;transition:all .2s;}
+.zotag:hover{background:var(--blue);color:#fff;border-color:var(--blue);}
+.zotag.hl{background:var(--blue);color:#fff;border-color:var(--blue);}
+.zoright{display:flex;flex-direction:column;gap:1.5rem;}
+.zoreg{border:1px solid var(--bdr);border-radius:16px;padding:1.25rem 1.5rem;background:#f8fafc;}
+.zoregn{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:.75rem;display:flex;align-items:center;gap:6px;}
+.zoregn::before{content:'';display:inline-block;width:14px;height:1.5px;background:var(--blue);}
+.zocities{display:flex;flex-wrap:wrap;gap:.4rem;}
+.zocity{font-size:12px;color:#475569;background:#fff;border:1px solid var(--bdr);border-radius:20px;padding:3px 11px;transition:all .2s;}
+.zocity:hover{border-color:#93c5fd;color:var(--blue);}
+.zonote{font-size:13px;color:var(--gr);background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;display:flex;align-items:center;gap:.75rem;}
+@media(max-width:800px){.zog{grid-template-columns:1fr;}}
+.zoregsgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2.5rem;}
+footer{background:#060e26;padding:4rem 3rem 2rem;}
+.ft{max-width:1100px;margin:0 auto;}
+.ftt{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:3rem;margin-bottom:3rem;}
+.flo{font-size:22px;font-weight:800;color:#fff;}
+.flo span{color:var(--bl);}
+.fbr p{font-size:13px;color:rgba(255,255,255,.4);line-height:1.8;margin-top:.75rem;max-width:260px;}
+.fcol h4{font-size:12px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1rem;}
+.fcol a{display:block;font-size:14px;color:rgba(255,255,255,.35);text-decoration:none;margin-bottom:.6rem;transition:color .2s;}
+.fcol a:hover{color:rgba(255,255,255,.75);}
+.fbt{border-top:1px solid rgba(255,255,255,.06);padding-top:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.fbt p{font-size:12px;color:rgba(255,255,255,.25);}
+@media(max-width:700px){
+  nav{padding:1rem 1.25rem;}.nls{display:none;}
+  .sb{gap:1.5rem;padding:1.5rem;}.sec{padding:4rem 1.25rem;}
+  .hero{padding:6rem 1.25rem 4rem;}
+  .hero h1{letter-spacing:-1.5px;}
+  .hd{font-size:15px;}
+  .hgl{width:100%;left:0;transform:none;}
+  .wg{grid-template-columns:1fr;}.poc{grid-template-columns:1fr;}
+  .poi{min-height:200px;}
+  .ctg{grid-template-columns:1fr;gap:2rem;}.fr{grid-template-columns:1fr;}.scg{grid-template-columns:1fr;}
+  .ps::before{display:none;}.ftt{grid-template-columns:1fr;gap:2rem;}
+  .zoregsgrid{grid-template-columns:1fr;}
+  #fcta{bottom:1rem;right:1rem;padding:10px 16px;font-size:13px;}
+  footer{padding:2rem 1.25rem;}.fbt{flex-direction:column;text-align:center;}
+  .fbt p{text-align:center;}
+  .prg{grid-template-columns:1fr;}
+}
+.faqbg{background:#f8fafc;}
+.faq{display:flex;flex-direction:column;gap:.75rem;max-width:780px;margin:0 auto;}
+.fqi{border:1px solid var(--bdr);border-radius:14px;background:#fff;overflow:hidden;transition:box-shadow .25s,border-color .25s;}
+.fqi.open{box-shadow:0 8px 30px rgba(37,99,235,.08);border-color:#bfdbfe;}
+.fqq{width:100%;text-align:left;background:none;border:none;padding:1.25rem 1.5rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;font-family:inherit;font-size:15px;font-weight:600;color:#0f172a;cursor:none;transition:color .2s;}
+.fqi.open .fqq{color:var(--blue);}
+.fqch{width:22px;height:22px;background:#eff6ff;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;color:var(--blue);font-weight:700;transition:transform .3s,background .2s;}
+.fqi.open .fqch{transform:rotate(180deg);background:var(--blue);color:#fff;}
+.fqa{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1);}
+.fqi.open .fqa{max-height:300px;}
+.fqap{padding:0 1.5rem 1.25rem;font-size:14px;color:var(--gr);line-height:1.75;border-top:1px solid #f1f5f9;}
+
+/* Hamburger button */
+.hbtn{display:none;flex-direction:column;justify-content:center;align-items:center;width:40px;height:40px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;cursor:pointer;gap:5px;padding:0;flex-shrink:0;transition:background .2s;}
+.hbtn:hover{background:rgba(255,255,255,.1);}
+.hbl{display:block;width:18px;height:1.5px;background:#fff;border-radius:2px;transition:transform .35s cubic-bezier(.77,0,.175,1),opacity .25s,width .35s;}
+.hbtn.open .hbl:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.hbtn.open .hbl:nth-child(2){opacity:0;width:0;}
+.hbtn.open .hbl:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+
+/* Mobile full-screen overlay */
+#mob{position:fixed;inset:0;z-index:190;pointer-events:none;clip-path:circle(0% at calc(100% - 52px) 48px);transition:clip-path .55s cubic-bezier(.77,0,.175,1);}
+#mob-bg{position:absolute;inset:0;background:var(--dark);}
+#mob.open{pointer-events:all;clip-path:circle(150% at calc(100% - 52px) 48px);}
+
+/* Grid lines in overlay */
+#mob-bg::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(79,163,232,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(79,163,232,.04) 1px,transparent 1px);background-size:50px 50px;}
+#mob-bg::after{content:'';position:absolute;top:10%;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(37,99,235,.14) 0%,transparent 70%);pointer-events:none;}
+
+/* Overlay content */
+#mob-inner{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:6rem 2.5rem 4rem;}
+
+/* Nav links in overlay */
+#mob-inner .mnls{display:flex;flex-direction:column;gap:0;width:100%;}
+#mob-inner .mnls a{font-size:clamp(28px,8vw,44px);font-weight:800;color:rgba(255,255,255,.2);text-decoration:none;letter-spacing:-1.5px;line-height:1.25;padding:.35rem 0;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;gap:1rem;transition:color .2s,padding-left .2s;opacity:0;transform:translateX(-24px);transition:opacity .4s,transform .4s,color .2s,padding-left .2s;}
+#mob-inner .mnls a .marr{font-size:20px;color:var(--bl);opacity:0;transition:opacity .2s,transform .2s;transform:translateX(-8px);}
+#mob-inner .mnls a:hover{color:#fff;padding-left:.5rem;}
+#mob-inner .mnls a:hover .marr{opacity:1;transform:translateX(0);}
+#mob.open #mob-inner .mnls a{opacity:1;transform:translateX(0);}
+#mob.open #mob-inner .mnls a:nth-child(1){transition-delay:.18s;}
+#mob.open #mob-inner .mnls a:nth-child(2){transition-delay:.24s;}
+#mob.open #mob-inner .mnls a:nth-child(3){transition-delay:.30s;}
+#mob.open #mob-inner .mnls a:nth-child(4){transition-delay:.36s;}
+#mob.open #mob-inner .mnls a:nth-child(5){transition-delay:.42s;}
+#mob.open #mob-inner .mnls a:nth-child(6){transition-delay:.48s;}
+
+/* Idees special link */
+#mob-inner .mnls a.midees{color:var(--bl);font-size:clamp(20px,5.5vw,30px);border-bottom:none;margin-top:.5rem;}
+
+/* Bottom bar in overlay */
+#mob-foot{position:absolute;bottom:2.5rem;left:2.5rem;right:2.5rem;display:flex;align-items:center;justify-content:space-between;opacity:0;transform:translateY(12px);transition:opacity .4s .55s,transform .4s .55s;}
+#mob.open #mob-foot{opacity:1;transform:translateY(0);}
+#mob-foot .mfinfo{font-size:12px;color:rgba(255,255,255,.25);letter-spacing:1px;}
+#mob-foot .mfinfo strong{color:rgba(255,255,255,.5);display:block;font-size:13px;margin-bottom:2px;}
+#mob-foot .lt{background:rgba(255,255,255,.07);}
+
+@media(max-width:700px){
+  .hbtn{display:flex;}
+}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Soutien informatique",
+  "name": "Soutien informatique dans les Laurentides",
+  "description": "Réparation et mise à niveau d'ordinateurs, suppression de virus, configuration Wi-Fi et assistance technique à domicile ou en entreprise. 50$ à 100$ de l'heure, déplacement disponible. Mirabel, Saint-Eustache et les Laurentides.",
+  "url": "https://norelo.ca/soutien-informatique/",
+  "provider": {
+    "@type": "ProfessionalService",
+    "name": "Norelo",
+    "url": "https://norelo.ca/",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Saint-Joseph-du-Lac",
+      "addressRegion": "QC",
+      "addressCountry": "CA"
+    }
+  },
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "Saint-Joseph-du-Lac",
+      "addressRegion": "QC",
+      "addressCountry": "CA"
+    },
+    {
+      "@type": "City",
+      "name": "Mirabel",
+      "addressRegion": "QC",
+      "addressCountry": "CA"
+    },
+    {
+      "@type": "City",
+      "name": "Saint-Eustache",
+      "addressRegion": "QC",
+      "addressCountry": "CA"
+    },
+    {
+      "@type": "City",
+      "name": "Deux-Montagnes",
+      "addressRegion": "QC",
+      "addressCountry": "CA"
+    },
+    {
+      "@type": "City",
+      "name": "Sainte-Marthe-sur-le-Lac",
+      "addressRegion": "QC",
+      "addressCountry": "CA"
+    },
+    {
+      "@type": "City",
+      "name": "Pointe-Calumet",
+      "addressRegion": "QC",
+      "addressCountry": "CA"
+    },
+    {
+      "@type": "City",
+      "name": "Oka",
+      "addressRegion": "QC",
+      "addressCountry": "CA"
+    },
+    {
+      "@type": "City",
+      "name": "Saint-Jérôme",
+      "addressRegion": "QC",
+      "addressCountry": "CA"
+    },
+    {
+      "@type": "City",
+      "name": "Blainville",
+      "addressRegion": "QC",
+      "addressCountry": "CA"
+    },
+    {
+      "@type": "City",
+      "name": "Sainte-Thérèse",
+      "addressRegion": "QC",
+      "addressCountry": "CA"
+    },
+    {
+      "@type": "City",
+      "name": "Boisbriand",
+      "addressRegion": "QC",
+      "addressCountry": "CA"
+    },
+    {
+      "@type": "City",
+      "name": "Saint-Colomban",
+      "addressRegion": "QC",
+      "addressCountry": "CA"
+    },
+    {
+      "@type": "City",
+      "name": "Lachute",
+      "addressRegion": "QC",
+      "addressCountry": "CA"
+    },
+    {
+      "@type": "City",
+      "name": "Bois-des-Filion",
+      "addressRegion": "QC",
+      "addressCountry": "CA"
+    },
+    {
+      "@type": "City",
+      "name": "Terrebonne",
+      "addressRegion": "QC",
+      "addressCountry": "CA"
+    },
+    {
+      "@type": "City",
+      "name": "Mascouche",
+      "addressRegion": "QC",
+      "addressCountry": "CA"
+    },
+    {
+      "@type": "City",
+      "name": "Repentigny",
+      "addressRegion": "QC",
+      "addressCountry": "CA"
+    }
+  ],
+  "inLanguage": [
+    "fr-CA",
+    "en-CA"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "CAD",
+    "price": "50",
+    "description": "Taux horaire de 50$ à 100$ selon la complexité, déplacement disponible"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Norelo",
+      "item": "https://norelo.ca/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Soutien informatique",
+      "item": "https://norelo.ca/soutien-informatique/"
+    }
+  ]
+}
+</script>
+<!-- Reprend mot pour mot la FAQ affichee plus bas. Si une question change
+     dans le HTML ou dans T, la changer ici aussi: Google ignore un FAQPage
+     dont le texte ne se retrouve pas sur la page. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "fr-CA",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Vous déplacez-vous à domicile?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. L'assistance technique est offerte à domicile ou en entreprise, et le déplacement est disponible dans toutes les zones desservies autour de Saint-Joseph-du-Lac. Pour les problèmes qui se règlent à distance, le travail se fait en ligne."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Combien coûte le soutien informatique?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Entre 50$ et 100$ de l'heure selon la complexité du problème. Le taux vous est confirmé avant qu'on commence, pas après. Pour un suivi régulier, des forfaits de support mensuel sont disponibles sur devis."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "En combien de temps répondez-vous?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sous 24h. Pas de tickets, pas d'attente, pas de centre d'assistance anonyme. Vous parlez directement à Daniel."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quels types de problèmes pouvez-vous régler?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Réparation et mise à niveau d'ordinateurs, suppression de virus et malwares, configuration de réseaux Wi-Fi, installation de logiciels et assistance technique générale. Aucune question n'est trop simple."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur-r"></div>
+<div id="prog"></div>
+<a href="/#contact" id="fcta"><span class="fd"></span><span id="ftxt">Nous contacter</span></a>
+<nav id="nav">
+  <a class="nl" href="/">Nore<span>lo</span><span class="nld"></span></a>
+  <div class="nr">
+    <div class="nls">
+      <a href="/#services" id="n1">Services</a>
+      <a href="/#pricing" id="n2">Tarifs</a>
+      <a href="/#zones" id="n3">Zones</a>
+      <a href="/#contact" id="n4">Contact</a>
+    </div>
+    <div class="lt">
+      <button id="bfr" class="on" onclick="sL('fr')">FR</button>
+      <button id="ben" onclick="sL('en')">EN</button>
+    </div>
+  </div>
+</nav>
+
+<section class="sec" style="padding-top:140px;background:linear-gradient(160deg,var(--dark),var(--d3));color:#fff;">
+  <div class="si">
+    <p class="stag" id="htag" style="color:var(--bl);">Soutien informatique</p>
+    <h1 style="font-size:clamp(2rem,5vw,3.4rem);line-height:1.1;font-weight:800;margin-bottom:1.25rem;" id="h1">Soutien informatique<br>dans les Laurentides.</h1>
+    <p class="ssu" id="hsub" style="color:rgba(255,255,255,.72);max-width:720px;margin-left:0;">Réparation et mise à niveau d'ordinateurs, suppression de virus et malwares, configuration de réseaux Wi-Fi, installation de logiciels et assistance technique à domicile ou en entreprise. Aucune question trop simple.</p>
+    <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:2rem;">
+      <a href="/#contact" class="bb" id="cta1">Décrire mon problème &rarr;</a>
+      <a href="/#pricing" class="bo" id="cta2" style="color:#fff;border-color:rgba(255,255,255,.3);">Voir les tarifs</a>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="si">
+    <p class="stag rv" id="clab">Ce qu'on règle</p>
+    <h2 class="sti rv" id="ct">Un vrai technicien,<br>pas un centre d'appel.</h2>
+    <p class="ssu rv" id="cs">Pas de tickets, pas d'attente. Vous parlez directement à Daniel, sous 24h garanti.</p>
+    <div class="svg">
+      <div class="svc rv d1"><div class="svic">🔧</div><h3 id="c1t">Réparation d'ordinateurs</h3><p id="c1d">Portable ou poste de travail, on diagnostique la panne et on vous dit honnêtement si ça vaut la peine d'être réparé.</p></div>
+      <div class="svc rv d2"><div class="svic">⚡</div><h3 id="c2t">Mise à niveau</h3><p id="c2d">Un ordinateur lent n'est pas toujours un ordinateur fini. Souvent, une pièce suffit à lui redonner des années.</p></div>
+      <div class="svc rv d3"><div class="svic">🛡️</div><h3 id="c3t">Virus et malwares</h3><p id="c3d">Suppression des virus, des malwares et des logiciels indésirables, puis vérification que rien ne revient.</p></div>
+      <div class="svc rv d1"><div class="svic">📶</div><h3 id="c4t">Réseaux Wi-Fi</h3><p id="c4d">Configuration de réseaux Wi-Fi pour la maison ou l'entreprise, incluant les zones mortes et les mots de passe.</p></div>
+      <div class="svc rv d2"><div class="svic">💾</div><h3 id="c5t">Installation de logiciels</h3><p id="c5d">Installation et configuration de vos logiciels, avec les explications pour vous rendre autonome ensuite.</p></div>
+      <div class="svc rv d3"><div class="svic">🏠</div><h3 id="c6t">Assistance sur place</h3><p id="c6d">Assistance technique à domicile ou en entreprise, partout dans les zones desservies. Aucune question trop simple.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec pbg">
+  <div class="si">
+    <p class="stag rv" id="plab">Tarifs</p>
+    <h2 class="sti rv" id="pt">Des prix affichés.<br>Pas de cachette.</h2>
+    <p class="ssu rv" id="ps">Le taux horaire est affiché avant que vous nous écriviez. Pas de formulaire juste pour savoir combien ça coûte.</p>
+    <div class="prg">
+      <div class="prc fe rv d1">
+        <p class="prn" id="ir1n">Taux horaire</p>
+        <div class="prp"><sup>$</sup>50 – 100<sub id="ir1per">/heure</sub></div>
+        <p class="prd" id="ir1d">Le taux varie selon la complexité du problème. On vous le confirme avant de commencer, jamais après.</p>
+        <ul class="prf">
+          <li><span class="prck">&#10003;</span><span id="if11">Réparation et mise à niveau</span></li>
+          <li><span class="prck">&#10003;</span><span id="if12">Suppression de virus et malwares</span></li>
+          <li><span class="prck">&#10003;</span><span id="if13">Configuration de réseaux Wi-Fi</span></li>
+          <li><span class="prck">&#10003;</span><span id="if14">Installation de logiciels</span></li>
+          <li><span class="prck">&#10003;</span><span id="if15">Déplacement disponible</span></li>
+        </ul>
+        <a href="/#contact" class="bb" style="text-align:center;display:block;" id="ir1cta">Décrire mon problème &rarr;</a>
+      </div>
+      <div class="prc rv d2">
+        <p class="prn" id="ir2n">Support mensuel</p>
+        <div class="prp" style="font-size:28px;padding-top:10px;" id="ir2p">Sur devis</div>
+        <p class="prd" id="ir2d">Pour les entreprises qui préfèrent un suivi régulier plutôt que d'appeler seulement quand ça brise.</p>
+        <ul class="prf">
+          <li><span class="prck">&#10003;</span><span id="if21">Support IT mensuel</span></li>
+          <li><span class="prck">&#10003;</span><span id="if22">Assistance à domicile ou en entreprise</span></li>
+          <li><span class="prck">&#10003;</span><span id="if23">Formation &amp; documentation</span></li>
+          <li><span class="prck">&#10003;</span><span id="if24">Réponse sous 24h</span></li>
+        </ul>
+        <a href="/#contact" class="bb" style="text-align:center;display:block;" id="ir2cta">Nous contacter</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="si">
+    <p class="stag rv" id="slab">Processus</p>
+    <h2 class="sti rv" id="st">Vous appelez, on règle.</h2>
+    <p class="ssu rv" id="ss">De votre premier message jusqu'à ce que tout refonctionne, voici comment ça se passe.</p>
+    <div class="ps">
+      <div class="pst rv d1"><div class="psn">1</div><h3 id="s1t">Vous écrivez</h3><p id="s1d">Décrivez le problème dans vos mots. Pas besoin du vocabulaire technique.</p></div>
+      <div class="pst rv d2"><div class="psn">2</div><h3 id="s2t">Diagnostic</h3><p id="s2d">On identifie la cause et on vous explique ce qui se passe, en français clair.</p></div>
+      <div class="pst rv d3"><div class="psn">3</div><h3 id="s3t">Réparation</h3><p id="s3d">On règle le problème, à distance ou sur place selon ce que ça demande.</p></div>
+      <div class="pst rv d4"><div class="psn">4</div><h3 id="s4t">Suivi</h3><p id="s4d">On vérifie que tout refonctionne et Daniel reste joignable directement après.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec zobg">
+  <div class="si">
+    <p class="stag rv" id="zlab">Zones desservies</p>
+    <h2 class="sti rv" id="zt">On se déplace<br>partout autour.</h2>
+    <p class="ssu rv" id="zs">Basé à Saint-Joseph-du-Lac, Norelo dessert toute la grande région de Montréal et des Laurentides. Déplacement sur place disponible.</p>
+    <div class="zocities rv" style="margin-top:1.5rem;"><span class="zocity zotag hl">Saint-Joseph-du-Lac</span><span class="zocity zotag">Mirabel</span><span class="zocity zotag">Saint-Eustache</span><span class="zocity zotag">Deux-Montagnes</span><span class="zocity zotag">Sainte-Marthe-sur-le-Lac</span><span class="zocity zotag">Pointe-Calumet</span><span class="zocity zotag">Oka</span><span class="zocity zotag">Saint-Jérôme</span><span class="zocity zotag">Blainville</span><span class="zocity zotag">Sainte-Thérèse</span><span class="zocity zotag">Boisbriand</span><span class="zocity zotag">Saint-Colomban</span><span class="zocity zotag">Lachute</span><span class="zocity zotag">Bois-des-Filion</span><span class="zocity zotag">Terrebonne</span><span class="zocity zotag">Mascouche</span><span class="zocity zotag">Repentigny</span></div>
+    <p class="rv" id="znote" style="font-size:13px;color:var(--gr);margin-top:1.25rem;">Déplacement sur place disponible dans toutes ces zones. Pour les problèmes qui se règlent à distance, le travail se fait en ligne.</p>
+  </div>
+</section>
+
+<section class="sec faqbg">
+  <div class="si">
+    <p class="stag rv" style="text-align:center;" id="flab">FAQ</p>
+    <h2 class="sti rv" style="text-align:center;" id="ft2">Des questions?<br>Des réponses.</h2>
+    <div class="faq" style="margin-top:2.5rem;">
+      <div class="fqi rv d1"><button class="fqq" onclick="tFaq(this)"><span id="q1">Vous déplacez-vous à domicile?</span><span class="fqch">&#9662;</span></button><div class="fqa"><p class="fqap" id="a1">Oui. L'assistance technique est offerte à domicile ou en entreprise, et le déplacement est disponible dans toutes les zones desservies autour de Saint-Joseph-du-Lac. Pour les problèmes qui se règlent à distance, le travail se fait en ligne.</p></div></div>
+      <div class="fqi rv d2"><button class="fqq" onclick="tFaq(this)"><span id="q2">Combien coûte le soutien informatique?</span><span class="fqch">&#9662;</span></button><div class="fqa"><p class="fqap" id="a2">Entre 50$ et 100$ de l'heure selon la complexité du problème. Le taux vous est confirmé avant qu'on commence, pas après. Pour un suivi régulier, des forfaits de support mensuel sont disponibles sur devis.</p></div></div>
+      <div class="fqi rv d3"><button class="fqq" onclick="tFaq(this)"><span id="q3">En combien de temps répondez-vous?</span><span class="fqch">&#9662;</span></button><div class="fqa"><p class="fqap" id="a3">Sous 24h. Pas de tickets, pas d'attente, pas de centre d'assistance anonyme. Vous parlez directement à Daniel.</p></div></div>
+      <div class="fqi rv d1"><button class="fqq" onclick="tFaq(this)"><span id="q4">Quels types de problèmes pouvez-vous régler?</span><span class="fqch">&#9662;</span></button><div class="fqa"><p class="fqap" id="a4">Réparation et mise à niveau d'ordinateurs, suppression de virus et malwares, configuration de réseaux Wi-Fi, installation de logiciels et assistance technique générale. Aucune question n'est trop simple.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="background:linear-gradient(160deg,var(--dark),var(--d3));color:#fff;">
+  <div class="si" style="text-align:center;">
+    <h2 class="sti rv" id="xt" style="color:#fff;">Quelque chose ne fonctionne plus?</h2>
+    <p class="ssu rv" id="xs" style="color:rgba(255,255,255,.72);margin-left:auto;margin-right:auto;">Décrivez votre problème et Daniel vous répond sous 24h. Aucune question trop simple.</p>
+    <a href="/#contact" class="bb rv" id="xcta" style="margin-top:1.5rem;display:inline-block;">Demander de l'aide &rarr;</a>
+  </div>
+</section>
+<footer>
+  <div class="ft">
+    <div class="ftt">
+      <div class="fbr"><div class="flo">Nore<span>lo</span></div><p id="fdesc">Expert tech local basé à Saint-Joseph-du-Lac. Sites web, soutien informatique et consultation pour les entreprises des Laurentides.</p></div>
+      <div class="fcol"><h4 id="fc1">Services</h4><a href="/creation-site-web/" id="fs1">Création de sites web</a><a href="/soutien-informatique/" id="fs2">Soutien informatique</a><a href="/#services" id="fs3">Consultation</a><a href="/#services" id="fs4">Hébergement</a><a href="/#services" id="fs5">Assemblage PC</a></div>
+      <div class="fcol"><h4 id="fc2">Entreprise</h4><a href="/#portfolio" id="fpo">Portfolio</a><a href="/#pricing" id="fpi">Tarifs</a><a href="/#process" id="fpr">Processus</a><a href="/#contact" id="fct">Contact</a></div>
+    </div>
+    <div class="fbt"><p id="fcopy">&copy; 2026 Norelo &middot; Saint-Joseph-du-Lac, Québec</p><p id="fmade">Fait avec soin dans les Laurentides</p><p style="margin-top:.5rem"><a href="/legal/" style="font-size:11px;color:rgba(255,255,255,.25);text-decoration:none;" id="flegal">Mentions légales &amp; Politique de confidentialité</a></p></div>
+  </div>
+</footer>
+<script>
+const T={
+ "fr": {
+  "n1": "Services",
+  "n2": "Tarifs",
+  "n3": "Zones",
+  "n4": "Contact",
+  "htag": "Soutien informatique",
+  "h1": "Soutien informatique<br>dans les Laurentides.",
+  "hsub": "Réparation et mise à niveau d'ordinateurs, suppression de virus et malwares, configuration de réseaux Wi-Fi, installation de logiciels et assistance technique à domicile ou en entreprise. Aucune question trop simple.",
+  "cta1": "Décrire mon problème &rarr;",
+  "cta2": "Voir les tarifs",
+  "clab": "Ce qu'on règle",
+  "ct": "Un vrai technicien,<br>pas un centre d'appel.",
+  "cs": "Pas de tickets, pas d'attente. Vous parlez directement à Daniel, sous 24h garanti.",
+  "plab": "Tarifs",
+  "pt": "Des prix affichés.<br>Pas de cachette.",
+  "ps": "Le taux horaire est affiché avant que vous nous écriviez. Pas de formulaire juste pour savoir combien ça coûte.",
+  "slab": "Processus",
+  "st": "Vous appelez, on règle.",
+  "ss": "De votre premier message jusqu'à ce que tout refonctionne, voici comment ça se passe.",
+  "zlab": "Zones desservies",
+  "zt": "On se déplace<br>partout autour.",
+  "zs": "Basé à Saint-Joseph-du-Lac, Norelo dessert toute la grande région de Montréal et des Laurentides. Déplacement sur place disponible.",
+  "znote": "Déplacement sur place disponible dans toutes ces zones. Pour les problèmes qui se règlent à distance, le travail se fait en ligne.",
+  "ft2": "Des questions?<br>Des réponses.",
+  "xt": "Quelque chose ne fonctionne plus?",
+  "xs": "Décrivez votre problème et Daniel vous répond sous 24h. Aucune question trop simple.",
+  "xcta": "Demander de l'aide &rarr;",
+  "c1t": "Réparation d'ordinateurs",
+  "c1d": "Portable ou poste de travail, on diagnostique la panne et on vous dit honnêtement si ça vaut la peine d'être réparé.",
+  "c2t": "Mise à niveau",
+  "c2d": "Un ordinateur lent n'est pas toujours un ordinateur fini. Souvent, une pièce suffit à lui redonner des années.",
+  "c3t": "Virus et malwares",
+  "c3d": "Suppression des virus, des malwares et des logiciels indésirables, puis vérification que rien ne revient.",
+  "c4t": "Réseaux Wi-Fi",
+  "c4d": "Configuration de réseaux Wi-Fi pour la maison ou l'entreprise, incluant les zones mortes et les mots de passe.",
+  "c5t": "Installation de logiciels",
+  "c5d": "Installation et configuration de vos logiciels, avec les explications pour vous rendre autonome ensuite.",
+  "c6t": "Assistance sur place",
+  "c6d": "Assistance technique à domicile ou en entreprise, partout dans les zones desservies. Aucune question trop simple.",
+  "s1t": "Vous écrivez",
+  "s1d": "Décrivez le problème dans vos mots. Pas besoin du vocabulaire technique.",
+  "s2t": "Diagnostic",
+  "s2d": "On identifie la cause et on vous explique ce qui se passe, en français clair.",
+  "s3t": "Réparation",
+  "s3d": "On règle le problème, à distance ou sur place selon ce que ça demande.",
+  "s4t": "Suivi",
+  "s4d": "On vérifie que tout refonctionne et Daniel reste joignable directement après.",
+  "q1": "Vous déplacez-vous à domicile?",
+  "a1": "Oui. L'assistance technique est offerte à domicile ou en entreprise, et le déplacement est disponible dans toutes les zones desservies autour de Saint-Joseph-du-Lac. Pour les problèmes qui se règlent à distance, le travail se fait en ligne.",
+  "q2": "Combien coûte le soutien informatique?",
+  "a2": "Entre 50$ et 100$ de l'heure selon la complexité du problème. Le taux vous est confirmé avant qu'on commence, pas après. Pour un suivi régulier, des forfaits de support mensuel sont disponibles sur devis.",
+  "q3": "En combien de temps répondez-vous?",
+  "a3": "Sous 24h. Pas de tickets, pas d'attente, pas de centre d'assistance anonyme. Vous parlez directement à Daniel.",
+  "q4": "Quels types de problèmes pouvez-vous régler?",
+  "a4": "Réparation et mise à niveau d'ordinateurs, suppression de virus et malwares, configuration de réseaux Wi-Fi, installation de logiciels et assistance technique générale. Aucune question n'est trop simple.",
+  "ir1n": "Taux horaire",
+  "ir1per": "/heure",
+  "ir1d": "Le taux varie selon la complexité du problème. On vous le confirme avant de commencer, jamais après.",
+  "if11": "Réparation et mise à niveau",
+  "if12": "Suppression de virus et malwares",
+  "if13": "Configuration de réseaux Wi-Fi",
+  "if14": "Installation de logiciels",
+  "if15": "Déplacement disponible",
+  "ir1cta": "Décrire mon problème &rarr;",
+  "ir2n": "Support mensuel",
+  "ir2p": "Sur devis",
+  "ir2d": "Pour les entreprises qui préfèrent un suivi régulier plutôt que d'appeler seulement quand ça brise.",
+  "if21": "Support IT mensuel",
+  "if22": "Assistance à domicile ou en entreprise",
+  "if23": "Formation &amp; documentation",
+  "if24": "Réponse sous 24h",
+  "ir2cta": "Nous contacter",
+  "flab": "FAQ",
+  "fdesc": "Expert tech local basé à Saint-Joseph-du-Lac. Sites web, soutien informatique et consultation pour les entreprises des Laurentides.",
+  "fc1": "Services",
+  "fc2": "Entreprise",
+  "fs1": "Création de sites web",
+  "fs2": "Soutien informatique",
+  "fs3": "Consultation",
+  "fs4": "Hébergement",
+  "fs5": "Assemblage PC",
+  "fpo": "Portfolio",
+  "fpi": "Tarifs",
+  "fpr": "Processus",
+  "fct": "Contact",
+  "fcopy": "&copy; 2026 Norelo &middot; Saint-Joseph-du-Lac, Québec",
+  "fmade": "Fait avec soin dans les Laurentides",
+  "flegal": "Mentions légales &amp; Politique de confidentialité",
+  "ftxt": "Nous contacter"
+ },
+ "en": {
+  "n1": "Services",
+  "n2": "Pricing",
+  "n3": "Areas",
+  "n4": "Contact",
+  "htag": "IT support",
+  "h1": "IT support<br>in the Laurentians.",
+  "hsub": "Computer and hardware repair, virus and malware removal, Wi-Fi network setup, software installation and on-site technical assistance for homes and businesses. No question is too simple.",
+  "cta1": "Describe my problem &rarr;",
+  "cta2": "See pricing",
+  "clab": "What we fix",
+  "ct": "A real technician,<br>not a call centre.",
+  "cs": "No tickets, no waiting. You talk directly to Daniel, within 24h guaranteed.",
+  "plab": "Pricing",
+  "pt": "Prices listed.<br>No gatekeeping.",
+  "ps": "The hourly rate is posted before you contact us. No form just to find out what it costs.",
+  "slab": "Process",
+  "st": "You call, we fix it.",
+  "ss": "From your first message to everything working again, here is how it goes.",
+  "zlab": "Service areas",
+  "zt": "We go<br>wherever you are.",
+  "zs": "Based in Saint-Joseph-du-Lac, Norelo serves the greater Montreal and Laurentians region. On-site visits available.",
+  "znote": "On-site visits available throughout all these areas. For problems that can be solved remotely, the work is done online.",
+  "ft2": "Questions?<br>Answers.",
+  "xt": "Something stopped working?",
+  "xs": "Describe your problem and Daniel replies within 24h. No question is too simple.",
+  "xcta": "Ask for help &rarr;",
+  "c1t": "Computer repair",
+  "c1d": "Laptop or desktop, we diagnose the fault and tell you honestly whether it is worth repairing.",
+  "c2t": "Upgrades",
+  "c2d": "A slow computer is not always a dead computer. Often one part is enough to give it years back.",
+  "c3t": "Viruses and malware",
+  "c3d": "Removal of viruses, malware and unwanted software, then a check that nothing comes back.",
+  "c4t": "Wi-Fi networks",
+  "c4d": "Wi-Fi network setup for home or business, including dead zones and passwords.",
+  "c5t": "Software installation",
+  "c5d": "Installing and configuring your software, with the explanations to make you self-sufficient afterward.",
+  "c6t": "On-site assistance",
+  "c6d": "Technical assistance at home or at your business, anywhere in the service areas. No question is too simple.",
+  "s1t": "You write",
+  "s1d": "Describe the problem in your own words. No technical vocabulary needed.",
+  "s2t": "Diagnosis",
+  "s2d": "We identify the cause and explain what is happening, in plain language.",
+  "s3t": "Repair",
+  "s3d": "We fix the problem, remotely or on site depending on what it takes.",
+  "s4t": "Follow-up",
+  "s4d": "We check that everything works again and Daniel stays reachable directly afterward.",
+  "q1": "Do you come to my home?",
+  "a1": "Yes. Technical assistance is offered at home or at your business, and on-site visits are available throughout the service areas around Saint-Joseph-du-Lac. For problems that can be solved remotely, the work is done online.",
+  "q2": "What does IT support cost?",
+  "a2": "Between $50 and $100 an hour depending on the complexity of the problem. The rate is confirmed before we start, not after. For regular follow-up, monthly support plans are available on quote.",
+  "q3": "How fast do you reply?",
+  "a3": "Within 24h. No tickets, no waiting, no anonymous help desk. You talk directly to Daniel.",
+  "q4": "What kinds of problems can you fix?",
+  "a4": "Computer repair and upgrades, virus and malware removal, Wi-Fi network setup, software installation and general technical assistance. No question is too simple.",
+  "ir1n": "Hourly rate",
+  "ir1per": "/hour",
+  "ir1d": "The rate depends on how complex the problem is. We confirm it before starting, never after.",
+  "if11": "Repair and upgrades",
+  "if12": "Virus and malware removal",
+  "if13": "Wi-Fi network setup",
+  "if14": "Software installation",
+  "if15": "On-site visits available",
+  "ir1cta": "Describe my problem &rarr;",
+  "ir2n": "Monthly support",
+  "ir2p": "Get a quote",
+  "ir2d": "For businesses that prefer regular follow-up rather than calling only when something breaks.",
+  "if21": "Monthly IT support",
+  "if22": "Home or business assistance",
+  "if23": "Training &amp; documentation",
+  "if24": "Reply within 24h",
+  "ir2cta": "Contact us",
+  "flab": "FAQ",
+  "fdesc": "Local tech expert based in Saint-Joseph-du-Lac. Websites, IT support and consulting for businesses in the Laurentians.",
+  "fc1": "Services",
+  "fc2": "Company",
+  "fs1": "Web design",
+  "fs2": "IT support",
+  "fs3": "Consulting",
+  "fs4": "Hosting",
+  "fs5": "PC building",
+  "fpo": "Portfolio",
+  "fpi": "Pricing",
+  "fpr": "Process",
+  "fct": "Contact",
+  "fcopy": "&copy; 2026 Norelo &middot; Saint-Joseph-du-Lac, Quebec",
+  "fmade": "Made with care in the Laurentians",
+  "flegal": "Legal notice &amp; Privacy policy",
+  "ftxt": "Contact us"
+ }
+};
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-r');
+let mx=-100,my=-100,rx=-100,ry=-100;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx+'px';cur.style.top=my+'px';
+  const el=document.elementFromPoint(mx,my);
+  if(!el)return;
+  const tag=el.tagName.toLowerCase();
+  const click=tag==='a'||tag==='button'||!!el.closest('a,button,.svc,.wc,.prc,.lt');
+  const text=!click&&(['p','h1','h2','h3','h4','h5','h6','span','li','label'].includes(tag)||!!el.closest('p,h1,h2,h3,h4,h5,h6,li'));
+  document.body.classList.toggle('cc',click);
+  document.body.classList.toggle('ct',text&&!click);
+});
+(function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+window.addEventListener('scroll',()=>{
+  const s=document.documentElement.scrollTop,h=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('prog').style.width=(s/h*100)+'%';
+  document.getElementById('nav').classList.toggle('sc',s>60);
+  document.getElementById('fcta').classList.toggle('show',s>400);
+});
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('on');});},{threshold:.1});
+document.querySelectorAll('.rv,.rvl,.rvr,.rvs').forEach(el=>obs.observe(el));
+function tFaq(btn){const i=btn.parentElement;const open=i.classList.contains('open');document.querySelectorAll('.fqi').forEach(x=>x.classList.remove('open'));if(!open)i.classList.add('open');}
+let lang='fr';window._l='fr';
+function sL(l){
+  lang=l;window._l=l;
+  document.getElementById('bfr').classList.toggle('on',l==='fr');
+  document.getElementById('ben').classList.toggle('on',l==='en');
+  const d=T[l];
+  for(const[id,val]of Object.entries(d)){
+    const el=document.getElementById(id);
+    if(!el)continue;
+    el.innerHTML=val;
+  }
+  document.documentElement.lang=l;
+  try{localStorage.setItem('norelo_lang',l);}catch(e){}
+}
+(function(){let s=null;try{s=localStorage.getItem('norelo_lang');}catch(e){}
+ if(s==='en')sL('en');else sL('fr');})();
+</script>
+</body>
+</html>
