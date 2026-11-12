@@ -1,21 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <url><loc>https://norelo.ca/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://norelo.ca/inspiration/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://norelo.ca/gestion-demo/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://norelo.ca/previews/templates/apercu/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <!-- Seules les pages publiques et indexables vont ici. Toute page portant
+       <meta name="robots" content="noindex"> doit rester hors du sitemap:
+       demander l'indexation d'une page qui l'interdit est un signal
+       contradictoire et Google le rapporte comme une erreur. -->
 
-  <url><loc>https://norelo.ca/previews/templates/salon/</loc><priority>0.5</priority></url>
-  <url><loc>https://norelo.ca/previews/templates/toilettage/</loc><priority>0.5</priority></url>
-  <url><loc>https://norelo.ca/previews/templates/massotherapie/</loc><priority>0.5</priority></url>
-  <url><loc>https://norelo.ca/previews/templates/construction/</loc><priority>0.5</priority></url>
-  <url><loc>https://norelo.ca/previews/templates/sante/</loc><priority>0.5</priority></url>
-  <url><loc>https://norelo.ca/previews/style-clinique/</loc><priority>0.5</priority></url>
-  <url><loc>https://norelo.ca/previews/style-toilettage/</loc><priority>0.5</priority></url>
-  <url><loc>https://norelo.ca/previews/style-editorial/</loc><priority>0.5</priority></url>
-  <url><loc>https://norelo.ca/previews/style-ebenisterie/</loc><priority>0.5</priority></url>
-
-  <url><loc>https://norelo.ca/legal/</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://norelo.ca/</loc><lastmod>2026-11-09</lastmod><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://norelo.ca/gestion-demo/</loc><lastmod>2026-11-09</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 
 </urlset>

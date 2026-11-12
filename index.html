@@ -418,7 +418,28 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
   "priceRange": "$$",
   "inLanguage": ["fr-CA", "en-CA"],
   "address": { "@type": "PostalAddress", "addressLocality": "Saint-Joseph-du-Lac", "addressRegion": "QC", "addressCountry": "CA" },
-  "areaServed": ["Laurentides", "Laval", "Grand Montréal"],
+  "areaServed": [
+    { "@type": "AdministrativeArea", "name": "Laurentides" },
+    { "@type": "AdministrativeArea", "name": "Laval" },
+    { "@type": "AdministrativeArea", "name": "Grand Montréal" },
+    { "@type": "City", "name": "Saint-Joseph-du-Lac", "addressRegion": "QC", "addressCountry": "CA" },
+    { "@type": "City", "name": "Mirabel", "addressRegion": "QC", "addressCountry": "CA" },
+    { "@type": "City", "name": "Saint-Eustache", "addressRegion": "QC", "addressCountry": "CA" },
+    { "@type": "City", "name": "Deux-Montagnes", "addressRegion": "QC", "addressCountry": "CA" },
+    { "@type": "City", "name": "Sainte-Marthe-sur-le-Lac", "addressRegion": "QC", "addressCountry": "CA" },
+    { "@type": "City", "name": "Pointe-Calumet", "addressRegion": "QC", "addressCountry": "CA" },
+    { "@type": "City", "name": "Oka", "addressRegion": "QC", "addressCountry": "CA" },
+    { "@type": "City", "name": "Saint-Jérôme", "addressRegion": "QC", "addressCountry": "CA" },
+    { "@type": "City", "name": "Blainville", "addressRegion": "QC", "addressCountry": "CA" },
+    { "@type": "City", "name": "Sainte-Thérèse", "addressRegion": "QC", "addressCountry": "CA" },
+    { "@type": "City", "name": "Boisbriand", "addressRegion": "QC", "addressCountry": "CA" },
+    { "@type": "City", "name": "Saint-Colomban", "addressRegion": "QC", "addressCountry": "CA" },
+    { "@type": "City", "name": "Lachute", "addressRegion": "QC", "addressCountry": "CA" },
+    { "@type": "City", "name": "Bois-des-Filion", "addressRegion": "QC", "addressCountry": "CA" },
+    { "@type": "City", "name": "Terrebonne", "addressRegion": "QC", "addressCountry": "CA" },
+    { "@type": "City", "name": "Mascouche", "addressRegion": "QC", "addressCountry": "CA" },
+    { "@type": "City", "name": "Repentigny", "addressRegion": "QC", "addressCountry": "CA" }
+  ],
   "openingHoursSpecification": [{
     "@type": "OpeningHoursSpecification",
     "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
@@ -427,6 +448,66 @@ footer{background:#060e26;padding:4rem 3rem 2rem;}
   "sameAs": [
     "https://maps.google.com/?cid=12952922675231304193",
     "https://www.facebook.com/norelo.ca/"
+  ]
+}
+</script>
+<!-- Reprend mot pour mot la FAQ affichee plus bas. Si une question change
+     dans le HTML, la changer ici aussi: Google ignore un FAQPage dont le
+     texte ne se retrouve pas sur la page. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "fr-CA",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Est-ce que je suis propriétaire de mon site?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui, à 100%. Une fois votre site livré, vous en êtes le seul propriétaire. Le code, les textes, les images, tout vous appartient. Norelo n'a aucun droit de rétention sur votre contenu."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Combien de temps ça prend pour avoir mon site?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "En général, entre 1 et 3 semaines selon la complexité. Un site Essentiel peut être livré en moins de 7 jours. Pour un projet Professionnel avec plusieurs pages et fonctionnalités, comptez 2 à 3 semaines."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Et si je n'ai pas de textes ni de photos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pas de problème. Daniel peut vous aider à rédiger vos textes et offre un service de photographie professionnelle sur place. On s'assure que votre site soit complet et prêt à l'emploi, même si vous partez de zéro."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je mettre à jour le site moi-même?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ça dépend du type de site. Pour les sites simples, les modifications sont gérées par Norelo dans le cadre du forfait de maintenance. Pour les projets plus complexes avec un CMS, une formation est incluse pour vous rendre autonome."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Qu'est-ce qui est inclus dans l'hébergement?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "L'hébergement comprend l'espace serveur, le certificat SSL (cadenas HTTPS), les mises à jour de sécurité et la surveillance du site. En cas de problème, Daniel est joignable directement, pas via un centre d'assistance anonyme."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Offrez-vous du support après la mise en ligne?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. Après la livraison, une période de support est incluse pour corriger les ajustements mineurs. Pour les modifications plus importantes ou le support continu, des forfaits de maintenance mensuelle sont disponibles."
+      }
+    }
   ]
 }
 </script>
