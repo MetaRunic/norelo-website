@@ -1,7 +1,7 @@
-# Review photos — drop crops in here
+# Review photos, drop crops in here
 
 The 15 real reviews in **Devine la note** each look for their own photo in this folder.
-Save a crop as `<name>.jpg` (or `.png`) and it appears in the game automatically — no
+Save a crop as `<name>.jpg` (or `.png`) and it appears in the game automatically, no
 code change needed. Until a file exists, a generic fallback image is shown instead.
 
 Square-ish crops work best (the card renders a 116×116 rounded square, cover-fitted).
@@ -27,7 +27,7 @@ Square-ish crops work best (the card renders a 116×116 rounded square, cover-fi
 ## Why these aren't already here
 
 The screenshots were supplied in chat. Claude can view images but has no way to write
-image data out to a file or crop it, so these have to be saved by hand — the fallback
+image data out to a file or crop it, so these have to be saved by hand, the fallback
 chain exists so the game works fine in the meantime.
 
 ## How the fallback works

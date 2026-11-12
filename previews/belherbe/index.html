@@ -163,18 +163,18 @@ body.laser .nlks a{color:#888;}body.laser .nlks a:hover{color:var(--gp);}
 .ls .fsub{background:var(--lp);color:#fff;}.ls .fsub:hover{background:#1e4d31;transform:translateY(-2px);}
 .gs .fsub{background:var(--gp);color:#0d0d0d;}.gs .fsub:hover{background:#b07a28;transform:translateY(-2px);}
 
-/* POLLEN CANVAS — inside hero only */
+/* POLLEN CANVAS, inside hero only */
 #pollen-cvs{position:absolute;inset:0;pointer-events:none;z-index:2;width:100%;height:100%;}
-/* BIRD CANVAS — inside hero only */
+/* BIRD CANVAS, inside hero only */
 #bird-cvs{position:absolute;inset:0;pointer-events:none;z-index:2;width:100%;height:100%;}
-/* SKY CANVAS — sun, rays, clouds */
+/* SKY CANVAS, sun, rays, clouds */
 #sky-cvs{position:absolute;inset:0;pointer-events:none;z-index:1;width:100%;height:100%;}
 /* BUTTERFLY CANVAS */
 /* Smooth hero content parallax */
 .lhero .hi{transition:transform .12s ease-out;}
 
 /* ============================================================
-   REDESIGNED SECTIONS — LAWN
+   REDESIGNED SECTIONS, LAWN
    ============================================================ */
 
 /* Diagonal separator hero → content */
@@ -315,7 +315,7 @@ body.laser .nlks a{color:#888;}body.laser .nlks a:hover{color:var(--gp);}
 .l-fsub:hover::after{opacity:1;}
 
 /* ============================================================
-   REDESIGNED SECTIONS — LASER
+   REDESIGNED SECTIONS, LASER
    ============================================================ */
 
 /* ── LASER SERVICES ── */
@@ -471,7 +471,7 @@ body.laser .site-footer-logo em{color:var(--gp);}
   .lhero{overflow:hidden;}
 }
 
-/* CUSTOM CURSORS — both sides */
+/* CUSTOM CURSORS, both sides */
 body.lawn{cursor:none;}
 body.lawn *{cursor:none;}
 #cur-cvs{position:fixed;inset:0;pointer-events:none;z-index:9997;}
@@ -797,7 +797,7 @@ body.laser #spark-cvs{display:block;}
     <div class="si">
       <div class="stag rv">Réalisations</div>
       <h2 class="rv d1">Quelques exemples</h2>
-      <p class="ssu rv d2" style="color:#555;">Chaque pièce est unique. Photos à venir — contactez-nous pour voir nos réalisations.</p>
+      <p class="ssu rv d2" style="color:#555;">Chaque pièce est unique. Photos à venir, contactez-nous pour voir nos réalisations.</p>
       <div class="g-gal-grid rv d2">
         <div class="g-gal-cell"><div class="g-gal-ph"><svg viewBox="0 0 40 40"><use href="#i-layers"/></svg><span>Photo à ajouter</span></div></div>
         <div class="g-gal-cell"><div class="g-gal-ph"><svg viewBox="0 0 40 40"><use href="#i-gift"/></svg><span>Photo à ajouter</span></div></div>
@@ -909,7 +909,7 @@ function scheduleObserver() {
 }
 
 // ================================================================
-// POLLEN — dandelion seeds drifting up
+// POLLEN, dandelion seeds drifting up
 // ================================================================
 let pollenRaf = null, seeds = [];
 function mkSeed(W,H,rand){
@@ -968,7 +968,7 @@ function stopPollen(){
 }
 
 // ================================================================
-// UNIFIED CURSOR — lawn dot + laser burn trail, text mode for both
+// UNIFIED CURSOR, lawn dot + laser burn trail, text mode for both
 // ================================================================
 (function(){
   const cvs = document.getElementById('cur-cvs');
@@ -1081,7 +1081,7 @@ function stopPollen(){
         ctx.shadowBlur = 8; ctx.shadowColor = 'rgba(82,183,136,.8)'; ctx.stroke();
         ctx.restore();
       } else {
-        // Clean arrow cursor — classic pointer shape, green with white outline
+        // Clean arrow cursor, classic pointer shape, green with white outline
         ctx.save();
         ctx.translate(mx, my);
         ctx.shadowBlur = 10;
@@ -1112,7 +1112,7 @@ function stopPollen(){
       decayTrail();
 
       if (onText) {
-        // Laser line cursor — vertical beam, like a caret
+        // Laser line cursor, vertical beam, like a caret
         const hh = 13;
         ctx.save();
         // outer glow
@@ -1160,7 +1160,7 @@ function stopPollen(){
 })();
 
 // ================================================================
-// GRASS — mouse proximity sway, wildflowers, fireflies
+// GRASS, mouse proximity sway, wildflowers, fireflies
 // ================================================================
 let grassRaf = null, blades = [], flowers = [], fireflies = [];
 let grassMouseX = -999, grassMouseY = -999;
@@ -1269,7 +1269,7 @@ function startGrass() {
       const h = b.h * b.grow * b.trimProgress;
       let sway = (Math.sin(t * b.spd + b.phase) * 0.13 + wind * 0.08) * (h / 55);
 
-      // Mouse proximity push — only when mouse is over the grass strip
+      // Mouse proximity push, only when mouse is over the grass strip
       if (mouseOverGrass) {
         const dx = b.x - mxC;
         const dy = (H - h * 0.5) - myC;
@@ -1358,7 +1358,7 @@ function startGrass() {
     grd.addColorStop(0,'transparent'); grd.addColorStop(1,'rgba(12,45,22,.3)');
     ctx.fillStyle = grd; ctx.fillRect(0, H-20, W, 20);
 
-    // Dew sparkles — 4-point stars on grass tips
+    // Dew sparkles, 4-point stars on grass tips
     if (Math.random() < .06 && blades.length) {
       const b = blades[Math.floor(Math.random()*blades.length)];
       if (b.grow > 0.85) {
@@ -1386,7 +1386,7 @@ function startGrass() {
 function stopGrass() { if (grassRaf) { cancelAnimationFrame(grassRaf); grassRaf = null; } }
 
 // ================================================================
-// BIRDS — fly occasionally from tree to tree
+// BIRDS, fly occasionally from tree to tree
 // ================================================================
 let birdRaf = null, birds = [], birdTimer = 0, nextBird = 220;
 
@@ -1527,7 +1527,7 @@ function stopBirds() {
 }
 
 // ================================================================
-// SKY — animated sun, crepuscular rays, volumetric clouds
+// SKY, animated sun, crepuscular rays, volumetric clouds
 // ================================================================
 let skyRaf = null;
 let skyMouseX = 0, skyMouseY = 0;
@@ -1544,7 +1544,7 @@ function startSky() {
   const W = cvs.width, H = cvs.height;
   const SX = W * 0.83, SY = H * 0.13; // sun anchor
 
-  // Ray angles — stable, pre-computed
+  // Ray angles, stable, pre-computed
   const rays = Array.from({length:14}, (_,i) => ({ang:(i/14)*Math.PI*2, len:W*1.6+Math.random()*200}));
 
   // Clouds
@@ -1637,7 +1637,7 @@ function stopSky() {
 }
 
 // ================================================================
-// BUTTERFLY — monarch with Lissajous flight
+// BUTTERFLY, monarch with Lissajous flight
 // ================================================================
 let butterflyRaf = null;
 
@@ -1723,7 +1723,7 @@ function stopButterfly(){
 }
 
 // ================================================================
-// CURSOR GRASS TRAIL — blades sprout at mouse position
+// CURSOR GRASS TRAIL, blades sprout at mouse position
 // ================================================================
 let trailRaf=null, trailBlades=[], trailCleanup=null;
 
@@ -1781,7 +1781,7 @@ function stopTrail(){
 }
 
 // ================================================================
-// HERO PARALLAX — mouse tilts content layers
+// HERO PARALLAX, mouse tilts content layers
 // ================================================================
 (function(){
   const hi=document.getElementById('lhero-hi');
@@ -1949,7 +1949,7 @@ function stopLaserHero() { if (laserHeroRaf) { cancelAnimationFrame(laserHeroRaf
 })();
 
 // ================================================================
-// LEAVES — elegant wind gusts
+// LEAVES, elegant wind gusts
 // ================================================================
 let leafRaf = null, leafParticles = [], gustTimer = 0, nextGust = 90;
 
@@ -2002,7 +2002,7 @@ function spawnGust(W, H) {
       vx: dir * speed,
       vy: (Math.random() - .5) * .6,
       rot: Math.random() * Math.PI * 2,
-      // Flutter: oscillates realistically — not constant speed
+      // Flutter: oscillates realistically, not constant speed
       rotV: 0,
       rotAcc: (Math.random() - .5) * .012,
       size,
@@ -2073,13 +2073,13 @@ function startLeaves() {
         ? Math.abs(l.vx) * surge
         : -Math.abs(l.vx) * surge;
 
-      // Sinusoidal vertical drift — the elegant wave motion
+      // Sinusoidal vertical drift, the elegant wave motion
       const drift = Math.sin(t * l.driftFreq + l.driftPhase) * l.driftAmp * .018;
 
       l.x += baseVx * .016 * 60;
       l.y += l.vy + drift;
 
-      // Rotation — tumbling with organic acceleration
+      // Rotation, tumbling with organic acceleration
       l.rotV += l.rotAcc;
       l.rotV *= .97; // damping so it doesn't spin forever
       if (Math.abs(l.rotV) > .12) l.rotV *= .85;
@@ -2131,7 +2131,7 @@ function triggerMow() {
   const W = cvs ? cvs.width : window.innerWidth;
   const H = cvs ? cvs.height : 150;
 
-  // Stagger blade trimming left to right — mower pass effect
+  // Stagger blade trimming left to right, mower pass effect
   blades.forEach(b => {
     const delay = (b.x / W) * 900;
     setTimeout(() => {
@@ -2197,7 +2197,7 @@ const countObs = new IntersectionObserver(entries => {
 document.querySelectorAll('.l-stats').forEach(el => countObs.observe(el));
 
 // ================================================================
-// FLOATING LABEL — select fix (mark as has-val on load if needed)
+// FLOATING LABEL, select fix (mark as has-val on load if needed)
 // ================================================================
 document.querySelectorAll('.l-fl select, .g-fl select').forEach(sel => {
   sel.addEventListener('change', () => {
