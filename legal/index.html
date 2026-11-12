@@ -436,6 +436,7 @@ function setLang(l) {
   document.getElementById('bfr').classList.toggle('on', l === 'fr');
   document.getElementById('ben').classList.toggle('on', l === 'en');
   document.documentElement.lang = l;
+  try{localStorage.setItem('norelo_lang',l);}catch(e){}
   document.getElementById('nav-back-link').textContent = l === 'fr' ? '← Retour au site' : '← Back to site';
   const d = T[l];
   for (const [id, val] of Object.entries(d)) {
@@ -445,6 +446,15 @@ function setLang(l) {
 }
 
 
+
+/* Garde la langue choisie d'une page a l'autre, comme l'accueil et les
+   pages de services. Le HTML statique est deja en francais, donc on ne
+   bascule que vers l'anglais. */
+(function(){
+  let v=null;
+  try{v=localStorage.getItem('norelo_lang');}catch(e){}
+  if(v==='en')setLang('en');
+})();
 </script>
 
 </body>

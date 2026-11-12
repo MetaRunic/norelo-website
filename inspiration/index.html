@@ -1519,6 +1519,7 @@ function sL(l){
   document.getElementById('bfr').classList.toggle('on',l==='fr');
   document.getElementById('ben').classList.toggle('on',l==='en');
   document.documentElement.lang=l;
+  try{localStorage.setItem('norelo_lang',l);}catch(e){}
   const d=T[l];
   for(const[id,val]of Object.entries(d)){const el=document.getElementById(id);if(el)el.innerHTML=val;}
 }
@@ -1657,6 +1658,15 @@ function closeLB(){document.getElementById('lbOverlay').classList.remove('open')
 function toggleTag(el){el.classList.toggle('on');const active=[...document.querySelectorAll('#tfTags .tf-tag.on')].map(t=>t.dataset.cat);document.querySelectorAll('#tfResults .tf-item').forEach(item=>{item.classList.toggle('hidden',active.length>0&&!active.includes(item.dataset.cat));});}
 // init tag filter
 (function(){const active=[...document.querySelectorAll('#tfTags .tf-tag.on')].map(t=>t.dataset.cat);document.querySelectorAll('#tfResults .tf-item').forEach(item=>{item.classList.toggle('hidden',active.length>0&&!active.includes(item.dataset.cat));});})();
+
+/* Garde la langue choisie d'une page a l'autre, comme l'accueil et les
+   pages de services. Le HTML statique est deja en francais, donc on ne
+   bascule que vers l'anglais. */
+(function(){
+  let v=null;
+  try{v=localStorage.getItem('norelo_lang');}catch(e){}
+  if(v==='en')sL('en');
+})();
 </script>
 </body>
 </html>
