@@ -1165,6 +1165,7 @@ function sL(l){
     else el.innerHTML=val;
   }
   document.documentElement.lang=l;
+  try{localStorage.setItem('norelo_lang',l);}catch(e){}
   uEst();
 }
 
@@ -1197,6 +1198,16 @@ function sub(){
     btn.disabled=false;
   });
 }
+
+/* Garde la langue choisie d'une page a l'autre. Les pages de services
+   persistent deja le choix: sans ca, un visiteur anglophone qui revient
+   a l'accueil repasse au francais. Le HTML statique est deja en francais,
+   donc on ne bascule que vers l'anglais. */
+(function(){
+  let v=null;
+  try{v=localStorage.getItem('norelo_lang');}catch(e){}
+  if(v==='en')sL('en');
+})();
 </script>
 </body>
 </html>
